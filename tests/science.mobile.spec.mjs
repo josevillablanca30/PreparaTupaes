@@ -23,7 +23,7 @@ test('Ciencias: abre desde M1, selección de módulo y diseño móvil',async({pa
  await page.getByRole('link',{name:'Entrar a Cachaste Ciencias →'}).tap();
  await expect(page).toHaveTitle('Cachaste · Ciencias');
  await expect(page.getByRole('heading',{name:'¿Qué mención rendirás?'})).toBeVisible();
- await expect(page.getByText(/54 del módulo común/i)).toBeVisible();
+ await expect(page.getByText(/54 del módulo común/i).first()).toBeVisible();
  await page.locator('.track').filter({hasText:'Química'}).tap();
  await expect(page.locator('.track').filter({hasText:'Química'})).toHaveAttribute('aria-pressed','true');
  await page.getByRole('button',{name:'Comenzar diagnóstico de 30'}).tap();
