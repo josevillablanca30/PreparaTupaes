@@ -5,11 +5,12 @@ import vm from 'node:vm';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
-function app(saved = '[]', failSave = false, savedSession = null, savedReview = null) {
+function app(saved = '[]', failSave = false, savedSession = null, savedReview = null, savedDiagnostic = null) {
   const element = { innerHTML: '' };
   const keys = new Map([['prepara-paes-demo-v1',saved]]);
   if(savedSession) keys.set('prepara-paes-active-exam-v1',savedSession);
   if(savedReview) keys.set('cachaste-m1-pending-review-v1',savedReview);
+  if(savedDiagnostic) keys.set('cachaste-m1-diagnostic-30-v1',savedDiagnostic);
   const context = vm.createContext({
     document: { getElementById: () => element },
     window: { scrollTo() {} },
@@ -409,4 +410,28 @@ test('diagnóstico integral produce resultados comparables por eje',()=>{
  assert.equal(run('round.length'),12);
  assert.equal(run('result().includes("Tu desempeño por eje")'),true);
  assert.equal(run('round.filter(x=>x.correct).length'),12);
+});
+
+test('nuevo diagnóstico M1: 30 preguntas distintas y los cuatro ejes',()=>{
+ const run=app();run("start('diagnostico30')");
+ assert.equal(run('queue.length'),30);
+ assert.equal(run('new Set(queue.map(q=>q.id)).size'),30);
+ for(const [axis,total] of [['Números',8],['Álgebra y funciones',8],['Geometría',7],['Probabilidad y estadística',7]]) {
+  assert.equal(run('queue.filter(q=>axisOf(q)==='+JSON.stringify(axis)+').length'),total);
+ }
+ assert.equal(run('home().includes("Comenzar diagnóstico de 30")'),true);
+ assert.equal(run('home().includes("disabled")'),true);
+});
+test('M1: finalizar diagnóstico desbloquea Express y produce plan persistente',()=>{
+ const run=app();run("start('diagnostico30')");
+ run("for(let n=0;n<30;n++){choice=queue[i].answer;confidence=n%2===0?'seguro':'azar';check();next()}");
+ assert.equal(run('page'),'result');
+ assert.equal(run('mathDiagnostic.results.length'),30);
+ assert.equal(run('mathReady()'),true);
+ assert.equal(run('mathWeakAxes().length'),4);
+ const saved=run('localStorage.getItem(mathDiagnosticKey)');
+ const reopened=app('[]',false,null,null,saved);
+ assert.equal(reopened('mathDiagnostic.completed'),true);
+ assert.equal(reopened('home().includes("Repetir diagnóstico de 30")'),true);
+ assert.equal(reopened('home().includes("Esto conviene reforzar primero")'),true);
 });
