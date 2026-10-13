@@ -151,8 +151,8 @@ test('Express equilibra habilidades y admite combinaciones distintas', () => {
   assert.equal(run('queue.length'),10);
   assert.equal(run('new Set(queue.map(q=>q.id)).size'),10);
   assert.equal(run('new Set(queue.map(q=>axisOf(q))).size'),4);
-  assert.equal(run('queue.some(q=>q.skill==="Geometría")'),true);
-  assert.equal(run('queue.some(q=>q.skill==="Estadística")'),true);
+  assert.equal(run('queue.filter(q=>axisOf(q)==="Geometría").length'),2);
+  assert.equal(run('queue.filter(q=>axisOf(q)==="Probabilidad y estadística").length'),2);
  }
 });
 
