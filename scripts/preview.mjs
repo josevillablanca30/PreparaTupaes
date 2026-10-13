@@ -5,6 +5,9 @@ import { readFile } from 'node:fs/promises';
 const files = new Map([
   ['/PreparaTupaes/', ['index.html', 'text/html; charset=utf-8']],
   ['/PreparaTupaes/index.html', ['index.html', 'text/html; charset=utf-8']],
+  ['/PreparaTupaes/science.html', ['science.html', 'text/html; charset=utf-8']],
+  ['/PreparaTupaes/science-bank.js', ['science-bank.js', 'text/javascript; charset=utf-8']],
+  ['/PreparaTupaes/science-app.js', ['science-app.js', 'text/javascript; charset=utf-8']],
   ['/PreparaTupaes/version.json', ['version.json', 'application/json']]
 ]);
 createServer(async (request, response) => {
