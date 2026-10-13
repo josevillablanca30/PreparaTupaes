@@ -5,15 +5,17 @@ import vm from 'node:vm';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
-function app(saved = '[]', failSave = false) {
+function app(saved = '[]', failSave = false, savedSession = null) {
   const element = { innerHTML: '' };
+  const keys = new Map([['prepara-paes-demo-v1',saved]]);
+  if(savedSession) keys.set('prepara-paes-active-exam-v1',savedSession);
   const context = vm.createContext({
     document: { getElementById: () => element },
     window: { scrollTo() {} },
-    localStorage: { getItem: () => saved, setItem: (_, value) => {
+    localStorage: { getItem: key => keys.get(key) ?? null, setItem: (key, value) => {
       if (failSave) throw new Error('Storage blocked');
-      saved = value;
-    } }
+      keys.set(key, value);
+    }, removeItem: key => keys.delete(key) }
   });
   vm.runInContext(source, context);
   return code => vm.runInContext(code, context);
@@ -148,7 +150,7 @@ test('Express equilibra habilidades y admite combinaciones distintas', () => {
   run("startExam('express')");
   assert.equal(run('queue.length'),10);
   assert.equal(run('new Set(queue.map(q=>q.id)).size'),10);
-  assert.equal(run('new Set(queue.map(q=>q.skill)).size'),7);
+  assert.equal(run('new Set(queue.map(q=>axisOf(q))).size'),4);
   assert.equal(run('queue.some(q=>q.skill==="Geometría")'),true);
   assert.equal(run('queue.some(q=>q.skill==="Estadística")'),true);
  }
@@ -162,4 +164,36 @@ test('desafíos aplicados: cuatro problemas M1 completos y seleccionables',()=>{
  assert.equal(run('queue.length'),4);
  assert.equal(run('queue[0].id'),112);
  assert.equal(run('home().includes("Desafíos aplicados")'),true);
+});
+
+test('banco M1 ampliado: 84 ítems íntegros, respuestas válidas y ejes trazables',()=>{
+ const run=app();
+ assert.equal(run('catalog.length'),84);
+ assert.equal(run('new Set(catalog.map(q=>q.id)).size'),84);
+ assert.equal(run('catalog.every(q=>q.options.length===4&&new Set(q.options).size===4&&Number.isInteger(q.answer)&&q.answer>=0&&q.answer<4&&q.explanations.length===4&&q.steps.length>=2&&q.easy&&q.example)'),true);
+ assert.equal(run('new Set(catalog.map(q=>axisOf(q))).size'),4);
+});
+test('simulacro completo: 65 preguntas únicas, cuota de ejes y 140 minutos',()=>{
+ const run=app();
+ run("startExam('full')");
+ assert.equal(run('queue.length'),65);
+ assert.equal(run('new Set(queue.map(q=>q.id)).size'),65);
+ assert.equal(run('queue.filter(q=>axisOf(q)==="Números").length'),16);
+ assert.equal(run('queue.filter(q=>axisOf(q)==="Álgebra y funciones").length'),19);
+ assert.equal(run('queue.filter(q=>axisOf(q)==="Geometría").length'),15);
+ assert.equal(run('queue.filter(q=>axisOf(q)==="Probabilidad y estadística").length'),15);
+ assert.equal(run('examDeadline-Date.now() > 139*60*1000'),true);
+ assert.equal(run('examQuiz(queue[0]).includes("Tiempo restante")'),true);
+ run('examMove(1)');
+ const saved=run('localStorage.getItem(sessionKey)');
+ assert.equal(JSON.parse(saved).index,1);
+ const resumed=app('[]',false,saved);
+ resumed('resumeSavedExam()');
+ assert.equal(resumed('queue.length'),65);
+ assert.equal(resumed('i'),1);
+ assert.equal(resumed('examDeadline> Date.now()'),true);
+ run('finishExam()');
+ assert.equal(run('round.length'),65);
+ assert.equal(run('page'),'result');
+ assert.equal(run('localStorage.getItem(sessionKey)'),null);
 });
