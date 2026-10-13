@@ -352,3 +352,18 @@ test('progreso móvil organizado por los cuatro ejes y habilidades plegadas',()=
  assert.equal(page.includes('1 respuestas registradas'),true);
  assert.equal(page.includes('Practicar Números'),true);
 });
+
+test('recuperación robusta: no reanuda ensayos vacíos o con IDs duplicados',()=>{
+ const empty=app('[]',false,JSON.stringify({ids:[],answers:[],index:0}));
+ assert.equal(empty('resumeExam'),null);
+ assert.equal(empty('home().includes("Continuar ensayo")'),false);
+ const duplicated=app('[]',false,JSON.stringify({ids:[1,1],answers:[null,null],index:0}));
+ assert.equal(duplicated('resumeExam'),null);
+});
+test('repaso corrupto: descarta IDs inexistentes y cursor inválido',()=>{
+ const run=app('[]',false,null,JSON.stringify({ids:[1,2,999999,1],cursor:'Infinity'}));
+ assert.equal(run('pendingReview.length'),2);
+ assert.equal(run('reviewCursor'),0);
+ run('reviewPending()');
+ assert.equal(run('queue.length'),2);
+});
