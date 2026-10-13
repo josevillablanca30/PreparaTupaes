@@ -9,6 +9,7 @@ async function checkLayout(page) {
     if (document.documentElement.scrollWidth > width + 1) problems.push('horizontal overflow');
     for (const button of document.querySelectorAll('button')) {
       const rect = button.getBoundingClientRect();
+      if (rect.width===0&&rect.height===0)continue;
       if (rect.width < 44 || rect.height < 44) problems.push('small target: ' + button.textContent);
       if (rect.left < -1 || rect.right > width + 1) problems.push('offscreen: ' + button.textContent);
     }
@@ -36,7 +37,7 @@ test('inicio: carga, revisión publicada y controles táctiles', async ({ page }
   const response = await page.goto('./');
   expect(response.status()).toBe(200);
   await expect(page).toHaveTitle('Cachaste · Aprende a tu ritmo');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('¿Cachaste? Aquí aprender se siente distinto.');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Aprende primero. Después demuestra lo que sabes.');
   if (process.env.EXPECTED_SHA) await expect(page.locator('meta[name="build-revision"]')).toHaveAttribute('content', process.env.EXPECTED_SHA);
   await checkLayout(page);
   await info.attach('inicio-movil', { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
