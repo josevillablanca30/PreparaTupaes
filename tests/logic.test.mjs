@@ -60,3 +60,26 @@ test('nueva ronda: reinicia alternativa, confianza y explicación', () => {
   assert.equal(run('mode'), 'steps');
   assert.equal(run('round.length'), 0);
 });
+
+test('variantes: cada habilidad prioritaria tiene una pregunta nueva con solución válida', () => {
+  const run=app();
+  assert.equal(run('variants.length'),3);
+  assert.equal(run('variants.every(v=>v.answer>=0&&v.answer<v.options.length&&v.steps.length>=2)'),true);
+  run("start('diagnostico');choice=0;check();startVariant()");
+  assert.equal(run('queue[0].id'),101);
+  assert.equal(run('page'),'quiz');
+  assert.equal(run('checked'),false);
+});
+test('simulacro: no muestra corrección, admite omisiones y corrige al finalizar', () => {
+  const run=app();
+  run('startExam()');
+  assert.equal(run('exam'),true);
+  assert.equal(run('quiz().includes("Respuesta correcta")'),false);
+  run('examMove(1);examMove(-1)');
+  assert.equal(run('i'),0);
+  run('choice=2;examAnswers[0]=2;examMove(1);examMove(1);examMove(1);examMove(1);examMove(1)');
+  assert.equal(run('page'),'result');
+  assert.equal(run('round.length'),5);
+  assert.equal(run('round.filter(x=>x.unanswered).length'),4);
+  assert.equal(run('round.filter(x=>x.correct).length'),1);
+});
