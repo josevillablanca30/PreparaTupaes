@@ -7,6 +7,9 @@ const files = new Map([
   ['/PreparaTupaes/index.html', ['index.html', 'text/html; charset=utf-8']],
   ['/PreparaTupaes/inicio.html', ['inicio.html', 'text/html; charset=utf-8']],
   ['/PreparaTupaes/science.html', ['science.html', 'text/html; charset=utf-8']],
+  ['/PreparaTupaes/reading.html', ['reading.html', 'text/html; charset=utf-8']],
+  ['/PreparaTupaes/reading-bank.js', ['reading-bank.js', 'text/javascript; charset=utf-8']],
+  ['/PreparaTupaes/reading-app.js', ['reading-app.js', 'text/javascript; charset=utf-8']],
   ['/PreparaTupaes/science-bank.js', ['science-bank.js', 'text/javascript; charset=utf-8']],
   ['/PreparaTupaes/science-app.js', ['science-app.js', 'text/javascript; charset=utf-8']],
   ['/PreparaTupaes/version.json', ['version.json', 'application/json']]
