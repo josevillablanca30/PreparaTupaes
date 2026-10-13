@@ -12,6 +12,12 @@ const files = new Map([
   ['/PreparaTupaes/reading-app.js', ['reading-app.js', 'text/javascript; charset=utf-8']],
   ['/PreparaTupaes/science-bank.js', ['science-bank.js', 'text/javascript; charset=utf-8']],
   ['/PreparaTupaes/science-app.js', ['science-app.js', 'text/javascript; charset=utf-8']],
+  ['/PreparaTupaes/m2.html', ['m2.html', 'text/html; charset=utf-8']],
+  ['/PreparaTupaes/m2-bank.js', ['m2-bank.js', 'text/javascript; charset=utf-8']],
+  ['/PreparaTupaes/m2-app.js', ['m2-app.js', 'text/javascript; charset=utf-8']],
+  ['/PreparaTupaes/history.html', ['history.html', 'text/html; charset=utf-8']],
+  ['/PreparaTupaes/history-bank.js', ['history-bank.js', 'text/javascript; charset=utf-8']],
+  ['/PreparaTupaes/history-app.js', ['history-app.js', 'text/javascript; charset=utf-8']],
   ['/PreparaTupaes/version.json', ['version.json', 'application/json']]
 ]);
 createServer(async (request, response) => {
