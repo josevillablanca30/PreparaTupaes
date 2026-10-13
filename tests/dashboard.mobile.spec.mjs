@@ -20,6 +20,7 @@ test('Cachaste: inicio unificado muestra asignaturas y rutas accesibles',async({
   await expect(page.getByRole('link',{name,exact:true})).toBeVisible();
  }
  await expect(page.getByRole('link',{name:'Ver Ciencias completa →'})).toBeVisible();
+ await expect(page.getByRole('link',{name:'Entrar a Competencia Lectora'})).toBeVisible();
  await checkDashboard(page);
  await info.attach('selector-asignaturas',{body:await page.screenshot({fullPage:true}),contentType:'image/png'});
 });
@@ -76,5 +77,22 @@ test('Progreso: selector reúne resúmenes de M1 y Ciencias sin mezclarlos',asyn
  await page.reload();
  await expect(page.locator('#m1-progress')).toHaveText('1 respuesta');
  await expect(page.locator('#science-progress')).toHaveText('1 respuesta');
+ await checkDashboard(page);
+});
+
+test('Selector unificado: muestra y conserva avance independiente en Lectora',async({page})=>{
+ await page.goto('./inicio.html');
+ await expect(page.locator('#reading-progress')).toHaveText('Aún sin practicar');
+ await page.getByRole('link',{name:'Entrar a Competencia Lectora'}).tap();
+ await page.getByRole('button',{name:'Comenzar diagnóstico de 30'}).tap();
+ await page.locator('button.option').first().tap();
+ await page.getByRole('button',{name:'Comprobar respuesta'}).tap();
+ await page.getByRole('button',{name:'Siguiente pregunta →'}).tap();
+ await page.getByRole('link',{name:'← Asignaturas'}).tap();
+ await expect(page.locator('#reading-progress')).toHaveText('1 respuesta');
+ await expect(page.locator('#m1-progress')).toHaveText('Aún sin practicar');
+ await expect(page.locator('#science-progress')).toHaveText('Aún sin practicar');
+ await page.reload();
+ await expect(page.locator('#reading-progress')).toHaveText('1 respuesta');
  await checkDashboard(page);
 });
