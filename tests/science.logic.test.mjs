@@ -16,9 +16,9 @@ function science(initial=new Map()){
  return {data,elements,window,bank:window.SCIENCE_BANK,saved:()=>JSON.parse(data.get('cachaste-science-v1')||'{}')};
 }
 function unlockedData(data=new Map()){data.set('cachaste-science-v1',JSON.stringify({baseline:{completed:true,results:Array.from({length:30},()=>({subject:'Biología',area:'Herencia y evolución',correct:true,confidence:'seguro'}))}}));return data}
-test('Ciencias: 63 ítems originales sin respuestas, IDs ni alternativas duplicadas',()=>{
+test('Ciencias: 116 ítems originales sin respuestas, IDs ni alternativas duplicadas',()=>{
  const {bank}=science();
- assert.equal(bank.length,63);
+ assert.equal(bank.length,116);
  assert.equal(new Set(bank.map(q=>q.id)).size,63);
  const texts=new Set();
  for(const q of bank){
@@ -35,8 +35,8 @@ test('Ciencias: 63 ítems originales sin respuestas, IDs ni alternativas duplica
 test('Ciencias: Módulo Común, Electivo y TP tienen cobertura balanceada',()=>{
  const {bank,window}=science();
  for(const sub of ['Biología','Física','Química']){
-  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='MC').length,15);
-  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='ME').length,4);
+  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='MC').length,18);
+  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='ME').length,sub==='Química'?18:19);
   assert.equal(bank.filter(q=>q.subject===sub&&q.module==='MTP').length,2);
  }
  assert.equal(new Set(bank.map(q=>q.area)).size,11);
@@ -164,4 +164,18 @@ test('Ciencias: progreso independiente de M1 y mensajes responsables sobre el ex
  assert.ok(a.elements.view.innerHTML.includes('Completo · En preparación'));
  assert.ok(!a.data.has('prepara-paes-demo-v1'));
  assert.ok(!a.data.has('prepara-paes-active-exam-v1'));
+});
+
+test('Ciencias: 54 preguntas de Módulo Común y 116 originales sin duplicados',()=>{
+ const a=science(),bank=a.bank;
+ assert.equal(bank.filter(q=>q.module==='MC').length,54);
+ assert.equal(bank.filter(q=>q.module==='ME').length,56);
+ assert.equal(bank.filter(q=>q.module==='MTP').length,6);
+ assert.equal(bank.length,116);
+ assert.equal(new Set(bank.map(q=>q.question)).size,116);
+ for(const q of bank){
+  assert.ok(q.steps.every(t=>t.length>=15),q.id);
+  assert.equal(q.explanations.length,4,q.id);
+  assert.ok(q.explanations.every(t=>t.length>15),q.id);
+ }
 });
