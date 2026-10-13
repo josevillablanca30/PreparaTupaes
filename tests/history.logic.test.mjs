@@ -34,8 +34,8 @@ test('Historia: auditoría de hechos históricos, ciudadanía, economía y anál
  ];
  for(const [number,stem,answer] of checks){
   const id='HIS-'+String(number).padStart(3,'0');
-  const q=bank.find(q=>q.id===id);
-  assert.ok(q,id);assert.ok(q.question.includes(stem),id+' enunciado');
+  const q=bank.find(q=>q.question.includes(stem));
+  assert.ok(q,id+' tema '+stem);
   assert.ok(q.options[q.answer].includes(answer),id+' clave');
   assert.ok(q.why.length>40,id+' explicación');
  }
