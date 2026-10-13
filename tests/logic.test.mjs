@@ -206,7 +206,7 @@ test('práctica por eje usa ocho ejercicios de contenido ampliado',()=>{
   assert.equal(run('queue.length'),8);
   assert.equal(run('queue.every(q=>axisOf(q)==="'+axis+'")'),true);
  }
- assert.equal(run('home().includes("¿Qué quieres reforzar hoy?")'),true);
+ assert.equal(run('home().includes("Refuerzo y otras prácticas")'),true);
 });
 test('repaso adaptativo busca en las 116 preguntas, no solamente en las cinco iniciales',()=>{
  const run=app('[{"id":245,"correct":false}]');
