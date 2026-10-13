@@ -3,17 +3,18 @@
 Aplicación de preparación PAES Chile. **Primera meta: Matemática M1 Regular 2026 / Admisión 2027**.
 
 ## Estado actual
-- 84 preguntas originales de práctica con alternativas, explicaciones por error y resolución.
+- 100 preguntas originales de práctica, incluidas 16 con gráficos y figuras con alternativas, explicaciones por error y resolución.
 - Banco basado en habilidades de la biblioteca educativa de Drive y el temario oficial; no reproduce preguntas de pago sin permiso.
-- Diagnóstico, práctica rápida, práctica por eje, refuerzo y Ensayo Express de 10 preguntas.
+- Diagnóstico, práctica rápida, práctica por eje, práctica visual, refuerzo y Ensayo Express de 10 preguntas.
+- Tutor con pistas progresivas: aciertos con ayuda se distinguen del dominio sin pistas.
 - Simulacro **formativo** de 65 preguntas, tiempo de 140 minutos, mapa navegable, marcadores y confirmación al entregar.
 - Guardado local de respuestas, reanudación de sesión y resultados por eje.
 - Etiquetas pedagógicas estimadas: 45 iniciales, 24 intermedias y 15 desafíos.
-- Marca visible Android: **Cachaste**.
+- Marca e icono Android: **Cachaste**. Versión de código Android **0.5.0**, pendiente de compilación comprobada.
 - **No es aún una versión comercial aprobada**, ni sus aciertos equivalen a una conversión oficial de puntaje.
-- Se probaron 24 casos de lógica en una ejecución JavaScript aislada y se cotejaron 84 respuestas con una segunda clave. Quedan pendientes QA visual móvil, ejecución confirmada de CI y compilación de un APK descargable.
+- Se probaron 29 casos de lógica en una ejecución JavaScript aislada y se cotejaron 100 respuestas con la clave editorial. Quedan pendientes QA visual móvil, ejecución confirmada de CI y compilación de un APK descargable.
 
-Consulta [reporte de QA](docs/qa-m1-pasada-calidad-2026-10-13.md) y [biblioteca y fuentes de Drive](docs/fuentes-drive-m1-2026.md).
+Consulta [pasada grande de gráficos y tutor](docs/qa-m1-expansion-100-2026-10-13.md), [reporte de QA anterior](docs/qa-m1-pasada-calidad-2026-10-13.md) y [biblioteca y fuentes de Drive](docs/fuentes-drive-m1-2026.md).
 
 ## Probar
 Abrir `index.html` con el navegador, o ejecutar:
@@ -43,14 +44,13 @@ URL prevista (solo válida después de un despliegue exitoso): https://josevilla
 Los reportes y capturas de las pruebas quedan en el run de Actions con retención de un día. La emulación móvil verifica interfaz y funcionalidad; no equivale a una prueba en un teléfono físico.
 
 ## Alcance y advertencias
-Esta versión subida a GitHub es una **base simplificada**, no todavía el prototipo completo preparado anteriormente. Las preguntas son originales de demostración: no son ensayos DEMRE ni representan una simulación oficial. No existe tutor IA, cuentas, backend, sincronización entre dispositivos ni estimador validado de puntaje.
+Esta es una **versión formativa funcional en desarrollo**, no un producto comercial terminado. Las preguntas son originales de práctica y no son ensayos DEMRE ni representan una simulación oficial validada. El tutor actual usa explicaciones y pistas redactadas previamente, no un modelo de IA generativo. No hay cuentas, backend, sincronización entre dispositivos ni estimador validado de puntaje.
 
-El ZIP de material PAES en Drive pesa aprox. 1,86 GB y el conector no permitió descargarlo (límite 256 MB). Hace falta acceder a su contenido descomprimido, clasificarlo y verificar derechos de uso.
+La biblioteca PAES descomprimida de Drive se ha podido consultar por archivos individuales. Aún falta completar su clasificación editorial y verificar derechos de uso para cualquier reproducción de material de terceros.
 
 ## Siguiente desarrollo
-1. Validación real en celular y pruebas automatizadas.
-2. Modularizar la aplicación e integrar el prototipo anterior.
-3. Banco de preguntas y solucionarios con trazabilidad y permisos.
-4. Motor de aprendizaje adaptativo y nuevas variantes verificadas.
-5. Ensayos con cronómetro y resultados.
+1. Ejecutar las pruebas completas Node y Playwright sobre el último commit, corregir cualquier regresión móvil.
+2. Validar matemáticamente los nuevos problemas visuales y sus distracciones con otra revisión pedagógica.
+3. Agregar más ítems de interpretación compleja, no únicamente cálculos directos.
+4. Estabilizar la compilación Android y verificar un APK descargable antes de presentarlo como listo.
 
