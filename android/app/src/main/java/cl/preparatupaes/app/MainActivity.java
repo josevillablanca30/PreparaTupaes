@@ -25,14 +25,24 @@ public class MainActivity extends Activity {
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient());
         setContentView(webView);
-        webView.loadUrl("file:///android_asset/index.html");
+        webView.loadUrl("file:///android_asset/inicio.html");
     }
     @Override public void onBackPressed() {
-        if (webView != null) {
-            webView.evaluateJavascript("typeof navigate === 'function' ? (navigate('home'), true) : false", null);
-        } else {
-            super.onBackPressed();
-        }
+        if (webView == null) { super.onBackPressed(); return; }
+        webView.evaluateJavascript(
+            "(function(){try{return typeof window.cachasteNativeBack==='function' ? window.cachasteNativeBack() : false}catch(e){return false}})()",
+            handled -> {
+                if ("true".equals(handled)) return;
+                if (webView == null) return;
+                if (webView.canGoBack()) { webView.goBack(); return; }
+                String url = webView.getUrl();
+                if (url != null && !url.endsWith("/inicio.html")) {
+                    webView.loadUrl("file:///android_asset/inicio.html");
+                } else {
+                    MainActivity.super.onBackPressed();
+                }
+            }
+        );
     }
     @Override protected void onDestroy() {
         if (webView != null) { webView.destroy(); webView = null; }
