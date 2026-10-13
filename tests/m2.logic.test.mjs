@@ -4,10 +4,10 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const src=readFileSync(new URL('../m2-bank.js',import.meta.url),'utf8');
 const app=readFileSync(new URL('../m2-app.js',import.meta.url),'utf8');
-test('M2: banco inicial tiene diez ítems originales válidos y cinco áreas',()=>{
+test('M2: banco inicial tiene veinte ítems originales válidos y cinco áreas',()=>{
  const window={};vm.runInNewContext(src,{window});
  const bank=window.CACHASTE_M2;
- assert.equal(bank.length,10);
+ assert.equal(bank.length,20);
  assert.equal(new Set(bank.map(q=>q.id)).size,10);
  assert.equal(new Set(bank.map(q=>q.area)).size,5);
  for(const q of bank){
