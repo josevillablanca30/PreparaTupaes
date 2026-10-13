@@ -12,9 +12,33 @@ permissions:
 jobs:
   apk:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Instalar dependencias
+        run: npm ci
+      - name: Validar lógica y clave editorial antes del APK
+        run: npm run test:logic
+      - name: Construir aplicación web empaquetada
+        run: npm run build
+      - name: Instalar navegador de pruebas
+        run: npx playwright install --with-deps chromium
+      - name: Validar uso táctil Android y pantalla de 320 px
+        run: npm test -- --project=Android-Chrome --project=mobile-320px
+      - name: Guardar capturas de errores móviles
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cachaste-qa-movil-fallido
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 1
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -26,7 +50,7 @@ jobs:
       - name: Empaquetar la versión web local para Android
         run: |
           mkdir -p android/app/src/main/assets
-          cp index.html android/app/src/main/assets/index.html
+          cp dist/index.html android/app/src/main/assets/index.html
       - name: Compilar APK de prueba
         working-directory: android
         run: gradle --no-daemon :app:assembleDebug
