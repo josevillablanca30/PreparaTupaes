@@ -113,11 +113,12 @@ test('comprobación de aprendizaje usa otra pregunta de la misma habilidad', () 
  assert.equal(run('quiz().includes("Respuesta correcta:")'),false);
 });
 
-test('ensayo sin preguntas de transferencia disponibles no ofrece botón engañoso', () => {
+test('ensayo Express ofrece transferencia solamente cuando hay ejercicios distintos', () => {
  const run=app();
  run("startExam('express');for(let n=0;n<10;n++)examMove(1)");
  assert.equal(run('round.length'),10);
- assert.equal(run('result().includes("Comprobar si aprendí")'),false);
+ const available=run('round.some(h=>catalog.some(v=>v.skill===h.skill&&!round.some(r=>r.id===v.id)))');
+ assert.equal(run('result().includes("Comprobar si aprendí")'),available);
 });
 test('tras fallar solo porcentajes, ofrece comprobación con otra pregunta', () => {
  const run=app();
@@ -139,4 +140,16 @@ test('geometría y estadística: seis ejercicios originales con soluciones compl
  assert.equal(run('queue.length'),6);
  assert.equal(run('queue[0].id'),106);
  assert.equal(run('home().includes("Geometría y Estadística")'),true);
+});
+
+test('Express equilibra habilidades y admite combinaciones distintas', () => {
+ const run=app();
+ for(let k=0;k<15;k++){
+  run("startExam('express')");
+  assert.equal(run('queue.length'),10);
+  assert.equal(run('new Set(queue.map(q=>q.id)).size'),10);
+  assert.equal(run('new Set(queue.map(q=>q.skill)).size'),7);
+  assert.equal(run('queue.some(q=>q.skill==="Geometría")'),true);
+  assert.equal(run('queue.some(q=>q.skill==="Estadística")'),true);
+ }
 });
