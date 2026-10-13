@@ -16,10 +16,10 @@ function science(initial=new Map()){
  return {data,elements,window,bank:window.SCIENCE_BANK,saved:()=>JSON.parse(data.get('cachaste-science-v1')||'{}')};
 }
 function unlockedData(data=new Map()){data.set('cachaste-science-v1',JSON.stringify({baseline:{completed:true,results:Array.from({length:30},()=>({subject:'Biología',area:'Herencia y evolución',correct:true,confidence:'seguro'}))}}));return data}
-test('Ciencias: 116 ítems originales sin respuestas, IDs ni alternativas duplicadas',()=>{
+test('Ciencias: 158 ítems originales sin respuestas, IDs ni alternativas duplicadas',()=>{
  const {bank}=science();
- assert.equal(bank.length,116);
- assert.equal(new Set(bank.map(q=>q.id)).size,116);
+ assert.equal(bank.length,158);
+ assert.equal(new Set(bank.map(q=>q.id)).size,158);
  const texts=new Set();
  for(const q of bank){
   assert.equal(q.options.length,4,q.id);
@@ -36,8 +36,8 @@ test('Ciencias: Módulo Común, Electivo y TP tienen cobertura balanceada',()=>{
  const {bank,window}=science();
  for(const sub of ['Biología','Física','Química']){
   assert.equal(bank.filter(q=>q.subject===sub&&q.module==='MC').length,18);
-  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='ME').length,sub==='Química'?18:19);
-  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='MTP').length,2);
+  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='ME').length,26);
+  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='MTP').length,sub==='Química'?8:9);
  }
  assert.equal(new Set(bank.map(q=>q.area)).size,11);
  assert.equal(new Set(bank.map(q=>q.skill)).size,5);
@@ -161,21 +161,53 @@ test('Ciencias: permite dejar observaciones en Biología sin cambiar respuestas 
 test('Ciencias: progreso independiente de M1 y mensajes responsables sobre el examen',()=>{
  const a=science();
  assert.ok(a.elements.view.innerHTML.includes('54 del módulo común'));
- assert.ok(a.elements.view.innerHTML.includes('Completo · En preparación'));
+ assert.ok(a.elements.view.innerHTML.includes('Ensayo completo · 80 preguntas'));
  assert.ok(!a.data.has('prepara-paes-demo-v1'));
  assert.ok(!a.data.has('prepara-paes-active-exam-v1'));
 });
 
-test('Ciencias: 54 preguntas de Módulo Común y 116 originales sin duplicados',()=>{
+test('Ciencias: 54 comunes y 104 especialidad para ensayos completos sin duplicados',()=>{
  const a=science(),bank=a.bank;
  assert.equal(bank.filter(q=>q.module==='MC').length,54);
- assert.equal(bank.filter(q=>q.module==='ME').length,56);
- assert.equal(bank.filter(q=>q.module==='MTP').length,6);
+ assert.equal(bank.filter(q=>q.module==='ME').length,78);
+ assert.equal(bank.filter(q=>q.module==='MTP').length,26);
  assert.equal(bank.length,116);
- assert.equal(new Set(bank.map(q=>q.question)).size,116);
+ assert.equal(new Set(bank.map(q=>q.question)).size,158);
  for(const q of bank){
   assert.ok(q.steps.every(t=>t.length>=15),q.id);
   assert.equal(q.explanations.length,4,q.id);
   assert.ok(q.explanations.every(t=>t.length>15),q.id);
  }
+});
+
+test('Ciencias: ensayo completo 80 respeta 54 comunes y 26 mención, sin repeticiones',()=>{
+ for(const track of ['Biología','Física','Química','TP']){
+  const a=science(unlockedData());a.window.chooseTrack(track);a.window.setup('completo');
+  const state=a.saved().session,rows=state.ids.map(id=>a.bank.find(x=>x.id===id));
+  assert.equal(rows.length,80);assert.equal(new Set(rows.map(x=>x.id)).size,80);
+  assert.equal(rows.filter(x=>x.module==='MC').length,54);
+  assert.equal(rows.filter(x=>x.module===(track==='TP'?'MTP':'ME')).length,26);
+  if(track!=='TP')assert.equal(rows.filter(x=>x.module==='ME'&&x.subject===track).length,26);
+  else assert.equal(new Set(rows.filter(x=>x.module==='MTP').map(x=>x.subject)).size,3);
+  assert.equal(state.track,track);
+  assert.ok(state.deadline-state.started>150*60*1000);
+  assert.ok(a.elements.view.innerHTML.includes('80'));
+  assert.ok(!a.elements.view.innerHTML.includes('Comprobar respuesta'));
+  assert.ok(a.elements.view.innerHTML.includes('Tiempo restante:'));
+ }
+});
+test('Ciencias: modo examen no revela respuestas y al terminar guarda resultados',()=>{
+ const a=science(unlockedData());a.window.setup('completo');
+ const id=a.saved().session.ids[0],q=a.bank.find(x=>x.id===id);
+ a.window.answer((q.answer+1)%4);a.window.check();
+ assert.equal(a.saved().session.results.length,0);
+ assert.ok(!a.elements.view.innerHTML.includes('Respuesta correcta:'));
+ a.window.examAdvance();
+ assert.equal(a.saved().session.index,1);
+ assert.equal(a.saved().session.results.length,1);
+ assert.equal(a.saved().session.results[0].correct,false);
+ for(let n=1;n<80;n++)a.window.examAdvance(true);
+ assert.equal(a.saved().session??null,null);
+ assert.equal(a.saved().history.length,80);
+ assert.ok(a.elements.view.innerHTML.includes('Resultados por asignatura'));
 });
