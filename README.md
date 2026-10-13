@@ -5,7 +5,8 @@ Aplicación de preparación PAES Chile. **Primera meta: Matemática M1 Regular 2
 ## Ciencias (nueva primera fase)
 - Entrada **Ciencias** integrada en el inicio de Cachaste, sin sustituir Matemática M1.
 - **63 preguntas originales iniciales**: 45 de Módulo Común (15 por asignatura), 12 de profundización Electiva (4 por especialidad) y 6 para refuerzo TP (2 por asignatura).
-- Tutor con pistas y explicaciones por alternativa, prácticas por Biología/Física/Química, diagnóstico mixto, selección de módulo, repaso de errores y progreso independiente.
+- **Ciencias funciona como una prueba integrada:** se elige mención de Biología, Física, Química o TP antes de practicar. La sesión formativa principal de 12 intercala **8 MC + 4 de especialidad**; en una mención científica presenta 6 preguntas de esa materia y 3 de cada una de las otras dos. En TP distribuye las tres materias equilibradamente. El simulacro oficial de 80 (54+26) se habilitará solo cuando el banco esté listo.
+- Tutor con pistas y explicaciones por alternativa, diagnóstico mixto, resultados separados por las tres materias, repaso de errores y progreso independiente. Las prácticas de una sola materia son **refuerzo opcional**, no el flujo principal.
 - Las observaciones científicas se pueden guardar y copiar desde el teléfono para corregir el banco posteriormente, sin cambiar automáticamente claves.
 - **Todavía no hay simulacro completo de Ciencias de 80 preguntas ni equivalencia a puntaje oficial**. Se requiere extender banco y revisar los módulos a fondo.
 - Recursos locales `inicio.html`, `index.html`, `science.html`, `science-bank.js`, `science-app.js` en el mismo APK; el inicio permite probar el UX de selección de asignaturas.
