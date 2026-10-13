@@ -160,7 +160,7 @@ test('Ciencias: permite dejar observaciones en Biología sin cambiar respuestas 
 });
 test('Ciencias: progreso independiente de M1 y mensajes responsables sobre el examen',()=>{
  const a=science();
- assert.ok(a.elements.view.innerHTML.includes('54 del módulo común'));
+ assert.ok(a.elements.view.innerHTML.includes('54 del Módulo Común'));
  assert.ok(a.elements.view.innerHTML.includes('Ensayo completo · 80 preguntas'));
  assert.ok(!a.data.has('prepara-paes-demo-v1'));
  assert.ok(!a.data.has('prepara-paes-active-exam-v1'));
@@ -171,7 +171,7 @@ test('Ciencias: 54 comunes y 104 especialidad para ensayos completos sin duplica
  assert.equal(bank.filter(q=>q.module==='MC').length,54);
  assert.equal(bank.filter(q=>q.module==='ME').length,78);
  assert.equal(bank.filter(q=>q.module==='MTP').length,26);
- assert.equal(bank.length,116);
+ assert.equal(bank.length,158);
  assert.equal(new Set(bank.map(q=>q.question)).size,158);
  for(const q of bank){
   assert.ok(q.steps.every(t=>t.length>=15),q.id);
