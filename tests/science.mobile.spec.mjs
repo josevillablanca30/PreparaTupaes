@@ -16,18 +16,19 @@ test('Ciencias: abre desde M1, selección de módulo y diseño móvil',async({pa
  await page.goto('./');
  await page.getByRole('link',{name:'Entrar a Cachaste Ciencias →'}).tap();
  await expect(page).toHaveTitle('Cachaste · Ciencias');
- await expect(page.getByRole('heading',{name:'¿Qué módulo rendirás?'})).toBeVisible();
+ await expect(page.getByRole('heading',{name:'¿Qué mención rendirás?'})).toBeVisible();
  await expect(page.getByText(/54 del Módulo Común/)).toBeVisible();
  await page.locator('.track').filter({hasText:'Química'}).tap();
  await expect(page.locator('.track').filter({hasText:'Química'})).toHaveAttribute('aria-pressed','true');
- await page.getByRole('button',{name:'Practicar mi módulo · 12 preguntas'}).tap();
+ await page.getByRole('button',{name:'Comenzar Ciencias mixtas · 12 preguntas'}).tap();
  await expect(page.locator('button.option')).toHaveCount(4);
  await expect(page.getByText('1 / 12',{exact:true})).toBeVisible();
  await mobileFit(page);
 });
 test('Ciencias: pistas y explicaciones funcionan en Biología',async({page})=>{
  await page.goto('./science.html');
- await page.getByRole('button',{name:'Practicar Biología · 8 preguntas'}).tap();
+ await page.getByText('Refuerzo por materia · opcional').click();
+ await page.getByRole('button',{name:'Reforzar Biología · 8 ejercicios'}).tap();
  await page.getByRole('button',{name:'Necesito una pista'}).tap();
  await expect(page.getByText('Pista 1 de 2')).toBeVisible();
  await page.getByRole('button',{name:'Dame otra pista'}).tap();
@@ -43,7 +44,8 @@ test('Ciencias: pistas y explicaciones funcionan en Biología',async({page})=>{
 });
 test('Ciencias: guardar una corrección de Biología, cerrar y recuperarla',async({page})=>{
  await page.goto('./science.html');
- await page.getByRole('button',{name:'Practicar Biología · 8 preguntas'}).tap();
+ await page.getByText('Refuerzo por materia · opcional').click();
+ await page.getByRole('button',{name:'Reforzar Biología · 8 ejercicios'}).tap();
  await page.getByRole('button',{name:'Proponer corrección'}).tap();
  await page.locator('#science-note').fill('Revisar la alternativa B con referencias al contenido celular.');
  await page.getByRole('button',{name:'Guardar mi observación'}).tap();
@@ -61,7 +63,7 @@ test('Ciencias: TP, diagnóstico mixto y M1 mantienen rutas independientes',asyn
  await page.getByRole('button',{name:'Diagnóstico mixto · 9 preguntas'}).tap();
  await expect(page.getByText('1 / 9',{exact:true})).toBeVisible();
  await page.getByRole('button',{name:'← Volver a Ciencias'}).tap();
- await page.getByRole('link',{name:'← Matemática M1'}).tap();
+ await page.getByRole('link',{name:'Matemática M1',exact:true}).tap();
  await expect(page).toHaveTitle('Cachaste · Aprende a tu ritmo');
  await expect(page.getByRole('button',{name:'Hacer diagnóstico · 5 preguntas'})).toBeVisible();
  await mobileFit(page);
