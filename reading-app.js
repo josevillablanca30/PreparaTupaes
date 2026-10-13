@@ -58,7 +58,8 @@ function check(){
 function advance(skip=false){
  if(!session)return;
  const q=current();
- if(!session.checked&&!skip&&session.selected===null)return;
+ if(session.mode!=='completo'&&!session.checked)return;
+ if(session.mode==='completo'&&session.selected===null&&!skip)return;
  const record={id:q.id,passageId:q.passageId,skill:q.skill,correct:session.selected===q.answer,confidence:session.confidence,assisted:session.hint>0,unanswered:session.selected===null,at:new Date().toISOString()};
  session.results.push(record);
  history.push(record);history=history.slice(-3000);
@@ -70,6 +71,16 @@ function advance(skip=false){
 function finish(){
  if(!session)return;
  const done=session;
+ // Al agotarse los 150 minutos, incluir preguntas pendientes como no respondidas.
+ if(done.mode==='completo'&&done.results.length<done.ids.length){
+  for(let i=done.results.length;i<done.ids.length;i++){
+   const q=qBy(done.ids[i]);
+   const skipped={id:q.id,passageId:q.passageId,skill:q.skill,correct:false,confidence:'sin-declarar',assisted:false,unanswered:true,at:new Date().toISOString()};
+   done.results.push(skipped);history.push(skipped);
+   if(!pending.includes(q.id))pending.push(q.id);
+  }
+  history=history.slice(-3000);
+ }
  recent=done.results.slice();
  if(done.mode==='diagnostico'&&done.results.length===30)baseline={completed:true,results:done.results.slice(),at:new Date().toISOString()};
  session=null;screen='result';save();render(true);
