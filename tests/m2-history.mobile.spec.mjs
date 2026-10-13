@@ -34,7 +34,7 @@ for(const subject of [
    await page.getByRole('button',{name:'Revisar respuesta'}).click();
    await page.getByRole('button',{name:i===29?'Ver resultado':'Continuar'}).click();
   }
-  await expect(page.getByText('30',{exact:false}).first()).toBeVisible();
+  await expect(page.getByRole('heading',{name:/de 30 correctas/})).toBeVisible();
   await page.getByRole('button',{name:'Volver al inicio'}).click();
   await expect(page.getByRole('button',{name:'Express · 10 preguntas'})).toBeEnabled();
   await expect(page.getByRole('button',{name:'Practicar banco completo · '+subject.count})).toBeEnabled();
