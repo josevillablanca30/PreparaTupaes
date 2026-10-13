@@ -239,3 +239,18 @@ test('simulacro 65: marcar, recuperar y revisar antes de entregar',()=>{
  assert.equal(resumed('page'),'result');
  assert.equal(resumed('round.length'),65);
 });
+
+test('estadísticas: un acierto de ensayo no se confunde con una respuesta con dudas',()=>{
+ const run=app('[{"id":1,"correct":true,"confidence":"sin-declarar"}]');
+ const row=run('skillInsights().find(x=>x.skill==="Porcentajes")');
+ assert.equal(row.uncertain,0);
+ assert.equal(row.essayCorrect,1);
+ assert.equal(row.confident,0);
+ assert.equal(run('progress().includes("1 aciertos en ensayo")'),true);
+});
+test('cronómetro permanece visible en el resumen previo a entregar',()=>{
+ const run=app();
+ run("startExam('full');jumpExamQuestion(64);examMove(1)");
+ assert.equal(run('examConfirming'),true);
+ assert.equal(run('examReviewScreen().includes("Tiempo restante")'),true);
+});
