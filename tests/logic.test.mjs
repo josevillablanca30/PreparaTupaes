@@ -349,7 +349,7 @@ test('progreso móvil organizado por los cuatro ejes y habilidades plegadas',()=
  assert.match(page,/Tu mapa por eje/);
  assert.match(page,/Ver detalle de 1 habilidad practicada/);
  assert.match(page,/role="progressbar"/);
- assert.equal(page.includes('1 respuestas registradas'),true);
+ assert.equal(page.includes('1 respuesta registrada'),true);
  assert.equal(page.includes('Practicar Números'),true);
 });
 
