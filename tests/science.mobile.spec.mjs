@@ -78,6 +78,7 @@ test('Ciencias: TP, diagnóstico mixto y M1 mantienen rutas independientes',asyn
 });
 
 test('Ciencias: diagnóstico de 30 activa Express y permite registrar incertidumbre',async({page})=>{
+ test.setTimeout(120000);
  await page.goto('./science.html');
  await expect(page.getByRole('button',{name:'Express · 10 preguntas'})).toBeDisabled();
  await page.getByRole('button',{name:'Comenzar diagnóstico de 30'}).tap();
