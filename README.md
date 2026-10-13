@@ -3,20 +3,20 @@
 Aplicación de preparación PAES Chile. **Primera meta: Matemática M1 Regular 2026 / Admisión 2027**.
 
 ## Estado actual
-- 100 preguntas originales de práctica, incluidas 16 con gráficos y figuras con alternativas, explicaciones por error y resolución.
+- 116 preguntas originales de práctica, incluidas 16 con gráficos y figuras con alternativas, explicaciones por error y resolución.
 - Banco basado en habilidades de la biblioteca educativa de Drive y el temario oficial; no reproduce preguntas de pago sin permiso.
-- Diagnóstico, práctica rápida, práctica por eje, práctica visual, refuerzo y Ensayo Express de 10 preguntas.
+- Diagnóstico corto (5) e integral (12 preguntas), práctica por eje, práctica visual, refuerzo, 16 ejercicios para Argumentar y Ensayo Express (10).
 - Tutor con pistas progresivas: aciertos con ayuda se distinguen del dominio sin pistas.
 - Simulacro **formativo** de 65 preguntas, tiempo de 140 minutos, mapa navegable, marcadores y confirmación al entregar.
 - Guardado local de respuestas, reanudación de sesión y resultados por eje.
 - Lista persistente de errores pendientes: rondas de diez preguntas sin perder las restantes; dominio confirmado al acertar sin pistas.
 - Progreso móvil resumido por los cuatro ejes, con detalles de habilidades plegables y acciones para reforzar.
-- Etiquetas pedagógicas estimadas: 45 iniciales, 40 intermedias y 15 desafíos.
-- Marca e icono Android: **Cachaste**. Versión de código Android **0.5.0**, pendiente de compilación comprobada.
+- Etiquetas pedagógicas estimadas: 45 iniciales, 40 intermedias y 31 desafíos.
+- Marca e icono Android: **Cachaste**. Versión de código Android **0.6.0**, pendiente de compilación comprobada.
 - **No es aún una versión comercial aprobada**, ni sus aciertos equivalen a una conversión oficial de puntaje.
-- Se probaron 35 casos de lógica en una ejecución JavaScript aislada y se cotejaron 100 respuestas con la clave editorial. Quedan pendientes QA visual móvil, ejecución confirmada de CI y compilación de un APK descargable.
+- Se verificaron 43 casos de lógica y auditoría editorial mediante ejecución JavaScript aislada (39 de lógica y 4 auditorías); se cotejaron 116 respuestas con la clave separada. Quedan pendientes QA visual móvil, ejecución confirmada de CI y compilación de un APK descargable.
 
-Consulta [estabilización de progreso y repaso](docs/qa-m1-estabilidad-2026-10-13.md), [pasada grande de gráficos y tutor](docs/qa-m1-expansion-100-2026-10-13.md), [reporte de QA anterior](docs/qa-m1-pasada-calidad-2026-10-13.md) y [biblioteca y fuentes de Drive](docs/fuentes-drive-m1-2026.md).
+Consulta [cierre de M1 y controles QA](docs/m1-cierre-funcional-2026.md), [estabilización de progreso y repaso](docs/qa-m1-estabilidad-2026-10-13.md), [pasada grande de gráficos y tutor](docs/qa-m1-expansion-100-2026-10-13.md), [reporte de QA anterior](docs/qa-m1-pasada-calidad-2026-10-13.md) y [biblioteca y fuentes de Drive](docs/fuentes-drive-m1-2026.md).
 
 ## Probar
 Abrir `index.html` con el navegador, o ejecutar:
@@ -43,7 +43,7 @@ Activación inicial requerida: **Settings → Pages → Source → GitHub Action
 
 URL prevista (solo válida después de un despliegue exitoso): https://josevillablanca30.github.io/PreparaTupaes/
 
-Los reportes y capturas de las pruebas quedan en el run de Actions con retención de un día. La emulación móvil verifica interfaz y funcionalidad; no equivale a una prueba en un teléfono físico.
+Los reportes y capturas de las pruebas quedan en el run de Actions con retención de un día. La emulación móvil comprueba interfaz y funcionalidad cuando CI finaliza exitosamente; no equivale a una prueba en un teléfono físico. El flujo del APK ahora exige primero Node, QA editorial y Playwright Android/320 px.
 
 ## Alcance y advertencias
 Esta es una **versión formativa funcional en desarrollo**, no un producto comercial terminado. Las preguntas son originales de práctica y no son ensayos DEMRE ni representan una simulación oficial validada. El tutor actual usa explicaciones y pistas redactadas previamente, no un modelo de IA generativo. No hay cuentas, backend, sincronización entre dispositivos ni estimador validado de puntaje.
