@@ -5,12 +5,13 @@ import vm from 'node:vm';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
-function app(saved = '[]', failSave = false, savedSession = null, savedReview = null, savedDiagnostic = null) {
+function app(saved = '[]', failSave = false, savedSession = null, savedReview = null, savedDiagnostic = null, savedMathDraft = null) {
   const element = { innerHTML: '' };
   const keys = new Map([['prepara-paes-demo-v1',saved]]);
   if(savedSession) keys.set('prepara-paes-active-exam-v1',savedSession);
   if(savedReview) keys.set('cachaste-m1-pending-review-v1',savedReview);
   if(savedDiagnostic) keys.set('cachaste-m1-diagnostic-30-v1',savedDiagnostic);
+  if(savedMathDraft) keys.set('cachaste-m1-diagnostic-draft-v1',savedMathDraft);
   const context = vm.createContext({
     document: { getElementById: () => element },
     window: { scrollTo() {} },
@@ -434,4 +435,20 @@ test('M1: finalizar diagnóstico desbloquea Express y produce plan persistente',
  assert.equal(reopened('mathDiagnostic.completed'),true);
  assert.equal(reopened('home().includes("Repetir diagnóstico de 30")'),true);
  assert.equal(reopened('home().includes("Esto conviene reforzar primero")'),true);
+});
+
+test('M1: diagnóstico de 30 reanuda pregunta, historial y autoconfianza',()=>{
+ const run=app();run("start('diagnostico30');for(let n=0;n<9;n++){choice=queue[i].answer;check();next()}");
+ assert.equal(run('i'),9);
+ assert.equal(run('round.length'),9);
+ run("confidence='azar';choice=2;draw()");
+ const draft=run('localStorage.getItem(mathDraftKey)');
+ const reopened=app('[]',false,null,null,null,draft);
+ assert.equal(reopened('savedMathDraft.index'),9);
+ assert.equal(reopened('home().includes("Continuar diagnóstico de 30")'),true);
+ reopened('resumeMathDiagnosis()');
+ assert.equal(reopened('queue.length'),30);
+ assert.equal(reopened('round.length'),9);
+ assert.equal(reopened('confidence'),'azar');
+ assert.equal(reopened('choice'),2);
 });
