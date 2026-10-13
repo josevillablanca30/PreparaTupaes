@@ -153,3 +153,13 @@ test('Express equilibra habilidades y admite combinaciones distintas', () => {
   assert.equal(run('queue.some(q=>q.skill==="Estadística")'),true);
  }
 });
+
+test('desafíos aplicados: cuatro problemas M1 completos y seleccionables',()=>{
+ const run=app();
+ assert.equal(run('challenges.length'),4);
+ assert.equal(run('challenges.every(q=>q.answer>=0&&q.answer<q.options.length&&q.explanations.length===4&&q.steps.length>=3)'),true);
+ run("start('desafios')");
+ assert.equal(run('queue.length'),4);
+ assert.equal(run('queue[0].id'),112);
+ assert.equal(run('home().includes("Desafíos aplicados")'),true);
+});
