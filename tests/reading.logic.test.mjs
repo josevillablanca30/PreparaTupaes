@@ -22,9 +22,9 @@ function finishDiagnosis(a,wrong=0){
   a.win.readingCheck();a.win.readingAdvance();
  }
 }
-test('Lectura: 15 textos originales y 75 preguntas únicas con tres habilidades',()=>{
- const a=reading();assert.equal(a.passages.length,15);assert.equal(a.items.length,75);
- assert.equal(new Set(a.items.map(x=>x.id)).size,75);
+test('Lectura: 18 textos originales y 90 preguntas únicas con tres habilidades',()=>{
+ const a=reading();assert.equal(a.passages.length,18);assert.equal(a.items.length,90);
+ assert.equal(new Set(a.items.map(x=>x.id)).size,90);
  assert.equal(new Set(a.items.map(x=>x.question)).size,75);
  for(const p of a.passages){assert.ok(p.paragraphs.length>=2);assert.ok(p.paragraphs.join(' ').length>700);}
  const distribution={};
@@ -37,9 +37,9 @@ test('Lectura: 15 textos originales y 75 preguntas únicas con tres habilidades'
   assert.ok(q.steps.length>=2,q.id);
   assert.ok(q.answer>=0&&q.answer<4,q.id);
  }
- assert.equal(distribution.Localizar,27);
- assert.equal(distribution.Interpretar,30);
- assert.equal(distribution.Evaluar,18);
+ assert.equal(distribution.Localizar,33);
+ assert.equal(distribution.Interpretar,36);
+ assert.equal(distribution.Evaluar,21);
 });
 test('Lectura: diagnóstico obligatorio de 30 distribuye 10/12/8',()=>{
  const a=reading();a.win.readingBegin('express');
@@ -119,4 +119,26 @@ test('Lectura: repaso persistente y progreso separados de M1 y Ciencias',()=>{
  assert.equal(b.get().baseline.completed,true);
  assert.ok(!data.has('cachaste-science-v1'));
  assert.ok(!data.has('prepara-paes-demo-v1'));
+});
+
+test('Lectura: tutor identifica el distractor y la evidencia textual',()=>{
+ const a=reading();
+ for(const q of a.items){
+  assert.ok(q.explanations[q.answer].includes('¡Cachaste!'),q.id);
+  for(let i=0;i<4;i++)if(i!==q.answer){
+   assert.ok(q.explanations[i].includes(q.options[i]),q.id+' distractor '+i);
+   assert.ok(q.explanations[i].includes(q.options[q.answer]),q.id+' respuesta');
+  }
+ }
+});
+test('Lectura: omitir con alternativa marcada no cuenta como acierto',()=>{
+ const a=reading();finishDiagnosis(a);
+ a.win.readingBegin('completo');
+ const first=a.get().session.ids[0],q=a.items.find(x=>x.id===first);
+ a.win.readingChoose(q.answer);
+ a.win.readingAdvance(true);
+ const rec=a.get().session.results[0];
+ assert.equal(rec.unanswered,true);
+ assert.equal(rec.correct,false);
+ assert.equal(rec.confidence,'sin-declarar');
 });
