@@ -100,3 +100,15 @@ test('resultado de ensayo ofrece repaso de habilidades falladas', () => {
   assert.equal(run('queue.length'),10);
   assert.equal(run('exam'),false);
 });
+
+test('comprobación de aprendizaje usa otra pregunta de la misma habilidad', () => {
+ const run=app();
+ run("startExam('express');for(let n=0;n<10;n++)examMove(1)");
+ const before=run('round.filter(x=>!x.correct).map(x=>x.id)');
+ run('verifyLearning()');
+ const after=run('queue.map(x=>x.id)');
+ assert.equal(run('exam'),true);
+ assert.equal(run('queue.length')>0,true);
+ assert.equal(after.some(id=>before.includes(id)),false);
+ assert.equal(run('quiz().includes("Respuesta correcta:")'),false);
+});
