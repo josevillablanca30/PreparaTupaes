@@ -6,13 +6,13 @@ android {
         applicationId 'cl.preparatupaes.app'
         minSdk 24
         targetSdk 35
-        versionCode 8
-        versionName '0.7.1'
+        versionCode 9
+        versionName '0.8.0'
     }
     buildTypes {
         debug {
             applicationIdSuffix '.sciencebeta'
-            resValue 'string', 'app_name', 'Cachaste Ciencias Beta'
+            resValue 'string', 'app_name', 'Cachaste Beta'
         }
         release {
             minifyEnabled false
