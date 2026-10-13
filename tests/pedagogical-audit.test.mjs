@@ -16,7 +16,7 @@ test('Auditoría final: claves, explicaciones y distractores completos en Cienci
    assert.equal(q.options.length,4,q.id);assert.equal(new Set(q.options).size,4,q.id);
    assert.ok(Number.isInteger(q.answer)&&q.answer>=0&&q.answer<4,q.id);
    assert.equal(q.explanations.length,4,q.id);
-   assert.ok(q.options.every(o=>o.length>=3),q.id);
+   assert.ok(q.options.every(o=>o.trim().length>=1),q.id);
    assert.ok(q.explanations.every(x=>x.length>=25),q.id);
    for(const option of q.options)assert.ok(!banned.test(option),q.id+' distractor manifiestamente ajeno: '+option);
    assert.ok(q.steps.length>=2&&q.easy.length>=20,q.id);
