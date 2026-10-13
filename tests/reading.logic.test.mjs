@@ -142,3 +142,12 @@ test('Lectura: omitir con alternativa marcada no cuenta como acierto',()=>{
  assert.equal(rec.correct,false);
  assert.equal(rec.confidence,'sin-declarar');
 });
+
+test('Lectura: distractores del primer texto son pertinentes y no absurdos',()=>{
+ const a=reading();
+ const first=a.items.filter(q=>q.passageId==='T01');
+ assert.equal(first.length,5);
+ const banned=['reparación de vehículos','Color de los estantes','La camioneta había dejado de funcionar','Todos los días'];
+ for(const q of first)for(const option of q.options)for(const phrase of banned)assert.ok(!option.includes(phrase),q.id+' '+phrase);
+ assert.ok(first.every(q=>q.explanations.filter((_,i)=>i!==q.answer).every(x=>x.includes('Contrástala con la evidencia'))));
+});
