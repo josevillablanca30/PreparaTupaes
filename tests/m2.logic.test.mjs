@@ -27,3 +27,28 @@ test('M2: interfaz incluye guardado local y no presenta puntajes oficiales',()=>
  assert.match(app,/No equivale a puntaje PAES oficial/);
  assert.match(app,/sin-declarar/);
 });
+
+test('M2: claves de cálculo verificadas de manera independiente',()=>{
+ const window={};vm.runInNewContext(src,{window});
+ const byId=new Map(window.CACHASTE_M2.map(q=>[q.id,q]));
+ const cases=[
+  ['M2-001','x=2'],['M2-002','6'],['M2-003','3/10'],['M2-004','0,2'],
+  ['M2-005','3π'],['M2-006','5'],['M2-007','8'],['M2-008','7'],
+  ['M2-009','$121.000'],['M2-010','3'],['M2-011','x≥5'],['M2-012','8'],
+  ['M2-013','25'],['M2-014','1/8'],['M2-015','3/10'],['M2-016','-1/2'],
+  ['M2-017','5'],['M2-018','3'],['M2-019','x²-9'],['M2-020','1600'],
+  ['M2-021','6'],['M2-022','7'],['M2-023','x=-4'],['M2-024','12'],
+  ['M2-025','(x+6)/3'],['M2-026','7'],['M2-027','8'],['M2-028','3'],
+  ['M2-029','0'],['M2-030','x>4'],['M2-031','20'],['M2-032','13'],
+  ['M2-033','5'],['M2-034','120°'],['M2-035','(5,3)'],
+  ['M2-036','1/2'],['M2-037','5'],['M2-038','7'],['M2-039','2/5'],
+  ['M2-040','0'],['M2-041','$3200'],['M2-042','120'],
+  ['M2-043','y=-2x+3'],['M2-044','$1100'],['M2-045','90'],
+  ['M2-046','Cada una por sí sola'],['M2-047','Ambas juntas, ninguna por sí sola'],
+  ['M2-048','Solo (2)'],['M2-049','Ambas juntas, ninguna por sí sola'],
+  ['M2-050','Se requiere información adicional'],['M2-051','Cada una por sí sola'],
+  ['M2-052','9'],['M2-053','1/6'],['M2-054','25π'],['M2-055','100']
+ ];
+ assert.equal(cases.length,55);
+ for(const [id,expected] of cases){const q=byId.get(id);assert.ok(q,id);assert.equal(q.options[q.answer],expected,id)}
+});
