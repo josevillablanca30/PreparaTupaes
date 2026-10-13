@@ -160,7 +160,7 @@ test('Ciencias: permite dejar observaciones en Biología sin cambiar respuestas 
 });
 test('Ciencias: progreso independiente de M1 y mensajes responsables sobre el examen',()=>{
  const a=science();
- assert.ok(a.elements.view.innerHTML.includes('54 del Módulo Común'));
+ assert.ok(a.elements.view.innerHTML.includes('54 del módulo común'));
  assert.ok(a.elements.view.innerHTML.includes('Completo · En preparación'));
  assert.ok(!a.data.has('prepara-paes-demo-v1'));
  assert.ok(!a.data.has('prepara-paes-active-exam-v1'));
