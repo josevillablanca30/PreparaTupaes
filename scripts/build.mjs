@@ -13,7 +13,9 @@ const readingPage=await readFile(new URL('../reading.html',import.meta.url),'utf
 await writeFile(new URL('../dist/reading.html',import.meta.url),readingPage.replace('</head>',`<meta name="build-revision" content="${revision}"></head>`));
 const m2Page=await readFile(new URL('../m2.html',import.meta.url),'utf8');
 await writeFile(new URL('../dist/m2.html',import.meta.url),m2Page.replace('</head>',`<meta name="build-revision" content="${revision}"></head>`));
-for(const file of ['science-bank.js','science-app.js','reading-bank.js','reading-app.js','m2-bank.js','m2-app.js']){
+const historyPage=await readFile(new URL('../history.html',import.meta.url),'utf8');
+await writeFile(new URL('../dist/history.html',import.meta.url),historyPage.replace('</head>',`<meta name="build-revision" content="${revision}"></head>`));
+for(const file of ['history-bank.js','history-app.js','science-bank.js','science-app.js','reading-bank.js','reading-app.js','m2-bank.js','m2-app.js']){
   const body=await readFile(new URL('../'+file,import.meta.url),'utf8');
   await writeFile(new URL('../dist/'+file,import.meta.url),body);
 }
