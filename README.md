@@ -2,6 +2,15 @@
 
 Aplicación de preparación PAES Chile. **Primera meta: Matemática M1 Regular 2026 / Admisión 2027**.
 
+## Ciencias (nueva primera fase)
+- Entrada **Ciencias** integrada en el inicio de Cachaste, sin sustituir Matemática M1.
+- **63 preguntas originales iniciales**: 45 de Módulo Común (15 por asignatura), 12 de profundización Electiva (4 por especialidad) y 6 para refuerzo TP (2 por asignatura).
+- Tutor con pistas y explicaciones por alternativa, prácticas por Biología/Física/Química, diagnóstico mixto, selección de módulo, repaso de errores y progreso independiente.
+- Las observaciones científicas se pueden guardar y copiar desde el teléfono para corregir el banco posteriormente, sin cambiar automáticamente claves.
+- **Todavía no hay simulacro completo de Ciencias de 80 preguntas ni equivalencia a puntaje oficial**. Se requiere extender banco y revisar los módulos a fondo.
+- Recursos web locales `science.html`, `science-bank.js`, `science-app.js` incluidos en la compilación Android.
+- [Informe y fuentes de la primera fase de Ciencias](docs/ciencias-primera-fase-2026.md).
+
 ## Estado actual
 - 116 preguntas originales de práctica, incluidas 16 con gráficos y figuras con alternativas, explicaciones por error y resolución.
 - Banco basado en habilidades de la biblioteca educativa de Drive y el temario oficial; no reproduce preguntas de pago sin permiso.
