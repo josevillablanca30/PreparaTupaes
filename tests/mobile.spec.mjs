@@ -158,3 +158,31 @@ test('simulacro M1: hoja de preguntas, marcador y entrega con confirmación', as
   await expect(page.getByRole('heading',{name:'0 de 65 correctas',exact:true})).toBeVisible();
   await checkLayout(page);
 });
+
+test('práctica visual: los gráficos y figuras aparecen legibles en móvil', async ({page}) => {
+  await page.goto('./');
+  await page.getByRole('button',{name:'Interpretar gráficos y figuras · 8 ejercicios',exact:true}).tap();
+  await expect(page.locator('figure.question-visual svg[role="img"]')).toHaveCount(1);
+  await expect(page.locator('figure.question-visual figcaption')).toBeVisible();
+  await expect(page.getByText('1 / 8',{exact:true})).toBeVisible();
+  await checkLayout(page);
+  await page.getByRole('button',{name:'Necesito una pista',exact:true}).tap();
+  await expect(page.getByText('Pista 1 de 2',{exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Otra pista, por favor',exact:true}).tap();
+  await expect(page.getByText('Pista 2 de 2',{exact:true})).toBeVisible();
+  await expect(page.getByRole('button',{name:'Ya tienes las dos pistas',exact:true})).toBeDisabled();
+  await checkLayout(page);
+});
+test('tutor: progreso registra ayuda sin inflar el dominio',async({page})=>{
+  await page.goto('./');
+  await page.getByRole('button',{name:'Hacer diagnóstico · 5 preguntas',exact:true}).tap();
+  await page.getByRole('button',{name:'Necesito una pista',exact:true}).tap();
+  await page.getByRole('button',{name:'C) $30.000',exact:true}).tap();
+  await page.getByRole('button',{name:'Lo tengo claro',exact:true}).tap();
+  await page.getByRole('button',{name:'Comprobar respuesta',exact:true}).tap();
+  await expect(page.getByText('¡Bien! Lo lograste con una pista.',{exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'← Inicio',exact:true}).tap();
+  await page.getByRole('button',{name:'Ver mi progreso',exact:true}).tap();
+  await expect(page.getByText(/1 con pistas/)).toBeVisible();
+  await checkLayout(page);
+});
