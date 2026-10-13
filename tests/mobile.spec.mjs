@@ -205,6 +205,8 @@ test('tutor: progreso registra ayuda sin inflar el dominio',async({page})=>{
 
 test('simulacro: errores pendientes sobreviven y se repasan de diez en diez',async({page})=>{
  await page.goto('./');
+ await page.evaluate(()=>localStorage.setItem('cachaste-m1-diagnostic-30-v1',JSON.stringify({completed:true,results:Array.from({length:30},(_,i)=>({axis:['Números','Álgebra y funciones','Geometría','Probabilidad y estadística'][i%4],correct:true,confidence:'seguro'}))})));
+ await page.reload();
  await page.getByRole('button',{name:'Simulacro M1 · 65 preguntas · 140 min',exact:true}).tap();
  await page.getByRole('button',{name:'Ver mapa de preguntas',exact:true}).tap();
  await page.getByRole('button',{name:'Revisar antes de entregar',exact:true}).tap();
