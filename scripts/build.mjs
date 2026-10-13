@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, copyFile } from 'node:fs/promises';
 
 const revision = process.env.GITHUB_SHA || 'local';
 if (!/^(local|[a-f0-9]{40})$/.test(revision)) throw new Error('Invalid build revision');
@@ -19,6 +19,8 @@ for(const file of ['history-bank.js','history-app.js','science-bank.js','science
   const body=await readFile(new URL('../'+file,import.meta.url),'utf8');
   await writeFile(new URL('../dist/'+file,import.meta.url),body);
 }
+await mkdir(new URL('../dist/assets/',import.meta.url),{recursive:true});
+for(const asset of ['cachaste-icon.svg','cachaste-logo.svg'])await copyFile(new URL('../assets/'+asset,import.meta.url),new URL('../dist/assets/'+asset,import.meta.url));
 await writeFile(new URL('../dist/.nojekyll', import.meta.url), '');
 await writeFile(new URL('../dist/version.json', import.meta.url), JSON.stringify({ revision }) + '\n');
 console.log(`Static build ready (${revision}); only public application files are included.`);
