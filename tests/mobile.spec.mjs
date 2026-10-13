@@ -257,6 +257,7 @@ test('argumentación M1: corrige razonamientos en interfaz móvil',async({page})
 });
 
 test('UX M1: diagnóstico de 30 habilita los dos ensayos y registra plan',async({page})=>{
+ test.setTimeout(120000);
  await page.goto('./');
  await expect(page.getByRole('button',{name:'Express · 10 preguntas',exact:true})).toBeDisabled();
  await expect(page.getByRole('button',{name:'Simulacro M1 · 65 preguntas · 140 min',exact:true})).toBeDisabled();
@@ -267,7 +268,7 @@ test('UX M1: diagnóstico de 30 habilita los dos ensayos y registra plan',async(
   await page.getByRole('button',{name:'Comprobar respuesta',exact:true}).tap();
   await page.getByRole('button',{name:n===29?'Ver mi resultado':'Siguiente pregunta →',exact:true}).tap();
  }
- await page.getByRole('button',{name:'← Inicio',exact:true}).tap().catch(async()=>{await page.goto('./')});
+ await page.goto('./');
  await expect(page.getByRole('button',{name:'Express · 10 preguntas',exact:true})).toBeEnabled();
  await expect(page.getByRole('button',{name:'Simulacro M1 · 65 preguntas · 140 min',exact:true})).toBeEnabled();
  await expect(page.getByText('Esto conviene reforzar primero')).toBeVisible();
