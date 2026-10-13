@@ -44,6 +44,7 @@ test('inicio: carga, revisión publicada y controles táctiles', async ({ page }
 
 test('diagnóstico completo: error, explicaciones, resultado y progreso persistente', async ({ page }, info) => {
   await page.goto('./');
+  await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
   await page.getByRole('button', { name: 'Hacer diagnóstico · 5 preguntas', exact: true }).tap();
   await expect(page.getByRole('button', { name: 'Comprobar respuesta', exact: true })).toBeDisabled();
   await page.getByRole('button', { name: 'A) $10.000', exact: true }).tap();
@@ -70,12 +71,14 @@ test('diagnóstico completo: error, explicaciones, resultado y progreso persiste
   await expect(page.getByRole('heading', { name: '5 respuestas registradas', exact: true })).toBeVisible();
   await checkLayout(page);
   await page.reload();
+  await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
   await page.getByRole('button', { name: 'Ver mi progreso', exact: true }).tap();
   await expect(page.getByRole('heading', { name: '5 respuestas registradas', exact: true })).toBeVisible();
 });
 
 test('práctica rápida de tres preguntas y repaso', async ({ page }) => {
   await page.goto('./');
+  await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
   await page.getByRole('button', { name: 'Práctica rápida · 3 preguntas', exact: true }).tap();
   await answer(page, 'C) $30.000');
   await answer(page, 'B) 5');
@@ -89,6 +92,7 @@ test('práctica rápida de tres preguntas y repaso', async ({ page }) => {
 test('el repaso prioriza una respuesta incorrecta', async ({ page }) => {
   await page.addInitScript(key => localStorage.setItem(key, JSON.stringify([{ id: 4, correct: false }, { id: 1, correct: true }])), storageKey);
   await page.goto('./');
+  await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
   await page.getByRole('button', { name: 'Repasar mis puntos débiles', exact: true }).tap();
   await expect(page.getByText('MATEMÁTICA M1 · Potencias', { exact: true })).toBeVisible();
 });
@@ -96,6 +100,7 @@ test('el repaso prioriza una respuesta incorrecta', async ({ page }) => {
 test('permite responder cuando el almacenamiento está bloqueado', async ({ page }) => {
   await page.addInitScript(() => { Storage.prototype.setItem = () => { throw new DOMException('Blocked', 'QuotaExceededError'); }; });
   await page.goto('./');
+  await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
   await page.getByRole('button', { name: 'Práctica rápida · 3 preguntas', exact: true }).tap();
   await answer(page, 'C) $30.000');
   await expect(page.locator('.storage-notice')).toContainText('Puedes seguir practicando');
@@ -108,6 +113,7 @@ for (const [label, saved] of [['JSON inválido', 'invalid'], ['formato inválido
   test('recuperación de progreso dañado: ' + label, async ({ page }) => {
     await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), { key: storageKey, value: saved });
     await page.goto('./');
+  await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
     await page.getByRole('button', { name: 'Ver mi progreso', exact: true }).tap();
     await expect(page.getByRole('heading', { name: '0 respuestas registradas', exact: true })).toBeVisible();
     await page.getByRole('button', { name: 'Repasar', exact: true }).tap();
@@ -117,10 +123,12 @@ for (const [label, saved] of [['JSON inválido', 'invalid'], ['formato inválido
 
 test('nueva ronda sin alternativa ni confianza heredadas', async ({ page }) => {
   await page.goto('./');
+  await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
   await page.getByRole('button', { name: 'Hacer diagnóstico · 5 preguntas', exact: true }).tap();
   await page.getByRole('button', { name: 'Lo tengo claro', exact: true }).tap();
   await page.getByRole('button', { name: 'A) $10.000', exact: true }).tap();
   await page.getByRole('button', { name: '← Inicio', exact: true }).tap();
+  await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
   await page.getByRole('button', { name: 'Práctica rápida · 3 preguntas', exact: true }).tap();
   await expect(page.getByRole('button', { name: 'Tengo dudas', exact: true })).toHaveClass('active');
   await expect(page.getByRole('button', { name: 'Comprobar respuesta', exact: true })).toBeDisabled();
@@ -128,7 +136,9 @@ test('nueva ronda sin alternativa ni confianza heredadas', async ({ page }) => {
 
 test('simulacro M1: 65 preguntas, cronómetro y reanudación tras recarga', async ({ page }) => {
   await page.goto('./');
-  await page.getByRole('button', { name: 'Simulacro M1 · 65 preguntas · 140 min', exact: true }).tap();
+  await page.evaluate(()=>localStorage.setItem('cachaste-m1-diagnostic-30-v1',JSON.stringify({completed:true,results:Array.from({length:30},(_,i)=>({axis:['Números','Álgebra y funciones','Geometría','Probabilidad y estadística'][i%4],correct:true,confidence:'seguro'}))})));
+ await page.reload();
+ await page.getByRole('button', { name: 'Simulacro M1 · 65 preguntas · 140 min', exact: true }).tap();
   await expect(page.getByText('Simulacro 1 / 65', { exact: true })).toBeVisible();
   await expect(page.getByRole('timer')).toContainText('Tiempo restante:');
   await checkLayout(page);
@@ -141,7 +151,9 @@ test('simulacro M1: 65 preguntas, cronómetro y reanudación tras recarga', asyn
 
 test('simulacro M1: hoja de preguntas, marcador y entrega con confirmación', async ({ page }) => {
   await page.goto('./');
-  await page.getByRole('button', {name:'Simulacro M1 · 65 preguntas · 140 min',exact:true}).tap();
+  await page.evaluate(()=>localStorage.setItem('cachaste-m1-diagnostic-30-v1',JSON.stringify({completed:true,results:Array.from({length:30},(_,i)=>({axis:['Números','Álgebra y funciones','Geometría','Probabilidad y estadística'][i%4],correct:true,confidence:'seguro'}))})));
+ await page.reload();
+ await page.getByRole('button', {name:'Simulacro M1 · 65 preguntas · 140 min',exact:true}).tap();
   await page.getByRole('button',{name:'Marcar para revisar',exact:true}).tap();
   await expect(page.getByRole('button',{name:'✓ Marcada para revisar',exact:true})).toBeVisible();
   await page.getByRole('button',{name:'Ver mapa de preguntas',exact:true}).tap();
@@ -161,6 +173,7 @@ test('simulacro M1: hoja de preguntas, marcador y entrega con confirmación', as
 
 test('práctica visual: los gráficos y figuras aparecen legibles en móvil', async ({page}) => {
   await page.goto('./');
+  await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
   await page.getByRole('button',{name:'Interpretar gráficos y figuras · 8 ejercicios',exact:true}).tap();
   await expect(page.locator('figure.question-visual svg[role="img"]')).toHaveCount(1);
   await expect(page.locator('figure.question-visual figcaption')).toBeVisible();
@@ -175,6 +188,7 @@ test('práctica visual: los gráficos y figuras aparecen legibles en móvil', as
 });
 test('tutor: progreso registra ayuda sin inflar el dominio',async({page})=>{
   await page.goto('./');
+  await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
   await page.getByRole('button',{name:'Hacer diagnóstico · 5 preguntas',exact:true}).tap();
   await page.getByRole('button',{name:'Necesito una pista',exact:true}).tap();
   await page.getByRole('button',{name:'C) $30.000',exact:true}).tap();
@@ -182,6 +196,7 @@ test('tutor: progreso registra ayuda sin inflar el dominio',async({page})=>{
   await page.getByRole('button',{name:'Comprobar respuesta',exact:true}).tap();
   await expect(page.getByText('¡Bien! Lo lograste con una pista.',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'← Inicio',exact:true}).tap();
+  await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
   await page.getByRole('button',{name:'Ver mi progreso',exact:true}).tap();
   await expect(page.locator('.axis-progress').filter({hasText:'Números'}).getByText(/1 con pistas/)).toBeVisible();
   await checkLayout(page);
@@ -207,6 +222,7 @@ test('simulacro: errores pendientes sobreviven y se repasan de diez en diez',asy
 });
 test('progreso amigable: cuatro ejes y detalles plegados',async({page})=>{
  await page.goto('./');
+  await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
  await page.getByRole('button',{name:'Ver mi progreso',exact:true}).tap();
  await expect(page.getByRole('heading',{name:'Tu mapa por eje',exact:true})).toBeVisible();
  await expect(page.getByRole('button',{name:'Practicar Números',exact:true})).toBeVisible();
@@ -218,6 +234,7 @@ test('progreso amigable: cuatro ejes y detalles plegados',async({page})=>{
 
 test('diagnóstico integral M1: lectura cómoda y cobertura de los cuatro ejes',async({page})=>{
  await page.goto('./');
+  await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
  await page.getByRole('button',{name:'Diagnóstico integral M1 · 12 preguntas',exact:true}).tap();
  await expect(page.getByText('1 / 12',{exact:true})).toBeVisible();
  await expect(page.locator('button.option')).toHaveCount(4);
@@ -226,6 +243,7 @@ test('diagnóstico integral M1: lectura cómoda y cobertura de los cuatro ejes',
 });
 test('argumentación M1: corrige razonamientos en interfaz móvil',async({page})=>{
  await page.goto('./');
+  await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
  await page.getByRole('button',{name:'Detectar errores y razonar · 8 desafíos',exact:true}).tap();
  await expect(page.getByText('1 / 8',{exact:true})).toBeVisible();
  await expect(page.locator('button.option')).toHaveCount(4);
@@ -234,5 +252,23 @@ test('argumentación M1: corrige razonamientos en interfaz móvil',async({page})
  await page.getByRole('button',{name:'Comprobar respuesta',exact:true}).tap();
  await expect(page.getByText('Respuesta correcta:',{exact:false})).toBeVisible();
  await expect(page.getByRole('button',{name:'No entendí nada',exact:true})).toBeVisible();
+ await checkLayout(page);
+});
+
+test('UX M1: diagnóstico de 30 habilita los dos ensayos y registra plan',async({page})=>{
+ await page.goto('./');
+ await expect(page.getByRole('button',{name:'Express · 10 preguntas',exact:true})).toBeDisabled();
+ await expect(page.getByRole('button',{name:'Simulacro M1 · 65 preguntas · 140 min',exact:true})).toBeDisabled();
+ await page.getByRole('button',{name:'Comenzar diagnóstico de 30',exact:true}).tap();
+ await expect(page.getByText('1 / 30',{exact:true})).toBeVisible();
+ for(let n=0;n<30;n++){
+  await page.locator('button.option').first().tap();
+  await page.getByRole('button',{name:'Comprobar respuesta',exact:true}).tap();
+  await page.getByRole('button',{name:n===29?'Ver mi resultado':'Siguiente pregunta →',exact:true}).tap();
+ }
+ await page.getByRole('button',{name:'← Inicio',exact:true}).tap().catch(async()=>{await page.goto('./')});
+ await expect(page.getByRole('button',{name:'Express · 10 preguntas',exact:true})).toBeEnabled();
+ await expect(page.getByRole('button',{name:'Simulacro M1 · 65 preguntas · 140 min',exact:true})).toBeEnabled();
+ await expect(page.getByText('Esto conviene reforzar primero')).toBeVisible();
  await checkLayout(page);
 });
