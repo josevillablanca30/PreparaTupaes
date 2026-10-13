@@ -4,12 +4,15 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const src=readFileSync(new URL('../m2-bank.js',import.meta.url),'utf8');
 const app=readFileSync(new URL('../m2-app.js',import.meta.url),'utf8');
-test('M2: banco inicial tiene veinte ítems originales válidos y cinco áreas',()=>{
+test('M2: banco de 55 preguntas originales válidas en seis áreas',()=>{
  const window={};vm.runInNewContext(src,{window});
  const bank=window.CACHASTE_M2;
  assert.equal(bank.length,55);
  assert.equal(new Set(bank.map(q=>q.id)).size,55);
  assert.equal(new Set(bank.map(q=>q.area)).size,6);
+ const distribution=Object.fromEntries([...new Set(bank.map(q=>q.area))].map(area=>[area,bank.filter(q=>q.area===area).length]));
+ assert.ok(Object.values(distribution).every(count=>count>=5),JSON.stringify(distribution));
+ assert.ok(bank.some(q=>q.area==='Suficiencia de datos'&&q.why.includes('afirmaci')));
  for(const q of bank){
   assert.equal(q.options.length,4,q.id);
   assert.equal(new Set(q.options).size,4,q.id);
