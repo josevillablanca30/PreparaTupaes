@@ -19,7 +19,7 @@ function unlockedData(data=new Map()){data.set('cachaste-science-v1',JSON.string
 test('Ciencias: 116 ítems originales sin respuestas, IDs ni alternativas duplicadas',()=>{
  const {bank}=science();
  assert.equal(bank.length,116);
- assert.equal(new Set(bank.map(q=>q.id)).size,63);
+ assert.equal(new Set(bank.map(q=>q.id)).size,116);
  const texts=new Set();
  for(const q of bank){
   assert.equal(q.options.length,4,q.id);
