@@ -405,6 +405,70 @@ const expected = new Map([
   [
     "279",
     "48 cm²"
+  ],
+  [
+    "280",
+    "Bastián: queda al 96% del valor original."
+  ],
+  [
+    "281",
+    "5/6 es mayor porque 10/12 supera 9/12."
+  ],
+  [
+    "282",
+    "3⁻²=1/9 porque el exponente negativo indica el recíproco."
+  ],
+  [
+    "283",
+    "Es verdadero porque 1÷4=0,25."
+  ],
+  [
+    "284",
+    "Debe obtener x > −4 porque dividió por un número negativo."
+  ],
+  [
+    "285",
+    "No multiplicó el 3 por 2 al distribuir."
+  ],
+  [
+    "286",
+    "Es incorrecto: $500 es fijo y cada uso aumenta $200."
+  ],
+  [
+    "287",
+    "No tiene soluciones reales: x² no puede ser −4 si x es real."
+  ],
+  [
+    "288",
+    "El área queda nueve veces mayor."
+  ],
+  [
+    "289",
+    "Que c sea el lado opuesto al ángulo recto."
+  ],
+  [
+    "290",
+    "Se cuadruplica."
+  ],
+  [
+    "291",
+    "Las longitudes de sus lados se conservan."
+  ],
+  [
+    "292",
+    "La mediana es 3; el promedio es 35."
+  ],
+  [
+    "293",
+    "Si sale azul primero, quedan 1 azul entre 4 fichas."
+  ],
+  [
+    "294",
+    "Cara y sello no pueden ocurrir juntos en un lanzamiento; la probabilidad es 0."
+  ],
+  [
+    "295",
+    "El 50% central del curso B está en un intervalo más estrecho."
   ]
 ]);
 const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
@@ -417,9 +481,9 @@ const context=vm.createContext({
 });
 vm.runInContext(source,context);
 const catalog=vm.runInContext('catalog',context);
-test('clave editorial M1: 100 respuestas esperadas sin ítems omitidos',()=>{
-  assert.equal(expected.size,100);
-  assert.equal(catalog.length,100);
+test('clave editorial M1: 116 respuestas esperadas sin ítems omitidos',()=>{
+  assert.equal(expected.size,116);
+  assert.equal(catalog.length,116);
   assert.equal(new Set(catalog.map(q=>q.id)).size,catalog.length);
   for(const q of catalog){
     assert.ok(expected.has(String(q.id)),'Sin segunda clave para '+q.id);
