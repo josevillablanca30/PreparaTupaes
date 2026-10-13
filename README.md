@@ -12,11 +12,11 @@ Aplicación de preparación PAES Chile. **Primera meta: Matemática M1 Regular 2
 - Lista persistente de errores pendientes: rondas de diez preguntas sin perder las restantes; dominio confirmado al acertar sin pistas.
 - Progreso móvil resumido por los cuatro ejes, con detalles de habilidades plegables y acciones para reforzar.
 - Etiquetas pedagógicas estimadas: 45 iniciales, 40 intermedias y 31 desafíos.
-- Marca e icono Android: **Cachaste**. Versión de código Android **0.6.0**, pendiente de compilación comprobada.
+- Marca e icono Android: **Cachaste**. Versión **0.6.0** compilada exitosamente como APK de prueba (debug).
 - **No es aún una versión comercial aprobada**, ni sus aciertos equivalen a una conversión oficial de puntaje.
-- Se verificaron 43 casos de lógica y auditoría editorial mediante ejecución JavaScript aislada (39 de lógica y 4 auditorías); se cotejaron 116 respuestas con la clave separada. Quedan pendientes QA visual móvil, ejecución confirmada de CI y compilación de un APK descargable.
+- El 13-10-2026 GitHub Actions confirmó **48/48 pruebas de navegador móvil aprobadas** en Android Chrome, iPhone WebKit y 320 px; el workflow de Android confirmó pruebas de lógica, 32/32 pruebas táctiles y compilación exitosa de APK de prueba. El APK se verificó como ZIP/APK íntegro con código y recursos incluidos. **Pendientes: instalación y pruebas en un teléfono físico y publicación web por Pages.**
 
-Consulta [cierre de M1 y controles QA](docs/m1-cierre-funcional-2026.md), [estabilización de progreso y repaso](docs/qa-m1-estabilidad-2026-10-13.md), [pasada grande de gráficos y tutor](docs/qa-m1-expansion-100-2026-10-13.md), [reporte de QA anterior](docs/qa-m1-pasada-calidad-2026-10-13.md) y [biblioteca y fuentes de Drive](docs/fuentes-drive-m1-2026.md).
+Consulta [resultado de CI y APK v0.6](docs/qa-ci-apk-cachaste-2026-10-13.md), [cierre de M1 y controles QA](docs/m1-cierre-funcional-2026.md), [estabilización de progreso y repaso](docs/qa-m1-estabilidad-2026-10-13.md), [pasada grande de gráficos y tutor](docs/qa-m1-expansion-100-2026-10-13.md), [reporte de QA anterior](docs/qa-m1-pasada-calidad-2026-10-13.md) y [biblioteca y fuentes de Drive](docs/fuentes-drive-m1-2026.md).
 
 ## Probar
 Abrir `index.html` con el navegador, o ejecutar:
