@@ -9,12 +9,14 @@ Aplicación de preparación PAES Chile. **Primera meta: Matemática M1 Regular 2
 - Tutor con pistas progresivas: aciertos con ayuda se distinguen del dominio sin pistas.
 - Simulacro **formativo** de 65 preguntas, tiempo de 140 minutos, mapa navegable, marcadores y confirmación al entregar.
 - Guardado local de respuestas, reanudación de sesión y resultados por eje.
-- Etiquetas pedagógicas estimadas: 45 iniciales, 24 intermedias y 15 desafíos.
+- Lista persistente de errores pendientes: rondas de diez preguntas sin perder las restantes; dominio confirmado al acertar sin pistas.
+- Progreso móvil resumido por los cuatro ejes, con detalles de habilidades plegables y acciones para reforzar.
+- Etiquetas pedagógicas estimadas: 45 iniciales, 40 intermedias y 15 desafíos.
 - Marca e icono Android: **Cachaste**. Versión de código Android **0.5.0**, pendiente de compilación comprobada.
 - **No es aún una versión comercial aprobada**, ni sus aciertos equivalen a una conversión oficial de puntaje.
-- Se probaron 29 casos de lógica en una ejecución JavaScript aislada y se cotejaron 100 respuestas con la clave editorial. Quedan pendientes QA visual móvil, ejecución confirmada de CI y compilación de un APK descargable.
+- Se probaron 35 casos de lógica en una ejecución JavaScript aislada y se cotejaron 100 respuestas con la clave editorial. Quedan pendientes QA visual móvil, ejecución confirmada de CI y compilación de un APK descargable.
 
-Consulta [pasada grande de gráficos y tutor](docs/qa-m1-expansion-100-2026-10-13.md), [reporte de QA anterior](docs/qa-m1-pasada-calidad-2026-10-13.md) y [biblioteca y fuentes de Drive](docs/fuentes-drive-m1-2026.md).
+Consulta [estabilización de progreso y repaso](docs/qa-m1-estabilidad-2026-10-13.md), [pasada grande de gráficos y tutor](docs/qa-m1-expansion-100-2026-10-13.md), [reporte de QA anterior](docs/qa-m1-pasada-calidad-2026-10-13.md) y [biblioteca y fuentes de Drive](docs/fuentes-drive-m1-2026.md).
 
 ## Probar
 Abrir `index.html` con el navegador, o ejecutar:
