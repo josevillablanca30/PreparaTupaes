@@ -197,3 +197,18 @@ test('simulacro completo: 65 preguntas únicas, cuota de ejes y 140 minutos',()=
  assert.equal(run('page'),'result');
  assert.equal(run('localStorage.getItem(sessionKey)'),null);
 });
+
+test('práctica por eje usa ocho ejercicios de contenido ampliado',()=>{
+ const run=app();
+ for(const [mode,axis] of [['numeros','Números'],['algebra','Álgebra y funciones'],['geometria','Geometría'],['estadistica','Probabilidad y estadística']]){
+  run("start('"+mode+"')");
+  assert.equal(run('queue.length'),8);
+  assert.equal(run('queue.every(q=>axisOf(q)==="'+axis+'")'),true);
+ }
+ assert.equal(run('home().includes("¿Qué quieres reforzar hoy?")'),true);
+});
+test('repaso adaptativo busca en las 84 preguntas, no solamente en las cinco iniciales',()=>{
+ const run=app('[{"id":245,"correct":false}]');
+ run("start('repaso')");
+ assert.equal(run('queue[0].id'),245);
+});
