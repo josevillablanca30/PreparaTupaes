@@ -2,7 +2,7 @@ name: Android APK · compilación de prueba
 on:
   push:
     branches: [main]
-    paths: ['index.html', 'inicio.html', 'science.html', 'science-bank.js', 'science-app.js', 'reading.html', 'reading-bank.js', 'reading-app.js', 'android/**', 'tests/**', 'scripts/**', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
+    paths: ['index.html', 'inicio.html', 'science.html', 'science-bank.js', 'science-app.js', 'reading.html', 'reading-bank.js', 'reading-app.js', 'm2.html', 'm2-bank.js', 'm2-app.js', 'android/**', 'tests/**', 'scripts/**', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
   workflow_dispatch:
 concurrency:
   group: cachaste-android-${{ github.ref }}
@@ -56,7 +56,7 @@ jobs:
         run: |
           mkdir -p android/app/src/main/assets
           cp dist/index.html android/app/src/main/assets/index.html
-          cp dist/inicio.html dist/science.html dist/science-bank.js dist/science-app.js dist/reading.html dist/reading-bank.js dist/reading-app.js android/app/src/main/assets/
+          cp dist/inicio.html dist/science.html dist/science-bank.js dist/science-app.js dist/reading.html dist/reading-bank.js dist/reading-app.js dist/m2.html dist/m2-bank.js dist/m2-app.js android/app/src/main/assets/
       - name: Compilar APK de prueba
         working-directory: android
         run: gradle --no-daemon :app:assembleDebug
