@@ -1,4 +1,9 @@
 import {test,expect} from '@playwright/test';
+async function unlockScience(page){
+ await page.evaluate(()=>localStorage.setItem('cachaste-science-v1',JSON.stringify({baseline:{completed:true,results:Array.from({length:30},(_,i)=>({subject:['Biología','Física','Química'][i%3],area:'Procesos y funciones biológicas',correct:true,confidence:'seguro'}))}})));
+ await page.reload();
+}
+
 async function mobileFit(page){
  const broken=await page.evaluate(()=>{
   const w=document.documentElement.clientWidth,issues=[];
@@ -20,14 +25,15 @@ test('Ciencias: abre desde M1, selección de módulo y diseño móvil',async({pa
  await expect(page.getByText(/54 del Módulo Común/)).toBeVisible();
  await page.locator('.track').filter({hasText:'Química'}).tap();
  await expect(page.locator('.track').filter({hasText:'Química'})).toHaveAttribute('aria-pressed','true');
- await page.getByRole('button',{name:'Comenzar Ciencias mixtas · 12 preguntas'}).tap();
+ await page.getByRole('button',{name:'Comenzar diagnóstico de 30'}).tap();
  await expect(page.locator('button.option')).toHaveCount(4);
- await expect(page.getByText('1 / 12',{exact:true})).toBeVisible();
+ await expect(page.getByText('1 / 30',{exact:true})).toBeVisible();
  await mobileFit(page);
 });
 test('Ciencias: pistas y explicaciones funcionan en Biología',async({page})=>{
  await page.goto('./science.html');
- await page.getByText('Refuerzo por materia · opcional').click();
+ await unlockScience(page);
+ await page.getByText('Más opciones de refuerzo').click();
  await page.getByRole('button',{name:'Reforzar Biología · 8 ejercicios'}).tap();
  await page.getByRole('button',{name:'Necesito una pista'}).tap();
  await expect(page.getByText('Pista 1 de 2')).toBeVisible();
@@ -44,7 +50,8 @@ test('Ciencias: pistas y explicaciones funcionan en Biología',async({page})=>{
 });
 test('Ciencias: guardar una corrección de Biología, cerrar y recuperarla',async({page})=>{
  await page.goto('./science.html');
- await page.getByText('Refuerzo por materia · opcional').click();
+ await unlockScience(page);
+ await page.getByText('Más opciones de refuerzo').click();
  await page.getByRole('button',{name:'Reforzar Biología · 8 ejercicios'}).tap();
  await page.getByRole('button',{name:'Proponer corrección'}).tap();
  await page.locator('#science-note').fill('Revisar la alternativa B con referencias al contenido celular.');
@@ -60,11 +67,32 @@ test('Ciencias: TP, diagnóstico mixto y M1 mantienen rutas independientes',asyn
  await page.goto('./science.html');
  await page.locator('.track').filter({hasText:'TP'}).tap();
  await expect(page.locator('.track').filter({hasText:'TP'})).toHaveAttribute('aria-pressed','true');
- await page.getByRole('button',{name:'Diagnóstico mixto · 9 preguntas'}).tap();
- await expect(page.getByText('1 / 9',{exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'Comenzar diagnóstico de 30'}).tap();
+ await expect(page.getByText('1 / 30',{exact:true})).toBeVisible();
  await page.getByRole('button',{name:'← Volver a Ciencias'}).tap();
  await page.getByRole('link',{name:'Matemática M1',exact:true}).tap();
  await expect(page).toHaveTitle('Cachaste · Aprende a tu ritmo');
- await expect(page.getByRole('button',{name:'Hacer diagnóstico · 5 preguntas'})).toBeVisible();
+ await expect(page.getByRole('button',{name:'Comenzar diagnóstico de 30'})).toBeVisible();
+ await mobileFit(page);
+});
+
+test('Ciencias: diagnóstico de 30 activa Express y permite registrar incertidumbre',async({page})=>{
+ await page.goto('./science.html');
+ await expect(page.getByRole('button',{name:'Express · 10 preguntas'})).toBeDisabled();
+ await page.getByRole('button',{name:'Comenzar diagnóstico de 30'}).tap();
+ await expect(page.getByText('1 / 30',{exact:true})).toBeVisible();
+ await expect(page.getByRole('button',{name:'Necesito una pista'})).toHaveCount(0);
+ for(let i=0;i<30;i++){
+  if(i===0)await page.getByRole('button',{name:'Fue al azar'}).tap();
+  await page.locator('button.option').first().tap();
+  await page.getByRole('button',{name:'Comprobar respuesta'}).tap();
+  await page.getByRole('button',{name:i===29?'Ver mi resultado':'Siguiente pregunta →'}).tap();
+ }
+ await expect(page.getByRole('heading',{name:'Resultados por asignatura'})).toBeVisible();
+ await page.getByRole('button',{name:'Elegir mención'}).tap();
+ await expect(page.getByRole('button',{name:'Express · 10 preguntas'})).toBeEnabled();
+ await expect(page.getByText('Lo que conviene aprender primero')).toBeVisible();
+ await page.getByRole('button',{name:'Express · 10 preguntas'}).tap();
+ await expect(page.getByText('1 / 10',{exact:true})).toBeVisible();
  await mobileFit(page);
 });
