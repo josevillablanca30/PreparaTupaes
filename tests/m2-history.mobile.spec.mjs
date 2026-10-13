@@ -31,6 +31,7 @@ for(const subject of [
   await page.getByRole('button',{name:'Diagnóstico · 30 preguntas'}).tap();
   for(let i=0;i<30;i++){
    await page.locator('[data-choice="0"]').click();
+   await page.getByRole('button',{name:'Tengo dudas'}).click();
    await page.getByRole('button',{name:'Revisar respuesta'}).click();
    await page.getByRole('button',{name:i===29?'Ver resultado':'Continuar'}).click();
   }
