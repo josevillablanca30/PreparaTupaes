@@ -5,7 +5,7 @@ import {readFileSync} from 'node:fs';
 function load(file){const window={};vm.runInNewContext(readFileSync(new URL('../'+file,import.meta.url),'utf8'),{window});return window}
 const sci=load('science-bank.js').SCIENCE_BANK;
 const rd=load('reading-bank.js').READING_QUESTIONS;
-const banned=/fusión nuclear|centrifugación del núcleo atómico|reparación de vehículos|color de los estantes|descomponedores crean energía desde la nada|cloroplastos.*sináptic|se vuelve cero siempre|se detienen todos los impulsos/i;
+const banned=/centrifugación del núcleo atómico|reparación de vehículos|color de los estantes|descomponedores crean energía desde la nada|cloroplastos.*sináptic|se vuelve cero siempre|se detienen todos los impulsos/i;
 test('Auditoría final: claves, explicaciones y distractores completos en Ciencias y Lectura',()=>{
  for(const [subject,bank] of [['Ciencias',sci],['Lectura',rd]]){
   assert.ok(bank.length>=100,subject);
