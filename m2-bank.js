@@ -1,0 +1,13 @@
+/* M2: banco inicial de elaboración original; práctica formativa, no DEMRE oficial. */
+window.CACHASTE_M2=[
+['Funciones','Si f(x)=x²-4x+1, ¿en qué valor de x alcanza su mínimo?',['x=2','x=4','x=-2','x=0'],0,'Completa el cuadrado: f(x)=(x-2)²-3. El cuadrado es mínimo cuando x=2.','El vértice de una parábola indica su extremo.'],
+['Funciones','Si g(x)=2^x, ¿cuál es g(3)-g(1)?',['6','4','8','2'],0,'g(3)=8 y g(1)=2; la diferencia es 6.','Evalúa cada potencia antes de restar.'],
+['Probabilidad','En una bolsa hay 3 fichas rojas y 2 azules. Si se extraen dos sin reposición, ¿cuál es la probabilidad de que ambas sean rojas?',['3/10','9/25','3/5','1/5'],0,'P(roja y roja)=(3/5)·(2/4)=6/20=3/10.','Sin reposición, el total disminuye después de la primera extracción.'],
+['Probabilidad','Si P(A)=0,4 y P(B)=0,5 y son independientes, ¿cuál es P(A∩B)?',['0,2','0,9','0,1','0,45'],0,'Para eventos independientes, P(A∩B)=P(A)·P(B)=0,4·0,5=0,2.','Recuerda la regla del producto para independencia.'],
+['Geometría','Un círculo de radio 3 tiene un sector de 120°. ¿Cuál es el área del sector?',['3π','6π','9π','2π'],0,'El sector representa 120/360=1/3 del círculo: (1/3)·π·3²=3π.','Calcula qué fracción de la circunferencia corresponde al ángulo central.'],
+['Geometría','¿Cuál es la distancia entre los puntos (1,2) y (4,6)?',['5','7','4','√7'],0,'Por Pitágoras: √((4-1)²+(6-2)²)=√(9+16)=5.','Calcula primero las diferencias horizontal y vertical.'],
+['Álgebra','¿Qué solución tiene la ecuación log₂(x)=3?',['8','6','9','1'],0,'La definición de logaritmo equivale a 2³=x, por tanto x=8.','Convierte la igualdad logarítmica a una potencia.'],
+['Álgebra','Si a>0 y a²=49, ¿cuánto vale a?',['7','-7','49','14'],0,'Las raíces de a²=49 son ±7, pero a>0 exige a=7.','No olvides la restricción del enunciado.'],
+['Modelación','Un capital de $100.000 crece un 10% anual compuesto. ¿Cuánto habrá tras dos años?',['$121.000','$120.000','$110.000','$122.000'],0,'100.000·1,1²=121.000; el segundo aumento se aplica sobre 110.000.','El crecimiento compuesto multiplica, no suma porcentajes sobre la base inicial.'],
+['Modelación','Un modelo lineal pasa por (0,5) y (2,11). ¿Cuál es su pendiente?',['3','6','2','5'],0,'La pendiente es (11-5)/(2-0)=6/2=3.','Usa cambio vertical dividido por cambio horizontal.']
+].map(([area,question,options,answer,why,hint],i)=>({id:'M2-'+String(i+1).padStart(3,'0'),area,question,options,answer,why,hint,origin:'original'}));
