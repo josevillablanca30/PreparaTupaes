@@ -138,3 +138,23 @@ test('simulacro M1: 65 preguntas, cronómetro y reanudación tras recarga', asyn
   await expect(page.getByText('Simulacro 2 / 65', { exact: true })).toBeVisible();
   await expect(page.getByRole('timer')).toContainText('Tiempo restante:');
 });
+
+test('simulacro M1: hoja de preguntas, marcador y entrega con confirmación', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', {name:'Simulacro M1 · 65 preguntas · 140 min',exact:true}).tap();
+  await page.getByRole('button',{name:'Marcar para revisar',exact:true}).tap();
+  await expect(page.getByRole('button',{name:'✓ Marcada para revisar',exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Ver mapa de preguntas',exact:true}).tap();
+  await expect(page.getByRole('button',{name:'Pregunta 1, sin responder, marcada',exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Pregunta 65, sin responder',exact:true}).tap();
+  await expect(page.getByText('Simulacro 65 / 65',{exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Revisar y finalizar',exact:true}).tap();
+  await expect(page.getByRole('heading',{name:'Revisa tu simulacro',exact:true})).toBeVisible();
+  await expect(page.getByText('Te faltan 65 sin responder.',{exact:false})).toBeVisible();
+  await page.getByRole('button',{name:'Volver a preguntas',exact:true}).tap();
+  await expect(page.getByRole('button',{name:'Pregunta 1, sin responder, marcada',exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Revisar antes de entregar',exact:true}).tap();
+  await page.getByRole('button',{name:'Entregar ensayo',exact:true}).tap();
+  await expect(page.getByRole('heading',{name:'0 de 65 correctas',exact:true})).toBeVisible();
+  await checkLayout(page);
+});
