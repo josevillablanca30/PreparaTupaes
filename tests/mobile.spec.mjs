@@ -215,3 +215,24 @@ test('progreso amigable: cuatro ejes y detalles plegados',async({page})=>{
  await expect(page.getByRole('button',{name:'Practicar Probabilidad y estadística',exact:true})).toBeVisible();
  await checkLayout(page);
 });
+
+test('diagnóstico integral M1: lectura cómoda y cobertura de los cuatro ejes',async({page})=>{
+ await page.goto('./');
+ await page.getByRole('button',{name:'Diagnóstico integral M1 · 12 preguntas',exact:true}).tap();
+ await expect(page.getByText('1 / 12',{exact:true})).toBeVisible();
+ await expect(page.locator('button.option')).toHaveCount(4);
+ await expect(page.getByRole('button',{name:'Necesito una pista',exact:true})).toBeVisible();
+ await checkLayout(page);
+});
+test('argumentación M1: corrige razonamientos en interfaz móvil',async({page})=>{
+ await page.goto('./');
+ await page.getByRole('button',{name:'Detectar errores y razonar · 8 desafíos',exact:true}).tap();
+ await expect(page.getByText('1 / 8',{exact:true})).toBeVisible();
+ await expect(page.locator('button.option')).toHaveCount(4);
+ await expect(page.getByRole('button',{name:'Comprobar respuesta',exact:true})).toBeDisabled();
+ await page.locator('button.option').first().tap();
+ await page.getByRole('button',{name:'Comprobar respuesta',exact:true}).tap();
+ await expect(page.getByText('Respuesta correcta:',{exact:false})).toBeVisible();
+ await expect(page.getByRole('button',{name:'No entendí nada',exact:true})).toBeVisible();
+ await checkLayout(page);
+});
