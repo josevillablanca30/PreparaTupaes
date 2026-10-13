@@ -167,10 +167,10 @@ test('desafíos aplicados: cuatro problemas M1 completos y seleccionables',()=>{
  assert.equal(run('home().includes("Desafíos aplicados")'),true);
 });
 
-test('banco M1 ampliado: 100 ítems íntegros, respuestas válidas y ejes trazables',()=>{
+test('banco M1 ampliado: 116 ítems íntegros, respuestas válidas y ejes trazables',()=>{
  const run=app();
- assert.equal(run('catalog.length'),100);
- assert.equal(run('new Set(catalog.map(q=>q.id)).size'),100);
+ assert.equal(run('catalog.length'),116);
+ assert.equal(run('new Set(catalog.map(q=>q.id)).size'),116);
  assert.equal(run('catalog.every(q=>q.options.length===4&&new Set(q.options).size===4&&Number.isInteger(q.answer)&&q.answer>=0&&q.answer<4&&q.explanations.length===4&&q.steps.length>=2&&q.easy&&q.example)'),true);
  assert.equal(run('new Set(catalog.map(q=>axisOf(q))).size'),4);
 });
@@ -208,7 +208,7 @@ test('práctica por eje usa ocho ejercicios de contenido ampliado',()=>{
  }
  assert.equal(run('home().includes("¿Qué quieres reforzar hoy?")'),true);
 });
-test('repaso adaptativo busca en las 100 preguntas, no solamente en las cinco iniciales',()=>{
+test('repaso adaptativo busca en las 116 preguntas, no solamente en las cinco iniciales',()=>{
  const run=app('[{"id":245,"correct":false}]');
  run("start('repaso')");
  assert.equal(run('queue[0].id'),245);
@@ -259,7 +259,7 @@ test('cronómetro permanece visible en el resumen previo a entregar',()=>{
 test('preguntas visuales: 16 diagramas originales accesibles',()=>{
  const run=app();
  assert.equal(run('visualBankA.length+visualBankB.length+visualBankC.length'),16);
- assert.equal(run('catalog.length'),100);
+ assert.equal(run('catalog.length'),116);
  assert.equal(run('catalog.filter(q=>q.visual).length'),16);
  assert.equal(run('catalog.filter(q=>q.visual).every(q=>renderVisual(q).includes("role="))'),true);
  assert.equal(run('catalog.filter(q=>q.visual).every(q=>renderVisual(q).includes("<figcaption>"))'),true);
@@ -366,4 +366,25 @@ test('repaso corrupto: descarta IDs inexistentes y cursor inválido',()=>{
  assert.equal(run('reviewCursor'),0);
  run('reviewPending()');
  assert.equal(run('queue.length'),2);
+});
+
+test('16 desafíos de argumentar detectan errores conceptuales de cuatro ejes',()=>{
+ const run=app();
+ assert.equal(run('reasoningBank.length'),16);
+ assert.equal(run('reasoningBank.every(q=>q.habilidadPAES==="Argumentar"&&q.explanations.length===4&&q.steps.length>=2)'),true);
+ assert.equal(run('new Set(reasoningBank.map(q=>q.id)).size'),16);
+ run("start('argumentar')");
+ assert.equal(run('queue.length'),8);
+ assert.equal(run('queue.every(q=>q.habilidadPAES==="Argumentar")'),true);
+ for(const eje of ['Números','Álgebra y funciones','Geometría','Probabilidad y estadística'])
+  assert.equal(run('queue.filter(q=>q.axis==="'+eje+'").length'),2);
+ assert.equal(run('home().includes("Detectar errores y razonar")'),true);
+});
+test('simulacro 65 incorpora preguntas originales de argumentación sin salirse del temario',()=>{
+ const run=app();
+ for(let j=0;j<12;j++){
+  run("startExam('full')");
+  assert.equal(run('queue.length'),65);
+  assert.equal(run('queue.some(q=>q.habilidadPAES==="Argumentar")'),true);
+ }
 });
