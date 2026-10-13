@@ -1,7 +1,7 @@
 /* M2: banco inicial de elaboración original; práctica formativa, no DEMRE oficial. */
 window.CACHASTE_M2=[
 ['Funciones','Si f(x)=x²-4x+1, ¿en qué valor de x alcanza su mínimo?',['x=2','x=4','x=-2','x=0'],0,'Completa el cuadrado: f(x)=(x-2)²-3. El cuadrado es mínimo cuando x=2.','El vértice de una parábola indica su extremo.'],
-['Funciones','Si g(x)=2^x, ¿cuál es g(3)-g(1)?',['6','4','8','2'],0,'g(3)=8 y g(1)=2; la diferencia es 6.','Evalúa cada potencia antes de restar.'],
+['Funciones','Si g(x)=2^x, ¿cuál es g(3)-g(1)?',['6','4','8','2'],0,'Primero evalúa ambas potencias: 2³=8 y 2¹=2. Después resta los resultados: 8-2=6. No restes los exponentes.','Evalúa cada potencia antes de restar.'],
 ['Probabilidad','En una bolsa hay 3 fichas rojas y 2 azules. Si se extraen dos sin reposición, ¿cuál es la probabilidad de que ambas sean rojas?',['3/10','9/25','3/5','1/5'],0,'P(roja y roja)=(3/5)·(2/4)=6/20=3/10.','Sin reposición, el total disminuye después de la primera extracción.'],
 ['Probabilidad','Si P(A)=0,4 y P(B)=0,5 y son independientes, ¿cuál es P(A∩B)?',['0,2','0,9','0,1','0,45'],0,'Para eventos independientes, P(A∩B)=P(A)·P(B)=0,4·0,5=0,2.','Recuerda la regla del producto para independencia.'],
 ['Geometría','Un círculo de radio 3 tiene un sector de 120°. ¿Cuál es el área del sector?',['3π','6π','9π','2π'],0,'El sector representa 120/360=1/3 del círculo: (1/3)·π·3²=3π.','Calcula qué fracción de la circunferencia corresponde al ángulo central.'],
