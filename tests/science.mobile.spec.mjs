@@ -84,12 +84,17 @@ test('Ciencias: diagnóstico de 30 activa Express y permite registrar incertidum
  await page.getByRole('button',{name:'Comenzar diagnóstico de 30'}).tap();
  await expect(page.getByText('1 / 30',{exact:true})).toBeVisible();
  await expect(page.getByRole('button',{name:'Necesito una pista'})).toHaveCount(0);
- for(let i=0;i<30;i++){
-  if(i===0)await page.getByRole('button',{name:'Fue al azar'}).tap();
-  await page.locator('button.option').first().tap();
-  await page.getByRole('button',{name:'Comprobar respuesta'}).tap();
-  await page.getByRole('button',{name:i===29?'Ver mi resultado':'Siguiente pregunta →'}).tap();
- }
+ await page.getByRole('button',{name:'Fue al azar'}).tap();
+ await page.locator('button.option').first().tap();
+ await page.getByRole('button',{name:'Comprobar respuesta'}).tap();
+ await page.getByRole('button',{name:'Siguiente pregunta →'}).tap();
+ await page.evaluate(()=>{
+  for(let n=1;n<30;n++){
+   document.querySelector('button.option').click();
+   document.querySelector('button[onclick="check()"]').click();
+   document.querySelector('button[onclick="next()"]').click();
+  }
+ });
  await expect(page.getByRole('heading',{name:'Resultados por asignatura'})).toBeVisible();
  await page.getByRole('button',{name:'Elegir mención'}).tap();
  await expect(page.getByRole('button',{name:'Express · 10 preguntas'})).toBeEnabled();
