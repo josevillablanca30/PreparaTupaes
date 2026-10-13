@@ -112,3 +112,19 @@ test('comprobación de aprendizaje usa otra pregunta de la misma habilidad', () 
  assert.equal(after.some(id=>before.includes(id)),false);
  assert.equal(run('quiz().includes("Respuesta correcta:")'),false);
 });
+
+test('ensayo sin preguntas de transferencia disponibles no ofrece botón engañoso', () => {
+ const run=app();
+ run("startExam('express');for(let n=0;n<10;n++)examMove(1)");
+ assert.equal(run('round.length'),10);
+ assert.equal(run('result().includes("Comprobar si aprendí")'),false);
+});
+test('tras fallar solo porcentajes, ofrece comprobación con otra pregunta', () => {
+ const run=app();
+ run("startExam('express');for(let n=0;n<10;n++){examAnswers[n]=queue[n].answer;};examAnswers[0]=0;for(let n=0;n<10;n++)examMove(1)");
+ assert.equal(run('round.filter(x=>!x.correct).length'),1);
+ assert.equal(run('result().includes("Comprobar si aprendí")'),true);
+ run('verifyLearning()');
+ assert.equal(run('queue.length'),1);
+ assert.notEqual(run('queue[0].id'),1);
+});
