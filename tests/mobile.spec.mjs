@@ -218,7 +218,7 @@ test('simulacro: errores pendientes sobreviven y se repasan de diez en diez',asy
  await expect(page.getByText('1 / 10',{exact:true})).toBeVisible();
  await page.getByRole('button',{name:'← Inicio',exact:true}).tap();
  await page.reload();
- await expect(page.getByText(/Tienes 65 preguntas para reforzar/)).toBeVisible();
+ await expect(page.getByText(/Tienes 65 ejercicios para reforzar/)).toBeVisible();
  await page.getByRole('button',{name:'Continuar mi repaso',exact:true}).tap();
  await expect(page.getByText('1 / 10',{exact:true})).toBeVisible();
  await checkLayout(page);
