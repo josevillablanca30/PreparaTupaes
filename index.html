@@ -54,7 +54,7 @@ function difficultyOrder(q){return difficultyOf(q)==='inicial'?0:difficultyOf(q)
 const store='prepara-paes-demo-v1';
 const reviewKey='cachaste-m1-pending-review-v1';
 let pendingReview=[],reviewCursor=0;
-try{const savedReview=JSON.parse(localStorage.getItem(reviewKey)||'null');if(savedReview&&Array.isArray(savedReview.ids)){pendingReview=[...new Set(savedReview.ids.filter(id=>Number.isInteger(id)&&catalog.some(q=>q.id===id)))].slice(0,catalog.length);reviewCursor=Math.max(0,Number(savedReview.cursor)||0)}}catch{}
+try{const savedReview=JSON.parse(localStorage.getItem(reviewKey)||'null');if(savedReview&&Array.isArray(savedReview.ids)){pendingReview=[...new Set(savedReview.ids.filter(id=>Number.isInteger(id)&&catalog.some(q=>q.id===id)))].slice(0,catalog.length);reviewCursor=Number.isSafeInteger(savedReview.cursor)&&savedReview.cursor>=0?Math.min(savedReview.cursor,catalog.length):0}}catch{}
 let history=[],storageAvailable=true;
 try {
   const saved=JSON.parse(localStorage.getItem(store)||'[]');
@@ -64,7 +64,7 @@ let page='home',queue=[],round=[],i=0,choice=null,confidence='duda',checked=fals
 const sessionKey='prepara-paes-active-exam-v1';
 let examDeadline=null,examFlags=[],examOverviewOpen=false,examConfirming=false;
 let resumeExam=null;
-try{const saved=JSON.parse(localStorage.getItem(sessionKey)||'null');if(saved&&Array.isArray(saved.ids)&&Array.isArray(saved.answers)&&saved.ids.length===saved.answers.length&&saved.ids.length<=65&&saved.ids.every(id=>catalog.some(q=>q.id===id))&&saved.answers.every(v=>v===null||(Number.isInteger(v)&&v>=0&&v<=3)))resumeExam=saved}catch{}
+try{const saved=JSON.parse(localStorage.getItem(sessionKey)||'null');if(saved&&Array.isArray(saved.ids)&&Array.isArray(saved.answers)&&saved.ids.length===saved.answers.length&&saved.ids.length>=1&&saved.ids.length<=65&&new Set(saved.ids).size===saved.ids.length&&saved.ids.every(id=>catalog.some(q=>q.id===id))&&saved.answers.every(v=>v===null||(Number.isInteger(v)&&v>=0&&v<=3)))resumeExam=saved}catch{}
 function persistExam(){if(!exam)return;try{localStorage.setItem(sessionKey,JSON.stringify({ids:queue.map(q=>q.id),answers:examAnswers,index:i,deadline:examDeadline,flags:[...examFlags]}));resumeExam={ids:queue.map(q=>q.id),answers:[...examAnswers],index:i,deadline:examDeadline,flags:[...examFlags]}}catch{storageAvailable=false}}
 function clearExam(){resumeExam=null;examDeadline=null;examFlags=[];examConfirming=false;examOverviewOpen=false;try{localStorage.removeItem(sessionKey)}catch{}}
 function resumeSavedExam(){if(!resumeExam)return;queue=resumeExam.ids.map(id=>catalog.find(q=>q.id===id));examAnswers=[...resumeExam.answers];i=Math.max(0,Math.min(queue.length-1,Number(resumeExam.index)||0));choice=examAnswers[i];exam=true;examDeadline=Number.isFinite(resumeExam.deadline)?resumeExam.deadline:null;examFlags=Array.isArray(resumeExam.flags)?resumeExam.flags.filter(id=>queue.some(q=>q.id===id)):[];examConfirming=false;examOverviewOpen=false;round=[];if(examDeadline&&Date.now()>=examDeadline){finishExam();return}navigate('quiz')}
