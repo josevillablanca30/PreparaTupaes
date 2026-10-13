@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "playwright test",
-    "test:logic": "node --test tests/logic.test.mjs",
+    "test:logic": "node --test tests/*.test.mjs",
     "preview": "node scripts/preview.mjs"
   },
   "devDependencies": {
