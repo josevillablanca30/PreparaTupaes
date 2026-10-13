@@ -103,7 +103,7 @@ test('resultado de ensayo ofrece repaso de habilidades falladas', () => {
 
 test('comprobación de aprendizaje usa otra pregunta de la misma habilidad', () => {
  const run=app();
- run("startExam('express');for(let n=0;n<10;n++){examAnswers[n]=queue[n].answer;};examAnswers[0]=0;for(let n=0;n<10;n++)examMove(1)");
+ run("startExam();for(let n=0;n<5;n++){examAnswers[n]=queue[n].answer;};examAnswers[0]=0;for(let n=0;n<5;n++)examMove(1)");
  const before=run('round.filter(x=>!x.correct).map(x=>x.id)');
  run('verifyLearning()');
  const after=run('queue.map(x=>x.id)');
@@ -121,7 +121,7 @@ test('ensayo sin preguntas de transferencia disponibles no ofrece botón engaño
 });
 test('tras fallar solo porcentajes, ofrece comprobación con otra pregunta', () => {
  const run=app();
- run("startExam('express');for(let n=0;n<10;n++){examAnswers[n]=queue[n].answer;};examAnswers[0]=0;for(let n=0;n<10;n++)examMove(1)");
+ run("startExam();for(let n=0;n<5;n++){examAnswers[n]=queue[n].answer;};examAnswers[0]=0;for(let n=0;n<5;n++)examMove(1)");
  assert.equal(run('round.filter(x=>!x.correct).length'),1);
  assert.equal(run('result().includes("Comprobar si aprendí")'),true);
  run('verifyLearning()');
