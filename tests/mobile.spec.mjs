@@ -183,7 +183,7 @@ test('tutor: progreso registra ayuda sin inflar el dominio',async({page})=>{
   await expect(page.getByText('¡Bien! Lo lograste con una pista.',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'← Inicio',exact:true}).tap();
   await page.getByRole('button',{name:'Ver mi progreso',exact:true}).tap();
-  await expect(page.getByText(/1 con pistas/)).toBeVisible();
+  await expect(page.locator('.axis-progress').filter({hasText:'Números'}).getByText(/1 con pistas/)).toBeVisible();
   await checkLayout(page);
 });
 
