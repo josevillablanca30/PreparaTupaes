@@ -36,7 +36,7 @@ test('Ciencias: pistas y explicaciones funcionan en Biología',async({page})=>{
  await page.getByRole('button',{name:'Comprobar respuesta'}).tap();
  await expect(page.getByText('Respuesta correcta:',{exact:false})).toBeVisible();
  await page.getByRole('button',{name:'Más fácil'}).tap();
- await expect(page.locator('.card').filter({hasText:'Te lo explico como prefieras'})).toBeVisible();
+ await expect(page.getByRole('heading',{name:'Te lo explico como prefieras',exact:true})).toBeVisible();
  await page.getByRole('button',{name:'Con un ejemplo'}).tap();
  await expect(page.getByRole('button',{name:'Siguiente pregunta →'})).toBeVisible();
  await mobileFit(page);
