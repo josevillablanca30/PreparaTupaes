@@ -13,7 +13,7 @@ function readingAdd(type,title,paragraphs,questions){
   const rotation=qi%4,options=answers.map((_,i)=>answers[(i+rotation)%4]);
   const correctIndex=options.indexOf(correct);
   READING_QUESTIONS.push({id:'LEC-'+String(qi+1).padStart(3,'0'),passageId:id,skill,question,options,answer:correctIndex,
-   explanations:options.map((x,i)=>i===correctIndex?'¡Cachaste! '+why:'Esa opción no se sostiene con las pistas del texto. '+clue+' '+why),
+   explanations:options.map((x,i)=>i===correctIndex?'¡Cachaste! '+why:'Elegiste «'+x+'». Contrástala con la evidencia del texto: '+clue+' La respuesta correcta es «'+correct+'». '+why),
    steps:[clue,why],easy:why,example:'Para comprobarlo, vuelve al fragmento indicado y separa lo que está escrito de lo que infieres.',origin:'original'});
  }
 }
