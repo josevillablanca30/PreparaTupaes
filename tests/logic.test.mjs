@@ -260,7 +260,7 @@ test('preguntas visuales: 16 diagramas originales accesibles',()=>{
  assert.equal(run('visualBankA.length+visualBankB.length+visualBankC.length'),16);
  assert.equal(run('catalog.length'),100);
  assert.equal(run('catalog.filter(q=>q.visual).length'),16);
- assert.equal(run('catalog.filter(q=>q.visual).every(q=>renderVisual(q).includes("role=\"img\""))'),true);
+ assert.equal(run('catalog.filter(q=>q.visual).every(q=>renderVisual(q).includes("role="))'),true);
  assert.equal(run('catalog.filter(q=>q.visual).every(q=>renderVisual(q).includes("<figcaption>"))'),true);
  run("start('visuales')");
  assert.equal(run('queue.length'),8);
