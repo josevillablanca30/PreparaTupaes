@@ -20,7 +20,10 @@ function score(q){
  const same=baseline?.results.filter(r=>r.skill===q.skill)||[];
  const weak=same.filter(r=>!r.correct||r.confidence==='azar'||r.confidence==='duda').length;
  const seen=history.filter(h=>h.id===q.id).length;
- return seen*8-weak*2;
+ // Reforzar errores y respuestas inseguras recientes, sin saturar con la misma pregunta.
+ const recent=history.slice(-120).filter(h=>h.id===q.id);
+ const needsReview=recent.length&&(!recent[recent.length-1].correct||recent[recent.length-1].confidence!=='seguro');
+ return seen*8-weak*2-(needsReview?5:0);
 }
 function select(count, quotas){
  const chosen=[],seenPassages={};
