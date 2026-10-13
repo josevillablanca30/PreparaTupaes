@@ -2,7 +2,7 @@ name: Android APK · compilación de prueba
 on:
   push:
     branches: [main]
-    paths: ['index.html', 'android/**', 'tests/**', 'scripts/**', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
+    paths: ['index.html', 'science.html', 'science-bank.js', 'science-app.js', 'android/**', 'tests/**', 'scripts/**', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
   workflow_dispatch:
 concurrency:
   group: cachaste-android-${{ github.ref }}
@@ -56,13 +56,14 @@ jobs:
         run: |
           mkdir -p android/app/src/main/assets
           cp dist/index.html android/app/src/main/assets/index.html
+          cp dist/science.html dist/science-bank.js dist/science-app.js android/app/src/main/assets/
       - name: Compilar APK de prueba
         working-directory: android
         run: gradle --no-daemon :app:assembleDebug
       - name: Publicar APK descargable
         uses: actions/upload-artifact@v4
         with:
-          name: Cachaste-M1-v0.6-debug
+          name: Cachaste-M1-Ciencias-v0.7-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 3
