@@ -60,7 +60,9 @@ function advance(skip=false){
  const q=current();
  if(session.mode!=='completo'&&!session.checked)return;
  if(session.mode==='completo'&&session.selected===null&&!skip)return;
- const record={id:q.id,passageId:q.passageId,skill:q.skill,correct:session.selected===q.answer,confidence:session.confidence,assisted:session.hint>0,unanswered:session.selected===null,at:new Date().toISOString()};
+ // Omitir debe registrar una respuesta en blanco incluso si había una alternativa marcada.
+ const answer=skip?null:session.selected;
+ const record={id:q.id,passageId:q.passageId,skill:q.skill,correct:answer!==null&&answer===q.answer,confidence:answer===null?'sin-declarar':session.confidence,assisted:session.hint>0,unanswered:answer===null,at:new Date().toISOString()};
  session.results.push(record);
  history.push(record);history=history.slice(-3000);
  if(!record.correct&&!pending.includes(q.id))pending.push(q.id);
