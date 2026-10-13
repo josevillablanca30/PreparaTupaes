@@ -137,7 +137,7 @@ function home(){
  guidance()+
  (done?'<details class="card reinforcement"><summary>Más opciones de refuerzo</summary><p>Si una materia te cuesta, puedes practicarla puntualmente. Después vuelve a Express para seguir ejercitando las tres.</p><div class="stack">'+subjects.map(sub=>'<button class="btn secondary" onclick="setup('+JSON.stringify(sub).replace(/"/g,'&quot;')+')">Reforzar '+esc(sub)+'</button>').join('')+'<button class="btn secondary" onclick="setup(&quot;mixto&quot;)">Práctica común · 9 preguntas</button></div></details>':'')+
  '<div class="card"><h2>Tu progreso</h2><p>'+history.length+' respuestas registradas · '+pending.length+' por reforzar.</p><div class="actions"><button class="btn secondary" onclick="progress()">Ver progreso</button><button class="btn secondary" onclick="setup(&quot;errores&quot;)" '+(!pending.length?'disabled':'')+'>Repasar errores</button><button class="btn secondary" onclick="exportNotes()">Mis correcciones ('+Object.keys(notes).length+')</button></div></div>'+
- '<p class="small">La prueba oficial de Ciencias considera 80 preguntas en 160 minutos. Estos ensayos son formativos y no estiman un puntaje oficial.</p>';
+ '<p class="small">La prueba oficial de Ciencias considera 80 preguntas: 54 del Módulo Común y 26 de la mención o modalidad TP, en 160 minutos. Estos ensayos son formativos y no estiman un puntaje oficial.</p>';
 }
 function discard(){session=null;store();render()}
 function feedback(q){const ok=session.selected===q.answer;const content=displayMode==='easy'?'<p>'+esc(q.easy)+'</p>':displayMode==='example'?'<p>'+esc(q.example)+'</p>':'<ol class="checklist">'+q.steps.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>';
