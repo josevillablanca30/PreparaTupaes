@@ -2,18 +2,24 @@
 
 Aplicación de preparación PAES Chile. **Primera meta: Matemática M1 Regular 2026 / Admisión 2027**.
 
-## Ciencias (nueva primera fase)
-- Entrada **Ciencias** integrada en el inicio de Cachaste, sin sustituir Matemática M1.
-- **63 preguntas originales iniciales**: 45 de Módulo Común (15 por asignatura), 12 de profundización Electiva (4 por especialidad) y 6 para refuerzo TP (2 por asignatura).
-- **Ciencias funciona como una prueba integrada:** se elige mención de Biología, Física, Química o TP antes de practicar. La ruta principal ahora presenta **Diagnóstico 30 → Express 10 → Completo 80 (pendiente)**. El diagnóstico de Ciencias utiliza **27 MC + 3 de mención o TP**; Express intercala **7 MC + 3 de especialidad**, manteniendo las tres materias. Un perfil detecta fallos, respuestas inseguras y conceptos que requieren refuerzo. El ensayo de 80 (54+26) se habilitará solo cuando el banco esté listo. El simulacro oficial de 80 (54+26) se habilitará solo cuando el banco esté listo.
-- Tutor con pistas y explicaciones por alternativa, **autoevaluación de confianza** (seguro, duda, azar), planes recomendados tras diagnóstico, resultados separados por las tres materias, repaso de errores y progreso independiente. Las prácticas de una sola materia son **refuerzo opcional**, no el flujo principal.
-- Las observaciones científicas se pueden guardar y copiar desde el teléfono para corregir el banco posteriormente, sin cambiar automáticamente claves.
-- **Todavía no hay simulacro completo de Ciencias de 80 preguntas ni equivalencia a puntaje oficial**. Se requiere extender banco y revisar los módulos a fondo.
-- Recursos locales `inicio.html`, `index.html`, `science.html`, `science-bank.js`, `science-app.js` en el mismo APK; el inicio permite probar el UX de selección de asignaturas.
-- **Beta Android unificada v0.9.0 (pendiente de validación CI final):** **un solo instalador** abre directamente en `inicio.html`, con selección visual de Matemática M1, Biología, Química o Física; todas se abren dentro de la misma aplicación y se regresa al selector desde sus encabezados. M1 y Ciencias registran avances independientes, mostrados en el dashboard.
-- Para proteger la M1 v0.6 que ya está en el teléfono, esta beta de pruebas todavía usa el identificador Android independiente `cl.preparatupaes.app.sciencebeta` y se llama **Cachaste Beta**. La firma de depuración cambia entre runners, por lo que no es una actualización fiable de otra beta anterior con el mismo identificador; **no desinstales tu Cachaste M1 v0.6**. No hay sincronización automática entre apps Android distintas.
-- Para una actualización estable de una sola aplicación será necesario configurar una firma Android persistente gestionada de forma segura.
-- [Informe y fuentes de la primera fase de Ciencias](docs/ciencias-primera-fase-2026.md).
+## Tres áreas dentro de una sola aplicación
+La pantalla inicial `inicio.html` permite elegir **Matemática M1**, **Competencia Lectora** o **Ciencias**. La prueba de Ciencias incluye las tres materias mezcladas y permite escoger la **mención Biología/Física/Química** o modalidad **TP**. Todos los módulos funcionan dentro de un mismo APK WebView con recursos offline; sus datos de aprendizaje están separados localmente.
+
+### Ciencias · banco ampliado
+- **158 preguntas originales**: **54 MC** (18 de cada ciencia), **78 ME** (26 por cada mención Biología, Física y Química) y **26 TP** (9 Biología, 9 Física, 8 Química).
+- **Diagnóstico 30:** 27 MC y 3 preguntas de la mención o TP; respuestas mezcladas. **Express 10:** 7 MC y 3 de especialidad, adaptado a errores y dudas.
+- **Ensayo completo formativo:** 80 preguntas únicas (54 MC + 26 ME o TP), reloj de 160 minutos, sin revelar respuestas durante la prueba y resultados separados por ciencia al terminar. **No es una reproducción de ítems oficiales ni un estimador validado de puntaje.**
+- Tutor con explicaciones por distractor, pistas, confianza («Lo tengo claro», «Tengo dudas», «Fue al azar»), progreso separado y observaciones científicas exportables. Su revisión editorial continúa siendo necesaria.
+
+### Competencia Lectora · primera fase integrada
+- **15 textos originales y 75 preguntas únicas:** 27 Localizar, 30 Interpretar y 18 Evaluar. Incluye narrativa, exposición, argumentación y lectura de registros.
+- **Diagnóstico 30**, **Express 10** y **ensayo formativo 65 preguntas en 150 minutos**, con preguntas agrupadas por texto, reloj, confianza en respuestas, tutor y recuperación de sesiones.
+- El diagnóstico orienta la práctica por habilidad débil y se conserva el avance en `localStorage`. El corpus y el nivel de exigencia todavía requieren revisión pedagógica adicional para equipararlos a las lecturas extensas de la PAES real.
+
+### Instalación y actualizaciones
+La beta Android unificada mantiene por seguridad el identificador debug independiente `cl.preparatupaes.app.sciencebeta`, de manera que puede coexistir con la aplicación M1 v0.6 ya probada, sin desinstalarla ni borrar sus datos. Las firmas de depuración de distintos runners podrían impedir actualizar betas anteriores en el teléfono; **no desinstales M1 v0.6 si quieres conservar su progreso**. Para una versión distribuible actualizable hace falta configurar una firma estable y segura.
+
+**Estado de la nueva beta v1.0:** código integrado y pruebas automatizadas en curso; no declarar APK aprobado ni instalación física hasta comprobar CI y binario.
 
 ## Estado actual
 - 116 preguntas originales de práctica, incluidas 16 con gráficos y figuras con alternativas, explicaciones por error y resolución.
