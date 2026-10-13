@@ -5,10 +5,11 @@ import vm from 'node:vm';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
-function app(saved = '[]', failSave = false, savedSession = null) {
+function app(saved = '[]', failSave = false, savedSession = null, savedReview = null) {
   const element = { innerHTML: '' };
   const keys = new Map([['prepara-paes-demo-v1',saved]]);
   if(savedSession) keys.set('prepara-paes-active-exam-v1',savedSession);
+  if(savedReview) keys.set('cachaste-m1-pending-review-v1',savedReview);
   const context = vm.createContext({
     document: { getElementById: () => element },
     window: { scrollTo() {} },
@@ -305,4 +306,49 @@ test('comprobación de aprendizaje usa ejercicios distintos y reinicia el result
  assert.equal(run('round.length'),0);
  assert.equal(run('queue.every(q=>!'+JSON.stringify(ids)+'.includes(q.id))'),true);
  assert.equal(run('examAnswers.length'),run('queue.length'));
+});
+
+test('errores de simulacro largo: 65 pendientes sobreviven al cierre',()=>{
+ const run=app();
+ run("startExam('full');finishExam()");
+ assert.equal(run('pendingReview.length'),65);
+ assert.equal(run('home().includes("Continuar mi repaso")'),true);
+ const saved=run('localStorage.getItem(reviewKey)');
+ const opened=app('[]',false,null,saved);
+ assert.equal(opened('pendingReview.length'),65);
+ opened('reviewPending()');
+ assert.equal(opened('queue.length'),10);
+ assert.equal(opened('round.length'),0);
+ assert.equal(opened('pendingReview.length'),65);
+});
+test('repaso pendiente avanza a siguiente tanda sin perder los errores restantes',()=>{
+ const run=app();
+ run("startExam('full');finishExam();reviewPending()");
+ const first=run('queue.map(q=>q.id)');
+ run("for(let j=0;j<10;j++){choice=queue[i].answer;check();next()}")
+ assert.equal(run('pendingReview.length'),55);
+ assert.equal(run('pendingReview.some(id=>'+JSON.stringify(first)+'.includes(id))'),false);
+ run('reviewPending()');
+ assert.equal(run('queue.length'),10);
+ assert.equal(run('queue.every(q=>!'+JSON.stringify(first)+'.includes(q.id))'),true);
+});
+test('una respuesta correcta con pistas sigue pendiente de dominio independiente',()=>{
+ const run=app();
+ run("start('rapida');choice=0;check()");
+ assert.equal(run('pendingReview.length'),1);
+ run("reviewPending();requestHint();choice=queue[i].answer;check()");
+ assert.equal(run('history.at(-1).assisted'),true);
+ assert.equal(run('pendingReview.length'),1);
+ run("reviewPending();choice=queue[i].answer;check()");
+ assert.equal(run('pendingReview.length'),0);
+});
+test('progreso móvil organizado por los cuatro ejes y habilidades plegadas',()=>{
+ const run=app('[{"id":1,"correct":true,"confidence":"seguro"}]');
+ const page=run('progress()');
+ assert.equal((page.match(/class="axis-progress"/g)||[]).length,4);
+ assert.match(page,/Tu mapa por eje/);
+ assert.match(page,/Ver detalle de 1 habilidades practicadas/);
+ assert.match(page,/role="progressbar"/);
+ assert.equal(page.includes('1 respuestas registradas'),true);
+ assert.equal(page.includes('Practicar Números'),true);
 });
