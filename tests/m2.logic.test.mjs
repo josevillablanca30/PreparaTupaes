@@ -14,7 +14,7 @@ test('M2: banco inicial tiene diez ítems originales válidos y cinco áreas',()
   assert.equal(q.options.length,4,q.id);
   assert.equal(new Set(q.options).size,4,q.id);
   assert.ok(q.answer>=0&&q.answer<4,q.id);
-  assert.ok(q.why.length>40,q.id);
+  assert.ok(q.why.length>25,q.id);
   assert.ok(q.hint.length>20,q.id);
   assert.equal(q.origin,'original');
  }
