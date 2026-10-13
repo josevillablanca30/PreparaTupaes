@@ -212,3 +212,30 @@ test('repaso adaptativo busca en las 84 preguntas, no solamente en las cinco ini
  run("start('repaso')");
  assert.equal(run('queue[0].id'),245);
 });
+
+test('simulacro completo: dificultad formativa ascendente por bloques',()=>{
+ const run=app();
+ for(let k=0;k<12;k++){
+  run("startExam('full')");
+  assert.equal(run('queue.every((q,i)=>i===0||difficultyOrder(queue[i-1])<=difficultyOrder(q))'),true);
+  assert.equal(run('queue.some(q=>difficultyOf(q)==="desafío")'),true);
+  assert.equal(run('new Set(queue.map(q=>q.id)).size'),65);
+ }
+});
+test('simulacro 65: marcar, recuperar y revisar antes de entregar',()=>{
+ const run=app();
+ run("startExam('full');toggleExamFlag();toggleExamOverview()");
+ assert.equal(run('examFlags.length'),1);
+ assert.equal(run('examQuiz(queue[i]).includes("Mapa del ensayo")'),true);
+ const saved=run('localStorage.getItem(sessionKey)');
+ const resumed=app('[]',false,saved);
+ resumed('resumeSavedExam()');
+ assert.equal(resumed('examFlags.length'),1);
+ resumed('jumpExamQuestion(64);examMove(1)');
+ assert.equal(resumed('examConfirming'),true);
+ assert.equal(resumed('examQuiz(queue[i]).includes("Revisa tu simulacro")'),true);
+ assert.equal(resumed('page'), 'quiz');
+ resumed('finishExam()');
+ assert.equal(resumed('page'),'result');
+ assert.equal(resumed('round.length'),65);
+});
