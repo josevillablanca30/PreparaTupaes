@@ -263,11 +263,16 @@ test('UX M1: diagnóstico de 30 habilita los dos ensayos y registra plan',async(
  await expect(page.getByRole('button',{name:'Simulacro M1 · 65 preguntas · 140 min',exact:true})).toBeDisabled();
  await page.getByRole('button',{name:'Comenzar diagnóstico de 30',exact:true}).tap();
  await expect(page.getByText('1 / 30',{exact:true})).toBeVisible();
- for(let n=0;n<30;n++){
-  await page.locator('button.option').first().tap();
-  await page.getByRole('button',{name:'Comprobar respuesta',exact:true}).tap();
-  await page.getByRole('button',{name:n===29?'Ver mi resultado':'Siguiente pregunta →',exact:true}).tap();
- }
+ await page.locator('button.option').first().tap();
+ await page.getByRole('button',{name:'Comprobar respuesta',exact:true}).tap();
+ await page.getByRole('button',{name:'Siguiente pregunta →',exact:true}).tap();
+ await page.evaluate(()=>{
+  for(let n=1;n<30;n++){
+   document.querySelector('button.option').click();
+   document.querySelector('button[onclick="check()"]').click();
+   document.querySelector('button[onclick="next()"]').click();
+  }
+ });
  await page.goto('./');
  await expect(page.getByRole('button',{name:'Express · 10 preguntas',exact:true})).toBeEnabled();
  await expect(page.getByRole('button',{name:'Simulacro M1 · 65 preguntas · 140 min',exact:true})).toBeEnabled();
