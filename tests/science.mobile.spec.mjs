@@ -35,7 +35,7 @@ test('Ciencias: pistas y explicaciones funcionan en Biología',async({page})=>{
  await page.goto('./science.html');
  await unlockScience(page);
  await page.getByText('Más opciones de refuerzo').click();
- await page.getByRole('button',{name:'Reforzar Biología · 8 ejercicios'}).tap();
+ await page.getByRole('button',{name:'Reforzar Biología'}).tap();
  await page.getByRole('button',{name:'Necesito una pista'}).tap();
  await expect(page.getByText('Pista 1 de 2')).toBeVisible();
  await page.getByRole('button',{name:'Dame otra pista'}).tap();
@@ -53,7 +53,7 @@ test('Ciencias: guardar una corrección de Biología, cerrar y recuperarla',asyn
  await page.goto('./science.html');
  await unlockScience(page);
  await page.getByText('Más opciones de refuerzo').click();
- await page.getByRole('button',{name:'Reforzar Biología · 8 ejercicios'}).tap();
+ await page.getByRole('button',{name:'Reforzar Biología'}).tap();
  await page.getByRole('button',{name:'Proponer corrección'}).tap();
  await page.locator('#science-note').fill('Revisar la alternativa B con referencias al contenido celular.');
  await page.getByRole('button',{name:'Guardar mi observación'}).tap();
