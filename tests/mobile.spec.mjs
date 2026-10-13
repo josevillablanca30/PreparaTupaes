@@ -186,3 +186,32 @@ test('tutor: progreso registra ayuda sin inflar el dominio',async({page})=>{
   await expect(page.getByText(/1 con pistas/)).toBeVisible();
   await checkLayout(page);
 });
+
+test('simulacro: errores pendientes sobreviven y se repasan de diez en diez',async({page})=>{
+ await page.goto('./');
+ await page.getByRole('button',{name:'Simulacro M1 · 65 preguntas · 140 min',exact:true}).tap();
+ await page.getByRole('button',{name:'Ver mapa de preguntas',exact:true}).tap();
+ await page.getByRole('button',{name:'Revisar antes de entregar',exact:true}).tap();
+ await page.getByRole('button',{name:'Entregar ensayo',exact:true}).tap();
+ await expect(page.getByRole('heading',{name:'0 de 65 correctas',exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'Ver progreso',exact:true}).tap();
+ await expect(page.getByRole('button',{name:'Repasar mis 65 pendientes',exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'Repasar mis 65 pendientes',exact:true}).tap();
+ await expect(page.getByText('1 / 10',{exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'← Inicio',exact:true}).tap();
+ await page.reload();
+ await expect(page.getByText(/Tienes 65 preguntas para reforzar/)).toBeVisible();
+ await page.getByRole('button',{name:'Continuar mi repaso',exact:true}).tap();
+ await expect(page.getByText('1 / 10',{exact:true})).toBeVisible();
+ await checkLayout(page);
+});
+test('progreso amigable: cuatro ejes y detalles plegados',async({page})=>{
+ await page.goto('./');
+ await page.getByRole('button',{name:'Ver mi progreso',exact:true}).tap();
+ await expect(page.getByRole('heading',{name:'Tu mapa por eje',exact:true})).toBeVisible();
+ await expect(page.getByRole('button',{name:'Practicar Números',exact:true})).toBeVisible();
+ await expect(page.getByRole('button',{name:'Practicar Geometría',exact:true})).toBeVisible();
+ await expect(page.getByRole('button',{name:'Practicar Álgebra y funciones',exact:true})).toBeVisible();
+ await expect(page.getByRole('button',{name:'Practicar Probabilidad y estadística',exact:true})).toBeVisible();
+ await checkLayout(page);
+});
