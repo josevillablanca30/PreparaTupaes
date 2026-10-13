@@ -1,13 +1,19 @@
-# Prepara tu PAES
+# Cachaste 💜
 
-Primera base interactiva para preparar Matemática M1 en Chile.
+Aplicación de preparación PAES Chile. **Primera meta: Matemática M1 Regular 2026 / Admisión 2027**.
 
-## Estado
-- Página responsive y cercana para estudiantes chilenos.
-- Diagnóstico de cinco preguntas originales de demostración.
-- Práctica rápida de tres preguntas y repaso básico.
-- Corrección según la alternativa elegida; explicaciones paso a paso, fáciles y con ejemplos.
-- Registro de seguridad al responder, guardado y progreso en el navegador.
+## Estado actual
+- 84 preguntas originales de práctica con alternativas, explicaciones por error y resolución.
+- Banco basado en habilidades de la biblioteca educativa de Drive y el temario oficial; no reproduce preguntas de pago sin permiso.
+- Diagnóstico, práctica rápida, práctica por eje, refuerzo y Ensayo Express de 10 preguntas.
+- Simulacro **formativo** de 65 preguntas, tiempo de 140 minutos, mapa navegable, marcadores y confirmación al entregar.
+- Guardado local de respuestas, reanudación de sesión y resultados por eje.
+- Etiquetas pedagógicas estimadas: 45 iniciales, 24 intermedias y 15 desafíos.
+- Marca visible Android: **Cachaste**.
+- **No es aún una versión comercial aprobada**, ni sus aciertos equivalen a una conversión oficial de puntaje.
+- Se probaron 24 casos de lógica en una ejecución JavaScript aislada y se cotejaron 84 respuestas con una segunda clave. Quedan pendientes QA visual móvil, ejecución confirmada de CI y compilación de un APK descargable.
+
+Consulta [reporte de QA](docs/qa-m1-pasada-calidad-2026-10-13.md) y [biblioteca y fuentes de Drive](docs/fuentes-drive-m1-2026.md).
 
 ## Probar
 Abrir `index.html` con el navegador, o ejecutar:
@@ -26,7 +32,7 @@ La aplicación no necesita dependencias en el navegador. Node y Playwright se ut
 
 El flujo `.github/workflows/pages.yml` se ejecuta al cambiar código en `main`, en pull requests y manualmente desde Actions. Los cambios solo de documentación no generan otro despliegue.
 
-1. Ejecuta seis pruebas de lógica y las pruebas táctiles en Chromium Android, WebKit iPhone y pantalla de 320 px.
+1. Ejecuta las pruebas de lógica y clave editorial, además de las pruebas táctiles en Chromium Android, WebKit iPhone y pantalla de 320 px.
 2. Si pasan, publica únicamente `dist/` en GitHub Pages. Las pull requests solo validan, sin publicar.
 3. Comprueba que la URL pública sirve el mismo commit y repite las pruebas móviles sobre HTTPS.
 
