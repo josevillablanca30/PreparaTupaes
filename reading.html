@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es-CL"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f9f7fd">
+<meta name="description" content="Cachaste: Competencia Lectora para la PAES 2026, con textos originales y tutor que te enseña a comprender.">
+<title>Cachaste · Competencia Lectora</title>
+<style>
+:root{font:16px system-ui,-apple-system,"Segoe UI",sans-serif;color:#28243d;background:#faf9fe;color-scheme:light}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 90% 0%,#e7e4ff,transparent 38%),#faf9fe}
+main{max-width:890px;margin:auto;padding:20px 16px calc(75px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:26px}
+.brand{font-size:22px;letter-spacing:-.8px;font-weight:850}.brand b{color:#7659d8}
+header nav{display:flex;gap:8px;flex-wrap:wrap}
+header a{display:inline-flex;align-items:center;min-height:44px;padding:10px 13px;color:#5940b7;background:#eeeafd;border-radius:12px;text-decoration:none;font-weight:700;font-size:13px}
+h1{font-size:clamp(32px,7vw,49px);letter-spacing:-1.7px;line-height:1.12;margin:12px 0}
+h2{font-size:clamp(20px,4vw,26px);letter-spacing:-.6px;margin:0 0 12px}
+h3{font-size:18px;margin:0 0 8px}p{line-height:1.65;color:#625e73}small,.small{font-size:13px;line-height:1.5;color:#6f687d}
+.eyebrow{font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#7155be;font-weight:850}
+.card{background:white;border:1px solid #e9e3f3;border-radius:22px;padding:clamp(17px,4vw,27px);margin:18px 0;box-shadow:0 12px 30px #2f23660a}
+.row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.pill{display:inline-block;background:#eeeafc;color:#5943a0;font-size:12px;border-radius:22px;padding:8px 11px;font-weight:750;max-width:100%}
+button{font:700 15px system-ui;cursor:pointer;min-height:46px;touch-action:manipulation;line-height:1.4}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #5b39bb;outline-offset:3px}
+.btn{background:#7257d5;color:#fff;border:0;border-radius:14px;padding:13px 17px}
+.btn.secondary{background:#eeeafb;color:#5140a8}.btn.soft{background:#fff0e3;color:#8c4b22;border:1px solid #e9cbaa}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.choices{display:grid;grid-template-columns:minmax(0,1fr);gap:13px}
+.choice{padding:18px;border:1px solid #e7e2ee;border-radius:17px;min-width:0;overflow-wrap:anywhere}
+.choice .btn{width:100%;max-width:100%;white-space:normal;margin-top:8px}
+.choice .pill{white-space:normal}.choice p{margin:9px 0}
+.choice:first-child{background:#faf7ff;border-color:#bda9e8}
+.bar{height:9px;border-radius:30px;background:#ebe8f5;overflow:hidden;margin:12px 0}.bar>div{height:100%;background:#7155d4}
+.weak{background:#f7f4fe;border-radius:12px;padding:12px 15px;margin:9px 0}
+.skill-summary{margin:16px 0}.skill-summary .row span{font-size:13px;color:#736b81}
+.notice{background:#fff9ee;border-color:#e9d7ae}
+.actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:16px}.actions .btn{flex:1 1 190px}
+.progress-top{margin-top:9px}.timer{background:#efeafb;color:#513aa7;padding:12px;text-align:center;border-radius:13px;font-variant-numeric:tabular-nums;font-weight:800}
+.passage{margin:18px 0;border:1px solid #dfd8ec;border-radius:21px;background:#fff;overflow:hidden}
+.passage summary{cursor:pointer;list-style:none;display:flex;flex-direction:column;gap:7px;padding:19px 21px;background:#f5f1ff}
+.passage summary::-webkit-details-marker{display:none}.passage summary span{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#6e55bd;font-weight:850}.passage summary b{font-size:clamp(19px,4vw,25px);letter-spacing:-.5px}
+.passage summary:after{content:'Ver / ocultar lectura';font-size:12px;color:#725b9d;font-weight:650}
+.passage article{padding:15px clamp(16px,5vw,29px) 21px}
+.passage article p{font-size:clamp(16px,2.4vw,18px);line-height:1.8;color:#343047;margin:18px 0}
+.paragraph-number{color:#9d8db3;font-size:12px;font-weight:800}
+.question h2{margin:14px 0 21px}.answers{display:grid;gap:11px}
+.option{width:100%;padding:15px;text-align:left;background:#fff;color:#342f4a;border:2px solid #e8e2f1;border-radius:14px;font:500 15px system-ui;min-height:51px;overflow-wrap:anywhere}
+.option.chosen{background:#f0eaff;border-color:#7658d5}
+.option:hover:not(:disabled){background:#f8f5ff}.option:disabled{opacity:1;cursor:default}
+.confidence{border:1px solid #e6ddf0;border-radius:14px;margin:18px 0;padding:13px}
+.confidence legend{font-weight:800;color:#4e3c83;padding:0 4px}
+.confchoices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.confchoices button{background:#f6f3fc;border:2px solid transparent;color:#5e4a8b;border-radius:12px;padding:11px;white-space:normal;overflow-wrap:anywhere;font-size:13px}
+.confchoices button.active{background:#e9e2ff;border-color:#7658d5}
+.hint-zone{margin:15px 0}.hint{background:#fff5e9;border-left:4px solid #e8ab75;padding:13px;border-radius:11px}
+.feedback{border-radius:14px;padding:15px;margin:17px 0}.feedback.right{background:#eff9f4;border:1px solid #c8ebd8}.feedback.wrong{background:#fff2ed;border:1px solid #f1d5c8}
+.feedback p{margin:10px 0 0}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
+.tabs button{flex:1 1 110px;background:white;border:1px solid #e6ddf1;color:#645290;border-radius:11px;padding:11px}
+.tabs button.active{background:#7658d5;color:white}.explanation{padding:16px;background:#f9f7ff;border-radius:13px;margin-bottom:19px}
+.explanation li{line-height:1.6;margin-bottom:8px}
+#status{min-height:16px;color:#8b4f24;font-size:13px}
+footer{margin-top:50px;color:#898095;font-size:12px;line-height:1.6}
+@media(max-width:370px){main{padding:16px 13px 75px}.choice{padding:13px}.card{padding:16px}.confchoices{grid-template-columns:1fr}.choice .row{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style></head><body><main>
+<header><div class="brand"><b>?</b> Cachaste</div><nav aria-label="Navegación"><a href="inicio.html">← Asignaturas</a><a href="index.html">Matemática M1</a></nav></header>
+<div id="status" role="status" aria-live="polite"></div><div id="view"></div>
+<footer>Cachaste · Contenido educativo original y no oficial · Sin cuentas, guardado local en este dispositivo.</footer>
+</main><script src="reading-bank.js"></script><script src="reading-app.js"></script></body></html>
