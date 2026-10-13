@@ -35,8 +35,8 @@ test.afterEach(async ({ page }) => expect(pageErrors.get(page)).toEqual([]));
 test('inicio: carga, revisión publicada y controles táctiles', async ({ page }, info) => {
   const response = await page.goto('./');
   expect(response.status()).toBe(200);
-  await expect(page).toHaveTitle('Prepara tu PAES · Aprende a tu ritmo');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Estudiar para la PAES puede sentirse distinto.');
+  await expect(page).toHaveTitle('Cachaste · Aprende a tu ritmo');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('¿Cachaste? Aquí aprender se siente distinto.');
   if (process.env.EXPECTED_SHA) await expect(page.locator('meta[name="build-revision"]')).toHaveAttribute('content', process.env.EXPECTED_SHA);
   await checkLayout(page);
   await info.attach('inicio-movil', { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
@@ -49,7 +49,7 @@ test('diagnóstico completo: error, explicaciones, resultado y progreso persiste
   await page.getByRole('button', { name: 'A) $10.000', exact: true }).tap();
   await page.getByRole('button', { name: 'Tengo dudas', exact: true }).tap();
   await page.getByRole('button', { name: 'Comprobar respuesta', exact: true }).tap();
-  await expect(page.getByText('No era esa, pero vamos a entenderla.', { exact: true })).toBeVisible();
+  await expect(page.getByText('Todavía no, pero cada intento enseña algo.', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Más fácil', exact: true }).tap();
   await expect(page.getByText(/25% es la cuarta parte/)).toBeVisible();
   await page.getByRole('button', { name: 'Con un ejemplo', exact: true }).tap();
@@ -98,7 +98,7 @@ test('permite responder cuando el almacenamiento está bloqueado', async ({ page
   await page.goto('./');
   await page.getByRole('button', { name: 'Práctica rápida · 3 preguntas', exact: true }).tap();
   await answer(page, 'C) $30.000');
-  await expect(page.getByRole('status')).toContainText('Puedes seguir practicando');
+  await expect(page.locator('.storage-notice')).toContainText('Puedes seguir practicando');
   await answer(page, 'B) 5');
   await answer(page, 'B) $9.000', true);
   await expect(page.getByRole('heading', { name: '3 de 3 correctas', exact: true })).toBeVisible();
@@ -124,4 +124,17 @@ test('nueva ronda sin alternativa ni confianza heredadas', async ({ page }) => {
   await page.getByRole('button', { name: 'Práctica rápida · 3 preguntas', exact: true }).tap();
   await expect(page.getByRole('button', { name: 'Tengo dudas', exact: true })).toHaveClass('active');
   await expect(page.getByRole('button', { name: 'Comprobar respuesta', exact: true })).toBeDisabled();
+});
+
+test('simulacro M1: 65 preguntas, cronómetro y reanudación tras recarga', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: 'Simulacro M1 · 65 preguntas · 140 min', exact: true }).tap();
+  await expect(page.getByText('Simulacro 1 / 65', { exact: true })).toBeVisible();
+  await expect(page.getByRole('timer')).toContainText('Tiempo restante:');
+  await checkLayout(page);
+  await page.getByRole('button', { name: 'Siguiente →', exact: true }).tap();
+  await page.reload();
+  await page.getByRole('button', { name: 'Continuar ensayo', exact: true }).tap();
+  await expect(page.getByText('Simulacro 2 / 65', { exact: true })).toBeVisible();
+  await expect(page.getByRole('timer')).toContainText('Tiempo restante:');
 });
