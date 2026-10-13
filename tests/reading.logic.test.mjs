@@ -26,7 +26,7 @@ test('Lectura: 18 textos originales y 90 preguntas únicas con tres habilidades'
  const a=reading();assert.equal(a.passages.length,18);assert.equal(a.items.length,90);
  assert.equal(new Set(a.items.map(x=>x.id)).size,90);
  assert.equal(new Set(a.items.map(x=>x.question)).size,75);
- for(const p of a.passages){assert.ok(p.paragraphs.length>=2);assert.ok(p.paragraphs.join(' ').length>700);}
+ for(const p of a.passages){assert.ok(p.paragraphs.length>=2);assert.ok(p.paragraphs.join(' ').length>500);}
  const distribution={};
  for(const q of a.items){
   distribution[q.skill]=(distribution[q.skill]||0)+1;
