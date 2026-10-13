@@ -64,8 +64,10 @@ jobs:
     outputs:
       page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Comprobar configuración de Pages
+      - name: Habilitar GitHub Pages si aún no está configurado
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - name: Publicar
         id: deployment
         uses: actions/deploy-pages@v5
