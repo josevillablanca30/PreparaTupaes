@@ -7,8 +7,8 @@ const app=readFileSync(new URL('../m2-app.js',import.meta.url),'utf8');
 test('M2: banco inicial tiene veinte ítems originales válidos y cinco áreas',()=>{
  const window={};vm.runInNewContext(src,{window});
  const bank=window.CACHASTE_M2;
- assert.equal(bank.length,20);
- assert.equal(new Set(bank.map(q=>q.id)).size,20);
+ assert.equal(bank.length,50);
+ assert.equal(new Set(bank.map(q=>q.id)).size,50);
  assert.equal(new Set(bank.map(q=>q.area)).size,5);
  for(const q of bank){
   assert.equal(q.options.length,4,q.id);
