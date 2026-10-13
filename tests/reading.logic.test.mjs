@@ -22,10 +22,10 @@ function finishDiagnosis(a,wrong=0){
   a.win.readingCheck();a.win.readingAdvance();
  }
 }
-test('Lectura: 18 textos originales y 90 preguntas únicas con tres habilidades',()=>{
- const a=reading();assert.equal(a.passages.length,18);assert.equal(a.items.length,90);
- assert.equal(new Set(a.items.map(x=>x.id)).size,90);
- assert.equal(new Set(a.items.map(x=>x.question)).size,90);
+test('Lectura: 20 textos originales y 100 preguntas únicas con tres habilidades',()=>{
+ const a=reading();assert.equal(a.passages.length,20);assert.equal(a.items.length,100);
+ assert.equal(new Set(a.items.map(x=>x.id)).size,100);
+ assert.equal(new Set(a.items.map(x=>x.question)).size,100);
  for(const p of a.passages){assert.ok(p.paragraphs.length>=2);assert.ok(p.paragraphs.join(' ').length>500);}
  const distribution={};
  for(const q of a.items){
@@ -37,9 +37,9 @@ test('Lectura: 18 textos originales y 90 preguntas únicas con tres habilidades'
   assert.ok(q.steps.length>=2,q.id);
   assert.ok(q.answer>=0&&q.answer<4,q.id);
  }
- assert.equal(distribution.Localizar,33);
- assert.equal(distribution.Interpretar,36);
- assert.equal(distribution.Evaluar,21);
+ assert.equal(distribution.Localizar,37);
+ assert.equal(distribution.Interpretar,40);
+ assert.equal(distribution.Evaluar,23);
 });
 test('Lectura: diagnóstico obligatorio de 30 distribuye 10/12/8',()=>{
  const a=reading();a.win.readingBegin('express');
