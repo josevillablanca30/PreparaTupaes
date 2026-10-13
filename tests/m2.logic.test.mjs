@@ -9,7 +9,7 @@ test('M2: banco inicial tiene veinte ítems originales válidos y cinco áreas',
  const bank=window.CACHASTE_M2;
  assert.equal(bank.length,50);
  assert.equal(new Set(bank.map(q=>q.id)).size,50);
- assert.equal(new Set(bank.map(q=>q.area)).size,5);
+ assert.equal(new Set(bank.map(q=>q.area)).size,6);
  for(const q of bank){
   assert.equal(q.options.length,4,q.id);
   assert.equal(new Set(q.options).size,4,q.id);
