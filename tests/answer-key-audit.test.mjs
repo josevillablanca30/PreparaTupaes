@@ -496,3 +496,29 @@ test('PAES M1: cuatro ejes y dificultad pedagógica definida',()=>{
   assert.equal(new Set(catalog.map(q=>vm.runInContext('axisOf(catalog.find(x=>x.id==='+q.id+'))',context))).size,4);
   assert.equal(catalog.every(q=>['inicial','intermedio','desafío'].includes(vm.runInContext('difficultyOf(catalog.find(x=>x.id==='+q.id+'))',context))),true);
 });
+
+test('auditoría editorial: las 116 preguntas tienen distractores explicados y resoluciones',()=>{
+  const prompts=new Set();
+  for(const q of catalog){
+    assert.ok(Number.isSafeInteger(q.id),'ID inválido');
+    assert.equal(q.options.length,4,'Cuatro alternativas en '+q.id);
+    assert.equal(new Set(q.options.map(x=>x.trim())).size,4,'Opciones repetidas en '+q.id);
+    assert.equal(q.explanations.length,4,'Faltan retroalimentaciones en '+q.id);
+    assert.ok(q.explanations.every(x=>typeof x==='string'&&x.trim().length>=12),'Explicación breve o ausente '+q.id);
+    assert.ok(q.steps.length>=2&&q.steps.every(x=>x.trim().length>=5),'Resolución insuficiente '+q.id);
+    assert.ok(q.easy&&q.example,'Falta explicación alternativa en '+q.id);
+    const key=q.q.trim().toLocaleLowerCase('es');
+    assert.ok(!prompts.has(key),'Enunciado duplicado '+q.id);
+    prompts.add(key);
+  }
+});
+test('cobertura de Argumentar, gráficos y habilidades del DEMRE Regular 2026',()=>{
+  const reasoning=catalog.filter(q=>q.habilidadPAES==='Argumentar');
+  assert.equal(reasoning.length,16);
+  assert.equal(catalog.filter(q=>q.visual).length,16);
+  assert.equal(new Set(reasoning.map(q=>vm.runInContext('axisOf(catalog.find(x=>x.id==='+q.id+'))',context))).size,4);
+  for(const q of catalog.filter(q=>q.visual)){
+    const markup=vm.runInContext('renderVisual(catalog.find(x=>x.id==='+q.id+'))',context);
+    assert.ok(markup.includes('<svg')&&markup.includes('role="img"'),'Diagrama inaccesible '+q.id);
+  }
+});
