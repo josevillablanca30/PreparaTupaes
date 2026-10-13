@@ -79,7 +79,7 @@ function setup(mode){
   message('Primero completa el diagnóstico de 30 preguntas para preparar tu ruta de estudio.');return;
  }
  let pool=[];
- if(['diagnostico','express','mixto'].includes(mode))pool=mixedSelection(mode);
+ if(['diagnostico','express','mixto','completo'].includes(mode))pool=mixedSelection(mode);
  else if(mode==='errores')pool=adapted(BANK.filter(q=>pending.includes(q.id)),10);
  else if(subjects.includes(mode))pool=adapted(BANK.filter(q=>q.subject===mode&&q.module==='MC'),8);
  else if(mode.startsWith('electivo:')){const sub=mode.slice(9);pool=adapted(BANK.filter(q=>q.subject===sub&&q.module==='ME'),4)}
