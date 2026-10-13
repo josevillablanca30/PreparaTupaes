@@ -42,24 +42,40 @@ test('Ciencias: Módulo Común, Electivo y TP tienen cobertura balanceada',()=>{
  assert.equal(new Set(bank.map(q=>q.skill)).size,5);
  assert.ok(window.SCIENCE_TOPICS.Biología.length===4);
 });
-test('Ciencias: cada electivo practica 9 MC (tres por materia) y 3 especialistas',()=>{
+test('Ciencias: cada mención tiene 12 ejercicios mixtos (8 comunes y 4 electivos)',()=>{
  for(const elected of ['Biología','Física','Química']){
   const a=science();a.window.chooseTrack(elected);a.window.setup('modulo');
   const saved=a.saved(),chosen=saved.session.ids.map(id=>a.bank.find(q=>q.id===id));
   assert.equal(chosen.length,12);
-  assert.equal(chosen.filter(q=>q.module==='MC').length,9);
-  assert.equal(chosen.filter(q=>q.module==='ME'&&q.subject===elected).length,3);
-  for(const sub of ['Biología','Física','Química'])
-   assert.equal(chosen.filter(q=>q.module==='MC'&&q.subject===sub).length,3);
+  assert.equal(new Set(chosen.map(x=>x.id)).size,12);
+  assert.equal(chosen.filter(q=>q.module==='MC').length,8);
+  assert.equal(chosen.filter(q=>q.module==='ME'&&q.subject===elected).length,4);
+  assert.equal(chosen.filter(q=>q.subject===elected).length,6);
+  for(const sub of ['Biología','Física','Química']){
+   assert.equal(chosen.filter(q=>q.subject===sub).length,sub===elected?6:3);
+  }
+  assert.ok(chosen.every((q,i)=>i===0||q.subject!==chosen[i-1].subject),'Materias deben alternarse');
+  assert.equal(saved.session.track,elected);
  }
 });
-test('Ciencias: módulo Técnico Profesional contiene las tres materias y refuerzo TP',()=>{
+test('Ciencias: mención TP mantiene balance entre tres materias',()=>{
  const a=science();a.window.chooseTrack('TP');a.window.setup('modulo');
  const q=a.saved().session.ids.map(id=>a.bank.find(x=>x.id===id));
  assert.equal(q.length,12);
+ assert.equal(q.filter(x=>x.module==='MC').length,8);
+ assert.equal(q.filter(x=>x.module==='MTP').length,4);
+ for(const sub of ['Biología','Física','Química']){
+  assert.equal(q.filter(x=>x.subject===sub).length,4);
+ }
+ assert.ok(q.every((x,i)=>i===0||x.subject!==q[i-1].subject));
+});
+test('Ciencias: diagnóstico común intercalado presenta las tres materias en cantidades iguales',()=>{
+ const a=science();a.window.setup('mixto');
+ const q=a.saved().session.ids.map(id=>a.bank.find(x=>x.id===id));
+ assert.equal(q.length,9);
  assert.equal(q.filter(x=>x.module==='MC').length,9);
- assert.equal(q.filter(x=>x.module==='MTP').length,3);
- assert.equal(new Set(q.filter(x=>x.module==='MTP').map(x=>x.subject)).size,3);
+ for(const sub of ['Biología','Física','Química'])assert.equal(q.filter(x=>x.subject===sub).length,3);
+ assert.ok(q.every((x,i)=>i===0||x.subject!==q[i-1].subject));
 });
 test('Ciencias: tutor enseña con pistas, corrección por alternativa y explicación sencilla',()=>{
  const a=science();a.window.setup('Biología');
