@@ -23,6 +23,14 @@ jobs:
         run: npm ci
       - name: Validar lógica y clave editorial antes del APK
         run: npm run test:logic
+      - name: Auditar calidad de 378 ítems y distractores
+        run: npm run audit:pedagogy
+      - name: Adjuntar informe editorial de auditoría
+        uses: actions/upload-artifact@v4
+        with:
+          name: cachaste-auditoria-pedagogica
+          path: reports/pedagogical-audit.json
+          retention-days: 14
       - name: Construir aplicación web empaquetada
         run: npm run build
       - name: Instalar navegador de pruebas
