@@ -15,7 +15,7 @@ let notes=saved.notes&&typeof saved.notes==='object'&&!Array.isArray(saved.notes
 let session=validateSession(saved.session)?saved.session:null;
 let baseline=saved.baseline&&saved.baseline.completed===true&&Array.isArray(saved.baseline.results)&&saved.baseline.results.length===30?saved.baseline:null;
 let screen='home',showReview=false,displayMode='steps',copied=false;
-function validateSession(value){return !!(value&&Array.isArray(value.ids)&&value.ids.length>=1&&value.ids.length<=30&&new Set(value.ids).size===value.ids.length&&value.ids.every(id=>BANK.some(q=>q.id===id))&&Number.isInteger(value.index)&&value.index>=0&&value.index<value.ids.length&&Array.isArray(value.results))}
+function validateSession(value){return !!(value&&Array.isArray(value.ids)&&value.ids.length>=1&&value.ids.length<=80&&new Set(value.ids).size===value.ids.length&&value.ids.every(id=>BANK.some(q=>q.id===id))&&Number.isInteger(value.index)&&value.index>=0&&value.index<value.ids.length&&Array.isArray(value.results))}
 function store(){try{localStorage.setItem(KEY,JSON.stringify({track,history,pending,notes,session,baseline}));return true}catch{message('No pudimos guardar este cambio en el dispositivo.');return false}}
 function message(x){if(status)status.textContent=x}
 function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
@@ -66,12 +66,15 @@ function mixedSelection(mode){
   }
  }else if(mode==='mixto'){
   pool=subjects.flatMap(sub=>adapted(BANK.filter(q=>q.module==='MC'&&q.subject===sub),3));
+ }else if(mode==='completo'){
+  pool=BANK.filter(q=>q.module==='MC');
+  pool.push(...(track==='TP'?BANK.filter(q=>q.module==='MTP'):BANK.filter(q=>q.module==='ME'&&q.subject===track)));
+  if(pool.length!==80||new Set(pool.map(q=>q.id)).size!==80)throw Error('Banco insuficiente o duplicado para mención '+track);
  }
  return mixScience(pool);
 }
 function setup(mode){
  if(mode==='modulo')mode='express';
- if(mode==='completo'){message('El ensayo completo de Ciencias sigue en preparación: aún no hay 80 preguntas válidas sin repetir.');return}
  if(!baseline&&mode!=='diagnostico'&&mode!=='errores'&&mode!=='resume'){
   message('Primero completa el diagnóstico de 30 preguntas para preparar tu ruta de estudio.');return;
  }
@@ -81,21 +84,62 @@ function setup(mode){
  else if(subjects.includes(mode))pool=adapted(BANK.filter(q=>q.subject===mode&&q.module==='MC'),8);
  else if(mode.startsWith('electivo:')){const sub=mode.slice(9);pool=adapted(BANK.filter(q=>q.subject===sub&&q.module==='ME'),4)}
  if(!pool.length){message('Por ahora no hay ejercicios pendientes en esta sección.');return}
- session={ids:pool.map(q=>q.id),index:0,selected:null,checked:false,hint:0,confidence:'duda',results:[],mode,track};
+ session={ids:pool.map(q=>q.id),index:0,selected:null,checked:false,hint:0,confidence:'duda',results:[],mode,track,started:Date.now(),deadline:mode==='completo'?Date.now()+160*60*1000:null};
  displayMode='steps';showReview=false;screen='quiz';store();render(true);
 }
 function backHome(){screen='home';showReview=false;store();render(true)}
-function resume(){if(!session)return;screen='quiz';render(true)}
+function resume(){if(!session)return;if(session.mode==='completo'&&Date.now()>=session.deadline){finishScienceExam();return}screen='quiz';render(true)}
 function answer(n){if(!session||session.checked||!Number.isInteger(n)||n<0||n>3)return;session.selected=n;store();render()}
-function hint(){if(!session||session.checked||session.hint>=2||session.mode==='diagnostico')return;session.hint++;store();render()}
+function hint(){if(!session||session.checked||session.hint>=2||['diagnostico','completo'].includes(session.mode))return;session.hint++;store();render()}
 function confidence(value){if(!session||session.checked||!['seguro','duda','azar'].includes(value))return;session.confidence=value;store();render()}
-function check(){if(!session||session.checked||session.selected===null)return;const q=selected();if(!q)return;
+function check(){if(!session||session.mode==='completo'||session.checked||session.selected===null)return;const q=selected();if(!q)return;
  session.checked=true;
  const result={id:q.id,subject:q.subject,correct:session.selected===q.answer,assisted:session.hint>0,confidence:session.confidence||'duda',area:q.area,module:q.module,date:new Date().toISOString()};
  session.results.push(result);history.push(result);history=history.slice(-2000);
  if(result.correct&&!result.assisted)pending=pending.filter(id=>id!==q.id);
  else if(!result.correct&&!pending.includes(q.id))pending.push(q.id);
  displayMode='steps';store();render()}
+function timeRemaining(){
+ if(!session?.deadline)return '';
+ const secs=Math.max(0,Math.ceil((session.deadline-Date.now())/1000));
+ return String(Math.floor(secs/3600)).padStart(2,'0')+':'+String(Math.floor(secs%3600/60)).padStart(2,'0')+':'+String(secs%60).padStart(2,'0');
+}
+function finishScienceExam(){
+ if(!session||session.mode!=='completo')return;
+ const results=session.results.slice();
+ for(let n=results.length;n<session.ids.length;n++){
+  const q=BANK.find(item=>item.id===session.ids[n]);
+  const row={id:q.id,subject:q.subject,correct:false,assisted:false,confidence:'sin-declarar',area:q.area,module:q.module,unanswered:true,date:new Date().toISOString()};
+  results.push(row);history.push(row);
+  if(!pending.includes(q.id))pending.push(q.id);
+ }
+ history=history.slice(-2000);lastResults=results;session=null;screen='result';store();render(true);
+}
+function examAdvance(skip=false){
+ if(!session||session.mode!=='completo')return;
+ if(session.deadline&&Date.now()>=session.deadline){finishScienceExam();return}
+ if(session.selected===null&&!skip)return;
+ const q=selected();
+ const row={id:q.id,subject:q.subject,correct:session.selected===q.answer,assisted:false,confidence:session.selected===null?'sin-declarar':session.confidence,area:q.area,module:q.module,unanswered:session.selected===null,date:new Date().toISOString()};
+ session.results.push(row);history.push(row);history=history.slice(-2000);
+ if(!row.correct&&!pending.includes(q.id))pending.push(q.id);
+ else if(row.correct&&row.confidence==='seguro')pending=pending.filter(id=>id!==q.id);
+ if(session.index===session.ids.length-1){lastResults=session.results.slice();session=null;screen='result';store();render(true);return}
+ session.index++;session.selected=null;session.checked=false;session.confidence='duda';session.hint=0;store();render(true);
+}
+function scienceExamQuestion(){
+ const q=selected();if(!q)return '<div class="card">No encontramos la pregunta.</div>';
+ const options=q.options.map((x,n)=>'<button class="option '+(session.selected===n?'selected':'')+'" aria-pressed="'+(session.selected===n)+'" onclick="answer('+n+')">'+String.fromCharCode(65+n)+') '+esc(x)+'</button>').join('');
+ const conf='<fieldset class="confidence-field"><legend>¿Qué tan seguro estás?</legend><div class="confidence-choices">'+[['seguro','Lo tengo claro'],['duda','Tengo dudas'],['azar','Fue al azar']].map(([v,t])=>'<button type="button" class="confidence-choice '+(session.confidence===v?'active':'')+'" aria-pressed="'+(session.confidence===v)+'" onclick="confidence(&quot;'+v+'&quot;)">'+t+'</button>').join('')+'</div></fieldset>';
+ return '<div class="timer" id="science-timer" role="timer">Tiempo restante: '+timeRemaining()+'</div>'+
+ '<div class="row"><span class="eyebrow">Ensayo · '+esc(q.subject)+' · '+esc(q.module)+'</span><span class="pill">'+(session.index+1)+' / 80</span></div>'+
+ '<div class="bar"><div style="width:'+((session.index+1)/80*100)+'%"></div></div>'+
+ '<div class="card"><p class="small">'+esc(q.area)+'</p><h2>'+esc(q.question)+'</h2><div class="stack">'+options+'</div>'+conf+
+ '<p class="small">En este ensayo no mostramos corrección ni pistas hasta terminar. Puedes omitir una pregunta.</p><div class="actions">'+
+ '<button class="btn" onclick="examAdvance()" '+(session.selected===null?'disabled':'')+'>'+(session.index===79?'Entregar ensayo':'Guardar y continuar →')+'</button>'+
+ '<button class="btn secondary" onclick="examAdvance(true)">'+(session.index===79?'Entregar sin responder':'Omitir pregunta →')+'</button></div></div>'+
+ '<button class="btn secondary" onclick="backHome()">← Volver a Ciencias</button>';
+}
 function next(){if(!session||!session.checked)return;if(session.index===session.ids.length-1){screen='result';const copy=JSON.parse(JSON.stringify(session));session=null;lastResults=copy.results;if(copy.mode==='diagnostico'&&copy.results.length===30)baseline={completed:true,track:copy.track,results:copy.results,updated:new Date().toISOString()};store();render(true);return}
  session.index++;session.selected=null;session.checked=false;session.hint=0;session.confidence='duda';showReview=false;displayMode='steps';store();render(true)}
 let lastResults=[];
@@ -132,7 +176,7 @@ function home(){
  '<div class="card"><span class="eyebrow">PASO 2</span><h2>Elige cómo practicar</h2><div class="exam-choices">'+
  '<div class="exam-choice '+(!done?'recommended':'')+'"><div class="row"><h3>Diagnóstico</h3><span class="pill">30 preguntas</span></div><p>'+(done?'Ya completaste el diagnóstico. Puedes repetirlo si quieres actualizar tus fortalezas.':'Tu primera prueba. Identifica qué sabes y lo que necesitas aprender para personalizar el estudio.')+'</p><button class="btn" onclick="setup(&quot;diagnostico&quot;)">'+(done?'Repetir diagnóstico de 30':'Comenzar diagnóstico de 30')+'</button></div>'+
  '<div class="exam-choice"><div class="row"><h3>Ensayo Express</h3><span class="pill">10 preguntas</span></div><p>Biología, Física y Química intercaladas, con más preguntas de tu mención y prioridad para los temas difíciles.</p><button class="btn secondary" onclick="setup(&quot;express&quot;)" '+(!done?'disabled':'')+'>Express · 10 preguntas</button></div>'+
- '<div class="exam-choice"><div class="row"><h3>Ensayo completo</h3><span class="pill">80 preguntas</span></div><p>54 del módulo común y 26 del electivo o TP. Todavía estamos completando y revisando el banco para no repetir preguntas.</p><button class="btn secondary" disabled>Completo · En preparación</button></div>'+
+ '<div class="exam-choice"><div class="row"><h3>Ensayo completo</h3><span class="pill">80 preguntas · 160 min</span></div><p>54 del Módulo Común y 26 de tu mención o TP. Sin preguntas repetidas ni corrección anticipada.</p><button class="btn secondary" onclick="setup(&quot;completo&quot;)" '+(!done?'disabled':'')+'>Ensayo completo · 80 preguntas</button></div>'+
  '</div>'+(!done?'<p class="small">El diagnóstico es obligatorio una sola vez antes de Express. Si lo interrumpes, puedes retomarlo.</p>':'')+'</div>'+
  guidance()+
  (done?'<details class="card reinforcement"><summary>Más opciones de refuerzo</summary><p>Si una materia te cuesta, puedes practicarla puntualmente. Después vuelve a Express para seguir ejercitando las tres.</p><div class="stack">'+subjects.map(sub=>'<button class="btn secondary" onclick="setup('+JSON.stringify(sub).replace(/"/g,'&quot;')+')">Reforzar '+esc(sub)+'</button>').join('')+'<button class="btn secondary" onclick="setup(&quot;mixto&quot;)">Práctica común · 9 preguntas</button></div></details>':'')+
@@ -143,7 +187,7 @@ function discard(){session=null;store();render()}
 function feedback(q){const ok=session.selected===q.answer;const content=displayMode==='easy'?'<p>'+esc(q.easy)+'</p>':displayMode==='example'?'<p>'+esc(q.example)+'</p>':'<ol class="checklist">'+q.steps.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>';
  return '<div class="explain '+(ok?'':'error')+'" role="status"><h3>'+(ok?(session.hint?'¡Cachaste, con una pista!':'¡Cachaste!'):'Todavía no, pero vamos a entenderlo.')+'</h3><p><b>Respuesta correcta:</b> '+esc(q.options[q.answer])+'</p><p>'+esc(q.explanations[session.selected])+'</p></div><div class="card"><h3>Te lo explico como prefieras</h3><div class="tabrow"><button class="btn secondary" onclick="changeMode(&quot;steps&quot;)">Paso a paso</button><button class="btn secondary" onclick="changeMode(&quot;easy&quot;)">Más fácil</button><button class="btn secondary" onclick="changeMode(&quot;example&quot;)">Con un ejemplo</button></div>'+content+'</div>';
 }
-function question(){const q=selected();if(!q)return '<div class="card">No encontramos esa pregunta. <button class="btn" onclick="backHome()">Inicio</button></div>';
+function question(){if(session?.mode==='completo')return scienceExamQuestion();const q=selected();if(!q)return '<div class="card">No encontramos esa pregunta. <button class="btn" onclick="backHome()">Inicio</button></div>';
  const count=session.ids.length;const options=q.options.map((x,n)=>'<button class="option '+(session.selected===n?'selected ':'')+(session.checked&&n===q.answer?'right ':session.checked&&session.selected===n?'wrong ':'')+'" aria-pressed="'+(session.selected===n)+'" onclick="answer('+n+')" '+(session.checked?'disabled':'')+'>'+String.fromCharCode(65+n)+') '+esc(x)+'</button>').join('');
  const hintText=session.hint?'<div class="hint" role="status"><b>Pista '+session.hint+' de 2</b><p>'+esc(skillMap(q))+'</p>'+(session.hint===2?'<p><b>Primer paso:</b> '+esc(q.steps[0])+'</p>':'')+'</div>':'';
 const confidencePanel=!session.checked?'<fieldset class="confidence-field"><legend>¿Qué tan seguro estás?</legend><div class="confidence-choices">'+[['seguro','Lo tengo claro'],['duda','Tengo dudas'],['azar','Fue al azar']].map(([v,t])=>'<button type="button" class="confidence-choice '+((session.confidence||'duda')===v?'active':'')+'" aria-pressed="'+((session.confidence||'duda')===v)+'" onclick="confidence(&quot;'+v+'&quot;)">'+t+'</button>').join('')+'</div></fieldset>':'';
@@ -159,8 +203,9 @@ function result(){
 }
 function progress(){screen='progress';render(true)}
 function progressPage(){const blocks=subjects.map(sub=>{const done=history.filter(x=>x.subject===sub);const correct=done.filter(x=>x.correct).length,assisted=done.filter(x=>x.correct&&x.assisted).length;const per=done.length?Math.round(100*correct/done.length):0;return '<div class="card"><div class="row"><h2>'+sub+'</h2><span class="pill">'+done.length+' intentos</span></div><div class="bar" role="progressbar" aria-valuenow="'+per+'" aria-valuemin="0" aria-valuemax="100" aria-label="Aciertos '+sub+'"><div style="width:'+per+'%"></div></div><p>'+correct+' aciertos · '+assisted+' con pistas.</p><button class="btn secondary" onclick="setup('+JSON.stringify(sub).replace(/"/g,'&quot;')+')">Practicar '+sub+'</button></div>'}).join('');return '<span class="eyebrow">Ciencias · progreso local</span><h1>Aprender también es volver a intentar.</h1><p>No convertimos los aciertos a puntaje PAES: representan únicamente los ejercicios que realizaste.</p>'+blocks+'<button class="btn secondary" onclick="backHome()">← Volver a Ciencias</button>'}
-function render(scroll=false){if(!view)return;view.innerHTML=screen==='quiz'&&session?question():screen==='result'?result():screen==='progress'?progressPage():screen==='notes'?reviewPage():home();if(scroll)window.scrollTo(0,0)}
-window.chooseTrack=chooseTrack;window.setup=setup;window.answer=answer;window.hint=hint;window.check=check;window.next=next;window.changeMode=changeMode;window.reviewToggle=reviewToggle;window.saveNote=saveNote;window.exportNotes=exportNotes;window.copyNotes=copyNotes;window.backHome=backHome;window.resume=resume;window.discard=discard;window.progress=progress;window.confidence=confidence;
+function render(scroll=false){if(session?.mode==='completo'&&screen==='quiz'&&session.deadline&&Date.now()>=session.deadline){finishScienceExam();return}if(!view)return;view.innerHTML=screen==='quiz'&&session?question():screen==='result'?result():screen==='progress'?progressPage():screen==='notes'?reviewPage():home();if(scroll)window.scrollTo(0,0)}
+window.chooseTrack=chooseTrack;window.setup=setup;window.examAdvance=examAdvance;window.answer=answer;window.hint=hint;window.check=check;window.next=next;window.changeMode=changeMode;window.reviewToggle=reviewToggle;window.saveNote=saveNote;window.exportNotes=exportNotes;window.copyNotes=copyNotes;window.backHome=backHome;window.resume=resume;window.discard=discard;window.progress=progress;window.confidence=confidence;
 window.cachasteNativeBack=function(){if(screen!=='home'){backHome();return true}return false};
+if(typeof setInterval==='function')setInterval(()=>{if(screen==='quiz'&&session?.mode==='completo'){if(Date.now()>=session.deadline){finishScienceExam();return}const el=document.getElementById('science-timer');if(el)el.textContent='Tiempo restante: '+timeRemaining()}},1000);
 render();
 })();
