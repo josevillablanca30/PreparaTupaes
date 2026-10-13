@@ -8,8 +8,9 @@ Aplicación de preparación PAES Chile. **Primera meta: Matemática M1 Regular 2
 - Tutor con pistas y explicaciones por alternativa, prácticas por Biología/Física/Química, diagnóstico mixto, selección de módulo, repaso de errores y progreso independiente.
 - Las observaciones científicas se pueden guardar y copiar desde el teléfono para corregir el banco posteriormente, sin cambiar automáticamente claves.
 - **Todavía no hay simulacro completo de Ciencias de 80 preguntas ni equivalencia a puntaje oficial**. Se requiere extender banco y revisar los módulos a fondo.
-- Recursos web locales `science.html`, `science-bank.js`, `science-app.js` incluidos en la compilación Android.
-- **Beta Android v0.7.1:** el instalador debug usa un identificador independiente (`cl.preparatupaes.app.sciencebeta`) y se llama **Cachaste Ciencias Beta** para convivir con M1 v0.6, cuya firma de prueba es distinta. **No desinstales la versión anterior**: sus avances permanecen en su almacenamiento local. Ambas aplicaciones no sincronizan progreso entre sí.
+- Recursos locales `inicio.html`, `index.html`, `science.html`, `science-bank.js`, `science-app.js` en el mismo APK; el inicio permite probar el UX de selección de asignaturas.
+- **Beta Android unificada v0.8.0:** **un solo instalador** abre directamente en `inicio.html`, con selección visual de Matemática M1, Biología, Química o Física; todas se abren dentro de la misma aplicación y se regresa al selector desde sus encabezados. M1 y Ciencias registran avances independientes, mostrados en el dashboard.
+- Para proteger la M1 v0.6 que ya está en el teléfono, esta beta de pruebas todavía usa el identificador Android independiente `cl.preparatupaes.app.sciencebeta` y se llama **Cachaste Beta**. La firma de depuración cambia entre runners, por lo que no es una actualización fiable de otra beta anterior con el mismo identificador; **no desinstales tu Cachaste M1 v0.6**. No hay sincronización automática entre apps Android distintas.
 - Para una actualización estable de una sola aplicación será necesario configurar una firma Android persistente gestionada de forma segura.
 - [Informe y fuentes de la primera fase de Ciencias](docs/ciencias-primera-fase-2026.md).
 
