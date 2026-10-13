@@ -18,6 +18,8 @@ const files = new Map([
   ['/PreparaTupaes/history.html', ['history.html', 'text/html; charset=utf-8']],
   ['/PreparaTupaes/history-bank.js', ['history-bank.js', 'text/javascript; charset=utf-8']],
   ['/PreparaTupaes/history-app.js', ['history-app.js', 'text/javascript; charset=utf-8']],
+  ['/PreparaTupaes/assets/cachaste-icon.svg', ['assets/cachaste-icon.svg', 'image/svg+xml']],
+  ['/PreparaTupaes/assets/cachaste-logo.svg', ['assets/cachaste-logo.svg', 'image/svg+xml']],
   ['/PreparaTupaes/version.json', ['version.json', 'application/json']]
 ]);
 createServer(async (request, response) => {
