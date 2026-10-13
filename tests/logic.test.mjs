@@ -388,3 +388,25 @@ test('simulacro 65 incorpora preguntas originales de argumentación sin salirse 
   assert.equal(run('queue.some(q=>q.habilidadPAES==="Argumentar")'),true);
  }
 });
+
+test('diagnóstico integral abarca los cuatro ejes y 12 preguntas sin repetir',()=>{
+ const run=app();
+ for(let repeat=0;repeat<8;repeat++){
+  run("start('diagnosticoIntegral')");
+  assert.equal(run('queue.length'),12);
+  assert.equal(run('new Set(queue.map(q=>q.id)).size'),12);
+  for(const axis of ['Números','Álgebra y funciones','Geometría','Probabilidad y estadística']){
+   assert.equal(run('queue.filter(q=>axisOf(q)==="'+axis+'").length'),3);
+  }
+  assert.equal(run('queue.every((q,i)=>i===0||difficultyOrder(queue[i-1])<=difficultyOrder(q))'),true);
+ }
+ assert.equal(run('home().includes("Diagnóstico integral M1")'),true);
+});
+test('diagnóstico integral produce resultados comparables por eje',()=>{
+ const run=app();
+ run("start('diagnosticoIntegral');for(let j=0;j<12;j++){choice=queue[i].answer;check();next()}");
+ assert.equal(run('page'),'result');
+ assert.equal(run('round.length'),12);
+ assert.equal(run('result().includes("Tu desempeño por eje")'),true);
+ assert.equal(run('round.filter(x=>x.correct).length'),12);
+});
