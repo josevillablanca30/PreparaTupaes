@@ -9,6 +9,8 @@ Aplicación de preparación PAES Chile. **Primera meta: Matemática M1 Regular 2
 - Las observaciones científicas se pueden guardar y copiar desde el teléfono para corregir el banco posteriormente, sin cambiar automáticamente claves.
 - **Todavía no hay simulacro completo de Ciencias de 80 preguntas ni equivalencia a puntaje oficial**. Se requiere extender banco y revisar los módulos a fondo.
 - Recursos web locales `science.html`, `science-bank.js`, `science-app.js` incluidos en la compilación Android.
+- **Beta Android v0.7.1:** el instalador debug usa un identificador independiente (`cl.preparatupaes.app.sciencebeta`) y se llama **Cachaste Ciencias Beta** para convivir con M1 v0.6, cuya firma de prueba es distinta. **No desinstales la versión anterior**: sus avances permanecen en su almacenamiento local. Ambas aplicaciones no sincronizan progreso entre sí.
+- Para una actualización estable de una sola aplicación será necesario configurar una firma Android persistente gestionada de forma segura.
 - [Informe y fuentes de la primera fase de Ciencias](docs/ciencias-primera-fase-2026.md).
 
 ## Estado actual
