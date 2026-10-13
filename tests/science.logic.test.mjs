@@ -211,3 +211,16 @@ test('Ciencias: modo examen no revela respuestas y al terminar guarda resultados
  assert.equal(a.saved().history.length,80);
  assert.ok(a.elements.view.innerHTML.includes('Resultados por asignatura'));
 });
+
+test('Ciencias: distractores de Biología distinguen mecanismos próximos, no objetos ajenos',()=>{
+ const {bank}=science();
+ const byStem=part=>bank.find(q=>q.question.includes(part));
+ const secretion=byStem('modificación y empaquetamiento');
+ assert.deepEqual(Array.from(secretion.options),['Complejo de Golgi','Retículo endoplasmático rugoso','Ribosomas libres','Lisosomas']);
+ const synapse=byStem('espacio sináptico');
+ assert.ok(synapse.options.includes('Vesículas sinápticas completas'));
+ assert.ok(synapse.options.includes('Receptores de membrana postsinápticos'));
+ const reflex=byStem('arco reflejo simple');
+ assert.ok(reflex.options.includes('Exigir una decisión consciente antes de cada respuesta'));
+ for(const q of [secretion,synapse,reflex])for(let i=0;i<4;i++)if(i!==q.answer)assert.ok(q.explanations[i].length>45,q.id);
+});
