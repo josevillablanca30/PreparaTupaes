@@ -166,10 +166,10 @@ test('desafíos aplicados: cuatro problemas M1 completos y seleccionables',()=>{
  assert.equal(run('home().includes("Desafíos aplicados")'),true);
 });
 
-test('banco M1 ampliado: 84 ítems íntegros, respuestas válidas y ejes trazables',()=>{
+test('banco M1 ampliado: 100 ítems íntegros, respuestas válidas y ejes trazables',()=>{
  const run=app();
- assert.equal(run('catalog.length'),84);
- assert.equal(run('new Set(catalog.map(q=>q.id)).size'),84);
+ assert.equal(run('catalog.length'),100);
+ assert.equal(run('new Set(catalog.map(q=>q.id)).size'),100);
  assert.equal(run('catalog.every(q=>q.options.length===4&&new Set(q.options).size===4&&Number.isInteger(q.answer)&&q.answer>=0&&q.answer<4&&q.explanations.length===4&&q.steps.length>=2&&q.easy&&q.example)'),true);
  assert.equal(run('new Set(catalog.map(q=>axisOf(q))).size'),4);
 });
@@ -207,7 +207,7 @@ test('práctica por eje usa ocho ejercicios de contenido ampliado',()=>{
  }
  assert.equal(run('home().includes("¿Qué quieres reforzar hoy?")'),true);
 });
-test('repaso adaptativo busca en las 84 preguntas, no solamente en las cinco iniciales',()=>{
+test('repaso adaptativo busca en las 100 preguntas, no solamente en las cinco iniciales',()=>{
  const run=app('[{"id":245,"correct":false}]');
  run("start('repaso')");
  assert.equal(run('queue[0].id'),245);
@@ -253,4 +253,56 @@ test('cronómetro permanece visible en el resumen previo a entregar',()=>{
  run("startExam('full');jumpExamQuestion(64);examMove(1)");
  assert.equal(run('examConfirming'),true);
  assert.equal(run('examReviewScreen().includes("Tiempo restante")'),true);
+});
+
+test('preguntas visuales: 16 diagramas originales accesibles',()=>{
+ const run=app();
+ assert.equal(run('visualBankA.length+visualBankB.length+visualBankC.length'),16);
+ assert.equal(run('catalog.length'),100);
+ assert.equal(run('catalog.filter(q=>q.visual).length'),16);
+ assert.equal(run('catalog.filter(q=>q.visual).every(q=>renderVisual(q).includes("role=\"img\""))'),true);
+ assert.equal(run('catalog.filter(q=>q.visual).every(q=>renderVisual(q).includes("<figcaption>"))'),true);
+ run("start('visuales')");
+ assert.equal(run('queue.length'),8);
+ assert.equal(run('queue.every(q=>q.visual)'),true);
+ assert.equal(run('new Set(queue.map(q=>axisOf(q))).size'),4);
+ assert.equal(run('quiz().includes("<svg")'),true);
+});
+test('tutor: las pistas no cuentan como dominio independiente',()=>{
+ const run=app();
+ run("start('diagnostico');requestHint();requestHint();choice=queue[i].answer;confidence='seguro';check()");
+ assert.equal(run('hintStage'),2);
+ assert.equal(run('history.at(-1).assisted'),true);
+ assert.equal(run('skillInsights().find(x=>x.skill==="Porcentajes").confident'),0);
+ assert.equal(run('skillInsights().find(x=>x.skill==="Porcentajes").assisted'),1);
+ assert.equal(run('quiz().includes("Lo lograste con una pista")'),true);
+ run('next()');
+ assert.equal(run('hintStage'),0);
+});
+test('ensayos no muestran pistas incluso con contenido visual',()=>{
+ const run=app();
+ run("startExam('full')");
+ assert.equal(run('examQuiz(queue[i]).includes("Necesito una pista")'),false);
+ run('requestHint()');
+ assert.equal(run('hintStage'),0);
+});
+test('repaso reinicia la ronda y registra solamente sus respuestas nuevas',()=>{
+ const run=app();
+ run("startExam();for(let j=0;j<5;j++)examMove(1)");
+ assert.equal(run('round.length'),5);
+ run('reviewErrors()');
+ assert.equal(run('round.length'),0);
+ assert.equal(run('queue.length'),5);
+ run('choice=queue[i].answer;check()');
+ assert.equal(run('round.length'),1);
+});
+test('comprobación de aprendizaje usa ejercicios distintos y reinicia el resultado',()=>{
+ const run=app();
+ run("startExam();for(let j=0;j<5;j++)examMove(1)");
+ const ids=run('round.map(x=>x.id)');
+ run('verifyLearning()');
+ assert.equal(run('exam'),true);
+ assert.equal(run('round.length'),0);
+ assert.equal(run('queue.every(q=>!'+JSON.stringify(ids)+'.includes(q.id))'),true);
+ assert.equal(run('examAnswers.length'),run('queue.length'));
 });
