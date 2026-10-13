@@ -10,6 +10,7 @@ async function mobileFit(page){
   if(document.documentElement.scrollWidth>w+1)issues.push('horizontal overflow');
   for(const el of document.querySelectorAll('button')){
    const r=el.getBoundingClientRect();
+   if(r.width===0&&r.height===0)continue;
    if(r.width<44||r.height<44)issues.push('control pequeño: '+el.textContent);
    if(r.left<-1||r.right>w+1)issues.push('control fuera de pantalla');
   }
