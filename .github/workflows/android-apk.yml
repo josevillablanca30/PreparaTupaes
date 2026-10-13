@@ -57,6 +57,20 @@ jobs:
           mkdir -p android/app/src/main/assets
           cp dist/index.html android/app/src/main/assets/index.html
           cp dist/inicio.html dist/science.html dist/science-bank.js dist/science-app.js dist/reading.html dist/reading-bank.js dist/reading-app.js dist/m2.html dist/m2-bank.js dist/m2-app.js dist/history.html dist/history-bank.js dist/history-app.js android/app/src/main/assets/
+      - name: Auditar las cinco materias dentro del paquete Android
+        run: |
+          set -euo pipefail
+          for page in index.html science.html reading.html m2.html history.html; do
+            test -s "android/app/src/main/assets/$page"
+            grep -qi '<title>' "android/app/src/main/assets/$page"
+          done
+          for script in science-bank.js science-app.js reading-bank.js reading-app.js m2-bank.js m2-app.js history-bank.js history-app.js; do
+            test -s "android/app/src/main/assets/$script"
+          done
+          for subject in index.html science.html reading.html m2.html history.html; do
+            test -f "dist/$subject"
+          done
+          echo "Cinco materias y ocho scripts presentes en assets Android"
       - name: Compilar APK de prueba
         working-directory: android
         run: gradle --no-daemon :app:assembleDebug
