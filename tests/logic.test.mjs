@@ -103,7 +103,7 @@ test('resultado de ensayo ofrece repaso de habilidades falladas', () => {
 
 test('comprobación de aprendizaje usa otra pregunta de la misma habilidad', () => {
  const run=app();
- run("startExam('express');for(let n=0;n<10;n++)examMove(1)");
+ run("startExam('express');for(let n=0;n<10;n++){examAnswers[n]=queue[n].answer;};examAnswers[0]=0;for(let n=0;n<10;n++)examMove(1)");
  const before=run('round.filter(x=>!x.correct).map(x=>x.id)');
  run('verifyLearning()');
  const after=run('queue.map(x=>x.id)');
@@ -127,4 +127,16 @@ test('tras fallar solo porcentajes, ofrece comprobación con otra pregunta', () 
  run('verifyLearning()');
  assert.equal(run('queue.length'),1);
  assert.notEqual(run('queue[0].id'),1);
+});
+
+test('geometría y estadística: seis ejercicios originales con soluciones completas', () => {
+ const run=app();
+ assert.equal(run('expansion.length'),6);
+ assert.equal(run('expansion.filter(q=>q.skill==="Geometría").length'),3);
+ assert.equal(run('expansion.filter(q=>q.skill==="Estadística").length'),3);
+ assert.equal(run('expansion.every(q=>q.answer>=0 && q.answer<q.options.length && q.explanations.length===q.options.length && q.steps.length>=2)'),true);
+ run("start('geodatos')");
+ assert.equal(run('queue.length'),6);
+ assert.equal(run('queue[0].id'),106);
+ assert.equal(run('home().includes("Geometría y Estadística")'),true);
 });
