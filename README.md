@@ -5,12 +5,12 @@ Aplicación de preparación PAES Chile. **Primera meta: Matemática M1 Regular 2
 ## Ciencias (nueva primera fase)
 - Entrada **Ciencias** integrada en el inicio de Cachaste, sin sustituir Matemática M1.
 - **63 preguntas originales iniciales**: 45 de Módulo Común (15 por asignatura), 12 de profundización Electiva (4 por especialidad) y 6 para refuerzo TP (2 por asignatura).
-- **Ciencias funciona como una prueba integrada:** se elige mención de Biología, Física, Química o TP antes de practicar. La sesión formativa principal de 12 intercala **8 MC + 4 de especialidad**; en una mención científica presenta 6 preguntas de esa materia y 3 de cada una de las otras dos. En TP distribuye las tres materias equilibradamente. El simulacro oficial de 80 (54+26) se habilitará solo cuando el banco esté listo.
-- Tutor con pistas y explicaciones por alternativa, diagnóstico mixto, resultados separados por las tres materias, repaso de errores y progreso independiente. Las prácticas de una sola materia son **refuerzo opcional**, no el flujo principal.
+- **Ciencias funciona como una prueba integrada:** se elige mención de Biología, Física, Química o TP antes de practicar. La ruta principal ahora presenta **Diagnóstico 30 → Express 10 → Completo 80 (pendiente)**. El diagnóstico de Ciencias utiliza **27 MC + 3 de mención o TP**; Express intercala **7 MC + 3 de especialidad**, manteniendo las tres materias. Un perfil detecta fallos, respuestas inseguras y conceptos que requieren refuerzo. El ensayo de 80 (54+26) se habilitará solo cuando el banco esté listo. El simulacro oficial de 80 (54+26) se habilitará solo cuando el banco esté listo.
+- Tutor con pistas y explicaciones por alternativa, **autoevaluación de confianza** (seguro, duda, azar), planes recomendados tras diagnóstico, resultados separados por las tres materias, repaso de errores y progreso independiente. Las prácticas de una sola materia son **refuerzo opcional**, no el flujo principal.
 - Las observaciones científicas se pueden guardar y copiar desde el teléfono para corregir el banco posteriormente, sin cambiar automáticamente claves.
 - **Todavía no hay simulacro completo de Ciencias de 80 preguntas ni equivalencia a puntaje oficial**. Se requiere extender banco y revisar los módulos a fondo.
 - Recursos locales `inicio.html`, `index.html`, `science.html`, `science-bank.js`, `science-app.js` en el mismo APK; el inicio permite probar el UX de selección de asignaturas.
-- **Beta Android unificada v0.8.0:** **un solo instalador** abre directamente en `inicio.html`, con selección visual de Matemática M1, Biología, Química o Física; todas se abren dentro de la misma aplicación y se regresa al selector desde sus encabezados. M1 y Ciencias registran avances independientes, mostrados en el dashboard.
+- **Beta Android unificada v0.9.0 (pendiente de validación CI final):** **un solo instalador** abre directamente en `inicio.html`, con selección visual de Matemática M1, Biología, Química o Física; todas se abren dentro de la misma aplicación y se regresa al selector desde sus encabezados. M1 y Ciencias registran avances independientes, mostrados en el dashboard.
 - Para proteger la M1 v0.6 que ya está en el teléfono, esta beta de pruebas todavía usa el identificador Android independiente `cl.preparatupaes.app.sciencebeta` y se llama **Cachaste Beta**. La firma de depuración cambia entre runners, por lo que no es una actualización fiable de otra beta anterior con el mismo identificador; **no desinstales tu Cachaste M1 v0.6**. No hay sincronización automática entre apps Android distintas.
 - Para una actualización estable de una sola aplicación será necesario configurar una firma Android persistente gestionada de forma segura.
 - [Informe y fuentes de la primera fase de Ciencias](docs/ciencias-primera-fase-2026.md).
@@ -18,10 +18,10 @@ Aplicación de preparación PAES Chile. **Primera meta: Matemática M1 Regular 2
 ## Estado actual
 - 116 preguntas originales de práctica, incluidas 16 con gráficos y figuras con alternativas, explicaciones por error y resolución.
 - Banco basado en habilidades de la biblioteca educativa de Drive y el temario oficial; no reproduce preguntas de pago sin permiso.
-- Diagnóstico corto (5) e integral (12 preguntas), práctica por eje, práctica visual, refuerzo, 16 ejercicios para Argumentar y Ensayo Express (10).
+- **Nueva entrada simplificada:** Diagnóstico de 30 preguntas (8 Números, 8 Álgebra y funciones, 7 Geometría, 7 Estadística), Express de 10 y ensayo completo de 65. El diagnóstico inicial desbloquea los ensayos para estudiantes nuevos y orienta un plan de refuerzo. Las prácticas antiguas de 3, 5, 8 y 12 quedan plegadas como opciones de refuerzo, preservando su funcionalidad.
 - Tutor con pistas progresivas: aciertos con ayuda se distinguen del dominio sin pistas.
 - Simulacro **formativo** de 65 preguntas, tiempo de 140 minutos, mapa navegable, marcadores y confirmación al entregar.
-- Guardado local de respuestas, reanudación de sesión y resultados por eje.
+- Guardado local de respuestas, **reanudación de diagnóstico M1 de 30 preguntas**, reanudación de simulacro y resultados por eje.
 - Lista persistente de errores pendientes: rondas de diez preguntas sin perder las restantes; dominio confirmado al acertar sin pistas.
 - Progreso móvil resumido por los cuatro ejes, con detalles de habilidades plegables y acciones para reforzar.
 - Etiquetas pedagógicas estimadas: 45 iniciales, 40 intermedias y 31 desafíos.
