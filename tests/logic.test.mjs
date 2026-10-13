@@ -83,3 +83,20 @@ test('simulacro: no muestra corrección, admite omisiones y corrige al finalizar
   assert.equal(run('round.filter(x=>x.unanswered).length'),4);
   assert.equal(run('round.filter(x=>x.correct).length'),1);
 });
+
+test('ensayo express contiene diez preguntas originales distintas', () => {
+  const run=app();
+  run("startExam('express')");
+  assert.equal(run('queue.length'),10);
+  assert.equal(run('new Set(queue.map(q=>q.id)).size'),10);
+  assert.equal(run('quiz().includes("Respuesta correcta:")'),false);
+});
+test('resultado de ensayo ofrece repaso de habilidades falladas', () => {
+  const run=app();
+  run("startExam('express');for(let j=0;j<10;j++){examMove(1)}");
+  assert.equal(run('round.length'),10);
+  assert.match(run('result()'),/Revisar mis errores/);
+  run('reviewErrors()');
+  assert.equal(run('queue.length'),10);
+  assert.equal(run('exam'),false);
+});
