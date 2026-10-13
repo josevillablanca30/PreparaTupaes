@@ -16,7 +16,7 @@ test('Cachaste: inicio unificado muestra asignaturas y rutas accesibles',async({
  await page.goto('./inicio.html');
  await expect(page).toHaveTitle('Cachaste · Elige tu asignatura');
  await expect(page.getByRole('heading',{name:'¿Qué quieres aprender hoy?'})).toBeVisible();
- for(const name of ['Entrar a Matemática M1','Entrar a Biología','Entrar a Química','Entrar a Física']){
+ for(const name of ['Entrar a Matemática M1','Elegir mención Biología','Elegir mención Química','Elegir mención Física']){
   await expect(page.getByRole('link',{name,exact:true})).toBeVisible();
  }
  await expect(page.getByRole('link',{name:'Ver Ciencias completa →'})).toBeVisible();
@@ -30,25 +30,29 @@ test('Navegación: M1 y Ciencias vuelven al mismo selector',async({page})=>{
  await expect(page.getByRole('button',{name:'Hacer diagnóstico · 5 preguntas'})).toBeVisible();
  await page.getByRole('link',{name:'← Todas las asignaturas'}).tap();
  await expect(page).toHaveTitle('Cachaste · Elige tu asignatura');
- await page.getByRole('link',{name:'Entrar a Biología'}).tap();
+ await page.getByRole('link',{name:'Elegir mención Biología'}).tap();
  await expect(page).toHaveTitle('Cachaste · Ciencias');
- await expect(page.getByText('Elegiste Biología')).toBeVisible();
- await expect(page.getByRole('button',{name:'Comenzar Biología'})).toBeVisible();
+ await expect(page.locator('.track').filter({hasText:'Biología'})).toHaveAttribute('aria-pressed','true');
+ await expect(page.getByRole('button',{name:'Comenzar Ciencias mixtas · 12 preguntas'})).toBeVisible();
  await page.getByRole('link',{name:'← Asignaturas'}).tap();
  await expect(page).toHaveTitle('Cachaste · Elige tu asignatura');
  await checkDashboard(page);
 });
 test('Selector: Química y Física muestran la materia elegida al entrar',async({page})=>{
  await page.goto('./inicio.html');
- await page.getByRole('link',{name:'Entrar a Química'}).tap();
- await expect(page.getByText('Elegiste Química')).toBeVisible();
- await page.getByRole('button',{name:'Comenzar Química'}).tap();
- await expect(page.getByText('Química · MC',{exact:true})).toBeVisible();
+ await page.getByRole('link',{name:'Elegir mención Química'}).tap();
+ await expect(page.locator('.track').filter({hasText:'Química'})).toHaveAttribute('aria-pressed','true');
+ await page.getByRole('button',{name:'Comenzar Ciencias mixtas · 12 preguntas'}).tap();
+ await expect(page.getByText('1 / 12',{exact:true})).toBeVisible();
+ const chemistry=await page.evaluate(()=>{const session=JSON.parse(localStorage.getItem('cachaste-science-v1')).session;return session.track});
+ expect(chemistry).toBe('Química');
  await page.getByRole('link',{name:'← Asignaturas'}).tap();
- await page.getByRole('link',{name:'Entrar a Física'}).tap();
- await expect(page.getByText('Elegiste Física')).toBeVisible();
- await page.getByRole('button',{name:'Comenzar Física'}).tap();
- await expect(page.getByText('Física · MC',{exact:true})).toBeVisible();
+ await page.getByRole('link',{name:'Elegir mención Física'}).tap();
+ await expect(page.locator('.track').filter({hasText:'Física'})).toHaveAttribute('aria-pressed','true');
+ await page.getByRole('button',{name:'Comenzar Ciencias mixtas · 12 preguntas'}).tap();
+ await expect(page.getByText('1 / 12',{exact:true})).toBeVisible();
+ const physics=await page.evaluate(()=>{const session=JSON.parse(localStorage.getItem('cachaste-science-v1')).session;return session.track});
+ expect(physics).toBe('Física');
  await checkDashboard(page);
 });
 test('Progreso: selector reúne resúmenes de M1 y Ciencias sin mezclarlos',async({page})=>{
@@ -62,8 +66,8 @@ test('Progreso: selector reúne resúmenes de M1 y Ciencias sin mezclarlos',asyn
  await page.getByRole('link',{name:'← Todas las asignaturas'}).tap();
  await expect(page.locator('#m1-progress')).toHaveText('1 respuesta');
  await expect(page.locator('#science-progress')).toHaveText('Aún sin practicar');
- await page.getByRole('link',{name:'Entrar a Biología'}).tap();
- await page.getByRole('button',{name:'Comenzar Biología'}).tap();
+ await page.getByRole('link',{name:'Elegir mención Biología'}).tap();
+ await page.getByRole('button',{name:'Comenzar Ciencias mixtas · 12 preguntas'}).tap();
  await page.locator('button.option').first().tap();
  await page.getByRole('button',{name:'Comprobar respuesta'}).tap();
  await page.getByRole('link',{name:'← Asignaturas'}).tap();
