@@ -11,3 +11,16 @@ window.CACHASTE_M2=[
 ['Modelación','Un capital de $100.000 crece un 10% anual compuesto. ¿Cuánto habrá tras dos años?',['$121.000','$120.000','$110.000','$122.000'],0,'100.000·1,1²=121.000; el segundo aumento se aplica sobre 110.000.','El crecimiento compuesto multiplica, no suma porcentajes sobre la base inicial.'],
 ['Modelación','Un modelo lineal pasa por (0,5) y (2,11). ¿Cuál es su pendiente?',['3','6','2','5'],0,'La pendiente es (11-5)/(2-0)=6/2=3.','Usa cambio vertical dividido por cambio horizontal.']
 ].map(([area,question,options,answer,why,hint],i)=>({id:'M2-'+String(i+1).padStart(3,'0'),area,question,options,answer,why,hint,origin:'original'}));
+
+window.CACHASTE_M2.push(...[
+['Funciones','¿Cuál es el dominio real de h(x)=√(x-5)?',['x≥5','x>0','x≤5','Todos los reales'],0,'Para obtener una raíz cuadrada real, el radicando debe ser no negativo: x-5≥0; por eso x≥5.','Establece la desigualdad del interior de la raíz.'],
+['Funciones','¿Cuál es el valor de f(2) si f(x)=3x²-2x?',['8','4','12','16'],0,'Sustituye x=2: 3·2²-2·2=12-4=8. Primero resuelve la potencia y luego las multiplicaciones.','Respeta el orden de operaciones.'],
+['Funciones','Si f(x)=x+2 y g(x)=x², ¿cuál es (g∘f)(3)?',['25','11','13','7'],0,'La composición g(f(3)) exige calcular primero f(3)=5 y luego g(5)=25.','En una composición se evalúa primero la función interior.'],
+['Probabilidad','Una moneda equilibrada se lanza tres veces. ¿Cuál es la probabilidad de obtener tres caras?',['1/8','1/3','3/8','1/6'],0,'Cada lanzamiento tiene probabilidad 1/2 de cara y son independientes: (1/2)³=1/8.','Multiplica las probabilidades de eventos independientes.'],
+['Probabilidad','Se elige un número del 1 al 10 de manera uniforme. ¿Cuál es la probabilidad de que sea múltiplo de 3?',['3/10','1/3','1/5','4/10'],0,'Los múltiplos de 3 en el conjunto son 3, 6 y 9: tres casos favorables entre diez posibles.','Enumera los casos antes de dividir.'],
+['Geometría','¿Cuál es la pendiente de una recta perpendicular a otra de pendiente 2?',['-1/2','2','1/2','-2'],0,'Las pendientes de rectas perpendiculares no verticales cumplen m₁·m₂=-1; así m₂=-1/2.','Usa el recíproco con signo contrario.'],
+['Geometría','Un vector v=(3,4). ¿Cuál es su magnitud?',['5','7','12','√7'],0,'La magnitud de (a,b) es √(a²+b²). Para (3,4): √(9+16)=5.','Aplica el teorema de Pitágoras a las componentes.'],
+['Álgebra','¿Cuál es la solución de 2^(x+1)=16?',['3','4','5','2'],0,'Como 16=2⁴, se igualan exponentes: x+1=4, luego x=3.','Expresa ambos lados con la misma base.'],
+['Álgebra','¿Cuál es el resultado de (x+3)(x-3)?',['x²-9','x²+9','x²-6x+9','x²+6x-9'],0,'Es una diferencia de cuadrados: (a+b)(a-b)=a²-b². Por tanto, x²-9.','Reconoce los factores conjugados.'],
+['Modelación','Una población de 200 bacterias se duplica cada hora. ¿Cuántas hay después de tres horas?',['1600','600','800','1200'],0,'El modelo exponencial es 200·2³. Tras tres duplicaciones, 200·8=1600.','No confundas duplicar tres veces con multiplicar por tres.']
+].map(([area,question,options,answer,why,hint],i)=>({id:'M2-'+String(i+11).padStart(3,'0'),area,question,options,answer,why,hint,origin:'original'})));
