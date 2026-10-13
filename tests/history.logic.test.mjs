@@ -27,10 +27,10 @@ test('Historia: auditoría de hechos históricos, ciudadanía, economía y anál
   [30,'Guerra Fría','URSS'],[31,'1789','Igualdad jurídica'],
   [41,'oferta','disminuir'],[43,'progresivo','tasa efectiva'],
   [46,'carta de 1900','percibía'],[47,'matrícula','creció'],
-  [51,'ferrocarril','transporte'],[52,'1914','Francisco Fernando'],
-  [55,'70%','siete de cada diez'],[56,'Araucanía','mapuche'],
-  [57,'Marshall','Europa occidental'],[61,'1971','gran minería del cobre'],
-  [62,'1929','crisis económica'],[65,'desempleados','fuerzas laborales']
+  [50,'ferrocarril','transporte'],[51,'1914','Francisco Fernando'],
+  [54,'70%','siete de cada diez'],[55,'Araucanía','mapuche'],
+  [56,'Marshall','Europa occidental'],[60,'1971','gran minería del cobre'],
+  [61,'1929','crisis económica'],[64,'desempleados','fuerzas laborales']
  ];
  for(const [number,stem,answer] of checks){
   const id='HIS-'+String(number).padStart(3,'0');
