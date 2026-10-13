@@ -26,7 +26,7 @@ h2{font-size:21px;letter-spacing:-.6px;margin:0}.section-title p{font-size:13px;
 .subject.m1{min-height:204px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:18px;background:linear-gradient(118deg,#fff 46%,#f3eefe)}
 .subject-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .icon{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;font-size:24px;font-weight:850}
-.m1 .icon{background:#ede7ff;color:#6045be}.bio .icon{background:#e7f5eb;color:#207e4d}.quim .icon{background:#fff1e2;color:#9d6228}.fis .icon{background:#e8f0ff;color:#346bb0}
+.m1 .icon{background:#ede7ff;color:#6045be}.read .icon{background:#e4f2ff;color:#2463a4}.subject.read{min-height:190px;background:linear-gradient(115deg,#fff 50%,#eef6ff)}.subject.read .action{margin-top:16px}.bio .icon{background:#e7f5eb;color:#207e4d}.quim .icon{background:#fff1e2;color:#9d6228}.fis .icon{background:#e8f0ff;color:#346bb0}
 .chip{font-size:11px;font-weight:800;border-radius:30px;background:#f1edfc;color:#66529c;padding:7px 10px;white-space:nowrap}
 .subject h3{font-size:clamp(21px,3vw,28px);letter-spacing:-.7px;margin:15px 0 6px}
 .subject p{color:#6d667b;font-size:14px;line-height:1.5;margin:0}
@@ -36,7 +36,7 @@ h2{font-size:21px;letter-spacing:-.6px;margin:0}.section-title p{font-size:13px;
 .subnav{display:inline-flex;align-items:center;justify-content:center;min-height:45px;padding:10px 15px;border-radius:13px;color:#6049ad;font-weight:750;text-decoration:none;background:#f0ecfd;font-size:13px}
 .sci-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px;background:#f1eef9;border-radius:16px;padding:14px 17px;color:#61547c;font-size:13px;line-height:1.5}
 .sci-meta a{font-weight:750;color:#6148a9;text-underline-offset:3px}
-.progress{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:35px}
+.progress{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:35px}
 .progress article{background:#fff;border:1px solid #eee9f5;border-radius:17px;padding:18px}
 .progress span{font-size:13px;color:#6d6882}.progress strong{font-size:23px;font-weight:800;display:block;margin-top:4px;letter-spacing:-.5px}
 .bottom-note{font-size:12px;color:#8a8495;line-height:1.6;margin:22px 0}
@@ -55,6 +55,8 @@ h2{font-size:21px;letter-spacing:-.6px;margin:0}.section-title p{font-size:13px;
 <div><div class="subject-top"><span class="chip">116 ejercicios originales</span></div>
 <h3>Matemática M1</h3><p>Desde cero: pistas, ejercicios visuales, diagnóstico y simulacro formativo.</p><span class="action">Entrar a M1 <span aria-hidden="true">→</span></span></div>
 <div class="icon" aria-hidden="true">x²</div></a></section>
+<section aria-labelledby="reading-title"><div class="section-title"><h2 id="reading-title">Competencia Lectora</h2><p>15 textos originales · 75 preguntas</p></div>
+<a class="subject read" href="reading.html" aria-label="Entrar a Competencia Lectora"><div class="subject-top"><span class="icon" aria-hidden="true">Aa</span><span class="chip">Nueva asignatura</span></div><h3>Comprende lo que lees</h3><p>Aprende a localizar, interpretar y evaluar. Diagnóstico, Express y ensayo completo de 65 preguntas.</p><span class="action">Entrar a Competencia Lectora →</span></a></section>
 <section aria-labelledby="science-title"><div class="section-title"><h2 id="science-title">Ciencias · elige tu mención</h2><a class="subnav" href="science.html">Ver Ciencias completa →</a></div>
 <div class="gridsci">
 <a class="subject bio" href="science.html?asignatura=biologia" aria-label="Elegir mención Biología"><div><div class="subject-top"><span class="icon" aria-hidden="true">🧬</span><span class="chip">En desarrollo</span></div><h3>Biología</h3><p>Células, sistemas, herencia, evolución y ambiente.</p></div><span class="action">Elegir mención Biología →</span></a>
@@ -64,6 +66,7 @@ h2{font-size:21px;letter-spacing:-.6px;margin:0}.section-title p{font-size:13px;
 <section class="progress" aria-label="Resumen local del aprendizaje">
 <article><span>Matemática M1</span><strong id="m1-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article>
 <article><span>Ciencias</span><strong id="science-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article>
+<article><span>Competencia Lectora</span><strong id="reading-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article>
 </section><p class="bottom-note">Tu progreso se guarda en este dispositivo y se mantiene separado por área. Cachaste es una aplicación independiente de preparación PAES; no contiene preguntas oficiales.</p>
 </main>
 <script>
@@ -75,6 +78,8 @@ const sc=safeRead('cachaste-science-v1');
 const sh=Array.isArray(sc?.history)?sc.history:[];
 if(h.length)document.getElementById('m1-progress').textContent=h.length+' '+(h.length===1?'respuesta':'respuestas');
 if(sh.length)document.getElementById('science-progress').textContent=sh.length+' '+(sh.length===1?'respuesta':'respuestas');
+const reading=safeRead('cachaste-reading-v1');const rh=Array.isArray(reading?.history)?reading.history:[];
+if(rh.length)document.getElementById('reading-progress').textContent=rh.length+' '+(rh.length===1?'respuesta':'respuestas');
 })();
 </script>
 </body></html>
