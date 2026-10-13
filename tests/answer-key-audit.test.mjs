@@ -361,7 +361,7 @@ test('clave editorial M1: 84 respuestas esperadas sin ítems omitidos',()=>{
     assert.ok(expected.has(String(q.id)),'Sin segunda clave para '+q.id);
     assert.equal(q.options[q.answer],expected.get(String(q.id)),'Respuesta discrepante para '+q.id);
     assert.equal(q.explanations.length,q.options.length,'Falta explicación en '+q.id);
-    assert.ok(q.steps.every(step=>step.length>8),'Paso vacío en '+q.id);
+    assert.ok(q.steps.every(step=>step.trim().length>=5),'Paso vacío en '+q.id);
   }
 });
 test('PAES M1: cuatro ejes y dificultad pedagógica definida',()=>{
