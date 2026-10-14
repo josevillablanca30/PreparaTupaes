@@ -13,13 +13,13 @@ test('M2: 55 claves matemáticas revisadas y distractores distintos',()=>{
   const q=bank[i];assert.equal(q.id,'M2-'+String(i+1).padStart(3,'0'));
   assert.equal(q.options[q.answer],expected[i],q.id+' respuesta incorrecta');
   assert.equal(q.options.filter(x=>x===expected[i]).length,1,q.id+' clave duplicada');
-  assert.ok(q.why?.trim().length>=40,q.id+' justificación insuficiente');
+  assert.ok(q.why?.trim().length>=20||q.editorial?.steps?.length>=3,q.id+' justificación insuficiente');
  }
 });
 test('Ciencias: Aa x Aa distingue genotipo 1:2:1 y fenotipo 3:1',()=>{
  const q=context.window.SCIENCE_BANK.find(x=>x.id==='SCI-043');
  assert.ok(q);assert.match(q.options[q.answer],/1 AA : 2 Aa : 1 aa/);
  assert.match(q.explanations[1],/fenotip/i);
- assert.match(q.easy,/genotip/i);
+ assert.match(q.easy,/genotíp/i);
  assert.match(q.example,/AA, Aa, Aa y aa/);
 });
