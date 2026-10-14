@@ -417,3 +417,11 @@ Cada fila corresponde a una pregunta real del repositorio. «Pendiente» signifi
 2. Escribir tres modalidades que no repitan la misma frase.
 3. Incorporar ejemplos resueltos, evidencia textual o fuentes históricas concretas.
 4. Ejecutar pruebas automáticas y una muestra manual antes de entregar APK.
+
+## Verificación adicional — fuentes y claves (14-10-2026)
+
+- Se consultó el material de preparación de Mineduc (https://acceso.mineduc.cl/material-de-preparacion-paes/) y la información de pruebas del DEMRE (https://portaldemre.demre.cl/paes/factores-seleccion/pruebas-acceso-paes). Los documentos oficiales definen temario y estructura; no verifican automáticamente las preguntas originales de la app.
+- Se accedió a un ensayo compartido en Drive titulado «ensayo-general-ciencias-mencion-biologia-paes-4.pdf». Su introducción afirma que las últimas 26 preguntas corresponden al electivo de Física, pese a titularse mención Biología. **Inconsistencia en material de referencia**: no usar su introducción como autoridad para asignar menciones sin contrastar con DEMRE.
+- Se revisaron los enunciados, claves y justificaciones de 55 ejercicios de M2, y se fijaron 55 respuestas esperadas en `tests/editorial-keys.test.mjs`. Esto controla regresiones en las claves, pero no certifica que la dificultad o distribución representen fielmente la PAES M2.
+- En Ciencias, `SCI-043` confundía una alternativa redactada como proporción de genotipos con una explicación sobre fenotipos. Se corrigió la alternativa, la explicación del distractor y el ejemplo del cuadro de Punnett.
+- **Pendiente**: verificación individual de las 166 preguntas de Ciencias, 100 de Lectora y 65 de Historia contra el material curricular, evidencias y distractores; revisión de calidad de las tres modalidades en todas las preguntas.
