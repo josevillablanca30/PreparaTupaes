@@ -29,3 +29,97 @@ window.CACHASTE_HISTORIA.push(...[["Historia de Chile","¿Qué proceso impulsó 
 window.CACHASTE_HISTORIA.push({id:'HIS-050',area:'Interpretación de fuentes',question:'Un censo registra un aumento de población urbana de 40% a 60% en veinte años. ¿Qué indica ese dato?',options:['Que creció la proporción de habitantes urbanos','Que todas las ciudades duplicaron habitantes','Que la población rural desapareció','Que aumentó exactamente 20% la población total'],answer:0,why:'Los porcentajes describen la participación relativa de la población urbana, no la variación absoluta del total.',hint:'Distingue proporción de cantidad total.',origin:'original'});
 
 window.CACHASTE_HISTORIA.push(...[["Historia de Chile","¿Qué efecto tuvo la llegada del ferrocarril a diversas regiones chilenas en el siglo XIX?",["Facilitó el transporte y la articulación de mercados","Eliminó de inmediato el comercio marítimo","Impidió toda migración interna","Suprimió la producción agrícola"],0,"El ferrocarril mejoró la conexión entre centros productivos, ciudades y puertos.","Relaciona infraestructura con circulación de bienes."],["Historia mundial","¿Qué hecho suele marcar el inicio de la Primera Guerra Mundial en 1914?",["El asesinato del archiduque Francisco Fernando","La caída del muro de Berlín","La fundación de la ONU","La crisis económica de 1929"],0,"El atentado de Sarajevo desencadenó una crisis diplomática y militar entre potencias europeas.","Distingue detonante inmediato y causas estructurales."],["Formación ciudadana","¿Qué finalidad tiene la rendición de cuentas de una autoridad pública?",["Permitir evaluar y controlar el ejercicio de sus funciones","Eliminar la transparencia administrativa","Impedir la participación ciudadana","Reemplazar todas las elecciones"],0,"La rendición de cuentas permite conocer decisiones, uso de recursos y responsabilidades públicas.","Relaciona información pública y control democrático."],["Economía y sociedad","Si una persona ahorra $10.000 mensuales durante seis meses sin intereses, ¿cuánto acumula?",["$60.000","$16.000","$50.000","$100.000"],0,"El ahorro acumulado es 10.000 multiplicado por seis meses: 60.000 pesos.","Multiplica aporte periódico por número de períodos."],["Interpretación de fuentes","Un registro electoral muestra que votó el 70% del padrón. ¿Qué conclusión se justifica?",["Participaron siete de cada diez personas habilitadas","Votó el 70% de toda la población del país","Todos los votantes eligieron la misma opción","El padrón creció exactamente un 70%"],0,"La participación se calcula sobre personas inscritas o habilitadas, no necesariamente sobre toda la población.","Identifica cuál es el denominador del porcentaje."],["Historia de Chile","¿Qué fue la ocupación de la Araucanía en el siglo XIX?",["Un proceso de incorporación territorial estatal que afectó profundamente al pueblo mapuche","Una expedición científica sin intervención militar","La fundación de la ONU en el sur de Chile","Un tratado de independencia firmado en 1810"],0,"El avance militar y administrativo del Estado chileno transformó el territorio y las condiciones de vida mapuche.","Considera sus dimensiones territoriales y sociales."],["Historia mundial","¿Qué buscaba el Plan Marshall después de la Segunda Guerra Mundial?",["Apoyar la reconstrucción económica de Europa occidental","Organizar la conquista española de América","Financiar la Primera Guerra Mundial","Abolir todos los bancos centrales"],0,"El programa estadounidense entregó apoyo para la recuperación económica europea de posguerra.","Ubica la iniciativa en el contexto de 1947."],["Formación ciudadana","¿Qué significa soberanía popular en una democracia?",["Que la legitimidad del poder político se funda en el pueblo","Que los cargos son necesariamente hereditarios","Que no existen derechos fundamentales","Que los tribunales dictan todas las leyes"],0,"La soberanía popular sitúa en la ciudadanía el fundamento de la autoridad política.","Distingue poder popular de privilegio hereditario."],["Economía y sociedad","Una municipalidad dispone de presupuesto para construir una biblioteca o mejorar una plaza, pero no ambas. Decide construir la biblioteca. ¿Qué representa su costo de oportunidad?",["El beneficio de mejorar la plaza al que se renunció","El gasto total de construir ambas obras","Una multa por no mejorar la plaza","El presupuesto que quedará necesariamente sin utilizar"],0,"El costo de oportunidad de elegir la biblioteca es el beneficio de la mejor alternativa descartada: mejorar la plaza. No equivale al costo monetario de todas las opciones.","Identifica la alternativa que no se eligió y el beneficio que habría aportado."],["Interpretación de fuentes","Una fotografía muestra una protesta, pero no incluye fecha ni lugar. ¿Qué conviene hacer antes de interpretarla?",["Investigar procedencia, contexto y autenticidad","Suponer que representa a todo el país","Atribuirle una fecha arbitraria","Descartar cualquier otra evidencia"],0,"La contextualización evita interpretaciones erróneas y ayuda a verificar qué representa realmente la imagen.","Comprueba cuándo, dónde y quién registró la escena."],["Historia de Chile","¿Qué significó la nacionalización del cobre en Chile en 1971?",["La transferencia al Estado de la gran minería del cobre mediante reforma constitucional","La eliminación completa de toda actividad minera","La creación del Banco Central","La independencia política de Chile"],0,"La reforma constitucional de 1971 permitió nacionalizar empresas de la gran minería del cobre.","Relaciona el proceso con la propiedad de recursos estratégicos."],["Historia mundial","¿Qué fue la Gran Depresión iniciada en 1929?",["Una crisis económica internacional de gran magnitud","Una recesión limitada exclusivamente a Estados Unidos","Una crisis causada únicamente por la Segunda Guerra Mundial","Una etapa de crecimiento sostenido del empleo y el comercio mundial"],0,"La crisis iniciada en 1929 produjo contracción económica, desempleo y efectos internacionales.","Distingue crisis económica de guerra o institución."],["Formación ciudadana","¿Qué función cumplen las elecciones periódicas en una democracia representativa?",["Permiten renovar autoridades y exigir responsabilidad política","Permiten renovar autoridades, pero eliminan el control entre elecciones","Sustituyen los mecanismos de fiscalización institucional por el voto","Garantizan por sí solas que todas las decisiones públicas sean legítimas"],0,"Las elecciones periódicas permiten a la ciudadanía elegir representantes y evaluar su gestión.","Relaciona representación con alternancia y control."],["Economía y sociedad","¿Qué suele ocurrir con la demanda de un bien normal cuando aumenta el ingreso, manteniendo lo demás constante?",["Tiende a aumentar","Tiende a disminuir, como ocurre con un bien inferior","Permanece necesariamente constante aunque cambie el ingreso","Aumenta solo si el precio del bien también sube"],0,"Por definición, la cantidad demandada de un bien normal tiende a aumentar cuando sube el ingreso.","Recuerda la relación entre ingreso y bien normal."],["Interpretación de fuentes","Un gráfico presenta solo valores absolutos de desempleados. ¿Qué dato adicional permite comparar tasas entre países?",["El tamaño de sus fuerzas laborales","La población total sin distinguir participación laboral","El número de personas ocupadas sin conocer la fuerza laboral","El producto interno bruto de cada país"],0,"Para comparar tasas de desempleo se necesita el número de personas desempleadas relativo a la fuerza laboral.","Distingue cantidad absoluta de tasa relativa."]].map(([area,question,options,answer,why,hint],i)=>({id:'HIS-'+String(i+51).padStart(3,'0'),area,question,options,answer,why,hint,origin:'original'})));
+
+const HISTORIA_EDITORIAL_REVIEW={
+ "HIS-001": {
+  "steps": [
+   "Identifica el cambio institucional que pregunta el enunciado: la Constitución de 1925.",
+   "El texto constitucional estableció la separación entre Iglesia y Estado; Chile dejó de tener una religión oficial.",
+   "Esto no debe confundirse con la independencia de Chile ni con el reconocimiento posterior del sufragio femenino pleno."
+  ],
+  "easy": "En 1925 Chile separó formalmente el Estado de la Iglesia católica. Antes existía un vínculo constitucional entre ambos; después, el Estado dejó de reconocer una religión oficial.",
+  "example": "Si una autoridad pública debe decidir sobre un asunto civil, la Constitución de 1925 consolidó que la legitimidad de esa decisión proviene del Estado y no de una iglesia."
+ },
+ "HIS-002": {
+  "steps": [
+   "Descompón el concepto: sustituir importaciones significa fabricar localmente lo que antes se compraba fuera.",
+   "La industrialización por sustitución de importaciones impulsó la industria nacional y tuvo intervención del Estado.",
+   "No significa eliminar el comercio exterior ni reemplazar las fábricas por agricultura."
+  ],
+  "easy": "La idea era producir en Chile bienes que antes se importaban, para depender menos de comprarlos en otros países.",
+  "example": "Si antes se importaban ciertos textiles, fomentar fábricas nacionales para producirlos es un ejemplo del objetivo de la sustitución de importaciones."
+ },
+ "HIS-003": {
+  "steps": [
+   "Ubica la fecha: 11 de septiembre de 1973, en Chile.",
+   "Ese día ocurrió un golpe de Estado encabezado por las Fuerzas Armadas y de Orden que derrocó al presidente Salvador Allende.",
+   "El hecho puso fin al gobierno constitucional y dio inicio a una dictadura militar que se extendió hasta 1990."
+  ],
+  "easy": "El 11 de septiembre de 1973 se produjo un golpe de Estado en Chile. Terminó el gobierno de Salvador Allende y comenzó una dictadura militar.",
+  "example": "Al construir una línea de tiempo, 1973 corresponde al golpe de Estado; 1988 al plebiscito y 1990 al retorno a un gobierno elegido democráticamente."
+ },
+ "HIS-004": {
+  "steps": [
+   "Distingue la elección de la asunción presidencial: la elección se realizó en 1989.",
+   "Patricio Aylwin asumió la presidencia el 11 de marzo de 1990.",
+   "Ese cambio marcó el inicio del gobierno civil elegido democráticamente tras la dictadura."
+  ],
+  "easy": "Aylwin ganó las elecciones de 1989 y asumió como presidente en marzo de 1990. Por eso 1990 es la fecha del retorno a un gobierno democrático.",
+  "example": "En una cronología: plebiscito de 1988, elecciones presidenciales de 1989 y cambio de mando el 11 de marzo de 1990."
+ },
+ "HIS-005": {
+  "steps": [
+   "El principio preguntado es el Estado de derecho.",
+   "Significa que las instituciones públicas y sus autoridades están sujetas a la Constitución y las leyes.",
+   "Una autoridad no puede actuar válidamente solo porque tenga poder político; debe respetar sus atribuciones y los controles jurídicos."
+  ],
+  "easy": "El Estado de derecho significa que nadie está por encima de la ley, tampoco quienes gobiernan.",
+  "example": "Si una autoridad toma una decisión fuera de sus atribuciones, esa decisión puede impugnarse mediante los mecanismos jurídicos correspondientes."
+ },
+ "HIS-006": {
+  "steps": [
+   "El Congreso Nacional integra el Poder Legislativo de Chile.",
+   "Una de sus funciones centrales es tramitar proyectos de ley mediante discusión y votación, según sus atribuciones.",
+   "El Congreso no reemplaza al Poder Judicial ni ejecuta directamente todas las políticas públicas."
+  ],
+  "easy": "Diputadas, diputados y senadores participan en la elaboración de las leyes: las debaten, las modifican y votan.",
+  "example": "Un proyecto de ley puede discutirse en comisiones y salas del Congreso antes de completar su tramitación legislativa."
+ },
+ "HIS-007": {
+  "steps": [
+   "La pregunta apunta al carácter secreto del sufragio.",
+   "El secreto impide que otras personas conozcan obligatoriamente por quién votó un elector.",
+   "Esta protección disminuye la posibilidad de presiones, amenazas o represalias por una preferencia política."
+  ],
+  "easy": "Votar en secreto protege tu decisión: nadie debería obligarte a demostrar por quién votaste.",
+  "example": "Si un empleador exige saber por qué candidatura votó un trabajador, el secreto del sufragio protege la privacidad de esa preferencia."
+ },
+ "HIS-008": {
+  "steps": [
+   "La pregunta mantiene constantes los otros factores que afectan las compras.",
+   "Si el precio de un mismo bien aumenta, normalmente disminuye la cantidad que las personas desean comprar.",
+   "Es un movimiento a lo largo de la curva de demanda, no necesariamente un cambio de la demanda completa."
+  ],
+  "easy": "Si un producto se encarece y todo lo demás sigue igual, normalmente se compran menos unidades. Eso es la ley de demanda.",
+  "example": "Si una entrada cuesta $4.000 y luego $6.000, con ingresos y preferencias iguales, es esperable que algunas personas compren menos entradas."
+ },
+ "HIS-009": {
+  "steps": [
+   "Identifica la decisión entre dos alternativas.",
+   "El costo de oportunidad es el valor de la mejor alternativa a la que renuncias.",
+   "No equivale necesariamente al dinero gastado: también puede ser tiempo o una experiencia perdida."
+  ],
+  "easy": "Elegir una cosa significa dejar otra. El costo de oportunidad es lo mejor que sacrificas al decidir.",
+  "example": "Si estudias dos horas en vez de trabajar y ganar $10.000, ese ingreso perdido puede representar tu costo de oportunidad."
+ },
+ "HIS-010": {
+  "steps": [
+   "La Revolución Industrial introdujo maquinaria y producción fabril a gran escala.",
+   "Estos cambios transformaron el trabajo, la organización de las ciudades y la producción.",
+   "No ocurrieron de forma idéntica ni simultánea en todos los países."
+  ],
+  "easy": "Muchas actividades que antes se hacían manualmente pasaron a realizarse con máquinas en fábricas. Eso cambió cómo se producía y dónde vivía la gente.",
+  "example": "Una fábrica textil mecanizada podía producir tejidos con máquinas, concentrando trabajadores y modificando el ritmo de producción respecto de un taller artesanal."
+ }
+};
+for(const q of window.CACHASTE_HISTORIA){const review=HISTORIA_EDITORIAL_REVIEW[q.id];if(review){q.editorial=review;q.reviewStatus='revisado_conceptualmente';}}
