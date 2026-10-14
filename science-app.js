@@ -198,7 +198,7 @@ function feedback(q){
  const reasoning=(q.steps||[]).filter(Boolean);
  const explanation=q.explanations?.[session.selected]||'';
  const mistake=ok?'':('<p><b>Elegiste:</b> '+chosen+'</p><p><b>Por qué no corresponde:</b> '+esc(explanation||'Esta alternativa no responde a lo que pregunta el enunciado.')+'</p>');
- const conclusion='<p><b>Por qué es correcta:</b> '+esc(reasoning[reasoning.length-1]||q.easy||'Revisa los datos del enunciado y compáralos con las alternativas.')+'</p>';
+ const conclusion='<p><b>Por qué es correcta:</b> '+esc(q.explanations?.[q.answer]||reasoning[reasoning.length-1]||q.easy||'Revisa los datos del enunciado y compáralos con las alternativas.')+'</p>';
  const easy=q.easy&&q.easy.length>85?q.easy:([q.easy,...reasoning].filter(Boolean).join(' '));
  const example=q.example&&q.example.length>85?q.example:([q.example,'Vuelve a la pregunta: '+q.question,'La opción correcta es '+q.options[q.answer]+'.'].filter(Boolean).join(' '));
  const exampleLabel=q.example?.startsWith('Aplica esta idea')?'Aplicado a esta pregunta':'Con un ejemplo';
