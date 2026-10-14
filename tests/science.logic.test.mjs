@@ -36,7 +36,7 @@ test('Ciencias: Módulo Común, Electivo y TP tienen cobertura balanceada',()=>{
  const {bank,window}=science();
  for(const sub of ['Biología','Física','Química']){
   assert.equal(bank.filter(q=>q.subject===sub&&q.module==='MC').length,18);
-  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='ME').length,26);
+  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='ME').length,sub==='Biología'?34:26);
   assert.equal(bank.filter(q=>q.subject===sub&&q.module==='MTP').length,sub==='Química'?8:9);
  }
  assert.equal(new Set(bank.map(q=>q.area)).size,11);
@@ -166,10 +166,10 @@ test('Ciencias: progreso independiente de M1 y mensajes responsables sobre el ex
  assert.ok(!a.data.has('prepara-paes-active-exam-v1'));
 });
 
-test('Ciencias: 54 comunes y 104 especialidad para ensayos completos sin duplicados',()=>{
+test('Ciencias: 54 comunes y 112 de especialidad para ensayos completos sin duplicados',()=>{
  const a=science(),bank=a.bank;
  assert.equal(bank.filter(q=>q.module==='MC').length,54);
- assert.equal(bank.filter(q=>q.module==='ME').length,78);
+ assert.equal(bank.filter(q=>q.module==='ME').length,86);
  assert.equal(bank.filter(q=>q.module==='MTP').length,26);
  assert.equal(bank.length,166);
  assert.equal(new Set(bank.map(q=>q.question)).size,166);
