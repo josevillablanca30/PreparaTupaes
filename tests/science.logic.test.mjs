@@ -16,10 +16,10 @@ function science(initial=new Map()){
  return {data,elements,window,bank:window.SCIENCE_BANK,saved:()=>JSON.parse(data.get('cachaste-science-v1')||'{}')};
 }
 function unlockedData(data=new Map()){data.set('cachaste-science-v1',JSON.stringify({baseline:{completed:true,results:Array.from({length:30},()=>({subject:'Biología',area:'Herencia y evolución',correct:true,confidence:'seguro'}))}}));return data}
-test('Ciencias: 158 ítems originales sin respuestas, IDs ni alternativas duplicadas',()=>{
+test('Ciencias: 166 ítems originales sin respuestas, IDs ni alternativas duplicadas',()=>{
  const {bank}=science();
- assert.equal(bank.length,158);
- assert.equal(new Set(bank.map(q=>q.id)).size,158);
+ assert.equal(bank.length,166);
+ assert.equal(new Set(bank.map(q=>q.id)).size,166);
  const texts=new Set();
  for(const q of bank){
   assert.equal(q.options.length,4,q.id);
@@ -171,8 +171,8 @@ test('Ciencias: 54 comunes y 104 especialidad para ensayos completos sin duplica
  assert.equal(bank.filter(q=>q.module==='MC').length,54);
  assert.equal(bank.filter(q=>q.module==='ME').length,78);
  assert.equal(bank.filter(q=>q.module==='MTP').length,26);
- assert.equal(bank.length,158);
- assert.equal(new Set(bank.map(q=>q.question)).size,158);
+ assert.equal(bank.length,166);
+ assert.equal(new Set(bank.map(q=>q.question)).size,166);
  for(const q of bank){
   assert.ok(q.steps.every(t=>t.length>=15),q.id);
   assert.equal(q.explanations.length,4,q.id);
@@ -223,4 +223,18 @@ test('Ciencias: distractores de Biología distinguen mecanismos próximos, no ob
  const reflex=byStem('arco reflejo simple');
  assert.ok(reflex.options.includes('Exigir una decisión consciente antes de cada respuesta'));
  for(const q of [secretion,synapse,reflex])for(let i=0;i<4;i++)if(i!==q.answer)assert.ok(q.explanations[i].length>45,q.id);
+});
+
+test('Sistema nervioso PAES 2027: ocho casos nuevos con explicaciones y errores plausibles',()=>{
+ const {bank}=science();
+ const topics=['dendritas y transmite','mielina intacta','canales de sodio','superficie caliente','entrada de calcio','sueño insuficiente','consume alcohol','presión sobre la piel'];
+ for(const stem of topics){
+  const q=bank.find(x=>x.question.includes(stem));
+  assert.ok(q,'Falta caso: '+stem);
+  assert.equal(q.subject,'Biología');
+  assert.equal(q.area,'Procesos y funciones biológicas');
+  assert.equal(q.module,'ME');
+  assert.equal(new Set(q.options).size,4);
+  for(let i=0;i<4;i++)assert.ok(q.explanations[i].length>=30,q.id);
+ }
 });
