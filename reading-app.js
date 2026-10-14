@@ -45,7 +45,7 @@ function begin(mode){
  if(mode==='completo'&&!baseline){notice('Completa primero el diagnóstico de 30 preguntas.');return}
  if(mode==='express'&&!baseline){notice('Completa primero el diagnóstico de 30 preguntas.');return}
  const quotas=mode==='diagnostico'?{Localizar:10,Interpretar:12,Evaluar:8}:mode==='express'?{Localizar:3,Interpretar:4,Evaluar:3}:{Localizar:23,Interpretar:26,Evaluar:16};
- let pool=mode==='errores'?BANK.filter(q=>pending.includes(q.id)).slice(0,10):select(mode==='diagnostico'?30:mode==='express'?10:65,quotas);
+ let pool=mode==='errores'?BANK.filter(q=>pending.some(id=>BANK.find(x=>x.id===id)?.skill===q.skill)&&!pending.includes(q.id)&&!history.some(h=>h.id===q.id)).slice(0,10):select(mode==='diagnostico'?30:mode==='express'?10:65,quotas);
  if(!pool.length){notice('Por ahora no tienes preguntas pendientes para reforzar.');return}
  session={mode,ids:pool.map(q=>q.id),index:0,selected:null,checked:false,confidence:'duda',hint:0,results:[],deadline:mode==='completo'?Date.now()+150*60*1000:null,started:Date.now()};
  feedbackMode='steps';screen='quiz';save();render(true);
@@ -139,6 +139,13 @@ function quiz(){
  return '<div class="row progress-top"><span class="eyebrow">'+(exam?'ENSAYO COMPLETO':session.mode==='diagnostico'?'DIAGNÓSTICO':'PRÁCTICA LECTORA')+'</span><span class="pill">'+(session.index+1)+' / '+count+'</span></div><div class="bar"><div style="width:'+((session.index+1)/count*100)+'%"></div></div>'+
  (exam?'<p class="timer" role="timer" id="reading-timer">Tiempo restante: '+timeLeft()+'</p>':'')+
  passageMarkup+'<section class="card question"><span class="eyebrow">'+esc(q.skill)+'</span><h2>'+esc(q.question)+'</h2><div class="answers">'+opts+'</div>'+hints+confidencePanel+review+nextButton+'</section>';
+}
+function diagnosticReport(rows){
+ if(!rows?.length)return '';
+ const explain={Localizar:'Busca datos explícitos y comprueba exactamente en qué parte del texto aparecen.',Interpretar:'Relaciona ideas, identifica causas y consecuencias y fundamenta inferencias con pistas del texto.',Evaluar:'Distingue hechos de opiniones, examina la intención del autor y contrasta la evidencia con la conclusión.'};
+ const groups=skills.map(skill=>{const a=rows.filter(x=>x.skill===skill);return {skill,total:a.length,correct:a.filter(x=>x.correct).length,secure:a.filter(x=>x.correct&&x.confidence==='seguro'&&!x.assisted).length,unsure:a.filter(x=>x.confidence==='duda'||x.confidence==='azar'||x.assisted).length}}).filter(x=>x.total).sort((a,b)=>a.secure/a.total-b.secure/b.total);
+ const card=g=>'<div class="skill-summary"><strong>'+esc(g.skill)+'</strong><p>'+g.correct+' de '+g.total+' correctas · '+g.secure+' seguras · '+g.unsure+' con dudas o ayuda.</p><p>'+esc(explain[g.skill])+'</p><p>'+(g.secure/g.total>=.75?'Fortaleza: aumenta la dificultad y cambia de tipo de texto.':'Prioridad: practica esta habilidad con otros textos y preguntas nuevas; no memorices la alternativa anterior.')+'</p></div>';
+ return '<div class="card"><span class="eyebrow">DIAGNÓSTICO LECTOR</span><h2>Lo que ya haces bien</h2>'+(groups.filter(x=>x.secure/x.total>=.75).map(card).join('')||'<p>Todavía no hay una habilidad suficientemente consolidada en esta muestra.</p>')+'<h2>Lo que necesitas mejorar</h2>'+(groups.filter(x=>x.secure/x.total<.75).map(card).join('')||'<p>No aparecen debilidades claras; continúa con textos nuevos.</p>')+'<h2>Plan recomendado</h2><p>1. Revisa la habilidad menos segura. 2. Aprende cómo se encuentra la evidencia. 3. Resuelve preguntas diferentes con textos nuevos. 4. Explica con tus palabras por qué descartas cada alternativa.</p><p class="small">Diagnóstico formativo: no representa un puntaje PAES ni certifica dominio definitivo.</p></div>';
 }
 function result(){
  const list=recent,good=list.filter(x=>x.correct).length;
