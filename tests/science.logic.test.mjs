@@ -137,9 +137,12 @@ test('Ciencias: error queda pendiente y se recupera en otra práctica; acierto a
  a.window.answer(wrong);a.window.check();
  assert.ok(a.saved().pending.includes(id));
  a.window.setup('errores');
- assert.equal(a.saved().session.ids[0],id);
- a.window.answer(q.answer);a.window.check();
- assert.equal(a.saved().pending.includes(id),false);
+ const ids=a.saved().session.ids;
+ assert.ok(ids.length>0);
+ assert.ok(!ids.includes(id),'El refuerzo debe usar preguntas diferentes a la fallada');
+ assert.ok(ids.every(candidate=>{const item=a.bank.find(x=>x.id===candidate);return item.subject===q.subject&&item.area===q.area}),'El refuerzo debe profundizar en la misma área');
+ a.window.answer(a.bank.find(x=>x.id===ids[0]).answer);a.window.check();
+ assert.ok(a.saved().pending.includes(id),'Un acierto en otra pregunta no elimina automáticamente el error original');
 });
 test('Ciencias: la sesión continúa después de cerrar y volver a abrir',()=>{
  const data=unlockedData();const a=science(data);a.window.setup('Química');a.window.hint();
