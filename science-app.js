@@ -200,7 +200,7 @@ function feedback(q){
  const mistake=ok?'':('<p><b>Elegiste:</b> '+chosen+'</p><p><b>Por qué no corresponde:</b> '+esc(explanation||'Esta alternativa no responde a lo que pregunta el enunciado.')+'</p>');
  const conclusion='<p><b>Por qué es correcta:</b> '+esc(reasoning[reasoning.length-1]||q.easy||'Revisa los datos del enunciado y compáralos con las alternativas.')+'</p>';
  const easy=q.easy&&q.easy.length>85?q.easy:([q.easy,...reasoning].filter(Boolean).join(' '));
- const example=q.example&&q.example.length>85?q.example:([q.example,'Vuelve a la pregunta: '+q.question,'La opción correcta es '+q.options[q.answer]+'.'].filter(Boolean).join(' ');
+ const example=q.example&&q.example.length>85?q.example:([q.example,'Vuelve a la pregunta: '+q.question,'La opción correcta es '+q.options[q.answer]+'.'].filter(Boolean).join(' '));
  const exampleLabel=q.example?.startsWith('Aplica esta idea')?'Aplicado a esta pregunta':'Con un ejemplo';
  const content=displayMode==='easy'?'<p>'+esc(easy)+'</p>':displayMode==='example'?'<p>'+esc(example)+'</p>':'<ol class="checklist">'+reasoning.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>';
  return '<div class="explain '+(ok?'':'error')+'" role="status"><h3>'+(ok?(session.hint?'¡Cachaste, con una pista!':'¡Cachaste!'):'Todavía no, pero vamos a entenderlo.')+'</h3><p><b>Respuesta correcta:</b> '+correct+'</p>'+mistake+conclusion+'</div><div class="card"><h3>Te lo explico como prefieras</h3><div class="tabrow"><button class="btn secondary" onclick="changeMode(&quot;steps&quot;)">Paso a paso</button><button class="btn secondary" onclick="changeMode(&quot;easy&quot;)">Más fácil</button><button class="btn secondary" onclick="changeMode(&quot;example&quot;)">'+esc(exampleLabel)+'</button></div>'+content+'</div>';
