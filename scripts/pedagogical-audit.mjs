@@ -43,4 +43,4 @@ mkdirSync(new URL('../reports/',import.meta.url),{recursive:true});
 writeFileSync(new URL('../reports/pedagogical-audit.json',import.meta.url),JSON.stringify(output,null,2)+'\n');
 console.log(JSON.stringify(output.summary));
 console.log('Revisar alertas heurísticas en reports/pedagogical-audit.json');
-if(critical)process.exitCode=1;
+if(critical){console.error('Alertas críticas:',JSON.stringify(output.flags.filter(f=>f.level==='critical').slice(0,60)));process.exitCode=1;}
