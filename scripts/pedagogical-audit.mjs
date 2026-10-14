@@ -11,7 +11,7 @@ const banks={
  Historia:ctx.window.CACHASTE_HISTORIA
 };
 const stop=/^(no|nunca|siempre|todos|todas|ningún|ninguna|únicamente|exclusivamente|completamente|absolutamente|imposible|desaparec|elimina|prohíbe|sustituye|solo funciona|solo sirve)\b/i;
-const normalize=s=>String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\p{L}\p{N}+*/=<>^%×÷≤≥√-]/gu,' ').trim().replace(/\s+/g,' ');
+const normalize=s=>String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\p{L}\p{N}+*/=<>^%×÷≤≥√:-]/gu,' ').trim().replace(/\s+/g,' ');
 const output={date:'2026-10-13',scope:'Auditoría heurística completa de cuatro bancos; no certificación de corrección conceptual',totals:{},flags:[],coverage:{}};
 let critical=0;
 for(const [name,questions] of Object.entries(banks)){
