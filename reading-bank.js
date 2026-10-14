@@ -14,7 +14,7 @@ function readingAdd(type,title,paragraphs,questions){
   const correctIndex=options.indexOf(correct);
   READING_QUESTIONS.push({id:'LEC-'+String(qi+1).padStart(3,'0'),passageId:id,skill,question,options,answer:correctIndex,
    explanations:options.map((x,i)=>i===correctIndex?'¡Cachaste! '+why:'Elegiste «'+x+'». Contrástala con la evidencia del texto: '+clue+' La respuesta correcta es «'+correct+'». '+why),
-   steps:[clue,why],easy:why,example:'Para comprobarlo, vuelve al fragmento indicado y separa lo que está escrito de lo que infieres.',origin:'original'});
+   steps:['Identifica la habilidad que pide el enunciado: '+skill+'. '+question,'Busca en el texto esta pista concreta: '+clue,'Conecta esa pista con la conclusión: '+why],easy:'La respuesta es «'+correct+'». '+why+' Para comprobarlo, '+clue.charAt(0).toLowerCase()+clue.slice(1),example:'Aplicación al texto «'+title+'»: '+clue+' Por eso la alternativa «'+correct+'» responde mejor a la pregunta que las otras opciones. '+why,origin:'original'});
  }
 }
 readingAdd('Expositivo','La biblioteca que comenzó a caminar',[
