@@ -98,7 +98,7 @@ function sciExtra(subject,area,module,question,correct,distractors,why,clue,skil
   const answer=arranged.findIndex(x=>x.text===correct);
   const explanations=arranged.map(x=>x.feedback);
   sciAdd(subject,area,question,arranged.map(x=>x.text),answer,explanations,
-    [clue,why],clue+' '+why,'En otro caso parecido, busca el dato que confirma la relación descrita antes de decidir.',
+    [clue,why],clue+' '+why,'Aplica esta idea a la situación del enunciado: '+question+' La alternativa correcta es «'+correct+'» porque '+why+' Para descartar las otras opciones, compara qué dato o mecanismo describe cada una.',
     {module,skill,difficulty:'intermedio'});
 }
 const sciMoreCore=[
