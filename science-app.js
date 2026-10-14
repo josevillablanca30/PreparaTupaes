@@ -80,7 +80,14 @@ function setup(mode){
  }
  let pool=[];
  if(['diagnostico','express','mixto','completo'].includes(mode))pool=mixedSelection(mode);
- else if(mode==='errores')pool=adapted(BANK.filter(q=>pending.includes(q.id)),10);
+ else if(mode==='errores'){
+  const targets=BANK.filter(q=>pending.includes(q.id));
+  const topics=new Set(targets.map(q=>q.subject+'|'+q.area));
+  const seen=new Set([...history.map(x=>x.id),...pending]);
+  const candidates=BANK.filter(q=>topics.has(q.subject+'|'+q.area)&&!seen.has(q.id));
+  pool=adapted(candidates,10);
+  if(!pool.length)pool=adapted(BANK.filter(q=>topics.has(q.subject+'|'+q.area)&&!pending.includes(q.id)),10);
+ }
  else if(subjects.includes(mode))pool=adapted(BANK.filter(q=>q.subject===mode&&q.module==='MC'),8);
  else if(mode.startsWith('electivo:')){const sub=mode.slice(9);pool=adapted(BANK.filter(q=>q.subject===sub&&q.module==='ME'),4)}
  if(!pool.length){message('Por ahora no hay ejercicios pendientes en esta sección.');return}
@@ -206,6 +213,16 @@ const confidencePanel=!session.checked?'<fieldset class="confidence-field"><lege
  return '<div class="row"><span class="eyebrow">'+esc(q.subject)+' · '+esc(q.module)+'</span><span class="pill">'+(session.index+1)+' / '+count+'</span></div><div class="bar"><div style="width:'+((session.index+1)/count*100)+'%"></div></div><div class="card"><p class="small">'+esc(q.area)+' · '+esc(q.skill)+'</p><h2>'+esc(q.question)+'</h2><div class="stack">'+options+'</div>'+(session.checked?feedback(q):(session.mode==='diagnostico'?'<p class="small">Este diagnóstico es tu punto de partida: primero responde por ti mismo; después podrás revisar cada explicación.</p>':hintText+'<div class="actions"><button class="btn soft" '+(session.hint===2?'disabled':'')+' onclick="hint()">'+(session.hint===0?'Necesito una pista':session.hint===1?'Dame otra pista':'Ya tienes dos pistas')+'</button></div>')+confidencePanel+'<div class="actions"><button class="btn" '+(session.selected===null?'disabled':'')+' onclick="check()">Comprobar respuesta</button></div>')+(session.checked?'<div class="actions"><button class="btn" onclick="next()">'+(session.index===count-1?'Ver mi resultado':'Siguiente pregunta →')+'</button></div>':'')+'</div>'+
  '<div class="card"><div class="row"><h3>¿Algo que corregir?</h3><button class="btn secondary" onclick="reviewToggle()">'+(showReview?'Cerrar':'Proponer corrección')+'</button></div><p class="small">Especialmente en Biología, puedes revisar científicamente la pregunta o proponer una explicación mejor. No cambia la pregunta automáticamente.</p>'+(showReview?'<label for="science-note">¿Qué cambiarías y por qué?</label><textarea id="science-note" maxlength="3000" placeholder="Ej.: la alternativa C también podría considerarse correcta si..." >'+esc(note)+'</textarea><button class="btn" onclick="saveNote()">Guardar mi observación</button>':note?'<p class="small">Ya tienes una observación guardada para esta pregunta.</p>':'')+'</div>'+
  '<button class="btn secondary" onclick="backHome()">← Volver a Ciencias</button>';
+}
+function diagnosticReport(rows){
+ if(!rows?.length)return '';
+ const groups=new Map();
+ for(const x of rows){const key=x.subject+'|'+x.area;let g=groups.get(key);if(!g){g={subject:x.subject,area:x.area,total:0,right:0,secure:0,uncertain:0};groups.set(key,g)}g.total++;if(x.correct)g.right++;if(x.correct&&x.confidence==='seguro'&&!x.assisted)g.secure++;if(x.confidence==='azar'||x.confidence==='duda'||x.assisted)g.uncertain++}
+ const stats=[...groups.values()].sort((a,b)=>a.secure/a.total-b.secure/b.total);
+ const line=g=>'<div class="weak-area"><strong>'+esc(g.subject)+' · '+esc(g.area)+'</strong><p class="small">'+g.right+' de '+g.total+' correctas · '+g.secure+' con seguridad · '+g.uncertain+' con dudas o ayuda.</p><p>'+ (g.secure/g.total>=.75?'Fortaleza: sigue practicando con preguntas nuevas para confirmar el dominio.':g.secure/g.total>=.5?'En desarrollo: comprende el concepto y practica su aplicación en contextos diferentes.':'Prioridad: revisa la idea central y aprende a distinguir las alternativas antes de practicar con preguntas nuevas.')+'</p></div>';
+ const strengths=stats.filter(g=>g.secure/g.total>=.75);
+ const weaknesses=stats.filter(g=>g.secure/g.total<.75);
+ return '<div class="card learning-plan"><span class="eyebrow">DIAGNÓSTICO PERSONALIZADO</span><h2>Lo que ya manejas</h2>'+(strengths.length?strengths.map(line).join(''):'<p>Aún no hay temas con dominio seguro suficiente; eso indica dónde empezar a estudiar, no que no puedas aprenderlos.</p>')+'<h2>Lo que debes mejorar</h2>'+(weaknesses.length?weaknesses.map(line).join(''):'<p>No se detectaron debilidades claras en esta muestra. Continúa con ejercicios nuevos.</p>')+'<h2>Tu plan de estudio</h2><p>1. Parte por los temas con menos respuestas correctas y seguras. 2. Revisa por qué fallaron tus alternativas. 3. Practica con preguntas distintas del mismo tema. 4. Comprueba si puedes explicar la respuesta sin ayuda.</p><p class="small">Cada tema puede tener pocas preguntas en el diagnóstico: este resultado es orientativo, no una certificación de dominio ni un puntaje PAES.</p></div>';
 }
 function result(){
  const results=lastResults,good=results.filter(x=>x.correct).length,assisted=results.filter(x=>x.correct&&x.assisted).length;
