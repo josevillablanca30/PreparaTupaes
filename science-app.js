@@ -68,7 +68,7 @@ function mixedSelection(mode){
   pool=subjects.flatMap(sub=>adapted(BANK.filter(q=>q.module==='MC'&&q.subject===sub),3));
  }else if(mode==='completo'){
   pool=BANK.filter(q=>q.module==='MC');
-  pool.push(...(track==='TP'?BANK.filter(q=>q.module==='MTP'):BANK.filter(q=>q.module==='ME'&&q.subject===track)));
+  pool.push(...(track==='TP'?BANK.filter(q=>q.module==='MTP'):mixScience(BANK.filter(q=>q.module==='ME'&&q.subject===track)).slice(0,26)));
   if(pool.length!==80||new Set(pool.map(q=>q.id)).size!==80)throw Error('Banco insuficiente o duplicado para mención '+track);
  }
  return mixScience(pool);
