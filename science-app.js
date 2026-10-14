@@ -184,8 +184,18 @@ function home(){
  '<p class="small">La prueba oficial de Ciencias considera 80 preguntas: 54 del Módulo Común y 26 de la mención o modalidad TP, en 160 minutos. Estos ensayos son formativos y no estiman un puntaje oficial.</p>';
 }
 function discard(){session=null;store();render()}
-function feedback(q){const ok=session.selected===q.answer;const content=displayMode==='easy'?'<p>'+esc(q.easy)+'</p>':displayMode==='example'?'<p>'+esc(q.example)+'</p>':'<ol class="checklist">'+q.steps.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>';
- return '<div class="explain '+(ok?'':'error')+'" role="status"><h3>'+(ok?(session.hint?'¡Cachaste, con una pista!':'¡Cachaste!'):'Todavía no, pero vamos a entenderlo.')+'</h3><p><b>Respuesta correcta:</b> '+esc(q.options[q.answer])+'</p><p>'+esc(q.explanations[session.selected])+'</p></div><div class="card"><h3>Te lo explico como prefieras</h3><div class="tabrow"><button class="btn secondary" onclick="changeMode(&quot;steps&quot;)">Paso a paso</button><button class="btn secondary" onclick="changeMode(&quot;easy&quot;)">Más fácil</button><button class="btn secondary" onclick="changeMode(&quot;example&quot;)">Con un ejemplo</button></div>'+content+'</div>';
+function feedback(q){
+ const ok=session.selected===q.answer;
+ const correct=esc(q.options[q.answer]);
+ const chosen=esc(q.options[session.selected]||'');
+ const reasoning=(q.steps||[]).filter(Boolean);
+ const explanation=q.explanations?.[session.selected]||'';
+ const mistake=ok?'':('<p><b>Elegiste:</b> '+chosen+'</p><p><b>Por qué no corresponde:</b> '+esc(explanation||'Esta alternativa no responde a lo que pregunta el enunciado.')+'</p>');
+ const conclusion='<p><b>Por qué es correcta:</b> '+esc(reasoning[reasoning.length-1]||q.easy||'Revisa los datos del enunciado y compáralos con las alternativas.')+'</p>';
+ const easy=q.easy&&q.easy.length>85?q.easy:([q.easy,...reasoning].filter(Boolean).join(' '));
+ const example=q.example&&q.example.length>85?q.example:([q.example,'Vuelve a la pregunta: '+q.question,'La opción correcta es '+q.options[q.answer]+'.'].filter(Boolean).join(' ');
+ const content=displayMode==='easy'?'<p>'+esc(easy)+'</p>':displayMode==='example'?'<p>'+esc(example)+'</p>':'<ol class="checklist">'+reasoning.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>';
+ return '<div class="explain '+(ok?'':'error')+'" role="status"><h3>'+(ok?(session.hint?'¡Cachaste, con una pista!':'¡Cachaste!'):'Todavía no, pero vamos a entenderlo.')+'</h3><p><b>Respuesta correcta:</b> '+correct+'</p>'+mistake+conclusion+'</div><div class="card"><h3>Te lo explico como prefieras</h3><div class="tabrow"><button class="btn secondary" onclick="changeMode(&quot;steps&quot;)">Paso a paso</button><button class="btn secondary" onclick="changeMode(&quot;easy&quot;)">Más fácil</button><button class="btn secondary" onclick="changeMode(&quot;example&quot;)">Con un ejemplo</button></div>'+content+'</div>';
 }
 function question(){if(session?.mode==='completo')return scienceExamQuestion();const q=selected();if(!q)return '<div class="card">No encontramos esa pregunta. <button class="btn" onclick="backHome()">Inicio</button></div>';
  const count=session.ids.length;const options=q.options.map((x,n)=>'<button class="option '+(session.selected===n?'selected ':'')+(session.checked&&n===q.answer?'right ':session.checked&&session.selected===n?'wrong ':'')+'" aria-pressed="'+(session.selected===n)+'" onclick="answer('+n+')" '+(session.checked?'disabled':'')+'>'+String.fromCharCode(65+n)+') '+esc(x)+'</button>').join('');
