@@ -45,6 +45,12 @@ for(const [name,questions] of Object.entries(banks)){
   if(q.explanations&&q.explanations.some((x,i)=>i!==q.answer&&x.length<20))flag('weak_wrong_feedback','review','Explicación de distractor demasiado breve');
   if(name==='Ciencias'&&(!q.steps||q.steps.length<2))flag('missing_steps','critical','Sin razonamiento guiado');
   if(name==='Lectura'&&(!q.passageId||!ctx.window.READING_PASSAGES.some(p=>p.id===q.passageId)))flag('missing_passage','critical','Referencia a texto inexistente');
+  if(name==='Ciencias'||name==='Lectura'){
+   const examples=String(q.example||'');
+   if(/^(En otro caso parecido|Para comprobarlo, vuelve al fragmento|Recuerda:|Como piezas de un rompecabezas)/i.test(examples))flag('generic_template','critical','Explicación de ejemplo genérica que no desarrolla la respuesta');
+   if(/^(Es la variable que se manipula deliberadamente\.)$/i.test(String(q.explanations?.[q.answer]||'')))flag('ambiguous_variable','critical','La explicación no distingue variable independiente de controlada');
+  }
+
  }
  output.coverage[name]=areas;
 }
