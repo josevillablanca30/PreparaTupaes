@@ -28,6 +28,16 @@ for(const [name,questions] of Object.entries(banks)){
   if(!q.question||q.question.length<20)flag('short_stem','review','Enunciado muy breve');
   if(!q.why&&(!q.explanations||q.explanations.length!==4))flag('missing_feedback','critical','Sin justificación o explicación por alternativa');
   if(q.why&&q.why.length<35)flag('short_explanation','review','Explicación de menos de 35 caracteres');
+  if(name==='Ciencias'||name==='Lectura'){
+   if(!q.easy||q.easy.trim().length<95)flag('vague_easy','review','Modo Más fácil demasiado breve: requiere explicación comprensible y concreta');
+   if(!q.example||q.example.trim().length<105||/En otro caso parecido|Para comprobarlo, vuelve al fragmento indicado/i.test(q.example))flag('generic_example','review','Ejemplo o aplicación demasiado genérico para enseñar el concepto');
+   if((q.steps||[]).some(x=>String(x).trim().length<45))flag('short_reasoning_step','review','Paso del razonamiento demasiado breve o poco explicativo');
+  }
+  if(name==='M2'||name==='Historia'){
+   if(!q.why||q.why.trim().length<85)flag('vague_core_reasoning','review','Justificación breve: revisar mecanismo, evidencia y conclusión');
+   if(!q.hint||q.hint.trim().length<55)flag('vague_hint','review','Pista demasiado breve para acompañar aprendizaje');
+  }
+
   if(wrong.some(w=>stop.test(w)))flag('absolute_distractor','review','Alternativa con negación o absoluto: comprobar plausibilidad');
   if(wrong.some(w=>w.length<correct.length*.25&&correct.length>45))flag('answer_length_cue','review','La correcta es mucho más larga que un distractor');
   if(wrong.some(w=>w.length>correct.length*4&&w.length>55))flag('reverse_length_cue','review','Distractor mucho más largo que la correcta');
