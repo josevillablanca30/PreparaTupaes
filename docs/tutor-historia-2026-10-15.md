@@ -15,7 +15,23 @@ Ejemplos de cambios:
 
 Los casos imaginados se identifican como tales. No se fabrican cartas ni citas históricas. Los ejemplos son enseñanza, no evidencia de que el estudiante ya domine el contenido. El refuerzo de costo de oportunidad utiliza HIS-059 después de HIS-009, con otro problema y sin repetir inmediatamente el fallado.
 
-## Fuentes de contraste
+## Lote 2: HIS-021 a HIS-040
+
+Se inspeccionaron y reescribieron otras 20 clases y sus 60 distractores. Historia acumula 40/65 revisadas; junto a M2, son 146/623. Permanecen 477 pendientes de esta pasada.
+
+La enseñanza incorpora cadenas causales de minería y urbanización, condiciones de la cuestión social, diferencia entre reglas formales y predominio parlamentario, fomento industrial, tenencia de la tierra y etapas de transición. Las fuentes primarias se clasifican respecto de una pregunta, sin tratarlas como infalibles. El caso HIS-028 permite refutar una causa ocurrida después de su supuesto efecto. Los casos de derechos distinguen proclamación y aplicación, accesibilidad y exclusión, denuncia y sentencia, resultado adverso y ausencia de debido proceso. HIS-040 explica flujo, territorio, producción final y doble conteo con un ejemplo numérico resuelto.
+
+114 pruebas de lógica y 26 recorridos locales del tutor aprobados, cero fallos y cero omitidas; auditoría de 623 ítems con cero fallos críticos. Los recorridos del tutor se amplían automáticamente a todos los ítems revisados, sin una lista que deje fuera las clases nuevas. Las claves y alternativas permanecen idénticas al respaldo previo. El [Android del primer lote](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38761624004) también terminó correctamente; su prueba nueva de Historia permaneció habilitada.
+
+### Fuentes adicionales
+
+- [Memoria Chilena: cuestión social](https://www.memoriachilena.gob.cl/602/w3-article-679.html) y [república parlamentaria](https://www.memoriachilena.gob.cl/602/w3-article-3537.html) (HIS-022/023).
+- [CORFO: origen y propósito](https://corfo.cl/sites/aniversario/aniv_voces-del-futuro) (HIS-024).
+- [Memoria Chilena: reforma agraria](https://www.memoriachilena.gob.cl/602/w3-article-3536.html) (HIS-025).
+- [ONU: descolonización](https://www.un.org/es/global-issues/decolonization) (HIS-033).
+- [Memoria Chilena: documentación de la Junta de 1810](https://www.memoriachilena.gob.cl/602/w3-article-96058.html) (contraste adicional de HIS-011).
+
+## Fuentes del primer lote
 
 Consulta: 15 de octubre de 2026. Se redactó material original; las fuentes sirven para contrastar hechos y distinciones, sin copiar sus textos.
 

@@ -1,7 +1,9 @@
 import{test,expect}from'@playwright/test';
+import{loadBanks}from'../scripts/load-banks.mjs';
+const reviewedIds=loadBanks().Historia.filter(q=>q.teaching).map(q=>q.id);
 // Cada distractor del lote se usa realmente en la interfaz, en tres modos.
-for(const wrongIndex of [1,2,3])for(let start=1;start<=20;start+=10){
- const ids=Array.from({length:Math.min(10,21-start)},(_,i)=>'HIS-'+String(start+i).padStart(3,'0'));
+for(const wrongIndex of [1,2,3])for(let start=0;start<reviewedIds.length;start+=10){
+ const ids=reviewedIds.slice(start,start+10);
  test('Historia profesor '+ids[0]+'–'+ids.at(-1)+' alternativa '+wrongIndex,async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(ids=>localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'history-teacher',mode:'express',ids,index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:ids.map(()=>null),flags:[]}})),ids);
