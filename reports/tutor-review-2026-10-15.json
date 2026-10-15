@@ -3,9 +3,9 @@
   "scope": "Revisión editorial asistida; no medición de aprendizaje con estudiantes. No se clasifica como excelente por longitud. Los ítems pendientes no se presentan como revisados.",
   "summary": {
     "total": 623,
-    "reviewed": 337,
-    "pending": 286,
-    "rewrittenThreeModes": 337,
+    "reviewed": 387,
+    "pending": 236,
+    "rewrittenThreeModes": 387,
     "excellent": 0
   },
   "bySubject": {
@@ -19,7 +19,7 @@
     },
     "Lectura": {
       "total": 130,
-      "reviewed": 50
+      "reviewed": 100
     },
     "M2": {
       "total": 106,
@@ -3760,302 +3760,752 @@
     {
       "subject": "Lectura",
       "id": "LEC-051",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-052",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-053",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-054",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-055",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-056",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-057",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-058",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-059",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-060",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-061",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-062",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-063",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-064",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-065",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-066",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-067",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-068",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-069",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-070",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-071",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-072",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-073",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-074",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-075",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-076",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-077",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-078",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-079",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-080",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-081",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-082",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-083",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-084",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-085",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-086",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-087",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-088",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-089",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-090",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-091",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-092",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-093",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-094",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-095",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-096",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-097",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-098",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-099",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
       "id": "LEC-100",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Lectura",
