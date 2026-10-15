@@ -3,6 +3,9 @@ import { readFile } from 'node:fs/promises';
 
 // A repository subpath catches the same relative-path mistakes as GitHub Pages.
 const files = new Map([
+  ['/PreparaTupaes/learning-core.js', ['learning-core.js', 'text/javascript; charset=utf-8']],
+  ['/PreparaTupaes/study-app.js', ['study-app.js', 'text/javascript; charset=utf-8']],
+  ['/PreparaTupaes/study-ui.css', ['study-ui.css', 'text/css; charset=utf-8']],
   ['/PreparaTupaes/', ['index.html', 'text/html; charset=utf-8']],
   ['/PreparaTupaes/index.html', ['index.html', 'text/html; charset=utf-8']],
   ['/PreparaTupaes/inicio.html', ['inicio.html', 'text/html; charset=utf-8']],
