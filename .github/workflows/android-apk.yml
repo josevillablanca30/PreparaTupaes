@@ -2,7 +2,7 @@ name: Android APK · compilación de prueba
 on:
   push:
     branches: [main, work/cachaste-respaldo-2026-10-15]
-    paths: ['learning-core.js', 'm1-teaching.js', 'study-app.js', 'study-ui.css', 'index.html', 'inicio.html', 'science.html', 'science-bank.js', 'science-app.js', 'reading.html', 'reading-bank.js', 'reading-app.js', 'm2.html', 'm2-bank.js', 'm2-app.js', 'history.html', 'history-bank.js', 'history-app.js', 'android/**', 'tests/**', 'scripts/**', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
+    paths: ['daily-*','assets/**','learning-core.js', 'm1-teaching.js', 'study-app.js', 'study-ui.css', 'index.html', 'inicio.html', 'science.html', 'science-bank.js', 'science-app.js', 'reading.html', 'reading-bank.js', 'reading-app.js', 'm2.html', 'm2-bank.js', 'm2-app.js', 'history.html', 'history-bank.js', 'history-app.js', 'android/**', 'tests/**', 'scripts/**', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
   workflow_dispatch:
 concurrency:
   group: cachaste-android-${{ github.ref }}
@@ -83,8 +83,8 @@ jobs:
           mkdir -p android/app/src/main/assets
           cp dist/index.html android/app/src/main/assets/index.html
           mkdir -p android/app/src/main/assets/assets
-          cp dist/assets/cachaste-icon.svg dist/assets/cachaste-logo.svg android/app/src/main/assets/assets/
-          cp dist/m1-teaching.js dist/learning-core.js dist/study-app.js dist/study-ui.css dist/inicio.html dist/science.html dist/science-bank.js dist/science-app.js dist/reading.html dist/reading-bank.js dist/reading-app.js dist/m2.html dist/m2-bank.js dist/m2-app.js dist/history.html dist/history-bank.js dist/history-app.js android/app/src/main/assets/
+          cp dist/assets/gatito-sabio-oficial.png dist/assets/cachaste-icon.svg dist/assets/cachaste-logo.svg android/app/src/main/assets/assets/
+          cp dist/daily-*.js dist/daily-ui.css dist/m1-teaching.js dist/learning-core.js dist/study-app.js dist/study-ui.css dist/inicio.html dist/science.html dist/science-bank.js dist/science-app.js dist/reading.html dist/reading-bank.js dist/reading-app.js dist/m2.html dist/m2-bank.js dist/m2-app.js dist/history.html dist/history-bank.js dist/history-app.js android/app/src/main/assets/
       - name: Auditar las cinco materias dentro del paquete Android
         run: |
           set -euo pipefail
@@ -92,7 +92,7 @@ jobs:
             test -s "android/app/src/main/assets/$page"
             grep -qi '<title>' "android/app/src/main/assets/$page"
           done
-          for script in m1-teaching.js learning-core.js study-app.js science-bank.js science-app.js reading-bank.js reading-app.js m2-bank.js m2-app.js history-bank.js history-app.js; do
+          for script in daily-catalog.js daily-core.js daily-curriculum.js daily-app.js m1-teaching.js learning-core.js study-app.js science-bank.js science-app.js reading-bank.js reading-app.js m2-bank.js m2-app.js history-bank.js history-app.js; do
             test -s "android/app/src/main/assets/$script"
           done
           for subject in index.html science.html reading.html m2.html history.html; do

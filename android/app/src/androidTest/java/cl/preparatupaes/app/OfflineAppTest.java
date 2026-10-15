@@ -108,6 +108,23 @@ public class OfflineAppTest {
         js("document.getElementById('resume').click();document.getElementById('next').click();document.getElementById('reinforce').click();true");
         assertEquals("true",js("JSON.parse(localStorage.getItem('cachaste-history-v1')).session.ids.join(',')==='HIS-059'"));
     }
+    @Test public void dailyLearningWorksOfflineAndResumesAfterRecreation() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp && document.querySelector('[data-action=smart]')");
+        js("document.querySelector('#daily-count').value='1';document.querySelector('[data-action=smart]').click();true");
+        waitFor("document.querySelector('.question-title')");
+        assertEquals("623",js("CACHASTE_DAILY_CATALOG.items.length"));
+        assertEquals("true",js("document.querySelector('.wise-cat img').naturalWidth>0"));
+        js("document.querySelector('[data-action=choice]').click();document.querySelector('[data-confidence=duda]').click();true");
+        String draft=js("localStorage.getItem('cachaste-daily-v1')");
+        scenario.recreate();
+        waitFor("window.CachasteDailyApp && document.querySelector('.question-title')");
+        assertEquals(draft,js("localStorage.getItem('cachaste-daily-v1')"));
+        js("document.querySelector('[data-action=check]').click();true");
+        waitFor("document.querySelector('.tutor')");
+        assertEquals("true",js("CachasteDailyApp.engine.state.attempts.length>=1"));
+        InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
+        waitFor("document.querySelector('[data-action=resume]')");
+    }
     @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         PackageInfo info=context.getPackageManager().getPackageInfo(context.getPackageName(),PackageManager.GET_PERMISSIONS);

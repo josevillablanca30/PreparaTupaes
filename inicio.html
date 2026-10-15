@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f9f7fd">
 <meta name="description" content="Cachaste: prepárate para la PAES de Chile con Matemática M1, Matemática M2, Competencia Lectora, Ciencias e Historia.">
-<title>Cachaste · Elige tu asignatura</title>
+<title>¿Cachaste? · Un ratito a la vez</title><link rel="stylesheet" href="daily-ui.css">
 <style>
 :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#27233c;background:#faf9fe;color-scheme:light}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 85% 0%,#e9e2ff 0%,transparent 36%),radial-gradient(ellipse at 3% 85%,#fdf0e5 0%,transparent 35%),#faf9fe}
@@ -49,9 +49,7 @@ h2{font-size:21px;letter-spacing:-.6px;margin:0}.section-title p{font-size:13px;
 </head>
 <body><main>
 <header><div class="logo"><img src="assets/cachaste-icon.svg" alt="" width="48" height="48"><span>¿Cachaste?<small style="display:block;font-size:12px;letter-spacing:1.4px;color:#7357d8">PREPARA TU PAES</small></span></div><span class="version">Tu tutor PAES</span></header>
-<section aria-labelledby="welcome-title"><span class="kicker">Tu espacio para aprender</span>
-<h1 id="welcome-title">¿Qué quieres aprender hoy?</h1>
-<p class="lead">Tú eliges por dónde empezar. Si algo cuesta, te lo explicamos de otra forma, con pistas y ejemplos hasta que lo entiendas.</p></section>
+<section aria-labelledby="welcome-title"><span class="kicker">APRENDE A TU RITMO</span><h1 id="welcome-title">Prepara tu PAES,<br>un ratito a la vez.</h1></section><section id="daily-root" aria-label="Aprendizaje diario"></section><h2>Diagnósticos, prácticas y ensayos PAES</h2><p>Conserva tus sesiones tradicionales y elige tu mención en Ciencias.</p>
 <div id="continue-study" aria-live="polite"></div>
 <section aria-labelledby="math-title"><div class="section-title"><h2 id="math-title">Matemática</h2><p>Comprende primero, practica después.</p></div>
 <a class="subject m1" href="index.html" aria-label="Entrar a Matemática M1">
@@ -91,4 +89,4 @@ const next=pending.sort((a,b)=>(b[2].started||0)-(a[2].started||0))[0],container
 if(next&&container){const [href,title,ses]=next;container.innerHTML='<section class="continue-card"><span class="kicker">SIGAMOS DESDE DONDE QUEDASTE</span><h2>'+title+'</h2><p>Pregunta '+(ses.index+1)+' de '+ses.ids.length+'. Tu sesión está guardada en este dispositivo.</p><a href="'+href+'">Retomar mi preparación →</a></section>';}
 })();
 </script>
-</body></html>
+<script src="learning-core.js"></script><script src="daily-curriculum.js"></script><script src="daily-catalog.js"></script><script src="daily-core.js"></script><script src="daily-app.js"></script></body></html>
