@@ -48,5 +48,18 @@
     "Not independent teacher certification",
     "Not a production-signed release",
     "Pages initial configuration requires administration"
-  ]
+  ],
+  "mainVerification": {
+    "mergeCommit": "d3de0bb5ae96100b97eff41a903d8fb0c6012e8d",
+    "androidWorkflow": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38713890053",
+    "androidConclusion": "success",
+    "instrumentedTests": 3,
+    "failures": 0,
+    "skipped": 0,
+    "mobileBrowserGate": 96,
+    "pagesWorkflow": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38713890214",
+    "browserTests": 144,
+    "pagesDeployConclusion": "failure",
+    "pagesReason": "configure-pages: Get Pages site failed / Not Found; initial administrative enablement required"
+  }
 }
