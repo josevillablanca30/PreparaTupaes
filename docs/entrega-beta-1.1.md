@@ -1,0 +1,77 @@
+# ¿Cachaste? — entrega de beta 1.1, 15 de octubre de 2026
+
+Estado: beta para pruebas supervisadas. No se declara versión comercial terminada.
+
+## Respaldo y conservación
+
+Se conservó el commit Android aprobado `20b5cdf562d1865573f8d78d7a9cc8affc71201b` como antecesor. Todos los cambios de la sesión se guardaron en commits organizados y se verificaron contra GitHub en `work/cachaste-respaldo-2026-10-15`. El PR #1 reúne los cambios sin reescribir el historial. El respaldo inicial incluye también el trabajo que estaba incompleto; los commits posteriores corrigen su integración.
+
+## Funcionalidades implementadas
+
+- Cinco materias, diagnóstico de 30, práctica de 10, resultados, historial y recuperación de sesiones.
+- Ensayos con mapa, marcación, cambios de alternativa, omisiones, confirmación de entrega y corrección al finalizar. No muestran pistas ni respuestas durante el ensayo.
+- Tutor local con pasos, explicación sencilla, ejemplo diferente y respuesta específica a cada distractor.
+- Perfil por concepto, registro de errores y prácticas que priorizan debilidades. El refuerzo usa otros ítems y excluye también familias de paráfrasis. Dos respuestas seguras en ítems diferentes, posteriores al último error y sin ayuda, permiten comprobar aprendizaje.
+- Historial, diagnósticos, resultados y refuerzos guardados en el dispositivo. Se recuperan borradores tras recargar y recrear la actividad Android. Los datos dañados se filtran sin impedir un nuevo diagnóstico.
+- Inicio con progreso de las cinco materias y acceso a la sesión pendiente; controles táctiles, foco visible, movimiento reducido y diseño para 320 px.
+
+## Bancos finales
+
+| Materia | Antes de la sesión | Ahora |
+|---|---:|---:|
+| Matemática M1 | 116 | 116 |
+| Matemática M2 | 55 | 106 |
+| Ciencias | 166 | 206 |
+| Competencia Lectora | 100 | 130 |
+| Historia | 65 | 65 |
+| Total | 502 | 623 |
+
+M1 ya existía: se conservó y revisó, no se presenta como un banco nuevo de 116 preguntas. Se conservan los 20 textos lectores. Ciencias mantiene 25 ítems complementarios fuera de las nuevas sesiones por su correspondencia curricular; quedan 181 elegibles. No se borraron sus IDs para preservar historiales antiguos.
+
+Las preguntas son originales, no preguntas oficiales ni un banco validado psicométricamente. El auditor estructural informa 0 errores críticos y 569 alertas heurísticas. Sus etiquetas señalan brevedad, plausibilidad o posibles pistas formales; no equivalen a 569 errores conceptuales comprobados y tampoco se han ocultado.
+
+## Correcciones pedagógicas y técnicas
+
+- Revisión asistida individual de claves, procedimientos y ejemplos de M1, M2, Ciencias, Lectora e Historia. Corrección de ejemplos que no enseñaban el concepto preguntado y de justificaciones genéricas.
+- M2: cinco alternativas estándar en suficiencia de datos; 51 ejercicios nuevos con claves comprobadas. Cada concepto de M2 tiene al menos dos ítems.
+- Ciencias: precisión en Golgi/RER, filtración, soluciones hipertónicas, ondas electromagnéticas, eficiencia eléctrica y concentraciones. Ampliación en genética, reproducción, óptica, modelos planetarios y química. Se excluyen paráfrasis del mismo ensayo y del refuerzo inmediato.
+- Lectora: explicaciones vinculadas a evidencia de cada texto, feedback de distractores y ejemplos específicos. Se añaden 30 ítems para ensayos de siete textos.
+- Historia: se distinguen causas estructurales y detonante de la Primera Guerra Mundial; contexto de fuentes y cronología chilena. Se corrige una alternativa ambigua sobre cálculo de desempleo.
+- Se corrigió un error de sintaxis que impedía iniciar el motor compartido de M2 e Historia, rutas faltantes en el servidor de pruebas, reanudación del refuerzo de M1 y sobrescritura de un ensayo al consultar resultados antiguos.
+- Migración de ensayos anteriores: conserva aciertos conocidos y no duplica el historial al entregar. Las respuestas antiguas cuyo distractor no se guardó no se inventan.
+
+## Estructura de ensayos
+
+| Prueba | Preguntas | Tiempo |
+|---|---:|---:|
+| M1 | 65 | 140 min |
+| M2 | 55 | 140 min |
+| Ciencias | 80 | 160 min |
+| Competencia Lectora | 65, siete textos | 150 min |
+| Historia | 65 | 120 min |
+
+Ciencias integra 54 comunes (18 de cada disciplina) y 26 del módulo elegido: Biología, Física, Química o técnico profesional. La selección se prueba en las cuatro opciones. Las cantidades y tiempos se contrastaron con los temarios DEMRE de PAES Regular 2026 / Admisión 2027. La beta informa aciertos y no convierte estos ejercicios en puntajes oficiales; no conoce cuáles ítems experimentales de una prueba real no se puntúan.
+
+Fuentes: https://demre.cl/la-prueba/pruebas-y-temarios/presentacion-pruebas-temarios-paes-regular
+
+## Validación y APK
+
+Código funcional congelado para validación final: `0a3f2f6a2d82976641831c63b7ed6a31cb0c008c`.
+
+- Lógica local: 104 aprobadas, 0 fallidas, 0 omitidas.
+- Integridad: 623 ítems, 0 alertas críticas.
+- Compilación web: aprobada.
+- Validación final de navegador y Android: se registra debajo con los workflows del mismo código; no se atribuye a este commit el resultado de uno anterior.
+
+Android usa API 36, minSdk 24, Java 17 y versión 1.1.0-beta / código 12. No solicita permisos de Internet ni almacenamiento. Las pruebas instrumentadas ejecutan las cinco materias dentro de la APK instalada y comprueban recreación de actividad, progreso y botón Atrás. No equivalen a una prueba en teléfono físico.
+
+## Pendientes reales
+
+1. Revisión independiente por docentes, cobertura exhaustiva de objetivos y calibración de dificultad. Los textos lectores necesitan mayor extensión y complejidad antes de afirmar equivalencia con PAES.
+2. El banco finito limita la novedad del refuerzo, especialmente después de un ensayo de Historia que usa sus 65 ítems. La aplicación no presenta una repetición inmediata como aprendizaje nuevo; una práctica espaciada no sustituye ampliar el banco.
+3. Teléfonos físicos de gama media: instalación, uso prolongado, lector de pantalla, texto aumentado, retorno tras cierre del proceso y actualización desde la beta anterior. La prueba automatizada cubre recreación de actividad, no todos los cierres del sistema operativo.
+4. Compatibilidad de firma con APK antiguas: la clave debug anterior puede haber sido efímera. No se debe desinstalar ni borrar datos para probar una actualización sin preservar antes el avance. El historial actual es local y no hay sincronización entre dispositivos.
+5. Pages depende de su habilitación inicial por una cuenta con administración. La conexión utilizada en esta sesión no incluye ese permiso. El workflow conserva las pruebas y no intenta saltarse el requisito de administración.
+6. Firma privada definitiva, política de privacidad pública, ficha de Google Play, cuenta y publicación. No se realizaron gastos ni publicaciones en Play. Detalles en `docs/publicacion-play.md`.
+
+La próxima prueba recomendada es supervisada: estudiantes con distinto nivel realizan diagnóstico, práctica, errores con tutor, refuerzo, ensayo con pausa y reapertura. Deben observarse comprensión real, accesibilidad y conservación del progreso, además de aciertos.
