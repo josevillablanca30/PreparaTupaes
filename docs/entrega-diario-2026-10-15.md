@@ -80,3 +80,15 @@ La APK de ese SHA fue descargada y comprobada: 2.101.089 bytes, SHA-256 `88533f1
 | [1566f44](https://github.com/josevillablanca30/PreparaTupaes/commit/1566f44b1a7f86d9342cf7b78ef2d73e719d5189) | Eje geométrico correcto en cuatro ítems M2 y artefacto Android identificado como versión 1.2. |
 
 Todos se publicaron en `main`, verificando el SHA remoto y el árbol de archivos. La rama `work/cachaste-diario-2026-10-15` conserva otro punto de respaldo. No se utilizó actualización forzada ni se sobrescribió la historia anterior.
+
+## APK final: corrección curricular incluida
+
+Código de aplicación `1566f44b1a7f86d9342cf7b78ef2d73e719d5189`. Workflow Android aprobado: https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38807317551 . Pasan 148 pruebas de lógica, 394 pruebas móviles y seis pruebas nativas en emulador API 36. Se comprobó el catálogo dentro de la APK, las cuatro asignaciones geométricas corregidas, el SHA de build en inicio y la imagen oficial sin modificaciones.
+
+Archivo final: `Cachaste-1.2.0-beta-daily.apk`, 2.101.237 bytes, SHA-256 `dd010416b6f46e06bd59e023c3dff82b89f14693bbd27b266eaabbb8476e5b1f`. Conserva el certificado beta v2 indicado arriba. Esta APK sustituye el archivo descargable de la primera integración; no contiene la clasificación anterior de esos cuatro ítems.
+
+El código está en `main` y en `work/cachaste-diario-2026-10-15`; los commits posteriores al SHA del APK solo documentan la entrega. No se declara publicación comercial ni prueba en teléfonos físicos.
+
+La suite web final del mismo SHA también aprobó los tres perfiles (Android, iPhone/WebKit y 320 px): https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38807317744 . El trabajo de despliegue volvió a fallar al leer la configuración de Pages (`Not Found`); por tanto no se entrega un enlace web público como si estuviera publicado. La APK funciona con los recursos locales y no depende de Pages.
+
+Resultado exacto final de CI: **148 lógica, 591 web, 6 nativas aprobadas**. Las 394 pruebas Android/320 px del workflow APK son un subconjunto de las 591 web, no se suman como pruebas distintas. Ninguna prueba fue desactivada para conseguir la compilación.
