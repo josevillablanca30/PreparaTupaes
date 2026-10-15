@@ -40,3 +40,7 @@ Después de ese checkpoint se preparó API 36 para los requisitos vigentes de fu
 - Se identifican familias de paráfrasis en Ciencias: los ensayos mantienen 54 comunes + 26 de mención sin duplicar familias; el refuerzo excluye también las paráfrasis de la pregunta fallada.
 - Tres preguntas nuevas de Lectora fueron reformuladas para no repetir el mismo dato dentro de su texto.
 - La comprobación final de esta revisión se conserva en los workflows del PR; no se transfieren resultados de otro commit sin comprobarlo.
+
+## APK final de 623 preguntas
+
+Código `0a3f2f6a2d82976641831c63b7ed6a31cb0c008c`: 104 pruebas de lógica y 144 recorridos de navegador aprobados; 96 de estos recorridos también se repitieron como puerta del workflow Android. La APK del run 38712726253 se instaló en Android 16 / API 36 y aprobó 3 pruebas instrumentadas, 0 fallidas y 0 omitidas. Se descargó y sus 17 archivos web se compararon con el código respaldado. Evidencia y huella del APK en `docs/evidencia-android-0a3f2f6.json` y detalle en `docs/entrega-beta-1.1.md`. Las secciones anteriores conservan el estado histórico de sus checkpoints.

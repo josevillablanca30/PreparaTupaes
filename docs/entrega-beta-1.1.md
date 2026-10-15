@@ -61,7 +61,10 @@ Código funcional congelado para validación final: `0a3f2f6a2d82976641831c63b7e
 - Lógica local: 104 aprobadas, 0 fallidas, 0 omitidas.
 - Integridad: 623 ítems, 0 alertas críticas.
 - Compilación web: aprobada.
-- Validación final de navegador y Android: se registra debajo con los workflows del mismo código; no se atribuye a este commit el resultado de uno anterior.
+- Navegador: 144 aprobadas en Android Chrome, iPhone WebKit y pantalla de 320 px. Workflow [38713143623](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38713143623), revisión documental `6445f51` con los mismos archivos funcionales de `0a3f2f6`.
+- Android: workflow [38712726253](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38712726253), commit `0a3f2f6`: compilación aprobada; 96 recorridos móviles aprobados; APK instalada en emulador API 36 con 3 pruebas instrumentadas, 0 fallidas y 0 omitidas. Informe nativo: 16,230 s.
+- Se descargó la APK del workflow y se compararon sus 17 archivos de aplicación con el respaldo local: idénticos, descontando únicamente la etiqueta de revisión insertada por el build. Todas las páginas empaquetadas identifican el commit probado.
+- APK: `Cachaste-1.1.0-beta-0a3f2f6.apk`, 329.828 bytes. SHA-256: `8b783bf6f91b1318677e4ebc61b39b0544c118358e6d9e4a69a8a5e2deb08579`. Se entrega como archivo descargable; el artefacto adicional de Actions tiene retención de tres días.
 
 Android usa API 36, minSdk 24, Java 17 y versión 1.1.0-beta / código 12. No solicita permisos de Internet ni almacenamiento. Las pruebas instrumentadas ejecutan las cinco materias dentro de la APK instalada y comprueban recreación de actividad, progreso y botón Atrás. No equivalen a una prueba en teléfono físico.
 
@@ -75,3 +78,19 @@ Android usa API 36, minSdk 24, Java 17 y versión 1.1.0-beta / código 12. No so
 6. Firma privada definitiva, política de privacidad pública, ficha de Google Play, cuenta y publicación. No se realizaron gastos ni publicaciones en Play. Detalles en `docs/publicacion-play.md`.
 
 La próxima prueba recomendada es supervisada: estudiantes con distinto nivel realizan diagnóstico, práctica, errores con tutor, refuerzo, ensayo con pausa y reapertura. Deben observarse comprensión real, accesibilidad y conservación del progreso, además de aciertos.
+
+## Commits de respaldo verificados
+
+- [`3f75755`](https://github.com/josevillablanca30/PreparaTupaes/commit/3f7575580eb66dc9d27780fe6af9da5459bfab43): content: respaldar revisión individual y ampliación de bancos PAES 2027.
+- [`797b3e7`](https://github.com/josevillablanca30/PreparaTupaes/commit/797b3e70066acb427a5518c46ee3e9b917d697be): wip: respaldar tutor, ensayos, refuerzo y persistencia en cinco materias.
+- [`be52b95`](https://github.com/josevillablanca30/PreparaTupaes/commit/be52b952fe4f0af3765f862466b5b7fa08a8ab1e): chore: respaldar infraestructura de pruebas y documentar estado de integración.
+- [`8730e22`](https://github.com/josevillablanca30/PreparaTupaes/commit/8730e22bf79f1ad8d6f71ebda7d73331e0ea8753): fix: recuperar motor compartido y validar reglas de aprendizaje y bancos ampliados.
+- [`f603913`](https://github.com/josevillablanca30/PreparaTupaes/commit/f60391306ea290b280b187f2947cc73c06ba626f): android: preparar beta 1.1 con recuperación y pruebas instrumentadas offline.
+- [`8da4a4d`](https://github.com/josevillablanca30/PreparaTupaes/commit/8da4a4d31e71b61d11c2ba881815deafccbedc03): feat: proteger sesiones, completar progreso y preparar Android API 36.
+- [`66c08e9`](https://github.com/josevillablanca30/PreparaTupaes/commit/66c08e9aa5d54ce967c80d4560242c92e1ebba7b): fix: evitar paráfrasis repetidas y reanudar refuerzos sin perder sesiones.
+- [`2ba6336`](https://github.com/josevillablanca30/PreparaTupaes/commit/2ba63369225b3765146452ef5d9f6e9cd7f83ac0): ci: localizar SDK manager explícitamente para compilar Android 16.
+- [`cb5a40f`](https://github.com/josevillablanca30/PreparaTupaes/commit/cb5a40f3e5c837a8f766c7296d536e62d512a405): feat: completar transferencia adaptativa con 28 ejercicios revisados.
+- [`0a3f2f6`](https://github.com/josevillablanca30/PreparaTupaes/commit/0a3f2f6a2d82976641831c63b7ed6a31cb0c008c): fix: distribuir claves de nuevos ejercicios sin alterar sus explicaciones.
+- [`6445f51`](https://github.com/josevillablanca30/PreparaTupaes/commit/6445f517a215381267191478b351eaf9d019ed15): docs: registrar entrega beta, respaldo y limites verificados.
+
+La evidencia final se agrega en un commit documental posterior. La lista completa se conserva en https://github.com/josevillablanca30/PreparaTupaes/pull/1/commits.
