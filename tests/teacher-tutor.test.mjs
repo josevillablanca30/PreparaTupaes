@@ -28,3 +28,15 @@ test('Tutor: vértice distingue ubicación/altura, logaritmo define sus tres té
  assert.match(by('003').foundation.join(' '),/favorable menos y un objeto total menos/);
  assert.equal((3/5)*(2/4),3/10);assert.equal(2**3,8);assert.equal((-4)**2,4**2);
 });
+test('Tutor: los ejemplos nuevos resuelven otra tarea y las comprobaciones matemáticas son consistentes',()=>{
+ assert.equal(99*101,100**2-1);
+ assert.equal((5100-600)/3,1500);
+ assert.equal((2*7+4-4)/2,7);
+ assert.equal(12000+100,12100);
+ assert.equal(Math.sqrt(13**2-5**2),12);
+ assert.equal((9-2)*180/9,140);
+ assert.equal((2+3+4+5+100)/5,22.8);
+ assert.equal((2+3+4+5+10)/5,4.8);
+ const q=after.find(q=>q.id==='M2-001');assert.match(q.teaching.application.join(' '),/suma y resta cuatro/);
+ const med=after.find(q=>q.id==='M2-038');assert.match(med.teaching.example.problem,/qué pasa con mediana y media/);
+});
