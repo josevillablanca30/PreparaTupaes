@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-15",
+  "sourceCommit": "0a3f2f6a2d82976641831c63b7ed6a31cb0c008c",
+  "androidWorkflow": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38712726253",
+  "browserWorkflow": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38713143623",
+  "browserDocumentationCommit": "6445f517a215381267191478b351eaf9d019ed15",
+  "logicTests": {
+    "passed": 104,
+    "failed": 0,
+    "skipped": 0
+  },
+  "browserTests": {
+    "passed": 144,
+    "failed": 0,
+    "projects": [
+      "Android-Chrome",
+      "iPhone-WebKit",
+      "mobile-320px"
+    ]
+  },
+  "androidBrowserGate": {
+    "passed": 96,
+    "subsetOfBrowserTests": true
+  },
+  "instrumentation": {
+    "api": 36,
+    "device": "emulator x86_64",
+    "tests": 3,
+    "failures": 0,
+    "skipped": 0,
+    "durationSeconds": 16.23
+  },
+  "artifactId": 11961498441,
+  "apk": {
+    "file": "Cachaste-1.1.0-beta-0a3f2f6.apk",
+    "bytes": 329828,
+    "sha256": "8b783bf6f91b1318677e4ebc61b39b0544c118358e6d9e4a69a8a5e2deb08579",
+    "applicationFilesCompared": 17,
+    "allMatched": true
+  },
+  "pedagogicalStructure": {
+    "items": 623,
+    "critical": 0,
+    "heuristicReviewFlags": 569
+  },
+  "limitations": [
+    "No physical-device test",
+    "Not independent teacher certification",
+    "Not a production-signed release",
+    "Pages initial configuration requires administration"
+  ]
+}

@@ -10,7 +10,7 @@ function reading(data=new Map()){
  const document={getElementById:k=>elements[k]||null};
  const storage={getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v),removeItem:k=>data.delete(k)};
  const cx=vm.createContext({window:win,document,localStorage:storage,console});
- vm.runInContext(bankSrc,cx);vm.runInContext(appSrc,cx);
+ vm.runInContext(readFileSync(new URL('../learning-core.js',import.meta.url),'utf8'),cx);vm.runInContext(bankSrc,cx);vm.runInContext(appSrc,cx);
  return {win,elements,data,items:win.READING_QUESTIONS,passages:win.READING_PASSAGES,get:()=>JSON.parse(data.get('cachaste-reading-v1')||'{}')};
 }
 function finishDiagnosis(a,wrong=0){
@@ -22,10 +22,10 @@ function finishDiagnosis(a,wrong=0){
   a.win.readingCheck();a.win.readingAdvance();
  }
 }
-test('Lectura: 20 textos originales y 100 preguntas únicas con tres habilidades',()=>{
- const a=reading();assert.equal(a.passages.length,20);assert.equal(a.items.length,100);
- assert.equal(new Set(a.items.map(x=>x.id)).size,100);
- assert.equal(new Set(a.items.map(x=>x.question)).size,100);
+test('Lectura: 20 textos originales y 130 preguntas únicas con tres habilidades',()=>{
+ const a=reading();assert.equal(a.passages.length,20);assert.equal(a.items.length,130);
+ assert.equal(new Set(a.items.map(x=>x.id)).size,130);
+ assert.equal(new Set(a.items.map(x=>x.question)).size,130);
  for(const p of a.passages){assert.ok(p.paragraphs.length>=2);assert.ok(p.paragraphs.join(' ').length>500);}
  const distribution={};
  for(const q of a.items){
@@ -37,9 +37,9 @@ test('Lectura: 20 textos originales y 100 preguntas únicas con tres habilidades
   assert.ok(q.steps.length>=2,q.id);
   assert.ok(q.answer>=0&&q.answer<4,q.id);
  }
- assert.equal(distribution.Localizar,37);
- assert.equal(distribution.Interpretar,40);
- assert.equal(distribution.Evaluar,23);
+ assert.equal(distribution.Localizar,45);
+ assert.equal(distribution.Interpretar,53);
+ assert.equal(distribution.Evaluar,32);
 });
 test('Lectura: diagnóstico obligatorio de 30 distribuye 10/12/8',()=>{
  const a=reading();a.win.readingBegin('express');
@@ -137,7 +137,10 @@ test('Lectura: omitir con alternativa marcada no cuenta como acierto',()=>{
  const first=a.get().session.ids[0],q=a.items.find(x=>x.id===first);
  a.win.readingChoose(q.answer);
  a.win.readingAdvance(true);
- const rec=a.get().session.results[0];
+ assert.equal(a.get().session.results.length,0);
+ assert.equal(a.get().session.answers[first],null);
+ a.win.readingExamAction('submit');
+ const rec=a.get().recent[0];
  assert.equal(rec.unanswered,true);
  assert.equal(rec.correct,false);
  assert.equal(rec.confidence,'sin-declarar');
@@ -146,8 +149,17 @@ test('Lectura: omitir con alternativa marcada no cuenta como acierto',()=>{
 test('Lectura: distractores del primer texto son pertinentes y no absurdos',()=>{
  const a=reading();
  const first=a.items.filter(q=>q.passageId==='T01');
- assert.equal(first.length,5);
+ assert.equal(first.length,10);
  const banned=['reparación de vehículos','Color de los estantes','La camioneta había dejado de funcionar','Todos los días'];
  for(const q of first)for(const option of q.options)for(const phrase of banned)assert.ok(!option.includes(phrase),q.id+' '+phrase);
- assert.ok(first.every(q=>q.explanations.filter((_,i)=>i!==q.answer).every(x=>x.includes('Contrástala con la evidencia'))));
+ assert.ok(first.every(q=>q.explanations.filter((_,i)=>i!==q.answer).every(x=>x.length>35)));
+ assert.ok(new Set(first[0].explanations).size===4);
+});
+
+test('Lectura migra respuestas anteriores sin duplicar historial y conserva los aciertos',()=>{
+ const a=reading();finishDiagnosis(a);a.win.readingBegin('completo');const state=a.get(),session=state.session;
+ const rows=session.ids.slice(0,2).map((id,i)=>({id,correct:i===0,unanswered:false,confidence:'sin-declarar',at:'2026-10-13T12:00:0'+i+'Z'}));
+ delete session.answers;session.results=rows;session.index=2;state.history.push(...rows);
+ const b=reading(new Map([['cachaste-reading-v1',JSON.stringify(state)]]));b.win.readingResume();b.win.readingExamAction('submit');const done=b.get();
+ assert.equal(done.history.length,95);assert.equal(done.recent[0].correct,true);assert.equal(done.recent[1].unanswered,false);
 });

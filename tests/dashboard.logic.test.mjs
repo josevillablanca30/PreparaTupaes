@@ -7,7 +7,7 @@ const read=path=>readFileSync(new URL(path,root),'utf8');
 const dashboard=read('inicio.html');
 const script=dashboard.match(/<script>([\s\S]*?)<\/script>/)?.[1];
 function openHome(data=new Map()){
- const rendered={'m1-progress':{textContent:'Aún sin practicar'},'science-progress':{textContent:'Aún sin practicar'},'reading-progress':{textContent:'Aún sin practicar'}};
+ const rendered={'m1-progress':{textContent:'Aún sin practicar'},'science-progress':{textContent:'Aún sin practicar'},'reading-progress':{textContent:'Aún sin practicar'},'m2-progress':{textContent:'Aún sin practicar'},'history-progress':{textContent:'Aún sin practicar'},'continue-study':{innerHTML:''}};
  vm.runInNewContext(script,{
   localStorage:{getItem:key=>data.get(key)??null},
   document:{getElementById:id=>rendered[id]}

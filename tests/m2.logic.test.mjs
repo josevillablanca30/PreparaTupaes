@@ -4,28 +4,28 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const src=readFileSync(new URL('../m2-bank.js',import.meta.url),'utf8');
 const app=readFileSync(new URL('../m2-app.js',import.meta.url),'utf8');
-test('M2: banco de 55 preguntas originales válidas en seis áreas',()=>{
+test('M2: banco de 106 preguntas originales válidas en seis áreas',()=>{
  const window={};vm.runInNewContext(src,{window});
  const bank=window.CACHASTE_M2;
- assert.equal(bank.length,55);
- assert.equal(new Set(bank.map(q=>q.id)).size,55);
+ assert.equal(bank.length,106);
+ assert.equal(new Set(bank.map(q=>q.id)).size,106);
  assert.equal(new Set(bank.map(q=>q.area)).size,6);
  const distribution=Object.fromEntries([...new Set(bank.map(q=>q.area))].map(area=>[area,bank.filter(q=>q.area===area).length]));
  assert.ok(Object.values(distribution).every(count=>count>=5),JSON.stringify(distribution));
  assert.ok(bank.some(q=>q.area==='Suficiencia de datos'&&q.why.includes('afirmaci')));
  for(const q of bank){
-  assert.equal(q.options.length,4,q.id);
-  assert.equal(new Set(q.options).size,4,q.id);
-  assert.ok(q.answer>=0&&q.answer<4,q.id);
+  assert.equal(q.options.length,q.area==='Suficiencia de datos'?5:4,q.id);
+  assert.equal(new Set(q.options).size,q.options.length,q.id);
+  assert.ok(q.answer>=0&&q.answer<q.options.length,q.id);
   assert.ok(q.why.length>25,q.id);
   assert.ok(q.hint.length>20,q.id);
   assert.equal(q.origin,'original');
  }
 });
 test('M2: interfaz incluye guardado local y no presenta puntajes oficiales',()=>{
- assert.match(app,/localStorage\.setItem/);
- assert.match(app,/No equivale a puntaje PAES oficial/);
- assert.match(app,/sin-declarar/);
+ assert.match(readFileSync(new URL('../study-app.js',import.meta.url),'utf8'),/localStorage\.setItem/);
+ assert.match(readFileSync(new URL('../study-app.js',import.meta.url),'utf8'),/No equivale a puntaje PAES oficial/);
+ assert.match(readFileSync(new URL('../study-app.js',import.meta.url),'utf8'),/sin-declarar/);
 });
 
 test('M2: claves de cálculo verificadas de manera independiente',()=>{

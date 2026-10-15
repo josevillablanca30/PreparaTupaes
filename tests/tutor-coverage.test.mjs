@@ -7,9 +7,9 @@ for(const name of ['reading-bank.js','history-bank.js','m2-bank.js','science-ban
  vm.runInContext(readFileSync(new URL('../'+name,import.meta.url),'utf8'),ctx,{filename:name});
 }
 const w=ctx.window;
-test('Lectura: 100 preguntas y 20 textos, con tutor y evidencias editoriales',()=>{
+test('Lectura: 130 preguntas y 20 textos, con tutor y evidencias editoriales',()=>{
  assert.equal(w.READING_PASSAGES.length,20);
- assert.equal(w.READING_QUESTIONS.length,100);
+ assert.equal(w.READING_QUESTIONS.length,130);
  const passages=new Map(w.READING_PASSAGES.map(p=>[p.id,p]));
  for(const [i,q] of w.READING_QUESTIONS.entries()){
   assert.equal(q.id,'LEC-'+String(i+1).padStart(3,'0'));
@@ -35,8 +35,8 @@ test('Historia: 65 preguntas con tutor editorial y claves únicas',()=>{
   assert.ok(q.editorial?.example?.length>=30,q.id+' ejemplo');
  }
 });
-test('Ciencias: 166 preguntas con respuestas y tres modos de tutor',()=>{
- assert.equal(w.SCIENCE_BANK.length,166);
+test('Ciencias: 206 preguntas con respuestas y tres modos de tutor',()=>{
+ assert.equal(w.SCIENCE_BANK.length,206);
  for(const [i,q] of w.SCIENCE_BANK.entries()){
   assert.equal(q.id,'SCI-'+String(i+1).padStart(3,'0'));
   assert.ok(q.options[q.answer],q.id+' clave');

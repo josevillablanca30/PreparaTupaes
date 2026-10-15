@@ -38,7 +38,7 @@ for(const subject of [
   await expect(page.getByRole('heading',{name:/de 30 correctas/})).toBeVisible();
   await page.getByRole('button',{name:'Volver al inicio'}).click();
   await expect(page.getByRole('button',{name:'Express · 10 preguntas'})).toBeEnabled();
-  await expect(page.getByRole('button',{name:'Practicar banco completo · '+subject.count})).toBeEnabled();
+  await expect(page.getByRole('button',{name:'Ensayo completo · '+subject.count+' preguntas'})).toBeEnabled();
   await page.getByRole('button',{name:'Express · 10 preguntas'}).click();
   const ids=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).session.ids,subject.key);
   expect(ids.length).toBe(10);

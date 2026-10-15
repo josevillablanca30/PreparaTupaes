@@ -12,8 +12,8 @@ test('Historia: banco de 65 preguntas originales, cuatro opciones y explicacione
  for(const q of bank){assert.equal(q.options.length,4);assert.equal(new Set(q.options).size,4);assert.ok(q.why.length>25);assert.ok(q.hint.length>20);assert.equal(q.origin,'original')}
 });
 test('Historia: sesión guardada independiente de otras materias',()=>{
- assert.match(app,/cachaste-history-v1/);assert.match(app,/localStorage\.setItem/);
- assert.match(app,/No equivale a puntaje PAES oficial/);
+ assert.match(app,/cachaste-history-v1/);assert.match(readFileSync(new URL('../study-app.js',import.meta.url),'utf8'),/localStorage\.setItem/);
+ assert.match(readFileSync(new URL('../study-app.js',import.meta.url),'utf8'),/No equivale a puntaje PAES oficial/);
 });
 test('Historia: auditoría de hechos históricos, ciudadanía, economía y análisis de fuentes',()=>{
  const window={};vm.runInNewContext(src,{window});

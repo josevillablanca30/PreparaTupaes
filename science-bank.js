@@ -252,3 +252,1539 @@ window.SCIENCE_BANK=SCIENCE_BANK;
 
 const SCIENCE_EDITORIAL_LOTE_1={"SCI-121":{"steps":["Tras ayuno, la glucosa sanguínea tiende a bajar.","El páncreas libera glucagón, que favorece la liberación de glucosa por el hígado.","La insulina suele actuar en sentido opuesto cuando la glicemia aumenta."],"easy":"El glucagón ayuda a elevar la glucosa cuando llevas horas sin comer.","example":"El hígado puede degradar glucógeno y liberar glucosa en respuesta al glucagón."},"SCI-122":{"steps":["La diversidad floral es la condición que se compara entre parcelas.","El resultado observado es la frecuencia de visitas de polinizadores.","Cuenta visitas por un mismo período y con procedimientos comparables."],"easy":"Lo que se mide es cuántas visitas reciben las flores.","example":"Registrar visitas durante 20 minutos en cada parcela permite comparar el resultado."},"SCI-123":{"steps":["Una lesión activa señales locales del sistema inmune innato.","La vasodilatación aumenta el flujo sanguíneo y facilita llegada de células defensivas.","Enrojecimiento y calor pueden acompañar esa respuesta."],"easy":"La zona puede ponerse roja y caliente porque llega más sangre.","example":"Tras un raspón leve, células inmunitarias acuden al tejido dañado."},"SCI-124":{"steps":["Velocidad constante significa aceleración igual a cero.","Por F_neta=m×a, la fuerza neta vertical es cero.","Eso no significa ausencia de fuerzas: peso y fuerza normal se equilibran."],"easy":"Aunque suba, si no acelera la fuerza neta es cero.","example":"La fuerza del piso del ascensor sobre la persona equilibra su peso."},"SCI-125":{"steps":["La rapidez de propagación permanece constante en el mismo medio.","Aplica v=λf: si f se duplica, λ debe dividirse por dos.","No confundas frecuencia con amplitud."],"easy":"El doble de ciclos por segundo implica la mitad de distancia por ciclo.","example":"Si inicialmente λ=4 m, al duplicar f con la misma rapidez pasa a 2 m."},"SCI-126":{"steps":["La potencia eléctrica se calcula como P=VI.","Sustituye V=12 V e I=2 A.","Al multiplicar 12×2 se obtiene una potencia de 24 W."],"easy":"Multiplica voltaje por corriente para obtener potencia.","example":"Un equipo de 24 W consume 24 joules de energía cada segundo."},"SCI-127":{"steps":["En paralelo, 1/R_eq=1/4+1/12.","Suma fracciones: 3/12+1/12=4/12=1/3.","Invierte el resultado: R_eq=3 Ω."],"easy":"Dos caminos en paralelo reducen la resistencia equivalente.","example":"La equivalente de 3 Ω es menor que ambas resistencias individuales, como debe ocurrir en paralelo."},"SCI-128":{"steps":["Las ondas S producen deformación de cizalla transversal.","Un líquido no sostiene esfuerzos cortantes elásticos como un sólido.","Por eso no atraviesan el núcleo externo líquido de la Tierra."],"easy":"Las ondas S necesitan un medio que resista deformación de cizalla.","example":"La ausencia de ondas S directas a través del núcleo externo ayuda a inferir su estado líquido."},"SCI-129":{"steps":["Potencia media es trabajo dividido por tiempo.","Sustituye los datos: P=600 J divididos por 20 s.","P=30 W, ya que 1 W=1 J/s."],"easy":"Se hicieron 30 joules de trabajo por segundo, en promedio.","example":"Realizar 600 J en 20 s equivale a una potencia media de 30 W."},"SCI-130":{"steps":["El movimiento relativo entre fuente y oyente cambia la frecuencia percibida.","Cuando la ambulancia se acerca, los frentes de onda llegan más frecuentemente.","Cuando se aleja, la frecuencia percibida disminuye: efecto Doppler."],"easy":"La sirena se oye más aguda al acercarse y más grave al alejarse.","example":"El tono cambia aunque la sirena emita una frecuencia aproximadamente constante."},"SCI-131":{"steps":["La ecuación balanceada es 2H₂+O₂→2H₂O.","La relación molar H₂:H₂O es 2:2, equivalente a 1:1.","Con oxígeno suficiente, 2 mol de H₂ producen 2 mol de H₂O."],"easy":"Dos moles de hidrógeno producen dos de agua según los coeficientes.","example":"Los coeficientes de una ecuación balanceada indican proporciones de moles."},"SCI-132":{"steps":["El número másico A es protones más neutrones.","El número atómico Z indica protones: Z=6.","Neutrones=A−Z=14−6=8."],"easy":"Resta número atómico al número másico.","example":"Carbono-14 tiene seis protones y ocho neutrones."},"SCI-133":{"steps":["CH₃−CH₂−CH₃ tiene tres átomos de carbono.","Solo contiene enlaces simples entre carbonos: es un alcano.","El alcano de tres carbonos se llama propano."],"easy":"Tres carbonos con enlaces simples forman propano.","example":"Su fórmula molecular es C₃H₈."},"SCI-134":{"steps":["La reacción ocurre en recipiente cerrado sin pérdida de materia.","La masa total se conserva aunque cambien las sustancias.","Masa final=10 g+15 g=25 g."],"easy":"Los productos pesan lo mismo que los reactivos consumidos.","example":"Si entran 25 g de reactivos y todo reacciona sin pérdidas, salen 25 g de productos."},"SCI-135":{"steps":["Un aldehído contiene un carbonilo terminal −CHO.","CH₃−CHO presenta ese grupo al final de la cadena.","No lo confundas con cetonas, que tienen el carbonilo entre carbonos."],"easy":"El grupo −CHO al extremo identifica un aldehído.","example":"CH₃CHO es etanal, un aldehído de dos carbonos."},"SCI-136":{"steps":["La distribución simplificada es 2, 8, 1.","El último nivel ocupado tiene un electrón.","Por eso posee un electrón de valencia."],"easy":"Mira el último número de la distribución por capas.","example":"La distribución 2,8,1 corresponde a un átomo neutro de sodio con un electrón externo."},"SCI-137":{"steps":["Molaridad M=n/V con V expresado en litros.","Sustituye n=0,2 mol y V=0,5 L.","M=0,2/0,5=0,4 mol/L."],"easy":"Divide los moles por los litros de solución.","example":"Medio litro con 0,2 mol equivale a 0,4 mol por litro."},"SCI-138":{"steps":["Ambas moléculas comparten la fórmula molecular.","Sus átomos están enlazados en un orden distinto.","Eso define isomería estructural o constitucional."],"easy":"Misma fórmula, distinta conexión entre átomos.","example":"Etanol y dimetil éter comparten C₂H₆O, pero sus átomos están conectados de manera diferente."},"SCI-139":{"steps":["La pared celular aporta soporte rígido.","Los cloroplastos permiten fotosíntesis y la vacuola central suele ser grande.","La combinación es característica de células vegetales fotosintéticas."],"easy":"Pared, cloroplastos y gran vacuola apuntan a célula vegetal.","example":"Una célula de hoja suele presentar esas estructuras."},"SCI-140":{"steps":["Las células de raíz somática se dividen para crecimiento.","La mitosis conserva normalmente el número cromosómico en las células hijas.","La meiosis, en cambio, forma células con dotación cromosómica reducida."],"easy":"La mitosis genera dos células con igual número de cromosomas.","example":"En una raíz diploide, las nuevas células somáticas suelen seguir siendo diploides."},"SCI-141":{"steps":["Al subir escaleras aumenta la demanda energética de músculos.","Aumenta el transporte de oxígeno y nutrientes y la eliminación de CO₂.","Por eso suelen elevarse frecuencia cardíaca y respiratoria."],"easy":"El cuerpo acelera circulación y respiración para abastecer músculos.","example":"La respiración elimina CO₂ producido por actividad metabólica intensa."},"SCI-142":{"steps":["Los peces pequeños se alimentan de insectos acuáticos.","Si disminuyen esas presas, se reduce su alimento disponible.","El efecto poblacional posterior depende de otras fuentes de alimento y condiciones."],"easy":"Menos insectos significa potencialmente menos comida para esos peces.","example":"La disminución de presas puede obligar a peces a cambiar dieta o reducir su crecimiento."},"SCI-143":{"steps":["El color del pelaje puede depender de variantes genéticas heredables.","Distintas combinaciones de alelos pueden contribuir a diferencias observadas.","El ambiente también puede influir; no toda diferencia visible es genética."],"easy":"Dos animales pueden heredar alelos distintos para un rasgo.","example":"Si los padres transmiten variantes de un gen pigmentario, sus crías pueden mostrar pelajes diferentes."},"SCI-144":{"steps":["La vacuna activa una respuesta adaptativa específica.","Se pueden formar linfocitos de memoria.","Ante exposición futura, la respuesta suele iniciarse con mayor rapidez."],"easy":"La vacuna entrena defensas para reconocer antes un agente.","example":"Una segunda exposición puede activar células de memoria sin partir desde cero."},"SCI-145":{"steps":["La cantidad de luz es la variable independiente.","El crecimiento medido es la variable dependiente.","Comparar altura ganada promedio permite estimar el efecto entre grupos."],"easy":"Hay que medir cuánto crecieron, no solo cuánto sol recibieron.","example":"Medir altura inicial y final de cada planta permite calcular su crecimiento."},"SCI-146":{"steps":["Rapidez media=distancia total/tiempo total.","Sustituye 45 km/3 h.","El resultado es una rapidez media de 15 km/h."],"easy":"Divide kilómetros recorridos por horas empleadas.","example":"En una hora, a esa rapidez media, recorrería 15 km."},"SCI-147":{"steps":["Si el balón pierde rapidez, existe aceleración opuesta al movimiento.","El roce con el suelo contribuye a frenarlo.","La resistencia del aire también puede intervenir, según las condiciones."],"easy":"La fricción se opone al movimiento y reduce la rapidez.","example":"Un balón sobre una superficie rugosa suele detenerse antes que en una muy lisa."},"SCI-148":{"steps":["Golpear más fuerte suele generar mayor amplitud de vibración.","Mayor amplitud se relaciona con mayor intensidad sonora.","No significa necesariamente mayor frecuencia ni tono más agudo."],"easy":"El golpe más fuerte hace que el sonido se escuche más intenso.","example":"Un tambor puede sonar más fuerte sin cambiar sustancialmente de nota."},"SCI-149":{"steps":["La corriente necesita una trayectoria conductora completa.","Si hay un corte, la corriente no circula por la ampolleta.","El circuito debe estar cerrado para encenderla."],"easy":"La electricidad necesita un camino cerrado entre los terminales.","example":"Un interruptor abierto impide el paso de corriente y apaga la ampolleta."},"SCI-150":{"steps":["Una corriente excesiva puede sobrecalentar conductores.","Un interruptor automático abre el circuito ante una sobrecorriente según su diseño.","No debe confundirse con un interruptor común sin función de protección."],"easy":"El automático corta la corriente cuando supera un límite de protección.","example":"Ante una sobrecarga, un interruptor termomagnético puede desconectar el circuito."},"SCI-151":{"steps":["El agua posee energía por su altura y movimiento.","El flujo hace girar una turbina acoplada a un generador.","El generador transforma energía mecánica en eléctrica."],"easy":"El movimiento del agua termina produciendo electricidad.","example":"En una central, el agua mueve turbinas que accionan un generador eléctrico."},"SCI-152":{"steps":["El sonido se propaga desde la fuente.","Al chocar con una superficie distante, parte se refleja.","El sonido reflejado regresa y puede oírse como eco."],"easy":"El eco es sonido que rebota y vuelve.","example":"Una voz en un túnel puede regresar tras reflejarse en paredes lejanas."},"SCI-153":{"steps":["Las partículas subatómicas tienen cargas distintas.","El electrón posee carga negativa; protón positiva y neutrón neutra.","La respuesta es electrón."],"easy":"El electrón es la partícula con carga negativa.","example":"Al perder electrones, un átomo puede quedar con carga neta positiva."},"SCI-154":{"steps":["Las columnas verticales de la tabla periódica se llaman grupos.","Elementos del mismo grupo suelen compartir patrones de electrones de valencia.","Por eso muestran propiedades químicas relacionadas."],"easy":"Las columnas son grupos o familias.","example":"Los metales alcalinos aparecen en el grupo 1 de la tabla."},"SCI-155":{"steps":["La masa de los reactivos es 8 g+12 g=20 g.","El recipiente está cerrado y no quedan residuos.","La conservación de masa exige 20 g de productos."],"easy":"La materia se reorganiza, no desaparece.","example":"Si todos los reactivos se convierten en productos, la masa total sigue siendo 20 g."},"SCI-156":{"steps":["Un hidrocarburo contiene únicamente carbono e hidrógeno.","La molécula cumple esa condición.","No requiere tener enlaces simples: puede ser alcano, alqueno o alquino."],"easy":"Si solo hay carbono e hidrógeno, es hidrocarburo.","example":"CH₄ y C₂H₄ son hidrocarburos aunque tengan estructuras diferentes."},"SCI-157":{"steps":["La solución combina soluto y solvente.","Masa total=10 g de sal+100 g de agua.","Resulta 110 g, sin pérdidas."],"easy":"Suma la masa del azúcar o sal y la del agua.","example":"10 g de sal disueltos en 100 g de agua producen 110 g de solución."},"SCI-158":{"steps":["Ambos vasos tienen el mismo volumen.","El que contiene mayor masa de azúcar disuelta tiene más soluto por volumen.","Por ello tiene mayor concentración."],"easy":"A igual volumen, más azúcar disuelta significa solución más concentrada.","example":"Si ambos vasos tienen 200 mL, el que contiene 20 g tiene mayor concentración que uno con 5 g."},"SCI-159":{"steps":["Las dendritas suelen recibir señales.","El axón conduce potenciales de acción desde la región de inicio hacia terminales.","Por eso la estructura indicada es el axón."],"easy":"El axón transporta la señal eléctrica hacia otras células.","example":"Una motoneurona conduce impulsos por su axón hasta terminales cercanos al músculo."},"SCI-160":{"steps":["La mielina favorece conducción saltatoria en axones mielinizados.","Con diámetro comparable, esa conducción suele ser más rápida.","La pérdida de mielina puede enlentecer o bloquear señales."],"easy":"La mielina ayuda a que el impulso viaje más rápido.","example":"Los potenciales de acción se regeneran principalmente en nodos de Ranvier."},"SCI-161":{"steps":["Los canales de sodio dependientes de voltaje permiten entrada rápida de Na⁺.","Esa corriente contribuye a la fase ascendente del potencial de acción.","Si se bloquean, la despolarización rápida se dificulta."],"easy":"Sin entrada de sodio, el impulso nervioso puede fallar.","example":"Bloquear canales de Na⁺ puede impedir la propagación normal del potencial de acción."},"SCI-162":{"steps":["Un estímulo doloroso activa receptores sensoriales.","La médula espinal puede coordinar un reflejo motor antes de la percepción consciente.","Por eso la mano se retira rápidamente."],"easy":"La médula puede activar la retirada antes de que seas consciente del dolor.","example":"Tocar una superficie muy caliente puede provocar un reflejo de flexión."},"SCI-163":{"steps":["En sinapsis química, el potencial de acción abre canales de calcio.","La entrada de Ca²⁺ favorece fusión de vesículas y liberación de neurotransmisor.","Si se bloquea el calcio, suele disminuir esa liberación."],"easy":"El calcio ayuda a que la neurona libere mensajeros químicos.","example":"Sin entrada presináptica de Ca²⁺, se reduce la exocitosis de vesículas."},"SCI-164":{"steps":["El estudio busca relacionar sueño y tiempo de reacción.","Medir a las mismas personas reduce diferencias individuales; controlar horario y condiciones limita confusores.","Comparar resultados antes y después permite evaluar el cambio, aunque no elimina todos los sesgos."],"easy":"Usa condiciones equivalentes y compara a las mismas personas.","example":"Un diseño contrabalanceado con descanso y sueño insuficiente puede mejorar la comparación."},"SCI-165":{"steps":["El alcohol actúa sobre el sistema nervioso central.","Puede alterar procesamiento de información, coordinación y reflejos.","La observación no permite concluir un mecanismo único ni un efecto idéntico en todos."],"easy":"El alcohol puede empeorar la coordinación al afectar el cerebro.","example":"El deterioro del equilibrio y del tiempo de reacción es compatible con sus efectos nerviosos."},"SCI-166":{"steps":["La presión deforma estructuras mecanosensibles en la piel.","Los receptores convierten ese estímulo mecánico en cambios de potencial eléctrico.","Si se alcanza umbral, se pueden generar impulsos nerviosos."],"easy":"La piel convierte presión en señales eléctricas para el sistema nervioso.","example":"Presionar un dedo activa receptores que codifican la intensidad del estímulo."}};
 for(const q of window.SCIENCE_BANK){if(SCIENCE_EDITORIAL_LOTE_1[q.id]){Object.assign(q,SCIENCE_EDITORIAL_LOTE_1[q.id]);q.review='revisado_conceptualmente';}}
+/* Revisión individual: precisión conceptual, transferencia y alcance curricular 2027. */
+{
+const by=n=>window.SCIENCE_BANK.find(q=>q.id==='SCI-'+String(n).padStart(3,'0'));
+by(3).question='Después de pasar por el retículo endoplasmático rugoso, una proteína de secreción debe clasificarse y empaquetarse para su destino. ¿Qué organelo realiza principalmente esa función?';
+by(26).question='Se necesita retener arena insoluble en una barrera porosa y dejar pasar el agua. ¿Qué método de separación corresponde?';
+by(64).question='Un glóbulo rojo se coloca en una solución hipertónica con solutos que no atraviesan su membrana. ¿Qué sucede inicialmente con el agua de su interior?';
+by(73).question='Una proteína destinada a la secreción ingresa a la vía del retículo rugoso. ¿Qué estructuras continúan ensamblando su cadena de aminoácidos mientras se incorpora a esa vía?';
+by(93).question='Un dispositivo eléctrico recibe 500 J de energía eléctrica y entrega 350 J de energía útil. ¿Cuál es su eficiencia energética?';by(93).area='Electricidad';
+by(125).question='En el vacío, una onda electromagnética duplica su frecuencia. ¿Qué ocurre con su longitud de onda?';
+by(125).steps=['La rapidez de propagación en el vacío permanece en c.','Aplica c=λf: si f se duplica, λ debe dividirse por dos.','No confundas frecuencia con amplitud: la relación usa frecuencia y longitud de onda.'];
+by(158).question='Dos soluciones de azúcar tienen el mismo volumen final. Una contiene mayor masa de azúcar disuelta. ¿Qué afirmación es razonable?';
+by(13).example='Una señal de radio en el vacío tiene f=100 MHz=10⁸ Hz. Con c=3×10⁸ m/s, su longitud es λ=c/f=3 m. No puede propagarse a 6 m/s en el vacío.';
+by(38).area='Organismo y ambiente';
+// These older items remain addressable for historical results, but are excluded from new PAES sessions.
+const supplemental=new Set([43,75,76,77,83,85,86,92,94,96,106,116,118,119,121,122,123,129,130,141,144,148,151,152,154]);
+for(const q of window.SCIENCE_BANK){const n=Number(q.id.slice(4));q.examEligible=!supplemental.has(n);q.curricularStatus=q.examEligible?'temario_demre_2027':'complementario_fuera_del_listado_explicito';q.review='revision_individual_asistida';q.reviewStatus='revision_individual_2026-10-14';}
+const examples=`
+1|En una célula renal que transporta activamente muchas sustancias, abundan mitocondrias. El transporte consume ATP; la respiración celular ayuda a reponerlo.
+2|Una célula puede dejar entrar oxígeno por difusión y usar proteínas para transportar glucosa. La membrana selecciona rutas distintas; no es una pared impermeable.
+3|En una célula que produce anticuerpos, el retículo rugoso participa en la síntesis y el Golgi clasifica las proteínas para enviarlas en vesículas. Son etapas diferentes de una misma ruta.
+4|En la unión entre neurona motora y músculo se libera acetilcolina. Esta cruza la hendidura y se une a receptores; la vesícula permanece del lado emisor.
+5|Al golpear el tendón bajo la rodilla se desencadena un reflejo de estiramiento. La respuesta rápida se organiza en un circuito nervioso sin esperar una decisión voluntaria.
+7|Una célula somática de una especie con 20 cromosomas origina por mitosis dos células de 20. Duplicar ADN antes de dividir no deja a cada hija con 40 cromosomas.
+8|Dos cromosomas homólogos pueden intercambiar segmentos en profase I. Así, un gameto puede reunir variantes que antes estaban en homólogos distintos, sin crear alelos por necesidad.
+9|En un ambiente seco, plantas con una variante heredable que mejora supervivencia pueden dejar más semillas. La frecuencia de esa variante puede aumentar; cada planta no decide transformarse.
+10|Si se marca el oxígeno del agua en un experimento fotosintético, la marca puede aparecer en el O₂ liberado. Marcar solo el carbono del CO₂ permite seguir otra parte del proceso.
+11|Si productores fijan 10.000 unidades de energía y solo 10% pasa al nivel siguiente en un modelo, los herbívoros reciben 1.000 y el siguiente nivel 100. El 10% es un supuesto ilustrativo, no una constante universal.
+12|Para investigar el efecto del riego, se cambian los mililitros de agua y se mide biomasa. Agua es independiente y biomasa dependiente; luz y suelo se mantienen comparables.
+14|Una señal de radio de 50 MHz tiene longitud de 6 m en el vacío. Otra de 100 MHz tiene 3 m: duplicar la frecuencia reduce a la mitad la longitud, conservando c.
+16|Una corredora recorre 150 m en 30 s. Su rapidez media es 150/30=5 m/s: divide distancia por tiempo y conserva las unidades.
+18|Un ascensor que desciende con velocidad constante tiene fuerza neta cero. Su movimiento no exige una fuerza neta descendente; el peso y la fuerza de soporte se equilibran.
+20|En una dorsal oceánica las placas se separan y pueden ocurrir sismos. En un borde de subducción también: se concentran en límites aunque la interacción sea distinta.
+21|Al trabarse dos bloques de una falla, pueden deformarse y acumular energía elástica. Su ruptura libera energía en ondas; el cambio de tiempo atmosférico no explica ese mecanismo.
+25|El agua con sal totalmente disuelta es una mezcla homogénea: se observa una fase. El agua con aceite separado presenta más de una fase y es heterogénea.
+27|Si un líquido hierve antes que otro en una mezcla, una destilación permite enriquecer el vapor en el más volátil y luego condensarlo. Filtrar no separa dos líquidos miscibles.
+28|El carbono-12 y el carbono-14 tienen ambos seis protones. Cambian los neutrones, pero Z=6 conserva la identidad del elemento.
+29|En CH₃−CH₃, cada carbono forma tres enlaces con hidrógeno y uno con el otro carbono. Cada uno completa cuatro enlaces covalentes, no cuatro vecinos de carbono.
+30|El propan-1-ol CH₃CH₂CH₂OH presenta −OH en un carbono saturado. Cambiar la longitud de la cadena no cambia que pertenezca a los alcoholes.
+31|C₃H₈ solo contiene C y H, por lo que es hidrocarburo. C₃H₈O contiene oxígeno y no pertenece a esa categoría, aunque también tenga carbono e hidrógeno.
+32|En CH₃−C≡CH, los dos últimos carbonos comparten un enlace triple. Cuenta las líneas del enlace; no confundas el triple enlace con tres carbonos unidos por enlaces simples.
+33|Para N₂+H₂→NH₃, coloca 2 ante NH₃ y 3 ante H₂: N₂+3H₂→2NH₃. Así conservas dos N y seis H a ambos lados sin cambiar subíndices.
+38|Para describir a estudiantes de toda una región, entrevistar solo a un curso deja fuera edades y localidades. Aumentar o diversificar la muestra responde al alcance de la conclusión.
+39|Para medir la masa de una muestra usa una balanza y expresa el dato en gramos. Un cronómetro entrega tiempo; elegir instrumento depende de la magnitud.
+40|Si una balanza entrega valores variables para una misma pesa, revisa nivelación, calibración y montaje antes de eliminar datos. Registrar el procedimiento permite interpretar la dispersión.
+41|Para comparar disolución con y sin agitación, mantén igual masa de sólido, tamaño de partículas, temperatura y volumen. Aquí agitación es la variable que cambias.
+42|Para estudiar la relación entre tiempo y distancia registra pares (t,d) y represéntalos con ambos ejes y unidades. Un promedio aislado pierde cómo se relacionan las variables.
+43|En un cruce Bb×bb con dominancia completa, el primer progenitor aporta B o b y el segundo solo b: se esperan 1/2 Bb y 1/2 bb. Es un apoyo de genética fuera del listado explícito actual.
+44|Si una célula necesita reponer una enzima, sus ribosomas ensamblan aminoácidos según el ARN. Bloquear esa maquinaria impide fabricar nueva enzima aunque otras moléculas sigan presentes.
+45|Imagina dos homólogos con variantes AB y ab. Un intercambio entre cromátidas no hermanas puede producir combinaciones Ab y aB; esa recombinación cambia asociaciones, no el número de cromosomas.
+46|Si una célula receptora tiene menos receptores disponibles, la misma cantidad de mensajero puede provocar menor respuesta. El cambio está en la recepción, no necesariamente en cuánto mensajero se libera.
+47|Una luz de frecuencia 5×10¹⁴ Hz pasa a un medio donde viaja más lento. Su frecuencia permanece; λ=v/f disminuye con la rapidez. La fuente sigue marcando el ritmo de oscilación.
+48|Un vehículo parte a 3 m/s y acelera a 2 m/s² durante 5 s. v=3+2×5=13 m/s; aquí debes incluir la velocidad inicial.
+50|En una dorsal, dos placas se separan y se forma corteza oceánica: divergencia. En subducción convergen y una desciende; distinguir movimientos evita confundir límites.
+52|El ácido propanoico CH₃CH₂COOH contiene −COOH. Un −OH dentro de ese grupo no lo convierte en alcohol: reconoce el conjunto carbonilo más hidroxilo.
+54|Si tienes 0,4 mol de soluto en 1 L y diluyes hasta 2 L, conservas 0,4 mol y pasas de 0,4 M a 0,2 M. Cambia concentración, no cantidad de soluto.
+55|Al comparar una célula de hoja con una muscular, ambas tienen membrana, pero la vegetal posee además pared celular. La pared sostiene y la membrana regula el intercambio.
+56|En una laguna, el fitoplancton produce materia orgánica por fotosíntesis y alimenta al zooplancton. Es productor porque incorpora materia y energía al inicio de esa cadena.
+58|Si pasan 6 coulomb en 3 segundos por un conductor, I=6/3=2 A. El volt mide diferencia de potencial; no intercambies esas unidades.
+60|En C+O₂→CO₂ se conserva un carbono y dos oxígenos. La masa también se conserva aunque el producto tenga propiedades distintas de los reactivos.
+61|Una hipótesis sobre germinación podría proponer que cambia su porcentaje a 15 y 25 °C con igual agua. Establece variables medibles y un resultado que podría refutarla.
+62|Puedes investigar cómo cambia la posición de una imagen al mover un objeto frente a una lente. Distancias de objeto e imagen se miden; preferir una imagen por bonita es un juicio distinto.
+63|Para un sólido dado, predice distinta masa máxima disuelta a 10 y 30 °C en 100 g de agua. Compruébalo sin cambiar también la cantidad de solvente.
+64|Una célula vegetal en un medio externo hipertónico puede perder agua y disminuir su turgencia. La pared aporta soporte, pero no evita todo movimiento osmótico de agua.
+65|En ratones con coloración heredable, un fondo oscuro puede favorecer a los más difíciles de ver para depredadores. Si dejan más crías, aumenta la frecuencia de ese rasgo; no se oscurecen por decisión.
+66|Si disminuye el fitoplancton, puede bajar la energía incorporada a una red acuática. Los consumidores no compensan automáticamente produciendo su propio alimento.
+67|Una señal realiza 30 ciclos en 5 s. Su frecuencia es 30/5=6 Hz y su período 1/6 s. Frecuencia cuenta ciclos por segundo; período mide tiempo por ciclo.
+68|Una caja recibe 8 N a la derecha y 8 N a la izquierda. F_neta=0 y a=0; puede estar quieta o seguir con velocidad constante.
+69|En una cadena de tres resistores en serie, abrir un cable interrumpe el único recorrido completo. Todos dejan de conducir, aunque la fuente conserve diferencia de potencial.
+70|Cloro-35 y cloro-37 tienen 17 protones; sus neutrones son 18 y 20. Son isótopos porque cambia A, no la identidad dada por Z.
+71|Si reaccionan 4 g y 6 g dentro de un recipiente sellado, el total sigue siendo 10 g. Que aparezca un gas no reduce la masa mientras no escape.
+72|En CH₃CH₂CH₂OH hay un −OH unido a carbono saturado: es alcohol. En CH₃COOH el −OH integra un carboxilo y la función es otra.
+73|Una célula que libera enzimas digestivas utiliza ribosomas asociados al retículo rugoso para continuar su síntesis. Más tarde, el Golgi modifica y dirige esas proteínas.
+74|En una hoja, los pigmentos de los tilacoides absorben luz y alimentan reacciones luminosas. El ciclo de fijación de carbono se desarrolla en el estroma, otra región del cloroplasto.
+75|Después de una comida, la insulina puede favorecer almacenamiento de glucosa como glucógeno. Eso ayuda a disminuir glucosa sanguínea; es un apoyo de fisiología, no un objetivo explícito del temario actual.
+76|Si una proteína cambia su forma por calor, su sitio activo puede dejar de encajar con el sustrato. No se transforma en ADN: se altera la función de la misma proteína.
+77|Con Bb×bb, cada descendiente tiene probabilidad 1/2 de ser bb. Calcula las combinaciones posibles de ese cruce en vez de memorizar 25% para todos los cruces.
+78|En una especie 2n=18, una meiosis normal origina células n=9. No divides otra vez por dos después de la segunda división; allí se separan cromátidas.
+79|Un cromosoma con variantes PQ y su homólogo pq pueden originar cromátidas Pq y pQ por intercambio. Se combinan alelos existentes; no se duplican todos los cromosomas.
+80|Una mutación en una célula del hígado puede transmitirse a sus células hijas por mitosis, pero normalmente no pasa a un hijo por fecundación. Hay que distinguir linaje somático y germinal.
+81|Al cambiar el ambiente, una variante heredable antes poco frecuente puede dar ventaja reproductiva. La selección actúa sobre diferencias; no anticipa qué mutación convendrá.
+82|Si aumenta el zooplancton que comen ciertos peces, inicialmente hay más alimento disponible para ellos. No se garantiza un aumento proporcional de peces: otras condiciones también importan.
+83|Un jardín con cinco especies y otro con tres difieren en riqueza. Contar cien plantas de una sola especie no equivale a tener cien especies.
+84|Para estudiar el efecto de salinidad en plantas, usa igual luz, especie y riego, y cambia salinidad. No mantengas constante precisamente el factor que quieres comparar.
+85|Al aumentar la respiración celular, crece la necesidad de intercambio de gases. Ventilar pulmones y producir ATP en células son procesos relacionados, pero distintos.
+86|La memoria inmunológica permite reconocer con mayor rapidez un agente previamente encontrado. No implica que toda exposición posterior sea imposible ni protección universal contra otros agentes.
+87|Las extremidades de ballenas y humanos comparten un patrón óseo heredado aunque tengan usos distintos. Esa homología aporta evidencia de ancestro común.
+88|Si un tren recorre 300 m en 15 s, su rapidez media es 20 m/s. Cambiar las unidades exige convertirlas antes de comparar con km/h.
+89|Para una masa de 5 kg con fuerza neta 15 N, a=15/5=3 m/s². El dato importante es la suma de fuerzas, no cualquiera de ellas aislada.
+90|Con g≈10 m/s², una masa de 7 kg pesa unos 70 N. Los kilogramos expresan masa y los newtons expresan fuerza.
+91|Si un móvil pasa de 12 a 4 m/s en 2 s en el mismo eje, a=(4−12)/2=−4 m/s². El signo representa el cambio de velocidad.
+92|Elevar 2 kg a 3 m con g=10 y velocidad constante requiere trabajo de la fuerza elevadora 2×10×3=60 J. Es práctica complementaria de trabajo mecánico.
+93|Una lámpara recibe 200 J y entrega 40 J de luz útil: eficiencia=40/200×100=20%. La energía restante no desaparece; se transforma en otras formas.
+94|Un objeto que cae reduce su energía potencial gravitatoria. Sin roce, aumenta su energía cinética en la misma cantidad; esto es un apoyo de energía mecánica.
+95|Una onda con período 0,05 s tiene frecuencia 1/0,05=20 Hz. No confundas el tiempo por ciclo con los ciclos por segundo.
+96|Una cuerda que vibra 440 veces por segundo produce un tono más agudo que otra de 220 Hz. El volumen depende también de amplitud; es un ejemplo complementario de sonido.
+97|Si la incidencia es 20° respecto de la normal, la reflexión también es 20°. Respecto del espejo, ese rayo forma 70°: importa desde dónde mides.
+98|Un objeto bajo agua parece desplazado al observarlo oblicuamente desde el aire. La luz cambia de dirección al cruzar la superficie por refracción.
+99|Una resistencia de 4 Ω conectada a 20 V conduce I=20/4=5 A. Multiplicar V por R no produce amperes.
+100|Con resistores de 4 y 7 Ω en serie, R_eq=11 Ω. La misma corriente recorre ambos y las caídas de voltaje se suman.
+101|Dos resistencias de 8 Ω en paralelo equivalen a 4 Ω. Añadir una segunda rama permite más corriente total para el mismo voltaje.
+102|Si dos señales parten juntas y recorren aproximadamente la misma distancia, la que llega antes tiene mayor rapidez media. No infieras su energía solo por el orden de llegada.
+103|Un átomo neutro de Z=8 tiene ocho protones y ocho electrones. Si pierde un electrón, sigue siendo oxígeno pero queda con carga +1.
+104|Para dos átomos de Z=6 y A=12 y 13, N=A−Z da 6 y 7 neutrones. La identidad no cambia porque los protones siguen siendo seis.
+105|Un átomo con nueve protones gana un electrón y queda con diez electrones: su carga neta es −1. Ganar y perder electrones tienen efectos opuestos.
+106|Un catión +1 y un anión −1 se atraen eléctricamente en una red iónica. No son dos metales unidos por enlace metálico; es contenido complementario.
+107|Un alcano acíclico de cuatro carbonos cumple CₙH₂ₙ₊₂: C₄H₁₀. La fórmula cambia si hay un ciclo o una insaturación.
+108|CH₃CH₂CH₂OH es un alcohol porque tiene −OH en carbono saturado. CH₃OCH₃ es un éter: su oxígeno une dos grupos carbonados.
+109|CH₃−CH=CH₂ es un alqueno de tres carbonos. La familia la determina el doble enlace; la longitud de la cadena aporta otra parte del nombre.
+110|HCOOH tiene un grupo carboxilo y es ácido metanoico. El carbonilo y el −OH pertenecen al mismo carbono; reconocer solo uno de ellos sería incompleto.
+111|Para Fe+O₂→Fe₂O₃, los coeficientes mínimos son 4,3,2: cuatro Fe y seis O en cada lado. No alteres las fórmulas de las sustancias.
+112|Con masa 60 g y masa molar 30 g/mol, n=60/30=2 mol. El gramo se cancela y quedan moles.
+113|Si disuelves 0,6 mol hasta 3 L de solución, M=0,6/3=0,2 mol/L. Usa volumen final de solución, no el del solvente antes de mezclar.
+114|Diluir 50 mL de solución 4 M hasta 200 mL da M₂=4×50/200=1 M. La concentración se reduce a la cuarta parte porque el volumen final se cuadruplica.
+115|Para 2A+B→productos, con 3 mol A y 2 mol B, A limita: alcanza para 1,5 veces la reacción, frente a 2 veces que permite B. Compara moles divididos por coeficientes.
+116|En cromatografía, un componente que interactúa más con la fase estacionaria puede avanzar menos que otro. Es una técnica complementaria; el temario enumera otras separaciones básicas.
+117|Si 2n=8, después de meiosis I cada célula tiene cuatro cromosomas todavía duplicados. En meiosis II se separan cromátidas hermanas sin volver a reducir a dos cromosomas.
+118|El ARN mensajero puede compararse con una copia de instrucciones que llega al ribosoma. El ARN de transferencia trae aminoácidos; no cumple la misma función.
+119|Un organismo Dd produce normalmente gametos D y d en proporciones esperadas iguales. No significa que toda muestra pequeña contenga exactamente la mitad de cada uno.
+120|En un modelo, un herbívoro incorpora energía del alimento y usa parte al respirar y moverse. Esa energía se disipa como calor y no queda toda disponible para su depredador.
+124|Un tren que avanza en línea recta sin cambiar velocidad tiene aceleración cero. Puede tener fuerzas de tracción y resistencia distintas de cero que se compensan.
+126|Un dispositivo de 9 V consume 0,5 A: P=9×0,5=4,5 W. En 10 segundos utiliza 45 J de energía.
+127|Resistencias de 6 y 12 Ω en paralelo dan 1/R=1/6+1/12=1/4, así que R=4 Ω. Debe ser menor que la rama de menor resistencia.
+129|Un aparato eléctrico transforma 900 J en 30 s. Su potencia media es 900/30=30 W. La energía y la potencia no son la misma magnitud.
+130|La luz de una fuente que se aleja puede observarse con menor frecuencia y mayor longitud de onda. Ese corrimiento cualitativo también es Doppler, ahora electromagnético.
+131|En N₂+3H₂→2NH₃, 6 mol H₂ con N₂ suficiente producen 4 mol NH₃. Multiplica 6 por la relación 2/3, no por el coeficiente aislado.
+132|Un átomo con Z=13 y A=27 tiene N=27−13=14 neutrones. La suma A+Z contaría protones dos veces.
+133|CH₃−CH₂−CH₂−CH₃ tiene cuatro carbonos y enlaces simples: butano. El prefijo cambia con la longitud; la familia sigue siendo alcano.
+134|Si reaccionan completamente 6 g y 9 g sin perder materia, los productos suman 15 g. Que cambien sus propiedades no crea masa.
+135|CH₃CH₂CHO posee carbonilo terminal y es propanal. CH₃COCH₃ lo tiene entre carbonos y es una cetona.
+136|En la distribución simplificada 2,8,7 hay siete electrones en el nivel externo. El total es 17; no confundas total con electrones de valencia.
+137|Al disolver 0,9 mol hasta 1,5 L, M=0,9/1,5=0,6 mol/L. Un volumen menor que el numerador no es requisito: revisa la razón con unidades.
+139|Una célula animal puede tener mitocondrias y núcleo, pero no cloroplastos ni pared vegetal. Usa la combinación de estructuras para clasificarla, no solo una estructura compartida.
+140|Al reparar un tejido, células somáticas se dividen por mitosis conservando normalmente su dotación cromosómica. No se forman gametos haploides en esa reparación.
+142|Menos algas disponibles pueden reducir el alimento del zooplancton herbívoro. La red conecta poblaciones, aunque el resultado final depende de otras fuentes de alimento.
+143|Dos hermanos pueden heredar combinaciones distintas de variantes genéticas. Parecerse no implica ser genéticamente idénticos ni que todo rasgo dependa solo de genes.
+145|Para comparar el efecto del abono, mide masa inicial y final de las plantas y calcula el aumento. La masa final aislada podría reflejar diferencias que ya existían.
+146|Un bus recorre 72 km en 2 horas, incluyendo detenciones. Su rapidez media del viaje es 36 km/h, aunque su rapidez instantánea varíe.
+147|Una caja que desliza sobre una mesa recibe roce cinético opuesto al deslizamiento relativo. Si no hay otra fuerza horizontal, disminuye su rapidez.
+149|En un circuito en paralelo, abrir solo una rama no necesariamente apaga las otras. Comprueba qué trayectorias completas siguen conectadas a la fuente.
+150|Si varios aparatos elevan demasiado la corriente de una instalación, una protección de sobrecorriente puede abrirla. Un interruptor común requiere accionamiento y no cumple la misma función automática.
+153|Un ion con 12 protones y 10 electrones tiene carga +2. Cuenta cargas positivas y negativas; los neutrones no aportan carga neta.
+155|Una mezcla inicial de 7 g y 11 g que reacciona completamente en un sistema cerrado produce 18 g totales. El número de sustancias puede cambiar sin variar la masa total.
+156|C₆H₆ es un hidrocarburo aromático: contiene solo C y H aunque no sea un alcano. La categoría hidrocarburo es más amplia que enlaces simples.
+157|Si disuelves 5 g de soluto en 45 g de agua sin pérdidas, la solución pesa 50 g. Su porcentaje m/m es 5/50×100=10%, no 5/45.
+158|Dos soluciones con volumen final de 500 mL contienen 10 y 25 g de sal. Sus concentraciones son 2 y 5 % m/v: más masa en igual volumen implica mayor concentración.
+159|Una neurona sensorial puede conducir señales desde un receptor hacia el sistema nervioso central por su axón. No confundas dirección funcional con una simple distancia al cuerpo celular.
+160|Al comparar axones del mismo diámetro, la mielina permite que los potenciales se regeneren entre nodos separados. El impulso no «salta» por fuera del axón: así se describe la conducción saltatoria.
+161|Si disminuye la entrada rápida de Na⁺, puede no alcanzarse una despolarización suficiente para propagar el potencial. La salida posterior de K⁺ cumple otro papel.
+162|El reflejo rotuliano activa un circuito medular al estirar el músculo. La pierna responde sin que primero decidas moverla voluntariamente.
+163|Una terminal que recibe el potencial, pero no permite entrada de Ca²⁺, puede liberar menos mensajero. La señal eléctrica y la exocitosis son pasos conectados, no equivalentes.
+164|Para comparar dos condiciones de descanso en una investigación, alterna el orden y mantén horarios y tareas comparables. Así reduces efectos de práctica y diferencias de horario sin afirmar causalidad absoluta.
+165|Si un grupo presenta menor coordinación después de alcohol, eso es compatible con alteración nerviosa. No identifica por sí solo un receptor específico: la conclusión debe respetar lo medido.
+166|Un receptor de luz en la retina convierte energía luminosa en cambios eléctricos. Es otro ejemplo de transducción: cambia el estímulo, se conserva la idea de convertirlo en señal nerviosa.
+`.trim().split('\n');
+for(const line of examples){const [n,example]=line.split('|');by(+n).example=example;}
+// Concepts are grouped more narrowly than an entire discipline and shared across transfer items.
+const groups={
+'Organelos y función celular':[1,2,3,44,55,64,73,74,118,139],
+'Sistema nervioso':[4,5,46,159,160,161,162,163,164,165,166],
+'Reproducción y prevención':[6],
+'División celular':[7,8,45,78,79,80,117,140],
+'Selección y evidencia evolutiva':[9,65,81,87,143],
+'Fotosíntesis y energía':[10,11,56,66,82,120,142],
+'Variables y evidencia experimental':[12,37,38,40,41,42,61,62,63,84,122,145],
+'Ondas electromagnéticas':[13,14,15,47,62,67,95,97,98,125],
+'Movimiento y fuerzas':[16,17,18,39,48,57,68,88,89,90,91,124,146,147],
+'Tectónica y geosfera':[19,20,21,50,102,128],
+'Circuitos y energía eléctrica':[22,23,24,49,58,69,93,99,100,101,126,127,149,150],
+'Materia y modelos atómicos':[25,26,27,28,51,59,70,103,104,105,132,136,153],
+'Carbono y grupos funcionales':[29,30,31,32,52,72,107,108,109,110,133,135,138,156],
+'Balance y estequiometría':[33,34,53,60,71,111,112,115,131,134,155],
+'Soluciones y concentración':[35,36,54,113,114,137,157,158]
+};
+for(const [concept,ids]of Object.entries(groups))for(const n of ids)by(n).concept=concept;
+for(const q of window.SCIENCE_BANK)q.concept ||= q.subject+' · '+q.area;
+}
+
+/* Nuevas preguntas sobre objetivos faltantes del temario y reemplazos curriculares. */
+window.SCIENCE_BANK.push(...[
+ {
+  "id": "SCI-167",
+  "subject": "Biología",
+  "module": "MC",
+  "area": "Procesos y funciones biológicas",
+  "concept": "Reproducción y prevención",
+  "question": "En una fecundación humana normal se unen dos gametos haploides. ¿Qué ocurre con la dotación cromosómica del cigoto?",
+  "options": [
+   "Se forman cuatro células con la mitad de cromosomas",
+   "Se restablece la dotación diploide",
+   "Permanece haploide",
+   "Cada gameto se divide por mitosis antes de fusionarse"
+  ],
+  "answer": 1,
+  "explanations": [
+   "Eso confunde fecundación con los productos de la meiosis.",
+   "¡Cachaste! Cada gameto aporta una dotación n; al reunirse, el cigoto contiene 2n.",
+   "El cigoto reúne dos dotaciones haploides, no una.",
+   "La fecundación es la unión de gametos; esa mitosis previa no define el proceso."
+  ],
+  "steps": [
+   "Distingue la reducción meiótica de la unión de gametos.",
+   "Suma las dotaciones: n+n=2n.",
+   "Cada gameto aporta una dotación n; al reunirse, el cigoto contiene 2n."
+  ],
+  "easy": "Cada gameto aporta una dotación n; al reunirse, el cigoto contiene 2n.",
+  "example": "En una especie con n=10, cada gameto aporta diez cromosomas y el cigoto normalmente tiene veinte. La regla se aplica sin memorizar el número humano.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-168",
+  "subject": "Biología",
+  "module": "MC",
+  "area": "Procesos y funciones biológicas",
+  "concept": "Reproducción y prevención",
+  "question": "¿Qué evento caracteriza a la ovulación dentro del ciclo ovárico?",
+  "options": [
+   "La liberación de un ovocito desde el ovario",
+   "La descamación del endometrio",
+   "La implantación del embrión en el útero",
+   "La unión de los núcleos de los gametos"
+  ],
+  "answer": 0,
+  "explanations": [
+   "¡Cachaste! Ovulación es la liberación del ovocito desde el folículo; no debe confundirse con menstruación ni fecundación.",
+   "La descamación corresponde a menstruación, un evento uterino.",
+   "La implantación ocurre después de fecundación y no define ovulación.",
+   "La unión de gametos corresponde a fecundación."
+  ],
+  "steps": [
+   "Identifica el órgano: el ciclo ovárico ocurre en el ovario.",
+   "Relaciona la salida del ovocito con la fase ovulatoria.",
+   "Ovulación es la liberación del ovocito desde el folículo; no debe confundirse con menstruación ni fecundación."
+  ],
+  "easy": "Ovulación es la liberación del ovocito desde el folículo; no debe confundirse con menstruación ni fecundación.",
+  "example": "Si un esquema muestra descamación del revestimiento uterino, representa menstruación. Reconocer órgano y cambio permite distinguirlo de ovulación.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-169",
+  "subject": "Biología",
+  "module": "MC",
+  "area": "Organización, estructura y actividad celular",
+  "concept": "Organelos y función celular",
+  "question": "Un enterocito tiene numerosas microvellosidades en su superficie. ¿Qué relación estructura-función explica esta característica?",
+  "options": [
+   "Reducen la superficie de contacto intestinal",
+   "Sustituyen a todos los ribosomas",
+   "Almacenan la totalidad del ADN celular",
+   "Aumentan la superficie disponible para absorción"
+  ],
+  "answer": 3,
+  "explanations": [
+   "Los pliegues aumentan, no disminuyen, superficie.",
+   "Son especializaciones de superficie, no maquinaria de síntesis proteica.",
+   "El ADN eucarionte está principalmente en el núcleo; no en microvellosidades.",
+   "¡Cachaste! Las microvellosidades incrementan superficie de membrana, favoreciendo absorción de nutrientes."
+  ],
+  "steps": [
+   "Reconoce que microvellosidades son prolongaciones de superficie.",
+   "Más superficie permite mayor contacto con el contenido intestinal.",
+   "Las microvellosidades incrementan superficie de membrana, favoreciendo absorción de nutrientes."
+  ],
+  "easy": "Las microvellosidades incrementan superficie de membrana, favoreciendo absorción de nutrientes.",
+  "example": "Al plegar una lámina puedes disponer más superficie dentro de un volumen pequeño. La analogía ayuda a entender el aumento de contacto, sin confundir la lámina con una célula.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-170",
+  "subject": "Biología",
+  "module": "MC",
+  "area": "Herencia y evolución",
+  "concept": "División celular",
+  "question": "Una célula detecta ADN dañado antes de entrar en fase S. ¿Qué efecto protector tiene detener el ciclo en ese punto?",
+  "options": [
+   "Convertir la célula somática en gameto",
+   "Duplicar primero el daño para facilitar su corrección",
+   "Evitar replicar el daño antes de repararlo",
+   "Separar cromátidas antes de replicar ADN"
+  ],
+  "answer": 2,
+  "explanations": [
+   "Detener el ciclo no transforma el tipo de célula.",
+   "El control busca impedir progresión con daño, no multiplicarlo.",
+   "¡Cachaste! El punto de control G1–S puede impedir que se replique ADN dañado, dando oportunidad a reparación o a otras respuestas celulares.",
+   "La separación ocurre durante división, no es la función del control G1–S."
+  ],
+  "steps": [
+   "Ubica S como la fase de replicación del ADN.",
+   "Detenerse antes de S limita transmitir copias dañadas.",
+   "El punto de control G1–S puede impedir que se replique ADN dañado, dando oportunidad a reparación o a otras respuestas celulares."
+  ],
+  "easy": "El punto de control G1–S puede impedir que se replique ADN dañado, dando oportunidad a reparación o a otras respuestas celulares.",
+  "example": "El control de metafase evita iniciar separación si los cromosomas no están unidos correctamente al huso. Distintos controles protegen etapas distintas.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-171",
+  "subject": "Física",
+  "module": "MC",
+  "area": "Ondas",
+  "concept": "Ondas electromagnéticas",
+  "question": "¿Qué radiación tiene mayor frecuencia que la luz visible?",
+  "options": [
+   "Infrarrojo",
+   "Ultravioleta",
+   "Ondas de radio",
+   "Microondas"
+  ],
+  "answer": 1,
+  "explanations": [
+   "El infrarrojo tiene menor frecuencia y mayor longitud que el visible.",
+   "¡Cachaste! El ultravioleta está a frecuencias superiores al visible; radio, microondas e infrarrojo quedan por debajo.",
+   "Las ondas de radio tienen menor frecuencia que la luz visible.",
+   "Las microondas están por debajo del visible en frecuencia."
+  ],
+  "steps": [
+   "Ordena el espectro de menor a mayor frecuencia.",
+   "Relaciona mayor frecuencia con menor longitud en el vacío.",
+   "El ultravioleta está a frecuencias superiores al visible; radio, microondas e infrarrojo quedan por debajo."
+  ],
+  "easy": "El ultravioleta está a frecuencias superiores al visible; radio, microondas e infrarrojo quedan por debajo.",
+  "example": "Los rayos X tienen mayor frecuencia que el ultravioleta. Todas estas ondas viajan a c en el vacío; mayor frecuencia no significa mayor rapidez.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-172",
+  "subject": "Física",
+  "module": "MC",
+  "area": "Mecánica",
+  "concept": "Movimiento y fuerzas",
+  "question": "Un resorte ideal de constante 200 N/m se estira 0,03 m dentro de su límite elástico. ¿Cuál es la magnitud de su fuerza elástica?",
+  "options": [
+   "6 N",
+   "0,00015 N",
+   "60 N",
+   "200,03 N"
+  ],
+  "answer": 0,
+  "explanations": [
+   "¡Cachaste! La ley de Hooke da F=kx=200×0,03=6 N; la fuerza se opone a la deformación.",
+   "Dividir extensión por constante no aplica F=kx.",
+   "Ese valor corresponde a una extensión diez veces mayor.",
+   "Sumar constante y extensión mezcla unidades diferentes."
+  ],
+  "steps": [
+   "Usa extensión en metros, no longitud total del resorte.",
+   "Multiplica k por x: N/m por m deja N.",
+   "La ley de Hooke da F=kx=200×0,03=6 N; la fuerza se opone a la deformación."
+  ],
+  "easy": "La ley de Hooke da F=kx=200×0,03=6 N; la fuerza se opone a la deformación.",
+  "example": "Si k=50 N/m y x=0,10 m, la fuerza elástica tiene magnitud 5 N. Duplicar la extensión duplica esa magnitud dentro del régimen ideal.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-173",
+  "subject": "Física",
+  "module": "MC",
+  "area": "Energía – Tierra",
+  "concept": "Tectónica y geosfera",
+  "question": "¿Qué describe mejor a la litosfera en el modelo físico de la Tierra?",
+  "options": [
+   "Toda la Tierra situada bajo la corteza",
+   "El núcleo externo completamente líquido",
+   "Solo el agua de océanos y continentes",
+   "Una capa rígida que incluye corteza y parte superior del manto"
+  ],
+  "answer": 3,
+  "explanations": [
+   "Eso incluiría regiones con propiedades distintas y no define litosfera.",
+   "El núcleo externo es una región diferente, profunda y líquida.",
+   "El conjunto de aguas corresponde a hidrosfera.",
+   "¡Cachaste! La litosfera combina corteza y manto superior rígido y está fragmentada en placas."
+  ],
+  "steps": [
+   "Distingue capas por composición y por comportamiento físico.",
+   "La corteza sola no equivale a toda la placa litosférica.",
+   "La litosfera combina corteza y manto superior rígido y está fragmentada en placas."
+  ],
+  "easy": "La litosfera combina corteza y manto superior rígido y está fragmentada en placas.",
+  "example": "Una placa oceánica no es solo sedimento del fondo: incluye corteza oceánica y una parte rígida del manto. La definición es mecánica.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-174",
+  "subject": "Física",
+  "module": "MC",
+  "area": "Electricidad",
+  "concept": "Circuitos y energía eléctrica",
+  "question": "En una instalación doméstica, ¿qué ventaja tiene conectar aparatos en paralelo?",
+  "options": [
+   "La corriente de la fuente se vuelve siempre cero",
+   "El voltaje se divide por igual entre todos los aparatos",
+   "Cada rama recibe el voltaje de la fuente y puede funcionar independientemente",
+   "Toda la corriente debe pasar por cada aparato sucesivamente"
+  ],
+  "answer": 2,
+  "explanations": [
+   "Las ramas cerradas conducen corriente; no desaparece por estar en paralelo.",
+   "Las ramas comparten voltaje; lo que se distribuye entre ellas es corriente.",
+   "¡Cachaste! En paralelo las ramas están entre los mismos puntos de potencial; abrir una no necesariamente interrumpe las otras.",
+   "Eso describe conexión en serie."
+  ],
+  "steps": [
+   "Identifica terminales comunes de las ramas.",
+   "Distingue voltaje compartido de corriente total sumada.",
+   "En paralelo las ramas están entre los mismos puntos de potencial; abrir una no necesariamente interrumpe las otras."
+  ],
+  "easy": "En paralelo las ramas están entre los mismos puntos de potencial; abrir una no necesariamente interrumpe las otras.",
+  "example": "Dos resistencias conectadas a una fuente de 12 V en paralelo tienen 12 V cada una. Si abres una rama, la otra puede seguir conduciendo.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-175",
+  "subject": "Química",
+  "module": "MC",
+  "area": "Estructura atómica",
+  "concept": "Materia y modelos atómicos",
+  "question": "La mayoría de partículas alfa atraviesa una lámina, pero unas pocas se desvían mucho. ¿Qué rasgo del modelo de Rutherford explica las grandes desviaciones?",
+  "options": [
+   "Átomos macizos indivisibles que llenan todo el volumen",
+   "Un núcleo pequeño, denso y con carga positiva",
+   "Carga positiva distribuida uniformemente en todo el átomo",
+   "Electrones sin ninguna carga eléctrica"
+  ],
+  "answer": 1,
+  "explanations": [
+   "Ese modelo no explica que la mayoría atraviese la lámina.",
+   "¡Cachaste! Las grandes desviaciones son compatibles con encuentros cercanos a una región pequeña, masiva y positiva: el núcleo.",
+   "La carga difusa de Thomson no explica bien esas desviaciones grandes.",
+   "Los electrones tienen carga negativa; esa suposición no explica el fenómeno."
+  ],
+  "steps": [
+   "Separa la observación frecuente de las desviaciones excepcionales.",
+   "La concentración de carga y masa explica estas últimas.",
+   "Las grandes desviaciones son compatibles con encuentros cercanos a una región pequeña, masiva y positiva: el núcleo."
+  ],
+  "easy": "Las grandes desviaciones son compatibles con encuentros cercanos a una región pequeña, masiva y positiva: el núcleo.",
+  "example": "Que muchas partículas atraviesen casi sin desviación indica gran espacio relativamente vacío; que unas pocas reboten aporta otra evidencia del mismo modelo.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-176",
+  "subject": "Química",
+  "module": "MC",
+  "area": "Estructura atómica",
+  "concept": "Materia y modelos atómicos",
+  "question": "Se separará una mezcla seca de arena fina y piedras usando una malla. ¿Qué procedimiento corresponde?",
+  "options": [
+   "Tamizado",
+   "Destilación",
+   "Decantación",
+   "Disolución"
+  ],
+  "answer": 0,
+  "explanations": [
+   "¡Cachaste! El tamizado separa sólidos según tamaño de partículas mediante una malla.",
+   "Separa por volatilidad mediante vaporización y condensación, no por malla.",
+   "Usa separación de fases y diferencias de densidad; no describe la malla.",
+   "Disolver no es el procedimiento descrito para clasificar sólidos por tamaño."
+  ],
+  "steps": [
+   "Identifica dos sólidos con tamaños diferentes.",
+   "La malla deja pasar partículas pequeñas y retiene mayores.",
+   "El tamizado separa sólidos según tamaño de partículas mediante una malla."
+  ],
+  "easy": "El tamizado separa sólidos según tamaño de partículas mediante una malla.",
+  "example": "Una malla para harina retiene grumos más grandes que sus aberturas. El tamaño, no la temperatura de ebullición, determina la separación.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-177",
+  "subject": "Química",
+  "module": "MC",
+  "area": "Química orgánica",
+  "concept": "Carbono y grupos funcionales",
+  "question": "En el metano CH₄, los enlaces del carbono apuntan hacia los vértices de un tetraedro. ¿Qué hibridación se asocia con esa geometría ideal?",
+  "options": [
+   "sp",
+   "sp²",
+   "Cuatro orbitales p sin hibridación",
+   "sp³"
+  ],
+  "answer": 3,
+  "explanations": [
+   "sp se asocia con geometría lineal, no tetraédrica.",
+   "sp² se asocia con geometría trigonal plana.",
+   "La descripción tetraédrica equivalente del modelo usa cuatro orbitales sp³.",
+   "¡Cachaste! Cuatro enlaces simples equivalentes alrededor del carbono del metano se describen mediante hibridación sp³."
+  ],
+  "steps": [
+   "Relaciona cuatro direcciones de enlace con geometría tetraédrica.",
+   "El ángulo ideal es cercano a 109,5°, no 180°.",
+   "Cuatro enlaces simples equivalentes alrededor del carbono del metano se describen mediante hibridación sp³."
+  ],
+  "easy": "Cuatro enlaces simples equivalentes alrededor del carbono del metano se describen mediante hibridación sp³.",
+  "example": "En eteno, cada carbono tiene geometría trigonal plana y se asocia con sp². Cambiar el tipo de enlace cambia la descripción geométrica.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-178",
+  "subject": "Química",
+  "module": "MC",
+  "area": "Reacciones químicas y estequiometría",
+  "concept": "Soluciones y concentración",
+  "question": "Se disuelven 5 g de soluto en 95 g de agua sin pérdidas. ¿Cuál es el porcentaje masa/masa?",
+  "options": [
+   "95 % m/m",
+   "0,05 % m/m",
+   "5 % m/m",
+   "5,26 % m/m"
+  ],
+  "answer": 2,
+  "explanations": [
+   "95% es la fracción de solvente, no de soluto.",
+   "0,05 es la fracción decimal; debes multiplicarla por 100 para porcentaje.",
+   "¡Cachaste! La solución pesa 100 g y %m/m=(5/100)×100=5%.",
+   "Dividiste por solvente, 95 g, en vez de solución, 100 g."
+  ],
+  "steps": [
+   "Suma soluto y solvente para obtener masa de solución.",
+   "Divide masa del soluto por masa total y convierte a porcentaje.",
+   "La solución pesa 100 g y %m/m=(5/100)×100=5%."
+  ],
+  "easy": "La solución pesa 100 g y %m/m=(5/100)×100=5%.",
+  "example": "Con 8 g de sal y 72 g de agua, el total es 80 g. El porcentaje es 8/80×100=10% m/m.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-179",
+  "subject": "Biología",
+  "module": "ME",
+  "area": "Procesos y funciones biológicas",
+  "concept": "Reproducción y prevención",
+  "question": "¿Qué diferencia correcta hay entre un método hormonal anticonceptivo y un preservativo?",
+  "options": [
+   "El preservativo detiene permanentemente la ovulación",
+   "El preservativo es barrera y puede reducir riesgo de ITS; el hormonal no cumple esa función de barrera",
+   "Ambos crean una barrera física del mismo tipo",
+   "El hormonal impide la transmisión de toda ITS"
+  ],
+  "answer": 1,
+  "explanations": [
+   "Su función es barrera, no suspensión permanente del ciclo.",
+   "¡Cachaste! Evitar embarazo y reducir transmisión de ITS son objetivos diferentes; no todos los métodos anticonceptivos cumplen ambos.",
+   "Un hormonal actúa sobre procesos fisiológicos, no forma esa barrera.",
+   "Anticoncepción hormonal no equivale a protección frente a ITS."
+  ],
+  "steps": [
+   "Identifica mecanismo físico frente a hormonal.",
+   "No conviertas reducción de riesgo en protección absoluta.",
+   "Evitar embarazo y reducir transmisión de ITS son objetivos diferentes; no todos los métodos anticonceptivos cumplen ambos."
+  ],
+  "easy": "Evitar embarazo y reducir transmisión de ITS son objetivos diferentes; no todos los métodos anticonceptivos cumplen ambos.",
+  "example": "Un método del calendario estima períodos fértiles, pero no bloquea intercambio de fluidos. Conocer su mecanismo evita atribuirle protección frente a ITS.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-180",
+  "subject": "Biología",
+  "module": "ME",
+  "area": "Procesos y funciones biológicas",
+  "concept": "Reproducción y prevención",
+  "question": "¿Cuál pareja asocia correctamente una ITS con el tipo de agente que la produce?",
+  "options": [
+   "Gonorrea: bacteria",
+   "VIH: bacteria",
+   "Herpes genital: protozoo",
+   "Clamidia: hongo"
+  ],
+  "answer": 0,
+  "explanations": [
+   "¡Cachaste! La gonorrea es bacteriana; VIH y herpes son virales, y clamidia también es bacteriana.",
+   "VIH es un virus, no una bacteria.",
+   "El herpes genital lo producen virus del herpes.",
+   "La clamidia es causada por una bacteria, no un hongo."
+  ],
+  "steps": [
+   "Distingue el nombre de la infección del tipo de agente.",
+   "No supongas que todas las ITS tienen el mismo agente ni el mismo manejo.",
+   "La gonorrea es bacteriana; VIH y herpes son virales, y clamidia también es bacteriana."
+  ],
+  "easy": "La gonorrea es bacteriana; VIH y herpes son virales, y clamidia también es bacteriana.",
+  "example": "Clasificar influenza como viral y tuberculosis como bacteriana muestra la misma distinción entre tipos de agente en otro contexto; no sirve atribuir a todas las infecciones una causa única.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-181",
+  "subject": "Biología",
+  "module": "ME",
+  "area": "Herencia y evolución",
+  "concept": "División celular",
+  "question": "En un cultivo, una sustancia impide que las cromátidas hermanas se separen en mitosis. ¿Qué etapa se afecta directamente?",
+  "options": [
+   "Fase S",
+   "G1",
+   "Profase I meiótica",
+   "Anafase"
+  ],
+  "answer": 3,
+  "explanations": [
+   "En S se replica ADN; no se separan cromátidas hacia polos.",
+   "G1 precede a replicación y no es la separación mitótica.",
+   "Es una etapa de meiosis, no la anafase mitótica descrita.",
+   "¡Cachaste! En anafase mitótica las cromátidas hermanas se separan hacia polos opuestos."
+  ],
+  "steps": [
+   "Identifica que el proceso es mitosis.",
+   "Relaciona la separación de hermanas con anafase.",
+   "En anafase mitótica las cromátidas hermanas se separan hacia polos opuestos."
+  ],
+  "easy": "En anafase mitótica las cromátidas hermanas se separan hacia polos opuestos.",
+  "example": "En anafase I meiótica se separan homólogos; en anafase II se separan cromátidas. Precisar qué se separa distingue las divisiones.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-182",
+  "subject": "Biología",
+  "module": "ME",
+  "area": "Herencia y evolución",
+  "concept": "Manipulación genética",
+  "question": "Se introduce en bacterias un gen humano para obtener una proteína utilizada como fármaco. ¿Qué aplicación se ejemplifica?",
+  "options": [
+   "Transformación de todas las bacterias en células humanas",
+   "Cruce sexual entre bacteria y ser humano",
+   "Producción de una proteína recombinante",
+   "Selección natural por aumento espontáneo del tamaño bacteriano"
+  ],
+  "answer": 2,
+  "explanations": [
+   "Expresar un gen no cambia a la bacteria en un organismo humano.",
+   "Introducir un gen no es un cruce sexual entre ambas especies.",
+   "¡Cachaste! La ingeniería genética permite que un organismo produzca una proteína codificada por ADN introducido.",
+   "Aquí hay intervención dirigida sobre ADN, no solo selección ambiental."
+  ],
+  "steps": [
+   "Reconoce el traslado deliberado de información genética.",
+   "La proteína producida puede purificarse para una aplicación.",
+   "La ingeniería genética permite que un organismo produzca una proteína codificada por ADN introducido."
+  ],
+  "easy": "La ingeniería genética permite que un organismo produzca una proteína codificada por ADN introducido.",
+  "example": "Modificar microorganismos para producir enzimas usadas en detergentes es otra aplicación. La finalidad cambia, pero se conserva el uso de genes para obtener un producto.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-183",
+  "subject": "Biología",
+  "module": "ME",
+  "area": "Herencia y evolución",
+  "concept": "Selección y evidencia evolutiva",
+  "question": "Al comparar aleta de ballena y brazo humano se observa un patrón óseo semejante pese a funciones distintas. ¿Qué concepto describe esa evidencia?",
+  "options": [
+   "Prueba de que ambas especies son idénticas",
+   "Estructuras homólogas",
+   "Estructuras análogas definidas solo por función idéntica",
+   "Órganos sin relación evolutiva por tener usos distintos"
+  ],
+  "answer": 1,
+  "explanations": [
+   "Compartir origen de estructuras no equivale a ser la misma especie.",
+   "¡Cachaste! La homología relaciona estructuras por origen evolutivo compartido, aunque sus funciones difieran.",
+   "La función no es idéntica aquí y el patrón heredado apunta a homología.",
+   "Una función distinta no elimina el origen común."
+  ],
+  "steps": [
+   "Compara el plan estructural, no solo la función actual.",
+   "La modificación de un patrón heredado apoya ancestro común.",
+   "La homología relaciona estructuras por origen evolutivo compartido, aunque sus funciones difieran."
+  ],
+  "easy": "La homología relaciona estructuras por origen evolutivo compartido, aunque sus funciones difieran.",
+  "example": "Las alas de insectos y aves permiten volar, pero sus orígenes estructurales difieren. La función similar por sí sola no prueba homología.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-184",
+  "subject": "Biología",
+  "module": "ME",
+  "area": "Organismo y ambiente",
+  "concept": "Fotosíntesis y energía",
+  "question": "¿Qué relación entre fotosíntesis y respiración celular contribuye al ciclo del carbono?",
+  "options": [
+   "La fotosíntesis fija CO₂ y la respiración puede liberarlo",
+   "Ambos procesos crean átomos nuevos de carbono",
+   "La respiración solo ocurre en animales",
+   "La fotosíntesis destruye todo el carbono fijado"
+  ],
+  "answer": 0,
+  "explanations": [
+   "¡Cachaste! La fijación incorpora carbono inorgánico a moléculas orgánicas; su oxidación en respiración puede devolver CO₂ al medio.",
+   "Reorganizan materia; no crean átomos de carbono.",
+   "Plantas y otros organismos también realizan respiración celular.",
+   "El carbono se incorpora a moléculas orgánicas, no desaparece."
+  ],
+  "steps": [
+   "Sigue el carbono entre moléculas, no solo la energía.",
+   "Distingue reciclaje de materia del flujo y disipación de energía.",
+   "La fijación incorpora carbono inorgánico a moléculas orgánicas; su oxidación en respiración puede devolver CO₂ al medio."
+  ],
+  "easy": "La fijación incorpora carbono inorgánico a moléculas orgánicas; su oxidación en respiración puede devolver CO₂ al medio.",
+  "example": "Una planta puede captar CO₂ con luz y también liberar CO₂ al respirar. Ser autótrofa no significa carecer de respiración celular.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-185",
+  "subject": "Física",
+  "module": "ME",
+  "area": "Ondas",
+  "concept": "Ondas electromagnéticas",
+  "question": "Una lente convergente recibe rayos paralelos a su eje principal. En el modelo de lente delgada ideal, ¿qué sucede después de atravesarla?",
+  "options": [
+   "Se reflejan todos hacia la fuente",
+   "Se dispersan como si provinieran del foco del mismo lado",
+   "Todos conservan la misma dirección sin desviarse",
+   "Convergen hacia el foco del otro lado"
+  ],
+  "answer": 3,
+  "explanations": [
+   "Una lente transmite y refracta; no equivale a un espejo.",
+   "Ese comportamiento corresponde a una lente divergente.",
+   "Excepto casos particulares como el rayo central, la lente desvía los rayos.",
+   "¡Cachaste! Una lente convergente reúne rayos incidentes paralelos hacia su foco imagen."
+  ],
+  "steps": [
+   "Identifica lente convergente y rayos paralelos.",
+   "Sigue refracción en la lente hasta el foco.",
+   "Una lente convergente reúne rayos incidentes paralelos hacia su foco imagen."
+  ],
+  "easy": "Una lente convergente reúne rayos incidentes paralelos hacia su foco imagen.",
+  "example": "Una lente divergente hace que rayos paralelos se separen como si provinieran de un foco del lado de entrada. Comparar ambos casos aclara el tipo de lente.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-186",
+  "subject": "Física",
+  "module": "ME",
+  "area": "Ondas",
+  "concept": "Ondas electromagnéticas",
+  "question": "Una fuente luminosa se aleja del observador. Considerando solo el efecto Doppler, ¿qué cambio cualitativo se espera?",
+  "options": [
+   "Mayor frecuencia y mayor longitud a rapidez fija",
+   "La luz deja de propagarse en el vacío",
+   "Menor frecuencia observada y mayor longitud de onda",
+   "Mayor frecuencia y menor longitud de onda"
+  ],
+  "answer": 2,
+  "explanations": [
+   "Con c fija, frecuencia y longitud no crecen juntas.",
+   "El movimiento de la fuente no impide la propagación electromagnética.",
+   "¡Cachaste! El alejamiento produce corrimiento hacia longitudes mayores; como c=λf, la frecuencia observada disminuye.",
+   "Ese cambio corresponde al acercamiento, bajo el efecto considerado."
+  ],
+  "steps": [
+   "Distingue frecuencia emitida de observada.",
+   "Relaciona el alejamiento con corrimiento al rojo.",
+   "El alejamiento produce corrimiento hacia longitudes mayores; como c=λf, la frecuencia observada disminuye."
+  ],
+  "easy": "El alejamiento produce corrimiento hacia longitudes mayores; como c=λf, la frecuencia observada disminuye.",
+  "example": "Una fuente que se acerca presenta el cambio contrario: frecuencia mayor y longitud menor, llamado corrimiento al azul. La rapidez de la luz en el vacío sigue siendo c.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-187",
+  "subject": "Física",
+  "module": "ME",
+  "area": "Mecánica",
+  "concept": "Movimiento y fuerzas",
+  "question": "Un tren avanza a 20 m/s respecto del suelo. Una persona camina dentro a 2 m/s hacia la parte delantera. Según relatividad de Galileo, ¿cuál es su velocidad respecto del suelo?",
+  "options": [
+   "2 m/s",
+   "22 m/s",
+   "18 m/s",
+   "10 m/s"
+  ],
+  "answer": 1,
+  "explanations": [
+   "Es la velocidad respecto del tren, no respecto del suelo.",
+   "¡Cachaste! En el mismo sentido, las velocidades se suman: v_persona/suelo=20+2=22 m/s.",
+   "Ese valor corresponde a caminar hacia atrás respecto del tren.",
+   "Dividir las velocidades no cambia correctamente de sistema de referencia."
+  ],
+  "steps": [
+   "Elige el suelo como referencia final.",
+   "Suma velocidades colineales con sus signos.",
+   "En el mismo sentido, las velocidades se suman: v_persona/suelo=20+2=22 m/s."
+  ],
+  "easy": "En el mismo sentido, las velocidades se suman: v_persona/suelo=20+2=22 m/s.",
+  "example": "Si un bote avanza 4 m/s respecto del agua y la corriente lleva 1 m/s en el mismo sentido, avanza 5 m/s respecto de la orilla.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-188",
+  "subject": "Física",
+  "module": "ME",
+  "area": "Mecánica",
+  "concept": "Modelos del sistema solar",
+  "question": "¿Qué observación de Galileo cuestionó que todos los astros giraran directamente alrededor de la Tierra?",
+  "options": [
+   "Satélites que orbitan Júpiter",
+   "La alternancia entre día y noche",
+   "El cambio de estaciones",
+   "La existencia de montañas terrestres"
+  ],
+  "answer": 0,
+  "explanations": [
+   "¡Cachaste! Las lunas de Júpiter muestran movimientos alrededor de un centro distinto de la Tierra.",
+   "Puede describirse con distintos modelos y no demuestra ese centro alternativo.",
+   "No identifica por sí solo un cuerpo que orbite otro planeta.",
+   "No es una observación de órbitas de otros astros."
+  ],
+  "steps": [
+   "Relaciona observación con la afirmación específica del modelo.",
+   "No concluyas que una sola observación prueba cada detalle de un modelo posterior.",
+   "Las lunas de Júpiter muestran movimientos alrededor de un centro distinto de la Tierra."
+  ],
+  "easy": "Las lunas de Júpiter muestran movimientos alrededor de un centro distinto de la Tierra.",
+  "example": "Las fases de Venus aportan otra observación relevante para comparar modelos planetarios. Cada evidencia debe confrontarse con lo que predice el modelo.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-189",
+  "subject": "Física",
+  "module": "ME",
+  "area": "Electricidad",
+  "concept": "Circuitos y energía eléctrica",
+  "question": "Un resistor de 4 Ω está en serie con dos resistores de 6 Ω en paralelo entre sí. ¿Cuál es la resistencia equivalente total?",
+  "options": [
+   "16 Ω",
+   "3 Ω",
+   "2 Ω",
+   "7 Ω"
+  ],
+  "answer": 3,
+  "explanations": [
+   "Sumaste los tres como si todos estuvieran en serie.",
+   "Solo calculaste el bloque paralelo y omitiste el resistor en serie.",
+   "El total no se obtiene tratando los tres como ramas paralelas.",
+   "¡Cachaste! El paralelo de 6 y 6 equivale a 3 Ω; en serie con 4 Ω, el total es 7 Ω."
+  ],
+  "steps": [
+   "Reduce primero el bloque paralelo: 6/2=3.",
+   "Suma el resistor en serie: 4+3=7.",
+   "El paralelo de 6 y 6 equivale a 3 Ω; en serie con 4 Ω, el total es 7 Ω."
+  ],
+  "easy": "El paralelo de 6 y 6 equivale a 3 Ω; en serie con 4 Ω, el total es 7 Ω.",
+  "example": "Con 2 Ω en serie y dos ramas de 8 Ω en paralelo, el total es 2+4=6 Ω. La topología indica qué regla aplicar en cada paso.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-190",
+  "subject": "Física",
+  "module": "ME",
+  "area": "Energía – Tierra",
+  "concept": "Tectónica y geosfera",
+  "question": "En una dorsal oceánica se forma corteza nueva. ¿Qué movimiento relativo de placas se asocia con ese proceso?",
+  "options": [
+   "Deslizamiento lateral sin separación neta",
+   "Las placas permanecen inmóviles desde su formación",
+   "Separación en un límite divergente",
+   "Una placa se introduce bajo otra"
+  ],
+  "answer": 2,
+  "explanations": [
+   "Describe un límite transformante, no formación de corteza en dorsal.",
+   "La teoría tectónica considera movimiento relativo.",
+   "¡Cachaste! En límites divergentes las placas se separan y el material ascendente puede formar corteza oceánica nueva.",
+   "Eso describe subducción en un límite convergente."
+  ],
+  "steps": [
+   "Localiza el proceso de creación de fondo oceánico.",
+   "Relaciona separación y ascenso de material con divergencia.",
+   "En límites divergentes las placas se separan y el material ascendente puede formar corteza oceánica nueva."
+  ],
+  "easy": "En límites divergentes las placas se separan y el material ascendente puede formar corteza oceánica nueva.",
+  "example": "En un límite transformante dos placas se deslizan lateralmente. Puede haber sismos sin que se cree corteza del mismo modo que en una dorsal.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-191",
+  "subject": "Química",
+  "module": "ME",
+  "area": "Reacciones químicas y estequiometría",
+  "concept": "Soluciones y concentración",
+  "question": "Hay 0,3 mol de soluto disueltos en 0,6 kg de solvente. ¿Cuál es la molalidad?",
+  "options": [
+   "0,3 mol/L",
+   "0,5 mol/kg",
+   "0,18 mol/kg",
+   "2 mol/kg"
+  ],
+  "answer": 1,
+  "explanations": [
+   "Se pide molalidad y no se proporciona volumen de solución.",
+   "¡Cachaste! La molalidad es moles de soluto por kilogramo de solvente: 0,3/0,6=0,5.",
+   "Multiplicar moles por kilogramos no calcula molalidad.",
+   "Invertiste la razón: se divide soluto por masa de solvente."
+  ],
+  "steps": [
+   "Distingue masa de solvente de volumen de solución.",
+   "Divide moles por kilogramos, conservando unidades.",
+   "La molalidad es moles de soluto por kilogramo de solvente: 0,3/0,6=0,5."
+  ],
+  "easy": "La molalidad es moles de soluto por kilogramo de solvente: 0,3/0,6=0,5.",
+  "example": "Un mol de soluto en 2 kg de agua tiene molalidad 0,5 mol/kg. La molaridad exigiría conocer el volumen final de solución.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-192",
+  "subject": "Química",
+  "module": "ME",
+  "area": "Reacciones químicas y estequiometría",
+  "concept": "Soluciones y concentración",
+  "question": "Una mezcla contiene 2 mol de A y 8 mol de B. ¿Cuál es la fracción molar de A?",
+  "options": [
+   "0,2",
+   "0,25",
+   "0,8",
+   "2"
+  ],
+  "answer": 0,
+  "explanations": [
+   "¡Cachaste! X_A=n_A/(n_A+n_B)=2/10=0,2 y las fracciones suman 1.",
+   "Dividiste A por B, no por moles totales.",
+   "Esa es la fracción molar de B.",
+   "Dos es la cantidad de moles de A, no su fracción."
+  ],
+  "steps": [
+   "Suma los moles de todos los componentes: 10.",
+   "Divide los dos moles de A por el total.",
+   "X_A=n_A/(n_A+n_B)=2/10=0,2 y las fracciones suman 1."
+  ],
+  "easy": "X_A=n_A/(n_A+n_B)=2/10=0,2 y las fracciones suman 1.",
+  "example": "Con 1 mol de C y 3 de D, X_C=1/4=0,25 y X_D=0,75. La fracción molar no lleva unidades.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-193",
+  "subject": "Química",
+  "module": "ME",
+  "area": "Reacciones químicas y estequiometría",
+  "concept": "Soluciones y concentración",
+  "question": "En una solución diluida hay 3 mg de soluto en 1 kg de solución. ¿Cuál es la concentración en ppm masa/masa?",
+  "options": [
+   "3.000 ppm",
+   "0,003 ppm",
+   "30 ppm",
+   "3 ppm"
+  ],
+  "answer": 3,
+  "explanations": [
+   "Confundiste miligramos con gramos: 3 mg no son 3 g.",
+   "Un mg/kg ya equivale a una ppm; no vuelvas a dividir por mil.",
+   "La razón entregada es tres mg por kg, no treinta.",
+   "¡Cachaste! Una ppm m/m equivale a 1 mg por kg; 3 mg/kg corresponde a 3 ppm."
+  ],
+  "steps": [
+   "Expresa ambas masas de forma compatible o usa equivalencia mg/kg.",
+   "Verifica que la base es masa de solución.",
+   "Una ppm m/m equivale a 1 mg por kg; 3 mg/kg corresponde a 3 ppm."
+  ],
+  "easy": "Una ppm m/m equivale a 1 mg por kg; 3 mg/kg corresponde a 3 ppm.",
+  "example": "Si una muestra de 2 kg tiene 10 mg de soluto, la concentración es 10/2=5 mg/kg=5 ppm m/m.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-194",
+  "subject": "Química",
+  "module": "ME",
+  "area": "Reacciones químicas y estequiometría",
+  "concept": "Soluciones y concentración",
+  "question": "Se mezclan 1 L de solución 1 M y 1 L de solución 3 M del mismo soluto, sin reacción y con volúmenes aditivos. ¿Qué molaridad final resulta?",
+  "options": [
+   "1 M",
+   "3 M",
+   "2 M",
+   "4 M"
+  ],
+  "answer": 2,
+  "explanations": [
+   "Ignoraste los tres moles aportados por la segunda solución.",
+   "Ignoraste la dilución al añadir la primera solución.",
+   "¡Cachaste! Hay 1×1+3×1=4 mol en 2 L; M_final=4/2=2 M.",
+   "Sumaste concentraciones sin dividir por el nuevo volumen."
+  ],
+  "steps": [
+   "Calcula moles de cada solución antes de sumar.",
+   "Divide moles totales por volumen final.",
+   "Hay 1×1+3×1=4 mol en 2 L; M_final=4/2=2 M."
+  ],
+  "easy": "Hay 1×1+3×1=4 mol en 2 L; M_final=4/2=2 M.",
+  "example": "Al mezclar 0,5 L de 2 M con 1,5 L de 0 M, hay 1 mol en 2 L y la concentración queda en 0,5 M.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-195",
+  "subject": "Química",
+  "module": "ME",
+  "area": "Reacciones químicas y estequiometría",
+  "concept": "Fórmulas y composición",
+  "question": "Un compuesto contiene 40% C, 6,67% H y 53,33% O en masa. Usa masas atómicas C=12, H=1 y O=16. ¿Cuál es su fórmula empírica?",
+  "options": [
+   "CH₆O₃",
+   "CH₂O",
+   "C₂HO",
+   "C₄H₆O₅"
+  ],
+  "answer": 1,
+  "explanations": [
+   "No redujiste las cantidades molares por el menor valor.",
+   "¡Cachaste! En 100 g: C≈3,33 mol, H≈6,67 mol, O≈3,33 mol. La razón mínima es 1:2:1.",
+   "No corresponde a la proporción molar 1:2:1.",
+   "Usaste cifras de porcentajes como subíndices sin convertir a moles."
+  ],
+  "steps": [
+   "Supón 100 g y convierte masa de cada elemento a moles.",
+   "Divide por 3,33 para hallar proporciones enteras mínimas.",
+   "En 100 g: C≈3,33 mol, H≈6,67 mol, O≈3,33 mol. La razón mínima es 1:2:1."
+  ],
+  "easy": "En 100 g: C≈3,33 mol, H≈6,67 mol, O≈3,33 mol. La razón mínima es 1:2:1.",
+  "example": "Si una muestra tiene 2 mol C y 6 mol H, su fórmula empírica es CH₃. La fórmula molecular necesitaría además masa molar.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-196",
+  "subject": "Química",
+  "module": "ME",
+  "area": "Química orgánica",
+  "concept": "Carbono y grupos funcionales",
+  "question": "¿Qué grupo funcional caracteriza a CH₃−COO−CH₂−CH₃?",
+  "options": [
+   "Éster",
+   "Éter",
+   "Aldehído",
+   "Amida"
+  ],
+  "answer": 0,
+  "explanations": [
+   "¡Cachaste! El grupo −C(=O)−O− unido a carbonos corresponde a un éster.",
+   "Un éter simple no contiene el carbonilo adyacente al oxígeno como en −COO−.",
+   "No hay carbonilo terminal unido a H de un grupo −CHO.",
+   "Una amida contiene nitrógeno asociado al carbonilo; aquí no hay N."
+  ],
+  "steps": [
+   "Localiza el carbonilo y el oxígeno adyacente.",
+   "Reconoce el grupo completo, no un enlace aislado.",
+   "El grupo −C(=O)−O− unido a carbonos corresponde a un éster."
+  ],
+  "easy": "El grupo −C(=O)−O− unido a carbonos corresponde a un éster.",
+  "example": "CH₃CONH₂ es una amida: el carbonilo está unido a nitrógeno. Cambiar O por N en ese entorno cambia la función.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-197",
+  "subject": "Química",
+  "module": "ME",
+  "area": "Química orgánica",
+  "concept": "Carbono y grupos funcionales",
+  "question": "La fórmula CH₃−O−CH₃ corresponde a ¿qué función orgánica?",
+  "options": [
+   "Alcohol",
+   "Cetona",
+   "Ácido carboxílico",
+   "Éter"
+  ],
+  "answer": 3,
+  "explanations": [
+   "No presenta un enlace O−H de alcohol.",
+   "No presenta carbonilo C=O entre carbonos.",
+   "No contiene el grupo −COOH.",
+   "¡Cachaste! En un éter, un oxígeno enlaza dos grupos carbonados: C−O−C."
+  ],
+  "steps": [
+   "Revisa los enlaces alrededor del oxígeno.",
+   "Distingue C−O−C de C−O−H.",
+   "En un éter, un oxígeno enlaza dos grupos carbonados: C−O−C."
+  ],
+  "easy": "En un éter, un oxígeno enlaza dos grupos carbonados: C−O−C.",
+  "example": "CH₃CH₂OH es alcohol y CH₃OCH₃ es éter. Ambos tienen C₂H₆O, pero su conectividad y función son distintas.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-198",
+  "subject": "Química",
+  "module": "ME",
+  "area": "Estructura atómica",
+  "concept": "Materia y modelos atómicos",
+  "question": "Dos líquidos inmiscibles forman capas y se separan abriendo la llave de un embudo de separación. ¿Qué procedimiento se utiliza?",
+  "options": [
+   "Tamizado",
+   "Destilación",
+   "Decantación",
+   "Filtración"
+  ],
+  "answer": 2,
+  "explanations": [
+   "El tamizado clasifica sólidos por tamaño, no líquidos inmiscibles.",
+   "No hay vaporización y condensación en este procedimiento.",
+   "¡Cachaste! La decantación aprovecha separación de fases y diferencias de densidad para retirar una capa.",
+   "Una barrera porosa no es el mecanismo descrito para estas capas líquidas."
+  ],
+  "steps": [
+   "Identifica líquidos que no se mezclan homogéneamente.",
+   "El embudo permite extraer una fase sin evaporarla.",
+   "La decantación aprovecha separación de fases y diferencias de densidad para retirar una capa."
+  ],
+  "easy": "La decantación aprovecha separación de fases y diferencias de densidad para retirar una capa.",
+  "example": "Dejar sedimentar barro y verter con cuidado el líquido superior es otra decantación. Cambia la mezcla, se conserva la separación por fases.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-199",
+  "subject": "Biología",
+  "module": "MTP",
+  "area": "Procesos y funciones biológicas",
+  "concept": "Reproducción y prevención",
+  "question": "¿Qué conducta representa respeto y responsabilidad en la dimensión afectiva de la sexualidad?",
+  "options": [
+   "Compartir información íntima sin consentimiento",
+   "Respetar límites y decisiones expresadas libremente",
+   "Suponer acuerdo porque existe una relación de pareja",
+   "Decidir por la otra persona para evitar conversar"
+  ],
+  "answer": 1,
+  "explanations": [
+   "Eso vulnera privacidad y respeto por la otra persona.",
+   "¡Cachaste! La sexualidad incluye aspectos afectivos y sociales; cuidar autonomía, comunicación y consentimiento contribuye al bienestar.",
+   "Una relación no reemplaza el respeto por decisiones y límites.",
+   "La responsabilidad incluye comunicación y autonomía."
+  ],
+  "steps": [
+   "Distingue sexualidad integral de una visión solo reproductiva.",
+   "Evalúa si la conducta respeta la decisión y privacidad de la otra persona.",
+   "La sexualidad incluye aspectos afectivos y sociales; cuidar autonomía, comunicación y consentimiento contribuye al bienestar."
+  ],
+  "easy": "La sexualidad incluye aspectos afectivos y sociales; cuidar autonomía, comunicación y consentimiento contribuye al bienestar.",
+  "example": "Conversar antes de compartir una fotografía privada y respetar una negativa aplica el mismo principio de autonomía y cuidado.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-200",
+  "subject": "Biología",
+  "module": "MTP",
+  "area": "Organización, estructura y actividad celular",
+  "concept": "Organelos y función celular",
+  "question": "Una célula degrada componentes envejecidos mediante enzimas dentro de vesículas. ¿Qué organelo participa directamente?",
+  "options": [
+   "Lisosoma",
+   "Ribosoma",
+   "Nucléolo",
+   "Cloroplasto"
+  ],
+  "answer": 0,
+  "explanations": [
+   "¡Cachaste! Los lisosomas contienen enzimas que permiten degradar materiales en un compartimento celular.",
+   "Ensambla proteínas; no es una vesícula digestiva.",
+   "Participa en formación de componentes ribosómicos, no digestión vesicular.",
+   "Realiza fotosíntesis; no corresponde a degradación descrita."
+  ],
+  "steps": [
+   "Reconoce degradación y localización en una vesícula.",
+   "No confundas fabricar proteínas con degradar componentes.",
+   "Los lisosomas contienen enzimas que permiten degradar materiales en un compartimento celular."
+  ],
+  "easy": "Los lisosomas contienen enzimas que permiten degradar materiales en un compartimento celular.",
+  "example": "Una célula que incorpora una partícula puede digerirla al fusionar compartimentos con lisosomas. La función es procesar material, no capturar luz.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-201",
+  "subject": "Física",
+  "module": "MTP",
+  "area": "Ondas",
+  "concept": "Ondas electromagnéticas",
+  "question": "Un espejo plano forma una imagen de un objeto situado frente a él. ¿Qué característica tiene esa imagen?",
+  "options": [
+   "Es real y siempre se proyecta en una pantalla",
+   "Tiene necesariamente el doble de tamaño",
+   "Se forma siempre sobre la superficie del espejo",
+   "Es virtual y del mismo tamaño que el objeto"
+  ],
+  "answer": 3,
+  "explanations": [
+   "La imagen de espejo plano es virtual: los rayos no convergen detrás.",
+   "El espejo plano no produce ese aumento.",
+   "Se percibe detrás, a distancia simétrica del objeto.",
+   "¡Cachaste! Los rayos reflejados parecen provenir de una imagen virtual detrás del espejo, del mismo tamaño."
+  ],
+  "steps": [
+   "Prolonga mentalmente los rayos reflejados hacia atrás.",
+   "Distingue una intersección aparente de una real.",
+   "Los rayos reflejados parecen provenir de una imagen virtual detrás del espejo, del mismo tamaño."
+  ],
+  "easy": "Los rayos reflejados parecen provenir de una imagen virtual detrás del espejo, del mismo tamaño.",
+  "example": "Si una marca está a 30 cm frente al espejo, su imagen se observa a 30 cm detrás. Esa simetría no significa que exista un objeto material allí.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-202",
+  "subject": "Física",
+  "module": "MTP",
+  "area": "Energía – Tierra",
+  "concept": "Tectónica y geosfera",
+  "question": "¿Qué relación explica la presencia de volcanismo andino y sismos frente a Chile?",
+  "options": [
+   "El desplazamiento de nubes hacia la cordillera",
+   "La inmovilidad completa de la litosfera",
+   "La interacción convergente y subducción de placas",
+   "El cambio diario entre luz y oscuridad"
+  ],
+  "answer": 2,
+  "explanations": [
+   "El movimiento atmosférico no corresponde al mecanismo tectónico.",
+   "La teoría tectónica explica estos procesos mediante placas móviles.",
+   "¡Cachaste! La subducción en el margen chileno se vincula con sismicidad y procesos que favorecen volcanismo andino.",
+   "El ciclo diario no explica el borde tectónico ni su volcanismo."
+  ],
+  "steps": [
+   "Ubica Chile en un margen convergente.",
+   "Relaciona interacción de placas con liberación de energía y magmatismo.",
+   "La subducción en el margen chileno se vincula con sismicidad y procesos que favorecen volcanismo andino."
+  ],
+  "easy": "La subducción en el margen chileno se vincula con sismicidad y procesos que favorecen volcanismo andino.",
+  "example": "En una dorsal también puede haber volcanismo, pero asociado a separación de placas. El fenómeno general puede tener contextos tectónicos diferentes.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-203",
+  "subject": "Física",
+  "module": "MTP",
+  "area": "Ondas",
+  "concept": "Ondas electromagnéticas",
+  "question": "¿Qué tienen en común radio y luz visible?",
+  "options": [
+   "Son ondas mecánicas de compresión del aire",
+   "Son ondas electromagnéticas que pueden propagarse en el vacío",
+   "Ambas necesitan aire para propagarse",
+   "Tienen siempre la misma frecuencia"
+  ],
+  "answer": 1,
+  "explanations": [
+   "Esa descripción corresponde a sonido, no a estas radiaciones.",
+   "¡Cachaste! Radio y visible pertenecen al espectro electromagnético; difieren en frecuencia y longitud, no en requerir un medio material.",
+   "Las ondas electromagnéticas no requieren aire.",
+   "Radio y visible ocupan rangos distintos de frecuencia."
+  ],
+  "steps": [
+   "Identifica la familia de ondas.",
+   "Distingue radiación electromagnética de perturbación mecánica.",
+   "Radio y visible pertenecen al espectro electromagnético; difieren en frecuencia y longitud, no en requerir un medio material."
+  ],
+  "easy": "Radio y visible pertenecen al espectro electromagnético; difieren en frecuencia y longitud, no en requerir un medio material.",
+  "example": "La luz del Sol llega a través del espacio interplanetario. Esa propagación permite reconocer que no necesita aire como el sonido.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ },
+ {
+  "id": "SCI-204",
+  "subject": "Química",
+  "module": "MTP",
+  "area": "Estructura atómica",
+  "concept": "Materia y modelos atómicos",
+  "question": "Una muestra tiene masa 24 g y volumen 8 cm³. ¿Cuál es su densidad?",
+  "options": [
+   "3 g/cm³",
+   "192 g/cm³",
+   "1/3 g/cm³",
+   "16 g/cm³"
+  ],
+  "answer": 0,
+  "explanations": [
+   "¡Cachaste! Densidad es masa dividida por volumen: 24/8=3 g/cm³.",
+   "Multiplicar masa por volumen no calcula densidad.",
+   "Invertiste volumen y masa.",
+   "Restar magnitudes con unidades distintas no da densidad."
+  ],
+  "steps": [
+   "Identifica masa y volumen de la misma muestra.",
+   "Divide y expresa unidad de masa por volumen.",
+   "Densidad es masa dividida por volumen: 24/8=3 g/cm³."
+  ],
+  "easy": "Densidad es masa dividida por volumen: 24/8=3 g/cm³.",
+  "example": "Otra muestra de la misma sustancia, de 15 g y 5 cm³ en iguales condiciones, también tiene densidad 3 g/cm³. La densidad no depende solo del tamaño.",
+  "skill": "Procesar y analizar evidencia",
+  "difficulty": "intermedio",
+  "origin": "original",
+  "review": "revision_individual_asistida",
+  "reviewStatus": "revision_individual_2026-10-14",
+  "examEligible": true,
+  "curricularStatus": "temario_demre_2027"
+ }
+]);
+/* Familias de paráfrasis: no se cuentan como transferencia ni se duplican en un ensayo. */
+for(const ids of [[9,65],[16,88],[22,99],[49,101],[53,131],[30,72,108],[33,111],[7,140]]){
+ const family='science-family-'+ids[0];for(const n of ids){const q=window.SCIENCE_BANK.find(q=>q.id==='SCI-'+String(n).padStart(3,'0'));q.transferGroup=family;}
+}
+/* Transferencia adicional: conceptos que antes tenían un único ítem. */
+{
+const additions=[
+[182,'Un microorganismo modificado produce una enzima para detergentes después de recibir un gen de otra especie. ¿Qué explica directamente la aparición de esa proteína?',
+ ['La expresión de la información del gen introducido','La conversión de todo su ADN en el ADN de la especie donante','La producción de la enzima sin utilizar información genética','La transformación del microorganismo en la especie que donó el gen'],
+ ['¡Cachaste! El gen introducido contiene información que, al expresarse, permite sintetizar la proteína. No reemplaza todo el genoma ni cambia la especie del organismo receptor.','La inserción de un gen no implica sustituir el resto del genoma del receptor.','La secuencia de la proteína depende de información genética; el enunciado vincula la nueva producción con el gen transferido.','Compartir un gen y producir una proteína no transforma al receptor en otra especie.'],
+ ['Identifica qué se introdujo: un gen, no un organismo completo.','Relaciona expresión genética con síntesis de una proteína.','La nueva proteína se explica por información transferida y expresada; el receptor conserva el resto de su identidad genética.'],
+ 'Es como incorporar una receta nueva: la célula puede fabricar ese producto sin cambiar todas sus demás instrucciones.',
+ 'Si una levadura recibe y expresa un gen que permite producir una proteína farmacéutica, puede obtenerse ese producto. La levadura sigue siendo levadura.'],
+[188,'Según la primera ley de Kepler, ¿cómo se describe la órbita de un planeta alrededor del Sol?',
+ ['Como una elipse con el Sol en uno de sus focos','Como una elipse con el Sol necesariamente en su centro','Como una circunferencia con la Tierra en el centro','Como una elipse con el Sol siempre fuera de ella'],
+ ['¡Cachaste! La primera ley describe órbitas elípticas y ubica al Sol en uno de los focos. No lo sitúa en el centro geométrico de la elipse.','El centro geométrico y los focos de una elipse no son el mismo punto, salvo el caso límite circular.','Esa descripción combina órbita circular con un centro terrestre; no corresponde a la ley de Kepler.','Los focos de una elipse están dentro de ella, no fuera.'],
+ ['Reconoce que la primera ley trata la forma de la órbita.','Distingue el foco de una elipse de su centro geométrico.','El planeta sigue una elipse y el Sol ocupa uno de los focos.'],
+ 'La trayectoria puede estar algo estirada. El Sol se ubica en un foco interior, no necesariamente justo al medio.',
+ 'En una órbita elíptica más alargada, la distancia al Sol cambia entre perihelio y afelio. El Sol continúa en un foco aunque la elipse cambie de forma.']
+];
+additions.forEach(([base,question,options,explanations,steps,easy,example],i)=>{
+ const original=window.SCIENCE_BANK.find(q=>q.id==='SCI-'+base);
+ const offset=i+1,rotate=values=>values.slice(offset).concat(values.slice(0,offset));
+ window.SCIENCE_BANK.push({...original,id:'SCI-'+(205+i),question,options:rotate(options),answer:4-offset,explanations:rotate(explanations),steps,easy,example,reviewStatus:'revision_individual_2026-10-15'});
+});
+}

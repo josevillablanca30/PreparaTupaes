@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 async function unlockScience(page){
- await page.evaluate(()=>localStorage.setItem('cachaste-science-v1',JSON.stringify({baseline:{completed:true,results:Array.from({length:30},(_,i)=>({subject:['Biología','Física','Química'][i%3],area:'Procesos y funciones biológicas',correct:true,confidence:'seguro'}))}})));
+ await page.addInitScript(()=>{if(sessionStorage.getItem('science-fixture'))return;sessionStorage.setItem('science-fixture','yes');localStorage.setItem('cachaste-science-v1',JSON.stringify({baseline:{completed:true,results:Array.from({length:30},(_,i)=>({subject:['Biología','Física','Química'][i%3],area:'Procesos y funciones biológicas',correct:true,confidence:'seguro'}))}}));});
  await page.reload();
 }
 
