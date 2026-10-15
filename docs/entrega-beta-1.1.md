@@ -94,3 +94,9 @@ La próxima prueba recomendada es supervisada: estudiantes con distinto nivel re
 - [`6445f51`](https://github.com/josevillablanca30/PreparaTupaes/commit/6445f517a215381267191478b351eaf9d019ed15): docs: registrar entrega beta, respaldo y limites verificados.
 
 La evidencia final se agrega en un commit documental posterior. La lista completa se conserva en https://github.com/josevillablanca30/PreparaTupaes/pull/1/commits.
+
+## Integración en main y estado real de Pages
+
+El PR #1 fue fusionado conservando los commits, sin squash ni reescritura. GitHub confirmó `main` en `d3de0bb5ae96100b97eff41a903d8fb0c6012e8d`, con el commit aprobado original y el último respaldo como padres del merge. La comparación con el código de la APK probada solo muestra cambios en documentación. La rama de respaldo se conserva.
+
+El workflow de main [38713890214](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38713890214) aprobó de nuevo los 144 recorridos de navegador. El job de despliegue 116353409093 falló al consultar la configuración con `Get Pages site failed` / `Not Found`. Por tanto **Pages no está publicado ni verificado**. El sitio debe habilitarse inicialmente en Settings → Pages con origen GitHub Actions desde una cuenta con administración. La conexión de esta sesión no tiene ese permiso; no se desactivaron pruebas ni se afirma un despliegue exitoso.

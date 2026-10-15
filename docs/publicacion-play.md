@@ -26,3 +26,5 @@ https://developer.android.com/build/releases/agp-8-10-0-release-notes
 ## Pages
 
 Las pruebas no se desactivan por un fallo de permisos. La conexión de esta sesión no incluye administración del repositorio. Si Pages no existe todavía, el propietario debe habilitarlo en Settings → Pages, con origen GitHub Actions; luego el workflow puede desplegar con `pages: write` e `id-token: write`. No se inventa ni se publica un enlace mientras no se verifique la revisión.
+
+Última verificación: el workflow de main 38713890214 aprobó 144 pruebas, pero configure-pages devolvió `Not Found` el 15 de octubre de 2026. Pages sigue pendiente; no hay enlace público nuevo verificado.
