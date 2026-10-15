@@ -4075,22 +4075,6 @@
     },
     {
       "bank": "M2",
-      "id": "M2-093",
-      "area": "Geometría",
-      "type": "vague_core_reasoning",
-      "level": "review",
-      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
-    },
-    {
-      "bank": "M2",
-      "id": "M2-093",
-      "area": "Geometría",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "M2",
       "id": "M2-095",
       "area": "Geometría",
       "type": "vague_hint",
@@ -4642,7 +4626,7 @@
   },
   "summary": {
     "critical": 0,
-    "review": 571,
+    "review": 569,
     "questionCount": 623
   }
 }

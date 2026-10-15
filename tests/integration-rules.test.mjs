@@ -53,6 +53,7 @@ test('Ciencias conserva históricos complementarios y dispone de 54+26 para cada
 });
 test('Refuerzo: cada concepto de M2 tiene transferencia y las 26 claves nuevas son correctas',()=>{
  const banks=loadBanks(),counts=new Map();
+ assert.equal(new Set(banks.M2.slice(80).map(q=>q.answer)).size,4,'Claves nuevas distribuidas entre cuatro posiciones');
  for(const q of banks.M2)counts.set(q.concept,(counts.get(q.concept)||0)+1);
  for(const [concept,count]of counts)assert.ok(count>=2,concept);
  const expected=['2/7','12π cm²','x≥4','9','−1/4','3','x²−25','(x+10)/5','1','−4','x≤−4','35 cm²','15 cm','135°','(4,2)','5','5,5','0,7','$3.800','2,5 horas','Ambas juntas, ninguna por sí sola','Cada una por sí sola','1/9','49π cm²','16π cm²','7√3'];

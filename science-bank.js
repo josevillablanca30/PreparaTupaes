@@ -1784,6 +1784,7 @@ const additions=[
 ];
 additions.forEach(([base,question,options,explanations,steps,easy,example],i)=>{
  const original=window.SCIENCE_BANK.find(q=>q.id==='SCI-'+base);
- window.SCIENCE_BANK.push({...original,id:'SCI-'+(205+i),question,options,answer:0,explanations,steps,easy,example,reviewStatus:'revision_individual_2026-10-15'});
+ const offset=i+1,rotate=values=>values.slice(offset).concat(values.slice(0,offset));
+ window.SCIENCE_BANK.push({...original,id:'SCI-'+(205+i),question,options:rotate(options),answer:4-offset,explanations:rotate(explanations),steps,easy,example,reviewStatus:'revision_individual_2026-10-15'});
 });
 }

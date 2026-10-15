@@ -239,7 +239,8 @@ const rows=[
 const suff=['Solo (1)','Solo (2)','Ambas juntas, ninguna por sí sola','Cada una por sí sola','Se requiere información adicional'];
 rows.forEach(([base,question,correct,wrong,reasons,steps,easy,example],i)=>{
  const original=window.CACHASTE_M2.find(q=>q.id==='M2-'+String(base).padStart(3,'0'));
- const options=original.area==='Suficiencia de datos'?suff.slice():[correct,...wrong];
+ const choices=[correct,...wrong],offset=i%4;
+ const options=original.area==='Suficiencia de datos'?suff.slice():choices.slice(offset).concat(choices.slice(0,offset));
  const why=steps.join(' '),lookup=new Map(wrong.map((w,n)=>[w,reasons[n]]));
  window.CACHASTE_M2.push({id:'M2-'+String(81+i).padStart(3,'0'),area:original.area,concept:original.concept,question,options,answer:options.indexOf(correct),explanations:options.map(o=>o===correct?'¡Cachaste! '+why:lookup.get(o)),why,hint:steps[0],editorial:{steps,easy,example},origin:'original',difficulty:'intermedio',reviewStatus:'revision_individual_2026-10-15'});
 });
