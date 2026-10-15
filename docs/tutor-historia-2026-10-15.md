@@ -72,6 +72,27 @@ Fuentes de contraste adicionales: [INE, estadísticas laborales](https://www.ine
 
 Verificación del lote: 116 pruebas de lógica y 40 recorridos locales de Historia aprobados, cero fallos y cero omitidos. La auditoría sigue con 623 preguntas y cero fallos críticos.
 
+## Lote 4: HIS-054 a HIS-065 — Historia completa en esta pasada
+
+12 clases y 36 distractores adicionales. Cobertura editorial real: **65/65 Historia y 106/106 M2**, 171/623 en total. Siguen pendientes 452: M1 116, Ciencias 206 y Lectura 130. No aumentó el banco y ninguna clase se clasifica «excelente» sin evaluación que lo sustente.
+
+Los nuevos ejemplos cambian contexto y tarea: ahorro se transfiere a entradas y salidas de un estanque; participación electoral a denominadores de una consulta; una fotografía sin contexto se compara con un audio auténtico de fecha mal atribuida; cantidades absolutas de desocupados se contrastan con un orden por tasas que da el resultado opuesto. Se definen símbolos y unidades y se desarrollan cálculos intermedios.
+
+Las clases históricas distinguen ocupación militar y cambios de autonomía mapuche; propuesta de 1947 y aplicación desde 1948 del Plan Marshall; participación estatal previa y nacionalización del cobre de 1971; comienzo y transmisión de la crisis de 1929. Las explicaciones de derechos separan origen del mandato, límites y controles. No se inventan cartas, citas, valores de gráficos ni datos del enunciado.
+
+Fuentes adicionales contrastadas:
+
+- [Memoria Chilena, ocupación militar y colonización de la Araucanía](https://www.memoriachilena.gob.cl/602/w3-article-3630.html?lang=es) y [radicaciones y reducciones](https://www.memoriachilena.gob.cl/602/w3-article-96198.html) (HIS-056).
+- [National Archives, Plan Marshall](https://www.archives.gov/milestone-documents/marshall-plan) (HIS-057).
+- [BCN, nacionalización del cobre](https://www.bcn.cl/historiapolitica/archivohales/colecciones/v/participacion-politica-y-membresias/la-nacionalizacion-del-cobre.%40t%3D10221.1_27831%26v%3Ddc%26r%3DFolleto.html) y [Memoria Chilena, chilenización y nacionalización](https://www.memoriachilena.gob.cl/602/w3-article-3622.html) (HIS-061).
+- [Élysée, texto de la declaración de 1789](https://www.elysee.fr/la-presidence/la-declaration-des-droits-de-l-homme-et-du-citoyen) (contraste de HIS-031; el primer acceso al Conseil constitutionnel respondió 429, por lo que se usó esta fuente oficial alternativa).
+
+El primer lote usó calidad anterior básica y actual adecuada, según lectura del contenido y tareas. El registro `reports/tutor-review-2026-10-15.json` identifica cada ID; los pendientes no heredan revisión por pertenecer a un concepto vecino. El refuerzo disponible comprueba con otro ítem, pero muchos conceptos aún carecen de una segunda familia. No se afirma transferencia comprobada para todos los 65 ni aprendizaje medido con estudiantes reales.
+
+## Verificación al cerrar Historia
+
+117 pruebas de lógica aprobadas, cero fallos y cero omitidas. Auditoría estructural: 623 preguntas, cero fallos críticos y 402 alertas heurísticas para revisión, que no equivalen por sí solas a errores conceptuales. Los recorridos móviles completos y la compilación nativa se registran al terminar, sin confundir un inicio de workflow con aprobación.
+
 ## Evidencia cerrada de M2
 
 Commit `1efd7946411fe4869b75b9656b2a3aa5b440a0eb`: 110 pruebas de lógica, 189 recorridos de navegador (incluido WebKit) y cuatro pruebas nativas Android aprobadas, sin omitidas. [Android de respaldo](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38730337593); [validación móvil y bloqueo de publicación Pages](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38730331099).

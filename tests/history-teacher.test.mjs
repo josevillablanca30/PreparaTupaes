@@ -10,7 +10,7 @@ test('Historia: las 65 claves, preguntas y alternativas de la beta se conservan'
  for(const old of before){const q=bank.find(q=>q.id===old.id);assert.equal(q.question,old.question);assert.equal(q.answer,old.answer);assert.deepEqual(Array.from(q.options),old.options);}
 });
 test('Historia: cada clase revisada integra fundamentos, aplicación, otra estrategia y tres errores particulares',()=>{
- const reviewed=bank.filter(q=>q.teaching);assert.ok(reviewed.length>=53);
+ const reviewed=bank.filter(q=>q.teaching);assert.equal(reviewed.length,65);
  for(const q of reviewed){const t=q.teaching,old=before.find(o=>o.id===q.id);
   assert.equal(t.quality,'adecuada');assert.ok(t.foundation.length>=2,q.id);assert.ok(t.application.length>=3,q.id);
   assert.ok(t.intuition.length>=2,q.id);assert.ok(t.example.steps.length>=3,q.id);
@@ -40,6 +40,19 @@ test('Historia: los ejemplos distinguen porcentaje, base, tasa y cantidades sin 
  assert.match(by(46).teaching.application.join(' '),/sin.*su puesto de trabajo|ni su puesto de trabajo/);
  assert.match(by(47).teaching.check,/solo conocemos la tendencia descrita/);
  assert.match(by(48).teaching.check,/no podemos decidir cuál tiene razón ni inventar citas/);
+});
+test('Historia: los últimos doce ejemplos calculan y delimitan correctamente sus conclusiones',()=>{
+ assert.equal(10000*6,60000);assert.equal(12*4-8,40);
+ assert.match(by(54).teaching.application.join(' '),/10.000 × 6/);
+ assert.equal(30/40,.75);assert.equal(30/50,.6);
+ assert.match(by(55).teaching.example.steps.join(' '),/No conocemos las preferencias/);
+ assert.match(by(56).teaching.foundation.join(' '),/resistencias, negociaciones/);
+ assert.match(by(57).teaching.foundation.join(' '),/1947.*1948/);
+ assert.match(by(60).teaching.check,/imagen auténtica y pie de foto correcto/);
+ assert.match(by(61).teaching.foundation.join(' '),/No significó detener la extracción/);
+ assert.match(by(63).teaching.example.steps.join(' '),/periodicidad por sí sola no basta/);
+ assert.equal(200/10000*100,2);assert.equal(100/2000*100,5);
+ assert.match(by(65).teaching.example.steps.join(' '),/mayor tasa es la de B/);
 });
 test('Historia: se distinguen etapas, límites de inferencia y propiedades económicas',()=>{
  assert.match(by(1).teaching.foundation.join(' '),/antecedentes/);
