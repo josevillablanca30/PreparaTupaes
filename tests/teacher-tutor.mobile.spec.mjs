@@ -1,4 +1,14 @@
 import{test,expect}from'@playwright/test';
+test('Ensayo M2 mantiene 55 preguntas sin elegir dos variantes equivalentes cuando hay banco suficiente',async({page})=>{
+ await page.addInitScript(()=>{Math.random=()=>0.5;localStorage.setItem('cachaste-m2-v1',JSON.stringify({diagnosticDone:true,history:[]}));});
+ await page.goto('./m2.html');
+ // Ambas variantes de media quedan al principio para que el caso no dependa del azar del sorteo.
+ await page.evaluate(()=>window.CACHASTE_M2.sort((a,b)=>Number(!a.transferGroup)-Number(!b.transferGroup)));
+ await page.locator('#full').click();
+ const selected=await page.evaluate(()=>JSON.parse(localStorage.getItem('cachaste-m2-v1')).session.ids.map(id=>{const q=window.CACHASTE_M2.find(q=>q.id===id);return{id,family:q.transferGroup||q.id};}));
+ expect(selected).toHaveLength(55);expect(new Set(selected.map(q=>q.family)).size).toBe(55);
+ expect(selected.filter(q=>q.family==='m2-mean-2-4-6-8')).toHaveLength(1);
+});
 for(const id of ['M2-001','M2-003','M2-007','M2-050']){
  test('Profesor M2 '+id+': tres estrategias, error elegido, recuperación y transferencia real',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));

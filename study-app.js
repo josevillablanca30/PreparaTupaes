@@ -31,8 +31,9 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   function begin(mode) {
     if (!diagnosticDone && mode !== 'diagnostic') { notice = 'Completa primero el diagnóstico para orientar tu práctica.'; render(); return; }
     if (session) { notice = 'Tienes una sesión guardada. Retómala o descártala antes de iniciar otra.'; render(); return; }
-    // El ensayo conserva sus ítems originales; la evidencia de transferencia sí excluye familias equivalentes.
-    const pool = L.select(BANK, history, mode === 'diagnostic' ? 30 : mode === 'full' ? count : 10, { balanced: true, distinctFamilies: mode !== 'full' });
+    // Mantén variedad cuando el banco alcanza; Historia necesita todos sus ítems para conservar 65.
+    const distinctFamilies = mode !== 'full' || new Set(BANK.map(q => q.transferGroup || q.id)).size >= count;
+    const pool = L.select(BANK, history, mode === 'diagnostic' ? 30 : mode === 'full' ? count : 10, { balanced: true, distinctFamilies });
     launch(mode, pool);
   }
   function launch(mode, pool) {

@@ -101,6 +101,10 @@ Se configura una ruta explícita compartida por Gradle y la caché, se crea/veri
 
 Esto corrige la ruta y permite comprobar continuidad entre compilaciones. Una caché de Actions puede caducar o ser eliminada: no equivale a custodia permanente de una clave de publicación. Antes de distribución estable/Google Play se necesita una clave de producción con respaldo seguro. No se han creado secretos de publicación, realizado gastos ni publicado la app.
 
+## Regresión del selector comprobada antes de entregar
+
+La excepción que conserva los 65 ítems de Historia debe aplicarse solo cuando no hay suficientes familias distintas. Aplicarla a todo ensayo podía permitir ambas variantes equivalentes de media en M2 pese a tener más de 55 familias disponibles. Se acota la excepción a bancos que no alcanzan la cantidad del ensayo. Una prueba coloca deliberadamente ambas variantes M2 al principio y elimina el azar: exige 55 familias distintas y solo una variante de media. Historia continúa con 65 preguntas. No se cambian claves ni se eliminan pruebas.
+
 ## Evidencia cerrada de M2
 
 Commit `1efd7946411fe4869b75b9656b2a3aa5b440a0eb`: 110 pruebas de lógica, 189 recorridos de navegador (incluido WebKit) y cuatro pruebas nativas Android aprobadas, sin omitidas. [Android de respaldo](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38730337593); [validación móvil y bloqueo de publicación Pages](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38730331099).
