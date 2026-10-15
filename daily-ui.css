@@ -23,3 +23,7 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 .mission-teaser strong{color:var(--game-deep);font-size:15px}
 .mission-teaser p{font-size:12px;color:var(--game-muted);margin:4px 0 9px;line-height:1.4!important}
 #daily-root .mission-teaser button{font-size:13px;min-height:44px;padding:8px 10px;flex-shrink:0}
+
+.prerequisite-card{margin:14px 0;padding:14px 16px;border:2px solid var(--game-border);border-radius:16px;background:#f7f1ff}
+.prerequisite-card p{margin:0 0 12px;font-size:14px;line-height:1.5}
+#daily-root .prerequisite-card button{width:100%;min-height:44px;font-size:14px}
