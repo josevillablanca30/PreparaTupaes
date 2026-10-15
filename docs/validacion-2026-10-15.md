@@ -26,3 +26,9 @@ Pendientes de publicación:
 - Configuración inicial de Pages: la conexión de GitHub no incluye administración y el intento anterior de habilitación devolvió `Resource not accessible by integration`.
 - Firma definitiva de producción y cuenta de Google Play aún no configuradas. La firma debug se conserva por rama en caché para futuras pruebas; no es firma de publicación.
 - Validación externa docente, calibración de dificultad, mayor profundidad de textos lectores y cobertura curricular exhaustiva siguen siendo criterios abiertos de versión comercial.
+
+## Primer Android instalado y comprobado
+
+El workflow [38708336309](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38708336309), commit `f60391306ea290b280b187f2947cc73c06ba626f`, terminó correctamente. Compiló la APK y aprobó las tres pruebas instrumentadas en emulador API 35: 3 ejecutadas, 0 fallos, 0 omitidas. El informe Android registra 100% de aprobación. No se afirma prueba en teléfono físico.
+
+Después de ese checkpoint se preparó API 36 para los requisitos vigentes de futuras publicaciones. También se protegió la sesión activa de M1 al consultar resultados anteriores, se añadieron controles de datos dañados y se conservan las respuestas de ensayos de versiones anteriores sin duplicar el historial. La nueva compilación de esos últimos cambios se validará en su propio workflow; el resultado de API 35 no se atribuye a un commit posterior.

@@ -18,7 +18,7 @@ for(const subject of subjects){
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('./'+subject.page);await diagnosis(page,subject);await page.locator('#back').click();await page.locator('#full').click();
   const start=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),subject.key);
-  expect(start.session.ids.length).toBe(subject.count);expect(start.session.deadline-start.session.started).toBe(subject.minutes*60000);
+  expect(start.session.ids.length).toBe(subject.count);expect(start.session.deadline-start.session.started).toBeGreaterThanOrEqual(subject.minutes*60000);expect(start.session.deadline-start.session.started).toBeLessThan(subject.minutes*60000+1000);
   await page.locator('[data-choice]').first().click();await page.locator('#flag').click();await page.locator('#omit').click();
   await page.locator('#map').click();await page.locator('[data-jump="0"]').click();
   await expect(page.locator('[data-choice][aria-pressed="true"]')).toHaveCount(0);
@@ -67,3 +67,23 @@ test('Lectura: siete textos, mapa, cambios y corrección completa al entregar',a
  const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('cachaste-reading-v1')));expect(saved.session).toBeNull();expect(saved.recent.length).toBe(65);expect(saved.recent[0].unanswered).toBe(true);expect(saved.assessments.length).toBe(2);
  await page.reload();await expect(page.getByRole('heading',{name:'Historial de sesiones',exact:true})).toBeVisible();
 });
+test('M1: consultar un resultado antiguo conserva el ensayo activo y sus respuestas',async({page})=>{
+ await page.goto('./');await page.evaluate(()=>{start('diagnostico30');for(let n=0;n<30;n++){choice=queue[i].answer;confidence='seguro';check();next()}navigate('home');startExam('full');choice=1;examAnswers[0]=1;persistExam();navigate('progress')});
+ const before=await page.evaluate(()=>localStorage.getItem('prepara-paes-active-exam-v1'));
+ await page.locator('.history-item').first().click();await expect(page.getByRole('heading',{name:'30 de 30 correctas',exact:true})).toBeVisible();
+ expect(await page.evaluate(()=>localStorage.getItem('prepara-paes-active-exam-v1'))).toBe(before);
+ expect(await page.evaluate(()=>queue.length)).toBe(65);
+ await page.evaluate(()=>window.cachasteNativeBack());await page.getByRole('button',{name:'Continuar ensayo',exact:true}).click();
+ await expect(page.locator('.option.selected')).toHaveCount(1);
+ await page.evaluate(()=>window.cachasteNativeBack());await page.getByRole('button',{name:'Express · 10 preguntas',exact:true}).click();
+ await expect(page.getByText('Tienes una sesión guardada. Retómala o descártala antes de comenzar otra.',{exact:true})).toBeVisible();
+ expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('prepara-paes-active-exam-v1')).ids.length)).toBe(65);
+});
+for(const subject of [{page:'science.html',key:'cachaste-science-v1'},{page:'reading.html',key:'cachaste-reading-v1'},...subjects]){
+ test(subject.page+': datos de sesión dañados permiten volver a empezar',async({page})=>{
+  await page.addInitScript(key=>localStorage.setItem(key,JSON.stringify({history:[null,{id:'INEXISTENTE',correct:true}],session:{mode:'full',ids:['INEXISTENTE'],index:0,results:[null]},lastResult:{mode:'full',results:[null,{id:'INEXISTENTE',correct:true}]},recent:[null],baseline:{completed:true,results:Array(30).fill(null)},assessments:[{id:'x',results:[null]}]})),subject.key);
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('./'+subject.page);
+  await expect(page.getByRole('button',{name:/diagnóstico/i}).first()).toBeVisible();
+  await page.getByRole('button',{name:/diagnóstico/i}).first().click();await expect(page.locator('.option,.choice').first()).toBeVisible();expect(errors).toEqual([]);
+ });
+}

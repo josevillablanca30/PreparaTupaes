@@ -129,6 +129,8 @@ test('nueva ronda sin alternativa ni confianza heredadas', async ({ page }) => {
   await page.getByRole('button', { name: 'Lo tengo claro', exact: true }).tap();
   await page.getByRole('button', { name: 'A) $10.000', exact: true }).tap();
   await page.getByRole('button', { name: '← Inicio', exact: true }).tap();
+  await page.getByRole('button',{name:'Descartar práctica',exact:true}).click();
+  await page.getByRole('button',{name:'Sí, descartar sesión',exact:true}).click();
   await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
   await page.getByRole('button', { name: 'Práctica rápida · 3 preguntas', exact: true }).tap();
   await expect(page.getByRole('button', { name: 'Tengo dudas', exact: true })).toHaveClass('active');

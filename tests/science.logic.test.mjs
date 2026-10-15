@@ -244,3 +244,12 @@ test('Sistema nervioso PAES 2027: ocho casos nuevos con explicaciones y errores 
   for(let i=0;i<4;i++)assert.ok(q.explanations[i].length>=30,q.id);
  }
 });
+
+test('Ciencias migra ensayo anterior sin duplicar intentos ni convertir un error en omisión',()=>{
+ const a=science(unlockedData());a.window.setup('completo');const state=a.saved(),session=state.session;
+ const rows=session.ids.slice(0,2).map((id,i)=>({id,correct:i===0,unanswered:false,confidence:'sin-declarar',date:'2026-10-13T12:00:0'+i+'Z'}));
+ delete session.answers;session.results=rows;session.index=2;state.history=rows;
+ const data=new Map([['cachaste-science-v1',JSON.stringify(state)]]),b=science(data);
+ b.window.resume();b.window.examAction('finish');const done=b.saved();
+ assert.equal(done.history.length,80);assert.equal(done.recent[0].correct,true);assert.equal(done.recent[1].correct,false);assert.equal(done.recent[1].unanswered,false);
+});

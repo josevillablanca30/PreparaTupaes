@@ -155,3 +155,11 @@ test('Lectura: distractores del primer texto son pertinentes y no absurdos',()=>
  assert.ok(first.every(q=>q.explanations.filter((_,i)=>i!==q.answer).every(x=>x.length>35)));
  assert.ok(new Set(first[0].explanations).size===4);
 });
+
+test('Lectura migra respuestas anteriores sin duplicar historial y conserva los aciertos',()=>{
+ const a=reading();finishDiagnosis(a);a.win.readingBegin('completo');const state=a.get(),session=state.session;
+ const rows=session.ids.slice(0,2).map((id,i)=>({id,correct:i===0,unanswered:false,confidence:'sin-declarar',at:'2026-10-13T12:00:0'+i+'Z'}));
+ delete session.answers;session.results=rows;session.index=2;state.history.push(...rows);
+ const b=reading(new Map([['cachaste-reading-v1',JSON.stringify(state)]]));b.win.readingResume();b.win.readingExamAction('submit');const done=b.get();
+ assert.equal(done.history.length,95);assert.equal(done.recent[0].correct,true);assert.equal(done.recent[1].unanswered,false);
+});

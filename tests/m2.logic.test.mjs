@@ -24,8 +24,8 @@ test('M2: banco de 80 preguntas originales válidas en seis áreas',()=>{
 });
 test('M2: interfaz incluye guardado local y no presenta puntajes oficiales',()=>{
  assert.match(readFileSync(new URL('../study-app.js',import.meta.url),'utf8'),/localStorage\.setItem/);
- assert.match(app,/No equivale a puntaje PAES oficial/);
- assert.match(app,/sin-declarar/);
+ assert.match(readFileSync(new URL('../study-app.js',import.meta.url),'utf8'),/No equivale a puntaje PAES oficial/);
+ assert.match(readFileSync(new URL('../study-app.js',import.meta.url),'utf8'),/sin-declarar/);
 });
 
 test('M2: claves de cálculo verificadas de manera independiente',()=>{

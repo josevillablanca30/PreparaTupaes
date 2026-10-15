@@ -54,14 +54,23 @@
     return [...fresh, ...rest];
   }
   function validSession(s, bank, modes, limit = 200) {
-    if (!s || !Array.isArray(s.ids) || !s.ids.length || s.ids.length > limit || new Set(s.ids).size !== s.ids.length || !Number.isInteger(s.index) || s.index < 0 || s.index >= s.ids.length || !modes.includes(s.mode) || !Array.isArray(s.results)) return false;
+    if (!s || !Array.isArray(s.ids) || !s.ids.length || s.ids.length > limit || new Set(s.ids).size !== s.ids.length || !Number.isInteger(s.index) || s.index < 0 || s.index >= s.ids.length || !modes.includes(s.mode) || !Array.isArray(s.results) || s.results.length>s.ids.length || new Set(s.results.map(r=>r?.id)).size!==s.results.length) return false;
     const byId = new Map(bank.map(q => [q.id, q]));
-    if (!s.ids.every(id => byId.has(id)) || s.results.some(r => !r || !byId.has(r.id) || typeof r.correct !== 'boolean')) return false;
+    if (!s.ids.every(id => byId.has(id)) || s.results.some(r => !r || !byId.has(r.id) || !s.ids.includes(r.id) || typeof r.correct !== 'boolean')) return false;
     if (s.selected != null && (!Number.isInteger(s.selected) || s.selected < 0 || s.selected >= byId.get(s.ids[s.index]).options.length)) return false;
     return true;
+  }
+  function cleanRows(bank, rows, limit = 5000) {
+    const byId=new Map(bank.map(q=>[q.id,q]));
+    return Array.isArray(rows)?rows.filter(r=>r&&byId.has(r.id)&&typeof r.correct==='boolean').slice(-limit).map(r=>({...r,selected:Number.isInteger(r.selected)&&r.selected>=0&&r.selected<byId.get(r.id).options.length?r.selected:null})):[];
+  }
+  function cleanAssessment(bank, value){
+    if(!value||!Array.isArray(value.results))return null;
+    const results=cleanRows(bank,value.results,200);
+    return {...value,id:String(value.id||'legacy-'+(value.at||value.date||'')),results,total:results.length,correct:results.filter(r=>r.correct).length};
   }
   function summary(mode, rows, extra = {}) {
     return { id: extra.id || 'round-' + Date.now(), mode, at: new Date().toISOString(), total: rows.length, correct: rows.filter(x => x.correct).length, results: rows, ...extra };
   }
-  global.CachasteLearning = { concept, profile, select, transfer, validSession, summary };
+  global.CachasteLearning = { concept, profile, select, transfer, validSession, cleanRows, cleanAssessment, summary };
 })(typeof window !== 'undefined' ? window : globalThis);

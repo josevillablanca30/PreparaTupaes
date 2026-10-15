@@ -29,6 +29,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run test:logic
+      - run: npm run audit:pedagogy
       - run: npm run build
       - run: npx playwright install --with-deps chromium webkit
       - run: npm test
@@ -64,10 +65,10 @@ jobs:
     outputs:
       page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Habilitar GitHub Pages si aún no está configurado
+      - name: Leer configuración Pages (habilitación inicial requiere administración)
         uses: actions/configure-pages@v5
         with:
-          enablement: true
+          enablement: false
       - name: Publicar
         id: deployment
         uses: actions/deploy-pages@v5

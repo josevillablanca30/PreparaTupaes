@@ -60,7 +60,7 @@ test('repaso: prioriza la habilidad con respuesta incorrecta', () => {
 });
 test('nueva ronda: reinicia alternativa, confianza y explicación', () => {
   const run = app();
-  run("start('diagnostico');choice=0;confidence='azar';check();mode='easy';navigate('home');start('rapida')");
+  run("start('diagnostico');choice=0;confidence='azar';check();mode='easy';navigate('home');discardMath();start('rapida')");
   assert.equal(run('choice'), null);
   assert.equal(run('confidence'), 'duda');
   assert.equal(run('mode'), 'steps');
@@ -449,4 +449,11 @@ test('M1: diagnóstico de 30 reanuda pregunta, historial y autoconfianza',()=>{
  assert.equal(reopened('round.length'),9);
  assert.equal(reopened('confidence'),'azar');
  assert.equal(reopened('choice'),2);
+});
+
+test('M1 protege la sesión guardada al intentar iniciar otra desde inicio',()=>{
+ const run=app();run("start('diagnostico30');choice=1;confidence='azar';draw();navigate('home')");
+ const before=run('localStorage.getItem(mathDraftKey)');
+ run("startExam('full')");assert.equal(run('localStorage.getItem(mathDraftKey)'),before);assert.equal(run('exam'),false);
+ run('requestDiscardMath()');assert.equal(run('page'),'discard');run("navigate('home');resumeMathDiagnosis()");assert.equal(run('choice'),1);assert.equal(run('confidence'),'azar');
 });

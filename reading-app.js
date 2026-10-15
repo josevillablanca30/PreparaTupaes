@@ -7,12 +7,13 @@ const skills=['Localizar','Interpretar','Evaluar'];
 const stored=(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch{return {}}})();
 let history=Array.isArray(stored.history)?stored.history.filter(h=>h&&typeof h.correct==='boolean'&&BANK.some(q=>q.id===h.id)).slice(-3000):[];
 let pending=Array.isArray(stored.pending)?stored.pending.filter(id=>BANK.some(q=>q.id===id)):[];
-let baseline=stored.baseline?.completed&&stored.baseline?.results?.length===30?stored.baseline:null;
+let baseline=stored.baseline?.completed&&stored.baseline?.results?.length===30&&stored.baseline.results.every(r=>r&&typeof r.correct==='boolean')?stored.baseline:null;
 let session=validSession(stored.session)?stored.session:null;
-let recent=Array.isArray(stored.recent)?stored.recent.filter(r=>r&&qBy(r.id)):[],screen='home',feedbackMode='steps',examMap=false,examConfirm=false;
-let assessments=Array.isArray(stored.assessments)?stored.assessments.filter(a=>a&&Array.isArray(a.results)).slice(-100):[];
-if(session?.mode==='completo'){if(!Number.isFinite(session.deadline))session=null;else{session.answers=session.answers||Object.fromEntries(session.results.filter(r=>Number.isInteger(r.selected)).map(r=>[r.id,r.selected]));session.flags=Array.isArray(session.flags)?session.flags:[];}}
-function validSession(s){return s&&Array.isArray(s.ids)&&s.ids.length>=1&&s.ids.length<=65&&new Set(s.ids).size===s.ids.length&&s.ids.every(id=>BANK.some(q=>q.id===id))&&Number.isInteger(s.index)&&s.index>=0&&s.index<s.ids.length&&Array.isArray(s.results)&&['diagnostico','express','completo','errores'].includes(s.mode)}
+let recent=Array.isArray(stored.recent)?window.CachasteLearning.cleanRows(BANK,stored.recent,200):[],screen='home',feedbackMode='steps',examMap=false,examConfirm=false;
+let assessments=Array.isArray(stored.assessments)?stored.assessments.map(a=>window.CachasteLearning.cleanAssessment(BANK,a)).filter(Boolean).slice(-100):[];
+if(session?.mode==='completo'){if(!Number.isFinite(session.deadline))session=null;else{if(!session.answers)session.legacyResults=session.results.slice();session.answers=session.answers||Object.fromEntries(session.results.map(r=>[r.id,r.selected??(r.correct?qBy(r.id).answer:null)]));session.flags=Array.isArray(session.flags)?session.flags.filter(id=>session.ids.includes(id)):[];session.answers=Object.fromEntries(session.ids.map(id=>{const n=session.answers[id];return[id,Number.isInteger(n)&&n>=0&&n<qBy(id).options.length?n:null]}));}}
+if(session){session.selected=session.selected??null;session.hint=Number.isInteger(session.hint)?Math.max(0,Math.min(2,session.hint)):0;session.checked=!!session.checked&&session.selected!==null;}
+function validSession(s){return window.CachasteLearning.validSession(s,BANK,['diagnostico','express','completo','errores'],65)}
 function save(){try{localStorage.setItem(KEY,JSON.stringify({version:2,history,pending,baseline,session,recent,assessments}));return true}catch{if(status)status.textContent='Este dispositivo no permitió guardar. Puedes continuar, pero el avance podría perderse.';return false}}
 function esc(t){return String(t??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
 function qBy(id){return BANK.find(q=>q.id===id)}
@@ -71,7 +72,7 @@ function check(){
 }
 function advance(skip=false){
  if(!session)return;
- if(session.mode==='completo'){if(skip){session.selected=null;session.answers[current().id]=null;}if(session.index===session.ids.length-1){examConfirm=true;save();render();}else examJump(session.index+1);return;}
+ if(session.mode==='completo'){if(skip){session.selected=null;session.answers[current().id]=null;session.explicitlyOmitted=[...new Set([...(session.explicitlyOmitted||[]),current().id])];}if(session.index===session.ids.length-1){examConfirm=true;save();render();}else examJump(session.index+1);return;}
  const q=current();
  if(session.mode!=='completo'&&!session.checked)return;
  if(session.mode==='completo'&&session.selected===null&&!skip)return;
@@ -90,7 +91,8 @@ function finish(){
  if(!session)return;
  const done=session;
  if(done.mode==='completo'){
-  done.results=done.ids.map(id=>{const q=qBy(id),n=done.answers[id]??null;return {id,passageId:q.passageId,skill:q.skill,concept:q.concept,selected:n,correct:n!==null&&n===q.answer,confidence:'sin-declarar',assisted:false,unanswered:n===null,at:new Date().toISOString()}});
+  const legacy=done.legacyResults||[],oldTail=history.slice(-legacy.length);if(legacy.length&&oldTail.length===legacy.length&&legacy.every((r,i)=>r.id===oldTail[i].id&&r.at&&r.at===oldTail[i].at&&r.correct===oldTail[i].correct))history=history.slice(0,-legacy.length);
+  done.results=done.ids.map(id=>{const q=qBy(id),n=done.answers[id]??null,old=legacy.find(r=>r.id===id),unknownOld=n===null&&old&&!old.correct&&!old.unanswered&&!done.explicitlyOmitted?.includes(id);return {id,passageId:q.passageId,skill:q.skill,concept:q.concept,selected:n,correct:n!==null&&n===q.answer,confidence:'sin-declarar',assisted:false,unanswered:n===null&&!unknownOld,at:old?.at||new Date().toISOString()}});
   history.push(...done.results);history=history.slice(-3000);
   for(const r of done.results)if(!r.correct&&!pending.includes(r.id))pending.push(r.id);
  }
@@ -158,10 +160,11 @@ function quiz(){
 }
 function diagnosticReport(rows){
  if(!rows?.length)return '';
+ const examResult=rows.every(r=>r.confidence==='sin-declarar');
  const explain={Localizar:'Busca datos explícitos y comprueba exactamente en qué parte del texto aparecen.',Interpretar:'Relaciona ideas, identifica causas y consecuencias y fundamenta inferencias con pistas del texto.',Evaluar:'Distingue hechos de opiniones, examina la intención del autor y contrasta la evidencia con la conclusión.'};
- const groups=skills.map(skill=>{const a=rows.filter(x=>x.skill===skill);return {skill,total:a.length,correct:a.filter(x=>x.correct).length,secure:a.filter(x=>x.correct&&x.confidence==='seguro'&&!x.assisted).length,unsure:a.filter(x=>x.confidence==='duda'||x.confidence==='azar'||x.assisted).length}}).filter(x=>x.total).sort((a,b)=>a.secure/a.total-b.secure/b.total);
- const card=g=>'<div class="skill-summary"><strong>'+esc(g.skill)+'</strong><p>'+g.correct+' de '+g.total+' correctas · '+g.secure+' seguras · '+g.unsure+' con dudas o ayuda.</p><p>'+esc(explain[g.skill])+'</p><p>'+(g.secure/g.total>=.75?'Fortaleza: aumenta la dificultad y cambia de tipo de texto.':'Prioridad: practica esta habilidad con otros textos y preguntas nuevas; no memorices la alternativa anterior.')+'</p></div>';
- return '<div class="card"><span class="eyebrow">DIAGNÓSTICO LECTOR</span><h2>Lo que ya haces bien</h2>'+(groups.filter(x=>x.secure/x.total>=.75).map(card).join('')||'<p>Todavía no hay una habilidad suficientemente consolidada en esta muestra.</p>')+'<h2>Lo que necesitas mejorar</h2>'+(groups.filter(x=>x.secure/x.total<.75).map(card).join('')||'<p>No aparecen debilidades claras; continúa con textos nuevos.</p>')+'<h2>Plan recomendado</h2><p>1. Revisa la habilidad menos segura. 2. Aprende cómo se encuentra la evidencia. 3. Resuelve preguntas diferentes con textos nuevos. 4. Explica con tus palabras por qué descartas cada alternativa.</p><p class="small">Diagnóstico formativo: no representa un puntaje PAES ni certifica dominio definitivo.</p></div>';
+ const groups=skills.map(skill=>{const a=rows.filter(x=>x.skill===skill);return {skill,total:a.length,correct:a.filter(x=>x.correct).length,secure:a.filter(x=>x.correct&&(examResult||x.confidence==='seguro')&&!x.assisted).length,unsure:a.filter(x=>x.confidence==='duda'||x.confidence==='azar'||x.assisted).length}}).filter(x=>x.total).sort((a,b)=>a.secure/a.total-b.secure/b.total);
+ const card=g=>'<div class="skill-summary"><strong>'+esc(g.skill)+'</strong><p>'+g.correct+' de '+g.total+' correctas · '+g.secure+(examResult?' sin pistas · ':' seguras · ')+g.unsure+' con dudas o ayuda.</p><p>'+esc(explain[g.skill])+'</p><p>'+(g.secure/g.total>=.75?'Fortaleza: aumenta la dificultad y cambia de tipo de texto.':'Prioridad: practica esta habilidad con otros textos y preguntas nuevas; no memorices la alternativa anterior.')+'</p></div>';
+ return '<div class="card">'+(examResult?'<p class="small">El ensayo no recoge autoconfianza. Un buen resultado orienta tu práctica; confirma el aprendizaje en otras preguntas.</p>':'')+'<span class="eyebrow">DIAGNÓSTICO LECTOR</span><h2>Lo que ya haces bien</h2>'+(groups.filter(x=>x.secure/x.total>=.75).map(card).join('')||'<p>Todavía no hay una habilidad suficientemente consolidada en esta muestra.</p>')+'<h2>Lo que necesitas mejorar</h2>'+(groups.filter(x=>x.secure/x.total<.75).map(card).join('')||'<p>No aparecen debilidades claras; continúa con textos nuevos.</p>')+'<h2>Plan recomendado</h2><p>1. Revisa la habilidad menos segura. 2. Aprende cómo se encuentra la evidencia. 3. Resuelve preguntas diferentes con textos nuevos. 4. Explica con tus palabras por qué descartas cada alternativa.</p><p class="small">Diagnóstico formativo: no representa un puntaje PAES ni certifica dominio definitivo.</p></div>';
 }
 function result(){
  const list=recent,good=list.filter(x=>x.correct).length;

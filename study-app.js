@@ -7,13 +7,13 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   let stored = {}; try { stored = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch {}
   let history = Array.isArray(stored.history) ? stored.history.filter(r => r && byId.has(r.id) && typeof r.correct === 'boolean').slice(-5000) : [];
   let session = L.validSession(stored.session, BANK, ['diagnostic', 'express', 'reinforce', 'full']) ? stored.session : null;
-  let lastResult = stored.lastResult && Array.isArray(stored.lastResult.results) ? stored.lastResult : null;
-  let assessments = Array.isArray(stored.assessments) ? stored.assessments.filter(r => r && Array.isArray(r.results)).slice(-100) : [];
+  let lastResult = L.cleanAssessment(BANK,stored.lastResult);
+  let assessments = Array.isArray(stored.assessments) ? stored.assessments.map(r=>L.cleanAssessment(BANK,r)).filter(Boolean).slice(-100) : [];
   let diagnosticDone = stored.diagnosticDone === true || lastResult?.mode === 'diagnostic' && lastResult.results.length === 30;
   let screen = 'home', explainMode = 'steps', mapOpen = false, confirming = false, notice = '';
   // Older full-bank practices have no deadline. Preserve them as practice, not as a timed exam.
   if (session?.mode === 'full' && !Number.isFinite(session.deadline)) session.mode = 'express';
-  if(session){session.flags=Array.isArray(session.flags)?session.flags.filter(n=>Number.isInteger(n)&&n>=0&&n<session.ids.length):[];}
+  if(session){session.selected=session.selected??null;session.checked=!!session.checked&&session.selected!==null;session.flags=Array.isArray(session.flags)?session.flags.filter(n=>Number.isInteger(n)&&n>=0&&n<session.ids.length):[];}
   if (session?.mode === 'full') {
     if (!Array.isArray(session.answers) || session.answers.length !== session.ids.length) session = null;
     else if (session.answers.some((n, i) => n !== null && (!Number.isInteger(n) || n < 0 || n >= order(byId.get(session.ids[i])).options.length))) session = null;

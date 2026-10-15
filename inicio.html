@@ -10,7 +10,7 @@
 :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#27233c;background:#faf9fe;color-scheme:light}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 85% 0%,#e9e2ff 0%,transparent 36%),radial-gradient(ellipse at 3% 85%,#fdf0e5 0%,transparent 35%),#faf9fe}
 main{max-width:950px;margin:auto;padding:22px max(18px,env(safe-area-inset-left)) calc(70px + env(safe-area-inset-bottom))}
-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:5px 0 56px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:5px 0 30px}
 .logo{display:flex;gap:11px;align-items:center;font-size:22px;letter-spacing:-.8px;font-weight:850}
 .symbol{display:grid;place-items:center;background:#7357d8;color:#fff;width:40px;height:40px;border-radius:13px;font-size:29px;box-shadow:0 5px 13px #7357d828}
 .version{font-size:12px;font-weight:700;color:#61538b;background:#f0ecfb;border-radius:24px;padding:9px 13px}
@@ -43,6 +43,8 @@ h2{font-size:21px;letter-spacing:-.6px;margin:0}.section-title p{font-size:13px;
 @media(max-width:700px){.progress{grid-template-columns:minmax(0,1fr)}.progress article{min-width:0;overflow-wrap:anywhere}header{margin-bottom:35px}.gridsci{grid-template-columns:1fr}.subject{min-height:162px}.subject.m1{grid-template-columns:minmax(0,1fr) auto;min-height:184px}.subject:not(.m1) .action{margin-top:15px}.subject h3{margin-top:10px}.section-title{margin-top:26px}.lead{margin-bottom:28px}}
 @media(max-width:370px){main{padding:15px 16px 70px}h1{letter-spacing:-1.5px}.subject.m1{grid-template-columns:1fr}.subject.m1 .icon{order:-1}.progress{grid-template-columns:1fr}.sci-meta{align-items:flex-start}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+
+.subject{transition:transform .15s ease,border-color .15s ease}.subject:active{transform:scale(.99)}.progress{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}.continue-card{margin:24px 0;padding:20px;border:1px solid #d8c9f2;background:#f0eafd;border-radius:20px}.continue-card a{display:inline-flex;align-items:center;min-height:46px;padding:10px 16px;background:#6846bb;color:white;border-radius:12px;text-decoration:none;font-weight:750}.continue-card p{margin:8px 0 12px}@media(max-width:500px){header{margin-bottom:28px}.gridsci{gap:10px}.gridsci .subject{padding:17px}.gridsci .subject p{font-size:14px}.section-title{align-items:flex-start;gap:8px;flex-wrap:wrap}}@media(prefers-reduced-motion:reduce){.subject{transition:none}}
 </style>
 </head>
 <body><main>
@@ -50,24 +52,25 @@ h2{font-size:21px;letter-spacing:-.6px;margin:0}.section-title p{font-size:13px;
 <section aria-labelledby="welcome-title"><span class="kicker">Tu espacio para aprender</span>
 <h1 id="welcome-title">¿Qué quieres aprender hoy?</h1>
 <p class="lead">Tú eliges por dónde empezar. Si algo cuesta, te lo explicamos de otra forma, con pistas y ejemplos hasta que lo entiendas.</p></section>
+<div id="continue-study" aria-live="polite"></div>
 <section aria-labelledby="math-title"><div class="section-title"><h2 id="math-title">Matemática</h2><p>Comprende primero, practica después.</p></div>
 <a class="subject m1" href="index.html" aria-label="Entrar a Matemática M1">
 <div><div class="subject-top"><span class="chip">116 ejercicios originales</span></div>
 <h3>Matemática M1</h3><p>Desde cero: pistas, ejercicios visuales, diagnóstico y simulacro formativo.</p><span class="action">Entrar a M1 <span aria-hidden="true">→</span></span></div>
-<div class="icon" aria-hidden="true">x²</div></a><a class="subject m1" href="m2.html" aria-label="Entrar a Matemática M2"><div><div class="subject-top"><span class="chip">55 ejercicios originales</span></div><h3>Matemática M2</h3><p>Funciones, probabilidad, geometría, álgebra y modelación con explicaciones paso a paso.</p><span class="action">Practicar M2 <span aria-hidden="true">→</span></span></div><div class="icon" aria-hidden="true">M2</div></a></section>
-<section aria-labelledby="reading-title"><div class="section-title"><h2 id="reading-title">Competencia Lectora</h2><p>20 textos originales · 100 preguntas</p></div>
-<a class="subject read" href="reading.html" aria-label="Entrar a Competencia Lectora"><div class="subject-top"><span class="icon" aria-hidden="true">Aa</span><span class="chip">Nueva asignatura</span></div><h3>Comprende lo que lees</h3><p>Aprende a localizar, interpretar y evaluar. Diagnóstico, Express y ensayo completo de 65 preguntas.</p><span class="action">Entrar a Competencia Lectora →</span></a></section>
+<div class="icon" aria-hidden="true">x²</div></a><a class="subject m1" href="m2.html" aria-label="Entrar a Matemática M2"><div><div class="subject-top"><span class="chip">80 ejercicios originales</span></div><h3>Matemática M2</h3><p>Funciones, probabilidad, geometría, álgebra y modelación con explicaciones paso a paso.</p><span class="action">Practicar M2 <span aria-hidden="true">→</span></span></div><div class="icon" aria-hidden="true">M2</div></a></section>
+<section aria-labelledby="reading-title"><div class="section-title"><h2 id="reading-title">Competencia Lectora</h2><p>20 textos originales · 130 preguntas</p></div>
+<a class="subject read" href="reading.html" aria-label="Entrar a Competencia Lectora"><div class="subject-top"><span class="icon" aria-hidden="true">Aa</span><span class="chip">Tres habilidades</span></div><h3>Comprende lo que lees</h3><p>Aprende a localizar, interpretar y evaluar. Diagnóstico, Express y ensayo completo de 65 preguntas.</p><span class="action">Entrar a Competencia Lectora →</span></a></section>
 <section aria-labelledby="history-title"><div class="section-title"><h2 id="history-title">Historia y Ciencias Sociales</h2><p>65 preguntas disponibles</p></div><a class="subject read" href="history.html"><div class="subject-top"><span class="icon" aria-hidden="true">H</span><span class="chip">65 ejercicios originales</span></div><h3>Comprende los procesos históricos</h3><p>Historia de Chile, ciudadanía, economía e historia mundial. Diagnóstico, Express y práctica guiada con explicaciones.</p><span class="action">Practicar Historia →</span></a></section><section aria-labelledby="science-title"><div class="section-title"><h2 id="science-title">Ciencias · elige tu mención</h2><a class="subnav" href="science.html">Ver Ciencias completa →</a></div>
 <div class="gridsci">
-<a class="subject bio" href="science.html?asignatura=biologia" aria-label="Elegir mención Biología"><div><div class="subject-top"><span class="icon" aria-hidden="true">🧬</span><span class="chip">En desarrollo</span></div><h3>Biología</h3><p>Células, sistemas, herencia, evolución y ambiente.</p></div><span class="action">Elegir mención Biología →</span></a>
-<a class="subject quim" href="science.html?asignatura=quimica" aria-label="Elegir mención Química"><div><div class="subject-top"><span class="icon" aria-hidden="true">⚗</span><span class="chip">En desarrollo</span></div><h3>Química</h3><p>Átomos, enlaces, reacciones y cálculos químicos.</p></div><span class="action">Elegir mención Química →</span></a>
-<a class="subject fis" href="science.html?asignatura=fisica" aria-label="Elegir mención Física"><div><div class="subject-top"><span class="icon" aria-hidden="true">⚡</span><span class="chip">En desarrollo</span></div><h3>Física</h3><p>Movimiento, ondas, electricidad y planeta Tierra.</p></div><span class="action">Elegir mención Física →</span></a>
+<a class="subject bio" href="science.html?asignatura=biologia" aria-label="Elegir mención Biología"><div><div class="subject-top"><span class="icon" aria-hidden="true">🧬</span><span class="chip">MC + mención</span></div><h3>Biología</h3><p>Células, sistemas, herencia, evolución y ambiente.</p></div><span class="action">Elegir mención Biología →</span></a>
+<a class="subject quim" href="science.html?asignatura=quimica" aria-label="Elegir mención Química"><div><div class="subject-top"><span class="icon" aria-hidden="true">⚗</span><span class="chip">MC + mención</span></div><h3>Química</h3><p>Átomos, enlaces, reacciones y cálculos químicos.</p></div><span class="action">Elegir mención Química →</span></a>
+<a class="subject fis" href="science.html?asignatura=fisica" aria-label="Elegir mención Física"><div><div class="subject-top"><span class="icon" aria-hidden="true">⚡</span><span class="chip">MC + mención</span></div><h3>Física</h3><p>Movimiento, ondas, electricidad y planeta Tierra.</p></div><span class="action">Elegir mención Física →</span></a>
 </div><div class="sci-meta"><span>La práctica de Ciencias siempre mezcla Biología, Física y Química. Tu mención tendrá más preguntas, sin dejar de repasar las otras dos.</span><a href="science.html">Elegir mi módulo →</a></div></section>
 <section class="progress" aria-label="Resumen local del aprendizaje">
 <article><span>Matemática M1</span><strong id="m1-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article>
 <article><span>Ciencias</span><strong id="science-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article>
 <article><span>Competencia Lectora</span><strong id="reading-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article>
-</section><p class="bottom-note">Tu progreso se guarda en este dispositivo y se mantiene separado por área. Cachaste es una aplicación independiente de preparación PAES; no contiene preguntas oficiales.</p>
+<article><span>Matemática M2</span><strong id="m2-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article><article><span>Historia</span><strong id="history-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article></section><p class="bottom-note">Tu progreso se guarda en este dispositivo y se mantiene separado por área. Cachaste es una aplicación independiente de preparación PAES; no contiene preguntas oficiales.</p>
 </main>
 <script>
 (function(){
@@ -80,6 +83,12 @@ if(h.length)document.getElementById('m1-progress').textContent=h.length+' '+(h.l
 if(sh.length)document.getElementById('science-progress').textContent=sh.length+' '+(sh.length===1?'respuesta':'respuestas');
 const reading=safeRead('cachaste-reading-v1');const rh=Array.isArray(reading?.history)?reading.history:[];
 if(rh.length)document.getElementById('reading-progress').textContent=rh.length+' '+(rh.length===1?'respuesta':'respuestas');
+for(const [key,id]of [['cachaste-m2-v1','m2-progress'],['cachaste-history-v1','history-progress']]){const v=safeRead(key);const rows=Array.isArray(v?.history)?v.history.filter(r=>r&&typeof r.correct==='boolean'):[];const el=document.getElementById(id);if(rows.length&&el)el.textContent=rows.length+' '+(rows.length===1?'respuesta':'respuestas');}
+const m1Draft=safeRead('cachaste-m1-diagnostic-draft-v1'),m1Exam=safeRead('prepara-paes-active-exam-v1');
+const possible=[['index.html','Matemática M1',m1Exam||m1Draft],['science.html','Ciencias',sc?.session],['reading.html','Competencia Lectora',reading?.session],['m2.html','Matemática M2',safeRead('cachaste-m2-v1')?.session],['history.html','Historia',safeRead('cachaste-history-v1')?.session]];
+const pending=possible.filter(([, ,ses])=>ses&&Array.isArray(ses.ids)&&ses.ids.length&&Number.isInteger(ses.index)&&ses.index>=0&&ses.index<ses.ids.length);
+const next=pending.sort((a,b)=>(b[2].started||0)-(a[2].started||0))[0],container=document.getElementById('continue-study');
+if(next&&container){const [href,title,ses]=next;container.innerHTML='<section class="continue-card"><span class="kicker">SIGAMOS DESDE DONDE QUEDASTE</span><h2>'+title+'</h2><p>Pregunta '+(ses.index+1)+' de '+ses.ids.length+'. Tu sesión está guardada en este dispositivo.</p><a href="'+href+'">Retomar mi preparación →</a></section>';}
 })();
 </script>
 </body></html>

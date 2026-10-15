@@ -1,11 +1,11 @@
 plugins { id 'com.android.application' }
 android {
     namespace 'cl.preparatupaes.app'
-    compileSdk 35
+    compileSdk 36
     defaultConfig {
         applicationId 'cl.preparatupaes.app'
         minSdk 24
-        targetSdk 35
+        targetSdk 36
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         versionCode 12
         versionName '1.1.0-beta'
