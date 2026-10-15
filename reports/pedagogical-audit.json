@@ -3195,62 +3195,6 @@
     },
     {
       "bank": "Historia",
-      "id": "HIS-003",
-      "area": "Historia de Chile",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-004",
-      "area": "Historia de Chile",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-007",
-      "area": "Formación ciudadana",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-012",
-      "area": "Historia de Chile",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-013",
-      "area": "Historia mundial",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-014",
-      "area": "Historia mundial",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-015",
-      "area": "Formación ciudadana",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
       "id": "HIS-021",
       "area": "Historia de Chile",
       "type": "vague_hint",
@@ -3650,7 +3594,7 @@
   },
   "summary": {
     "critical": 0,
-    "review": 447,
+    "review": 440,
     "questionCount": 623
   }
 }

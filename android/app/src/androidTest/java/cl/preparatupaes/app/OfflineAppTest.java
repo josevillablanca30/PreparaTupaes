@@ -90,6 +90,24 @@ public class OfflineAppTest {
         js("document.getElementById('resume').click();document.getElementById('next').click();document.getElementById('reinforce').click();true");
         assertEquals("true",js("JSON.parse(localStorage.getItem('cachaste-m2-v1')).session.ids.every(id=>id!=='M2-001')"));
     }
+    @Test public void historyTeacherSurvivesRecreationAndOffersDifferentDecision() throws Exception {
+        open("inicio.html", "document.querySelectorAll('a.subject').length>=5");
+        js("localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'native-history',mode:'express',ids:['HIS-009'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}}));true");
+        open("history.html", "document.getElementById('resume')");
+        js("document.getElementById('resume').click();[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.includes('etiqueta de un cuaderno')).click();document.querySelector('[data-conf=\"duda\"]').click();document.getElementById('check').click();true");
+        waitFor("document.querySelector('.teaching-section')");
+        assertEquals("true",js("document.querySelector('.error-reason').textContent.includes('etiqueta de un cuaderno')"));
+        String draft=js("localStorage.getItem('cachaste-history-v1')");
+        js("document.querySelector('[data-explain=\"easy\"]').click();true");
+        assertEquals("true",js("document.querySelector('.tutor-panel').textContent.includes('Tu sábado')"));
+        js("document.querySelector('[data-explain=\"example\"]').click();true");
+        assertEquals("true",js("document.querySelector('.tutor-panel').textContent.includes('espacio de música')"));
+        assertEquals(draft,js("localStorage.getItem('cachaste-history-v1')"));
+        scenario.recreate();waitFor("document.getElementById('resume')");
+        assertEquals(draft,js("localStorage.getItem('cachaste-history-v1')"));
+        js("document.getElementById('resume').click();document.getElementById('next').click();document.getElementById('reinforce').click();true");
+        assertEquals("true",js("JSON.parse(localStorage.getItem('cachaste-history-v1')).session.ids.join(',')==='HIS-059'"));
+    }
     @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         PackageInfo info=context.getPackageManager().getPackageInfo(context.getPackageName(),PackageManager.GET_PERMISSIONS);
