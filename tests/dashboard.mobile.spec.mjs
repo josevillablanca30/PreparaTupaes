@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 async function checkDashboard(page) {
+ if(page.url().includes('inicio.html'))await expect(page.locator('#traditional-section')).toBeVisible();
  const issues=await page.evaluate(()=>{
   const width=document.documentElement.clientWidth, problems=[];
   if(document.documentElement.scrollWidth>width+1)problems.push('horizontal overflow');
@@ -13,9 +14,9 @@ async function checkDashboard(page) {
  expect(issues).toEqual([]);
 }
 test('Cachaste: inicio unificado muestra asignaturas y rutas accesibles',async({page},info)=>{
- await page.goto('./inicio.html');
+ await page.goto('./inicio.html#traditional');
  await expect(page).toHaveTitle('¿Cachaste? · Un ratito a la vez');
- await expect(page.getByRole('heading',{name:/Prepara tu PAES,.*un ratito a la vez/})).toBeVisible();
+ await expect(page.getByRole('heading',{name:'Diagnósticos, prácticas y ensayos PAES',level:1})).toBeVisible();
  for(const name of ['Entrar a Matemática M1','Elegir mención Biología','Elegir mención Química','Elegir mención Física']){
   await expect(page.getByRole('link',{name,exact:true})).toBeVisible();
  }
@@ -25,7 +26,7 @@ test('Cachaste: inicio unificado muestra asignaturas y rutas accesibles',async({
  await info.attach('selector-asignaturas',{body:await page.screenshot({fullPage:true}),contentType:'image/png'});
 });
 test('Navegación: M1 y Ciencias vuelven al mismo selector',async({page})=>{
- await page.goto('./inicio.html');
+ await page.goto('./inicio.html#traditional');
  await page.getByRole('link',{name:'Entrar a Matemática M1'}).tap();
  await expect(page).toHaveTitle('Cachaste · Aprende a tu ritmo');
  await expect(page.getByRole('button',{name:'Comenzar diagnóstico de 30'})).toBeVisible();
@@ -40,7 +41,7 @@ test('Navegación: M1 y Ciencias vuelven al mismo selector',async({page})=>{
  await checkDashboard(page);
 });
 test('Selector: Química y Física muestran la materia elegida al entrar',async({page})=>{
- await page.goto('./inicio.html');
+ await page.goto('./inicio.html#traditional');
  await page.getByRole('link',{name:'Elegir mención Química'}).tap();
  await expect(page.locator('.track').filter({hasText:'Química'})).toHaveAttribute('aria-pressed','true');
  await page.getByRole('button',{name:'Comenzar diagnóstico de 30'}).tap();
@@ -62,7 +63,7 @@ test('Selector: Química y Física muestran la materia elegida al entrar',async(
  await checkDashboard(page);
 });
 test('Progreso: selector reúne resúmenes de M1 y Ciencias sin mezclarlos',async({page})=>{
- await page.goto('./inicio.html');
+ await page.goto('./inicio.html#traditional');
  await expect(page.locator('#m1-progress')).toHaveText('Aún sin practicar');
  await expect(page.locator('#science-progress')).toHaveText('Aún sin practicar');
  await page.getByRole('link',{name:'Entrar a Matemática M1'}).tap();
@@ -86,7 +87,7 @@ test('Progreso: selector reúne resúmenes de M1 y Ciencias sin mezclarlos',asyn
 });
 
 test('Selector unificado: muestra y conserva avance independiente en Lectora',async({page})=>{
- await page.goto('./inicio.html');
+ await page.goto('./inicio.html#traditional');
  await expect(page.locator('#reading-progress')).toHaveText('Aún sin practicar');
  await page.getByRole('link',{name:'Entrar a Competencia Lectora'}).tap();
  await page.getByRole('button',{name:'Comenzar diagnóstico de 30'}).tap();

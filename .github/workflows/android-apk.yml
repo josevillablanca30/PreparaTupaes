@@ -83,7 +83,7 @@ jobs:
           mkdir -p android/app/src/main/assets
           cp dist/index.html android/app/src/main/assets/index.html
           mkdir -p android/app/src/main/assets/assets
-          cp dist/assets/gatito-sabio-oficial.png dist/assets/cachaste-icon.svg dist/assets/cachaste-logo.svg android/app/src/main/assets/assets/
+          cp dist/assets/gatito-sabio-poses-v1.png dist/assets/gatito-sabio-oficial.png dist/assets/cachaste-icon.svg dist/assets/cachaste-logo.svg android/app/src/main/assets/assets/
           cp dist/daily-*.js dist/daily-ui.css dist/m1-teaching.js dist/learning-core.js dist/study-app.js dist/study-ui.css dist/inicio.html dist/science.html dist/science-bank.js dist/science-app.js dist/reading.html dist/reading-bank.js dist/reading-app.js dist/m2.html dist/m2-bank.js dist/m2-app.js dist/history.html dist/history-bank.js dist/history-app.js android/app/src/main/assets/
       - name: Auditar las cinco materias dentro del paquete Android
         run: |
@@ -133,7 +133,7 @@ jobs:
       - name: Publicar APK descargable
         uses: actions/upload-artifact@v4
         with:
-          name: Cachaste-v1.2.0-beta-daily-${{ github.sha }}
+          name: Cachaste-v1.3.0-beta-camino-${{ github.sha }}
           path: |
             android/app/build/outputs/apk/debug/app-debug.apk
             android/app/build/outputs/apk/debug/APK-CERTIFICATE.txt

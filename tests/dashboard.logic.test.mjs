@@ -16,7 +16,7 @@ function openHome(data=new Map()){
 }
 test('selector Cachaste: pantalla inicial contiene las cinco asignaturas y Ciencias agrupada',()=>{
  assert.ok(script,'falta JS de dashboard');
- for(const name of ['Prepara tu PAES,','Matemática M1','Biología','Química','Física','Competencia Lectora'])assert.ok(dashboard.includes(name),name);
+ for(const name of ['daily-root','Matemática M1','Biología','Química','Física','Competencia Lectora'])assert.ok(dashboard.includes(name),name);
  for(const href of ['index.html','science.html','science.html?asignatura=biologia','science.html?asignatura=quimica','science.html?asignatura=fisica','reading.html'])assert.ok(dashboard.includes('href="'+href+'"'),href);
  assert.ok(dashboard.includes('viewport-fit=cover'));
  assert.ok(dashboard.includes('prefers-reduced-motion'));
@@ -52,6 +52,6 @@ test('APK unificado abre selector e incluye Matemática y Ciencias sin descarga 
  }
  assert.ok(preview.includes('/PreparaTupaes/inicio.html'));
  assert.ok(java.includes('cachasteNativeBack'));
- assert.ok(read('index.html').includes('href="inicio.html"'));
- assert.ok(read('science.html').includes('href="inicio.html"'));
+ assert.ok(read('index.html').includes('href="inicio.html#traditional"'));
+ assert.ok(read('science.html').includes('href="inicio.html#traditional"'));
 });

@@ -29,7 +29,7 @@ async function completeDiagnostic(page){
  await expect(page.getByRole('heading',{name:'Tu desempeño por habilidad'})).toBeVisible();
 }
 test('Lectora: entra desde inicio unificado y los textos son legibles en móvil',async({page},info)=>{
- await page.goto('./inicio.html');
+ await page.goto('./inicio.html#traditional');
  await page.getByRole('link',{name:'Entrar a Competencia Lectora'}).tap();
  await expect(page).toHaveTitle('Cachaste · Competencia Lectora');
  await expect(page.getByRole('heading',{name:'Tres formas de prepararte'})).toBeVisible();
