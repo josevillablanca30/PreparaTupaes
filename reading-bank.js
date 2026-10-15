@@ -262,3 +262,1120 @@ for(const q of READING_QUESTIONS){if(LECTURA_EDITORIAL_LOTE_4[q.id]){Object.assi
 
 const LECTURA_EDITORIAL_LOTE_5={"LEC-061":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","El segundo párrafo recomienda buscar fuente original, revisar fecha y contrastar otras fuentes.","La respuesta «Buscar fuente original, revisar fecha y contrastar fuentes» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"El segundo párrafo recomienda buscar fuente original, revisar fecha y contrastar otras fuentes.","example":"En este texto, la pista decisiva es: El segundo párrafo recomienda buscar fuente original, revisar fecha y contrastar otras fuentes. Eso respalda «Buscar fuente original, revisar fecha y contrastar fuentes»."},"LEC-062":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","El primer párrafo distingue confianza en quien envía de veracidad del mensaje.","La respuesta «La confianza en el remitente no prueba que el contenido sea verdadero» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"El primer párrafo distingue confianza en quien envía de veracidad del mensaje.","example":"En este texto, la pista decisiva es: El primer párrafo distingue confianza en quien envía de veracidad del mensaje. Eso respalda «La confianza en el remitente no prueba que el contenido sea verdadero»."},"LEC-063":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Una captura recortada puede ocultar contexto y alterar la interpretación.","La respuesta «Ilustrar cómo el contexto omitido puede distorsionar un mensaje» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Una captura recortada puede ocultar contexto y alterar la interpretación.","example":"En este texto, la pista decisiva es: Una captura recortada puede ocultar contexto y alterar la interpretación. Eso respalda «Ilustrar cómo el contexto omitido puede distorsionar un mensaje»."},"LEC-064":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","El tercer párrafo considera responsable corregir públicamente información errónea.","La respuesta «Corregir públicamente un error puede ser una señal de responsabilidad» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"El tercer párrafo considera responsable corregir públicamente información errónea.","example":"En este texto, la pista decisiva es: El tercer párrafo considera responsable corregir públicamente información errónea. Eso respalda «Corregir públicamente un error puede ser una señal de responsabilidad»."},"LEC-065":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","La confianza en el remitente no sustituye evidencia sobre los hechos.","La respuesta «Carece de evidencia sobre la información misma» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"La confianza en el remitente no sustituye evidencia sobre los hechos.","example":"En este texto, la pista decisiva es: La confianza en el remitente no sustituye evidencia sobre los hechos. Eso respalda «Carece de evidencia sobre la información misma»."},"LEC-066":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","El taller compara el mismo cielo al inicio y quince minutos después.","La respuesta «Quince minutos» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"El taller compara el mismo cielo al inicio y quince minutos después.","example":"En este texto, la pista decisiva es: El taller compara el mismo cielo al inicio y quince minutos después. Eso respalda «Quince minutos»."},"LEC-067":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","El primer párrafo recomienda revisar nubosidad y fase lunar.","La respuesta «Nubes y fases de la Luna» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"El primer párrafo recomienda revisar nubosidad y fase lunar.","example":"En este texto, la pista decisiva es: El primer párrafo recomienda revisar nubosidad y fase lunar. Eso respalda «Nubes y fases de la Luna»."},"LEC-068":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Esperar permite que los ojos se adapten a la oscuridad y perciban objetos débiles.","La respuesta «Sus ojos pudieron adaptarse mejor a la oscuridad» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Esperar permite que los ojos se adapten a la oscuridad y perciban objetos débiles.","example":"En este texto, la pista decisiva es: Esperar permite que los ojos se adapten a la oscuridad y perciban objetos débiles. Eso respalda «Sus ojos pudieron adaptarse mejor a la oscuridad»."},"LEC-069":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","El tercer párrafo advierte que un punto brillante también puede ser un planeta.","La respuesta «Evitar clasificar todo punto brillante como estrella» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"El tercer párrafo advierte que un punto brillante también puede ser un planeta.","example":"En este texto, la pista decisiva es: El tercer párrafo advierte que un punto brillante también puede ser un planeta. Eso respalda «Evitar clasificar todo punto brillante como estrella»."},"LEC-070":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Registrar lugar, fecha, hora e iluminación ayuda a reproducir observaciones.","La respuesta «Lugar, fecha, hora y condiciones de iluminación» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Registrar lugar, fecha, hora e iluminación ayuda a reproducir observaciones.","example":"En este texto, la pista decisiva es: Registrar lugar, fecha, hora e iluminación ayuda a reproducir observaciones. Eso respalda «Lugar, fecha, hora y condiciones de iluminación»."},"LEC-071":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Julia halló la caja de semillas debajo del lavaplatos.","La respuesta «Debajo del lavaplatos» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Julia halló la caja de semillas debajo del lavaplatos.","example":"En este texto, la pista decisiva es: Julia halló la caja de semillas debajo del lavaplatos. Eso respalda «Debajo del lavaplatos»."},"LEC-072":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","En la primera semana apareció un único brote.","La respuesta «Uno» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"En la primera semana apareció un único brote.","example":"En este texto, la pista decisiva es: En la primera semana apareció un único brote. Eso respalda «Uno»."},"LEC-073":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","El abuelo pregunta por estación y luz para revisar condiciones de germinación.","La respuesta «Para ayudarla a considerar condiciones que afectan la germinación» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"El abuelo pregunta por estación y luz para revisar condiciones de germinación.","example":"En este texto, la pista decisiva es: El abuelo pregunta por estación y luz para revisar condiciones de germinación. Eso respalda «Para ayudarla a considerar condiciones que afectan la germinación»."},"LEC-074":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Julia aprende a observar variables y esperar, no a exigir resultados inmediatos.","La respuesta «Que observar condiciones y tener paciencia importa más que desear un resultado rápido» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Julia aprende a observar variables y esperar, no a exigir resultados inmediatos.","example":"En este texto, la pista decisiva es: Julia aprende a observar variables y esperar, no a exigir resultados inmediatos. Eso respalda «Que observar condiciones y tener paciencia importa más que desear un resultado rápido»."},"LEC-075":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","La germinación y las fechas funcionan como imagen del vínculo con su abuelo.","La respuesta «Una imagen que vincula el cultivo con el lazo afectivo familiar» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"La germinación y las fechas funcionan como imagen del vínculo con su abuelo.","example":"En este texto, la pista decisiva es: La germinación y las fechas funcionan como imagen del vínculo con su abuelo. Eso respalda «Una imagen que vincula el cultivo con el lazo afectivo familiar»."},"LEC-076":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","El indicador de tránsito celebra un ahorro de tres minutos.","La respuesta «Tres minutos» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"El indicador de tránsito celebra un ahorro de tres minutos.","example":"En este texto, la pista decisiva es: El indicador de tránsito celebra un ahorro de tres minutos. Eso respalda «Tres minutos»."},"LEC-077":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","El texto menciona ambulancias, buses y transporte de mercancías.","La respuesta «Ambulancias, buses y transporte de mercancías» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"El texto menciona ambulancias, buses y transporte de mercancías.","example":"En este texto, la pista decisiva es: El texto menciona ambulancias, buses y transporte de mercancías. Eso respalda «Ambulancias, buses y transporte de mercancías»."},"LEC-078":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","El ejemplo de una persona mayor ante seis pistas muestra riesgos que no refleja la rapidez.","La respuesta «Para mostrar una consecuencia que no refleja el indicador de rapidez» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"El ejemplo de una persona mayor ante seis pistas muestra riesgos que no refleja la rapidez.","example":"En este texto, la pista decisiva es: El ejemplo de una persona mayor ante seis pistas muestra riesgos que no refleja la rapidez. Eso respalda «Para mostrar una consecuencia que no refleja el indicador de rapidez»."},"LEC-079":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","La tesis propone medir tiempos, accidentes, accesibilidad y espacio público.","La respuesta «Evaluar la movilidad con indicadores diversos y considerando a distintos usuarios» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"La tesis propone medir tiempos, accidentes, accesibilidad y espacio público.","example":"En este texto, la pista decisiva es: La tesis propone medir tiempos, accidentes, accesibilidad y espacio público. Eso respalda «Evaluar la movilidad con indicadores diversos y considerando a distintos usuarios»."},"LEC-080":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Comparar indicadores antes y después de la obra permitiría evaluar su efecto real.","La respuesta «Una comparación de tiempos, accidentes y accesibilidad antes y después de una obra» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Comparar indicadores antes y después de la obra permitiría evaluar su efecto real.","example":"En este texto, la pista decisiva es: Comparar indicadores antes y después de la obra permitiría evaluar su efecto real. Eso respalda «Una comparación de tiempos, accidentes y accesibilidad antes y después de una obra»."},"LEC-081":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","En mayo se prestaron 40 audiolibros.","La respuesta «40» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"En mayo se prestaron 40 audiolibros.","example":"En este texto, la pista decisiva es: En mayo se prestaron 40 audiolibros. Eso respalda «40»."},"LEC-082":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Los libros digitales pasaron de 40 en marzo a 90 en mayo.","La respuesta «Libros digitales» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Los libros digitales pasaron de 40 en marzo a 90 en mayo.","example":"En este texto, la pista decisiva es: Los libros digitales pasaron de 40 en marzo a 90 en mayo. Eso respalda «Libros digitales»."},"LEC-083":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Los impresos disminuyeron de 120 a 110 a 100: diez menos cada mes.","La respuesta «Una disminución gradual de diez préstamos por mes» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Los impresos disminuyeron de 120 a 110 a 100: diez menos cada mes.","example":"En este texto, la pista decisiva es: Los impresos disminuyeron de 120 a 110 a 100: diez menos cada mes. Eso respalda «Una disminución gradual de diez préstamos por mes»."},"LEC-084":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Un préstamo es una transacción y una misma persona puede realizar varios.","La respuesta «Porque una persona puede realizar más de un préstamo» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Un préstamo es una transacción y una misma persona puede realizar varios.","example":"En este texto, la pista decisiva es: Un préstamo es una transacción y una misma persona puede realizar varios. Eso respalda «Porque una persona puede realizar más de un préstamo»."},"LEC-085":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","La cantidad de préstamos no mide comprensión lectora ni demuestra mejora de aprendizaje.","La respuesta «Que la comprensión lectora mejoró gracias a los dispositivos» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"La cantidad de préstamos no mide comprensión lectora ni demuestra mejora de aprendizaje.","example":"En este texto, la pista decisiva es: La cantidad de préstamos no mide comprensión lectora ni demuestra mejora de aprendizaje. Eso respalda «Que la comprensión lectora mejoró gracias a los dispositivos»."},"LEC-086":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Elisa encontró el cuaderno en el taller de su abuela.","La respuesta «En el taller de su abuela» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Elisa encontró el cuaderno en el taller de su abuela.","example":"En este texto, la pista decisiva es: Elisa encontró el cuaderno en el taller de su abuela. Eso respalda «En el taller de su abuela»."},"LEC-087":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Una anotación advertía «viento del sur, no confiarse».","La respuesta «Viento del sur, no confiarse» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Una anotación advertía «viento del sur, no confiarse».","example":"En este texto, la pista decisiva es: Una anotación advertía «viento del sur, no confiarse». Eso respalda «Viento del sur, no confiarse»."},"LEC-088":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","El primer gráfico ocultaba notas y días sin registros.","La respuesta «Omitía advertencias y vacíos importantes del registro» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"El primer gráfico ocultaba notas y días sin registros.","example":"En este texto, la pista decisiva es: El primer gráfico ocultaba notas y días sin registros. Eso respalda «Omitía advertencias y vacíos importantes del registro»."},"LEC-089":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Elisa aprende a comunicar límites y advertencias junto a los datos.","La respuesta «De privilegiar la apariencia a comunicar datos con sus límites» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Elisa aprende a comunicar límites y advertencias junto a los datos.","example":"En este texto, la pista decisiva es: Elisa aprende a comunicar límites y advertencias junto a los datos. Eso respalda «De privilegiar la apariencia a comunicar datos con sus límites»."},"LEC-090":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","La pregunta de la abuela cuestiona que un gráfico bonito baste para decidir.","La respuesta «Cuestionar si una representación atractiva basta para tomar decisiones» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"La pregunta de la abuela cuestiona que un gráfico bonito baste para decidir.","example":"En este texto, la pista decisiva es: La pregunta de la abuela cuestiona que un gráfico bonito baste para decidir. Eso respalda «Cuestionar si una representación atractiva basta para tomar decisiones»."},"LEC-091":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","El estacionamiento registró 34 grados.","La respuesta «34 grados» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"El estacionamiento registró 34 grados.","example":"En este texto, la pista decisiva es: El estacionamiento registró 34 grados. Eso respalda «34 grados»."},"LEC-092":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Se midió durante cinco minutos en cada punto.","La respuesta «Cinco minutos» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Se midió durante cinco minutos en cada punto.","example":"En este texto, la pista decisiva es: Se midió durante cinco minutos en cada punto. Eso respalda «Cinco minutos»."},"LEC-093":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","La profesora advierte que un día y variables sin controlar impiden generalizar.","La respuesta «Porque una jornada no permite aislar todas las variables ni representar el verano» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"La profesora advierte que un día y variables sin controlar impiden generalizar.","example":"En este texto, la pista decisiva es: La profesora advierte que un día y variables sin controlar impiden generalizar. Eso respalda «Porque una jornada no permite aislar todas las variables ni representar el verano»."},"LEC-094":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Entrevistar vecinos complementa temperaturas con experiencias de uso.","La respuesta «Información sobre cómo experimentan y usan los espacios de la plaza» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Entrevistar vecinos complementa temperaturas con experiencias de uso.","example":"En este texto, la pista decisiva es: Entrevistar vecinos complementa temperaturas con experiencias de uso. Eso respalda «Información sobre cómo experimentan y usan los espacios de la plaza»."},"LEC-095":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Medir a horas equivalentes en varios días permite comparaciones más sólidas.","La respuesta «Medir los tres lugares a horas equivalentes durante varias jornadas» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Medir a horas equivalentes en varios días permite comparaciones más sólidas.","example":"En este texto, la pista decisiva es: Medir a horas equivalentes en varios días permite comparaciones más sólidas. Eso respalda «Medir los tres lugares a horas equivalentes durante varias jornadas»."},"LEC-096":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","La prohibición buscaba reducir distracciones y mejorar convivencia.","La respuesta «Reducir distracciones y mejorar la convivencia» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"La prohibición buscaba reducir distracciones y mejorar convivencia.","example":"En este texto, la pista decisiva es: La prohibición buscaba reducir distracciones y mejorar convivencia. Eso respalda «Reducir distracciones y mejorar la convivencia»."},"LEC-097":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Entre las alternativas se mencionan excepciones de accesibilidad.","La respuesta «Excepciones de accesibilidad» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Entre las alternativas se mencionan excepciones de accesibilidad.","example":"En este texto, la pista decisiva es: Entre las alternativas se mencionan excepciones de accesibilidad. Eso respalda «Excepciones de accesibilidad»."},"LEC-098":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","El autor cuestiona el falso dilema entre permitirlo todo y prohibirlo todo.","La respuesta «Una falsa oposición que oculta soluciones intermedias» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"El autor cuestiona el falso dilema entre permitirlo todo y prohibirlo todo.","example":"En este texto, la pista decisiva es: El autor cuestiona el falso dilema entre permitirlo todo y prohibirlo todo. Eso respalda «Una falsa oposición que oculta soluciones intermedias»."},"LEC-099":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Propone momentos sin teléfono y enseñanza de uso digital responsable.","La respuesta «Combinar espacios sin teléfonos con educación para el uso responsable» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Propone momentos sin teléfono y enseñanza de uso digital responsable.","example":"En este texto, la pista decisiva es: Propone momentos sin teléfono y enseñanza de uso digital responsable. Eso respalda «Combinar espacios sin teléfonos con educación para el uso responsable»."},"LEC-100":{"steps":["Identifica si la pregunta pide un dato explícito, una inferencia o la función de un argumento.","Evaluar atención, convivencia y opiniones antes y después ayudaría a medir eficacia.","La respuesta «Datos de atención y convivencia antes y después, junto con opiniones de la comunidad» se justifica por ese dato o razonamiento; evita concluir más de lo que permite el texto."],"easy":"Evaluar atención, convivencia y opiniones antes y después ayudaría a medir eficacia.","example":"En este texto, la pista decisiva es: Evaluar atención, convivencia y opiniones antes y después ayudaría a medir eficacia. Eso respalda «Datos de atención y convivencia antes y después, junto con opiniones de la comunidad»."}};
 for(const q of READING_QUESTIONS){if(LECTURA_EDITORIAL_LOTE_5[q.id]){Object.assign(q,LECTURA_EDITORIAL_LOTE_5[q.id]);q.reviewStatus='revisado_con_evidencia_textual';}}
+
+/* Transferencia: cada ejemplo usa un caso distinto del texto evaluado. */
+{
+const examples=`
+1|Si otro aviso dice «el taller se reúne tres veces al mes», la frecuencia pedida es tres al mes. No la cambies por el día de una reunión particular.
+2|Si otro texto dice «el puesto móvil entrega alimentos y la sede mantiene las consultas», las consultas pertenecen a la sede. Asocia cada servicio con su lugar.
+3|Si un bus cambia su ruta después de contar pasajeros, relaciona el registro con la decisión: se ajustó la ruta según el uso, no por un cambio de vehículos.
+4|Un texto cuenta que una posta detecta distancia, abre una ronda rural y ajusta horarios. Su síntesis reúne problema, respuesta y ajuste; no se limita a un horario.
+5|Para evaluar si una beca reduce una brecha territorial, compara la participación por zona antes y después, con poblaciones comparables. El gasto total de la beca no basta.
+6|En «la visita comenzó a las 11:30 y terminó a las 13:00», si preguntan por el inicio debes elegir 11:30. Distingue el momento solicitado del final.
+7|En «el lago A tiene 12 m de profundidad y el B, 18 m», la profundidad de B es 18 m. Seis metros es la diferencia, no la profundidad.
+8|Si dos cultivos cambian tanto en riego como en suelo, una diferencia de crecimiento no permite atribuir el efecto solo al riego. Hay más de una explicación posible.
+9|Si un informe recomienda repetir una encuesta en días distintos, esa recomendación amplía la evidencia; no prueba anticipadamente cuál será el resultado.
+10|Si una encuesta encuentra más ejercicio entre quienes duermen bien, puedes afirmar una asociación. Sin controlar otros factores, no puedes asegurar que el ejercicio sea la única causa.
+11|En «se debe guardar silencio durante la función», la regla se aplica a ese momento. No implica silencio durante toda la permanencia en el edificio.
+12|Un autor propone regular el uso del agua, sin cerrar piscinas ni permitir todo consumo. Su tesis defiende una regulación, no ninguno de los extremos.
+13|Si un autor defiende bicicletas y aclara que las ambulancias necesitan vías despejadas, la aclaración limita el alcance de su propuesta; no la abandona.
+14|Para respaldar que un nuevo horario mejora asistencia, compara cursos semejantes con y sin el cambio. Una encuesta de gusto por el horario no mide asistencia.
+15|Un autor defiende parques y admite que su mantención cuesta dinero. Reconocer ese costo es una objeción incorporada, no una renuncia a construir parques.
+16|En una tabla con agosto: peras 8 y manzanas 15, localiza primero agosto y luego manzanas. La celda pedida es 15, no el total 23.
+17|Una serie 9,7,5 disminuye en cada período; una serie 5,8,6 no lo hace, aunque su último valor sea menor que el máximo.
+18|Si un informe dice que una tienda abrió a mitad de año, ese dato puede explicar ventas nulas antes de abrir. Cumple una función causal en el texto.
+19|Si en una misma fila hay 7,8 y 10 unidades de tres productos, el total es 25. No mezcles valores de filas de meses diferentes.
+20|Para comparar eficiencia de transporte, usa combustible por kilómetro bajo condiciones comparables. Los litros totales pueden aumentar solo porque hubo más viajes.
+21|Si un relato menciona que cerraron un policlínico, no lo reemplaces por hospital porque parezca más familiar. Localizar exige conservar la información entregada.
+22|Si una organización escucha propuestas y después explica qué eligió, escuchar significa considerar y fundamentar. No equivale a aceptar cada petición.
+23|Si un colegio mide atrasos después de cambiar la entrada, esos datos evalúan el efecto del cambio. No reemplazan las razones que motivaron la decisión inicial.
+24|Una ruta más corta puede tener escaleras. Ese ejemplo cuestiona el supuesto de que menos distancia significa mejor acceso para todas las personas.
+25|Un argumento a favor del reciclaje se fortalece si reconoce sus costos y propone medir resultados. Admitir límites permite evaluar la propuesta con más precisión.
+26|En «junto a cada receta anotó un lugar», el dato asociado a la receta es un lugar. No supongas una fecha por lo habitual de un diario.
+27|Si durante un apagón la canción llega desde un patio, la fuente es el patio. La radio mencionada antes no sigue siendo automáticamente la fuente.
+28|En un cuento, una caja de entradas de cine puede representar experiencias compartidas, si cada entrada despierta un recuerdo. El valor simbólico nace de esas acciones.
+29|Si un personaje deja de reparar un reloj para escuchar a su dueña, puedes inferir un cambio de interés hacia la historia, no que el reloj quedó reparado.
+30|Para sostener que un cuento trata sobre reconciliación, busca una disculpa y la respuesta del otro personaje. El color de la habitación por sí solo no basta.
+31|En «el cartel advertía crecida del río», identifica ese peligro concreto. Un cierre de camino no permite inferir por sí solo que hubo un incendio.
+32|Si «esa noche escribieron una carta y al día siguiente la enviaron», la acción del día siguiente es enviar. Respeta la secuencia temporal solicitada.
+33|Si alguien debe elegir entre ganar una carrera o ayudar a una persona caída, el conflicto es entre logro individual y auxilio. La marca de las zapatillas es secundaria.
+34|Una frase final como «perdimos el premio, pero encontramos un equipo» cambia el criterio de éxito. La conclusión valora un aprendizaje distinto de la meta inicial.
+35|Si el relato muestra humo y una salida señalizada, alejarse por ella se justifica en esos indicios. La decisión se evalúa con la información disponible al personaje.
+36|Si un grupo anota olores y horarios antes de hacer análisis, esos son sus registros iniciales. No atribuyas al primer momento mediciones realizadas después.
+37|Si un análisis identifica sedimentos sin identificar sustancias tóxicas, informa solo el hallazgo comprobado. No conviertas una sospecha en resultado.
+38|Una mancha en una pared permite investigar una filtración; por sí sola no identifica qué cañería falló. Distingue indicio, hipótesis y prueba.
+39|Si se observa menos ruido un domingo, repetir la medición otros domingos ayuda a saber si es un patrón. Una sola observación no prueba regularidad.
+40|Ante un estudio que encuentra una asociación sin causalidad, un titular como «Observan relación y recomiendan investigar» respeta mejor la evidencia que «Demuestran la causa».
+41|En «clubes y universidades organizarán la feria», ambos son responsables explícitos. No reemplaces esas instituciones por otras que podrían organizar ferias.
+42|Si un texto distingue un botón suelto de un cable expuesto, el riesgo eléctrico se relaciona con el cable. Evalúa la condición concreta, no cualquier avería.
+43|Un autor recomienda reutilizar envases cuando estén limpios y sean adecuados. Su tesis tiene condiciones; no obliga a reutilizar cualquier recipiente.
+44|Un artículo elogia caminar y luego menciona veredas peligrosas. El segundo párrafo introduce una condición para que la recomendación sea segura.
+45|Para sostener que una campaña disminuyó residuos, mide basura evitada respecto de una situación comparable. Contar afiches mide difusión, no el resultado ambiental.
+46|En un relato, un paquete se encuentra en el patio y después se guarda en una pieza. El lugar del hallazgo sigue siendo el patio, no su destino posterior.
+47|Si un personaje cancela un viaje porque consiguió una beca local, esa es la causa explícita. No inventes falta de pasajes si el relato no la menciona.
+48|Un ruido parece amenazante hasta que se descubre un gato. La interpretación cambia de peligro a explicación cotidiana; no cambia necesariamente el ruido observado.
+49|Si alguien deja preparado un álbum para mostrárselo a su hermana, el gesto sugiere deseo de compartir recuerdos. Debe conectarse con las acciones del relato.
+50|En un cuento, un testimonio que aclara quién dejó una carta puede producir el giro. El color del papel ambienta, pero no explica el cambio de interpretación.
+51|Si un archivo compara vestimenta y mapas para datar una imagen, esas son sus fuentes de comparación. No atribuyas al equipo documentos que no consultó.
+52|Si una fecha exacta se corrige a «entre 1980 y 1984», el dato final es ese intervalo. La primera fecha queda como hipótesis descartada.
+53|Si un modelo de bus circuló entre 1960 y 1970, su presencia permite proponer un rango, no el día de la foto. La precisión de la afirmación debe seguir a la evidencia.
+54|El recuerdo de un vecino puede sugerir dónde buscar un documento. Esa pista es útil aunque necesite contraste; no tiene que ser prueba definitiva para aportar.
+55|Si dos registros discrepan sobre una fecha, consignar la discrepancia y sus fuentes es más riguroso que elegir arbitrariamente el dato más preciso.
+56|En «la lámpara seguía encendida y el reloj detenido», solo el reloj está detenido. Distingue las propiedades atribuidas a cada objeto.
+57|Si las notas aparecen en los márgenes de un cuaderno, ese es su soporte. No confundas el lugar donde se encontró el cuaderno con dónde están escritas las notas.
+58|Un diario de una fábrica con cumpleaños y ayudas entre trabajadores revela una dimensión cotidiana además de la producción. La inferencia reúne distintos detalles.
+59|Si después de conversar con un pescador una artista añade personas a un paisaje vacío, el cambio visual expresa nueva comprensión de la vida en ese lugar.
+60|Para mostrar que una plaza reúne a la comunidad, una escena de vecinos organizando ayuda aporta más que mencionar solamente el tamaño de sus bancas.
+61|Si un instructivo pide identificar emisor, fecha y evidencia, la respuesta debe incluir los tres pasos. Ver solo el título no cumple la secuencia.
+62|Que una amiga recomiende una noticia explica por qué la lees, pero no prueba sus datos. La confianza personal y la verificación del contenido son criterios distintos.
+63|Si un ejemplo muestra un gráfico sin eje vertical, ilustra pérdida de contexto. No es necesariamente una instrucción para diseñar gráficos.
+64|Un autor que valora rectificar una cifra está defendiendo responsabilidad ante el error. No sostiene por eso que toda información anterior sea falsa.
+65|«Lo vi muchas veces» describe difusión, no veracidad. Para sostener la afirmación faltan datos sobre lo que se dice, no sobre cuántas veces se repitió.
+66|Si una actividad dura diez minutos y luego espera otros cinco, la pregunta sobre la espera exige cinco. Identifica a qué etapa corresponde cada cantidad.
+67|Si para una salida se recomienda revisar mareas y viento, esos son los factores señalados. El precio del equipamiento puede importar, pero no responde al texto.
+68|Si tras acostumbrarse a una habitación oscura alguien ve un mueble, cambió su percepción; no es necesario suponer que el mueble apareció en ese instante.
+69|Un aviso de que no todo hongo es comestible impide generalizar desde su apariencia. Su función es corregir una clasificación precipitada.
+70|Para repetir una medición de ruido conviene anotar lugar, hora e instrumento. Esos datos reconstruyen las condiciones; el diseño de la libreta no lo hace.
+71|Si las llaves estaban bajo una maceta, ese es el lugar pedido. Que después se guardaran en un cajón no cambia dónde fueron encontradas.
+72|En «de cuatro huevos nació un polluelo», el número de nacimientos es uno. Cuatro indica el total inicial, no el resultado.
+73|Si una entrenadora pregunta por descanso y alimentación, orienta a considerar condiciones del rendimiento. No está asegurando una causa única sin datos.
+74|Un personaje que registra resultados y ajusta una receta aprende a observar y modificar, no solo a desear que el plato salga bien.
+75|Decir que una carta es «un puente entre dos casas» vincula la comunicación con una imagen de unión. No afirma que exista un puente material.
+76|Si un informe celebra ahorrar cuatro minutos, responde con ese dato. No confundas la cantidad de pistas de una vía con minutos ahorrados.
+77|En «ambulancias y buses requieren prioridad», conserva esas dos categorías. Que otros vehículos existan no significa que el texto los mencione.
+78|Un ejemplo de una silla de ruedas ante una escalera muestra una dimensión de accesibilidad que el número de visitantes no refleja.
+79|Un texto propone evaluar un hospital por tiempos, calidad y acceso. Su tesis exige varios indicadores, no eliminar uno ni usarlo como único criterio.
+80|Para evaluar una biblioteca renovada, compara uso, acceso y satisfacción antes y después. Una foto de la inauguración no mide el resultado sostenido.
+81|En una tabla, cruza la fila del mes solicitado con la columna del formato. Un dato de la columna vecina puede ser correcto en la tabla y aun así no responder.
+82|Si una serie digital pasa de 10 a 25, verifica que esos extremos pertenezcan al mismo formato. No mezcles números de dos series.
+83|Una serie 70,65,60 cae cinco por período. La variación entre meses es distinta de la disminución total de diez entre extremos.
+84|Si se vendieron 50 entradas, no necesariamente asistieron 50 compradores distintos: alguien pudo comprar varias. Distingue transacciones de personas.
+85|Que aumenten visitas a una web no prueba que sus lectores aprendan más. Hace falta una medición del aprendizaje y un diseño que examine otras causas.
+86|Si un personaje encuentra una libreta en un taller, el lugar del hallazgo no es necesariamente el lugar donde se escribieron sus notas.
+87|En «suelo húmedo: caminar con cuidado», la advertencia específica combina condición y precaución. No la sustituyas por una regla que parezca razonable pero no está escrita.
+88|Un mapa que omite caminos cerrados puede ser claro y aun así informar mal. La calidad incluye qué información relevante conserva.
+89|Una persona que agrega márgenes de error a un gráfico aprende a mostrar incertidumbre. La mejora no exige desechar toda representación visual.
+90|La pregunta «¿una cifra basta para conocer una escuela?» cuestiona un criterio insuficiente. No afirma que todas las cifras sean inútiles.
+91|Si se miden 20° a la sombra y 27° al sol, la temperatura al sol es 27°. Siete es la diferencia y no la medición pedida.
+92|Si se mide dos minutos por punto durante una semana, la duración por punto es dos minutos. Una semana corresponde al período general del estudio.
+93|Una encuesta realizada en una sola clase no representa automáticamente a todo el colegio. Evalúa si la muestra sostiene el alcance de la conclusión.
+94|Entrevistar pasajeros sobre una ruta aporta experiencias de uso. No reemplaza por sí solo el registro de tiempos ni garantiza modificar la ruta.
+95|Para comparar ruido en dos salas, mide en horarios equivalentes durante varios días con instrumentos comparables. Así reduces diferencias ajenas a la sala.
+96|Si un programa anuncia que busca reducir atrasos, esa es su intención inicial. El anuncio no demuestra todavía que haya logrado reducirlos.
+97|Si una norma prevé apoyo para quienes necesitan lector de pantalla, esa es una excepción de accesibilidad. No autoriza cualquier uso no relacionado.
+98|Presentar «construir todo o construir nada» omite alternativas de escala y ubicación. Reconocerlas permite cuestionar una falsa dicotomía.
+99|Un autor propone períodos de descanso y educación sobre sueño. Su postura combina medidas; no exige prohibir toda actividad nocturna.
+100|Para evaluar una regla de biblioteca, compara ruido y satisfacción antes y después y escucha a sus usuarios. Contar carteles solo mide cuánto se anunció.
+`.trim().split('\n');
+for(const line of examples){const [n,example]=line.split('|');const q=window.READING_QUESTIONS[+n-1];q.example='Caso de transferencia: '+example;q.concept=q.skill==='Localizar'?'Información explícita':/función|papel|para qué/i.test(q.question)?'Función de recursos':/tesis|principal|resume|postura/i.test(q.question)?'Síntesis y postura':q.skill==='Evaluar'?'Evaluación de evidencia':'Inferencias y relaciones';q.reviewStatus='revisado_con_evidencia_textual';}
+}
+
+/* Treinta ítems adicionales: un ensayo contiene siete textos, no trece. */
+window.READING_QUESTIONS.push(...[
+ {
+  "id": "LEC-101",
+  "passageId": "T01",
+  "skill": "Localizar",
+  "question": "¿Qué servicio se conserva en el edificio principal después de incorporar la camioneta?",
+  "options": [
+   "Los talleres y el acceso a computadores",
+   "La atención exclusiva a habitantes del centro",
+   "La devolución de libros en dos buses",
+   "La visita a ferias todos los días"
+  ],
+  "answer": 0,
+  "steps": [
+   "Relee «¿Qué servicio se conserva en el edificio principal después de incorporar la camioneta?» y distingue la información solicitada de los otros detalles del texto.",
+   "El último párrafo mantiene los talleres y computadores en la sede; la camioneta complementa esos servicios.",
+   "La alternativa «Los talleres y el acceso a computadores» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El último párrafo mantiene los talleres y computadores en la sede; la camioneta complementa esos servicios.",
+  "example": "Una posta rural móvil puede llevar controles a localidades alejadas y mantener los exámenes especializados en el centro. Complementar no es sustituir.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Información explícita",
+  "difficulty": "intermedio",
+  "explanations": [
+   "¡Cachaste! El último párrafo mantiene los talleres y computadores en la sede; la camioneta complementa esos servicios.",
+   "«La atención exclusiva a habitantes del centro» no coincide con lo que establece el texto. El último párrafo mantiene los talleres y computadores en la sede; la camioneta complementa esos servicios. La conclusión respaldada es «Los talleres y el acceso a computadores».",
+   "«La devolución de libros en dos buses» no coincide con lo que establece el texto. El último párrafo mantiene los talleres y computadores en la sede; la camioneta complementa esos servicios. La conclusión respaldada es «Los talleres y el acceso a computadores».",
+   "«La visita a ferias todos los días» no coincide con lo que establece el texto. El último párrafo mantiene los talleres y computadores en la sede; la camioneta complementa esos servicios. La conclusión respaldada es «Los talleres y el acceso a computadores»."
+  ]
+ },
+ {
+  "id": "LEC-102",
+  "passageId": "T01",
+  "skill": "Interpretar",
+  "question": "¿Por qué contar solo préstamos habría dado una visión incompleta de la camioneta?",
+  "options": [
+   "Porque los préstamos dejaron de registrarse",
+   "Porque cada consulta equivalía necesariamente a un libro prestado",
+   "Porque la sede central ya no recibía visitantes",
+   "Porque también acercó el servicio a personas nuevas y atendió consultas"
+  ],
+  "answer": 3,
+  "steps": [
+   "Relee «¿Por qué contar solo préstamos habría dado una visión incompleta de la camioneta?» y distingue la información solicitada de los otros detalles del texto.",
+   "El segundo párrafo distingue préstamos, usuarios nuevos, consultas y recomendaciones: son dimensiones diferentes del servicio.",
+   "La alternativa «Porque también acercó el servicio a personas nuevas y atendió consultas» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El segundo párrafo distingue préstamos, usuarios nuevos, consultas y recomendaciones: son dimensiones diferentes del servicio.",
+  "example": "Un taller puede tener pocos productos terminados y muchos participantes que aprendieron una técnica. Evaluarlo exige mirar más de un indicador.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Inferencias y relaciones",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Porque los préstamos dejaron de registrarse» no coincide con lo que establece el texto. El segundo párrafo distingue préstamos, usuarios nuevos, consultas y recomendaciones: son dimensiones diferentes del servicio. La conclusión respaldada es «Porque también acercó el servicio a personas nuevas y atendió consultas».",
+   "«Porque cada consulta equivalía necesariamente a un libro prestado» no coincide con lo que establece el texto. El segundo párrafo distingue préstamos, usuarios nuevos, consultas y recomendaciones: son dimensiones diferentes del servicio. La conclusión respaldada es «Porque también acercó el servicio a personas nuevas y atendió consultas».",
+   "«Porque la sede central ya no recibía visitantes» no coincide con lo que establece el texto. El segundo párrafo distingue préstamos, usuarios nuevos, consultas y recomendaciones: son dimensiones diferentes del servicio. La conclusión respaldada es «Porque también acercó el servicio a personas nuevas y atendió consultas».",
+   "¡Cachaste! El segundo párrafo distingue préstamos, usuarios nuevos, consultas y recomendaciones: son dimensiones diferentes del servicio."
+  ]
+ },
+ {
+  "id": "LEC-103",
+  "passageId": "T01",
+  "skill": "Evaluar",
+  "question": "¿Qué afirmación excede la evidencia sobre los primeros meses del servicio móvil?",
+  "options": [
+   "Los préstamos fueron menores que en la sede principal",
+   "El registro de uso permitió ajustar paradas",
+   "Todas las personas de sectores alejados comenzaron a leer más",
+   "Aumentó la cantidad de usuarios nuevos del servicio"
+  ],
+  "answer": 2,
+  "steps": [
+   "Relee «¿Qué afirmación excede la evidencia sobre los primeros meses del servicio móvil?» y distingue la información solicitada de los otros detalles del texto.",
+   "El texto informa nuevos usuarios y préstamos; no mide cuánto leyeron todos los habitantes ni demuestra un cambio universal.",
+   "La alternativa «Todas las personas de sectores alejados comenzaron a leer más» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El texto informa nuevos usuarios y préstamos; no mide cuánto leyeron todos los habitantes ni demuestra un cambio universal.",
+  "example": "Que aumenten las inscripciones en un gimnasio no demuestra que todos los vecinos hagan más ejercicio: falta medir esa conducta.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Evaluación de evidencia",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Los préstamos fueron menores que en la sede principal» no coincide con lo que establece el texto. El texto informa nuevos usuarios y préstamos; no mide cuánto leyeron todos los habitantes ni demuestra un cambio universal. La conclusión respaldada es «Todas las personas de sectores alejados comenzaron a leer más».",
+   "«El registro de uso permitió ajustar paradas» no coincide con lo que establece el texto. El texto informa nuevos usuarios y préstamos; no mide cuánto leyeron todos los habitantes ni demuestra un cambio universal. La conclusión respaldada es «Todas las personas de sectores alejados comenzaron a leer más».",
+   "¡Cachaste! El texto informa nuevos usuarios y préstamos; no mide cuánto leyeron todos los habitantes ni demuestra un cambio universal.",
+   "«Aumentó la cantidad de usuarios nuevos del servicio» no coincide con lo que establece el texto. El texto informa nuevos usuarios y préstamos; no mide cuánto leyeron todos los habitantes ni demuestra un cambio universal. La conclusión respaldada es «Todas las personas de sectores alejados comenzaron a leer más»."
+  ]
+ },
+ {
+  "id": "LEC-104",
+  "passageId": "T01",
+  "skill": "Interpretar",
+  "question": "¿Qué relación hay entre registrar consultas y modificar las paradas?",
+  "options": [
+   "El registro reemplaza la necesidad de atender lectores",
+   "La información recogida orienta una decisión del servicio",
+   "La modificación invalida todos los datos recogidos",
+   "Las consultas son una consecuencia del cierre del edificio"
+  ],
+  "answer": 1,
+  "steps": [
+   "Relee «¿Qué relación hay entre registrar consultas y modificar las paradas?» y distingue la información solicitada de los otros detalles del texto.",
+   "El segundo párrafo enlaza «esa información» con la modificación de paradas. La decisión responde a datos de uso.",
+   "La alternativa «La información recogida orienta una decisión del servicio» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El segundo párrafo enlaza «esa información» con la modificación de paradas. La decisión responde a datos de uso.",
+  "example": "Si una cafetería ajusta el horario tras registrar a qué hora llega gente, el registro funciona como insumo para decidir.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Inferencias y relaciones",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«El registro reemplaza la necesidad de atender lectores» no coincide con lo que establece el texto. El segundo párrafo enlaza «esa información» con la modificación de paradas. La decisión responde a datos de uso. La conclusión respaldada es «La información recogida orienta una decisión del servicio».",
+   "¡Cachaste! El segundo párrafo enlaza «esa información» con la modificación de paradas. La decisión responde a datos de uso.",
+   "«La modificación invalida todos los datos recogidos» no coincide con lo que establece el texto. El segundo párrafo enlaza «esa información» con la modificación de paradas. La decisión responde a datos de uso. La conclusión respaldada es «La información recogida orienta una decisión del servicio».",
+   "«Las consultas son una consecuencia del cierre del edificio» no coincide con lo que establece el texto. El segundo párrafo enlaza «esa información» con la modificación de paradas. La decisión responde a datos de uso. La conclusión respaldada es «La información recogida orienta una decisión del servicio»."
+  ]
+ },
+ {
+  "id": "LEC-105",
+  "passageId": "T01",
+  "skill": "Evaluar",
+  "question": "¿Qué dato permitiría evaluar específicamente la dificultad de acceso que motivó la camioneta?",
+  "options": [
+   "El tiempo de traslado de usuarios alejados antes y después",
+   "El color preferido por los lectores para los estantes",
+   "La cantidad de títulos que hay solo en la sede central",
+   "El número de años que tiene el edificio municipal"
+  ],
+  "answer": 0,
+  "steps": [
+   "Relee «¿Qué dato permitiría evaluar específicamente la dificultad de acceso que motivó la camioneta?» y distingue la información solicitada de los otros detalles del texto.",
+   "El problema inicial eran los dos buses necesarios para devolver un libro. Comparar tiempos de acceso aborda directamente esa barrera.",
+   "La alternativa «El tiempo de traslado de usuarios alejados antes y después» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El problema inicial eran los dos buses necesarios para devolver un libro. Comparar tiempos de acceso aborda directamente esa barrera.",
+  "example": "Para evaluar si una rampa facilita el ingreso, observa el acceso de sus usuarios antes y después; contar baldosas no mide esa facilidad.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Evaluación de evidencia",
+  "difficulty": "intermedio",
+  "explanations": [
+   "¡Cachaste! El problema inicial eran los dos buses necesarios para devolver un libro. Comparar tiempos de acceso aborda directamente esa barrera.",
+   "«El color preferido por los lectores para los estantes» no coincide con lo que establece el texto. El problema inicial eran los dos buses necesarios para devolver un libro. Comparar tiempos de acceso aborda directamente esa barrera. La conclusión respaldada es «El tiempo de traslado de usuarios alejados antes y después».",
+   "«La cantidad de títulos que hay solo en la sede central» no coincide con lo que establece el texto. El problema inicial eran los dos buses necesarios para devolver un libro. Comparar tiempos de acceso aborda directamente esa barrera. La conclusión respaldada es «El tiempo de traslado de usuarios alejados antes y después».",
+   "«El número de años que tiene el edificio municipal» no coincide con lo que establece el texto. El problema inicial eran los dos buses necesarios para devolver un libro. Comparar tiempos de acceso aborda directamente esa barrera. La conclusión respaldada es «El tiempo de traslado de usuarios alejados antes y después»."
+  ]
+ },
+ {
+  "id": "LEC-106",
+  "passageId": "T02",
+  "skill": "Localizar",
+  "question": "¿A qué hora se realizaron las mediciones comparadas de las dos plazas?",
+  "options": [
+   "A las 8 horas",
+   "Al mediodía",
+   "En cuatro horarios cada día",
+   "A las 15 horas"
+  ],
+  "answer": 3,
+  "steps": [
+   "Relee «¿A qué hora se realizaron las mediciones comparadas de las dos plazas?» y distingue la información solicitada de los otros detalles del texto.",
+   "El texto fija las mediciones a las 15 horas. La propuesta posterior de ampliar horarios todavía no describe lo realizado.",
+   "La alternativa «A las 15 horas» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El texto fija las mediciones a las 15 horas. La propuesta posterior de ampliar horarios todavía no describe lo realizado.",
+  "example": "Si un informe distingue «medimos a las 10» de «mediremos también a las 18», identifica lo hecho sin mezclarlo con el plan.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Información explícita",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«A las 8 horas» no coincide con lo que establece el texto. El texto fija las mediciones a las 15 horas. La propuesta posterior de ampliar horarios todavía no describe lo realizado. La conclusión respaldada es «A las 15 horas».",
+   "«Al mediodía» no coincide con lo que establece el texto. El texto fija las mediciones a las 15 horas. La propuesta posterior de ampliar horarios todavía no describe lo realizado. La conclusión respaldada es «A las 15 horas».",
+   "«En cuatro horarios cada día» no coincide con lo que establece el texto. El texto fija las mediciones a las 15 horas. La propuesta posterior de ampliar horarios todavía no describe lo realizado. La conclusión respaldada es «A las 15 horas».",
+   "¡Cachaste! El texto fija las mediciones a las 15 horas. La propuesta posterior de ampliar horarios todavía no describe lo realizado."
+  ]
+ },
+ {
+  "id": "LEC-107",
+  "passageId": "T02",
+  "skill": "Interpretar",
+  "question": "¿Qué aporta mencionar diferencias de pavimento y tráfico entre las plazas?",
+  "options": [
+   "Confirma que ambas plazas tenían condiciones idénticas",
+   "Prueba que los termómetros estaban defectuosos",
+   "Introduce factores que también pueden influir en la temperatura",
+   "Demuestra que los árboles nunca influyen"
+  ],
+  "answer": 2,
+  "steps": [
+   "Relee «¿Qué aporta mencionar diferencias de pavimento y tráfico entre las plazas?» y distingue la información solicitada de los otros detalles del texto.",
+   "Esas diferencias impiden atribuir toda la variación solo a los árboles. Son explicaciones alternativas que deben considerarse.",
+   "La alternativa «Introduce factores que también pueden influir en la temperatura» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "Esas diferencias impiden atribuir toda la variación solo a los árboles. Son explicaciones alternativas que deben considerarse.",
+  "example": "Si dos salas difieren en ventanas y número de personas, una diferencia de calor no puede atribuirse solo a sus cortinas.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Inferencias y relaciones",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Confirma que ambas plazas tenían condiciones idénticas» no coincide con lo que establece el texto. Esas diferencias impiden atribuir toda la variación solo a los árboles. Son explicaciones alternativas que deben considerarse. La conclusión respaldada es «Introduce factores que también pueden influir en la temperatura».",
+   "«Prueba que los termómetros estaban defectuosos» no coincide con lo que establece el texto. Esas diferencias impiden atribuir toda la variación solo a los árboles. Son explicaciones alternativas que deben considerarse. La conclusión respaldada es «Introduce factores que también pueden influir en la temperatura».",
+   "¡Cachaste! Esas diferencias impiden atribuir toda la variación solo a los árboles. Son explicaciones alternativas que deben considerarse.",
+   "«Demuestra que los árboles nunca influyen» no coincide con lo que establece el texto. Esas diferencias impiden atribuir toda la variación solo a los árboles. Son explicaciones alternativas que deben considerarse. La conclusión respaldada es «Introduce factores que también pueden influir en la temperatura»."
+  ]
+ },
+ {
+  "id": "LEC-108",
+  "passageId": "T02",
+  "skill": "Evaluar",
+  "question": "¿Qué afirmación sí respalda la comparación de 28 °C y 36 °C?",
+  "options": [
+   "La plaza más caliente recibe el doble de tráfico",
+   "La diferencia registrada entre las plazas fue de 8 °C",
+   "Los árboles reducen siempre exactamente 8 °C",
+   "La diferencia será la misma durante todo el verano"
+  ],
+  "answer": 1,
+  "steps": [
+   "Relee «¿Qué afirmación sí respalda la comparación de 28 °C y 36 °C?» y distingue la información solicitada de los otros detalles del texto.",
+   "36−28=8 describe los datos de esa observación; no establece una ley permanente ni aporta una medida del tráfico.",
+   "La alternativa «La diferencia registrada entre las plazas fue de 8 °C» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "36−28=8 describe los datos de esa observación; no establece una ley permanente ni aporta una medida del tráfico.",
+  "example": "Registrar 22 y 26 grados permite calcular una diferencia de 4 grados. No demuestra por sí solo su causa.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Evaluación de evidencia",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«La plaza más caliente recibe el doble de tráfico» no coincide con lo que establece el texto. 36−28=8 describe los datos de esa observación; no establece una ley permanente ni aporta una medida del tráfico. La conclusión respaldada es «La diferencia registrada entre las plazas fue de 8 °C».",
+   "¡Cachaste! 36−28=8 describe los datos de esa observación; no establece una ley permanente ni aporta una medida del tráfico.",
+   "«Los árboles reducen siempre exactamente 8 °C» no coincide con lo que establece el texto. 36−28=8 describe los datos de esa observación; no establece una ley permanente ni aporta una medida del tráfico. La conclusión respaldada es «La diferencia registrada entre las plazas fue de 8 °C».",
+   "«La diferencia será la misma durante todo el verano» no coincide con lo que establece el texto. 36−28=8 describe los datos de esa observación; no establece una ley permanente ni aporta una medida del tráfico. La conclusión respaldada es «La diferencia registrada entre las plazas fue de 8 °C»."
+  ]
+ },
+ {
+  "id": "LEC-109",
+  "passageId": "T02",
+  "skill": "Interpretar",
+  "question": "¿Para qué se propone entrevistar a quienes usan las plazas?",
+  "options": [
+   "Para complementar las mediciones con experiencias de uso",
+   "Para sustituir todos los termómetros por opiniones",
+   "Para demostrar que la plaza Sur debe cerrarse",
+   "Para fijar de antemano cuál será la temperatura"
+  ],
+  "answer": 0,
+  "steps": [
+   "Relee «¿Para qué se propone entrevistar a quienes usan las plazas?» y distingue la información solicitada de los otros detalles del texto.",
+   "Las entrevistas añaden cómo se vive el espacio. No reemplazan el dato térmico ni prueban una decisión ya tomada.",
+   "La alternativa «Para complementar las mediciones con experiencias de uso» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "Las entrevistas añaden cómo se vive el espacio. No reemplazan el dato térmico ni prueban una decisión ya tomada.",
+  "example": "En un estudio de buses, las entrevistas describen comodidad y los cronómetros miden duración: aportan información complementaria.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Inferencias y relaciones",
+  "difficulty": "intermedio",
+  "explanations": [
+   "¡Cachaste! Las entrevistas añaden cómo se vive el espacio. No reemplazan el dato térmico ni prueban una decisión ya tomada.",
+   "«Para sustituir todos los termómetros por opiniones» no coincide con lo que establece el texto. Las entrevistas añaden cómo se vive el espacio. No reemplazan el dato térmico ni prueban una decisión ya tomada. La conclusión respaldada es «Para complementar las mediciones con experiencias de uso».",
+   "«Para demostrar que la plaza Sur debe cerrarse» no coincide con lo que establece el texto. Las entrevistas añaden cómo se vive el espacio. No reemplazan el dato térmico ni prueban una decisión ya tomada. La conclusión respaldada es «Para complementar las mediciones con experiencias de uso».",
+   "«Para fijar de antemano cuál será la temperatura» no coincide con lo que establece el texto. Las entrevistas añaden cómo se vive el espacio. No reemplazan el dato térmico ni prueban una decisión ya tomada. La conclusión respaldada es «Para complementar las mediciones con experiencias de uso»."
+  ]
+ },
+ {
+  "id": "LEC-110",
+  "passageId": "T02",
+  "skill": "Evaluar",
+  "question": "¿Qué cambio fortalecería la comparación térmica entre plazas?",
+  "options": [
+   "Medir cada plaza con un instrumento sin calibrar distinto",
+   "Medir solo el lugar que confirmó la hipótesis inicial",
+   "Elegir el día más caliente para una y el más frío para otra",
+   "Repetir mediciones equivalentes en más horarios y condiciones"
+  ],
+  "answer": 3,
+  "steps": [
+   "Relee «¿Qué cambio fortalecería la comparación térmica entre plazas?» y distingue la información solicitada de los otros detalles del texto.",
+   "Ampliar observaciones comparables permite revisar si la diferencia se mantiene; cambiar condiciones sin control dificulta la comparación.",
+   "La alternativa «Repetir mediciones equivalentes en más horarios y condiciones» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "Ampliar observaciones comparables permite revisar si la diferencia se mantiene; cambiar condiciones sin control dificulta la comparación.",
+  "example": "Para comparar ruido en dos salas, registra ambas en horarios comparables y durante varios días, en vez de elegir casos favorables.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Evaluación de evidencia",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Medir cada plaza con un instrumento sin calibrar distinto» no coincide con lo que establece el texto. Ampliar observaciones comparables permite revisar si la diferencia se mantiene; cambiar condiciones sin control dificulta la comparación. La conclusión respaldada es «Repetir mediciones equivalentes en más horarios y condiciones».",
+   "«Medir solo el lugar que confirmó la hipótesis inicial» no coincide con lo que establece el texto. Ampliar observaciones comparables permite revisar si la diferencia se mantiene; cambiar condiciones sin control dificulta la comparación. La conclusión respaldada es «Repetir mediciones equivalentes en más horarios y condiciones».",
+   "«Elegir el día más caliente para una y el más frío para otra» no coincide con lo que establece el texto. Ampliar observaciones comparables permite revisar si la diferencia se mantiene; cambiar condiciones sin control dificulta la comparación. La conclusión respaldada es «Repetir mediciones equivalentes en más horarios y condiciones».",
+   "¡Cachaste! Ampliar observaciones comparables permite revisar si la diferencia se mantiene; cambiar condiciones sin control dificulta la comparación."
+  ]
+ },
+ {
+  "id": "LEC-111",
+  "passageId": "T03",
+  "skill": "Localizar",
+  "question": "Según la propuesta, ¿cuándo se guardan los teléfonos?",
+  "options": [
+   "Únicamente al terminar la jornada",
+   "Durante toda actividad autorizada con el dispositivo",
+   "Durante las explicaciones",
+   "Solo durante los recreos"
+  ],
+  "answer": 2,
+  "steps": [
+   "Relee «Según la propuesta, ¿cuándo se guardan los teléfonos?» y distingue la información solicitada de los otros detalles del texto.",
+   "El texto distingue guardarlos durante explicaciones y utilizarlos en actividades autorizadas; la regla depende del contexto.",
+   "La alternativa «Durante las explicaciones» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El texto distingue guardarlos durante explicaciones y utilizarlos en actividades autorizadas; la regla depende del contexto.",
+  "example": "Una instrucción puede pedir guardar calculadoras al explicar un procedimiento y usarlas al comprobar resultados: cada momento tiene una regla.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Información explícita",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Únicamente al terminar la jornada» no coincide con lo que establece el texto. El texto distingue guardarlos durante explicaciones y utilizarlos en actividades autorizadas; la regla depende del contexto. La conclusión respaldada es «Durante las explicaciones».",
+   "«Durante toda actividad autorizada con el dispositivo» no coincide con lo que establece el texto. El texto distingue guardarlos durante explicaciones y utilizarlos en actividades autorizadas; la regla depende del contexto. La conclusión respaldada es «Durante las explicaciones».",
+   "¡Cachaste! El texto distingue guardarlos durante explicaciones y utilizarlos en actividades autorizadas; la regla depende del contexto.",
+   "«Solo durante los recreos» no coincide con lo que establece el texto. El texto distingue guardarlos durante explicaciones y utilizarlos en actividades autorizadas; la regla depende del contexto. La conclusión respaldada es «Durante las explicaciones»."
+  ]
+ },
+ {
+  "id": "LEC-112",
+  "passageId": "T03",
+  "skill": "Interpretar",
+  "question": "¿Qué función tiene mencionar actividades manuales y lectura?",
+  "options": [
+   "Presentar un resultado estadístico sobre notas escolares",
+   "Mostrar que el uso educativo del teléfono convive con otras formas de aprender",
+   "Defender que toda actividad debe hacerse en pantalla",
+   "Afirmar que leer impide aprender con tecnología"
+  ],
+  "answer": 1,
+  "steps": [
+   "Relee «¿Qué función tiene mencionar actividades manuales y lectura?» y distingue la información solicitada de los otros detalles del texto.",
+   "El autor valora experiencias sin dispositivos sin renunciar a usos pedagógicos específicos: las alternativas no son excluyentes.",
+   "La alternativa «Mostrar que el uso educativo del teléfono convive con otras formas de aprender» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El autor valora experiencias sin dispositivos sin renunciar a usos pedagógicos específicos: las alternativas no son excluyentes.",
+  "example": "Defender salidas a terreno junto con simulaciones digitales propone variedad de métodos, no eliminar uno de ellos.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Inferencias y relaciones",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Presentar un resultado estadístico sobre notas escolares» no coincide con lo que establece el texto. El autor valora experiencias sin dispositivos sin renunciar a usos pedagógicos específicos: las alternativas no son excluyentes. La conclusión respaldada es «Mostrar que el uso educativo del teléfono convive con otras formas de aprender».",
+   "¡Cachaste! El autor valora experiencias sin dispositivos sin renunciar a usos pedagógicos específicos: las alternativas no son excluyentes.",
+   "«Defender que toda actividad debe hacerse en pantalla» no coincide con lo que establece el texto. El autor valora experiencias sin dispositivos sin renunciar a usos pedagógicos específicos: las alternativas no son excluyentes. La conclusión respaldada es «Mostrar que el uso educativo del teléfono convive con otras formas de aprender».",
+   "«Afirmar que leer impide aprender con tecnología» no coincide con lo que establece el texto. El autor valora experiencias sin dispositivos sin renunciar a usos pedagógicos específicos: las alternativas no son excluyentes. La conclusión respaldada es «Mostrar que el uso educativo del teléfono convive con otras formas de aprender»."
+  ]
+ },
+ {
+  "id": "LEC-113",
+  "passageId": "T03",
+  "skill": "Evaluar",
+  "question": "¿Qué afirmación sería incompatible con la postura del texto?",
+  "options": [
+   "Toda actividad escolar debe realizarse con teléfonos",
+   "Se necesitan límites según la actividad",
+   "Las familias pueden participar en reglas compartidas",
+   "Las consecuencias deben ser proporcionales"
+  ],
+  "answer": 0,
+  "steps": [
+   "Relee «¿Qué afirmación sería incompatible con la postura del texto?» y distingue la información solicitada de los otros detalles del texto.",
+   "La propuesta regula usos y conserva lectura y actividades manuales. Usar teléfonos en todo momento borra esa distinción central.",
+   "La alternativa «Toda actividad escolar debe realizarse con teléfonos» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "La propuesta regula usos y conserva lectura y actividades manuales. Usar teléfonos en todo momento borra esa distinción central.",
+  "example": "Si alguien propone caminar algunos trayectos y usar bus en otros, atribuirle «todos los viajes a pie» exagera su postura.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Evaluación de evidencia",
+  "difficulty": "intermedio",
+  "explanations": [
+   "¡Cachaste! La propuesta regula usos y conserva lectura y actividades manuales. Usar teléfonos en todo momento borra esa distinción central.",
+   "«Se necesitan límites según la actividad» no coincide con lo que establece el texto. La propuesta regula usos y conserva lectura y actividades manuales. Usar teléfonos en todo momento borra esa distinción central. La conclusión respaldada es «Toda actividad escolar debe realizarse con teléfonos».",
+   "«Las familias pueden participar en reglas compartidas» no coincide con lo que establece el texto. La propuesta regula usos y conserva lectura y actividades manuales. Usar teléfonos en todo momento borra esa distinción central. La conclusión respaldada es «Toda actividad escolar debe realizarse con teléfonos».",
+   "«Las consecuencias deben ser proporcionales» no coincide con lo que establece el texto. La propuesta regula usos y conserva lectura y actividades manuales. Usar teléfonos en todo momento borra esa distinción central. La conclusión respaldada es «Toda actividad escolar debe realizarse con teléfonos»."
+  ]
+ },
+ {
+  "id": "LEC-114",
+  "passageId": "T03",
+  "skill": "Interpretar",
+  "question": "¿Por qué incluir a familias y docentes en las reglas?",
+  "options": [
+   "Para dejar cada incumplimiento sin consecuencia",
+   "Para reemplazar toda decisión pedagógica por una encuesta",
+   "Para permitir cualquier uso si lo pide una familia",
+   "Para construir criterios compartidos sobre el uso"
+  ],
+  "answer": 3,
+  "steps": [
+   "Relee «¿Por qué incluir a familias y docentes en las reglas?» y distingue la información solicitada de los otros detalles del texto.",
+   "La participación busca acuerdos comprensibles y aplicables, junto con consecuencias proporcionales, no ausencia de límites.",
+   "La alternativa «Para construir criterios compartidos sobre el uso» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "La participación busca acuerdos comprensibles y aplicables, junto con consecuencias proporcionales, no ausencia de límites.",
+  "example": "Un acuerdo de convivencia construido con la comunidad puede facilitar que se entiendan sus razones; participar no equivale a decidir sin reglas.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Inferencias y relaciones",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Para dejar cada incumplimiento sin consecuencia» no coincide con lo que establece el texto. La participación busca acuerdos comprensibles y aplicables, junto con consecuencias proporcionales, no ausencia de límites. La conclusión respaldada es «Para construir criterios compartidos sobre el uso».",
+   "«Para reemplazar toda decisión pedagógica por una encuesta» no coincide con lo que establece el texto. La participación busca acuerdos comprensibles y aplicables, junto con consecuencias proporcionales, no ausencia de límites. La conclusión respaldada es «Para construir criterios compartidos sobre el uso».",
+   "«Para permitir cualquier uso si lo pide una familia» no coincide con lo que establece el texto. La participación busca acuerdos comprensibles y aplicables, junto con consecuencias proporcionales, no ausencia de límites. La conclusión respaldada es «Para construir criterios compartidos sobre el uso».",
+   "¡Cachaste! La participación busca acuerdos comprensibles y aplicables, junto con consecuencias proporcionales, no ausencia de límites."
+  ]
+ },
+ {
+  "id": "LEC-115",
+  "passageId": "T04",
+  "skill": "Localizar",
+  "question": "¿Cuántos kilogramos de zanahorias se cosecharon en abril y mayo en conjunto?",
+  "options": [
+   "8 kg",
+   "25 kg",
+   "15 kg",
+   "7 kg"
+  ],
+  "answer": 2,
+  "steps": [
+   "Relee «¿Cuántos kilogramos de zanahorias se cosecharon en abril y mayo en conjunto?» y distingue la información solicitada de los otros detalles del texto.",
+   "La tabla registra 7 kg en abril y 8 en mayo: 7+8=15. Los 25 kg corresponden a la suma de todos los cultivos de abril.",
+   "La alternativa «15 kg» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "La tabla registra 7 kg en abril y 8 en mayo: 7+8=15. Los 25 kg corresponden a la suma de todos los cultivos de abril.",
+  "example": "Si una tabla registra 4 y 6 cuadernos en dos semanas, el total de esas semanas es 10; no uses la columna de otro producto.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Información explícita",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«8 kg» no coincide con lo que establece el texto. La tabla registra 7 kg en abril y 8 en mayo: 7+8=15. Los 25 kg corresponden a la suma de todos los cultivos de abril. La conclusión respaldada es «15 kg».",
+   "«25 kg» no coincide con lo que establece el texto. La tabla registra 7 kg en abril y 8 en mayo: 7+8=15. Los 25 kg corresponden a la suma de todos los cultivos de abril. La conclusión respaldada es «15 kg».",
+   "¡Cachaste! La tabla registra 7 kg en abril y 8 en mayo: 7+8=15. Los 25 kg corresponden a la suma de todos los cultivos de abril.",
+   "«7 kg» no coincide con lo que establece el texto. La tabla registra 7 kg en abril y 8 en mayo: 7+8=15. Los 25 kg corresponden a la suma de todos los cultivos de abril. La conclusión respaldada es «15 kg»."
+  ]
+ },
+ {
+  "id": "LEC-116",
+  "passageId": "T04",
+  "skill": "Interpretar",
+  "question": "¿Qué comparación muestra un cambio de composición de la cosecha entre abril y junio?",
+  "options": [
+   "Los tres cultivos mantienen igual producción",
+   "Bajan las lechugas y aumentan los tomates",
+   "Bajan las lechugas y también los tomates",
+   "Las zanahorias desaparecen de la cosecha"
+  ],
+  "answer": 1,
+  "steps": [
+   "Relee «¿Qué comparación muestra un cambio de composición de la cosecha entre abril y junio?» y distingue la información solicitada de los otros detalles del texto.",
+   "Lechugas: 18 a 12; tomates: 0 a 16. La producción cambia de composición y no solo de total.",
+   "La alternativa «Bajan las lechugas y aumentan los tomates» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "Lechugas: 18 a 12; tomates: 0 a 16. La producción cambia de composición y no solo de total.",
+  "example": "Si bajan las ventas de pan y suben las de fruta, cambia la composición de ventas aunque el total pudiera mantenerse.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Inferencias y relaciones",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Los tres cultivos mantienen igual producción» no coincide con lo que establece el texto. Lechugas: 18 a 12; tomates: 0 a 16. La producción cambia de composición y no solo de total. La conclusión respaldada es «Bajan las lechugas y aumentan los tomates».",
+   "¡Cachaste! Lechugas: 18 a 12; tomates: 0 a 16. La producción cambia de composición y no solo de total.",
+   "«Bajan las lechugas y también los tomates» no coincide con lo que establece el texto. Lechugas: 18 a 12; tomates: 0 a 16. La producción cambia de composición y no solo de total. La conclusión respaldada es «Bajan las lechugas y aumentan los tomates».",
+   "«Las zanahorias desaparecen de la cosecha» no coincide con lo que establece el texto. Lechugas: 18 a 12; tomates: 0 a 16. La producción cambia de composición y no solo de total. La conclusión respaldada es «Bajan las lechugas y aumentan los tomates»."
+  ]
+ },
+ {
+  "id": "LEC-117",
+  "passageId": "T04",
+  "skill": "Evaluar",
+  "question": "¿Por qué el total cosechado no basta para comparar eficiencia?",
+  "options": [
+   "Porque falta relacionarlo con los recursos utilizados",
+   "Porque los kilogramos no permiten sumar productos",
+   "Porque solo importan los tomates para evaluar el huerto",
+   "Porque una cosecha mayor siempre requiere menos agua"
+  ],
+  "answer": 0,
+  "steps": [
+   "Relee «¿Por qué el total cosechado no basta para comparar eficiencia?» y distingue la información solicitada de los otros detalles del texto.",
+   "El texto pide horas, superficie y agua. Eficiencia relaciona resultados e insumos, no únicamente cantidad producida.",
+   "La alternativa «Porque falta relacionarlo con los recursos utilizados» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El texto pide horas, superficie y agua. Eficiencia relaciona resultados e insumos, no únicamente cantidad producida.",
+  "example": "Producir 100 piezas con 50 horas y 120 con 100 horas da más piezas en el segundo caso, pero menos piezas por hora.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Evaluación de evidencia",
+  "difficulty": "intermedio",
+  "explanations": [
+   "¡Cachaste! El texto pide horas, superficie y agua. Eficiencia relaciona resultados e insumos, no únicamente cantidad producida.",
+   "«Porque los kilogramos no permiten sumar productos» no coincide con lo que establece el texto. El texto pide horas, superficie y agua. Eficiencia relaciona resultados e insumos, no únicamente cantidad producida. La conclusión respaldada es «Porque falta relacionarlo con los recursos utilizados».",
+   "«Porque solo importan los tomates para evaluar el huerto» no coincide con lo que establece el texto. El texto pide horas, superficie y agua. Eficiencia relaciona resultados e insumos, no únicamente cantidad producida. La conclusión respaldada es «Porque falta relacionarlo con los recursos utilizados».",
+   "«Porque una cosecha mayor siempre requiere menos agua» no coincide con lo que establece el texto. El texto pide horas, superficie y agua. Eficiencia relaciona resultados e insumos, no únicamente cantidad producida. La conclusión respaldada es «Porque falta relacionarlo con los recursos utilizados»."
+  ]
+ },
+ {
+  "id": "LEC-118",
+  "passageId": "T04",
+  "skill": "Localizar",
+  "question": "¿Qué destino tiene la producción del huerto?",
+  "options": [
+   "Se exporta a otra región",
+   "Se vende para pagar sueldos",
+   "Se almacena toda para el siguiente año",
+   "Se entrega gratuitamente al comedor"
+  ],
+  "answer": 3,
+  "steps": [
+   "Relee «¿Qué destino tiene la producción del huerto?» y distingue la información solicitada de los otros detalles del texto.",
+   "El texto señala el destino al comedor sin cobro. No describe venta, exportación ni almacenamiento de toda la cosecha.",
+   "La alternativa «Se entrega gratuitamente al comedor» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El texto señala el destino al comedor sin cobro. No describe venta, exportación ni almacenamiento de toda la cosecha.",
+  "example": "Si un registro dice que los libros fueron donados a una escuela, no corresponde inferir ingresos por venta.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Información explícita",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Se exporta a otra región» no coincide con lo que establece el texto. El texto señala el destino al comedor sin cobro. No describe venta, exportación ni almacenamiento de toda la cosecha. La conclusión respaldada es «Se entrega gratuitamente al comedor».",
+   "«Se vende para pagar sueldos» no coincide con lo que establece el texto. El texto señala el destino al comedor sin cobro. No describe venta, exportación ni almacenamiento de toda la cosecha. La conclusión respaldada es «Se entrega gratuitamente al comedor».",
+   "«Se almacena toda para el siguiente año» no coincide con lo que establece el texto. El texto señala el destino al comedor sin cobro. No describe venta, exportación ni almacenamiento de toda la cosecha. La conclusión respaldada es «Se entrega gratuitamente al comedor».",
+   "¡Cachaste! El texto señala el destino al comedor sin cobro. No describe venta, exportación ni almacenamiento de toda la cosecha."
+  ]
+ },
+ {
+  "id": "LEC-119",
+  "passageId": "T05",
+  "skill": "Interpretar",
+  "question": "¿Qué significa que participar no obliga a incorporar toda solicitud?",
+  "options": [
+   "Que la autoridad puede decidir sin dar razones",
+   "Que solo deben consultarse quienes apoyan la obra",
+   "Que las decisiones deben ponderar demandas y justificar lo resuelto",
+   "Que escuchar a vecinos no tiene utilidad"
+  ],
+  "answer": 2,
+  "steps": [
+   "Relee «¿Qué significa que participar no obliga a incorporar toda solicitud?» y distingue la información solicitada de los otros detalles del texto.",
+   "El texto exige escuchar y explicar decisiones; reconoce que las demandas pueden requerir ponderación y no satisfacerse todas.",
+   "La alternativa «Que las decisiones deben ponderar demandas y justificar lo resuelto» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El texto exige escuchar y explicar decisiones; reconoce que las demandas pueden requerir ponderación y no satisfacerse todas.",
+  "example": "En un presupuesto escolar hay solicitudes incompatibles. Consultar permite conocerlas y explicar prioridades, aunque no se financien todas.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Inferencias y relaciones",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Que la autoridad puede decidir sin dar razones» no coincide con lo que establece el texto. El texto exige escuchar y explicar decisiones; reconoce que las demandas pueden requerir ponderación y no satisfacerse todas. La conclusión respaldada es «Que las decisiones deben ponderar demandas y justificar lo resuelto».",
+   "«Que solo deben consultarse quienes apoyan la obra» no coincide con lo que establece el texto. El texto exige escuchar y explicar decisiones; reconoce que las demandas pueden requerir ponderación y no satisfacerse todas. La conclusión respaldada es «Que las decisiones deben ponderar demandas y justificar lo resuelto».",
+   "¡Cachaste! El texto exige escuchar y explicar decisiones; reconoce que las demandas pueden requerir ponderación y no satisfacerse todas.",
+   "«Que escuchar a vecinos no tiene utilidad» no coincide con lo que establece el texto. El texto exige escuchar y explicar decisiones; reconoce que las demandas pueden requerir ponderación y no satisfacerse todas. La conclusión respaldada es «Que las decisiones deben ponderar demandas y justificar lo resuelto»."
+  ]
+ },
+ {
+  "id": "LEC-120",
+  "passageId": "T05",
+  "skill": "Localizar",
+  "question": "¿Qué espacios aparecen como puntos sensibles al diseñar la ciclovía?",
+  "options": [
+   "Los estacionamientos de camiones rurales",
+   "El consultorio y las paradas de buses",
+   "Los puertos y aeropuertos",
+   "Las bibliotecas universitarias"
+  ],
+  "answer": 1,
+  "steps": [
+   "Relee «¿Qué espacios aparecen como puntos sensibles al diseñar la ciclovía?» y distingue la información solicitada de los otros detalles del texto.",
+   "El texto menciona acceso al consultorio y paradas de buses como situaciones que requieren atención en el diseño.",
+   "La alternativa «El consultorio y las paradas de buses» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El texto menciona acceso al consultorio y paradas de buses como situaciones que requieren atención en el diseño.",
+  "example": "Al leer un plan de accesibilidad, identifica los lugares nombrados, sin reemplazarlos por otros que también podrían necesitar mejoras.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Información explícita",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Los estacionamientos de camiones rurales» no coincide con lo que establece el texto. El texto menciona acceso al consultorio y paradas de buses como situaciones que requieren atención en el diseño. La conclusión respaldada es «El consultorio y las paradas de buses».",
+   "¡Cachaste! El texto menciona acceso al consultorio y paradas de buses como situaciones que requieren atención en el diseño.",
+   "«Los puertos y aeropuertos» no coincide con lo que establece el texto. El texto menciona acceso al consultorio y paradas de buses como situaciones que requieren atención en el diseño. La conclusión respaldada es «El consultorio y las paradas de buses».",
+   "«Las bibliotecas universitarias» no coincide con lo que establece el texto. El texto menciona acceso al consultorio y paradas de buses como situaciones que requieren atención en el diseño. La conclusión respaldada es «El consultorio y las paradas de buses»."
+  ]
+ },
+ {
+  "id": "LEC-121",
+  "passageId": "T05",
+  "skill": "Evaluar",
+  "question": "¿Qué conjunto de indicadores responde mejor a la evaluación posterior propuesta?",
+  "options": [
+   "Accidentes, tiempos y uso de la ciclovía",
+   "Cantidad de discursos y carteles inaugurales",
+   "Solo el precio de la pintura utilizada",
+   "Número de fotografías de la inauguración"
+  ],
+  "answer": 0,
+  "steps": [
+   "Relee «¿Qué conjunto de indicadores responde mejor a la evaluación posterior propuesta?» y distingue la información solicitada de los otros detalles del texto.",
+   "La evaluación se dirige a seguridad, movilidad y utilización. Los gastos o actos inaugurales no describen por sí mismos esos resultados.",
+   "La alternativa «Accidentes, tiempos y uso de la ciclovía» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "La evaluación se dirige a seguridad, movilidad y utilización. Los gastos o actos inaugurales no describen por sí mismos esos resultados.",
+  "example": "Para evaluar un comedor, mide acceso, tiempos de espera y alimentación entregada; contar invitaciones de apertura mide difusión.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Evaluación de evidencia",
+  "difficulty": "intermedio",
+  "explanations": [
+   "¡Cachaste! La evaluación se dirige a seguridad, movilidad y utilización. Los gastos o actos inaugurales no describen por sí mismos esos resultados.",
+   "«Cantidad de discursos y carteles inaugurales» no coincide con lo que establece el texto. La evaluación se dirige a seguridad, movilidad y utilización. Los gastos o actos inaugurales no describen por sí mismos esos resultados. La conclusión respaldada es «Accidentes, tiempos y uso de la ciclovía».",
+   "«Solo el precio de la pintura utilizada» no coincide con lo que establece el texto. La evaluación se dirige a seguridad, movilidad y utilización. Los gastos o actos inaugurales no describen por sí mismos esos resultados. La conclusión respaldada es «Accidentes, tiempos y uso de la ciclovía».",
+   "«Número de fotografías de la inauguración» no coincide con lo que establece el texto. La evaluación se dirige a seguridad, movilidad y utilización. Los gastos o actos inaugurales no describen por sí mismos esos resultados. La conclusión respaldada es «Accidentes, tiempos y uso de la ciclovía»."
+  ]
+ },
+ {
+  "id": "LEC-122",
+  "passageId": "T05",
+  "skill": "Interpretar",
+  "question": "¿Cómo presenta el texto la posibilidad de modificar la obra después de evaluarla?",
+  "options": [
+   "Como prueba automática de que nunca debió construirse",
+   "Como reemplazo de la participación previa",
+   "Como garantía de que no habrá accidentes futuros",
+   "Como una forma responsable de corregir problemas"
+  ],
+  "answer": 3,
+  "steps": [
+   "Relee «¿Cómo presenta el texto la posibilidad de modificar la obra después de evaluarla?» y distingue la información solicitada de los otros detalles del texto.",
+   "El texto conecta evaluación y ajustes con responsabilidad: una corrección informada no equivale a invalidar toda la iniciativa.",
+   "La alternativa «Como una forma responsable de corregir problemas» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El texto conecta evaluación y ajustes con responsabilidad: una corrección informada no equivale a invalidar toda la iniciativa.",
+  "example": "Si una biblioteca cambia un horario tras evaluar asistencia, el ajuste puede mejorar el servicio en lugar de demostrar un fracaso total.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Inferencias y relaciones",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Como prueba automática de que nunca debió construirse» no coincide con lo que establece el texto. El texto conecta evaluación y ajustes con responsabilidad: una corrección informada no equivale a invalidar toda la iniciativa. La conclusión respaldada es «Como una forma responsable de corregir problemas».",
+   "«Como reemplazo de la participación previa» no coincide con lo que establece el texto. El texto conecta evaluación y ajustes con responsabilidad: una corrección informada no equivale a invalidar toda la iniciativa. La conclusión respaldada es «Como una forma responsable de corregir problemas».",
+   "«Como garantía de que no habrá accidentes futuros» no coincide con lo que establece el texto. El texto conecta evaluación y ajustes con responsabilidad: una corrección informada no equivale a invalidar toda la iniciativa. La conclusión respaldada es «Como una forma responsable de corregir problemas».",
+   "¡Cachaste! El texto conecta evaluación y ajustes con responsabilidad: una corrección informada no equivale a invalidar toda la iniciativa."
+  ]
+ },
+ {
+  "id": "LEC-123",
+  "passageId": "T06",
+  "skill": "Localizar",
+  "question": "¿Qué suceso interrumpe la escucha de la radio?",
+  "options": [
+   "La rotura de la ventana",
+   "El término de la visita de Mara",
+   "Un corte de electricidad",
+   "La llegada de una carta"
+  ],
+  "answer": 2,
+  "steps": [
+   "Relee «¿Qué suceso interrumpe la escucha de la radio?» y distingue la información solicitada de los otros detalles del texto.",
+   "El corte de electricidad detiene la radio y permite que la música de la calle adquiera protagonismo en la escena.",
+   "La alternativa «Un corte de electricidad» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El corte de electricidad detiene la radio y permite que la música de la calle adquiera protagonismo en la escena.",
+  "example": "Si en un cuento la lluvia obliga a entrar a una casa, esa lluvia desencadena el cambio de escenario; no confundirla con un recuerdo posterior.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Información explícita",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«La rotura de la ventana» no coincide con lo que establece el texto. El corte de electricidad detiene la radio y permite que la música de la calle adquiera protagonismo en la escena. La conclusión respaldada es «Un corte de electricidad».",
+   "«El término de la visita de Mara» no coincide con lo que establece el texto. El corte de electricidad detiene la radio y permite que la música de la calle adquiera protagonismo en la escena. La conclusión respaldada es «Un corte de electricidad».",
+   "¡Cachaste! El corte de electricidad detiene la radio y permite que la música de la calle adquiera protagonismo en la escena.",
+   "«La llegada de una carta» no coincide con lo que establece el texto. El corte de electricidad detiene la radio y permite que la música de la calle adquiera protagonismo en la escena. La conclusión respaldada es «Un corte de electricidad»."
+  ]
+ },
+ {
+  "id": "LEC-124",
+  "passageId": "T06",
+  "skill": "Interpretar",
+  "question": "¿Qué aporta la anotación sobre el primer baile con Ernesto?",
+  "options": [
+   "Permite calcular la duración del corte de luz",
+   "Vincula la melodía con una experiencia personal de Elvira",
+   "Demuestra que Ernesto toca en la banda de la calle",
+   "Informa cuándo se compró la radio"
+  ],
+  "answer": 1,
+  "steps": [
+   "Relee «¿Qué aporta la anotación sobre el primer baile con Ernesto?» y distingue la información solicitada de los otros detalles del texto.",
+   "La nota recuerda el primer baile y la lluvia; conecta música y memoria íntima. No identifica a músicos actuales ni datos técnicos.",
+   "La alternativa «Vincula la melodía con una experiencia personal de Elvira» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "La nota recuerda el primer baile y la lluvia; conecta música y memoria íntima. No identifica a músicos actuales ni datos técnicos.",
+  "example": "Una entrada de teatro guardada con una fecha puede evocar una amistad: el objeto importa por la experiencia asociada.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Inferencias y relaciones",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Permite calcular la duración del corte de luz» no coincide con lo que establece el texto. La nota recuerda el primer baile y la lluvia; conecta música y memoria íntima. No identifica a músicos actuales ni datos técnicos. La conclusión respaldada es «Vincula la melodía con una experiencia personal de Elvira».",
+   "¡Cachaste! La nota recuerda el primer baile y la lluvia; conecta música y memoria íntima. No identifica a músicos actuales ni datos técnicos.",
+   "«Demuestra que Ernesto toca en la banda de la calle» no coincide con lo que establece el texto. La nota recuerda el primer baile y la lluvia; conecta música y memoria íntima. No identifica a músicos actuales ni datos técnicos. La conclusión respaldada es «Vincula la melodía con una experiencia personal de Elvira».",
+   "«Informa cuándo se compró la radio» no coincide con lo que establece el texto. La nota recuerda el primer baile y la lluvia; conecta música y memoria íntima. No identifica a músicos actuales ni datos técnicos. La conclusión respaldada es «Vincula la melodía con una experiencia personal de Elvira»."
+  ]
+ },
+ {
+  "id": "LEC-125",
+  "passageId": "T06",
+  "skill": "Interpretar",
+  "question": "¿Qué cambio se produce en la atención de Mara durante la escena?",
+  "options": [
+   "Pasa de la rutina de la radio a escuchar la historia de Elvira",
+   "Deja de interesarse por cualquier relato",
+   "Se concentra solo en reparar el circuito eléctrico",
+   "Decide abandonar de inmediato la visita"
+  ],
+  "answer": 0,
+  "steps": [
+   "Relee «¿Qué cambio se produce en la atención de Mara durante la escena?» y distingue la información solicitada de los otros detalles del texto.",
+   "Mara no vuelve a encender la radio para privilegiar el relato. El interés cambia de un aparato a la memoria compartida.",
+   "La alternativa «Pasa de la rutina de la radio a escuchar la historia de Elvira» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "Mara no vuelve a encender la radio para privilegiar el relato. El interés cambia de un aparato a la memoria compartida.",
+  "example": "Cuando alguien deja de mirar un álbum para escuchar la historia de quien aparece en una foto, cambia del objeto al relato de vida.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Inferencias y relaciones",
+  "difficulty": "intermedio",
+  "explanations": [
+   "¡Cachaste! Mara no vuelve a encender la radio para privilegiar el relato. El interés cambia de un aparato a la memoria compartida.",
+   "«Deja de interesarse por cualquier relato» no coincide con lo que establece el texto. Mara no vuelve a encender la radio para privilegiar el relato. El interés cambia de un aparato a la memoria compartida. La conclusión respaldada es «Pasa de la rutina de la radio a escuchar la historia de Elvira».",
+   "«Se concentra solo en reparar el circuito eléctrico» no coincide con lo que establece el texto. Mara no vuelve a encender la radio para privilegiar el relato. El interés cambia de un aparato a la memoria compartida. La conclusión respaldada es «Pasa de la rutina de la radio a escuchar la historia de Elvira».",
+   "«Decide abandonar de inmediato la visita» no coincide con lo que establece el texto. Mara no vuelve a encender la radio para privilegiar el relato. El interés cambia de un aparato a la memoria compartida. La conclusión respaldada es «Pasa de la rutina de la radio a escuchar la historia de Elvira»."
+  ]
+ },
+ {
+  "id": "LEC-126",
+  "passageId": "T06",
+  "skill": "Evaluar",
+  "question": "¿Qué interpretación carece de apoyo en el relato de Mara y Elvira?",
+  "options": [
+   "Una melodía puede activar recuerdos personales",
+   "La interrupción de una rutina permite conversar",
+   "La escucha de Mara adquiere un sentido afectivo",
+   "La banda de la calle interpreta a propósito la historia de Elvira"
+  ],
+  "answer": 3,
+  "steps": [
+   "Relee «¿Qué interpretación carece de apoyo en el relato de Mara y Elvira?» y distingue la información solicitada de los otros detalles del texto.",
+   "La coincidencia musical activa un recuerdo; el relato no atribuye a la banda conocimiento ni intención sobre la historia personal.",
+   "La alternativa «La banda de la calle interpreta a propósito la historia de Elvira» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "La coincidencia musical activa un recuerdo; el relato no atribuye a la banda conocimiento ni intención sobre la historia personal.",
+  "example": "Que una canción coincida con una emoción del personaje no demuestra que quien la canta conozca esa emoción.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Evaluación de evidencia",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Una melodía puede activar recuerdos personales» no coincide con lo que establece el texto. La coincidencia musical activa un recuerdo; el relato no atribuye a la banda conocimiento ni intención sobre la historia personal. La conclusión respaldada es «La banda de la calle interpreta a propósito la historia de Elvira».",
+   "«La interrupción de una rutina permite conversar» no coincide con lo que establece el texto. La coincidencia musical activa un recuerdo; el relato no atribuye a la banda conocimiento ni intención sobre la historia personal. La conclusión respaldada es «La banda de la calle interpreta a propósito la historia de Elvira».",
+   "«La escucha de Mara adquiere un sentido afectivo» no coincide con lo que establece el texto. La coincidencia musical activa un recuerdo; el relato no atribuye a la banda conocimiento ni intención sobre la historia personal. La conclusión respaldada es «La banda de la calle interpreta a propósito la historia de Elvira».",
+   "¡Cachaste! La coincidencia musical activa un recuerdo; el relato no atribuye a la banda conocimiento ni intención sobre la historia personal."
+  ]
+ },
+ {
+  "id": "LEC-127",
+  "passageId": "T07",
+  "skill": "Localizar",
+  "question": "¿Qué señal advierte del peligro en el trayecto al tranque?",
+  "options": [
+   "Una carta dejada en casa",
+   "Un cartel que anuncia lluvia para el mes siguiente",
+   "Una cinta amarilla junto al derrumbe",
+   "Un horario de museo"
+  ],
+  "answer": 2,
+  "steps": [
+   "Relee «¿Qué señal advierte del peligro en el trayecto al tranque?» y distingue la información solicitada de los otros detalles del texto.",
+   "La cinta amarilla y las rocas sueltas sitúan un peligro concreto en el sendero. El aviso se relaciona con el derrumbe.",
+   "La alternativa «Una cinta amarilla junto al derrumbe» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "La cinta amarilla y las rocas sueltas sitúan un peligro concreto en el sendero. El aviso se relaciona con el derrumbe.",
+  "example": "En una narración, un puente cortado y una barrera pueden explicar que el personaje cambie de ruta sin que abandone todo el viaje.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Información explícita",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Una carta dejada en casa» no coincide con lo que establece el texto. La cinta amarilla y las rocas sueltas sitúan un peligro concreto en el sendero. El aviso se relaciona con el derrumbe. La conclusión respaldada es «Una cinta amarilla junto al derrumbe».",
+   "«Un cartel que anuncia lluvia para el mes siguiente» no coincide con lo que establece el texto. La cinta amarilla y las rocas sueltas sitúan un peligro concreto en el sendero. El aviso se relaciona con el derrumbe. La conclusión respaldada es «Una cinta amarilla junto al derrumbe».",
+   "¡Cachaste! La cinta amarilla y las rocas sueltas sitúan un peligro concreto en el sendero. El aviso se relaciona con el derrumbe.",
+   "«Un horario de museo» no coincide con lo que establece el texto. La cinta amarilla y las rocas sueltas sitúan un peligro concreto en el sendero. El aviso se relaciona con el derrumbe. La conclusión respaldada es «Una cinta amarilla junto al derrumbe»."
+  ]
+ },
+ {
+  "id": "LEC-128",
+  "passageId": "T07",
+  "skill": "Interpretar",
+  "question": "¿Qué caracteriza la decisión de la hermana de Ignacio?",
+  "options": [
+   "Decide impedir para siempre las salidas de Ignacio",
+   "Prioriza la seguridad y propone regresar por otro camino",
+   "Busca llegar más rápido cruzando el derrumbe",
+   "Desestima las señales de peligro del sendero"
+  ],
+  "answer": 1,
+  "steps": [
+   "Relee «¿Qué caracteriza la decisión de la hermana de Ignacio?» y distingue la información solicitada de los otros detalles del texto.",
+   "Ante el riesgo del derrumbe, propone regresar por una ruta segura; no se plantea una prohibición permanente de salir.",
+   "La alternativa «Prioriza la seguridad y propone regresar por otro camino» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "Ante el riesgo del derrumbe, propone regresar por una ruta segura; no se plantea una prohibición permanente de salir.",
+  "example": "Cambiar una excursión por una ruta segura durante una tormenta es una decisión contextual, no renunciar a todas las excursiones.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Inferencias y relaciones",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«Decide impedir para siempre las salidas de Ignacio» no coincide con lo que establece el texto. Ante el riesgo del derrumbe, propone regresar por una ruta segura; no se plantea una prohibición permanente de salir. La conclusión respaldada es «Prioriza la seguridad y propone regresar por otro camino».",
+   "¡Cachaste! Ante el riesgo del derrumbe, propone regresar por una ruta segura; no se plantea una prohibición permanente de salir.",
+   "«Busca llegar más rápido cruzando el derrumbe» no coincide con lo que establece el texto. Ante el riesgo del derrumbe, propone regresar por una ruta segura; no se plantea una prohibición permanente de salir. La conclusión respaldada es «Prioriza la seguridad y propone regresar por otro camino».",
+   "«Desestima las señales de peligro del sendero» no coincide con lo que establece el texto. Ante el riesgo del derrumbe, propone regresar por una ruta segura; no se plantea una prohibición permanente de salir. La conclusión respaldada es «Prioriza la seguridad y propone regresar por otro camino»."
+  ]
+ },
+ {
+  "id": "LEC-129",
+  "passageId": "T07",
+  "skill": "Evaluar",
+  "question": "¿Qué afirmación exagera lo ocurrido al final del paseo?",
+  "options": [
+   "Ignacio deja de interesarse para siempre por fotografiar",
+   "El paseo no produce las imágenes inicialmente esperadas",
+   "El regreso permite observar detalles del pueblo",
+   "La experiencia adquiere valor pese al cambio de plan"
+  ],
+  "answer": 0,
+  "steps": [
+   "Relee «¿Qué afirmación exagera lo ocurrido al final del paseo?» y distingue la información solicitada de los otros detalles del texto.",
+   "El relato presenta un cambio de mirada durante ese paseo. No afirma una renuncia permanente a la fotografía.",
+   "La alternativa «Ignacio deja de interesarse para siempre por fotografiar» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El relato presenta un cambio de mirada durante ese paseo. No afirma una renuncia permanente a la fotografía.",
+  "example": "Que una persona disfrute dibujar una tarde no demuestra que nunca volverá a usar su cámara: una experiencia no prueba un cambio absoluto.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Evaluación de evidencia",
+  "difficulty": "intermedio",
+  "explanations": [
+   "¡Cachaste! El relato presenta un cambio de mirada durante ese paseo. No afirma una renuncia permanente a la fotografía.",
+   "«El paseo no produce las imágenes inicialmente esperadas» no coincide con lo que establece el texto. El relato presenta un cambio de mirada durante ese paseo. No afirma una renuncia permanente a la fotografía. La conclusión respaldada es «Ignacio deja de interesarse para siempre por fotografiar».",
+   "«El regreso permite observar detalles del pueblo» no coincide con lo que establece el texto. El relato presenta un cambio de mirada durante ese paseo. No afirma una renuncia permanente a la fotografía. La conclusión respaldada es «Ignacio deja de interesarse para siempre por fotografiar».",
+   "«La experiencia adquiere valor pese al cambio de plan» no coincide con lo que establece el texto. El relato presenta un cambio de mirada durante ese paseo. No afirma una renuncia permanente a la fotografía. La conclusión respaldada es «Ignacio deja de interesarse para siempre por fotografiar»."
+  ]
+ },
+ {
+  "id": "LEC-130",
+  "passageId": "T07",
+  "skill": "Interpretar",
+  "question": "¿Qué relación une el plan frustrado y la observación de aves y cables?",
+  "options": [
+   "La observación demuestra que el tranque ya no existe",
+   "El paseo confirma que solo vale cumplir el objetivo inicial",
+   "Las aves causan el derrumbe del sendero",
+   "El cambio de plan abre una experiencia valiosa no prevista"
+  ],
+  "answer": 3,
+  "steps": [
+   "Relee «¿Qué relación une el plan frustrado y la observación de aves y cables?» y distingue la información solicitada de los otros detalles del texto.",
+   "El relato desplaza el valor de la salida desde la foto prevista hacia lo descubierto en el regreso. No niega la frustración inicial.",
+   "La alternativa «El cambio de plan abre una experiencia valiosa no prevista» conserva el alcance de la evidencia; las otras añaden, alteran o intercambian datos."
+  ],
+  "easy": "El relato desplaza el valor de la salida desde la foto prevista hacia lo descubierto en el regreso. No niega la frustración inicial.",
+  "example": "Si una lluvia impide un partido y permite conocer historias de los vecinos bajo un techo, aparece un valor inesperado sin negar el contratiempo.",
+  "origin": "original",
+  "reviewStatus": "revisado_con_evidencia_textual",
+  "concept": "Inferencias y relaciones",
+  "difficulty": "intermedio",
+  "explanations": [
+   "«La observación demuestra que el tranque ya no existe» no coincide con lo que establece el texto. El relato desplaza el valor de la salida desde la foto prevista hacia lo descubierto en el regreso. No niega la frustración inicial. La conclusión respaldada es «El cambio de plan abre una experiencia valiosa no prevista».",
+   "«El paseo confirma que solo vale cumplir el objetivo inicial» no coincide con lo que establece el texto. El relato desplaza el valor de la salida desde la foto prevista hacia lo descubierto en el regreso. No niega la frustración inicial. La conclusión respaldada es «El cambio de plan abre una experiencia valiosa no prevista».",
+   "«Las aves causan el derrumbe del sendero» no coincide con lo que establece el texto. El relato desplaza el valor de la salida desde la foto prevista hacia lo descubierto en el regreso. No niega la frustración inicial. La conclusión respaldada es «El cambio de plan abre una experiencia valiosa no prevista».",
+   "¡Cachaste! El relato desplaza el valor de la salida desde la foto prevista hacia lo descubierto en el regreso. No niega la frustración inicial."
+  ]
+ }
+]);
+/* Diagnóstico de cada distractor: motivos específicos, vinculados con la evidencia. */
+{
+const reasons=`
+1|Reduce la frecuencia: el texto dice dos visitas semanales.|Aumenta la frecuencia sin respaldo: no se mencionan tres visitas.|Confunde una parada añadida con toda la frecuencia semanal.
+2|Las ferias forman parte del recorrido móvil, no del servicio citado en la sede.|Las consultas en plazas corresponden a la camioneta, no a lo que se mantiene en el edificio.|Las sedes vecinales son paradas del servicio móvil.
+3|El edificio conserva sus talleres; no se plantea reemplazarlos todos.|El equipo sí modifica paradas según la información de uso.|Ampliar computadores no es la causa dada para visitar ferias.
+4|Las paradas se ajustan según demanda; no se exige frecuencia idéntica en todos los barrios.|El relato también considera nuevos usuarios y consultas, además de préstamos.|La sede conserva talleres y computadores; la camioneta complementa esos servicios.
+5|El total del centro no distingue si mejoró el acceso de los barrios alejados.|Contar paradas no demuestra quién pudo usar el servicio.|El combustible mide un gasto, no la distribución del acceso entre habitantes.
+6|El relato no ubica la medición a las nueve.|Mediodía no coincide con las quince horas indicadas.|Las veinte horas no corresponden al horario registrado.
+7|Ocho grados es la diferencia entre las plazas, no la temperatura de la plaza Sur.|Quince corresponde a la hora de medición, no a grados de temperatura.|Veintiocho corresponde a la plaza Norte, no a la Sur.
+8|La ausencia de lluvia no hace imposible comparar; el problema son otros factores no aislados.|El texto indica instrumentos comparables, no modelos distintos como explicación.|La diferencia observada no identifica por sí sola una causa exclusiva.
+9|Medir más no elimina automáticamente el efecto del pavimento.|Se propone ampliar observaciones comparables, no reducirlas a una.|La recomendación reconoce que una observación limitada no basta para atribuir causalidad.
+10|Se reconoce que pavimento y tránsito también pueden influir.|El texto no afirma haber controlado todas las condiciones de tránsito.|La calidad integral incluye usos y experiencias que una temperatura aislada no mide.
+11|La regla propuesta no se limita exclusivamente a redes sociales.|El pasaje consultado dice durante explicaciones; esta alternativa cambia la condición expresa.|Las actividades autorizadas son una excepción al guardado, no parte de una prohibición total.
+12|El autor conserva lectura y actividades manuales; no afirma mejora necesaria por usar pantallas siempre.|La propuesta exige normas compartidas; no defiende uso libre sin acuerdos.|La tesis cuestiona precisamente que la prohibición absoluta sea la única respuesta.
+13|La lectura extensa aparece como actividad que no necesita pantalla en la propuesta.|Los experimentos conservan valor; las normas no los vuelven innecesarios.|El autor distingue usos pertinentes y momentos sin dispositivos.
+14|La preferencia estudiantil sola no prueba efectos sobre atención ni aprendizaje.|La disponibilidad de teléfonos no mide el resultado de la regulación.|Las opiniones sin comparación no evalúan directamente el efecto relativo de las dos normas.
+15|El texto no quiere reemplazar la lectura extensa con pantallas.|Se proponen consecuencias proporcionales; no se descartan todas.|El autor no afirma facilidad universal de las prohibiciones.
+16|Diez kilogramos corresponden a zanahorias en junio.|Seis corresponde a tomates de mayo, no de junio.|Doce corresponde a lechugas de junio, no a tomates.
+17|Zanahorias suben de siete a ocho y diez; no disminuyen.|Tomates pasan de cero a seis y dieciséis; aumentan.|Lechugas disminuyen; por eso no aumentan todos los cultivos.
+18|La maduración del tomate no demuestra que fuera imposible cosechar lechugas.|El comentario explica la serie de tomates, no la baja de lechugas.|Los cultivos tienen trayectorias diferentes; no crecen todos por igual.
+19|La suma de mayo es 15+6+8; treinta y uno no corresponde a esa fila.|Treinta y nueve no es la suma de los tres valores de mayo.|Veintitrés omite o cambia uno de los valores de mayo.
+20|Las jornadas de trabajo miden otro insumo y no incluyen agua utilizada.|Agua total sin relación con producción no expresa eficiencia hídrica por resultado.|La cosecha sola tampoco informa cuánta agua se utilizó.
+21|El texto menciona consultorio, no hospital regional.|Una farmacia no es la instalación nombrada.|No se menciona un laboratorio universitario en ese ejemplo.
+22|Escuchar no obliga a aprobar toda solicitud: el autor reconoce límites.|Consultar no equivale a renunciar a cualquier obra.|La participación incluye distintos afectados, no solamente ciclistas expertos.
+23|La evaluación busca conocer resultados y corregir, no ocultar errores.|Los indicadores incluyen seguridad y uso, no solo número de automóviles.|Evaluar después complementa la consulta previa, no la reemplaza por completo.
+24|El autor propone evaluar después; no cuestiona que eso sea posible.|La presencia de cruces y paraderos es parte del contexto, no el supuesto criticado.|El acceso a servicios es un criterio defendido, no una idea rechazada.
+25|El texto prevé ajustes; no promete ausencia total de problemas.|Propone indicadores y no rechaza datos cuantitativos.|Reconoce necesidades y límites, en vez de elevar una opinión a verdad indiscutible.
+26|Se anota una fecha; no se indica una hora exacta junto a cada título.|El nombre de Mara no es el dato que acompaña cada canción.|El cuaderno no se presenta como registro de precios.
+27|La música viene de la plaza, no de una televisión vecina.|No se identifica un automóvil como fuente musical.|El corte revela un grupo que ensaya, no una radio portátil.
+28|Las fechas vinculan recuerdos pasados, no una programación futura.|El cuaderno no se usa como lista de compras.|No describe instrucciones técnicas para reparar la radio.
+29|La electricidad vuelve y no se afirma una avería permanente.|No se menciona una prohibición de escuchar música.|Mara quiere escuchar a Elvira: no olvida su presencia.
+30|La altura del edificio ubica el espacio, pero no conecta canción y recuerdo.|La marca de la radio no aporta la memoria del baile.|La hora de regreso de la luz no explica el vínculo afectivo central.
+31|La advertencia se asocia a derrumbe, no incendio.|El riesgo está en el sendero y sus rocas, no en falta de agua.|La cinta no se vincula con protección de animales.
+32|No se organiza un concurso al día siguiente.|Los hermanos avisan del problema; no cierran todas las rutas.|Deciden prudencia y no se describe ese regreso por la huella peligrosa.
+33|Ignacio ya tiene un objetivo fotográfico; no se debate qué cámara comprar.|No hay concurso que fundamente una competencia por un premio.|Estudiar o trabajar no es el dilema de esta caminata.
+34|El cambio valora lo observado; no renuncia para siempre a observar aves.|El regreso adquiere valor; no demuestra inutilidad de los caminos largos.|La frase expresa aprendizaje, no una acusación contra la hermana.
+35|Ahorrar tiempo no elimina la evidencia de derrumbe.|Acelerar junto al borde no reduce el riesgo descrito.|No tener fotografías no vuelve segura la ruta advertida.
+36|La agrupación registra observaciones; no parte de certificados de sanción.|No se mencionan análisis sanguíneos de toda la población.|El registro inicial no es una serie satelital de veinte años.
+37|Los análisis no confirman un contaminante tóxico específico.|Encontraron más partículas; no ausencia absoluta de sedimentos.|No se demuestra un cambio en todas las especies.
+38|Una foto puede orientar, pero no atribuye toda responsabilidad por sí sola.|El texto sí reconoce utilidad de observaciones ciudadanas.|El laboratorio informa límites y solicita nuevas muestras: no elimina toda incertidumbre.
+39|Muestrear de nuevo busca repetición del patrón, no convertir imágenes en certificados.|Las observaciones de vecinos no se prohíben.|Una investigación rigurosa no busca impedir resultados contradictorios.
+40|Los resultados no certifican potabilidad de todas las aguas.|No se establece culpabilidad de una empresa mediante esos datos.|No se confirma una emergencia química irreversible.
+41|La propuesta menciona escuelas y municipios, no ese par de instituciones.|Bancos centrales y tribunales no son los organizadores sugeridos.|No se restringe a fabricantes extranjeros.
+42|Una costura suelta no representa el riesgo eléctrico señalado.|La limpieza de una silla no corresponde al ejemplo de falla peligrosa.|Pintura desgastada en una caja no es el riesgo específico descrito.
+43|El autor permite reemplazo cuando reparar no es viable o seguro.|Se advierte sobre riesgos y necesidad de conocimiento; no se propone improvisar reparación eléctrica.|La propuesta considera riesgos; no conservar a cualquier costo.
+44|El párrafo fija condiciones, no se limita a historia de talleres.|No niega uso de recursos en fabricación.|El texto argumenta sobre límites; no enumera marcas.
+45|Los anuncios de productos nuevos no muestran residuos evitados por reparación.|Las vitrinas no miden resultados del programa de reparación.|El color de herramientas no mide cuánto se evitó desechar.
+46|El hallazgo fue sobre el mesón de la imprenta, no en un cajón familiar.|La costa pertenece al viaje deseado, no al lugar del hallazgo.|La bicicleta es parte de la historia y no el soporte donde encuentra el sobre.
+47|No se atribuye la renuncia al viaje a un robo.|No se menciona cierre de rutas como causa.|La pérdida de la fotografía no explica el trabajo aceptado.
+48|Valorar una decisión del padre no implica prohibir todos los viajes a la costa.|La fotografía y el relato se vinculan con una bicicleta; no prueban que jamás tuviera una.|La narración de Rosa aporta contexto; no se demuestra que invente todos los recuerdos.
+49|Dejar abierto el sobre invita una conversación; no prepara una carta anónima.|No se plantea vender la fotografía.|Lo deja visible, coherente con conversar y no ocultar.
+50|El color identifica el sobre, pero no revela la razón del viaje no realizado.|El horario de cierre no introduce la nueva explicación.|El cajón no contiene la revelación que transforma su interpretación.
+51|La moda actual no es el conjunto de pistas históricas descrito.|Las recetas no aparecen como fuentes de datación fotográfica.|No se basa solo en testimonios de turistas.
+52|El nuevo intervalo no incluye 1988.|1974 era la precisión inicial que la evidencia no permitía conservar.|La evidencia sitúa la imagen en los años setenta, no antes de 1900.
+53|El periódico sí aporta información de la tienda y su rótulo.|Corregir una fotografía no fecha todas las imágenes en un solo año.|El rótulo acota años, no determina el día exacto.
+54|Los recuerdos deben contrastarse; no sustituyen automáticamente documentos.|El proyecto reconoce su utilidad como pistas.|Su aporte no garantiza precisión diaria de cualquier fotografía.
+55|Descartar todos los testimonios ignora una fuente que puede contrastarse.|Inventar datos contradice reconocer evidencia e incertidumbre.|La fecha más antigua no es necesariamente la correcta.
+56|El objeto detenido es un reloj, no una caja registradora.|No se describe un tren detenido como ese objeto.|La bicicleta no corresponde al objeto indicado en la estación.
+57|Las notas aparecen en un libro de horarios, no en un mapa turístico.|No se hallan en la pared de una escuela.|La puerta azul es parte del edificio, no el soporte de los registros.
+58|Las anotaciones incluyen pasajeros y situaciones de viaje.|El reloj está detenido, no se concluye que siempre funcionara.|Las notas registran vida cotidiana, no solo ceremonias oficiales.
+59|La conversación añade vida humana; no se afirma que borre la puerta.|No transforma físicamente el edificio en un centro comercial.|Tomás sigue dibujando, ahora con otra comprensión del lugar.
+60|Tener lápices describe a Tomás, no la función comunitaria de la estación.|El reloj detenido no prueba por sí solo vínculos entre personas.|El color de la puerta no informa interacción comunitaria.
+61|Modificar presentación y borrar autor no verifica contenido.|Consultar solo al remitente no contrasta la afirmación con fuentes.|Un título y un reenvío no comprueban origen, fecha ni evidencia.
+62|El problema es falta de verificación, no intención engañosa de toda persona conocida.|Tampoco se afirma falsedad universal de mensajes privados.|La cantidad de contactos no prueba verdad del contenido.
+63|El ejemplo no niega que pantallas contengan textos reales.|El objetivo es advertir sobre contexto omitido, no promocionar aplicaciones.|No enseña edición; muestra un riesgo de interpretación.
+64|La amistad no reemplaza pruebas sobre la información.|El autor propone verificar y corregir, no prohibir toda noticia.|La rapidez de reenvío no comprueba veracidad.
+65|El argumento citado no aporta una fuente original fechada.|No contiene mediciones contrastadas: solo confianza en la persona.|No distingue hechos y opiniones sobre el contenido mismo.
+66|Un minuto no es el período de adaptación descrito.|Una hora excede los quince minutos indicados.|No esperan toda la noche para volver a comparar.
+67|Tráfico y radio no son las condiciones astronómicas nombradas.|Turistas y horario comercial no responden a esa planificación.|El texto prioriza nubes y Luna; no precios o anuncios.
+68|Planetas no se transforman en estrellas durante la espera.|Las estrellas podían estar allí; cambió la capacidad de observarlas.|La adaptación visual no detiene el movimiento terrestre.
+69|La advertencia distingue astros; no vuelve invisibles las estrellas.|No prohíbe mapas; evita una clasificación equivocada.|Distinguir planetas y estrellas no demuestra brillo idéntico de todos los planetas.
+70|El color de la libreta no permite reproducir condiciones de observación.|La comida de participantes no identifica esas condiciones.|La tienda de lápices no aporta ubicación ni momento de observación.
+71|Los sobres estaban bajo el lavaplatos, no en la escuela.|La estación de buses no es el lugar del hallazgo.|El calendario no contenía los sobres según el relato.
+72|Sí apareció un brote durante esa primera semana.|Dos brotes corresponden a una evolución posterior, no a la primera semana.|Tres macetas no significan tres brotes en la primera semana.
+73|Preguntar por luz y estación no afirma que el agua sea innecesaria.|Reconoce condiciones y ritmos, no crecimiento idéntico de todas las especies.|No prueba que el tamaño de las macetas sea la causa.
+74|El relato muestra tiempos distintos de germinación.|Observar y registrar ayudan a comprender, no son inútiles.|La orientación del abuelo contribuye al aprendizaje, no se desecha como conclusión.
+75|Es una imagen afectiva; no una orden literal para conversar con plantas.|La frase literaria no aporta una prueba científica sobre voces.|No establece una relación matemática de medidas.
+76|Media hora no coincide con el ahorro citado.|Seis refiere a pistas del cruce, no minutos ahorrados.|Diez minutos no es el valor del indicador mencionado.
+77|El texto menciona también vehículos de emergencia, transporte colectivo y carga.|No restringe la necesidad de eficiencia a taxis.|Trenes y embarcaciones no son el conjunto nombrado para esa avenida.
+78|El ejemplo se refiere a cruzar caminando, no a conducir.|El problema de accesibilidad no equivale a proponer eliminar semáforos.|Una calle ancha puede ser difícil de cruzar; no se afirma seguridad necesaria.
+79|El autor busca evaluar mejor las mejoras, no rechazarlas todas.|Critica precisamente usar solo ahorro de tiempo.|Su propuesta considera distintos usuarios, sin prioridad automática del automóvil.
+80|Las ventas por marca no muestran seguridad ni accesibilidad de la obra.|Una fotografía aislada no compara efectos antes y después.|Un conductor satisfecho no representa a todos los usuarios ni los distintos resultados.
+81|Veinte corresponde a marzo, no a mayo.|Treinta corresponde a abril, no a mayo.|Noventa son préstamos digitales de mayo, no audiolibros.
+82|Los impresos pasan de 120 a 100, no de 40 a 90.|Audiolibros pasan de 20 a 40.|La tabla no presenta revistas como ese formato.
+83|Los registros de impresos sí cambian entre meses.|La caída es de diez por mes, no cincuenta.|Los impresos disminuyen, no crecen veinte mensuales.
+84|La distinción no depende de que todo se devuelva el mismo día.|Los digitales sí forman parte de los préstamos registrados.|No se establece un préstamo exacto por estudiante; puede haber varios por persona.
+85|El aumento digital sí se observa de 40 a 90.|La baja de impresos sí se observa de 120 a 100.|Los audiolibros sí pasan de 20 en marzo a 40 en mayo.
+86|El cuaderno aparece en el taller de la abuela, no en una biblioteca.|Una embarcación abandonada no es el lugar del hallazgo.|La oficina escolar no corresponde al lugar descrito.
+87|No se prescribe suspender redes durante todo invierno.|No aparece ese cierre semanal del puerto.|El aviso advierte del viento; no ordena salir siempre al amanecer.
+88|El problema no es que estuviera hecho a mano, sino omitir información relevante.|El primer gráfico omitía advertencias; no incorporaba demasiadas.|No se afirma ausencia de todas las fechas; faltaban avisos y vacíos importantes.
+89|Elisa mejora la representación de registros; no los destruye.|No abandona tecnología: la usa con mayor conciencia de límites.|Incorpora condiciones como el viento, en vez de ignorar clima.
+90|La crítica pide información fiel, no declara inútil todo diseño.|No se le ordena dejar de programar.|Se cuestiona el gráfico incompleto, no la posibilidad de registrar mareas.
+91|Veintiocho no es la temperatura del estacionamiento registrada.|Treinta y uno corresponde al sector de cemento junto al muro.|Veintiséis corresponde al sector de árboles.
+92|Cuatro semanas es el período propuesto de seguimiento, no duración de cada medición.|No se mide una hora en cada punto.|Quince minutos no es el intervalo por punto indicado.
+93|Se usaron instrumentos comparables; no se presenta esa diferencia como motivo.|Sí se registraron temperaturas en tres puntos.|El estudio compara sectores de una plaza, no ciudades distintas.
+94|Las experiencias vecinales complementan datos, no sustituyen exactamente termómetros.|Una entrevista no calcula por sí sola temperatura del asfalto.|Conocer opiniones no garantiza que se modifique el diseño.
+95|Una sola opinión no compara térmicamente los tres lugares.|Instrumentos sin calibración introducen diferencias no controladas.|Medir solo un sector impide comparar los tres en condiciones equivalentes.
+96|No se propone sustituir docentes con aplicaciones.|La motivación no es comercializar dispositivos.|La prohibición de teléfonos no elimina las clases presenciales.
+97|No se plantea publicidad como excepción educativa.|La excepción citada es accesibilidad, no exclusivamente pruebas finales.|No se define una excepción de recreos obligatorios.
+98|Cuestionar extremos no niega la posibilidad de establecer normas.|Las soluciones intermedias incluyen momentos sin pantallas.|El texto busca mejorar convivencia, no eliminarla.
+99|La propuesta no prohíbe toda tecnología fuera y dentro del colegio.|Contar confiscaciones no expresa la combinación educativa defendida.|El autor propone reglas y espacios sin teléfonos, no permiso irrestricto.
+100|El tamaño del reglamento mide extensión, no efectos de la propuesta.|Contar carteles mide difusión de la norma, no convivencia ni atención.|El precio comercial de teléfonos no evalúa el cambio pedagógico.
+`.trim().split('\n');
+for(const line of reasons){const[n,...why]=line.split('|');const q=window.READING_QUESTIONS[+n-1];let k=0;q.explanations=q.options.map((option,i)=>i===q.answer?q.explanations[i]:'Elegiste «'+option+'». '+why[k++]+' La alternativa respaldada es «'+q.options[q.answer]+'». '+q.steps[1]);}
+}
