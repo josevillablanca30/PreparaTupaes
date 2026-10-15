@@ -333,7 +333,7 @@
     },
     "M2": {
       "questions": 106,
-      "units": 8,
+      "units": 9,
       "levels": 53,
       "axes": {
         "Álgebra y funciones": {
@@ -431,14 +431,6 @@
             "Raíces y restricciones": [
               "M2-048",
               "M2-050"
-            ],
-            "Área de rectángulos": [
-              "M2-049",
-              "M2-101"
-            ],
-            "Área de cuadrados": [
-              "M2-051",
-              "M2-102"
             ]
           }
         },
@@ -541,6 +533,16 @@
             "Esferas": [
               "M2-067",
               "M2-105"
+            ]
+          },
+          "Suficiencia de datos": {
+            "Área de rectángulos": [
+              "M2-049",
+              "M2-101"
+            ],
+            "Área de cuadrados": [
+              "M2-051",
+              "M2-102"
             ]
           }
         },
