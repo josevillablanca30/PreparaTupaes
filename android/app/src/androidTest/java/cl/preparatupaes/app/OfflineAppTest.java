@@ -68,7 +68,8 @@ public class OfflineAppTest {
         assertNotEquals("null",js("localStorage.getItem('cachaste-m1-diagnostic-draft-v1')"));
     }
     @Test public void teacherExplainsSelectedMistakeAndTransfersOffline() throws Exception {
-        open("m2.html", "document.getElementById('diagnostic')");
+        // Seed from the dashboard: an active study page saves its own closure on pagehide.
+        open("inicio.html", "document.querySelectorAll('a.subject').length>=5");
         js("localStorage.setItem('cachaste-m2-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'native-teacher',mode:'express',ids:['M2-001'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}}));true");
         open("m2.html", "document.getElementById('resume')");
         js("document.getElementById('resume').click();true");

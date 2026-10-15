@@ -19,3 +19,28 @@ for(const id of ['M2-001','M2-003','M2-007','M2-050']){
   expect(transfer.length).toBeGreaterThan(0);expect(transfer.every(q=>q.id!==id)).toBe(true);expect(new Set(transfer.map(q=>q.concept)).size).toBe(1);expect(errors).toEqual([]);
  });
 }
+// Recorre las 106 preguntas reales en lotes de diez: no solo cuatro ejemplos escogidos.
+for(let start=1;start<=106;start+=10){
+ const ids=Array.from({length:Math.min(10,107-start)},(_,i)=>'M2-'+String(start+i).padStart(3,'0'));
+ test('M2 completo '+ids[0]+'–'+ids.at(-1)+': cada modo corresponde al ítem y al distractor',async({page})=>{
+  await page.addInitScript(ids=>localStorage.setItem('cachaste-m2-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'all-teaching',mode:'express',ids,index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:ids.map(()=>null),flags:[]}})),ids);
+  await page.goto('./m2.html');await page.locator('#resume').click();
+  const completed=await page.evaluate(ids=>{
+   for(const id of ids){
+    const q=window.CACHASTE_M2.find(q=>q.id===id),wrong=(q.answer+1)%q.options.length;
+    const button=[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.slice(3)===q.options[wrong]);if(!button)throw Error(id+' no ofrece la alternativa esperada');button.click();
+    document.querySelector('[data-conf="duda"]').click();document.getElementById('check').click();
+    if(!document.querySelector('.error-reason').textContent.includes(q.explanations[wrong]))throw Error(id+' diagnóstico ajeno al distractor');
+    const expectations={steps:q.teaching.check,easy:q.teaching.intuition[0],example:q.teaching.example.problem};
+    for(const [mode,content]of Object.entries(expectations)){
+     document.querySelector('[data-explain="'+mode+'"]').click();const body=[...document.querySelectorAll('.tutor-panel > .teaching-section')].map(s=>s.textContent).join('\n');
+     if(!body.includes(content))throw Error(id+' contenido incorrecto en '+mode);
+     if(document.documentElement.scrollWidth>innerWidth+1)throw Error(id+' desborde horizontal en '+mode);
+    }
+    document.getElementById('next').click();
+   }
+   const saved=JSON.parse(localStorage.getItem('cachaste-m2-v1'));return {count:saved.lastResult.total,correct:saved.lastResult.correct,history:saved.history.length};
+  },ids);
+  expect(completed).toEqual({count:ids.length,correct:0,history:ids.length});
+ });
+}
