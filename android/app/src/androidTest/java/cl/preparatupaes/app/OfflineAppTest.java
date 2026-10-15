@@ -46,11 +46,11 @@ public class OfflineAppTest {
         open("inicio.html", "document.querySelectorAll('a.subject').length>=5");
         open("index.html", "typeof start==='function' && document.querySelector('h1')");
         open("science.html", "Array.isArray(window.SCIENCE_BANK) && document.querySelector('h1')");
-        assertEquals("204",js("window.SCIENCE_BANK.length"));
+        assertEquals("206",js("window.SCIENCE_BANK.length"));
         open("reading.html", "Array.isArray(window.READING_QUESTIONS) && document.querySelector('h1')");
         assertEquals("130",js("window.READING_QUESTIONS.length"));
         open("m2.html", "document.getElementById('diagnostic')");
-        assertEquals("80",js("window.CACHASTE_M2.length"));
+        assertEquals("106",js("window.CACHASTE_M2.length"));
         open("history.html", "document.getElementById('diagnostic')");
         assertEquals("65",js("window.CACHASTE_HISTORIA.length"));
     }

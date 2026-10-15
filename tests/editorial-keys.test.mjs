@@ -8,7 +8,7 @@ for(const name of ['m2-bank.js','science-bank.js'])vm.runInContext(readFileSync(
 // de los 55 enunciados de M2. Este control detecta regresiones; no certifica temario.
 const expected=["x=2","6","3/10","0,2","3π","5","8","7","$121.000","3","x≥5","8","25","1/8","3/10","-1/2","5","3","x²-9","1600","6","7","x=-4","12","(x+6)/3","7","8","3","0","x>4","20","13","5","120°","(5,3)","1/2","5","7","2/5","0","$3200","120","y=-2x+3","$1100","90","Cada una por sí sola","Ambas juntas, ninguna por sí sola","Solo (2)","Ambas juntas, ninguna por sí sola","Se requiere información adicional","Cada una por sí sola","9","1/6","25π","100"];
 test('M2: 55 claves matemáticas revisadas y distractores distintos',()=>{
- const bank=context.window.CACHASTE_M2;assert.equal(bank.length,80);
+ const bank=context.window.CACHASTE_M2;assert.equal(bank.length,106);
  for(let i=0;i<expected.length;i++){
   const q=bank[i];assert.equal(q.id,'M2-'+String(i+1).padStart(3,'0'));
   assert.equal(q.options[q.answer],expected[i],q.id+' respuesta incorrecta');

@@ -43,11 +43,20 @@ test('Bancos ampliados: claves de cálculos nuevas comprobadas por separado',()=
 });
 test('Ciencias conserva históricos complementarios y dispone de 54+26 para cada mención',()=>{
  const all=loadBanks().Ciencias,eligible=all.filter(q=>q.examEligible!==false);
- assert.equal(all.length,204);assert.equal(eligible.length,179);
+ assert.equal(all.length,206);assert.equal(eligible.length,181);
  for(const sub of ['Biología','Física','Química']){
   assert.ok(eligible.filter(q=>q.subject===sub&&q.module==='MC').length>=18);
   assert.ok(eligible.filter(q=>q.subject===sub&&q.module==='ME').length>=26);
  }
  assert.equal(eligible.filter(q=>q.module==='MTP').length,26);
  assert.equal(all.find(q=>q.id==='SCI-075').examEligible,false);
+});
+test('Refuerzo: cada concepto de M2 tiene transferencia y las 26 claves nuevas son correctas',()=>{
+ const banks=loadBanks(),counts=new Map();
+ for(const q of banks.M2)counts.set(q.concept,(counts.get(q.concept)||0)+1);
+ for(const [concept,count]of counts)assert.ok(count>=2,concept);
+ const expected=['2/7','12π cm²','x≥4','9','−1/4','3','x²−25','(x+10)/5','1','−4','x≤−4','35 cm²','15 cm','135°','(4,2)','5','5,5','0,7','$3.800','2,5 horas','Ambas juntas, ninguna por sí sola','Cada una por sí sola','1/9','49π cm²','16π cm²','7√3'];
+ expected.forEach((key,i)=>{const q=banks.M2.find(q=>q.id==='M2-'+String(81+i).padStart(3,'0'));assert.equal(q.options[q.answer],key,q.id);assert.ok(q.explanations.every(t=>typeof t==='string'&&t.length>15),q.id);});
+ assert.equal((4/7)*(3/6),2/7);assert.equal(120/360*6**2,12);assert.equal(17**2-8**2,15**2);assert.equal((1+3+8+12)/4,6);
+ for(const concept of ['Manipulación genética','Modelos del sistema solar'])assert.ok(banks.Ciencias.filter(q=>q.concept===concept&&q.examEligible!==false).length>=2);
 });

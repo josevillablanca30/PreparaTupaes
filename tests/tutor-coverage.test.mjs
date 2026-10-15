@@ -35,8 +35,8 @@ test('Historia: 65 preguntas con tutor editorial y claves únicas',()=>{
   assert.ok(q.editorial?.example?.length>=30,q.id+' ejemplo');
  }
 });
-test('Ciencias: 204 preguntas con respuestas y tres modos de tutor',()=>{
- assert.equal(w.SCIENCE_BANK.length,204);
+test('Ciencias: 206 preguntas con respuestas y tres modos de tutor',()=>{
+ assert.equal(w.SCIENCE_BANK.length,206);
  for(const [i,q] of w.SCIENCE_BANK.entries()){
   assert.equal(q.id,'SCI-'+String(i+1).padStart(3,'0'));
   assert.ok(q.options[q.answer],q.id+' clave');

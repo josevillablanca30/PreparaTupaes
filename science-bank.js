@@ -1766,3 +1766,24 @@ window.SCIENCE_BANK.push(...[
 for(const ids of [[9,65],[16,88],[22,99],[49,101],[53,131],[30,72,108],[33,111],[7,140]]){
  const family='science-family-'+ids[0];for(const n of ids){const q=window.SCIENCE_BANK.find(q=>q.id==='SCI-'+String(n).padStart(3,'0'));q.transferGroup=family;}
 }
+/* Transferencia adicional: conceptos que antes tenían un único ítem. */
+{
+const additions=[
+[182,'Un microorganismo modificado produce una enzima para detergentes después de recibir un gen de otra especie. ¿Qué explica directamente la aparición de esa proteína?',
+ ['La expresión de la información del gen introducido','La conversión de todo su ADN en el ADN de la especie donante','La producción de la enzima sin utilizar información genética','La transformación del microorganismo en la especie que donó el gen'],
+ ['¡Cachaste! El gen introducido contiene información que, al expresarse, permite sintetizar la proteína. No reemplaza todo el genoma ni cambia la especie del organismo receptor.','La inserción de un gen no implica sustituir el resto del genoma del receptor.','La secuencia de la proteína depende de información genética; el enunciado vincula la nueva producción con el gen transferido.','Compartir un gen y producir una proteína no transforma al receptor en otra especie.'],
+ ['Identifica qué se introdujo: un gen, no un organismo completo.','Relaciona expresión genética con síntesis de una proteína.','La nueva proteína se explica por información transferida y expresada; el receptor conserva el resto de su identidad genética.'],
+ 'Es como incorporar una receta nueva: la célula puede fabricar ese producto sin cambiar todas sus demás instrucciones.',
+ 'Si una levadura recibe y expresa un gen que permite producir una proteína farmacéutica, puede obtenerse ese producto. La levadura sigue siendo levadura.'],
+[188,'Según la primera ley de Kepler, ¿cómo se describe la órbita de un planeta alrededor del Sol?',
+ ['Como una elipse con el Sol en uno de sus focos','Como una elipse con el Sol necesariamente en su centro','Como una circunferencia con la Tierra en el centro','Como una elipse con el Sol siempre fuera de ella'],
+ ['¡Cachaste! La primera ley describe órbitas elípticas y ubica al Sol en uno de los focos. No lo sitúa en el centro geométrico de la elipse.','El centro geométrico y los focos de una elipse no son el mismo punto, salvo el caso límite circular.','Esa descripción combina órbita circular con un centro terrestre; no corresponde a la ley de Kepler.','Los focos de una elipse están dentro de ella, no fuera.'],
+ ['Reconoce que la primera ley trata la forma de la órbita.','Distingue el foco de una elipse de su centro geométrico.','El planeta sigue una elipse y el Sol ocupa uno de los focos.'],
+ 'La trayectoria puede estar algo estirada. El Sol se ubica en un foco interior, no necesariamente justo al medio.',
+ 'En una órbita elíptica más alargada, la distancia al Sol cambia entre perihelio y afelio. El Sol continúa en un foco aunque la elipse cambie de forma.']
+];
+additions.forEach(([base,question,options,explanations,steps,easy,example],i)=>{
+ const original=window.SCIENCE_BANK.find(q=>q.id==='SCI-'+base);
+ window.SCIENCE_BANK.push({...original,id:'SCI-'+(205+i),question,options,answer:0,explanations,steps,easy,example,reviewStatus:'revision_individual_2026-10-15'});
+});
+}
