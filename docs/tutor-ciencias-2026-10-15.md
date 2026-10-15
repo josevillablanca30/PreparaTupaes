@@ -25,3 +25,9 @@ Otras 60 clases completas, total 150/206. Se desarrollan aceleración con cambio
 Comprobaciones: trabajo elevador de 100 J en 092, eficiencia 70% en 093, I=2 A en 099, equivalente paralela de 3 Ω en 127, 1 mol/L tras duplicar volumen en 114 y 8 neutrones en 132. En 124 se explica por qué subir con velocidad constante no requiere fuerza neta ascendente. En 128 se vincula la ausencia de S en líquido con respuesta de cizalla, sin decir que S no viaja en sólidos.
 
 Validación del lote: 128 pruebas de lógica aprobadas y 78 ejecuciones del profesor de Ciencias aprobadas en Android Chrome y 320 px. Quedan 56 preguntas de Ciencias; cobertura global 567/623. Las claves y condiciones de ensayo se conservan.
+
+## Cierre editorial: SCI-151 a SCI-206
+
+Se incorporaron las 56 clases restantes. Los 206 ítems ahora tienen fundamentos, estrategia accesible, aplicación individual, comprobación y ejemplo resuelto. Se separaron especialmente inflamación, observación astronómica, consentimiento, digestión lisosomal, densidad y fracción molar para no enseñar mediante un ejemplo de otro objetivo. No se cambiaron enunciados, alternativas, claves ni elegibilidad de ensayos.
+
+El registro editorial alcanza 623 de 623 preguntas (116 M1, 106 M2, 206 Ciencias, 130 Lectura y 65 Historia). La calificación es «adecuada», no «excelente»: los fundamentos y ejemplos se comparten entre preguntas de un concepto y aún falta validación con estudiantes. Las comprobaciones automáticas de estructura no sustituyen esa validación. La lógica completa pasa 129 pruebas. La comprobación móvil de este lote se registra en el siguiente cierre de validación.

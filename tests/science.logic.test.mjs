@@ -132,8 +132,8 @@ test('Ciencias: tutor enseña con pistas, corrección por alternativa y explicac
  const data=a.saved();assert.equal(data.history.length,1);
  assert.equal(data.history[0].assisted,true);
 });
-test('Ciencias: error queda pendiente y se recupera en otra práctica; acierto autónomo lo cierra',()=>{
- const a=science(unlockedData());a.window.setup('Física');
+test('Ciencias: otro problema del concepto refuerza sin cerrar el error por un solo acierto',()=>{
+ const fixture=unlockedData();const saved=JSON.parse(fixture.get('cachaste-science-v1'));saved.session={mode:'mixto',ids:['SCI-017'],index:0,selected:null,checked:false,results:[],confidence:'duda',hint:0,started:Date.now()};fixture.set('cachaste-science-v1',JSON.stringify(saved));const a=science(fixture);a.window.resume();
  const id=a.saved().session.ids[0],q=a.bank.find(x=>x.id===id),wrong=(q.answer+1)%4;
  a.window.answer(wrong);a.window.check();
  assert.ok(a.saved().pending.includes(id));

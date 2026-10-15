@@ -59,5 +59,8 @@ test('Refuerzo: cada concepto de M2 tiene transferencia y las 26 claves nuevas s
  const expected=['2/7','12π cm²','x≥4','9','−1/4','3','x²−25','(x+10)/5','1','−4','x≤−4','35 cm²','15 cm','135°','(4,2)','5','5,5','0,7','$3.800','2,5 horas','Ambas juntas, ninguna por sí sola','Cada una por sí sola','1/9','49π cm²','16π cm²','7√3'];
  expected.forEach((key,i)=>{const q=banks.M2.find(q=>q.id==='M2-'+String(81+i).padStart(3,'0'));assert.equal(q.options[q.answer],key,q.id);assert.ok(q.explanations.every(t=>typeof t==='string'&&t.length>15),q.id);});
  assert.equal((4/7)*(3/6),2/7);assert.equal(120/360*6**2,12);assert.equal(17**2-8**2,15**2);assert.equal((1+3+8+12)/4,6);
- for(const concept of ['Manipulación genética','Modelos del sistema solar'])assert.ok(banks.Ciencias.filter(q=>q.concept===concept&&q.examEligible!==false).length>=2);
+ assert.equal(banks.Ciencias.filter(q=>q.concept==='Expresión de ADN introducido'&&q.examEligible!==false).length,2);
+ const astronomy=['SCI-188','SCI-206'].map(id=>banks.Ciencias.find(q=>q.id===id));
+ assert.ok(astronomy.every(q=>q.examEligible!==false&&q.teaching));
+ assert.notEqual(astronomy[0].concept,astronomy[1].concept,'Evaluar evidencia de modelos y describir una elipse no certifican el mismo objetivo');
 });
