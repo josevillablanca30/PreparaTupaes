@@ -31,11 +31,12 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   function begin(mode) {
     if (!diagnosticDone && mode !== 'diagnostic') { notice = 'Completa primero el diagnóstico para orientar tu práctica.'; render(); return; }
     if (session) { notice = 'Tienes una sesión guardada. Retómala o descártala antes de iniciar otra.'; render(); return; }
-    const pool = L.select(BANK, history, mode === 'diagnostic' ? 30 : mode === 'full' ? count : 10, { balanced: true });
+    // El ensayo conserva sus ítems originales; la evidencia de transferencia sí excluye familias equivalentes.
+    const pool = L.select(BANK, history, mode === 'diagnostic' ? 30 : mode === 'full' ? count : 10, { balanced: true, distinctFamilies: mode !== 'full' });
     launch(mode, pool);
   }
   function launch(mode, pool) {
-    if (!pool.length) { notice = 'Ya trabajaste los ejercicios distintos disponibles de estos conceptos. Revisa el tutor y vuelve a una práctica Express.'; render(); return; }
+    if (!pool.length) { notice = 'Ya trabajaste los ejercicios distintos disponibles de estos conceptos. Revisa el tutor y vuelve a una práctica Express.'; render(true); return; }
     session = { id: 'study-' + Date.now(), mode, ids: pool.map(q => q.id), index: 0, selected: null, checked: false, confidence: null, results: [], started: Date.now(), deadline: mode === 'full' ? Date.now() + minutes * 60000 : null, answers: pool.map(() => null), flags: [] };
     screen = 'quiz'; notice = ''; confirming = false; mapOpen = false; save(); render(true);
   }

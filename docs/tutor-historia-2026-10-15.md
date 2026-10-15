@@ -54,6 +54,18 @@ Consulta: 15 de octubre de 2026. Se redactó material original; las fuentes sirv
 
 ## Evidencia cerrada de M2
 
+## Corrección del refuerzo de Historia
+
+El agrupamiento anterior por grandes áreas podía considerar dos hechos inconexos como evidencia del mismo aprendizaje. Se reemplazó por 50 conceptos precisos en los 65 IDs existentes, sin modificar sus respuestas ni borrar historial. El perfil usa el ID para reinterpretar resultados antiguos: sus antiguas etiquetas amplias no certifican dominio automáticamente.
+
+HIS-012 y HIS-021 preguntan por la misma relación minería/exportación/urbanización; se agruparon como una sola familia de transferencia. No se usan mutuamente como pregunta nueva ni como dos evidencias independientes. Hay conceptos con un solo ítem o una sola familia: la app informa agotamiento en vez de ofrecer otro tema como supuesto refuerzo. Esta limitación de cobertura no está resuelta; se respeta la instrucción de no ampliar el banco.
+
+El ensayo conserva los 65 ítems originales mediante una opción explícita del selector: la exclusión de familias equivalentes se usa para prácticas y transferencia, no para acortar el ensayo. Eso preserva estructura y también documenta que el banco contiene esa relación casi equivalente. El aviso de agotamiento lleva al inicio de la pantalla para que sea visible en un teléfono.
+
+115 pruebas de lógica aprobadas. Se ejecutan además los recorridos de ambos ensayos completos, persistencia, entrega por tiempo y tutor a 320 px y Android Chrome. No se presenta esta corrección de conceptos como reescritura de las 25 clases aún pendientes.
+
+## Evidencia cerrada de M2
+
 Commit `1efd7946411fe4869b75b9656b2a3aa5b440a0eb`: 110 pruebas de lógica, 189 recorridos de navegador (incluido WebKit) y cuatro pruebas nativas Android aprobadas, sin omitidas. [Android de respaldo](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38730337593); [validación móvil y bloqueo de publicación Pages](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38730331099).
 
 La APK M2 descargada tiene SHA-256 `36d7ba63ddffbbaf58651094f890ea98b2326768c4fd7f219edb85a0c567bec7`. Su certificado público difiere del de la beta `0a3f2f6` previamente entregada. El registro confirma ausencia de la caché de firma al compilar: no se puede prometer actualización sobre esa instalación. No se ha indicado desinstalar ni borrar datos. Es un pendiente de distribución, distinto del resultado de pruebas funcionales.

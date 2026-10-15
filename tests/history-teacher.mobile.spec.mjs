@@ -43,3 +43,13 @@ test('Historia: una decisión nueva comprueba costo de oportunidad después de r
  const ids=await page.evaluate(()=>JSON.parse(localStorage.getItem('cachaste-history-v1')).session.ids);
  expect(ids).toEqual(['HIS-059']);
 });
+test('Historia: no se ofrece un tema ajeno ni un dominio ficticio cuando falta otro ítem del concepto',async({page})=>{
+ await page.addInitScript(()=>localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'no-unrelated-transfer',mode:'express',ids:['HIS-001'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}})));
+ await page.goto('./history.html');await page.locator('#resume').click();
+ await page.getByRole('button').filter({hasText:'El reconocimiento del sufragio femenino'}).click();
+ await page.locator('[data-conf="duda"]').click();await page.locator('#check').click();await page.locator('#next').click();
+ await page.locator('#reinforce').click();await expect(page.locator('#study-notice')).toContainText('Ya trabajaste los ejercicios distintos disponibles');
+ expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('cachaste-history-v1')).session)).toBeNull();
+ await page.locator('#back').click();await page.locator('#full').click();
+ expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('cachaste-history-v1')).session.ids.length)).toBe(65);
+});

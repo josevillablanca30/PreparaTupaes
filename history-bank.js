@@ -866,3 +866,69 @@ for(const [number,lesson] of Object.entries(HISTORIA_TEACHING)) {
  q.editorial={steps:[lesson.aim,...lesson.foundation,...lesson.application,lesson.check],easy:lesson.intuition.join('\n\n')+'\n\nEn esta pregunta: '+lesson.application.join(' '),example:[lesson.problem,...lesson.example,lesson.bridge].join('\n\n')};
  q.why=q.editorial.steps.join('\n\n');q.hint=lesson.aim;q.explanations[q.answer]=q.why;
 }
+
+/* El refuerzo exige el concepto trabajado, no simplemente la misma asignatura.
+   Los IDs históricos se conservan: el perfil se reconstruye desde esos IDs. */
+{
+ const groups={
+  'Secularización del Estado':[1],
+  'Industrialización y fomento estatal':[2,24],
+  'Ruptura democrática de 1973':[3],
+  'Transición democrática de 1988 a 1990':[4,26],
+  'Estado de derecho y límites constitucionales':[5,34],
+  'Funciones y separación de poderes':[6,16,35],
+  'Secreto del sufragio':[7],
+  'Precio y cantidad demandada':[8],
+  'Costo de oportunidad':[9,59],
+  'Industrialización y urbanización':[10,29],
+  'Junta de 1810 e independencia':[11],
+  'Minería exportadora y urbanización':[12,21],
+  'Razón y crítica ilustrada':[13],
+  'Origen y propósito de la ONU':[14],
+  'Pluralismo político':[15],
+  'Transparencia y rendición de cuentas':[17,53],
+  'Inflación y poder adquisitivo':[18],
+  'Bienes públicos y recursos comunes':[19],
+  'Ampliación del sufragio femenino':[20],
+  'Cuestión social':[22],
+  'Predominio parlamentario tras 1891':[23],
+  'Reforma agraria y tenencia de tierra':[25],
+  'Procedencia y alcance de testimonios':[27,46],
+  'Crítica y contraste de fuentes':[28,48,60],
+  'Guerra Fría':[30],
+  'Igualdad jurídica en 1789':[31],
+  'Imperialismo y dominio colonial':[32],
+  'Descolonización y autodeterminación':[33],
+  'Participación ciudadana':[36],
+  'Igualdad y no discriminación':[37],
+  'Libertad de prensa':[38],
+  'Debido proceso':[39],
+  'Producción final y PIB':[40],
+  'Desocupación y fuerza de trabajo':[41,65],
+  'Desplazamientos de oferta':[42],
+  'Progresividad tributaria':[43],
+  'Externalidades negativas':[44],
+  'Diversificación y riesgo':[45],
+  'Alcance de indicadores de matrícula':[47],
+  'Evidencias de cambios territoriales':[49],
+  'Porcentajes: base y alcance':[50,55],
+  'Transporte y articulación de mercados':[51],
+  'Detonante y causas de la Primera Guerra Mundial':[52],
+  'Ahorro por aportes periódicos':[54],
+  'Ocupación de la Araucanía':[56],
+  'Reconstrucción y Plan Marshall':[57],
+  'Representación y soberanía popular':[58,63],
+  'Nacionalización del cobre':[61],
+  'Gran Depresión de 1929':[62],
+  'Ingreso y demanda de bienes normales':[64]
+ };
+ const assigned=new Set();
+ for(const [concept,numbers]of Object.entries(groups))for(const n of numbers){
+  const q=window.CACHASTE_HISTORIA.find(q=>q.id==='HIS-'+String(n).padStart(3,'0'));
+  if(!q||assigned.has(q.id))throw Error('Concepto de Historia inválido o repetido: '+n);
+  q.concept=concept;assigned.add(q.id);
+ }
+ if(assigned.size!==window.CACHASTE_HISTORIA.length)throw Error('Faltan conceptos de Historia');
+ // Ambos ítems evalúan la misma relación minería-exportación-crecimiento urbano.
+ for(const n of [12,21])window.CACHASTE_HISTORIA.find(q=>q.id==='HIS-'+String(n).padStart(3,'0')).transferGroup='his-mineria-exportacion-urbanizacion';
+}

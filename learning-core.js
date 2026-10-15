@@ -22,7 +22,7 @@
     });
     return [...groups.values()].map(x => ({ ...x, evidence: [...x.evidence] }));
   }
-  function select(bank, history, count, { exclude = [], concepts = null, balanced = false, random = Math.random } = {}) {
+  function select(bank, history, count, { exclude = [], concepts = null, balanced = false, distinctFamilies = true, random = Math.random } = {}) {
     const blocked = new Set(exclude), seen = new Map(), latest = new Map();
     history.forEach(row => { if (!row) return; seen.set(row.id, (seen.get(row.id) || 0) + 1); latest.set(row.id, row); });
     const p = new Map(profile(bank, history).map(x => [x.concept, x]));
@@ -33,7 +33,7 @@
       // New questions about weak concepts come first. Never label a repeated item as transfer.
       const priority = (seen.get(q.id) || 0) * 20 + (state?.status === 'por reforzar' ? -8 : state?.status === 'por comprobar' ? -3 : 0);
       return { q, priority, tie: random() };
-    }).sort((a, b) => a.priority - b.priority || a.tie - b.tie).filter(x=>{const family=x.q.transferGroup||x.q.id;if(families.has(family))return false;families.add(family);return true;});
+    }).sort((a, b) => a.priority - b.priority || a.tie - b.tie).filter(x=>{if(!distinctFamilies)return true;const family=x.q.transferGroup||x.q.id;if(families.has(family))return false;families.add(family);return true;});
     if (!balanced) return ranked.slice(0, count).map(x => x.q);
     const areas = [...new Set(bank.map(q => q.area || q.axis || q.skill))], result = [];
     while (result.length < count && ranked.length) {
