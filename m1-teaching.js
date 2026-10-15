@@ -332,6 +332,311 @@
  add(217,'Sustitución con signos','Reemplazaremos a por 2 y b por −3, conservando el signo negativo de b.',['Escribimos a² − 2b = 2² − 2(−3).','La potencia da 4 y el producto 2(−3) da −6.','Restamos el producto completo: 4 − (−6) = 4 + 6 = 10.'], 'Restar dos veces un número negativo aumenta el valor; no convierte el cuatro en negativo.', ['−2 resulta de 4 − 6: se perdió el signo negativo de b.','1 no respeta ni el cuadrado de a ni el producto 2b; calcula por separado 4 y −6 antes de restarlos.',null,'14 no es 4 + 6; al sustituir a = 2, su cuadrado es cuatro, no ocho.']);
  add(218,'Proporción inversa','El mismo muro se reparte entre el doble de personas con igual rendimiento.',['El trabajo fijo equivale a 6 × 8 = 48 persona-horas.','Con doce personas, tiempo = 48/12 = 4 horas.','La cantidad de personas se duplicó, por lo que el tiempo se redujo a la mitad.'], '12 × 4 = 48, igual que 6 × 8. Esto supone colaboración simultánea al mismo ritmo.', [null,'6 horas con doce personas implicaría 72 persona-horas, más trabajo que el muro original.','8 horas conserva el tiempo pese a duplicar el equipo, contrario al modelo de trabajo compartido.','16 horas aplica proporción directa: más personas no deberían tardar el doble para este mismo trabajo.']);
  add(219,'Proporción directa','Todos los panes son iguales, así que la harina por pan debe mantenerse constante.',['Cada pan requiere 600/15 = 40 g de harina.','Veinticinco panes requieren 25 × 40 = 1.000 g.','También son diez panes más: agregan 10 × 40 = 400 g a los 600 iniciales.'], '1.000/25 = 40 g por pan, igual que 600/15.', ['750 g para 25 panes daría 30 g por pan; cambia la receta.','900 g para 25 daría 36 g por pan, menos de los 40 necesarios.',null,'1.200 g duplica la harina y corresponde a treinta panes, no veinticinco.']);
+ define('Escala y semejanza',[
+  'Una escala 1:n conserva una razón entre longitudes: una unidad en el dibujo corresponde a n de la misma unidad en la realidad. Antes de convertir unidades, multiplicamos por el factor de escala.',
+  'En figuras semejantes los lados correspondientes se multiplican por un mismo factor k. Las longitudes cambian por k, las áreas por k² y los volúmenes por k³. Identifica qué magnitud pide la pregunta.'
+ ],[
+  'Un plano es una foto reducida con una regla de correspondencia. Cada pequeño tramo representa siempre la misma cantidad de longitud real: las unidades no cambian por sí solas.',
+  'Al ampliar una foto al triple, hay tres veces más ancho y tres veces más alto. Por eso ocupa nueve veces más papel, aunque cada borde solo se triplique.'
+ ],'Una fotografía de 4 cm por 6 cm se amplía para que el lado de 4 cm mida 10 cm. ¿Qué ocurre con el otro lado y con el área?',[
+  'El factor de longitudes es k = 10/4 = 2,5. El otro lado pasa de 6 a 6 × 2,5 = 15 cm.',
+  'El área inicial es 4 × 6 = 24 cm² y la nueva 10 × 15 = 150 cm².',
+  'La razón de áreas es 150/24 = 6,25 = 2,5². La razón de longitudes y la razón de áreas son diferentes porque el área cambia en dos direcciones.'
+ ],'Encuentra el factor entre lados correspondientes, conserva las unidades y distingue longitud de área.');
+ define('Inecuaciones',[
+  'Una inecuación describe valores que cumplen una comparación, no necesariamente un único número. El signo < significa menor que y > mayor que; si son estrictos, el extremo no está incluido.',
+  'Sumar o restar lo mismo a ambos lados conserva el orden. Multiplicar o dividir por un positivo también; hacerlo por un negativo invierte el orden. Por ejemplo, 2 < 5 pero −2 > −5.'
+ ],[
+  'Piensa en una fila de números. Multiplicar por un negativo refleja toda la fila alrededor del cero y cambia quién queda a la izquierda. Esa vuelta explica por qué la flecha debe invertirse.',
+  'No es una regla para cambiar todos los signos porque sí: ocurre al multiplicar o dividir la comparación por un negativo. Para comprobar, elige un número dentro del intervalo y otro fuera.'
+ ],'Un congelador registra T = −2h grados después de h horas. ¿Para qué h se cumple T < −10 en este modelo?',[
+  'Sustituimos la regla de temperatura: −2h < −10.',
+  'Dividimos por −2 e invertimos < a >: h > 5. A las cinco horas T = −10 y todavía no es estrictamente menor.',
+  'Probamos h = 6: T = −12 < −10, sí cumple. Con h = 4, T = −8, no cumple. Esto confirma la dirección del intervalo.'
+ ],'Despeja conservando la comparación e invierte el sentido solo al multiplicar o dividir por un negativo; prueba valores a ambos lados.');
+ define('Sistemas lineales',[
+  'Un sistema exige que las mismas incógnitas cumplan dos igualdades a la vez. Cada letra debe representar la misma cantidad y unidad en las dos ecuaciones.',
+  'Sumar o restar ecuaciones permite eliminar una incógnita si sus coeficientes se cancelan. Luego se despeja la otra y se sustituye para comprobar ambas condiciones, no solo una.'
+ ],[
+  'Imagina dos bolsas con compras casi iguales. Si quitas de la bolsa grande todo lo que también está en la pequeña, la diferencia del precio corresponde a lo que quedó dentro.',
+  'Con dos pistas sobre las mismas cantidades, ninguna se descarta: una respuesta válida debe hacer que las dos compras cuadren.'
+ ],'En una feria, tres manzanas y dos peras pesan 800 g; una manzana y dos peras pesan 500 g. ¿Cuánto pesa una manzana?',[
+  'Llamamos m al peso de una manzana y p al de una pera: 3m + 2p = 800 y m + 2p = 500.',
+  'Restamos la segunda igualdad de la primera: 2m = 300, por lo que m = 150 g.',
+  'En la segunda igualdad, 150 + 2p = 500: p = 175 g. Comprobamos la primera: 450 + 350 = 800 g. Las dos pistas se cumplen.'
+ ],'Compara lo que se repite en ambas igualdades y cancélalo; interpreta la diferencia como cantidad de objetos, no siempre como una sola unidad.');
+ define('Función afín y tarifa fija',[
+  'Una función asigna a cada entrada x una salida f(x). En f(x) = b + mx, b es el valor cuando x = 0 y m es el cambio de la salida por cada unidad de x.',
+  'Evaluar consiste en reemplazar x por la entrada completa. En una tarifa, la parte fija se cobra una vez y la parte variable se multiplica por la cantidad de usos. Las unidades ayudan: pesos por uso × usos = pesos.'
+ ],[
+  'Piensa en subir a un taxi: antes de avanzar ya puede haber un cobro. Luego el marcador agrega siempre la misma cantidad por cada tramo. El cobro de partida y el de cada tramo no cumplen el mismo papel.',
+  'Para reconocer cuál es cuál, imagina cero usos y después un uso más. Lo que queda en cero es fijo; lo que cambia entre un uso y el siguiente es el incremento.'
+ ],'Un estanque tiene 12 litros y recibe 3 litros por minuto: V(t) = 12 + 3t. ¿Cuánta agua tiene a los 4 minutos y qué representa cada término?',[
+  'La entrada t mide minutos y la salida V mide litros. El 12 es el agua inicial; el 3 mide litros por minuto.',
+  'En cuatro minutos entran 3 × 4 = 12 litros. Sumamos los iniciales: V(4) = 12 + 12 = 24 litros.',
+  'V(0) = 12 comprueba la cantidad fija. De t = 4 a t = 5 se pasa de 24 a 27: el aumento por minuto es tres, no doce.'
+ ],'Distingue la salida inicial del cambio por unidad y sustituye la entrada donde aparece la letra, conservando sus signos.');
+ define('Pendiente de una recta',[
+  'La pendiente indica cuánto cambia la salida y por cada unidad de entrada x: m = (y₂ − y₁)/(x₂ − x₁). Los subíndices solo distinguen los dos puntos; debemos restar en el mismo orden arriba y abajo.',
+  'Una pendiente positiva indica aumento, una negativa disminución. El valor donde la recta cruza el eje vertical es la salida inicial y no necesariamente coincide con la pendiente.'
+ ],[
+  'Imagina una rampa: no basta saber cuánto sube, también importa en cuánto avance horizontal ocurre esa subida. Una elevación de cuatro en dos pasos equivale a dos por paso.',
+  'Si en vez de subir la rampa baja, el cambio vertical es negativo. Leer la altura de un único punto no permite medir esa inclinación.'
+ ],'Una reserva baja de 90 a 66 litros mientras el reloj pasa de 2 a 6 minutos. ¿Cuál es la pendiente?',[
+  'El cambio de agua es 66 − 90 = −24 litros. El cambio de tiempo es 6 − 2 = 4 minutos.',
+  'Dividimos: m = −24/4 = −6 litros por minuto. El signo menos expresa pérdida.',
+  'Durante cuatro minutos perder seis por minuto equivale a perder veinticuatro litros: 90 − 24 = 66. Usar solo −24 ignoraría cuántos minutos transcurrieron.'
+ ],'Lee dos puntos, calcula ambos cambios con el mismo orden y divide el cambio vertical por el horizontal.');
+ define('Cuadráticas y soluciones reales',[
+  'El cuadrado de un número real nunca es negativo: un positivo por sí mismo es positivo y un negativo por sí mismo también. Por eso x² = c tiene dos soluciones reales si c > 0, una si c = 0 y ninguna si c < 0.',
+  'Cuando c es positivo, las dos soluciones son √c y −√c. Esto no contradice que el símbolo √c indique solo la raíz principal no negativa: resolver la ecuación pide todos los valores que la cumplen.'
+ ],[
+  'Piensa en distancias a una marca: estar tres pasos a la izquierda o tres a la derecha da el mismo cuadrado de distancia. El cuadrado pierde esa diferencia de dirección.',
+  'Pero ninguna distancia al cuadrado puede dar una cantidad negativa. Antes de buscar raíces, mira qué número debe alcanzar el cuadrado.'
+ ],'Una coordenada cumple z² − 25 = 0. ¿Cuáles son sus soluciones y qué cambiaría si fuera z² + 25 = 0?',[
+  'En la primera ecuación sumamos 25 a ambos lados: z² = 25.',
+  'Tanto 5² como (−5)² valen 25, de modo que z = 5 o z = −5. Sustituir ambos produce cero en z² − 25.',
+  'En la segunda ecuación necesitaríamos z² = −25. No hay z real que lo cumpla: cambiar el signo del término constante cambia la existencia de soluciones reales.'
+ ],'Aísla el cuadrado y comprueba el signo de lo que debe valer; si es positivo, verifica los dos signos de la raíz.');
+ define('Extremos de una cuadrática',[
+  'La forma a(x − p)² + q permite reconocer el punto extremo. El cuadrado (x − p)² siempre es no negativo y se hace cero exactamente cuando x = p.',
+  'Si a es positivo, se suma una cantidad no negativa a q y q es el mínimo. Si a es negativo, se resta una cantidad no negativa de q y q es el máximo. La entrada p donde ocurre y el valor q alcanzado son respuestas diferentes.'
+ ],[
+  'Imagina el punto más bajo de un cuenco o el más alto de un cerro. Alejarte del centro en cualquier dirección cambia la altura según un cuadrado.',
+  'La posición del centro dice dónde ocurre el extremo; la altura dice cuánto vale. Confundir ambas es como contestar una hora cuando preguntan una altura.'
+ ],'La pérdida de energía se modela por L(t) = (t − 4)² + 7. ¿Cuál es la pérdida mínima y cuándo ocurre?',[
+  'Como todo cuadrado es no negativo, (t − 4)² nunca baja de cero.',
+  'Se hace cero con t = 4. Entonces L(4) = 0 + 7 = 7, la pérdida mínima.',
+  'Con t = 3 o t = 5 obtenemos 8, mayor que siete. La entrada del mínimo es cuatro; el mínimo de la salida es siete. No son la misma cantidad.'
+ ],'Busca cuándo el cuadrado se anula y distingue el valor de entrada de la altura o salida extrema.');
+ define('Teorema de Pitágoras',[
+  'Un triángulo rectángulo tiene un ángulo de 90°. Los dos lados que forman ese ángulo son catetos; el lado opuesto es la hipotenusa, el más largo.',
+  'Pitágoras relaciona los cuadrados de esas longitudes: a² + b² = c², con c como hipotenusa. Para hallar c sumamos los cuadrados; para un cateto restamos su cuadrado conocido al de c. Finalmente tomamos la raíz no negativa.'
+ ],[
+  'En un cruce de calles perpendiculares, caminar primero por una calle y luego por otra no mide el atajo en diagonal. La diagonal es un tercer lado y se calcula con cuadrados, no sumando los recorridos.',
+  'Busca primero la esquina recta en el dibujo. El lado de enfrente es el que queda solo a un lado de la igualdad, aunque la figura esté girada.'
+ ],'Una persona avanza 9 m hacia el este y 12 m hacia el norte. ¿A qué distancia en línea recta quedó del inicio?',[
+  'Las dos direcciones son perpendiculares; 9 y 12 son catetos. La distancia directa d es la hipotenusa.',
+  'Aplicamos d² = 9² + 12² = 81 + 144 = 225, así que d = 15 m.',
+  'Quince es mayor que cada cateto y menor que el recorrido de 21 m. Al cuadrarlo se recupera 225: ambas comprobaciones concuerdan con la geometría.'
+ ],'Identifica la hipotenusa antes de escribir la igualdad y distingue si buscas esa longitud o uno de los catetos.');
+ define('Área de un círculo',[
+  'El radio r une el centro con el borde; el diámetro atraviesa el centro y mide 2r. El área del círculo es A = πr², donde π es la constante que vincula contorno y diámetro.',
+  'El cuadrado del radio cuenta cómo cambia una superficie en dos direcciones. La longitud de la circunferencia, 2πr, mide solo el borde. Utiliza el valor de π solicitado y unidades cuadradas para el área.'
+ ],[
+  'Imagina una pizza: el radio va desde el centro hasta la orilla. Comprar queso para cubrirla requiere su superficie; poner un cordón en la orilla requiere el contorno.',
+  'Si duplicas el radio, la pizza crece al doble en dos direcciones y necesita cuatro veces más cobertura. No basta duplicar la cantidad de queso.'
+ ],'Una tapa circular tiene diámetro de 10 cm. Con π = 3, ¿qué superficie cubre una etiqueta que ocupa la mitad de la tapa?',[
+  'El radio es la mitad del diámetro: r = 10/2 = 5 cm.',
+  'El área completa es πr² = 3 × 5² = 75 cm².',
+  'La etiqueta ocupa la mitad: 75/2 = 37,5 cm². Usar diez como radio daría una tapa cuatro veces mayor que la descrita.'
+ ],'Distingue radio de diámetro y cobertura de contorno; aplica el cuadrado al radio, no a π.');
+ define('Longitud de circunferencia',[
+  'La circunferencia es el borde de un círculo. Su longitud es L = πd = 2πr, donde d es diámetro y r radio; d = 2r.',
+  'π expresa cuántas veces cabe el diámetro en el contorno. Esta longitud se mide en metros o centímetros; la superficie interior se mide en unidades cuadradas y utiliza otra fórmula.'
+ ],[
+  'Imagina una cinta que da una vuelta exacta a una rueda. La cinta mide el borde, mientras que una línea recta que atraviesa el centro mide el diámetro.',
+  'Con π aproximado por tres, la cinta es aproximadamente tres veces esa línea de lado a lado. Si ya conoces el diámetro, no necesitas duplicarlo otra vez.'
+ ],'Una rueda de radio 0,4 m da cinco vueltas sin resbalar. Con π = 3, ¿qué distancia recorre?',[
+  'Su diámetro es 2 × 0,4 = 0,8 m.',
+  'Cada vuelta recorre un contorno: πd = 3 × 0,8 = 2,4 m.',
+  'Cinco vueltas recorren 5 × 2,4 = 12 m. El área del disco no permitiría obtener esta distancia.'
+ ],'Para medir borde o recorrido de una vuelta, utiliza π por diámetro y evita duplicar un diámetro ya conocido.');
+ define('Áreas de paralelogramo y trapecio',[
+  'El área de un paralelogramo es base por altura perpendicular: inclinar sus lados no cambia el área si conserva esas dos medidas. La altura no es necesariamente el lado inclinado.',
+  'En un trapecio las bases paralelas pueden tener distinta longitud. Su área es A = (B + b)h/2: el promedio de las bases multiplicado por la altura. Dos trapecios iguales forman un paralelogramo de base B + b.'
+ ],[
+  'Puedes cortar la punta inclinada de un paralelogramo y moverla al otro lado para formar un rectángulo sin perder papel. La misma base y altura siguen midiendo su superficie.',
+  'Para un trapecio, imagina apoyar una copia invertida contra la primera. Juntas completan una figura de base igual a la suma de las dos bases; la mitad pertenece al trapecio original.'
+ ],'Una franja de terreno tiene forma de trapecio con bases 12 y 8 m y separación perpendicular de 5 m. Se siembra la mitad. ¿Qué superficie se siembra?',[
+  'El promedio de las bases es (12 + 8)/2 = 10 m.',
+  'El área del trapecio completo es 10 × 5 = 50 m².',
+  'Sembrar la mitad requiere 50/2 = 25 m². La primera división por dos corresponde a la forma del trapecio y la segunda a la parte que se siembra: son motivos distintos.'
+ ],'Reconoce la figura, usa altura perpendicular y justifica si corresponde o no dividir por dos.');
+ define('Volumen y superficie de prismas',[
+  'El volumen mide el espacio interior y se cuenta en unidades cúbicas. Un prisma rectangular de largo l, ancho a y altura h tiene V = l × a × h: área de la base multiplicada por cantidad de capas.',
+  'En un cubo todos los lados miden s: V = s³. Cubrirlo con papel mide superficie, no volumen: tiene seis caras cuadradas de área s², por lo que el área total es 6s².'
+ ],[
+  'Piensa en llenar una caja con cubitos y después envolverla. Los cubitos cuentan espacio en tres direcciones; el papel cuenta solo los cuadrados de la piel exterior.',
+  'Una capa de cubitos no llena toda la caja si hay varias capas. Y una cara de papel no envuelve los seis lados de un cubo cerrado.'
+ ],'Una caja cerrada tiene largo 4 cm, ancho 3 cm y alto 2 cm. ¿Cuál es su volumen y cuánta superficie tiene?',[
+  'Cada capa de 1 cm de alto contiene 4 × 3 = 12 cm³. Dos capas ocupan V = 4 × 3 × 2 = 24 cm³.',
+  'Las caras vienen en pares: dos de 4 × 3, dos de 4 × 2 y dos de 3 × 2 cm².',
+  'El papel necesario es 2 × (12 + 8 + 6) = 52 cm². Las unidades y los cálculos distinguen llenar de envolver.'
+ ],'Decide si buscas espacio interior o cobertura; usa tres dimensiones para volumen y suma todas las caras para superficie.');
+ define('Cilindro: volumen',[
+  'Un cilindro tiene bases circulares iguales. Su volumen es V = πr²h: área de la base, πr², multiplicada por altura h. r es radio, no diámetro.',
+  'Con la altura fija, cambiar el radio por un factor k cambia el volumen por k², porque el radio aparece al cuadrado. El resultado se mide en unidades cúbicas.'
+ ],[
+  'Imagina apilar monedas del mismo tamaño: el espacio ocupado depende de cuánto cubre cada moneda y de la altura de la pila.',
+  'Hacer cada moneda más ancha no solo agrega un borde: amplía el disco en dos direcciones. Por eso duplicar el radio cuadruplica el espacio de una pila de la misma altura.'
+ ],'Un recipiente cilíndrico tiene diámetro 6 cm y altura 4 cm. Con π = 3, ¿qué volumen ocupa la mitad de su capacidad?',[
+  'El radio es 6/2 = 3 cm. Su base tiene área 3 × 3² = 27 cm².',
+  'La capacidad completa es 27 × 4 = 108 cm³.',
+  'La mitad es 108/2 = 54 cm³. Si el radio se duplicara a seis con altura fija, la capacidad completa sería 432 cm³, cuatro veces 108.'
+ ],'Calcula primero la superficie circular de una base, después multiplícala por la altura; para comparar radios conserva su cuadrado.');
+ define('Cilindro: superficie lateral',[
+  'La superficie lateral de un cilindro es su costado, sin las dos bases. Al desplegarlo forma un rectángulo: un lado mide la circunferencia de la base, 2πr, y el otro la altura h.',
+  'Su área es 2πrh. No es volumen porque no cuenta el interior, ni área total porque no incorpora los dos discos de las bases. La unidad es cuadrada.'
+ ],[
+  'Piensa en sacar la etiqueta de una lata y aplanarla. La etiqueta es rectangular: debe alcanzar a dar una vuelta completa y llegar de abajo arriba.',
+  'El ancho de la etiqueta es el recorrido alrededor, no el radio ni el diámetro. Los círculos de arriba y abajo quedarían descubiertos porque solo estamos envolviendo el costado.'
+ ],'Una lata tiene diámetro 10 cm y altura 8 cm. Con π = 3, ¿cuánto papel ocupa una etiqueta que cubre todo el costado?',[
+  'Una vuelta mide πd = 3 × 10 = 30 cm: ese es el ancho de la etiqueta.',
+  'La altura de la etiqueta es 8 cm. Su área rectangular es 30 × 8 = 240 cm².',
+  'No sumamos bases ni multiplicamos por el área del disco. Si dibujamos el rectángulo desplegado se distinguen sus dos dimensiones: 30 y 8.'
+ ],'Despliega mentalmente el costado: circunferencia por altura. Decide si se piden también las bases antes de agregarlas.');
+ define('Reflexión',[
+  'Reflejar es obtener la imagen especular respecto de una recta: cada punto y su imagen están a igual distancia perpendicular del eje, en lados opuestos.',
+  'Respecto del eje y cambia el signo de x y se conserva y: (x,y) → (−x,y). La reflexión conserva longitudes, ángulos y áreas, aunque invierte la orientación de la figura.'
+ ],[
+  'Imagina un espejo vertical en la línea x = 0: alguien tres pasos a la derecha aparece tres a la izquierda, pero a la misma altura.',
+  'El espejo no estira las figuras ni las gira un cuarto de vuelta. Tu mano reflejada tiene el mismo tamaño, aunque su orientación se invierta.'
+ ],'Los extremos de un segmento son (1,2) y (4,2). ¿Dónde quedan al reflejarlos respecto del eje y y cuánto mide el segmento?',[
+  'Cambiamos solo las coordenadas horizontales: (1,2) pasa a (−1,2) y (4,2) a (−4,2).',
+  'Antes la separación horizontal era 4 − 1 = 3; después es |−4 − (−1)| = 3.',
+  'La longitud se conserva. Las alturas siguen siendo dos y cada extremo queda al lado opuesto del espejo, a la misma distancia de él.'
+ ],'Ubica el eje del espejo, cambia solo la coordenada perpendicular a él y comprueba que se conserven distancias.');
+ define('Traslación',[
+  'Una traslación mueve todos los puntos en la misma dirección y distancia. Un vector (a,b) indica desplazamiento horizontal a y vertical b; se suma componente a componente.',
+  'La regla es (x,y) → (x+a,y+b). Un desplazamiento negativo apunta a la izquierda o hacia abajo. No intercambiamos coordenadas y no multiplicamos por el vector.'
+ ],[
+  'Es como mover una ficha por un tablero: tres pasos a la derecha cambian la columna, dos hacia abajo cambian la fila. La posición de partida todavía importa.',
+  'El vector da instrucciones de movimiento y no la dirección del punto de llegada. Sigue cada instrucción desde donde estabas.'
+ ],'Un robot está en (−2,−1) y avanza según el vector (5,3). Luego retrocede ese mismo vector. ¿Qué ocurre?',[
+  'Al avanzar sumamos componentes: (−2 + 5, −1 + 3) = (3,2).',
+  'Retroceder el vector equivale a sumar (−5,−3): (3 − 5, 2 − 3) = (−2,−1).',
+  'Volver al punto inicial verifica la suma componente a componente. No se intercambian las coordenadas ni se modifica la forma del robot.'
+ ],'Aplica el desplazamiento horizontal a x y el vertical a y; comprueba deshaciendo el movimiento.');
+ define('Rotación',[
+  'Una rotación gira una figura alrededor de un centro por cierto ángulo y sentido, conservando distancias al centro. El sentido antihorario es contrario al movimiento de las manecillas del reloj.',
+  'Para 90° antihorarios alrededor del origen, (x,y) se transforma en (−y,x). El vector horizontal positivo pasa al vertical positivo, y el vertical positivo pasa al horizontal negativo.'
+ ],[
+  'Imagina una hoja transparente que gira un cuarto de vuelta a la izquierda alrededor de una chinche en el origen. El punto gira con ella; no se refleja en un espejo.',
+  'Una flecha que apuntaba a la derecha termina apuntando arriba. Esa referencia ayuda a recordar el sentido antes de aplicar la regla.'
+ ],'Una flecha va del origen a (3,−2). ¿Dónde termina después de girar 90° antihorarios?',[
+  'Usamos (x,y) → (−y,x). Aquí x = 3 e y = −2.',
+  'La nueva coordenada horizontal es −(−2) = 2 y la vertical es 3: queda (2,3).',
+  'Las distancias al origen conservan su cuadrado: 3² + (−2)² = 13 y 2² + 3² = 13. Además un punto abajo y a la derecha pasó arriba y a la derecha, como indica el giro.'
+ ],'Verifica centro, ángulo y sentido, después aplica (−y,x) y comprueba la distancia al origen.');
+ define('Frecuencia relativa',[
+  'La frecuencia absoluta cuenta casos de una categoría. La relativa compara esos casos con todos los del grupo: f relativa = f absoluta/total. Multiplicar por cien la expresa como porcentaje.',
+  'Primero sumamos todas las categorías si el total no aparece. El número de una barra no es automáticamente un porcentaje; la base debe ser el total de observaciones.'
+ ],[
+  'Imagina repartir cien espacios de un mural entre talleres según cuántas personas tienen. Un taller con veinticuatro personas no ocupa necesariamente veinticuatro espacios: depende de cuántas personas hay entre todos.',
+  'La pregunta de proporción es «de cada cien del grupo completo, cuántas pertenecen a esta categoría». Antes de responder necesitas el grupo completo.'
+ ],'En una biblioteca, 18 préstamos son de novela, 6 de poesía y 6 de ensayo. ¿Qué porcentaje corresponde a novela?',[
+  'El total es 18 + 6 + 6 = 30 préstamos.',
+  'La parte de novela es 18/30 = 0,60, equivalente a 60%.',
+  'El resto suma 12/30 = 40%. Ambos porcentajes suman cien. El 18 era un recuento, no un porcentaje.'
+ ],'Divide la frecuencia de interés por el total y solo entonces convierte a porcentaje si lo solicitan.');
+ define('Comparación de frecuencias',[
+  'Preguntar cuántos más tiene una categoría que otra requiere restar sus frecuencias, no sumar ni elegir la frecuencia mayor sin comparar.',
+  'En un gráfico primero relacionamos etiqueta y altura de cada barra con su escala. Si preguntan por un empate máximo, buscamos todas las barras con la mayor frecuencia, no cualquier pareja de igual altura.'
+ ],[
+  'Imagina dos filas de personas frente a frente: al emparejarlas, las que sobran en la fila larga muestran la diferencia.',
+  'Para un empate ganador miras quiénes llegaron a la altura más alta. Que dos grupos tengan igual tamaño no basta si hay otro más numeroso.'
+ ],'Un club tiene 17 socios adultos, 11 juveniles y 17 infantiles. ¿Cuántos adultos más que juveniles hay y quiénes empatan en el máximo?',[
+  'La diferencia solicitada es 17 − 11 = 6 socios, no 28.',
+  'La frecuencia máxima es 17 y aparece en adultos e infantiles.',
+  'La diferencia y el empate son conclusiones distintas a partir de los mismos datos. Siempre deben conservarse las etiquetas de las categorías.'
+ ],'Lee las categorías exactas y distingue diferencia de suma y de búsqueda del máximo.');
+ define('Promedio ponderado',[
+  'Un promedio ponderado asigna a cada dato una proporción de influencia. Cuando los pesos suman uno, multiplicamos cada valor por su peso y sumamos los productos.',
+  'El 40% se escribe 0,40 y el 60% como 0,60. El promedio simple asigna 50% a cada dato, por lo que solo corresponde cuando ambos pesan lo mismo.'
+ ],[
+  'Piensa en mezclar jugos: si pones más del segundo sabor, el resultado se acerca más a él. La cantidad de cada jugo funciona como el peso de cada nota.',
+  'No basta promediar dos números porque haya dos pruebas: una puede influir más que la otra. A cada nota le toca la parte del resultado que dice su ponderación.'
+ ],'Una evaluación tiene proyecto 80 puntos con peso 75% y exposición 60 puntos con peso 25%. ¿Cuál es el resultado?',[
+  'Los pesos suman 75% + 25% = 100%, por lo que cubren toda la evaluación.',
+  'El proyecto aporta 80 × 0,75 = 60 puntos y la exposición 60 × 0,25 = 15.',
+  'El resultado es 60 + 15 = 75 puntos. Está entre 60 y 80 y más cerca de 80, el dato de mayor peso. El promedio simple de 70 no respeta las ponderaciones.'
+ ],'Asocia cada peso con su dato antes de multiplicar y comprueba que el resultado se acerque al de mayor influencia.');
+ define('Cuartiles y dispersión central',[
+  'Los cuartiles describen posiciones en datos ordenados: Q1 deja aproximadamente 25% de las observaciones en o bajo él y Q3 aproximadamente 75%. Su cálculo en muestras pequeñas depende de la convención indicada.',
+  'El rango intercuartílico RIC = Q3 − Q1 mide el ancho del intervalo central, aproximadamente la mitad de los datos. No entrega el mínimo, máximo ni cantidad de observaciones, y no debe confundirse con la mediana.'
+ ],[
+  'Imagina ordenar una fila y marcar dónde termina su primer cuarto y dónde termina su tercer cuarto. La distancia entre esas marcas describe qué tan extendida está la parte central.',
+  'Dos filas pueden tener la misma persona en el centro y distinta separación entre sus marcas. Saber dónde está el centro no basta para saber cuán repartidos están los datos.'
+ ],'Dos registros de tiempos tienen Q1 = 5 y Q3 = 17, y Q1 = 8 y Q3 = 14 minutos, respectivamente. ¿Cuál tiene menor dispersión central?',[
+  'En el primero, RIC = 17 − 5 = 12 minutos. En el segundo, RIC = 14 − 8 = 6 minutos.',
+  'El segundo tiene un intervalo central más estrecho: seis frente a doce minutos.',
+  'Eso no demuestra que sus mínimos, máximos o tamaños sean iguales. La comparación se limita al ancho de los dos intervalos centrales.'
+ ],'Identifica los cuartiles que delimitan el intervalo central, réstalos y limita la conclusión a la información que realmente entregan.');
+ define('Percentiles',[
+  'Un percentil ubica un dato dentro de una distribución ordenada. El percentil p es un valor que deja aproximadamente p% de las observaciones en o bajo ese nivel, según la convención de cálculo.',
+  'El número del percentil describe una posición relativa y no una puntuación absoluta ni el porcentaje de respuestas correctas. Los empates y el tamaño de la muestra explican por qué hablamos de aproximadamente.'
+ ],[
+  'Imagina una carrera con cien posiciones ordenadas por puntuación. Decir que tu puntuación está cerca del lugar que deja setenta y cinco detrás describe tu posición, no los puntos que ganaste.',
+  'Puedes tener pocos o muchos puntos y estar en el mismo percentil de grupos distintos. Lo que importa es cómo te ubicas respecto de ese grupo.'
+ ],'Una medición de estatura coincide con el percentil 40 de un grupo. ¿Significa que mide 40 cm?',[
+  'No: cuarenta identifica una posición relativa en las estaturas ordenadas.',
+  'Aproximadamente 40% del grupo tiene una estatura en o bajo esa medición; el resto queda sobre ella, con las salvedades de empates y convención.',
+  'Para conocer centímetros necesitamos el valor de estatura correspondiente. El percentil por sí solo no permite inventarlo.'
+ ],'Interpreta el porcentaje como proporción del grupo en la distribución, nunca como la unidad física o puntuación del dato.');
+ define('Complemento de un evento',[
+  'Un evento y su complemento cubren todos los resultados y no ocurren juntos. Si A es que llueva, su complemento es que no llueva bajo la misma definición de día y lugar.',
+  'Las probabilidades de ambos suman uno: P(no A) = 1 − P(A). No se suman al uno porque el total de posibilidades ya está completo.'
+ ],[
+  'Imagina un círculo repartido en la parte donde ocurre algo y la parte donde no. Si conoces el espacio ocupado, la otra parte es lo que falta para completar el círculo.',
+  'No necesitas nuevos datos para completar hasta cien por ciento, pero debes estar hablando del mismo evento y sus mismas condiciones.'
+ ],'La probabilidad de que un envío llegue tarde es 0,12. ¿Cuál es la probabilidad de que no llegue tarde?',[
+  'Llegar tarde y no llegar tarde cubren todos los resultados definidos para el envío.',
+  'Restamos del total: 1 − 0,12 = 0,88, equivalente a 88%.',
+  'Comprobamos 0,12 + 0,88 = 1. El resultado no significa que todos los envíos lleguen exactamente a la misma hora: solo que no cumplen la condición de retraso.'
+ ],'Identifica la negación exacta del evento y calcula lo que falta para completar la probabilidad total de uno.');
+ define('Unión de eventos',[
+  'El conector O pide la unión: resultados que cumplen una condición, la otra o ambas. Debemos contar cada resultado una sola vez.',
+  'P(A o B) = P(A) + P(B) − P(A y B). Si los eventos son incompatibles no comparten resultados y basta sumar. Si se superponen, restamos la intersección que habíamos contado dos veces.'
+ ],[
+  'Imagina dos listas de personas invitadas: una por deporte y otra por música. Para saber cuántas reciben invitación, quien aparece en las dos listas debe contarse solo una vez.',
+  'La palabra O suele ampliar el grupo, pero no permite duplicar a nadie. Si hablamos de una sola bolita, no puede ser de dos colores exclusivos a la vez.'
+ ],'Se elige al azar un número del 1 al 10. ¿Cuál es la probabilidad de que sea múltiplo de 2 o de 3?',[
+  'Los múltiplos de dos son 2, 4, 6, 8 y 10; los de tres son 3, 6 y 9.',
+  'El seis aparece en ambas listas. La unión sin duplicados es 2, 3, 4, 6, 8, 9, 10: siete resultados.',
+  'La probabilidad es 7/10. También (5 + 3 − 1)/10 = 7/10: se resta el seis duplicado.'
+ ],'Forma el conjunto que cumple al menos una condición y revisa si debes eliminar resultados repetidos.');
+ add(220,'Escala y semejanza','Buscamos la distancia real que representan 3 cm en escala 1:50.000.',['Una unidad del plano equivale a 50.000 de la misma unidad real: 3 × 50.000 = 150.000 cm.','Como 100 cm = 1 m, 150.000/100 = 1.500 m.','Como 1.000 m = 1 km, 1.500/1.000 = 1,5 km.'],'Convertir de cm a km divide por 100.000. La escala se aplica antes y con unidades iguales.',['150 m se queda diez veces corto: 150.000 cm equivalen a 1.500 m.',null,'15 km es diez veces la distancia: faltó un factor diez en la conversión.','150 km es cien veces lo representado. No confundas los 150.000 cm con kilómetros.']);
+ add(221,'Ecuación lineal','El dos multiplica al paquete completo x + 4; hay que deshacer ese producto y luego la suma.',['En 2(x + 4) = 18 dividimos ambos lados por dos: x + 4 = 9.','Restamos cuatro en ambos lados: x = 5.','Comprobamos 2(5 + 4) = 2 × 9 = 18.'],'Dividir por dos antes de restar es válido porque el paréntesis completo estaba multiplicado por dos.',[null,'Con x = 7, 2(7 + 4) = 22, no 18. La suma interior debe valer nueve.','9 es el valor del paréntesis x + 4; aún falta restar cuatro.','14 resta cuatro directamente a 18 e ignora que el dos multiplica todo el paréntesis.']);
+ add(222,'Ecuación lineal','Hay que separar el pago fijo de $3.500 del cobro de $250 por mensaje extra.',['Sea m la cantidad de mensajes: 3.500 + 250m = 5.500.','Restamos 3.500: 250m = 2.000.','Dividimos por 250: m = 8 mensajes.'],'3.500 + 250 × 8 = 5.500: ambos componentes recuperan la cuenta.',['Cuatro mensajes agregarían 1.000 y el total sería 4.500, no 5.500.','Seis agregarían 1.500 y el total sería 5.000; todavía faltarían $500.',null,'Diez agregarían 2.500 y el total sería 6.000, más de lo pagado.']);
+ add(223,'Inecuaciones','Buscamos todos los valores de x para los que 3x + 2 resulta estrictamente menor que 14.',['Restamos dos a ambos lados: 3x < 12.','Dividimos por tres positivo, por lo que conservamos el sentido: x < 4.','Con x = 3 obtenemos 11 < 14; con x = 4 obtenemos 14 y no cumple la condición estricta.'],'El extremo cuatro queda excluido y los valores menores sí cumplen.',[null,'x > 4 invierte la comparación al dividir por tres positivo. Con x = 5, el resultado 17 no es menor que 14.','x < 6 admite valores que fallan, como x = 5: 3 × 5 + 2 = 17.','x > 6 combina un límite incorrecto con sentido invertido; x = 7 produce 23, que no cumple.']);
+ add(224,'Inecuaciones','El factor −2 obliga a invertir la comparación cuando despejamos x.',['Dividimos ambos lados de −2x > 8 por −2.','8/(−2) = −4 y el signo > cambia a <: x < −4.','Probamos x = −5: −2(−5) = 10 > 8; x = −3 daría 6 y no cumple.'],'x = −4 produce igualdad, por lo que queda fuera de esta desigualdad estricta.',['x > −4 conserva indebidamente el signo al dividir por un negativo.',null,'x > 4 pierde el signo del cociente y también la dirección correcta; x = 5 da −10.','x < 4 usa el extremo positivo; incluye cero, que produciría 0 > 8, falso.']);
+ add(225,'Sistemas lineales','Las mismas cantidades x e y deben sumar nueve y diferenciarse en tres.',['Sumamos las ecuaciones: (x + y) + (x − y) = 9 + 3.','Los términos y y −y se cancelan: 2x = 12, de donde x = 6.','Sustituimos en x + y = 9: y = 3; también 6 − 3 = 3.'],'El par (6,3) cumple ambas ecuaciones, por eso x vale seis.',['3 es y, no x. Si x fuera tres, la primera exigiría y = 6 y la segunda daría −3.','Con x = 4 la primera exige y = 5, pero entonces x − y = −1, no 3.',null,'9 es la suma x + y: asignársela a x deja y = 0 y la diferencia sería nueve.']);
+ add(226,'Sistemas lineales','Las compras solo se diferencian en una entrada adulta; su diferencia de precios revela su valor.',['Llamamos a a la entrada adulta e i a la infantil: 2a + i = 19.000 y a + i = 11.000.','Restamos ambas igualdades: a = 19.000 − 11.000 = $8.000.','La infantil cuesta 11.000 − 8.000 = 3.000; comprobamos 2 × 8.000 + 3.000 = 19.000.'],'La diferencia de compras contiene exactamente una entrada adulta, sin entrada infantil.',['Con adulto 7.000 e infantil 4.000, la compra grande sería 18.000, no 19.000.',null,'Con adulto 9.000 e infantil 2.000, la compra grande sería 20.000.','11.000 es el costo de adulto e infantil juntos; no de la entrada adulta sola.']);
+ add(227,'Función afín y tarifa fija','Debemos evaluar la tarifa f(x) = 2.500 + 800x en x = 6 kilómetros.',['El fijo es 2.500 pesos y el costo por kilómetro 800 pesos.','Reemplazamos solo x: f(6) = 2.500 + 800 × 6 = 2.500 + 4.800.','Sumamos ambas partes: f(6) = $7.300.'],'El cargo fijo se paga una vez y los seis kilómetros agregan 4.800 pesos.',['4.800 calcula solo los seis kilómetros y omite la tarifa fija.',null,'8.100 correspondería a siete kilómetros, porque 2.500 + 800 × 7 = 8.100.','15.000 multiplica 2.500 por seis; el fijo no es el cobro por kilómetro y además falta el término variable.']);
+ add(228,'Pendiente de una recta','Los dos puntos permiten comparar el cambio vertical con el horizontal.',['De (0,3) a (2,7), el cambio de y es 7 − 3 = 4.','El cambio de x es 2 − 0 = 2.','La pendiente es 4/2 = 2 unidades de y por cada unidad de x.'],'La regla y = 3 + 2x produce y = 7 cuando x = 2: sube cuatro al avanzar dos.',['1 no reproduce el cambio: avanzar dos haría subir solo dos y terminaría en cinco.',null,'3 es la ordenada inicial, y cuando x = 0, no el aumento por unidad.','4 es el cambio vertical completo; falta repartirlo entre las dos unidades horizontales.']);
+ add(229,'Función afín y tarifa fija','La entrada de f es −1; debemos sustituirla completa y conservar el signo.',['f(−1) = 3(−1) − 2.','Primero el producto: 3(−1) = −3.','Después la resta: −3 − 2 = −5.'],'Al restar dos a −3 avanzamos hacia valores más negativos, no hacia cero.',[null,'−1 resulta de −3 + 2; la función indica restar dos, no sumarlos.','1 es f(1) = 3 − 2: cambia indebidamente la entrada negativa por positiva.','5 toma la magnitud del resultado, pero el signo negativo también forma parte de la salida.']);
+ add(230,'Cuadráticas y soluciones reales','La ecuación requiere todos los valores reales cuyo cuadrado sea nueve.',['Sumamos nueve a ambos lados de x² − 9 = 0: x² = 9.','3² = 9 y (−3)² = 9.','Las dos soluciones son x = −3 y x = 3.'],'Ambas producen cero al restar nueve; ninguna debe omitirse.',['Solo 3 omite −3, cuyo producto (−3)(−3) también vale nueve.','Solo −3 omite el valor positivo 3, que también cumple.',null,'Con cero obtenemos −9 y con nueve obtenemos 72: ninguno hace cero la expresión.']);
+ add(231,'Extremos de una cuadrática','Nos preguntan en qué instante ocurre la altura máxima, no cuánto mide esa altura.',['En h(t) = −(t − 3)² + 9, el cuadrado es siempre no negativo.','Restarlo de nueve da como máximo nueve, cuando el cuadrado vale cero.','Eso ocurre si t − 3 = 0: t = 3. Entonces h(3) = 9.'],'Con t = 2 o t = 4 la altura vale ocho, menor que nueve; el instante del máximo es tres.',['En t = 0 la altura es −9 + 9 = 0, no el máximo.',null,'t = 6 produce también altura cero, cuando la pelota ya bajó.','9 es la altura máxima, no el instante en que ocurre; t = 9 no anula el cuadrado.']);
+ add(232,'Extremos de una cuadrática','Buscamos el valor mínimo de f, no solamente la coordenada x del vértice.',['Reescribimos x² − 4x + 3 como (x − 2)² − 1, porque (x − 2)² = x² − 4x + 4.','El cuadrado alcanza su mínimo cero con x = 2.','Entonces f(2) = 0 − 1 = −1. Cualquier otro cuadrado agrega una cantidad no negativa.'],'Para todo x real, (x − 2)² − 1 ≥ −1, y x = 2 efectivamente alcanza ese límite.',[null,'0 es un valor posible en las raíces, pero f(2) = −1 demuestra que puede bajar más.','1 no es mínimo: al sustituir x = 2 se obtiene −1. No confundas el término final de la forma cuadrada con un signo positivo.','3 es f(0), una salida particular que está por encima del mínimo.']);
+ add(233,'Teorema de Pitágoras','La escalera de 5 m es la hipotenusa; la distancia al muro de 3 m es un cateto.',['El muro y el suelo forman el ángulo recto. Si h es la altura, h² + 3² = 5².','Despejamos h² = 25 − 9 = 16.','Tomamos la raíz positiva porque es longitud: h = 4 m.'],'3² + 4² = 9 + 16 = 25 = 5². La altura es menor que la escalera.',['2 resta 5 − 3 directamente, pero Pitágoras relaciona cuadrados, no una resta de lados.','3 es la distancia horizontal conocida, no la altura; dos catetos de tres darían hipotenusa √18.',null,'8 suma las longitudes conocidas; la altura ni siquiera podría superar la escalera de cinco.']);
+ add(234,'Teorema de Pitágoras','La diagonal del rectángulo forma la hipotenusa con los lados perpendiculares de seis y ocho.',['Escribimos d² = 6² + 8².','Calculamos 36 + 64 = 100.','La diagonal mide d = √100 = 10 unidades.'],'10² = 6² + 8²; diez supera ambos lados sin alcanzar el recorrido de catorce por el borde.',['7 es menor que el lado de ocho, por lo que no puede ser la hipotenusa.',null,'14 suma seis y ocho: es el recorrido por dos bordes, no la diagonal.','48 es 6 × 8, el área del rectángulo, no una longitud.']);
+ add(235,'Teorema de Pitágoras','La hipotenusa es 13 cm y conocemos un cateto de 12; falta el otro cateto.',['Si c es el cateto faltante, c² + 12² = 13².','Restamos: c² = 169 − 144 = 25.','Por ser longitud tomamos la raíz positiva: c = √25 = 5 cm.'],'12² + 5² = 144 + 25 = 169 = 13²; no confundimos c² con c.',['1 resta las longitudes 13 − 12 en vez de restar sus cuadrados.',null,'12,5 no es √25; su cuadrado es 156,25 y no completaría la igualdad.','25 es el cuadrado del cateto; falta obtener su raíz para responder la longitud.']);
+ add(236,'Área de un círculo','El radio mide 5 cm y debemos calcular superficie usando π = 3,14.',['Aplicamos A = πr² con r = 5 cm.','Primero el cuadrado: 5² = 25 cm².','Multiplicamos 3,14 × 25 = 78,5 cm².'],'El radio se eleva al cuadrado antes de multiplicar por π; 31,4 cm sería contorno, otra magnitud.',['15,7 es πr y omite uno de los factores cinco necesarios para el área.','31,4 es 2πr, la longitud del contorno, y debería medirse en cm.',null,'157 es el doble del área: añade un factor dos que la superficie circular no requiere.']);
+ add(237,'Longitud de circunferencia','Ya conocemos el diámetro de 8 m y queremos el borde, con π = 3.',['Usamos L = πd porque nos dieron el diámetro.','Sustituimos: L = 3 × 8.','El contorno mide 24 m; no aparece ninguna unidad al cuadrado.'],'El radio sería cuatro: 2 × 3 × 4 = 24 m, equivalente a usar πd.',['12 multiplica π por el radio y solo alcanza la mitad del contorno.','16 duplica el diámetro sin usar π; no mide la vuelta completa.',null,'48 duplica de nuevo el diámetro ya conocido; 2πr y πd son alternativas, no factores que se agreguen juntos.']);
+ add(238,'Áreas de paralelogramo y trapecio','El trapecio tiene bases paralelas de 10 y 6 cm y altura perpendicular de cuatro.',['Sumamos las bases: 10 + 6 = 16 cm.','Su promedio es 16/2 = 8 cm.','Multiplicamos por la altura: 8 × 4 = 32 cm².'],'Dos trapecios iguales forman un paralelogramo de base 16 y altura cuatro, área 64; uno ocupa 32.',['16 suma las bases pero no incorpora la altura ni toma el promedio.','24 usa solo la base menor por la altura: omite el ensanchamiento hasta la base mayor.',null,'64 es el área de dos copias del trapecio; falta dividir por dos.']);
+ add(239,'Áreas de paralelogramo y trapecio','Aunque el paralelogramo esté inclinado, conocemos base nueve y altura perpendicular cuatro.',['El área de un paralelogramo es base por altura perpendicular.','Sustituimos A = 9 × 4.','Obtenemos 36 cm², sin dividir entre dos.'],'Reacomodar su esquina lo convierte en un rectángulo de nueve por cuatro sin cambiar su superficie.',['13 suma dos longitudes y no obtiene superficie.','18 divide por dos como si fuera un triángulo; el paralelogramo ya ocupa el área completa.',null,'72 duplica el área; no hay dos figuras que sumar.']);
+ add(240,'Volumen y superficie de prismas','La caja es un cubo de arista 4 cm; buscamos espacio interior.',['Una base tiene 4 × 4 = 16 cm².','La altura es también cuatro: V = 16 × 4 = 64 cm³.','Equivalentemente V = 4³ = 4 × 4 × 4.'],'Cuatro capas de dieciséis cubitos de 1 cm³ suman 64 cm³.',['12 suma tres aristas y no mide espacio interior.','16 es el área de una cara; falta la tercera dimensión.','48 es tres veces el área de una cara, no cuatro capas de altura.',null]);
+ add(241,'Volumen y superficie de prismas','El depósito mide 5 por 3 por 2 m; el volumen necesita las tres dimensiones.',['La base rectangular mide 5 × 3 = 15 m².','Multiplicamos por dos metros de altura: V = 15 × 2 = 30 m³.','El resultado cuenta treinta cubos de un metro de lado.'],'Una capa de 1 m de altura contiene quince metros cúbicos; hay dos capas.',['10 multiplica largo por altura y deja fuera el ancho.','15 es el área de la base, todavía sin la altura.',null,'60 duplica el volumen; las tres dimensiones ya cuentan el espacio completo.']);
+ add(242,'Volumen y superficie de prismas','Se quiere papel para cubrir las seis caras del cubo cerrado, no para llenarlo.',['Cada cara cuadrada tiene 3 × 3 = 9 cm².','Un cubo tiene seis caras, incluyendo tapa y fondo.','El total es 6 × 9 = 54 cm².'],'Al desplegar el cubo aparecen seis cuadrados de área nueve cada uno.',['9 cubre solo una de las seis caras.','18 cubre dos caras, no el cubo completo.','27 es 3³, el volumen en cm³; el papel se mide en cm².',null]);
+ add(243,'Cilindro: volumen','El cilindro tiene radio dos y altura cinco; utilizamos π = 3.',['La base tiene área πr² = 3 × 2² = 3 × 4 = 12 cm².','Multiplicamos por la altura: V = 12 × 5.','El volumen es 60 cm³.'],'Cada centímetro de altura contiene 12 cm³ y cinco capas suman 60.',['30 usa 3 × 2 × 5 y omite elevar el radio al cuadrado.',null,'90 no conserva el área de base de 12 cm²: a cinco centímetros de altura implicaría una base de 18. Calcula primero 3 × 2².','120 agrega un factor dos extra; no se duplica el volumen por tener dos bases.']);
+ add(244,'Cilindro: superficie lateral','Solo vamos a envolver el costado: radio cuatro, altura seis y π = 3.',['La vuelta de la base mide 2πr = 2 × 3 × 4 = 24 cm.','Desplegado, el costado es un rectángulo de 24 por 6 cm.','Su área es 24 × 6 = 144 cm², sin sumar discos.'],'El ancho de la etiqueta da una vuelta completa; el alto alcanza los seis centímetros.',['24 es el contorno de la base en cm; todavía falta multiplicar por la altura.','48 usa 2 × 4 × 6 pero omite el factor π = 3.','72 usa πrh y recorre solo media circunferencia: falta el factor dos.',null]);
+ add(245,'Reflexión','El espejo es el eje y, así que cambia la posición horizontal y se mantiene la altura.',['El punto (3,−2) está tres unidades a la derecha y dos abajo del origen.','Reflejar respecto del eje y lo lleva tres a la izquierda, conservando las dos abajo.','La imagen es (−3,−2).'],'Ambos puntos tienen la misma coordenada y y distancias opuestas de tres al eje vertical.',['(3,2) refleja en el eje x, que no es el solicitado.',null,'(−3,2) cambia ambas coordenadas, equivalente a media vuelta alrededor del origen.','(2,−3) intercambia posiciones y signos sin respetar la distancia perpendicular al eje y.']);
+ add(246,'Traslación','Partimos en (−1,4) y movemos tres a la derecha y dos hacia abajo.',['Aplicamos la componente horizontal: −1 + 3 = 2.','Aplicamos la componente vertical: 4 + (−2) = 2.','El punto de llegada es (2,2).'],'El desplazamiento entre llegada y partida es (2 − (−1), 2 − 4) = (3,−2), el vector pedido.',['(−4,6) resta el vector en lugar de sumarlo.',null,'(2,6) mueve hacia arriba dos en lugar de bajar dos.','(−3,1) no corresponde a sumar cada componente; conserva el orden horizontal y vertical.']);
+ add(247,'Rotación','El giro es un cuarto de vuelta antihorario alrededor del origen.',['Para 90° antihorarios aplicamos (x,y) → (−y,x).','En (2,1), la nueva x es −1 y la nueva y es 2.','La imagen es (−1,2).'],'La distancia al origen conserva su cuadrado 2² + 1² = 5; el punto pasa del primer al segundo cuadrante.',['(1,−2) corresponde a un cuarto de vuelta horario, el sentido contrario.',null,'(−2,−1) corresponde a una media vuelta de 180°.','(2,−1) es una reflexión en el eje horizontal, no un giro de 90°.']);
+ add(248,'Escala y semejanza','Una altura de 1,5 cm en escala 1:100 representa cien veces esa longitud real.',['Multiplicamos manteniendo centímetros: 1,5 × 100 = 150 cm.','Cien centímetros forman un metro: 150/100 = 1,5 m.','La altura real es 1,5 m; la conversión de unidad no cambia la distancia física.'],'1,5 m son 150 cm; divididos por la escala cien regresan a 1,5 cm del modelo.',['0,15 m son quince centímetros, diez veces menos que lo representado.',null,'15 m son 1.500 cm y equivaldrían a quince centímetros del modelo.','150 m conserva el número en centímetros pero cambia la etiqueta sin convertir la unidad.']);
+ add(249,'Escala y semejanza','El lado de tres corresponde a nueve; debemos usar ese mismo factor en el lado de cinco.',['El factor de semejanza es k = 9/3 = 3.','Multiplicamos el lado correspondiente de cinco por el mismo factor: 5 × 3 = 15 cm.','El lado de cuatro pasaría a doce; el triángulo mayor tiene lados nueve, doce y quince.'],'Las razones 9/3, 12/4 y 15/5 valen todas tres.',['11 suma la diferencia 9 − 3 al lado cinco; la semejanza conserva razones, no diferencias.','12 corresponde al lado de cuatro, no al de cinco.',null,'45 multiplica cinco por nueve, pero nueve es un lado, no el factor de escala.']);
+ add(250,'Frecuencia relativa','Queremos el porcentaje de los cuarenta estudiantes que representa el grupo de doce.',['Los favorables a estudiar de mañana son doce y el total son cuarenta.','La frecuencia relativa es 12/40 = 0,30.','Al multiplicar por cien se obtiene 30%.'],'Treinta de cada cien es la misma proporción que doce de cada cuarenta.',['12% toma el recuento doce como si ya estuviera sobre cien.',null,'40% confunde el total cuarenta con la proporción del subgrupo.','70% corresponde a los veintiocho que no eligieron estudiar de mañana.']);
+ add(251,'Lectura y suma de frecuencias','Para hallar la venta total debemos incluir los cuatro días.',['Lunes y martes suman 12 + 15 = 27.','Agregamos miércoles: 27 + 9 = 36.','Agregamos jueves: 36 + 14 = 50 jugos.'],'La agrupación alternativa (12 + 14) + (15 + 9) = 26 + 24 también da cincuenta.',['36 omite los catorce jugos del jueves.','41 omite los nueve jugos del miércoles.',null,'60 excede en diez la suma de las ventas; suma cada día una sola vez.']);
+ add(252,'Comparación de frecuencias','Se pregunta cuántos más hay en fútbol que en teatro, no cuántos hay juntos.',['Leemos fútbol dieciocho y teatro seis.','Restamos el grupo menor del mayor: 18 − 6 = 12.','Las doce personas son la diferencia entre ambos talleres.'],'Seis de teatro más doce de diferencia recuperan las dieciocho de fútbol.',['6 responde la cantidad en teatro, sin comparar.','9 es el dato de dibujo; no corresponde a los dos talleres preguntados.',null,'24 suma 18 + 6: responde cuántas inscripciones reúnen, no cuántas más tiene fútbol.']);
+ add(253,'Promedio ponderado','La nota seis pesa más que la cinco; debemos respetar sus porcentajes de influencia.',['La prueba de cinco aporta 5 × 0,40 = 2,0.','La prueba de seis aporta 6 × 0,60 = 3,6.','Sumamos los aportes: 2,0 + 3,6 = 5,6.'],'5,6 está entre cinco y seis y más cerca de seis, la nota que pesa 60%.',['5,4 intercambia los pesos: 5 × 0,60 + 6 × 0,40.','5,5 es el promedio simple y daría el mismo peso a las dos pruebas.',null,'6,0 ignora por completo la primera nota, que sí representa el 40%.']);
+ add(254,'Mediana','Los siete datos ya están ordenados; necesitamos el cuarto valor.',['La posición central es (7 + 1)/2 = 4.','Contamos 2, 4, 6, 8: el cuarto dato es ocho.','Quedan tres datos antes y tres después, por lo que la mediana es ocho.'],'Aquí media y mediana coinciden en ocho, pero la justificación de mediana es su posición.',['6 es el tercer dato y deja distinto número de observaciones a cada lado.','7 es la cantidad de datos, no el dato de la posición central.',null,'10 es el quinto valor, después del centro.']);
+ add(255,'Cuartiles y dispersión central','El enunciado define Q1 como mediana de la mitad inferior excluyendo la mediana general.',['La mediana general es ocho y se excluye al partir el registro.','La mitad inferior queda formada por 2, 4 y 6.','La mediana de esa mitad es cuatro, por lo que Q1 = 4.'],'Usamos exactamente la convención indicada; otros métodos de cuartiles pueden dar resultados diferentes en muestras pequeñas.',['2 es el mínimo de la mitad inferior, no su dato central.',null,'6 es el máximo de la mitad inferior, no su mediana.','8 es la mediana general que la convención pidió excluir.']);
+ add(256,'Percentiles','Hay que interpretar una posición relativa: el percentil 75 no expresa necesariamente setenta y cinco puntos.',['Ordenamos conceptualmente las puntuaciones de menor a mayor.','El nivel P75 deja aproximadamente 75% de los datos en o bajo ese valor.','La puntuación concreta dependerá del grupo; el número 75 identifica una posición porcentual.'],'La interpretación admite aproximación y empates; no informa la puntuación exacta ni asegura que sea el máximo.',['Superar solo al 25% confunde P75 con una posición cercana al primer cuartil.','75 puntos convierte la etiqueta de posición en una puntuación que no conocemos.',null,'Ser máximo no se deduce: P75 describe una posición relativa y no aporta el valor máximo del registro.']);
+ add(257,'Cuartiles y dispersión central','Q1 y Q3 son los extremos de la caja; buscamos su ancho, no su suma.',['La caja empieza en diez y termina en dieciocho.','El rango intercuartílico es Q3 − Q1 = 18 − 10.','Su ancho es ocho unidades.'],'Sumar el ancho ocho a Q1 = 10 llega exactamente a Q3 = 18.',['4 es la mitad del ancho; no se pide dividirlo entre dos.',null,'10 es Q1, el extremo inicial, no la distancia entre extremos.','28 suma los extremos y no mide la separación de la caja.']);
+ add(258,'Complemento de un evento','Si llover tiene probabilidad 0,35, no llover ocupa el resto del total.',['Llover y no llover son complementarios bajo las mismas condiciones.','Sus probabilidades suman uno.','P(no lluvia) = 1 − 0,35 = 0,65.'],'0,35 + 0,65 = 1; el complemento equivale a 65%.',['0,35 repite la probabilidad de lluvia en vez de su negación.','0,55 deja una suma de 0,90: faltarían posibilidades sin contar.',null,'1,35 supera uno y no puede ser probabilidad; se sumó donde correspondía restar.']);
+ add(259,'Unión de eventos','En una extracción sirven tanto las bolitas verdes como las rojas.',['El total es 5 + 3 + 2 = 10 bolitas.','Verde y roja son colores excluyentes en esta bolsa: hay 5 + 2 = 7 favorables.','P(verde o roja) = 7/10.'],'Las tres amarillas son el complemento: 7/10 + 3/10 = 1.',['1/2 solo cuenta las cinco verdes y omite las dos rojas.',null,'3/10 cuenta las amarillas, exactamente las que no queremos.','8/10 supondría ocho favorables, pero solo hay cinco verdes y dos rojas.']);
+
  global.CachasteM1Teach=function(bank){
   for(const q of bank){const row=rows[q.id];if(!row)continue;const base=lessons[row.key];
    const t={revision:'tutor-profesor-2026-10-15',qualityBefore:'básica',quality:'adecuada',aim:row.aim,foundation:base.foundation.slice(),application:row.application.slice(),check:row.check,intuition:base.intuition.slice(),example:{...base.example,steps:base.example.steps.slice()}};
