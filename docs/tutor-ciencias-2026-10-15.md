@@ -17,3 +17,11 @@ Se completan otras 54 clases, total 90/206. Se comprueban las relaciones 1:2:1 g
 Los ejemplos se ajustan al mecanismo: una mutación de rama se compara con esqueje y semillas, el parentesco mediante ADN usa regiones homólogas, la fiabilidad usa una serie de tiempos discordantes y la representación usa pares tiempo-temperatura. Pared celular tiene una lección propia de soporte y turgencia. No se usa contar especies como ejemplo de comparar ADN.
 
 Validación móvil: 48 pruebas de las 90 clases aprobadas. Corrección del registro de lógica: antes del respaldo, quedaba una expectativa antigua en el test de 043 que exigía literalmente «Bb×bb». Se actualizó para verificar el cruce nuevo Tt×tt, la probabilidad de cada resultado y la distinción entre probabilidad y reparto obligatorio; después pasaron las 128 pruebas de lógica. Se conserva la distinción explícita «proporción genotípica» en 043. Las preguntas y elegibilidad siguen intactas. La clasificación de conceptos seguirá precisándose antes del cierre para evitar certificar transferencia entre procedimientos diferentes.
+
+## Lote 3 · SCI-091–150
+
+Otras 60 clases completas, total 150/206. Se desarrollan aceleración con cambio de velocidad, trabajo de la fuerza elevadora frente a trabajo neto, eficiencia, ley de reflexión con referencia normal/superficie, resistencia paralela con fracciones, moles y concentración con unidades y balance de átomos. Se incorporan lecciones específicas de tono/intensidad, ondas sísmicas P/S, Doppler e isomería estructural.
+
+Comprobaciones: trabajo elevador de 100 J en 092, eficiencia 70% en 093, I=2 A en 099, equivalente paralela de 3 Ω en 127, 1 mol/L tras duplicar volumen en 114 y 8 neutrones en 132. En 124 se explica por qué subir con velocidad constante no requiere fuerza neta ascendente. En 128 se vincula la ausencia de S en líquido con respuesta de cizalla, sin decir que S no viaja en sólidos.
+
+Validación del lote: 128 pruebas de lógica aprobadas y 78 ejecuciones del profesor de Ciencias aprobadas en Android Chrome y 320 px. Quedan 56 preguntas de Ciencias; cobertura global 567/623. Las claves y condiciones de ensayo se conservan.
