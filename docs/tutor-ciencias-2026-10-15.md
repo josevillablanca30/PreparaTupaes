@@ -9,3 +9,11 @@ Antes SCI-016 decía «rapidez = distancia/tiempo; 120/20 = 6». Ahora explica q
 Referencias primarias contrastadas para los fundamentos: [OMS, preservativos](https://www.who.int/news-room/fact-sheets/detail/condoms), [OMS, vacunación y memoria](https://www.who.int/news-room/questions-and-answers/item/vaccines-and-immunization-what-is-vaccination), [USGS, placas y magma](https://www.usgs.gov/faqs/are-tectonic-plates-floating-magma). Se distingue reducción de riesgo de garantía absoluta y manto principalmente sólido de un océano global de magma. Los contenidos de vacunas se aplicarán a sus lotes correspondientes.
 
 Validación: 128 pruebas de lógica y 18 pruebas de navegador Android Chrome/320 px aprobadas. Las pruebas recorren todos los distractores y modos de las 36 clases y preservan los datos curriculares. No equivalen a revisión externa por un docente ni a prueba física en teléfono. Pendientes de Ciencias en este checkpoint: 170.
+
+## Lote 2 · SCI-037–090
+
+Se completan otras 54 clases, total 90/206. Se comprueban las relaciones 1:2:1 genotípica frente a 3:1 fenotípica, la probabilidad aa de 25%, el gameto de seis cromosomas de una especie 2n=12, el circuito paralelo de tres ohmios y los cálculos de rapidez y fuerza.
+
+Los ejemplos se ajustan al mecanismo: una mutación de rama se compara con esqueje y semillas, el parentesco mediante ADN usa regiones homólogas, la fiabilidad usa una serie de tiempos discordantes y la representación usa pares tiempo-temperatura. Pared celular tiene una lección propia de soporte y turgencia. No se usa contar especies como ejemplo de comparar ADN.
+
+Validación: 128 pruebas de lógica aprobadas; 48 pruebas móviles de las 90 clases aprobadas. Se conserva la distinción explícita «proporción genotípica» en 043. Las preguntas y elegibilidad siguen intactas. La clasificación de conceptos seguirá precisándose antes del cierre para evitar certificar transferencia entre procedimientos diferentes.

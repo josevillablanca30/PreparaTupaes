@@ -3,9 +3,9 @@
   "scope": "Revisión editorial asistida; no medición de aprendizaje con estudiantes. No se clasifica como excelente por longitud. Los ítems pendientes no se presentan como revisados.",
   "summary": {
     "total": 623,
-    "reviewed": 453,
-    "pending": 170,
-    "rewrittenThreeModes": 453,
+    "reviewed": 507,
+    "pending": 116,
+    "rewrittenThreeModes": 507,
     "excellent": 0
   },
   "bySubject": {
@@ -15,7 +15,7 @@
     },
     "Ciencias": {
       "total": 206,
-      "reviewed": 36
+      "reviewed": 90
     },
     "Lectura": {
       "total": 130,
@@ -2314,326 +2314,812 @@
     {
       "subject": "Ciencias",
       "id": "SCI-037",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-038",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-039",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-040",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-041",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-042",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-043",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-044",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-045",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-046",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-047",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-048",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-049",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-050",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-051",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-052",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-053",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-054",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-055",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-056",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-057",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-058",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-059",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-060",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-061",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-062",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-063",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-064",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-065",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-066",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-067",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-068",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-069",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-070",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-071",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-072",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-073",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-074",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-075",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-076",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-077",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-078",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-079",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-080",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-081",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-082",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-083",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-084",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-085",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-086",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-087",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-088",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-089",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
       "id": "SCI-090",
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "Ciencias",
