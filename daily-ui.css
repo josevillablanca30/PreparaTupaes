@@ -17,3 +17,9 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 .daily-quest-progress>span{display:block;height:100%;border-radius:inherit;background:var(--game-purple);transition:width .2s ease}
 .daily-quest>button{width:100%;margin-top:4px}
 @media(prefers-reduced-motion:reduce){.daily-quest-progress>span{transition:none}}
+
+.mission-teaser{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--game-border);border-radius:18px;padding:13px 15px;margin:17px 0}
+.mission-teaser>div{flex:1;min-width:0}
+.mission-teaser strong{color:var(--game-deep);font-size:15px}
+.mission-teaser p{font-size:12px;color:var(--game-muted);margin:4px 0 9px;line-height:1.4!important}
+#daily-root .mission-teaser button{font-size:13px;min-height:44px;padding:8px 10px;flex-shrink:0}
