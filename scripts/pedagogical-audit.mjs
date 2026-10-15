@@ -20,7 +20,7 @@ for(const [name,questions] of Object.entries(banks)){
   if(stems.has(normalize(q.question)))flag('duplicate_stem','critical','Enunciado repetido');stems.add(normalize(q.question));
   if(![4,5].includes(opts.length)||new Set(opts.map(normalize)).size!==opts.length||!Number.isInteger(q.answer)||q.answer<0||q.answer>=opts.length)flag('invalid_options','critical','Claves o alternativas inválidas');
   if(!q.question||q.question.length<20)flag('short_stem','review','Enunciado muy breve');
-  if(!q.why&&(!q.explanations||q.explanations.length!==opts.length))flag('missing_feedback','critical','Sin justificación o explicación por alternativa');
+  if(!q.explanations||q.explanations.length!==opts.length)flag('missing_feedback','critical','Sin justificación o explicación por alternativa');
   if(q.why&&q.why.length<35)flag('short_explanation','review','Explicación de menos de 35 caracteres');
   if(name==='Ciencias'||name==='Lectura'){
    if(!q.easy||q.easy.trim().length<95)flag('vague_easy','review','Modo Más fácil demasiado breve: requiere explicación comprensible y concreta');

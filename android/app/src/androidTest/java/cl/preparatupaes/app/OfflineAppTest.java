@@ -67,6 +67,28 @@ public class OfflineAppTest {
         waitFor("document.querySelector('h1') && document.querySelector('h1').textContent.includes('Aprende primero')");
         assertNotEquals("null",js("localStorage.getItem('cachaste-m1-diagnostic-draft-v1')"));
     }
+    @Test public void teacherExplainsSelectedMistakeAndTransfersOffline() throws Exception {
+        open("m2.html", "document.getElementById('diagnostic')");
+        js("localStorage.setItem('cachaste-m2-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'native-teacher',mode:'express',ids:['M2-001'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}}));true");
+        open("m2.html", "document.getElementById('resume')");
+        js("document.getElementById('resume').click();true");
+        waitFor("document.querySelector('[data-choice]')");
+        js("[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.slice(3)==='x=4').click();document.querySelector('[data-conf=\"duda\"]').click();document.getElementById('check').click();true");
+        waitFor("document.querySelector('.teaching-section')");
+        assertEquals("true",js("document.querySelector('.error-reason').textContent.includes('Elegiste: x=4')"));
+        assertEquals("true",js("document.querySelector('.tutor-panel').textContent.includes('El concepto desde cero')"));
+        String draft=js("localStorage.getItem('cachaste-m2-v1')");
+        js("document.querySelector('[data-explain=\"easy\"]').click();true");
+        assertEquals("true",js("document.querySelector('.tutor-panel').textContent.includes('Imagina un valle')"));
+        js("document.querySelector('[data-explain=\"example\"]').click();true");
+        assertEquals("true",js("document.querySelector('.tutor-panel').textContent.includes('C(q)=(q−6)²+20')"));
+        assertEquals(draft,js("localStorage.getItem('cachaste-m2-v1')"));
+        scenario.recreate();
+        waitFor("document.getElementById('resume')");
+        assertEquals(draft,js("localStorage.getItem('cachaste-m2-v1')"));
+        js("document.getElementById('resume').click();document.getElementById('next').click();document.getElementById('reinforce').click();true");
+        assertEquals("true",js("JSON.parse(localStorage.getItem('cachaste-m2-v1')).session.ids.every(id=>id!=='M2-001')"));
+    }
     @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         PackageInfo info=context.getPackageManager().getPackageInfo(context.getPackageName(),PackageManager.GET_PERMISSIONS);

@@ -40,3 +40,22 @@ test('Tutor: los ejemplos nuevos resuelven otra tarea y las comprobaciones matem
  const q=after.find(q=>q.id==='M2-001');assert.match(q.teaching.application.join(' '),/suma y resta cuatro/);
  const med=after.find(q=>q.id==='M2-038');assert.match(med.teaching.example.problem,/qué pasa con mediana y media/);
 });
+test('Tutor: una explicación corresponde a cada alternativa y se reparan los valores absolutos partidos',()=>{
+ for(const [subject,bank]of Object.entries(banks)){if(subject==='texts')continue;for(const q of bank)assert.equal(q.explanations.length,q.options.length,subject+' '+q.id);}
+ const abs=after.find(q=>q.id==='M2-027');assert.match(abs.explanations[1],/viola x>3/);assert.match(abs.explanations[2],/\|5−3\|=2/);assert.match(abs.explanations[3],/\|3−3\|=0/);
+ const q=after.find(q=>q.id==='M2-024');assert.match(q.explanations[1],/3²/);assert.equal(3**2,9);assert.equal(3*2**2,12);
+ assert.equal(after.filter(q=>q.teaching).length,106,'M2 completo, sin contar materias pendientes');
+});
+test('Tutor: ejemplos iguales con IDs distintos no certifican aprendizaje nuevo',()=>{
+ const source=readFileSync(new URL('../learning-core.js',import.meta.url),'utf8');
+ const w={};
+ // La regla se comprueba en un contexto aislado, sin estado del navegador.
+ return import('node:vm').then(({runInNewContext})=>{
+  runInNewContext(source,{window:w});
+  const bank=[{id:'a',concept:'Media',transferGroup:'mismo-problema'},{id:'b',concept:'Media',transferGroup:'mismo-problema'},{id:'c',concept:'Media'}];
+  const secure=id=>({id,correct:true,confidence:'seguro',assisted:false});
+  assert.notEqual(w.CachasteLearning.profile(bank,[secure('a'),secure('b')])[0].status,'comprobado');
+  assert.equal(w.CachasteLearning.profile(bank,[secure('a'),secure('c')])[0].status,'comprobado');
+  const failed=[{id:'a',correct:false,confidence:'duda'}];assert.deepEqual(Array.from(w.CachasteLearning.transfer(bank,failed,failed,10),q=>q.id),['c']);
+ });
+});

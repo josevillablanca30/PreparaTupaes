@@ -7,7 +7,7 @@ for(const row of baseline){
  const q=banks[row.subject].find(q=>q.id===row.id);
  if(!q)throw Error('Se perdió un ítem: '+row.id);
  if(!q.teaching)continue;
- row.review='revision_editorial_asistida_de_contenido';row.qualityBefore=q.id==='M2-050'?'insuficiente':'básica';row.quality=q.teaching.quality;
+ row.review='revision_editorial_asistida_de_contenido';row.qualityBefore=['M2-027','M2-050'].includes(q.id)?'insuficiente':'básica';row.quality=q.teaching.quality;
  row.evidence=['Fundamentos definidos','Aplicación propia conservada y revisada','Comprobación específica','Estrategia cotidiana diferente','Otro problema resuelto y puente de transferencia','Distractor elegido identificado y procedimiento de reparación'];
 }
 const reviewed=baseline.filter(r=>r.review!=='pendiente_revision_pedagogica_individual');

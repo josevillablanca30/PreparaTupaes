@@ -16,7 +16,7 @@
       if (!row.correct || row.assisted || row.confidence === 'azar' || row.confidence === 'duda') {
         item.lastFailure = index; item.evidence.clear(); item.status = 'por reforzar';
       } else if(row.confidence === 'seguro') {
-        item.evidence.add(row.id);
+        item.evidence.add(q.transferGroup || row.id);
         item.status = item.evidence.size >= 2 ? 'comprobado' : 'por comprobar';
       } else if(item.status !== 'comprobado') item.status='por comprobar';
     });
