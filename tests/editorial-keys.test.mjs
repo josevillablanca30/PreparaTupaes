@@ -22,6 +22,8 @@ test('Ciencias: Aa x Aa distingue genotipo 1:2:1 y fenotipo 3:1',()=>{
  assert.match(q.explanations[1],/fenotip/i);
  assert.match(q.easy,/genotíp/i);
  assert.match(q.steps.join(' '),/AA, Aa, aA y aa/);
- assert.match(q.example,/Bb×bb/);
+ assert.match(q.example,/Tt se cruza con tt/);
+ assert.match(q.example,/cada una con probabilidad 1\/2/);
+ assert.match(q.example,/probabilidades por descendiente/);
  assert.equal(q.examEligible,false);
 });
