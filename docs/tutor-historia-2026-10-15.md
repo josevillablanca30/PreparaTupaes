@@ -91,7 +91,15 @@ El primer lote usó calidad anterior básica y actual adecuada, según lectura d
 
 ## Verificación al cerrar Historia
 
-117 pruebas de lógica aprobadas, cero fallos y cero omitidas. Auditoría estructural: 623 preguntas, cero fallos críticos y 402 alertas heurísticas para revisión, que no equivalen por sí solas a errores conceptuales. Los recorridos móviles completos y la compilación nativa se registran al terminar, sin confundir un inicio de workflow con aprobación.
+117 pruebas de lógica y 46 recorridos locales del tutor de Historia aprobados, cero fallos y cero omitidas. Los recorridos usan las 195 alternativas incorrectas y los tres modos en Android Chrome y 320 px. Auditoría estructural: 623 preguntas, cero fallos críticos y 402 alertas heurísticas para revisión, que no equivalen por sí solas a errores conceptuales. Se inspeccionaron visualmente fundamentos, analogía y ejemplo a 320 px: párrafos separados, lista de operaciones y desplazamiento vertical sin desborde. La ejecución local de toda la suite terminó sin resumen completo en el archivo de salida; no se contabiliza como aprobación integral. La compilación nativa y la suite completa de CI se registran al terminar.
+
+## Corrección de la conservación de firma beta
+
+El log Android `38730337593` confirma el problema: la caché apuntaba a `~/.android/debug.keystore`, pero al guardarla ese archivo no existía. El workflow advertía `Path Validation Error` y no guardaba ninguna clave. Por tanto, repetir la rama no garantizaba una firma estable. Las claves privadas descartadas en esos runners no pueden recuperarse desde sus APK; no se promete compatibilidad de actualización con `0a3f2f6` ni se indica borrar una instalación con avances.
+
+Se configura una ruta explícita compartida por Gradle y la caché, se crea/verifica una clave de beta en esa ruta cuando no existe y se verifica criptográficamente cada APK con `apksigner`. Solo el certificado público acompaña al artefacto; la clave se excluye de git y de los adjuntos. Se usa la caché v2 de la rama principal; se probará su recuperación en la rama de respaldo después de completarse la primera compilación.
+
+Esto corrige la ruta y permite comprobar continuidad entre compilaciones. Una caché de Actions puede caducar o ser eliminada: no equivale a custodia permanente de una clave de publicación. Antes de distribución estable/Google Play se necesita una clave de producción con respaldo seguro. No se han creado secretos de publicación, realizado gastos ni publicado la app.
 
 ## Evidencia cerrada de M2
 

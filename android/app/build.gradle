@@ -10,6 +10,18 @@ android {
         versionCode 12
         versionName '1.1.0-beta'
     }
+    signingConfigs {
+        debug {
+            // CI usa una ruta explícita que también recupera la caché. Nunca es una clave de publicación.
+            def betaKeystore = System.getenv('CACHASTE_DEBUG_KEYSTORE')
+            if (betaKeystore) {
+                storeFile file(betaKeystore)
+                storePassword 'android'
+                keyAlias 'androiddebugkey'
+                keyPassword 'android'
+            }
+        }
+    }
     buildTypes {
         debug {
             applicationIdSuffix '.sciencebeta'
