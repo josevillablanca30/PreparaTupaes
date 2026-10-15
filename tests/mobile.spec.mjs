@@ -53,11 +53,13 @@ test('diagnóstico completo: error, explicaciones, resultado y progreso persiste
   await page.getByRole('button', { name: 'Comprobar respuesta', exact: true }).tap();
   await expect(page.getByText('Todavía no, pero cada intento enseña algo.', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Más fácil', exact: true }).tap();
-  await expect(page.getByText(/25% es la cuarta parte/)).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Imagínalo así',exact:true})).toBeVisible();
+  await expect(page.getByText(/una de cuatro porciones de una pizza/)).toBeVisible();
   await page.getByRole('button', { name: 'Con un ejemplo', exact: true }).tap();
-  await expect(page.getByText('Una polera de $20.000 con 25% de descuento queda en $15.000.', { exact: true })).toBeVisible();
+  await expect(page.getByText('Un estanque tenía 80 litros y se utilizó el 15% para regar. ¿Cuánta agua queda?',{exact:true})).toBeVisible();
+  await expect(page.getByText(/80 − 12 = 68 litros/)).toBeVisible();
   await page.getByRole('button', { name: 'Paso a paso', exact: true }).tap();
-  await expect(page.getByText('Resta el descuento: 40.000 − 10.000 = 30.000.', { exact: true })).toBeVisible();
+  await expect(page.getByText('Restamos el ahorro al precio: 40.000 − 10.000 = $30.000.',{exact:true})).toBeVisible();
   await checkLayout(page);
   await info.attach('explicacion-movil', { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
   await page.getByRole('button', { name: 'Siguiente pregunta →', exact: true }).tap();
@@ -256,7 +258,10 @@ test('argumentación M1: corrige razonamientos en interfaz móvil',async({page})
  await page.locator('button.option').first().tap();
  await page.getByRole('button',{name:'Comprobar respuesta',exact:true}).tap();
  await expect(page.getByText('Respuesta correcta:',{exact:false})).toBeVisible();
- await expect(page.getByRole('button',{name:'No entendí nada',exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'Más fácil',exact:true}).tap();
+ await expect(page.getByRole('heading',{name:'Imagínalo así',exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'Con un ejemplo',exact:true}).tap();
+ await expect(page.getByRole('heading',{name:'Un problema distinto',exact:true})).toBeVisible();
  await checkLayout(page);
 });
 

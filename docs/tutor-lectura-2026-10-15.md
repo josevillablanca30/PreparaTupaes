@@ -17,3 +17,15 @@ Se completan otras 50 clases y se contrastan con los diez pasajes restantes; los
 La pregunta negativa LEC-085 se enseña explícitamente como detección de una afirmación injustificada: elegir «mejoró la comprensión gracias a los dispositivos» no la convierte en verdadera. Las tres alternativas restantes se explican como observaciones que sí respalda la tabla.
 
 Validación: 124 pruebas de lógica aprobadas, con comprobación literal de las 100 citas. La primera ejecución detectó una cita con «su» en vez de «Su» en LEC-088; se corrigió para conservar exactamente el original. Las 60 pruebas de navegador de las 100 clases pasaron; la próxima ejecución integral verificará también la versión final de esa corrección de mayúscula. No se presenta la estética ni la longitud como prueba de aprendizaje.
+
+## Lote 3 · LEC-101–130 · Lectura completa
+
+Las 130 preguntas y sus 390 distractores están revisados; las 130 clases tienen fundamentos, evidencia exacta, razonamiento particular, comprobación y otro texto resuelto. Se reescriben individualmente los 90 distractores del último lote, que antes repetían plantillas, además de conservar los diagnósticos particulares comprobados de 001–100.
+
+Corrección crítica: 103, 113, 126 y 129 pedían encontrar una afirmación excesiva, incompatible o no respaldada. La plantilla anterior llamaba a esa alternativa «conclusión respaldada» y decía que las alternativas verdaderas no coincidían con el texto. Ahora explica la consigna negativa y por qué se debe señalar para rechazar la afirmación. 085 se verifica con el mismo criterio. En 126, reconocer una melodía no prueba que la banda conociera la vida de Elvira. En 129, valorar el trayecto no demuestra renuncia permanente a fotografiar.
+
+El refuerzo requiere otro pasaje para el mismo procedimiento: los ítems de igual procedimiento dentro de un mismo texto comparten familia y no constituyen dos pruebas independientes de transferencia. Las revisiones de resultados de Lectura y M1 también utilizan secciones legibles, en lugar de juntar la explicación larga en un solo párrafo.
+
+Validación final de este checkpoint: 125 pruebas de lógica aprobadas. La batería completa Android Chrome/320 px ejecutó 278 pruebas: 274 pasaron y cuatro fallaron por textos antiguos o la expectativa del cuarto botón genérico de M1. Se actualizaron esas dos pruebas para verificar la analogía nueva, la resolución del estanque y los tres modos solicitados; las cuatro ejecuciones dirigidas pasaron. No se desactivó ninguna prueba. Las 78 ejecuciones del profesor lector recorrieron los 130 ítems, tres distractores y tres modos sin errores ni desbordes. La ejecución integral en CI queda pendiente de este commit.
+
+Cobertura acumulada: 417/623 (M1 116, M2 106, Lectura 130 e Historia 65). Única materia pendiente de revisión profunda: Ciencias, 206. No se declara lista la aplicación por esta revisión editorial ni se afirma prueba en teléfono físico.
