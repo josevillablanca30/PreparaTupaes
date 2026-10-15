@@ -3211,99 +3211,11 @@
     },
     {
       "bank": "Historia",
-      "id": "HIS-044",
-      "area": "Economía y sociedad",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-045",
-      "area": "Economía y sociedad",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-046",
-      "area": "Interpretación de fuentes",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-047",
-      "area": "Interpretación de fuentes",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
       "id": "HIS-047",
       "area": "Interpretación de fuentes",
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-048",
-      "area": "Interpretación de fuentes",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-049",
-      "area": "Interpretación de fuentes",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-050",
-      "area": "Interpretación de fuentes",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-051",
-      "area": "Historia de Chile",
-      "type": "vague_core_reasoning",
-      "level": "review",
-      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-051",
-      "area": "Historia de Chile",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-052",
-      "area": "Historia mundial",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-053",
-      "area": "Formación ciudadana",
-      "type": "vague_hint",
-      "level": "review",
-      "detail": "Pista demasiado breve para acompañar aprendizaje"
     },
     {
       "bank": "Historia",
@@ -3474,7 +3386,7 @@
   },
   "summary": {
     "critical": 0,
-    "review": 425,
+    "review": 414,
     "questionCount": 623
   }
 }

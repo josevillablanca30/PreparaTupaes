@@ -52,8 +52,6 @@ Consulta: 15 de octubre de 2026. Se redactó material original; las fuentes sirv
 
 14 recorridos locales aprobados (Android Chrome y 320 px): usan las tres alternativas incorrectas de cada pregunta del lote, cambian entre los tres modos y comprueban ausencia de desborde horizontal. Otro recorrido recupera la clase tras recargar y ofrece HIS-059 como problema distinto. El primer intento no pudo abrir el ejecutable local truncado de Chromium; se regeneró desde el paquete existente y se ejecutaron las pruebas completas, sin cambiar ni desactivar casos. Hay una nueva prueba nativa Android para ese recorrido; su resultado se registrará al completar CI, sin darla por aprobada anticipadamente.
 
-## Evidencia cerrada de M2
-
 ## Corrección del refuerzo de Historia
 
 El agrupamiento anterior por grandes áreas podía considerar dos hechos inconexos como evidencia del mismo aprendizaje. Se reemplazó por 50 conceptos precisos en los 65 IDs existentes, sin modificar sus respuestas ni borrar historial. El perfil usa el ID para reinterpretar resultados antiguos: sus antiguas etiquetas amplias no certifican dominio automáticamente.
@@ -62,7 +60,17 @@ HIS-012 y HIS-021 preguntan por la misma relación minería/exportación/urbaniz
 
 El ensayo conserva los 65 ítems originales mediante una opción explícita del selector: la exclusión de familias equivalentes se usa para prácticas y transferencia, no para acortar el ensayo. Eso preserva estructura y también documenta que el banco contiene esa relación casi equivalente. El aviso de agotamiento lleva al inicio de la pantalla para que sea visible en un teléfono.
 
-115 pruebas de lógica aprobadas. Se ejecutan además los recorridos de ambos ensayos completos, persistencia, entrega por tiempo y tutor a 320 px y Android Chrome. No se presenta esta corrección de conceptos como reescritura de las 25 clases aún pendientes.
+115 pruebas de lógica y 52 recorridos móviles aprobados, incluyendo ambos ensayos completos, persistencia, entrega por tiempo y tutor a 320 px y Android Chrome. No se presenta esta corrección de conceptos como reescritura de las 25 clases aún pendientes.
+
+## Lote 3: HIS-041 a HIS-053
+
+13 clases y 39 distractores adicionales. Historia acumula 53/65; total de esta pasada: 159/623, con 464 pendientes. Se enseñan criterios laborales sin confundir ausencia de sueldo con desocupación, desplazamiento de oferta, tasas efectivas, costos externos y riesgos compartidos. El trabajo con fuentes se limita a la información entregada y separa datos, inferencias y causas.
+
+HIS-050 antes daba otro censo con porcentajes distintos. Ahora un club de ajedrez permite comprobar que una proporción puede subir mientras la cantidad baja: 60% de 20 son doce personas; 80% de diez son ocho. Cambia el contexto y la tarea: construir un contraejemplo para comprender la necesidad de una base. HIS-043 compara dos esquemas hipotéticos para mostrar que más pesos no implica mayor tasa. Los ejemplos tributarios no se presentan como tablas vigentes ni asesoría.
+
+Fuentes de contraste adicionales: [INE, estadísticas laborales](https://www.ine.gob.cl/estadisticas-por-tema/mercado-laboral/ocupacion-y-desocupacion); [SII, definición de tributo progresivo y tasa efectiva](https://www.sii.cl/valores_y_fechas/impuesto_2da_categoria/impuesto2026.htm); [CMF Educa, diversificación](https://www.cmfchile.cl/educa/621/w3-article-1091.html). Se consultan definiciones, sin copiar cifras coyunturales al banco.
+
+Verificación del lote: 116 pruebas de lógica y 40 recorridos locales de Historia aprobados, cero fallos y cero omitidos. La auditoría sigue con 623 preguntas y cero fallos críticos.
 
 ## Evidencia cerrada de M2
 

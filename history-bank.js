@@ -650,6 +650,138 @@ Object.assign(HISTORIA_TEACHING,{
   bridge:'En el ítem original reconoce producción final en un período y territorio. No elijas riqueza acumulada ni impresión de dinero.'
  }
 });
+Object.assign(HISTORIA_TEACHING,{
+ '041':{
+  aim:'Diferencia no recibir sueldo, no tener una ocupación y estar desocupado según una medición laboral. No son categorías idénticas.',
+  foundation:['Las estadísticas laborales usan criterios para comparar situaciones, no solo etiquetas como estudiante o jubilado. Una persona ocupada tiene una actividad laboral según las reglas de la medición; puede ser asalariada o trabajar por cuenta propia. No recibir un sueldo de un empleador no significa automáticamente estar sin ocupación.','Para la desocupación se consideran falta de ocupación, búsqueda de empleo y disponibilidad, dentro de los períodos de referencia de la encuesta. La fuerza de trabajo reúne personas ocupadas y desocupadas. Quienes no reúnen condiciones para integrarla no se clasifican automáticamente como desempleados. Un estudiante o jubilado puede tener distintas situaciones laborales: su etiqueta no reemplaza esos criterios.'],
+  application:['Busca una definición con las condiciones laborales relevantes, no con un grupo social único.','Sin trabajo, búsqueda y disponibilidad es la combinación que describe la opción correcta.','No basta carecer de sueldo, estudiar o estar jubilado. Hay que preguntar qué actividad se realiza y si se busca empleo y se está disponible.'],
+  check:'No uses desempleado como sinónimo de toda persona sin salario. La tasa compara desocupados con fuerza de trabajo; no con toda la población. Para clasificar casos reales se aplican los criterios completos de la encuesta.',
+  intuition:['Dos personas pueden no recibir un sueldo mensual y estar en situaciones diferentes. Una vende productos por cuenta propia; otra no tiene trabajo y busca uno. Mirar solo la existencia de una liquidación de sueldo las mezclaría.','La estadística hace preguntas sobre actividad, búsqueda y disponibilidad para distinguirlas. También evita suponer que todos los estudiantes o jubilados hacen lo mismo: una persona puede estudiar y trabajar, por ejemplo.'],
+  problem:'Caso imaginado: Paula trabaja por cuenta propia vendiendo verduras y Diego está sin ocupación, busca empleo y puede comenzar. Ninguno recibe sueldo de una empresa. ¿Se clasifican igual por ese solo dato?',
+  example:['Paula realiza una actividad laboral: trabajar por cuenta propia no requiere recibir sueldo de un empleador para contar como ocupación.','Diego reúne las condiciones descritas de falta de ocupación, búsqueda y disponibilidad.','No se clasifican igual solo por no recibir sueldo. La información sobre actividad y búsqueda permite distinguir sus situaciones.'],
+  bridge:'En el ítem original elige los criterios de desocupación, no una categoría basada solo en sueldo, estudio o jubilación.'
+ },
+ '042':{
+  aim:'Identifica qué curva cambia: aumenta la oferta, mientras se mantiene la demanda. No inventaremos un cambio de gustos de los compradores.',
+  foundation:['Oferta es la relación entre precios y cantidades que vendedores están dispuestos a ofrecer. Que aumente significa que ofrecen más a cada precio, por ejemplo por mejoras productivas. Demanda describe las compras deseadas y posibles a distintos precios. El equilibrio competitivo se ubica donde coinciden cantidades ofrecida y demandada.','Con curvas ordinarias y demanda fija, más oferta genera presión hacia un precio menor: al precio anterior hay más unidades que los compradores desean adquirir. Al bajar el precio, puede aumentar la cantidad comprada hasta un nuevo equilibrio. No se desplaza por eso toda la demanda: se modifica la cantidad demandada a lo largo de ella.'],
+  application:['Fija el cambio: oferta mayor. Conserva la demanda según el enunciado.','Bajo el modelo competitivo ordinario, el nuevo equilibrio tiende a tener precio menor y cantidad mayor.','Elige menor precio de equilibrio. No supongas una caída de demanda ni que necesariamente se venderán menos unidades.'],
+  check:'Puedes diferenciar desplazamiento de oferta y movimiento sobre demanda: cambia la capacidad de ofrecer a cada precio; los compradores responden al nuevo precio sin que cambien sus preferencias o ingresos.',
+  intuition:['Imagina más puestos ofreciendo un producto a los mismos compradores. Para vender la mayor cantidad disponible, aparece presión para bajar el precio. Con el precio más bajo, algunos compradores llevan más unidades.','La imagen sirve bajo las condiciones del modelo del ítem. No afirma que cualquier mercado ajuste instantáneamente ni permite calcular un precio exacto sin conocer las relaciones de oferta y demanda.'],
+  problem:'Caso imaginado: una tormenta reduce las capturas de pescado y los vendedores ofrecen menos a cada precio, mientras los compradores mantienen la misma demanda. ¿Qué dirección de precio sería coherente con el modelo?',
+  example:['La oferta se reduce, al contrario del caso original; no se dice que cambien los gustos.','Al precio anterior faltarían unidades frente a lo que se desea comprar. Hay presión hacia un precio mayor.','Con curvas ordinarias, el nuevo equilibrio tiende a precio mayor y cantidad menor. La magnitud exige más datos.'],
+  bridge:'Usa la dirección de la oferta para razonar: en tu pregunta aumenta, por lo que la tendencia del precio es la contraria, hacia abajo.'
+ },
+ '043':{
+  aim:'Compara proporciones pagadas, no solo pesos. Pagar una suma mayor no demuestra por sí solo que un impuesto sea progresivo.',
+  foundation:['La base gravada es el monto al que se refiere el impuesto. La tasa efectiva o media es impuesto pagado dividido por esa base, expresado como porcentaje. Progresivo significa que esa proporción aumenta al crecer la base: la carga relativa es mayor.','Un esquema proporcional mantiene la misma tasa aunque el monto en pesos aumente. Un esquema regresivo tiene una carga relativa menor al crecer la base. Estas son definiciones de estructura tributaria, no una tabla para calcular obligaciones reales: los ejemplos de la clase son hipotéticos y no corresponden a tasas vigentes.'],
+  application:['Localiza la relación solicitada: base mayor y tasa efectiva mayor.','La primera alternativa expresa esa progresividad. No basta que todos paguen el mismo monto fijo.','Disminuir la carga relativa sería regresividad; aplicarse a importaciones describe el ámbito del impuesto, no su progresividad.'],
+  check:'Calcula impuesto ÷ base antes de clasificar. Si una persona paga el doble de pesos pero también tiene el doble de base, la tasa es igual: eso es proporcional, no una prueba de progresividad.',
+  intuition:['Una misma suma pesa distinto en bolsillos de diferente tamaño. Pagar $100 sobre $1.000 equivale a una décima parte; sobre $2.000, a una vigésima.','Por eso la progresividad mira la parte del total que se aporta. La palabra progresivo no significa simplemente que el Estado recaude más pesos ni que el pago aumente con el paso del tiempo.'],
+  problem:'Dos esquemas imaginados: A cobra $100 sobre base $1.000 y $200 sobre $2.000; B cobra $100 y $400 sobre esas mismas bases. ¿Cuál muestra progresividad en esa comparación?',
+  example:['En A: 100 ÷ 1.000 = 10% y 200 ÷ 2.000 = 10%. Aumentan los pesos, pero no la proporción.','En B: 100 ÷ 1.000 = 10% y 400 ÷ 2.000 = 20%. La tasa efectiva crece con la base.','B es progresivo en la comparación; A es proporcional. Son ejemplos didácticos, no un cálculo de impuestos chilenos.'],
+  bridge:'En el ítem original busca aumento de tasa efectiva al crecer la base, no solo aumento de monto o un tipo de producto gravado.'
+ },
+ '044':{
+  aim:'Buscaremos un costo que recae sobre alguien ajeno al intercambio y que no queda plenamente considerado en el precio.',
+  foundation:['En una transacción hay quienes compran y venden. Una externalidad es un efecto sobre terceros que no participa plenamente en esa decisión o intercambio. Es negativa si impone un costo, como daño, molestias o gastos, que no se incorpora totalmente en las decisiones y precios.','La diferencia entre costo privado y social es importante: una actividad puede ser rentable para quienes transan y al mismo tiempo perjudicar a vecinos. Si el costo externo se ignora, el mercado puede generar más de la actividad que lo socialmente conveniente. Identificar ese problema no determina por sí solo una política única: hay que estudiar el daño y las alternativas.'],
+  application:['Identifica terceros: personas afectadas que no son simplemente comprador y vendedor del bien.','Busca un costo que no se incorpora plenamente en el precio de la transacción. Esa es la alternativa correcta.','Ni la ausencia de efectos sociales ni el aumento obligatorio del bienestar describe una externalidad negativa; el daño no desaparece automáticamente porque haya una venta.'],
+  check:'No todo gasto del productor es externo. Si compra un insumo y paga su precio, ese es un costo privado. El rasgo decisivo aquí es el costo para terceros que no queda plenamente asumido en el intercambio.',
+  intuition:['Una fiesta puede ser entretenida para quienes compraron entrada y rentable para quien la organiza. Si el ruido impide dormir a vecinos que no participaron, aparece un costo fuera de la boleta.','La palabra externa se refiere a quedar fuera de esa decisión y precio, no a ocurrir fuera del país. Seguir quién disfruta, quién paga y quién soporta molestias ayuda a encontrar el problema.'],
+  problem:'Caso imaginado: un espectáculo paga a músicos y personal, pero su ruido nocturno perjudica a vecinos que no compraron entradas y no reciben compensación. ¿Qué costo ilustra la externalidad?',
+  example:['El pago a músicos y personal ya es un costo considerado por el organizador.','La molestia sobre vecinos ajenos al intercambio es otro efecto, no incluido plenamente en el precio de entrada.','Ese perjuicio a terceros ilustra el costo externo negativo. No basta observar que el espectáculo tuvo ingresos para afirmar beneficio social neto.'],
+  bridge:'En tu pregunta elige costos para terceros no incorporados plenamente en el precio: es la relación que define la consecuencia consultada.'
+ },
+ '045':{
+  aim:'Aprenderemos qué riesgo puede reducir repartir recursos y por qué eso nunca equivale a prometer ganancias seguras.',
+  foundation:['Un activo es un recurso o instrumento con valor económico. Invertir implica exponer recursos a resultados inciertos. Riesgo específico es el vinculado a una empresa, actividad o sector particular; un riesgo general puede afectar simultáneamente a muchas inversiones.','Diversificar consiste en distribuir entre activos con exposiciones diferentes, de modo que la caída de uno no afecte todo de la misma manera. Tener muchos nombres no basta si todos dependen del mismo problema. La diversificación puede reducir exposición específica, pero no elimina riesgo de mercado, costos ni posibilidad de pérdida. Esta clase explica el concepto y no recomienda productos financieros.'],
+  application:['Busca distribución entre activos, no concentración en uno solo.','La opción correcta expresa reducir exposición específica; es un objetivo posible, no una garantía.','Ganancias sin riesgo y eliminación de toda fluctuación exageran el alcance del método. Una crisis general todavía puede afectar varios activos a la vez.'],
+  check:'Pregunta si los activos tienen riesgos diferentes y cuáles comparten. Contar inversiones sin observar esa relación puede dar una falsa sensación de diversificación.',
+  intuition:['Repartir una carga en varias bolsas puede evitar perderlo todo si una se rompe. Pero si todas quedan en el mismo vehículo y ese vehículo falla, comparten un riesgo.','En inversiones ocurre algo parecido: repartir puede proteger de ciertos problemas particulares, mientras otros afectan al conjunto. La comparación ayuda a entender por qué reducir un riesgo no es eliminar cualquier riesgo.'],
+  problem:'Caso imaginado: alguien cree estar protegido porque reparte recursos entre tres empresas, pero las tres dependen de una única fábrica. ¿El número tres demuestra por sí solo riesgos independientes?',
+  example:['No mires solo los nombres: identifica el factor común del que dependen los resultados.','Una interrupción de la fábrica puede afectar simultáneamente a las tres empresas.','Tener tres activos no prueba eliminar esa exposición compartida. Diversificar exige examinar diferencias y riesgos comunes; aun con diferencias persiste incertidumbre.'],
+  bridge:'En el ítem original la respuesta es distribuir recursos para reducir exposición específica, manteniendo claro que no hay garantía de ganancia.'
+ },
+ '046':{
+  aim:'Ajustaremos el alcance de una conclusión a lo que aporta una carta. No le atribuiremos cifras, autoría ni leyes que el enunciado no entrega.',
+  foundation:['Un testimonio es un registro situado: alguien describe o interpreta una experiencia desde un contexto. La carta de 1900 menciona jornadas extensas. Eso informa sobre la percepción expresada por su autor acerca de condiciones laborales en su entorno, sin demostrar por sí sola lo que ocurría en todas partes.','Generalizar es extender una conclusión a un conjunto mayor. Para hacerlo se necesitan fuentes con cobertura adecuada y contraste: registros, otros testimonios y documentos pertinentes. Que una fuente sea contemporánea no la vuelve una muestra estadística nacional ni demuestra ausencia universal de leyes. Debemos evaluar por separado qué afirma y cuánto permite concluir.'],
+  application:['Usa solo el dato entregado: una carta describe jornadas extensas en 1900.','La conclusión prudente es que su autor percibía condiciones exigentes en su entorno. No necesitas inventar una jornada exacta ni su puesto de trabajo.','Todos los trabajadores del mundo, ninguna ley y cifras nacionales exactas exceden el alcance de ese testimonio.'],
+  check:'Revisa el tamaño de tu afirmación: ¿hablas de lo que describe un autor o de toda una población? La primera conclusión está respaldada; la segunda necesita evidencia adicional que el enunciado no ofrece.',
+  intuition:['Si una persona te cuenta que esperó mucho un bus, conoces su relato de esa espera. No sabes todavía cómo funcionaron todas las rutas del país durante todo el año.','Eso no vuelve inútil su experiencia. Te da una pista y una perspectiva, pero para una conclusión más grande necesitas más registros. El buen análisis aprovecha la fuente sin hacerla decir más de lo que puede.'],
+  problem:'Caso imaginado: una pasajera relata que su bus se retrasó una mañana. ¿Ese testimonio basta para afirmar que todas las rutas tuvieron retraso ese mes?',
+  example:['El relato refiere a una persona, un recorrido y un momento, no al conjunto de rutas.','Para evaluar el mes completo se necesitarían registros de varios servicios y períodos, con criterios comparables.','Puedes afirmar que ella describió un retraso; no convertirlo automáticamente en una estadística universal.'],
+  bridge:'Aplica ese límite a la carta de 1900: percepción situada de trabajo exigente, sin inventar cifras nacionales o condiciones de todo el mundo.'
+ },
+ '047':{
+  aim:'Distinguiremos la variable que el gráfico describe de otras que no mide. El enunciado da una tendencia de matrícula, sin datos adicionales sobre aprendizaje.',
+  foundation:['Matrícula es el registro de estudiantes inscritos. Un gráfico que muestra su aumento permite describir esa variable en el período indicado. Calidad educativa y finalización son otras dimensiones: estar inscrito no prueba cuánto se aprendió ni si se completó el programa.','Un total agregado reúne casos y puede ocultar diferencias entre lugares. Incluso si el total aumenta de modo sostenido, no se deduce que cada región creció igual o que todos terminaron estudios. Interpretar bien un indicador exige preguntar qué mide, para quién y durante qué período, antes de explicar causas o efectos.'],
+  application:['Identifica la variable descrita: matrícula escolar entre 1950 y 1970.','La conclusión directamente respaldada es que la matrícula creció en el período mostrado.','No hay mediciones de calidad, término de estudios ni distribución territorial en la descripción. Las otras alternativas añaden información que no se entregó.'],
+  check:'No inventes valores o puntos del gráfico: aquí solo conocemos la tendencia descrita. Puedes describir crecimiento de matrícula, pero no calcular su magnitud ni probar mejoras educativas de igual proporción.',
+  intuition:['Entrar a un curso y aprender sus contenidos son cosas relacionadas, pero distintas. Contar cuántas personas se inscriben no equivale a comprobar qué saben hacer al final.','Piensa en cada indicador como una herramienta con una función. Sirve para mirar algo concreto; pedirle que responda cualquier otra pregunta puede producir conclusiones sin respaldo.'],
+  problem:'Caso imaginado: una biblioteca informa más préstamos de libros. Alguien concluye que la comprensión lectora aumentó exactamente en la misma proporción. ¿Qué falta?',
+  example:['Los préstamos cuentan circulación de libros, no directamente comprensión de quien los recibe.','Para evaluar comprensión se necesitarían tareas o evidencias de lectura, además del número de préstamos.','La conclusión segura es aumento de préstamos. La supuesta mejora exacta requiere otra medición y no se deduce automáticamente.'],
+  bridge:'En el ítem escolar aplica el mismo cuidado: matrícula creció; calidad y finalización requieren indicadores adicionales.'
+ },
+ '048':{
+  aim:'Aprenderemos a contrastar versiones diferentes sin elegir por longitud ni decidir que toda diferencia vuelve inútiles las fuentes.',
+  foundation:['Una fuente selecciona qué hechos destaca y cómo los presenta. Contexto editorial incluye quién publica, a qué público se dirige y qué posición o propósito puede orientar el tratamiento. Perspectiva no significa que cada dato sea falso: un relato puede destacar un aspecto verdadero y omitir otro.','Contrastar consiste en comparar afirmaciones, pruebas, procedencia y contexto. Se distinguen hechos verificables, interpretaciones y juicios. Las coincidencias pueden apoyar ciertos datos y las diferencias plantear preguntas; ninguna regla dice que el texto más largo sea más exacto o que todas las versiones tengan el mismo respaldo.'],
+  application:['Parte del dato: dos periódicos describen de modo distinto la misma protesta.','Compara qué afirma cada uno, qué evidencias aporta, qué omite y desde qué contexto escribe.','Selecciona comparar perspectivas, evidencias y contexto. Extensión, descarte sin lectura o suponer identidad evitan el trabajo de contraste.'],
+  check:'La pregunta no entrega el contenido de los artículos, por lo que no podemos decidir cuál tiene razón ni inventar citas. Sí podemos elegir un método para evaluarlos de manera fundada.',
+  intuition:['Dos personas pueden contar un partido: una habla de una lesión y otra de una jugada. No son relatos idénticos, pero tampoco necesariamente incompatibles. Debes mirar qué ocurrió y qué parte eligió contar cada una.','Con periódicos, además, preguntas quién informa y con qué pruebas. Comparar no significa promediar versiones hasta inventar una tercera: significa comprobar cada afirmación relevante.'],
+  problem:'Caso imaginado: un testigo dice que una calle estuvo cerrada y otro relata que una ambulancia pudo pasar. ¿La diferencia demuestra por sí sola que uno mintió?',
+  example:['Precisa tiempos y condiciones: un cierre general puede permitir excepciones o cambiar durante el día.','Busca registros y contexto para saber si ambas afirmaciones refieren al mismo momento y situación.','No elijas automáticamente por la extensión del relato. La aparente contradicción requiere contraste antes de declarar una mentira.'],
+  bridge:'En la pregunta original aplica ese método a las versiones periodísticas: perspectivas, contexto y evidencia, sin inventar qué dijo cada diario.'
+ },
+ '049':{
+  aim:'Separaremos describir un cambio espacial de explicar su causa histórica. Un mapa no responde por sí solo ambas preguntas.',
+  foundation:['Un mapa representa información espacial mediante escala, colores, símbolos y límites. Comparar mapas de distintas fechas puede mostrar cómo cambió una frontera. La escala relaciona distancias del dibujo con el territorio; no explica decisiones políticas.','Para estudiar causas necesitas fuentes sobre procesos: tratados, conflictos y decisiones de la época. Un documento puede ayudar si su fecha, contenido y actores se relacionan con el cambio mostrado. Que un tratado sea contemporáneo no prueba automáticamente que causó esa frontera: debe examinarse su contenido y contrastarse.'],
+  application:['Identifica lo que ya sabes: hay un cambio fronterizo representado.','Busca evidencia sobre acuerdos, conflictos o decisiones capaces de explicar ese cambio.','Elige tratados y procesos políticos. Color, escala o tamaño del papel sirven para interpretar la representación o su soporte, pero no determinan por sí solos la causa política.'],
+  check:'Puedes responder cómo se representa el límite y todavía no saber por qué cambió. No atribuyas una guerra o tratado específico que el enunciado no identifica: la pregunta solicita qué evidencia buscar.',
+  intuition:['Ver una puerta nueva en el plano de un edificio muestra que el dibujo cambió. No explica quién decidió construirla ni para qué. Necesitas planos de obra, acuerdos u otros antecedentes.','Con fronteras sucede una distinción semejante, aunque involucren relaciones de poder mucho más amplias. Leer el símbolo es el comienzo; explicar el proceso exige documentos y contexto.'],
+  problem:'Caso imaginado: dos mapas de una red ferroviaria muestran una línea nueva. ¿Cambiar el color de la leyenda basta para explicar por qué se construyó?',
+  example:['La leyenda ayuda a identificar qué representa la línea y evita confundirla con una carretera.','Para explicar la construcción se necesitan proyectos, decisiones de financiamiento y antecedentes de demanda o estrategia.','La representación muestra el cambio; los documentos pertinentes permiten investigar sus causas. Un color no sustituye esa evidencia.'],
+  bridge:'En tu pregunta fronteriza busca tratados, conflictos y decisiones relevantes, además de leer correctamente el mapa.'
+ },
+ '050':{
+  aim:'Diferencia proporción urbana, cantidad de habitantes urbanos y población total. El porcentaje siempre necesita una base.',
+  foundation:['Un porcentaje indica una parte por cada cien del total de referencia. El 40% urbano significa cuarenta de cada cien habitantes; el 60%, sesenta de cada cien. El paso de 40% a 60% aumenta la participación urbana en veinte puntos porcentuales.','Para obtener habitantes urbanos debes multiplicar la proporción por la población total de cada momento. Como esos totales no se entregan, no sabes cuántas personas urbanas había ni cuánto creció el país. Veinte puntos porcentuales tampoco equivalen a afirmar veinte por ciento de crecimiento del total.'],
+  application:['Identifica la base: población total en cada censo. Se describe su parte urbana.','Compara participaciones: 60% es mayor que 40%, por lo que aumentó la proporción urbana.','No puedes concluir que cada ciudad duplicó habitantes ni que desapareció la población rural. Tampoco conoces la variación de la población total.'],
+  check:'Conocer la fracción no es conocer el tamaño del conjunto. Aun si aumenta la proporción, necesitas los totales para afirmar una variación absoluta. La respuesta segura se limita al aumento de participación urbana.',
+  intuition:['Una porción más grande de una torta pequeña puede tener menos cantidad que una porción menor de una torta enorme. La fracción y el tamaño total son dos datos diferentes.','Con población, porcentaje y número de personas también son distintos. La palabra aumentó solo es precisa si dices qué aumentó: aquí, la participación relativa de habitantes urbanos.'],
+  problem:'Caso imaginado: en un club, 60% de 20 integrantes practica ajedrez; luego el club tiene 10 integrantes y 80% lo practica. ¿Más porcentaje implica más ajedrecistas?',
+  example:['Al inicio: 0,60 × 20 = 12 ajedrecistas. Después: 0,80 × 10 = 8.','La proporción sube de 60% a 80%, pero la cantidad baja de doce a ocho porque cambió el total.','El caso demuestra que porcentaje mayor no basta para concluir cantidad mayor. Se necesitan ambos datos.'],
+  bridge:'En el censo original solo se entregan porcentajes: puedes afirmar mayor proporción urbana, sin inventar los totales ni su crecimiento.'
+ },
+ '051':{
+  aim:'Explicaremos cómo una infraestructura de transporte puede conectar producción y compradores sin eliminar los demás medios de transporte.',
+  foundation:['Un mercado conecta a quienes producen y venden con quienes compran. Transportar bienes tiene tiempos, costos y límites de capacidad. El ferrocarril del siglo XIX facilitó conexiones entre zonas productivas, ciudades y puertos, con efectos diferentes según trazado y región.','Articular mercados significa hacer más viables esos intercambios entre lugares. Una línea puede llevar productos agrícolas o mineros hacia un puerto, complementando transporte marítimo en vez de reemplazarlo. También puede facilitar movimientos de población. No toda localidad obtuvo el mismo acceso ni todos los efectos fueron inmediatos.'],
+  application:['Busca una consecuencia relacionada con circulación de bienes y personas.','Facilitar transporte y articulación de mercados corresponde al mecanismo: conectar producción con destinos de venta y abastecimiento.','Eliminar inmediatamente barcos, impedir toda migración o suprimir agricultura no se deriva de mejorar esa conexión.'],
+  check:'Imagina el trayecto completo de un producto: puede viajar en tren hasta el puerto y luego en barco. Esa complementariedad muestra por qué el ferrocarril no exige desaparición del comercio marítimo.',
+  intuition:['Un producto no llega a sus compradores solo porque exista. Hace falta moverlo. Una conexión más eficaz puede permitir vender en lugares que antes eran muy difíciles de alcanzar.','Piensa en una cadena de tramos: el tren puede resolver uno y el barco otro. Mejorar un eslabón puede aumentar la utilidad de los demás, en vez de eliminarlos.'],
+  problem:'Caso imaginado: una zona agrícola obtiene una línea hasta un puerto y aumentan los embarques. ¿Es contradictorio que crezcan juntos tren y navegación?',
+  example:['El tren acerca productos de la zona interior al puerto.','El barco los lleva desde allí hacia otros mercados. Son tramos diferentes del mismo circuito.','No hay contradicción: los medios pueden complementarse. Para medir cuánto influyó cada uno se necesitarían registros de transporte y comercio.'],
+  bridge:'En el ítem chileno reconoce transporte y articulación de mercados, sin convertir al tren en causa de desaparición de barcos o agricultura.'
+ },
+ '052':{
+  aim:'Distinguiremos el detonante inmediato de un conflicto de las tensiones y decisiones que ayudan a explicar su expansión.',
+  foundation:['Un detonante es un hecho que precipita una crisis en un contexto ya tensionado. Las causas estructurales son condiciones y rivalidades de más larga duración. El asesinato del archiduque Francisco Fernando en Sarajevo, en junio de 1914, precipitó la crisis diplomática que condujo al estallido de la Primera Guerra Mundial.','Las rivalidades entre potencias, los sistemas de alianzas, el nacionalismo y decisiones durante la crisis ayudan a explicar cómo se amplió el conflicto. El atentado no contiene por sí solo toda esa explicación ni vuelve la guerra un resultado sin decisiones humanas. Una causa del inicio debe anteceder a este: hechos posteriores no pueden precipitarlo.'],
+  application:['Lee qué se pregunta: el hecho que precipitó la crisis de 1914, no la única causa de toda la guerra.','El asesinato de Francisco Fernando es el detonante entre las opciones.','La caída del muro en 1989, la fundación de la ONU en 1945 y la crisis de 1929 son posteriores a 1914; no pueden haber desencadenado ese inicio.'],
+  check:'Puedes reconocer la chispa sin confundirla con todo el combustible. Nombra el atentado como detonante y conserva la necesidad de estudiar rivalidades, alianzas y decisiones para explicar la guerra.',
+  intuition:['Una chispa puede iniciar un incendio, pero para explicar su magnitud necesitas saber si había material inflamable y cómo se respondió. La comparación separa inicio inmediato y condiciones.','En historia no son procesos automáticos como una máquina: también hay actores que deciden. Por eso no basta memorizar el atentado para explicar cada causa o consecuencia de la Primera Guerra Mundial.'],
+  problem:'Caso imaginado: una discusión puntual desencadena una ruptura entre organizaciones que acumulaban rivalidades durante años. ¿Identificar la discusión basta para explicar toda la ruptura?',
+  example:['La discusión puede ser el desencadenante inmediato: ayuda a ubicar cuándo se abrió la crisis.','Las rivalidades previas y decisiones posteriores explican por qué ese episodio tuvo tal alcance.','Separa los niveles de explicación. Reconocer el detonante no obliga a negar antecedentes ni a considerar inevitable el resultado.'],
+  bridge:'En tu pregunta se solicita el detonante de 1914: el asesinato en Sarajevo, dentro de una explicación histórica más amplia.'
+ },
+ '053':{
+  aim:'Entenderemos rendir cuentas como informar y justificar una gestión para que pueda evaluarse, no como publicar cualquier cifra sin control.',
+  foundation:['Una autoridad toma decisiones y usa recursos públicos dentro de sus atribuciones. Rendir cuentas significa explicar qué hizo, con qué recursos, por qué y con qué resultados, de modo que otras personas e instituciones puedan examinar su actuación y responsabilidades.','La transparencia aporta información, pero la rendición de cuentas también requiere posibilidad de escrutinio y respuestas fundadas. Se relaciona con controles institucionales y ciudadanos. No reemplaza las elecciones ni exige suprimir participación: ofrece herramientas para evaluar el ejercicio del cargo también entre votaciones.'],
+  application:['Pregunta para qué se informa y justifica una gestión: para evaluarla y controlarla.','Esa finalidad aparece en la primera alternativa.','Eliminar transparencia o impedir participación contradiría ese examen. Reemplazar todas las elecciones tampoco es su propósito: son mecanismos complementarios.'],
+  check:'No basta mirar si hay muchas páginas publicadas. Pregunta si permiten identificar decisiones, recursos y resultados, contrastarlos y exigir explicaciones. Eso vincula información con responsabilidad pública.',
+  intuition:['Si un grupo administra dinero común, quienes aportan necesitan saber qué se hizo y por qué. Una cifra final sin detalle puede ser insuficiente para evaluar la gestión.','En el Estado, además, existen competencias y mecanismos formales de control. La idea cotidiana ayuda a ver el propósito: que tener a cargo recursos de todos implique dar razones y poder ser examinado.'],
+  problem:'Caso imaginado: un organismo publica una lista de gastos sin señalar qué obra financiaron ni responder preguntas sobre diferencias con el presupuesto. ¿La lista por sí sola demuestra rendición completa?',
+  example:['La lista aporta información sobre montos, pero falta relacionarlos con decisiones, fines y resultados.','Para evaluar la gestión se necesitan antecedentes comprensibles y justificaciones, además de los controles pertinentes.','No puedes afirmar rendición completa por el volumen de datos. Transparencia útil y posibilidad de escrutinio deben conectarse.'],
+  bridge:'En el ítem original la finalidad es permitir evaluar y controlar funciones públicas, no solo mostrar números ni reemplazar elecciones.'
+ }
+});
 const HISTORIA_TEACHING_ERRORS={
  '001':[
   'Puede que hayas relacionado cualquier avance democrático con la misma Constitución. El sufragio femenino parlamentario y presidencial se reconoció por la ley de 1949. Separa el cambio electoral de la relación entre Iglesia y Estado establecida en 1925.',
@@ -852,6 +984,73 @@ Object.assign(HISTORIA_TEACHING_ERRORS,{
   'La riqueza acumulada de una empresa es un stock particular en una fecha. El PIB es un flujo de producción de una economía durante un período. Corrige tanto la escala —país, no una empresa— como la diferencia entre acumulación y producción.',
   'Imprimir billetes aumenta una cantidad de dinero, no cuenta por sí solo nuevos bienes y servicios finales. Confundiste el instrumento de pago con la producción que se mide. El PIB no es un contador de papel moneda.',
   'Habitantes es una medida de población, no del valor producido. La población puede ayudar a calcular PIB por habitante si se conoce el PIB, pero no lo reemplaza: necesitas producción final y período.'
+ ]
+});
+Object.assign(HISTORIA_TEACHING_ERRORS,{
+ '041':[
+  'No recibir sueldo no equivale a estar desocupado: existen trabajos por cuenta propia y personas fuera de la fuerza laboral. Corrige el criterio preguntando por ocupación, búsqueda y disponibilidad, no solo por una liquidación de sueldo.',
+  'Estudiar no determina por sí solo la situación laboral. Un estudiante puede trabajar, buscar empleo estando disponible o no integrar la fuerza laboral. La estadística clasifica esas condiciones, no exclusivamente la actividad de estudiar.',
+  'Jubilar no implica automáticamente buscar trabajo ni estar disponible, y tampoco impide toda actividad laboral. La etiqueta jubilado no sustituye los criterios de desocupación. Identifica si hay ocupación, búsqueda y disponibilidad.'
+ ],
+ '042':[
+  'Con oferta mayor a cada precio y demanda fija, la presión ordinaria es hacia menor precio de equilibrio. Si pensaste en precio mayor por mayor demanda, cambiaste una condición que el enunciado mantiene constante.',
+  'La pregunta dice que la demanda se mantiene. Un precio nuevo puede cambiar la cantidad comprada a lo largo de esa curva sin desplazarla completa. No inventes una caída de preferencias para explicar un aumento de oferta.',
+  'En el modelo ordinario, más oferta y demanda fija tienden a aumentar la cantidad de equilibrio. No confundas caída del precio con caída necesaria de unidades transadas: pueden bajar precios y venderse más unidades.'
+ ],
+ '043':[
+  'Un monto fijo no es una proporción creciente: pesa más sobre bases pequeñas. Por ejemplo, los mismos $100 son 10% de $1.000 y 5% de $2.000. Para identificar progresividad compara tasas efectivas, no igualdad de pesos.',
+  'La progresividad exige una carga relativa mayor al crecer la base, no una disminución necesaria. Si estabas pensando en una tasa efectiva decreciente, eso describe regresividad. Distingue tasa, monto pagado y base gravada.',
+  'Aplicarse a productos importados indica sobre qué operación recae un impuesto. No dice si su tasa efectiva crece con la base. Has confundido ámbito del tributo con estructura progresiva de su carga.'
+ ],
+ '044':[
+  'Beneficios privados sin efectos sobre otros no describen una externalidad. Debes identificar terceros afectados por costos no plenamente incorporados en el precio. Que comprador y vendedor ganen no demuestra ausencia de perjuicios externos.',
+  'Que exista una transacción no hace desaparecer la contaminación ni otro daño externo. La externalidad negativa identifica precisamente un costo que el intercambio no incorpora plenamente. Resolverlo requiere analizar mecanismos adicionales, no suponer una corrección automática.',
+  'Un costo para terceros puede reducir bienestar, aunque quienes transan obtengan beneficios. No hay aumento obligatorio del bienestar colectivo. Distingue el beneficio privado del efecto sobre todas las personas afectadas.'
+ ],
+ '045':[
+  'Poner todo en un activo concentra el resultado en sus riesgos particulares. Diversificar busca distribuir exposiciones. No basta que ese activo parezca atractivo para que deje de existir dependencia de una sola inversión.',
+  'Diversificar puede reducir ciertos riesgos, pero no garantiza ganancias. El error convierte una estrategia de reducción de exposición específica en eliminación total de incertidumbre. Todavía puede haber pérdidas y riesgos compartidos.',
+  'Las fluctuaciones generales del mercado pueden afectar varios activos simultáneamente. Diversificación no controla toda la economía. Pregunta qué riesgos difieren y cuáles siguen compartidos, en lugar de prometer ausencia de cualquier caída.'
+ ],
+ '046':[
+  'Una carta situada no demuestra cómo vivían todos los trabajadores del mundo. La generalización cambia enormemente el conjunto sobre el que se afirma algo. Para ampliarlo necesitarías fuentes y cobertura que no aporta el enunciado.',
+  'Describir jornadas extensas no prueba que no existieran leyes en ningún país. Pueden existir normas y problemas de cumplimiento, además de contextos diferentes. No deduzcas ausencia universal de legislación de una experiencia particular.',
+  'La carta no es por sí sola un registro nacional representativo ni entrega cifras exactas de todo el país. Puede aportar una percepción valiosa, pero necesitas otros documentos y criterios para construir una estimación general.'
+ ],
+ '047':[
+  'Matrícula cuenta inscripciones; calidad educativa requiere otras evidencias. Puede que hayas asociado más acceso con mejor aprendizaje, pero el gráfico descrito no mide esa mejora ni permite afirmar una proporción exacta entre ambas.',
+  'Inscribirse no equivale a finalizar estudios. La matrícula puede crecer con trayectorias y tasas de término diferentes. Necesitarías registros de permanencia y finalización para sostener que todos terminaron.',
+  'Un aumento agregado puede coexistir con regiones que crecen distinto o incluso retroceden. El gráfico descrito no entrega distribución territorial. No extiendas una tendencia del total a igualdad entre todos sus componentes.'
+ ],
+ '048':[
+  'Un texto largo puede incluir pruebas sólidas o repetir afirmaciones sin fundamento. La extensión no decide confiabilidad. Compara datos, procedencia y contexto de cada versión antes de preferirla.',
+  'Descartar todas las fuentes sin leerlas impide saber qué pueden aportar. La diferencia entre versiones es una razón para contrastar, no para abandonar toda evidencia. Examina afirmaciones y respaldos concretos.',
+  'El enunciado dice que las descripciones difieren. Suponer identidad borra el problema de análisis. Puede haber énfasis distintos o contradicciones: necesitas comparar contexto y pruebas para distinguirlos, sin inventar el contenido de los artículos.'
+ ],
+ '049':[
+  'La escala relaciona distancias del mapa y del territorio. Ayuda a leer la representación, pero no explica por sí sola qué acuerdo o conflicto causó una frontera. Distingue medida espacial y explicación política.',
+  'Los colores pueden indicar control territorial si así lo define la leyenda, pero no prueban por sí solos el resultado diplomático que lo produjo. Necesitas documentos y contexto para explicar ese cambio, además de interpretar símbolos.',
+  'El tamaño del papel no determina por sí solo fecha ni causa de una modificación fronteriza. Examinar el soporte puede aportar datos de una fuente, pero aquí se requieren procesos y documentos políticos relacionados con el cambio.'
+ ],
+ '050':[
+  'Un cambio de proporción nacional no informa que cada ciudad duplicó habitantes. Faltan totales y distribución entre ciudades. No conviertas un dato agregado relativo en una variación absoluta idéntica de todas sus partes.',
+  'Si el porcentaje urbano final es 60%, eso no describe que toda la población sea urbana. El dato no respalda desaparición rural. Aumentar una participación no significa automáticamente llevarla al 100%.',
+  '60% menos 40% son veinte puntos porcentuales de participación urbana, no crecimiento de la población total. Para conocer ese crecimiento se necesitan los totales de ambos censos. Has confundido el porcentaje de una parte con la variación del conjunto.'
+ ],
+ '051':[
+  'El tren podía llevar bienes hasta un puerto y el barco continuar su transporte. No tenían que excluirse. Mejorar una conexión terrestre puede complementar el comercio marítimo, en vez de eliminarlo inmediatamente.',
+  'Conectar lugares podía facilitar desplazamientos de personas, no impedir toda migración interna. No confundas un medio que mejora movilidad con una barrera general a moverse; los efectos concretos dependen de rutas y contexto.',
+  'El ferrocarril podía transportar productos agrícolas hacia mercados. No suprimía necesariamente su producción. Sigue el circuito de un producto del campo hasta compradores para entender cómo infraestructura y agricultura podían relacionarse.'
+ ],
+ '052':[
+  'El muro de Berlín cayó en 1989, décadas después del inicio de 1914. Un hecho posterior no puede precipitar una crisis anterior. Revisa primero cronología y luego distingue detonante de tensiones de largo plazo.',
+  'La ONU se fundó en 1945 después de la Segunda Guerra Mundial. No desencadenó el inicio de la Primera en 1914. Relacionar una institución con guerras no permite intercambiar esos conflictos ni sus fechas.',
+  'La crisis económica de 1929 ocurrió después de 1914. Puede ser importante para otros procesos, pero no fue el detonante inicial consultado. Una causa de un inicio debe antecederlo: aquí corresponde al atentado de Sarajevo.'
+ ],
+ '053':[
+  'Rendir cuentas necesita información para examinar la gestión; eliminar transparencia reduce esa posibilidad. No se trata de evitar preguntas, sino de justificar decisiones, recursos y resultados ante quienes pueden evaluarlos.',
+  'La rendición de cuentas puede aportar antecedentes para que la ciudadanía participe y fiscalice. Impedirla contradice el propósito de control público. Informar no significa reservar toda evaluación exclusivamente a quien tomó la decisión.',
+  'Las elecciones eligen y permiten evaluar autoridades periódicamente; rendir cuentas permite examinar su ejercicio también entre votaciones. Son mecanismos complementarios. Ninguno reemplaza automáticamente todas las funciones del otro.'
  ]
 });
 for(const [number,lesson] of Object.entries(HISTORIA_TEACHING)) {

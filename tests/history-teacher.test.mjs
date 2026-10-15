@@ -10,7 +10,7 @@ test('Historia: las 65 claves, preguntas y alternativas de la beta se conservan'
  for(const old of before){const q=bank.find(q=>q.id===old.id);assert.equal(q.question,old.question);assert.equal(q.answer,old.answer);assert.deepEqual(Array.from(q.options),old.options);}
 });
 test('Historia: cada clase revisada integra fundamentos, aplicación, otra estrategia y tres errores particulares',()=>{
- const reviewed=bank.filter(q=>q.teaching);assert.ok(reviewed.length>=40);
+ const reviewed=bank.filter(q=>q.teaching);assert.ok(reviewed.length>=53);
  for(const q of reviewed){const t=q.teaching,old=before.find(o=>o.id===q.id);
   assert.equal(t.quality,'adecuada');assert.ok(t.foundation.length>=2,q.id);assert.ok(t.application.length>=3,q.id);
   assert.ok(t.intuition.length>=2,q.id);assert.ok(t.example.steps.length>=3,q.id);
@@ -31,6 +31,15 @@ test('Historia: clasificar fuentes no garantiza verdad y una causa debe antecede
  assert.match(by(39).teaching.check,/pierda una causa no demuestra/);
  assert.equal(2+(7-2),7,'No se duplica la harina incorporada al pan');
  assert.match(by(40).teaching.example.steps.join(' '),/\$2 del molino y \$5 adicionales/);
+});
+test('Historia: los ejemplos distinguen porcentaje, base, tasa y cantidades sin inventar evidencia original',()=>{
+ assert.equal(100/1000,200/2000);assert.ok(400/2000>100/1000);
+ assert.match(by(43).teaching.example.steps.join(' '),/A es proporcional/);
+ assert.equal(.6*20,12);assert.equal(.8*10,8);
+ assert.match(by(50).teaching.example.steps.join(' '),/cantidad baja de doce a ocho/);
+ assert.match(by(46).teaching.application.join(' '),/sin.*su puesto de trabajo|ni su puesto de trabajo/);
+ assert.match(by(47).teaching.check,/solo conocemos la tendencia descrita/);
+ assert.match(by(48).teaching.check,/no podemos decidir cuál tiene razón ni inventar citas/);
 });
 test('Historia: se distinguen etapas, límites de inferencia y propiedades económicas',()=>{
  assert.match(by(1).teaching.foundation.join(' '),/antecedentes/);
