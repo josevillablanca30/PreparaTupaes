@@ -27,3 +27,12 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 .prerequisite-card{margin:14px 0;padding:14px 16px;border:2px solid var(--game-border);border-radius:16px;background:#f7f1ff}
 .prerequisite-card p{margin:0 0 12px;font-size:14px;line-height:1.5}
 #daily-root .prerequisite-card button{width:100%;min-height:44px;font-size:14px}
+
+/* Teacher-led learning: each pedagogical step belongs to the approved mascot. */
+.teacher-explanation{margin:15px 0 18px}
+.teacher-step{border:2px solid var(--game-border);border-radius:20px;padding:14px;background:#f9f5ff}
+.teacher-step-meta{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--game-deep);margin-bottom:10px}
+.teacher-step .wise-cat{margin:0}
+.teacher-step .wise-cat p{background:#fff;line-height:1.7!important;white-space:pre-line}
+.teacher-step .cat-frame{width:100px;height:100px}
+@media(max-width:390px){.teacher-step .cat-frame{width:76px;height:76px}.teacher-step{padding:11px}.teacher-step .wise-cat{gap:7px}.teacher-step .wise-cat p{padding:11px;font-size:14px}}
