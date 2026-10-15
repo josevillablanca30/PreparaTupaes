@@ -101,9 +101,44 @@ Se configura una ruta explícita compartida por Gradle y la caché, se crea/veri
 
 Esto corrige la ruta y permite comprobar continuidad entre compilaciones. Una caché de Actions puede caducar o ser eliminada: no equivale a custodia permanente de una clave de publicación. Antes de distribución estable/Google Play se necesita una clave de producción con respaldo seguro. No se han creado secretos de publicación, realizado gastos ni publicado la app.
 
+Verificación real: `38765814462` guardó la caché v2; `38766714437` la recuperó con `Cache hit`. Ambas APK tienen certificado SHA-256 `06fea3ef23af90358868d6c7edf877a871404027e1f7104036ed25ff7b05df22`. Ambas ejecutaron cinco pruebas nativas con cero fallos y cero omitidas. Esta continuidad nueva no recupera la firma perdida de `0a3f2f6`.
+
+La taxonomía tiene 50 conceptos; solo 12 disponen de una segunda familia distinta (26 ítems potencialmente emparejables). La disponibilidad real de refuerzo también depende del historial y de las exclusiones recientes. Para los restantes no se certifica transferencia ficticia. El siguiente trabajo de contenido debe mejorar M1, Ciencias y Lectura y abordar esta falta de variedad cuando se autorice ampliar evaluaciones; no se oculta aumentando cifras de cobertura.
+
 ## Regresión del selector comprobada antes de entregar
 
 La excepción que conserva los 65 ítems de Historia debe aplicarse solo cuando no hay suficientes familias distintas. Aplicarla a todo ensayo podía permitir ambas variantes equivalentes de media en M2 pese a tener más de 55 familias disponibles. Se acota la excepción a bancos que no alcanzan la cantidad del ensayo. Una prueba coloca deliberadamente ambas variantes M2 al principio y elimina el azar: exige 55 familias distintas y solo una variante de media. Historia continúa con 65 preguntas. No se cambian claves ni se eliminan pruebas.
+
+## Entrega validada
+
+Código de la APK: **`3c4a17e5298ea05e1ee846ea520d5c054101ac8f`**. Archivo: `Cachaste-Tutor-M2-Historia-3c4a17e.apk`, 467.172 bytes. SHA-256: `c40b184f3896859334c9e23c542b40feddd452bb9c7a43e03ae063d15b8116dd`. Se contrastaron los 19 archivos públicos empaquetados con las fuentes del repositorio; las seis páginas contienen la revisión de compilación correspondiente. `apksigner` verificó la firma y el certificado coincide con las dos compilaciones anteriores de la caché v2. La APK final también recuperó esa caché.
+
+- [Android final](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38767466651): 117 pruebas de lógica, 174 recorridos Android Chrome/320 px y cinco pruebas nativas sobre APK instalado en emulador API 36, cero fallos y cero omitidas. Las pruebas nativas incluyen apertura offline de las cinco materias, recuperación y botón Atrás, tutor M2, tutor Historia y ausencia de permisos de red/almacenamiento.
+- [Validación completa y Pages](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38767466645): 261 recorridos aprobados en Android Chrome, iPhone WebKit y 320 px. Los 174 anteriores son parte de esos perfiles, no 174 casos independientes adicionales. Después de aprobar las pruebas, publicar Pages falla en `configure-pages` con `Not Found`; no se declara sitio desplegado.
+- Las 117 pruebas incluyen conservación de claves y opciones respecto de los respaldos de M2/Historia, aridad de distractores de los cinco bancos, cálculo de ejemplos y refuerzo sin temas ajenos ni familias equivalentes.
+- Inspección visual interna a 320 px de fundamentos, explicación cotidiana y ejemplo resuelto. No se entregan capturas como un sustituto de la app.
+
+Se completaron en esta continuación **65 preguntas de Historia, sus tres modos y 195 explicaciones de distractores**. La pasada M2 anterior conserva 106 preguntas revisadas; total acumulado **171/623**. No hubo ampliación del banco: M1 116, M2 106, Ciencias 206, Lectura 130 y Historia 65. Todas las clases nuevas se clasifican adecuadas, sin afirmar excelencia ni aprendizaje observado en estudiantes reales.
+
+Commits de esta continuación, verificados en GitHub:
+
+- `763a95d`: primeras 20 clases de Historia, respaldo previo y pruebas.
+- `7a19169`: otras 20 clases y 60 distractores.
+- `fdb99e8`: conceptos precisos y refuerzo sin evidencia ficticia.
+- `b36e778`: 13 clases de economía y análisis de fuentes.
+- `f98ce78`: últimas 12 clases; Historia completa en esta pasada.
+- `65de58f`: ruta real y conservación comprobable de firma beta.
+- `3c4a17e`: variedad M2 y cantidad de Historia, con prueba sin azar.
+
+El registro reproducible de cobertura está en `reports/tutor-review-2026-10-15.json` y la evidencia final de APK/CI en `reports/tutor-historia-validation-2026-10-15.json`. Este informe y esas evidencias se guardan en un commit adicional.
+
+## Pendientes reales y siguiente prueba
+
+Faltan **452 clases** al estándar profundo de esta misión: M1 116, Ciencias 206 y Lectura 130. No se marca como revisada su pedagogía por pasar pruebas estructurales. Muchos conceptos de Historia carecen de una segunda familia para verificar transferencia: el agotamiento es visible y no se suplanta por otra materia. La custodia permanente de firma de producción, la instalación en teléfonos físicos y la evaluación con estudiantes siguen pendientes. No se declara la aplicación comercial terminada.
+
+La siguiente pasada debe empezar por tutor M1 conservando sus 116 claves. La siguiente prueba con estudiantes debe observar si pueden explicar el concepto y resolver un ejercicio distinto, especialmente porcentajes, costo de oportunidad y análisis de fuentes; pulsar «Entendido» no es evidencia. Conviene usar un teléfono pequeño de gama media y medir comprensión además de ausencia de bloqueos.
+
+La beta `0a3f2f6` previamente entregada tiene otra firma. Esta APK no puede actualizar sobre ella conservando automáticamente la instalación. No se debe indicar desinstalar una beta con avances sin rescatar sus datos; la clave antigua no fue recuperada. La firma nueva comprobada permite continuidad entre las compilaciones v2 mientras se conserve la clave, y no sustituye una estrategia de publicación con respaldo seguro.
 
 ## Evidencia cerrada de M2
 
