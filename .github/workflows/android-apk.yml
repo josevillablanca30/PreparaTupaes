@@ -1,8 +1,8 @@
 name: Android APK · compilación de prueba
 on:
   push:
-    branches: [main]
-    paths: ['index.html', 'inicio.html', 'science.html', 'science-bank.js', 'science-app.js', 'reading.html', 'reading-bank.js', 'reading-app.js', 'm2.html', 'm2-bank.js', 'm2-app.js', 'history.html', 'history-bank.js', 'history-app.js', 'android/**', 'tests/**', 'scripts/**', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
+    branches: [main, work/cachaste-respaldo-2026-10-15]
+    paths: ['learning-core.js', 'study-app.js', 'study-ui.css', 'index.html', 'inicio.html', 'science.html', 'science-bank.js', 'science-app.js', 'reading.html', 'reading-bank.js', 'reading-app.js', 'm2.html', 'm2-bank.js', 'm2-app.js', 'history.html', 'history-bank.js', 'history-app.js', 'android/**', 'tests/**', 'scripts/**', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
   workflow_dispatch:
 concurrency:
   group: cachaste-android-${{ github.ref }}
@@ -23,7 +23,7 @@ jobs:
         run: npm ci
       - name: Validar lógica y clave editorial antes del APK
         run: npm run test:logic
-      - name: Auditar calidad de 378 ítems y distractores
+      - name: Validar integridad de los cinco bancos y generar informe
         run: npm run audit:pedagogy
       - name: Adjuntar informe editorial de auditoría
         uses: actions/upload-artifact@v4
@@ -60,13 +60,18 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.10.2'
+      - name: Conservar firma de pruebas entre compilaciones de la misma rama
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: cachaste-debug-signing-v1-${{ github.ref_name }}
       - name: Empaquetar la versión web local para Android
         run: |
           mkdir -p android/app/src/main/assets
           cp dist/index.html android/app/src/main/assets/index.html
           mkdir -p android/app/src/main/assets/assets
           cp dist/assets/cachaste-icon.svg dist/assets/cachaste-logo.svg android/app/src/main/assets/assets/
-          cp dist/inicio.html dist/science.html dist/science-bank.js dist/science-app.js dist/reading.html dist/reading-bank.js dist/reading-app.js dist/m2.html dist/m2-bank.js dist/m2-app.js dist/history.html dist/history-bank.js dist/history-app.js android/app/src/main/assets/
+          cp dist/learning-core.js dist/study-app.js dist/study-ui.css dist/inicio.html dist/science.html dist/science-bank.js dist/science-app.js dist/reading.html dist/reading-bank.js dist/reading-app.js dist/m2.html dist/m2-bank.js dist/m2-app.js dist/history.html dist/history-bank.js dist/history-app.js android/app/src/main/assets/
       - name: Auditar las cinco materias dentro del paquete Android
         run: |
           set -euo pipefail
@@ -74,7 +79,7 @@ jobs:
             test -s "android/app/src/main/assets/$page"
             grep -qi '<title>' "android/app/src/main/assets/$page"
           done
-          for script in science-bank.js science-app.js reading-bank.js reading-app.js m2-bank.js m2-app.js history-bank.js history-app.js; do
+          for script in learning-core.js study-app.js science-bank.js science-app.js reading-bank.js reading-app.js m2-bank.js m2-app.js history-bank.js history-app.js; do
             test -s "android/app/src/main/assets/$script"
           done
           for subject in index.html science.html reading.html m2.html history.html; do
@@ -86,10 +91,30 @@ jobs:
       - name: Compilar APK de prueba
         working-directory: android
         run: gradle --no-daemon :app:assembleDebug
+      - name: Permitir aceleración del emulador
+        run: |
+          sudo chmod a+rw /dev/kvm
+      - name: Probar APK instalado, WebView sin red, persistencia y botón Atrás
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          profile: pixel_2
+          disable-animations: true
+          script: cd android && gradle --no-daemon :app:connectedDebugAndroidTest
+      - name: Conservar resultados Android
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cachaste-qa-android-${{ github.run_id }}
+          path: android/app/build/reports/androidTests/connected/
+          if-no-files-found: ignore
+          retention-days: 3
       - name: Publicar APK descargable
         uses: actions/upload-artifact@v4
         with:
-          name: Cachaste-Unificado-Beta-v1.0.0-debug
+          name: Cachaste-v1.1.0-beta-${{ github.sha }}
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 3
