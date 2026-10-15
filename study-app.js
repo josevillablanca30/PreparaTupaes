@@ -41,7 +41,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
     session = { id: 'study-' + Date.now(), mode, ids: pool.map(q => q.id), index: 0, selected: null, checked: false, confidence: null, results: [], started: Date.now(), deadline: mode === 'full' ? Date.now() + minutes * 60000 : null, answers: pool.map(() => null), flags: [] };
     screen = 'quiz'; notice = ''; confirming = false; mapOpen = false; save(); render(true);
   }
-  function reinforce() { if(session){notice='Retoma o descarta la sesión guardada antes de comenzar otra.';screen='home';render();return;}launch('reinforce', L.transfer(BANK, history, lastResult?.results || [], 10)); }
+  function reinforce() { if(session){notice='Retoma o descarta la sesión guardada antes de comenzar otra.';screen='home';render();return;}launch('reinforce', L.transfer(BANK, history, [...(lastResult?.results || []),...history.slice(-30)], 10)); }
   function choose(n) {
     if (!session || session.checked || !Number.isInteger(n) || n < 0 || n >= current().options.length) return;
     if (expired()) return;

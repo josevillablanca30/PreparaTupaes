@@ -50,7 +50,7 @@ function begin(mode){
  if(mode==='express'&&!baseline){notice('Completa primero el diagnóstico de 30 preguntas.');return}
  const quotas=mode==='diagnostico'?{Localizar:10,Interpretar:12,Evaluar:8}:mode==='express'?{Localizar:3,Interpretar:4,Evaluar:3}:{Localizar:23,Interpretar:26,Evaluar:16};
  let pool;
- if(mode==='errores')pool=window.CachasteLearning?window.CachasteLearning.transfer(BANK,history,recent.length?recent:history.slice(-30),10):BANK.filter(q=>pending.some(id=>qBy(id)?.skill===q.skill)&&!pending.includes(q.id)&&!history.some(h=>h.id===q.id)).slice(0,10);
+ if(mode==='errores')pool=window.CachasteLearning?window.CachasteLearning.transfer(BANK,history,[...recent,...history.slice(-30)],10):BANK.filter(q=>pending.some(id=>qBy(id)?.skill===q.skill)&&!pending.includes(q.id)&&!history.some(h=>h.id===q.id)).slice(0,10);
  else if(mode==='completo'){
   const eligible=PASSAGES.filter(p=>BANK.filter(q=>q.passageId===p.id).length>=9);
   // DEMRE specifies 7 texts / 65 questions. Five blocks of 9 and two of 10.

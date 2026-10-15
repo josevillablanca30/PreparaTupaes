@@ -99,7 +99,7 @@ function setup(mode){
  if(['diagnostico','express','mixto','completo'].includes(mode))pool=mixedSelection(mode);
  else if(mode==='errores'){
   const targets=BANK.filter(q=>q.examEligible!==false&&pending.includes(q.id));
-  if(window.CachasteLearning){pool=window.CachasteLearning.transfer(BANK.filter(q=>q.examEligible!==false),history,lastResults.length?lastResults:history.slice(-30),10)}else{
+  if(window.CachasteLearning){pool=window.CachasteLearning.transfer(BANK.filter(q=>q.examEligible!==false),history,[...lastResults,...history.slice(-30)],10)}else{
    const topics=new Set(targets.map(q=>q.subject+'|'+q.area));
    const seen=new Set([...history.map(x=>x.id),...pending]);
    pool=adapted(BANK.filter(q=>q.examEligible!==false&&topics.has(q.subject+'|'+q.area)&&!seen.has(q.id)),10);

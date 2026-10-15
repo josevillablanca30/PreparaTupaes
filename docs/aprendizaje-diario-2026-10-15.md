@@ -27,3 +27,9 @@ Primera suite móvil completa: 388 aprobadas y cuatro fallos por título y encab
 Conteo de la organización inicial: M1 26 unidades/73 niveles; M2 8/53; Lectura 3/16; Ciencias 11/122; Historia 5/53. Son niveles editoriales por objetivo y contexto, no 317 clases nuevas independientes: reutilizan las 623 clases revisadas y sus fundamentos por concepto. El informe `reports/daily-curriculum-2026-10-15.json` enumera las asignaciones por ID.
 
 Segunda integración: 145 pruebas de lógica aprobadas, incluyendo 120 muestreos adicionales de ensayos de Ciencias con 80 familias distintas, y 28 recorridos móviles de diario, selector y Ciencias aprobados (Android Chromium y 320 px). Se comprobó visualmente el inicio a 320 px sin desbordamiento. El APK cambia a versión 1.2.0-beta-daily, código 13; conserva applicationId, almacenamiento y configuración de firma beta. La prueba nativa añadida verifica el nuevo diario sin conexión y su recuperación al recrear la actividad. Su resultado depende todavía de CI.
+
+## Integración con refuerzo tradicional
+
+El espejo de respuestas diarias conserva los metadatos esperados por cada materia (habilidad, área, concepto, módulo y fecha). Los errores diarios también entran a las listas de refuerzo existentes de M1, Lectura y Ciencias, sin borrar notas ni sesiones. M2/Historia y los otros reforzamientos combinan resultados de la sesión previa con errores recientes del historial, de modo que una práctica diaria no queda ignorada porque exista un ensayo antiguo.
+
+El inicio se compactó después de inspeccionarlo a 320 px. Se conservan los seis estados de presentación del gatito usando la imagen oficial, y el progreso muestra las últimas sesiones breves. No hay ilustraciones generadas ni servicios externos por respuesta.
