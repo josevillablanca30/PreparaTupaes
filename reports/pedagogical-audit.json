@@ -1,0 +1,4456 @@
+{
+  "date": "2026-10-15",
+  "scope": "Auditoría heurística estructural de cinco bancos; no certificación de corrección conceptual",
+  "totals": {
+    "M1": 116,
+    "Ciencias": 204,
+    "Lectura": 130,
+    "M2": 80,
+    "Historia": 65
+  },
+  "flags": [
+    {
+      "bank": "M1",
+      "id": 210,
+      "area": "Potencias",
+      "type": "short_stem",
+      "level": "review",
+      "detail": "Enunciado muy breve"
+    },
+    {
+      "bank": "M1",
+      "id": 211,
+      "area": "Potencias",
+      "type": "weak_wrong_feedback",
+      "level": "review",
+      "detail": "Explicación de distractor demasiado breve"
+    },
+    {
+      "bank": "M1",
+      "id": 216,
+      "area": "Álgebra",
+      "type": "weak_wrong_feedback",
+      "level": "review",
+      "detail": "Explicación de distractor demasiado breve"
+    },
+    {
+      "bank": "M1",
+      "id": 221,
+      "area": "Ecuaciones",
+      "type": "weak_wrong_feedback",
+      "level": "review",
+      "detail": "Explicación de distractor demasiado breve"
+    },
+    {
+      "bank": "M1",
+      "id": 224,
+      "area": "Inecuaciones",
+      "type": "short_stem",
+      "level": "review",
+      "detail": "Enunciado muy breve"
+    },
+    {
+      "bank": "M1",
+      "id": 230,
+      "area": "Función cuadrática",
+      "type": "weak_wrong_feedback",
+      "level": "review",
+      "detail": "Explicación de distractor demasiado breve"
+    },
+    {
+      "bank": "M1",
+      "id": 231,
+      "area": "Función cuadrática",
+      "type": "weak_wrong_feedback",
+      "level": "review",
+      "detail": "Explicación de distractor demasiado breve"
+    },
+    {
+      "bank": "M1",
+      "id": 237,
+      "area": "Círculos",
+      "type": "weak_wrong_feedback",
+      "level": "review",
+      "detail": "Explicación de distractor demasiado breve"
+    },
+    {
+      "bank": "M1",
+      "id": 239,
+      "area": "Polígonos",
+      "type": "weak_wrong_feedback",
+      "level": "review",
+      "detail": "Explicación de distractor demasiado breve"
+    },
+    {
+      "bank": "M1",
+      "id": 284,
+      "area": "Inecuaciones",
+      "type": "weak_wrong_feedback",
+      "level": "review",
+      "detail": "Explicación de distractor demasiado breve"
+    },
+    {
+      "bank": "M1",
+      "id": 291,
+      "area": "Transformaciones",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "M1",
+      "id": 292,
+      "area": "Estadística",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "M1",
+      "id": 294,
+      "area": "Probabilidad",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-001",
+      "area": "Organización, estructura y actividad celular",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-001",
+      "area": "Organización, estructura y actividad celular",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-002",
+      "area": "Organización, estructura y actividad celular",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-003",
+      "area": "Organización, estructura y actividad celular",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-004",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-004",
+      "area": "Procesos y funciones biológicas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-005",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-006",
+      "area": "Procesos y funciones biológicas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-006",
+      "area": "Procesos y funciones biológicas",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-007",
+      "area": "Herencia y evolución",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-007",
+      "area": "Herencia y evolución",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-008",
+      "area": "Herencia y evolución",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-009",
+      "area": "Herencia y evolución",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-009",
+      "area": "Herencia y evolución",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-010",
+      "area": "Organismo y ambiente",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-011",
+      "area": "Organismo y ambiente",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-012",
+      "area": "Organismo y ambiente",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-013",
+      "area": "Ondas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-014",
+      "area": "Ondas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-014",
+      "area": "Ondas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-014",
+      "area": "Ondas",
+      "type": "reverse_length_cue",
+      "level": "review",
+      "detail": "Distractor mucho más largo que la correcta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-015",
+      "area": "Ondas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-016",
+      "area": "Mecánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-016",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-017",
+      "area": "Mecánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-017",
+      "area": "Mecánica",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-017",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-018",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-020",
+      "area": "Energía – Tierra",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-020",
+      "area": "Energía – Tierra",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-020",
+      "area": "Energía – Tierra",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-021",
+      "area": "Energía – Tierra",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-022",
+      "area": "Electricidad",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-022",
+      "area": "Electricidad",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-022",
+      "area": "Electricidad",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-023",
+      "area": "Electricidad",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-023",
+      "area": "Electricidad",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-023",
+      "area": "Electricidad",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-024",
+      "area": "Electricidad",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-024",
+      "area": "Electricidad",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-024",
+      "area": "Electricidad",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-025",
+      "area": "Estructura atómica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-026",
+      "area": "Estructura atómica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-026",
+      "area": "Estructura atómica",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-026",
+      "area": "Estructura atómica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-027",
+      "area": "Estructura atómica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-027",
+      "area": "Estructura atómica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-028",
+      "area": "Estructura atómica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-028",
+      "area": "Estructura atómica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-029",
+      "area": "Química orgánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-030",
+      "area": "Química orgánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-030",
+      "area": "Química orgánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-031",
+      "area": "Química orgánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-031",
+      "area": "Química orgánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-032",
+      "area": "Química orgánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-033",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-034",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-034",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-034",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-035",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-035",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-035",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-036",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-036",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-036",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-038",
+      "area": "Organismo y ambiente",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-039",
+      "area": "Mecánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-039",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-040",
+      "area": "Electricidad",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-041",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-041",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-042",
+      "area": "Estructura atómica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-043",
+      "area": "Herencia y evolución",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-044",
+      "area": "Organización, estructura y actividad celular",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-044",
+      "area": "Organización, estructura y actividad celular",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-045",
+      "area": "Herencia y evolución",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-046",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-047",
+      "area": "Ondas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-048",
+      "area": "Mecánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-048",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-049",
+      "area": "Electricidad",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-049",
+      "area": "Electricidad",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-050",
+      "area": "Energía – Tierra",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-051",
+      "area": "Estructura atómica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-051",
+      "area": "Estructura atómica",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-051",
+      "area": "Estructura atómica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-052",
+      "area": "Química orgánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-052",
+      "area": "Química orgánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-053",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-053",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-054",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-054",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-055",
+      "area": "Organización, estructura y actividad celular",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-055",
+      "area": "Organización, estructura y actividad celular",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-056",
+      "area": "Organismo y ambiente",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-057",
+      "area": "Mecánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-057",
+      "area": "Mecánica",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-058",
+      "area": "Electricidad",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-058",
+      "area": "Electricidad",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-059",
+      "area": "Estructura atómica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-059",
+      "area": "Estructura atómica",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-059",
+      "area": "Estructura atómica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-060",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-061",
+      "area": "Organismo y ambiente",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-062",
+      "area": "Ondas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-063",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-063",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-063",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-064",
+      "area": "Organización, estructura y actividad celular",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-067",
+      "area": "Ondas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-068",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-070",
+      "area": "Estructura atómica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-071",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-073",
+      "area": "Organización, estructura y actividad celular",
+      "type": "answer_length_cue",
+      "level": "review",
+      "detail": "La correcta es mucho más larga que un distractor"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-078",
+      "area": "Herencia y evolución",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-079",
+      "area": "Herencia y evolución",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-080",
+      "area": "Herencia y evolución",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-082",
+      "area": "Organismo y ambiente",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-085",
+      "area": "Procesos y funciones biológicas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-088",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-089",
+      "area": "Mecánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-089",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-090",
+      "area": "Mecánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-090",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-091",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-093",
+      "area": "Electricidad",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-094",
+      "area": "Energía – Tierra",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-096",
+      "area": "Ondas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-097",
+      "area": "Ondas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-099",
+      "area": "Electricidad",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-099",
+      "area": "Electricidad",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-099",
+      "area": "Electricidad",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-100",
+      "area": "Electricidad",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-103",
+      "area": "Estructura atómica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-104",
+      "area": "Estructura atómica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-110",
+      "area": "Química orgánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-110",
+      "area": "Química orgánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-112",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-113",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-113",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-117",
+      "area": "Herencia y evolución",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-117",
+      "area": "Herencia y evolución",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-119",
+      "area": "Herencia y evolución",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-121",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-121",
+      "area": "Procesos y funciones biológicas",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-122",
+      "area": "Organismo y ambiente",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-122",
+      "area": "Organismo y ambiente",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-123",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-123",
+      "area": "Procesos y funciones biológicas",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-124",
+      "area": "Mecánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-124",
+      "area": "Mecánica",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-125",
+      "area": "Ondas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-125",
+      "area": "Ondas",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-126",
+      "area": "Electricidad",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-126",
+      "area": "Electricidad",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-126",
+      "area": "Electricidad",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-127",
+      "area": "Electricidad",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-127",
+      "area": "Electricidad",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-128",
+      "area": "Energía – Tierra",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-128",
+      "area": "Energía – Tierra",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-128",
+      "area": "Energía – Tierra",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-129",
+      "area": "Mecánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-129",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-130",
+      "area": "Ondas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-131",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-131",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-132",
+      "area": "Estructura atómica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-132",
+      "area": "Estructura atómica",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-132",
+      "area": "Estructura atómica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-133",
+      "area": "Química orgánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-133",
+      "area": "Química orgánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-134",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-134",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-135",
+      "area": "Química orgánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-135",
+      "area": "Química orgánica",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-135",
+      "area": "Química orgánica",
+      "type": "weak_wrong_feedback",
+      "level": "review",
+      "detail": "Explicación de distractor demasiado breve"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-136",
+      "area": "Estructura atómica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-136",
+      "area": "Estructura atómica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-137",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-137",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-138",
+      "area": "Química orgánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-138",
+      "area": "Química orgánica",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-139",
+      "area": "Organización, estructura y actividad celular",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-139",
+      "area": "Organización, estructura y actividad celular",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-140",
+      "area": "Organización, estructura y actividad celular",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-141",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-141",
+      "area": "Procesos y funciones biológicas",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-142",
+      "area": "Organismo y ambiente",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-143",
+      "area": "Herencia y evolución",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-143",
+      "area": "Herencia y evolución",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-144",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-144",
+      "area": "Procesos y funciones biológicas",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-144",
+      "area": "Procesos y funciones biológicas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-145",
+      "area": "Organismo y ambiente",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-146",
+      "area": "Mecánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-146",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-147",
+      "area": "Mecánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-147",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-148",
+      "area": "Ondas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-148",
+      "area": "Ondas",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-149",
+      "area": "Electricidad",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-150",
+      "area": "Electricidad",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-151",
+      "area": "Energía – Tierra",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-151",
+      "area": "Energía – Tierra",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-152",
+      "area": "Ondas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-152",
+      "area": "Ondas",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-152",
+      "area": "Ondas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-153",
+      "area": "Estructura atómica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-153",
+      "area": "Estructura atómica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-154",
+      "area": "Estructura atómica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-154",
+      "area": "Estructura atómica",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-155",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-155",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-156",
+      "area": "Química orgánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-156",
+      "area": "Química orgánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-157",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-157",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-158",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-158",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-159",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-159",
+      "area": "Procesos y funciones biológicas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-160",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-161",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-162",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-162",
+      "area": "Procesos y funciones biológicas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-163",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-164",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-165",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-166",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-167",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-167",
+      "area": "Procesos y funciones biológicas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-170",
+      "area": "Herencia y evolución",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-172",
+      "area": "Mecánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-172",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-173",
+      "area": "Energía – Tierra",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-174",
+      "area": "Electricidad",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-176",
+      "area": "Estructura atómica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-178",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-178",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-180",
+      "area": "Procesos y funciones biológicas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-181",
+      "area": "Herencia y evolución",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-181",
+      "area": "Herencia y evolución",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-185",
+      "area": "Ondas",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-185",
+      "area": "Ondas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-185",
+      "area": "Ondas",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-186",
+      "area": "Ondas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-187",
+      "area": "Mecánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-187",
+      "area": "Mecánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-188",
+      "area": "Mecánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-189",
+      "area": "Electricidad",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-189",
+      "area": "Electricidad",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-191",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-192",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-192",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-192",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-193",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-193",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-193",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-194",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-194",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-194",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-195",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-196",
+      "area": "Química orgánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-197",
+      "area": "Química orgánica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-197",
+      "area": "Química orgánica",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-197",
+      "area": "Química orgánica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-198",
+      "area": "Estructura atómica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-200",
+      "area": "Organización, estructura y actividad celular",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-202",
+      "area": "Energía – Tierra",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-203",
+      "area": "Ondas",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-204",
+      "area": "Estructura atómica",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-204",
+      "area": "Estructura atómica",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-001",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-005",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-006",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-007",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-008",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-009",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-011",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-012",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-013",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-014",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-015",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-016",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-017",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-017",
+      "area": "Localizar",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-018",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-018",
+      "area": "Interpretar",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-019",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-019",
+      "area": "Interpretar",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-020",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-021",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-022",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-023",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-024",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-025",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-026",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-027",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-028",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-029",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-030",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-031",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-032",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-033",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-034",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-035",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-036",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-037",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-038",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-039",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-040",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-041",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-042",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-043",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-044",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-045",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-046",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-047",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-048",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-049",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-050",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-051",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-051",
+      "area": "Localizar",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-052",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-053",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-053",
+      "area": "Interpretar",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-054",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-054",
+      "area": "Interpretar",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-055",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-056",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-056",
+      "area": "Localizar",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-057",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-058",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-059",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-062",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-063",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-064",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-065",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-066",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-067",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-068",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-069",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-070",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-071",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-072",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-073",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-074",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-075",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-076",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-077",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-077",
+      "area": "Localizar",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-078",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-079",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-080",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-081",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-081",
+      "area": "Localizar",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-082",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-083",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-084",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-085",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-086",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-087",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-087",
+      "area": "Localizar",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-088",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-088",
+      "area": "Interpretar",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-089",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-090",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-091",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-091",
+      "area": "Localizar",
+      "type": "short_reasoning_step",
+      "level": "review",
+      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-092",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-093",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-094",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-095",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-096",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-097",
+      "area": "Localizar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-098",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-099",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-100",
+      "area": "Evaluar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-108",
+      "area": "Evaluar",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-111",
+      "area": "Localizar",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-116",
+      "area": "Interpretar",
+      "type": "vague_easy",
+      "level": "review",
+      "detail": "Modo Más fácil demasiado breve: requiere explicación comprensible y concreta"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-001",
+      "area": "Funciones",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-001",
+      "area": "Funciones",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-002",
+      "area": "Funciones",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-003",
+      "area": "Probabilidad",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-004",
+      "area": "Probabilidad",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-004",
+      "area": "Probabilidad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-005",
+      "area": "Geometría",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-006",
+      "area": "Geometría",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-006",
+      "area": "Geometría",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-007",
+      "area": "Álgebra",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-007",
+      "area": "Álgebra",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-007",
+      "area": "Álgebra",
+      "type": "weak_wrong_feedback",
+      "level": "review",
+      "detail": "Explicación de distractor demasiado breve"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-008",
+      "area": "Álgebra",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-008",
+      "area": "Álgebra",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-009",
+      "area": "Modelación",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-010",
+      "area": "Modelación",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-010",
+      "area": "Modelación",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-011",
+      "area": "Funciones",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-011",
+      "area": "Funciones",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-012",
+      "area": "Funciones",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-013",
+      "area": "Funciones",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-014",
+      "area": "Probabilidad",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-015",
+      "area": "Probabilidad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-016",
+      "area": "Geometría",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-017",
+      "area": "Geometría",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-017",
+      "area": "Geometría",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-018",
+      "area": "Álgebra",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-018",
+      "area": "Álgebra",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-019",
+      "area": "Álgebra",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-019",
+      "area": "Álgebra",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-020",
+      "area": "Modelación",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-021",
+      "area": "Funciones",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-021",
+      "area": "Funciones",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-022",
+      "area": "Funciones",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-022",
+      "area": "Funciones",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-023",
+      "area": "Funciones",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-023",
+      "area": "Funciones",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-024",
+      "area": "Funciones",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-024",
+      "area": "Funciones",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-025",
+      "area": "Funciones",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-025",
+      "area": "Funciones",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-026",
+      "area": "Álgebra",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-026",
+      "area": "Álgebra",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-027",
+      "area": "Álgebra",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-027",
+      "area": "Álgebra",
+      "type": "weak_wrong_feedback",
+      "level": "review",
+      "detail": "Explicación de distractor demasiado breve"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-028",
+      "area": "Álgebra",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-028",
+      "area": "Álgebra",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-029",
+      "area": "Álgebra",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-029",
+      "area": "Álgebra",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-030",
+      "area": "Álgebra",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-030",
+      "area": "Álgebra",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-031",
+      "area": "Geometría",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-031",
+      "area": "Geometría",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-032",
+      "area": "Geometría",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-032",
+      "area": "Geometría",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-033",
+      "area": "Geometría",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-033",
+      "area": "Geometría",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-034",
+      "area": "Geometría",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-034",
+      "area": "Geometría",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-035",
+      "area": "Geometría",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-035",
+      "area": "Geometría",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-036",
+      "area": "Probabilidad",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-036",
+      "area": "Probabilidad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-037",
+      "area": "Probabilidad",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-037",
+      "area": "Probabilidad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-038",
+      "area": "Probabilidad",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-038",
+      "area": "Probabilidad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-039",
+      "area": "Probabilidad",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-039",
+      "area": "Probabilidad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-040",
+      "area": "Probabilidad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-041",
+      "area": "Modelación",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-041",
+      "area": "Modelación",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-042",
+      "area": "Modelación",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-042",
+      "area": "Modelación",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-043",
+      "area": "Modelación",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-043",
+      "area": "Modelación",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-044",
+      "area": "Modelación",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-045",
+      "area": "Modelación",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-045",
+      "area": "Modelación",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-047",
+      "area": "Suficiencia de datos",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-048",
+      "area": "Suficiencia de datos",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-049",
+      "area": "Suficiencia de datos",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-052",
+      "area": "Funciones",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-053",
+      "area": "Probabilidad",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-053",
+      "area": "Probabilidad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-054",
+      "area": "Geometría",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-054",
+      "area": "Geometría",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-055",
+      "area": "Modelación",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-055",
+      "area": "Modelación",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-056",
+      "area": "Álgebra",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-057",
+      "area": "Álgebra",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-059",
+      "area": "Funciones",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-061",
+      "area": "Funciones",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-061",
+      "area": "Funciones",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-062",
+      "area": "Geometría",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-067",
+      "area": "Geometría",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-069",
+      "area": "Probabilidad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-071",
+      "area": "Probabilidad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-072",
+      "area": "Probabilidad",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-074",
+      "area": "Probabilidad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-075",
+      "area": "Probabilidad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-076",
+      "area": "Modelación",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-077",
+      "area": "Modelación",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-078",
+      "area": "Álgebra",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-003",
+      "area": "Historia de Chile",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-004",
+      "area": "Historia de Chile",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-007",
+      "area": "Formación ciudadana",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-012",
+      "area": "Historia de Chile",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-013",
+      "area": "Historia mundial",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-014",
+      "area": "Historia mundial",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-015",
+      "area": "Formación ciudadana",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-021",
+      "area": "Historia de Chile",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-023",
+      "area": "Historia de Chile",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-024",
+      "area": "Historia de Chile",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-024",
+      "area": "Historia de Chile",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-025",
+      "area": "Historia de Chile",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-028",
+      "area": "Historia de Chile",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-029",
+      "area": "Historia mundial",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-030",
+      "area": "Historia mundial",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-031",
+      "area": "Historia mundial",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-034",
+      "area": "Formación ciudadana",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-035",
+      "area": "Formación ciudadana",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-036",
+      "area": "Formación ciudadana",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-037",
+      "area": "Formación ciudadana",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-038",
+      "area": "Formación ciudadana",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-038",
+      "area": "Formación ciudadana",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-040",
+      "area": "Economía y sociedad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-041",
+      "area": "Economía y sociedad",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-044",
+      "area": "Economía y sociedad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-045",
+      "area": "Economía y sociedad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-046",
+      "area": "Interpretación de fuentes",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-047",
+      "area": "Interpretación de fuentes",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-047",
+      "area": "Interpretación de fuentes",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-048",
+      "area": "Interpretación de fuentes",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-049",
+      "area": "Interpretación de fuentes",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-050",
+      "area": "Interpretación de fuentes",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-051",
+      "area": "Historia de Chile",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-051",
+      "area": "Historia de Chile",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-052",
+      "area": "Historia mundial",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-053",
+      "area": "Formación ciudadana",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-054",
+      "area": "Economía y sociedad",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-054",
+      "area": "Economía y sociedad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-055",
+      "area": "Interpretación de fuentes",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-055",
+      "area": "Interpretación de fuentes",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-056",
+      "area": "Historia de Chile",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-057",
+      "area": "Historia mundial",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-058",
+      "area": "Formación ciudadana",
+      "type": "vague_core_reasoning",
+      "level": "review",
+      "detail": "Justificación breve: revisar mecanismo, evidencia y conclusión"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-058",
+      "area": "Formación ciudadana",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-060",
+      "area": "Interpretación de fuentes",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-062",
+      "area": "Historia mundial",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-063",
+      "area": "Formación ciudadana",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-064",
+      "area": "Economía y sociedad",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-065",
+      "area": "Interpretación de fuentes",
+      "type": "vague_hint",
+      "level": "review",
+      "detail": "Pista demasiado breve para acompañar aprendizaje"
+    }
+  ],
+  "coverage": {
+    "M1": {
+      "Porcentajes": 11,
+      "Ecuaciones": 6,
+      "Proporcionalidad": 5,
+      "Potencias": 5,
+      "Probabilidad": 7,
+      "Geometría": 4,
+      "Estadística": 7,
+      "Enteros": 3,
+      "Racionales": 5,
+      "Raíces": 2,
+      "Álgebra": 4,
+      "Inecuaciones": 3,
+      "Sistemas 2×2": 2,
+      "Función afín": 8,
+      "Función cuadrática": 4,
+      "Pitágoras": 4,
+      "Círculos": 3,
+      "Polígonos": 5,
+      "Cuerpos geométricos": 3,
+      "Cilindros": 3,
+      "Transformaciones": 4,
+      "Semejanza": 3,
+      "Tablas y gráficos": 6,
+      "Cuartiles": 5,
+      "Probabilidad compuesta": 4
+    },
+    "Ciencias": {
+      "Organización, estructura y actividad celular": 13,
+      "Procesos y funciones biológicas": 25,
+      "Herencia y evolución": 19,
+      "Organismo y ambiente": 16,
+      "Ondas": 19,
+      "Mecánica": 19,
+      "Energía – Tierra": 11,
+      "Electricidad": 17,
+      "Estructura atómica": 20,
+      "Química orgánica": 17,
+      "Reacciones químicas y estequiometría": 28
+    },
+    "Lectura": {
+      "Localizar": 45,
+      "Interpretar": 53,
+      "Evaluar": 32
+    },
+    "M2": {
+      "Funciones": 16,
+      "Probabilidad": 18,
+      "Geometría": 17,
+      "Álgebra": 12,
+      "Modelación": 11,
+      "Suficiencia de datos": 6
+    },
+    "Historia": {
+      "Historia de Chile": 18,
+      "Formación ciudadana": 15,
+      "Economía y sociedad": 13,
+      "Historia mundial": 11,
+      "Interpretación de fuentes": 8
+    }
+  },
+  "summary": {
+    "critical": 0,
+    "review": 547,
+    "questionCount": 595
+  }
+}

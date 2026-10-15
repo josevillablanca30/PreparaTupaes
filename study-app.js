@@ -1,6 +1,6 @@
 /* M2 and Historia share this tested study flow; existing bank and local keys are preserved. */
+'use strict';
 window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, count }) {
-  'use strict';
   const L = window.CachasteLearning, root = document.getElementById('app');
   const byId = new Map(BANK.map(q => [q.id, q]));
   const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');

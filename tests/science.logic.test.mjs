@@ -11,15 +11,16 @@ function science(initial=new Map()){
  const document={getElementById:id=>elements[id]||null,execCommand:()=>true};
  const storage={getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,v),removeItem:k=>data.delete(k)};
  const context=vm.createContext({window,document,localStorage:storage,console});
+ vm.runInContext(readFileSync(new URL('../learning-core.js',import.meta.url),'utf8'),context);
  vm.runInContext(bankSrc,context);
  vm.runInContext(appSrc,context);
  return {data,elements,window,bank:window.SCIENCE_BANK,saved:()=>JSON.parse(data.get('cachaste-science-v1')||'{}')};
 }
 function unlockedData(data=new Map()){data.set('cachaste-science-v1',JSON.stringify({baseline:{completed:true,results:Array.from({length:30},()=>({subject:'Biología',area:'Herencia y evolución',correct:true,confidence:'seguro'}))}}));return data}
-test('Ciencias: 166 ítems originales sin respuestas, IDs ni alternativas duplicadas',()=>{
+test('Ciencias: 204 ítems originales sin respuestas, IDs ni alternativas duplicadas',()=>{
  const {bank}=science();
- assert.equal(bank.length,166);
- assert.equal(new Set(bank.map(q=>q.id)).size,166);
+ assert.equal(bank.length,204);
+ assert.equal(new Set(bank.map(q=>q.id)).size,204);
  const texts=new Set();
  for(const q of bank){
   assert.equal(q.options.length,4,q.id);
@@ -35,9 +36,9 @@ test('Ciencias: 166 ítems originales sin respuestas, IDs ni alternativas duplic
 test('Ciencias: Módulo Común, Electivo y TP tienen cobertura balanceada',()=>{
  const {bank,window}=science();
  for(const sub of ['Biología','Física','Química']){
-  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='MC').length,18);
-  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='ME').length,sub==='Biología'?34:26);
-  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='MTP').length,sub==='Química'?8:9);
+  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='MC').length,22);
+  assert.equal(bank.filter(q=>q.subject===sub&&q.module==='ME').length,sub==='Biología'?40:sub==='Física'?32:34);
+  assert.equal(bank.filter(q=>q.examEligible!==false&&q.subject===sub&&q.module==='MTP').length,sub==='Química'?8:9);
  }
  assert.equal(new Set(bank.map(q=>q.area)).size,11);
  assert.equal(new Set(bank.map(q=>q.skill)).size,5);
@@ -136,11 +137,11 @@ test('Ciencias: error queda pendiente y se recupera en otra práctica; acierto a
  const id=a.saved().session.ids[0],q=a.bank.find(x=>x.id===id),wrong=(q.answer+1)%4;
  a.window.answer(wrong);a.window.check();
  assert.ok(a.saved().pending.includes(id));
- a.window.setup('errores');
+ a.window.discard();a.window.setup('errores');
  const ids=a.saved().session.ids;
  assert.ok(ids.length>0);
  assert.ok(!ids.includes(id),'El refuerzo debe usar preguntas diferentes a la fallada');
- assert.ok(ids.every(candidate=>{const item=a.bank.find(x=>x.id===candidate);return item.subject===q.subject&&item.area===q.area}),'El refuerzo debe profundizar en la misma área');
+ assert.ok(ids.every(candidate=>{const item=a.bank.find(x=>x.id===candidate);return item.concept===q.concept}),'El refuerzo debe profundizar en la misma área');
  a.window.answer(a.bank.find(x=>x.id===ids[0]).answer);a.window.check();
  assert.ok(a.saved().pending.includes(id),'Un acierto en otra pregunta no elimina automáticamente el error original');
 });
@@ -171,11 +172,11 @@ test('Ciencias: progreso independiente de M1 y mensajes responsables sobre el ex
 
 test('Ciencias: 54 comunes y 112 de especialidad para ensayos completos sin duplicados',()=>{
  const a=science(),bank=a.bank;
- assert.equal(bank.filter(q=>q.module==='MC').length,54);
- assert.equal(bank.filter(q=>q.module==='ME').length,86);
- assert.equal(bank.filter(q=>q.module==='MTP').length,26);
- assert.equal(bank.length,166);
- assert.equal(new Set(bank.map(q=>q.question)).size,166);
+ assert.equal(bank.filter(q=>q.module==='MC').length,66);
+ assert.equal(bank.filter(q=>q.module==='ME').length,106);
+ assert.equal(bank.filter(q=>q.examEligible!==false&&q.module==='MTP').length,26);
+ assert.equal(bank.length,204);
+ assert.equal(new Set(bank.map(q=>q.question)).size,204);
  for(const q of bank){
   assert.ok(q.steps.every(t=>t.length>=15),q.id);
   assert.equal(q.explanations.length,4,q.id);
@@ -207,9 +208,11 @@ test('Ciencias: modo examen no revela respuestas y al terminar guarda resultados
  assert.ok(!a.elements.view.innerHTML.includes('Respuesta correcta:'));
  a.window.examAdvance();
  assert.equal(a.saved().session.index,1);
- assert.equal(a.saved().session.results.length,1);
- assert.equal(a.saved().session.results[0].correct,false);
+ assert.equal(a.saved().session.results.length,0);
+ assert.equal(a.saved().history.length,0);
+ assert.equal(a.saved().session.answers[id],(q.answer+1)%4);
  for(let n=1;n<80;n++)a.window.examAdvance(true);
+ a.window.examAction('finish');
  assert.equal(a.saved().session??null,null);
  assert.equal(a.saved().history.length,80);
  assert.ok(a.elements.view.innerHTML.includes('Resultados por asignatura'));
@@ -218,7 +221,7 @@ test('Ciencias: modo examen no revela respuestas y al terminar guarda resultados
 test('Ciencias: distractores de Biología distinguen mecanismos próximos, no objetos ajenos',()=>{
  const {bank}=science();
  const byStem=part=>bank.find(q=>q.question.includes(part));
- const secretion=byStem('modificación y empaquetamiento');
+ const secretion=byStem('clasificarse y empaquetarse');
  assert.deepEqual(Array.from(secretion.options),['Complejo de Golgi','Retículo endoplasmático rugoso','Ribosomas libres','Lisosomas']);
  const synapse=byStem('espacio sináptico');
  assert.ok(synapse.options.includes('Vesículas sinápticas completas'));

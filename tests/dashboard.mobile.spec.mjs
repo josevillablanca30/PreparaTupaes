@@ -50,6 +50,11 @@ test('Selector: Química y Física muestran la materia elegida al entrar',async(
  await page.getByRole('link',{name:'← Asignaturas'}).tap();
  await page.getByRole('link',{name:'Elegir mención Física'}).tap();
  await expect(page.locator('.track').filter({hasText:'Física'})).toHaveAttribute('aria-pressed','true');
+ // A different subject link must preserve the unfinished chemistry diagnosis.
+ await page.getByRole('button',{name:'Continuar donde quedé'}).tap();
+ expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('cachaste-science-v1')).session.track)).toBe('Química');
+ await page.evaluate(()=>window.cachasteNativeBack());
+ await page.getByRole('button',{name:'Descartar',exact:true}).tap();
  await page.getByRole('button',{name:'Comenzar diagnóstico de 30'}).tap();
  await expect(page.getByText('1 / 30',{exact:true})).toBeVisible();
  const physics=await page.evaluate(()=>{const session=JSON.parse(localStorage.getItem('cachaste-science-v1')).session;return session.track});

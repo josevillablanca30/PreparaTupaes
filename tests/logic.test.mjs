@@ -20,6 +20,7 @@ function app(saved = '[]', failSave = false, savedSession = null, savedReview = 
       keys.set(key, value);
     }, removeItem: key => keys.delete(key) }
   });
+  vm.runInContext(readFileSync(new URL('../learning-core.js',import.meta.url),'utf8'),context);
   vm.runInContext(source, context);
   return code => vm.runInContext(code, context);
 }
@@ -131,8 +132,8 @@ test('tras fallar solo porcentajes, ofrece comprobación con otra pregunta', () 
  assert.equal(run('round.filter(x=>!x.correct).length'),1);
  assert.equal(run('result().includes("Comprobar si aprendí")'),true);
  run('verifyLearning()');
- assert.equal(run('queue.length'),1);
- assert.notEqual(run('queue[0].id'),1);
+ assert.equal(run('queue.length'),10);
+ assert.equal(run('queue.every(q=>q.skill==="Porcentajes"&&q.id!==1)'),true);
 });
 
 test('geometría y estadística: seis ejercicios originales con soluciones completas', () => {
@@ -295,7 +296,8 @@ test('repaso reinicia la ronda y registra solamente sus respuestas nuevas',()=>{
  assert.equal(run('round.length'),5);
  run('reviewErrors()');
  assert.equal(run('round.length'),0);
- assert.equal(run('queue.length'),5);
+ assert.equal(run('queue.length'),10);
+ assert.equal(run('queue.every(q=>!pendingReview.includes(q.id))'),true);
  run('choice=queue[i].answer;check()');
  assert.equal(run('round.length'),1);
 });
@@ -323,26 +325,21 @@ test('errores de simulacro largo: 65 pendientes sobreviven al cierre',()=>{
  assert.equal(opened('round.length'),0);
  assert.equal(opened('pendingReview.length'),65);
 });
-test('repaso pendiente avanza a siguiente tanda sin perder los errores restantes',()=>{
- const run=app();
- run("startExam('full');finishExam();reviewPending()");
+test('refuerzo usa otros ítems y no declara dominio por acertar con dudas',()=>{
+ const run=app();run("startExam('full');finishExam();reviewPending()");
  const first=run('queue.map(q=>q.id)');
- run("for(let j=0;j<10;j++){choice=queue[i].answer;check();next()}")
- assert.equal(run('pendingReview.length'),55);
- assert.equal(run('pendingReview.some(id=>'+JSON.stringify(first)+'.includes(id))'),false);
+ assert.equal(run('queue.every(q=>!pendingReview.includes(q.id))'),true);
+ run("for(let j=0;j<10;j++){choice=queue[i].answer;confidence='duda';check();next()}");
+ assert.equal(run('pendingReview.length'),65);
  run('reviewPending()');
- assert.equal(run('queue.length'),10);
  assert.equal(run('queue.every(q=>!'+JSON.stringify(first)+'.includes(q.id))'),true);
 });
-test('una respuesta correcta con pistas sigue pendiente de dominio independiente',()=>{
- const run=app();
- run("start('rapida');choice=0;check()");
- assert.equal(run('pendingReview.length'),1);
- run("reviewPending();requestHint();choice=queue[i].answer;check()");
+test('un acierto con pistas no sustituye dos evidencias independientes y seguras',()=>{
+ const run=app();run("start('rapida');choice=0;check();reviewPending();requestHint();choice=queue[i].answer;check()");
  assert.equal(run('history.at(-1).assisted'),true);
  assert.equal(run('pendingReview.length'),1);
- run("reviewPending();choice=queue[i].answer;check()");
- assert.equal(run('pendingReview.length'),0);
+ run("reviewPending();choice=queue[i].answer;confidence='seguro';check()");
+ assert.equal(run('pendingReview.length'),1);
 });
 test('progreso móvil organizado por los cuatro ejes y habilidades plegadas',()=>{
  const run=app('[{"id":1,"correct":true,"confidence":"seguro"}]');
@@ -367,7 +364,8 @@ test('repaso corrupto: descarta IDs inexistentes y cursor inválido',()=>{
  assert.equal(run('pendingReview.length'),2);
  assert.equal(run('reviewCursor'),0);
  run('reviewPending()');
- assert.equal(run('queue.length'),2);
+ assert.equal(run('queue.length'),10);
+ assert.equal(run('queue.every(q=>![1,2].includes(q.id))'),true);
 });
 
 test('16 desafíos de argumentar detectan errores conceptuales de cuatro ejes',()=>{
@@ -445,7 +443,7 @@ test('M1: diagnóstico de 30 reanuda pregunta, historial y autoconfianza',()=>{
  const draft=run('localStorage.getItem(mathDraftKey)');
  const reopened=app('[]',false,null,null,null,draft);
  assert.equal(reopened('savedMathDraft.index'),9);
- assert.equal(reopened('home().includes("Continuar diagnóstico de 30")'),true);
+ assert.equal(reopened('home().includes("Continuar práctica guardada")'),true);
  reopened('resumeMathDiagnosis()');
  assert.equal(reopened('queue.length'),30);
  assert.equal(reopened('round.length'),9);
