@@ -14,8 +14,8 @@ async function checkDashboard(page) {
 }
 test('Cachaste: inicio unificado muestra asignaturas y rutas accesibles',async({page},info)=>{
  await page.goto('./inicio.html');
- await expect(page).toHaveTitle('Cachaste · Elige tu asignatura');
- await expect(page.getByRole('heading',{name:'¿Qué quieres aprender hoy?'})).toBeVisible();
+ await expect(page).toHaveTitle('¿Cachaste? · Un ratito a la vez');
+ await expect(page.getByRole('heading',{name:/Prepara tu PAES,.*un ratito a la vez/})).toBeVisible();
  for(const name of ['Entrar a Matemática M1','Elegir mención Biología','Elegir mención Química','Elegir mención Física']){
   await expect(page.getByRole('link',{name,exact:true})).toBeVisible();
  }
@@ -30,13 +30,13 @@ test('Navegación: M1 y Ciencias vuelven al mismo selector',async({page})=>{
  await expect(page).toHaveTitle('Cachaste · Aprende a tu ritmo');
  await expect(page.getByRole('button',{name:'Comenzar diagnóstico de 30'})).toBeVisible();
  await page.getByRole('link',{name:'← Todas las asignaturas'}).tap();
- await expect(page).toHaveTitle('Cachaste · Elige tu asignatura');
+ await expect(page).toHaveTitle('¿Cachaste? · Un ratito a la vez');
  await page.getByRole('link',{name:'Elegir mención Biología'}).tap();
  await expect(page).toHaveTitle('Cachaste · Ciencias');
  await expect(page.locator('.track').filter({hasText:'Biología'})).toHaveAttribute('aria-pressed','true');
  await expect(page.getByRole('button',{name:'Comenzar diagnóstico de 30'})).toBeVisible();
  await page.getByRole('link',{name:'← Asignaturas'}).tap();
- await expect(page).toHaveTitle('Cachaste · Elige tu asignatura');
+ await expect(page).toHaveTitle('¿Cachaste? · Un ratito a la vez');
  await checkDashboard(page);
 });
 test('Selector: Química y Física muestran la materia elegida al entrar',async({page})=>{

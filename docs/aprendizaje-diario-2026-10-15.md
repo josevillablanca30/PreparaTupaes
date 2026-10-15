@@ -13,3 +13,17 @@ La selección registra presentaciones (incluidas preguntas abandonadas), prioriz
 Las recompensas se calculan por preguntas distintas cada día en fecha de Chile: 10 XP por intento, 15 por acierto, nunca penalizaciones ni vidas. No alteran dominio académico. Se muestran racha, misión y tres logros iniciales.
 
 Validación del cierre editorial previo: 129 pruebas de lógica y 108 ejecuciones móviles del profesor de Ciencias aprobadas. Primera integración diaria: 140 pruebas de lógica aprobadas; recorridos móviles de clase, error, transferencia, persistencia, cinco asignaturas y Express, más navegación tradicional, se verifican antes del commit. Pendiente validación Android de esta nueva integración y prueba con estudiantes. La secuencia de prerrequisitos de cada unidad requiere una segunda curaduría; los niveles son accesibles y recomendados, sin bloqueo obligatorio.
+
+## Segunda pasada funcional
+
+Se ordenaron los objetivos de porcentajes desde cálculo de la parte hacia descuentos, cambios sucesivos y recuperación del original. Trece relaciones de prerrequisitos editoriales permiten recomendar una base anterior, incluyendo pasar desde M2 a una clase M1. No representan aún un grafo completo de prerrequisitos de todo el temario.
+
+Se reutilizan las figuras y gráficos SVG originales de M1 en las preguntas diarias. En Lectura, después de comprobar, se resaltan únicamente citas exactas de la evidencia editorial del propio pasaje. Se distingue entre no disponer de otra pregunta para acreditar un objetivo y haberlo dominado. La recomendación diaria evita insistir en un objetivo sin preguntas disponibles.
+
+Se subdividieron objetivos de Ciencias que mezclaban magnitudes o procedimientos diferentes (rapidez/aceleración, peso/fuerza, molaridad/molalidad, corriente/su unidad y otros). Se agruparon cuatro pares adicionales de paráfrasis para impedir acreditarlas como transferencia independiente. El banco conserva sus 623 ítems y claves.
+
+Primera suite móvil completa: 388 aprobadas y cuatro fallos por título y encabezado del inicio anterior. Se actualizaron las expectativas a la nueva identidad manteniendo las comprobaciones de navegación y accesibilidad; los 18 recorridos diarios y del selector pasan después de esa corrección. No se eliminaron pruebas. Las ejecuciones finales de la suite completa y del APK se registrarán con su SHA definitivo.
+
+Conteo de la organización inicial: M1 26 unidades/73 niveles; M2 8/53; Lectura 3/16; Ciencias 11/122; Historia 5/53. Son niveles editoriales por objetivo y contexto, no 317 clases nuevas independientes: reutilizan las 623 clases revisadas y sus fundamentos por concepto. El informe `reports/daily-curriculum-2026-10-15.json` enumera las asignaciones por ID.
+
+Segunda integración: 145 pruebas de lógica aprobadas, incluyendo 120 muestreos adicionales de ensayos de Ciencias con 80 familias distintas, y 28 recorridos móviles de diario, selector y Ciencias aprobados (Android Chromium y 320 px). Se comprobó visualmente el inicio a 320 px sin desbordamiento. El APK cambia a versión 1.2.0-beta-daily, código 13; conserva applicationId, almacenamiento y configuración de firma beta. La prueba nativa añadida verifica el nuevo diario sin conexión y su recuperación al recrear la actividad. Su resultado depende todavía de CI.

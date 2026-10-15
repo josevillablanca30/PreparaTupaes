@@ -7,8 +7,8 @@ android {
         minSdk 24
         targetSdk 36
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        versionCode 12
-        versionName '1.1.0-beta'
+        versionCode 13
+        versionName '1.2.0-beta-daily'
     }
     signingConfigs {
         debug {

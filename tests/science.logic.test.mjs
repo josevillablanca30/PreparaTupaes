@@ -253,3 +253,5 @@ test('Ciencias migra ensayo anterior sin duplicar intentos ni convertir un error
  b.window.resume();b.window.examAction('finish');const done=b.saved();
  assert.equal(done.history.length,80);assert.equal(done.recent[0].correct,true);assert.equal(done.recent[1].correct,false);assert.equal(done.recent[1].unanswered,false);
 });
+
+test('Ciencias: 80 familias caben en todas las menciones incluso con nuevas paráfrasis agrupadas',()=>{for(const track of ['Biología','Física','Química','TP'])for(let trial=0;trial<30;trial++){const a=science(unlockedData());a.window.chooseTrack(track);a.window.setup('completo');const rows=a.saved().session.ids.map(id=>a.bank.find(q=>q.id===id));assert.equal(rows.length,80);assert.equal(new Set(rows.map(q=>q.transferGroup||q.id)).size,80);}});
