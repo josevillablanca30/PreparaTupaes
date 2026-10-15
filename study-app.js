@@ -74,11 +74,21 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   function expired() { if (session?.mode === 'full' && Date.now() >= session.deadline) { finish(); return true; } return false; }
   function move(index) { if (!session || session.mode !== 'full' || expired()) return; session.index = Math.max(0, Math.min(index, session.ids.length - 1)); session.selected = session.answers[session.index]; confirming = false; save(); render(true); }
   function timeLeft() { const secs = Math.max(0, Math.ceil((session.deadline - Date.now()) / 1000)); return Math.floor(secs / 60) + ':' + String(secs % 60).padStart(2, '0'); }
+  function lesson(q, mode) {
+    const t=q.teaching,e=q.editorial||q;
+    const paragraphs=values=>values.map(value=>'<p>'+esc(value)+'</p>').join('');
+    const steps=values=>'<ol>'+values.map(value=>'<li>'+esc(value)+'</li>').join('')+'</ol>';
+    if(!t)return mode==='steps'?steps(e.steps):paragraphs(String(mode==='easy'?e.easy:e.example).split('\n\n'));
+    const section=(heading,body,kind='')=>'<section class="teaching-section '+kind+'"><h4>'+heading+'</h4>'+body+'</section>';
+    if(mode==='steps')return section('Entendamos qué buscamos',paragraphs([t.aim]))+section('El concepto desde cero',paragraphs(t.foundation))+section('Resolvamos tu pregunta',steps(t.application))+section('Comprobemos el resultado',paragraphs([t.check]),'teaching-check');
+    if(mode==='easy')return section('Imagínalo así',paragraphs(t.intuition))+section('Conectémoslo con tu ejercicio',steps(t.application));
+    return section('Un problema distinto',paragraphs([t.example.problem]),'teaching-example')+section('Vamos a resolverlo',steps(t.example.steps))+section('Qué puedes llevar a tu pregunta',paragraphs([t.example.bridge]));
+  }
   function tutor(q, selected = null) {
     const e = q.editorial || q;
-    const detail = explainMode === 'steps' ? '<ol>' + e.steps.map(s => '<li>' + esc(s) + '</li>').join('') + '</ol>' : '<p>' + esc(explainMode === 'easy' ? e.easy : e.example) + '</p>';
+    const detail = lesson(q,explainMode);
     const wrong = selected !== null && selected !== q.answer && q.explanations?.[selected];
-    return '<section class="tutor-panel"><h3>Te lo dejamos clarito</h3>' + (wrong ? '<p class="error-reason"><strong>Por qué tu alternativa no sirve:</strong> ' + esc(wrong) + '</p>' : '') + '<div class="explanation-options" role="group" aria-label="Forma de explicación">' + [['steps', 'Paso a paso'], ['easy', 'Más fácil'], ['example', 'Con un ejemplo']].map(([m, text]) => '<button data-explain="' + m + '" aria-pressed="' + (m === explainMode) + '">' + text + '</button>').join('') + '</div>' + detail + '</section>';
+    return '<section class="tutor-panel"><h3>Te lo dejamos clarito</h3>' + (wrong ? '<div class="error-reason"><p><strong>Elegiste: ' + esc(q.options[selected]) + '</strong></p><p>' + esc(wrong) + '</p>' + (q.teaching?.selectedFeedback?.[selected] ? '<details><summary>Cómo corregir ese razonamiento</summary><ol>' + q.teaching.selectedFeedback[selected].repair.map(s=>'<li>'+esc(s)+'</li>').join('') + '</ol><p>'+esc(q.teaching.check)+'</p></details>' : '') + '</div>' : '') + '<div class="explanation-options" role="group" aria-label="Forma de explicación">' + [['steps', 'Paso a paso'], ['easy', 'Más fácil'], ['example', 'Con un ejemplo']].map(([m, text]) => '<button data-explain="' + m + '" aria-pressed="' + (m === explainMode) + '">' + text + '</button>').join('') + '</div>' + detail + '</section>';
   }
   function report(rows) {
     const areas = [...new Set(rows.map(r => r.area))];
@@ -104,7 +114,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
     return '<span class="eyebrow">Resultado de tu sesión</span><h1>' + good + ' de ' + rows.length + ' correctas</h1><p>Comprender el error es parte del avance. Revisa tus respuestas y después prueba con otro ejercicio del mismo concepto.</p>' + report(rows) + '<div class="actions"><button class="primary" id="reinforce">Practicar con preguntas nuevas</button><button id="back">Volver al inicio</button><button id="progress">Ver mi progreso</button></div><h2>Revisa y comprende</h2>' + rows.map(r => {
       const q = byId.get(r.id); if (!q) return '';
       const e = q.editorial || q;
-      return '<details class="review-item"><summary>' + (r.correct ? '✓ ' : '↗ ') + esc(q.question) + '</summary><p><strong>Tu respuesta:</strong> ' + esc(r.selected == null ? r.unanswered ? 'Sin responder' : 'No guardada en esta versión anterior' : q.options[r.selected]) + '</p><p><strong>Correcta:</strong> ' + esc(q.options[q.answer]) + '</p>' + (r.selected != null && !r.correct && q.explanations?.[r.selected] ? '<p>' + esc(q.explanations[r.selected]) + '</p>' : '') + '<h3>Paso a paso</h3><ol>' + e.steps.map(s => '<li>' + esc(s) + '</li>').join('') + '</ol><h3>Más fácil</h3><p>' + esc(e.easy) + '</p><h3>Con un ejemplo</h3><p>' + esc(e.example) + '</p></details>';
+      return '<details class="review-item"><summary>' + (r.correct ? '✓ ' : '↗ ') + esc(q.question) + '</summary><p><strong>Tu respuesta:</strong> ' + esc(r.selected == null ? r.unanswered ? 'Sin responder' : 'No guardada en esta versión anterior' : q.options[r.selected]) + '</p><p><strong>Correcta:</strong> ' + esc(q.options[q.answer]) + '</p>' + (r.selected != null && !r.correct && q.explanations?.[r.selected] ? '<p>' + esc(q.explanations[r.selected]) + '</p>' : '') + '<h3>Paso a paso</h3>' + lesson(q,'steps') + '<h3>Más fácil</h3>' + lesson(q,'easy') + '<h3>Con un ejemplo</h3>' + lesson(q,'example') + '</details>';
     }).join('');
   }
   function bind(id, fn) { const el = document.getElementById(id); if (el) el.onclick = fn; }
