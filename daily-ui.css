@@ -8,3 +8,12 @@ html{background:var(--game-paper)}body{margin:0;background:var(--game-paper);col
 body.is-learning #daily-root{display:flex;flex-direction:column}body.is-learning #daily-root>.lesson-top,body.is-learning #daily-root>.daily-session-head{order:-2}body.is-learning #daily-root>.lesson-meter{order:-1}
 
 body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{display:block;width:100%;margin-top:18px}#daily-root .cat-frame{aspect-ratio:1}
+
+/* Daily quests: lightweight, offline-first progression inspired by open-source learning paths. */
+.daily-quest{padding:16px 0;border-top:1px solid var(--game-border)}
+.daily-quest strong{display:block;font-size:16px;color:var(--game-deep)}
+.daily-quest p{margin:7px 0 11px}
+.daily-quest-progress{height:12px;border-radius:999px;background:#eee5f6;overflow:hidden}
+.daily-quest-progress>span{display:block;height:100%;border-radius:inherit;background:var(--game-purple);transition:width .2s ease}
+.daily-quest>button{width:100%;margin-top:4px}
+@media(prefers-reduced-motion:reduce){.daily-quest-progress>span{transition:none}}
