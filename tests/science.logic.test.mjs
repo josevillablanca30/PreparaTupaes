@@ -188,7 +188,7 @@ test('Ciencias: ensayo completo 80 respeta 54 comunes y 26 mención, sin repetic
  for(const track of ['Biología','Física','Química','TP']){
   const a=science(unlockedData());a.window.chooseTrack(track);a.window.setup('completo');
   const state=a.saved().session,rows=state.ids.map(id=>a.bank.find(x=>x.id===id));
-  assert.equal(rows.length,80);assert.equal(new Set(rows.map(x=>x.id)).size,80);
+  assert.equal(rows.length,80);assert.equal(new Set(rows.map(x=>x.id)).size,80);assert.equal(new Set(rows.map(x=>x.transferGroup||x.id)).size,80);
   assert.equal(rows.filter(x=>x.module==='MC').length,54);
   assert.equal(rows.filter(x=>x.module===(track==='TP'?'MTP':'ME')).length,26);
   if(track!=='TP')assert.equal(rows.filter(x=>x.module==='ME'&&x.subject===track).length,26);

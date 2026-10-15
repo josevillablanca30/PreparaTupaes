@@ -3139,19 +3139,19 @@
     },
     {
       "bank": "Lectura",
+      "id": "LEC-101",
+      "area": "Localizar",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Lectura",
       "id": "LEC-108",
       "area": "Evaluar",
       "type": "generic_example",
       "level": "review",
       "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
-    },
-    {
-      "bank": "Lectura",
-      "id": "LEC-111",
-      "area": "Localizar",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
     },
     {
       "bank": "Lectura",

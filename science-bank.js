@@ -1762,3 +1762,7 @@ window.SCIENCE_BANK.push(...[
   "curricularStatus": "temario_demre_2027"
  }
 ]);
+/* Familias de paráfrasis: no se cuentan como transferencia ni se duplican en un ensayo. */
+for(const ids of [[9,65],[16,88],[22,99],[49,101],[53,131],[30,72,108],[33,111],[7,140]]){
+ const family='science-family-'+ids[0];for(const n of ids){const q=window.SCIENCE_BANK.find(q=>q.id==='SCI-'+String(n).padStart(3,'0'));q.transferGroup=family;}
+}

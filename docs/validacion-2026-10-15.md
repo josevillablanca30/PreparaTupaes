@@ -32,3 +32,11 @@ Pendientes de publicación:
 El workflow [38708336309](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38708336309), commit `f60391306ea290b280b187f2947cc73c06ba626f`, terminó correctamente. Compiló la APK y aprobó las tres pruebas instrumentadas en emulador API 35: 3 ejecutadas, 0 fallos, 0 omitidas. El informe Android registra 100% de aprobación. No se afirma prueba en teléfono físico.
 
 Después de ese checkpoint se preparó API 36 para los requisitos vigentes de futuras publicaciones. También se protegió la sesión activa de M1 al consultar resultados anteriores, se añadieron controles de datos dañados y se conservan las respuestas de ensayos de versiones anteriores sin duplicar el historial. La nueva compilación de esos últimos cambios se validará en su propio workflow; el resultado de API 35 no se atribuye a un commit posterior.
+
+## Cierre de integración de sesiones y selección
+
+- 103 pruebas de lógica aprobadas, incluidas migración de ensayos previos, protección de borradores y control de dominio mediante preguntas distintas.
+- Se corrigió la reanudación del refuerzo de M1 desde el botón de repaso pendiente.
+- Se identifican familias de paráfrasis en Ciencias: los ensayos mantienen 54 comunes + 26 de mención sin duplicar familias; el refuerzo excluye también las paráfrasis de la pregunta fallada.
+- Tres preguntas nuevas de Lectora fueron reformuladas para no repetir el mismo dato dentro de su texto.
+- La comprobación final de esta revisión se conserva en los workflows del PR; no se transfieren resultados de otro commit sin comprobarlo.

@@ -79,9 +79,13 @@ function mixedSelection(mode){
  }else if(mode==='mixto'){
   pool=subjects.flatMap(sub=>adapted(BANK.filter(q=>q.examEligible!==false&&q.module==='MC'&&q.subject===sub),3));
  }else if(mode==='completo'){
-  pool=subjects.flatMap(sub=>list(BANK.filter(q=>q.examEligible!==false&&q.module==='MC'&&q.subject===sub),18));
-  pool.push(...(track==='TP'?subjects.flatMap(sub=>list(BANK.filter(q=>q.examEligible!==false&&q.module==='MTP'&&q.subject===sub),sub==='Química'?8:9)):mixScience(BANK.filter(q=>q.examEligible!==false&&q.module==='ME'&&q.subject===track)).slice(0,26)));
-  if(pool.length!==80||new Set(pool.map(q=>q.id)).size!==80)throw Error('Banco insuficiente o duplicado para mención '+track);
+  const eligible=BANK.filter(q=>q.examEligible!==false),family=q=>q.transferGroup||q.id;
+  const distinct=(items,n)=>{const used=new Set();return list(items,items.length).filter(q=>{const key=family(q);if(used.has(key))return false;used.add(key);return true}).slice(0,n)};
+  const speciality=track==='TP'?eligible.filter(q=>q.module==='MTP'):distinct(eligible.filter(q=>q.module==='ME'&&q.subject===track),26);
+  const used=new Set(speciality.map(family));
+  const common=subjects.flatMap(sub=>distinct(eligible.filter(q=>q.module==='MC'&&q.subject===sub&&!used.has(family(q))),18));
+  pool=[...common,...speciality];
+  if(common.length!==54||speciality.length!==26||new Set(pool.map(family)).size!==80)throw Error('Banco insuficiente o familias duplicadas para mención '+track);
  }
  return mixScience(pool);
 }
