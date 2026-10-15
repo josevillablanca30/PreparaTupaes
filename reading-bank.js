@@ -1388,3 +1388,181 @@ const updates={
 };
 for(const[n,u]of Object.entries(updates)){const q=window.READING_QUESTIONS.find(q=>q.id==='LEC-'+n),answer=q.answer;const opts=[u.answerText,...u.wrong];q.options=opts.slice(1);q.options.splice(answer,0,u.answerText);q.question=u.question;q.steps=['Identifica exactamente el dato que solicita la pregunta y el pasaje donde se menciona.',u.why,'Comprueba que la alternativa elegida no añade condiciones ausentes ni contradice lo dicho.'];q.easy=u.why;q.example=u.example;let i=0;q.explanations=q.options.map((o,j)=>j===answer?'¡Cachaste! '+u.why:'Elegiste «'+o+'». '+u.reasons[i++]+' La respuesta respaldada es «'+u.answerText+'». '+u.why);}
 }
+
+/* Profesor lector: citas verificables, razonamiento individual y transferencia.
+ * Los ejemplos son textos hipotéticos independientes de los veinte pasajes. */
+(function(){
+ const modules={},rows={};
+ function module(key,foundation,intuition,problem,steps,bridge){modules[key]={foundation,intuition,example:{problem,steps,bridge}};}
+ module('Dato explícito',[
+  'Localizar es recuperar información que el texto dice directamente. Primero identifica qué se pide: una persona, lugar, tiempo, cantidad o condición. Una alternativa puede mencionar algo verdadero y aun así responder otra pregunta.',
+  'La evidencia es el fragmento que permite justificar una respuesta. Une el dato con su referente: quién hizo qué, dónde y cuándo. Una paráfrasis puede conservar la idea sin usar exactamente las mismas palabras.'
+ ],[
+  'Es como buscar una dirección en una invitación: la hora y el lugar están en el mismo papel, pero no se pueden intercambiar. La palabra de la pregunta indica qué casillero necesitas.',
+  'Pon mentalmente un dedo sobre la frase que responde y otro sobre lo que te preguntan. Si ambos señalan la misma persona, momento y acción, tienes un respaldo; si cambian, mezclaste datos.'
+ ],'Texto nuevo: «El taller de cerámica funciona los martes a las 17:00 en la sede vecinal. Las inscripciones se reciben los viernes por correo». ¿Qué día se realiza el taller?',[
+  'La pregunta pide el día de la actividad, no el día de inscripción. Buscamos el verbo que describe el funcionamiento del taller.',
+  'La frase «funciona los martes» entrega el dato solicitado. «Los viernes» pertenece a otra acción: recibir inscripciones.',
+  'Respondemos martes. La alternativa viernes sería tentadora porque también aparece en el texto, pero cambia el referente. La presencia de una palabra no basta para que responda la pregunta.'
+ ],'Vuelve al pasaje e identifica el dato junto con la acción o sujeto al que corresponde, como distinguimos actividad e inscripción.');
+ module('Relación causal',[
+  'Explicar por qué ocurre un hecho exige relacionar una causa o motivo con su consecuencia. A veces el vínculo es explícito, con porque o por eso; otras veces se infiere conectando información del texto.',
+  'Inferir no significa inventar: la conclusión debe desprenderse de pistas concretas. No atribuyas intenciones, causas únicas o efectos permanentes si solo hay coincidencias o cambios puntuales.'
+ ],[
+  'Piensa en seguir un hilo entre dos hechos. Que estén uno junto al otro en la página no garantiza que el primero causó el segundo: necesitas la unión que el relato ofrece.',
+  'Pregunta «¿qué dato me permite dar este salto?». Si para contestar debes agregar una historia que el texto nunca cuenta, el salto es demasiado grande.'
+ ],'Texto nuevo: «El sistema de reservas dejó de funcionar. Por eso, la encargada anotó temporalmente las solicitudes en una libreta». ¿Por qué usó la libreta?',[
+  'El hecho que queremos explicar es la decisión de anotar a mano. El conector «por eso» la une con el problema del sistema.',
+  'El motivo respaldado es poder registrar solicitudes mientras el sistema no funcionaba. No se dice que la encargada rechace toda tecnología.',
+  'El adverbio «temporalmente» limita la conclusión: no podemos afirmar que la libreta reemplazará al sistema para siempre. Causa y alcance deben conservarse juntos.'
+ ],'Busca el hecho que se explica, las pistas de su motivo y los límites de esa relación; no agregues una intención ajena al pasaje.');
+ module('Idea global y tesis',[
+  'La idea global integra las partes importantes de un texto, sin reducirlo a un dato aislado. En un texto argumentativo, la tesis es la postura que el autor defiende mediante razones.',
+  'Para reconstruirla, identifica el problema inicial, lo que se propone y los límites que el autor reconoce. Una síntesis debe conservar los matices: defender una regulación no equivale a permitir todo ni a prohibir todo.'
+ ],[
+  'Imagina ponerle un nombre a una película después de verla completa. Un detalle de una escena puede ser cierto, pero no contar de qué trata el conjunto.',
+  'En un argumento, pregunta qué propuesta seguiría en pie si borras los ejemplos. Esa idea organiza los ejemplos; no tiene por qué coincidir con la primera opinión citada, que puede ser la de un adversario.'
+ ],'Texto nuevo: «El comedor debería ofrecer opciones vegetarianas. No propongo quitar los otros platos: algunos estudiantes tienen otras necesidades. Propongo ampliar las opciones y revisar su uso al terminar el semestre». ¿Cuál es la tesis?',[
+  'El problema es una oferta limitada y la propuesta explícita es ampliarla con opciones vegetarianas.',
+  'El autor conserva otros platos y propone evaluar la medida. La síntesis debe incluir la ampliación sin convertirla en una sustitución total.',
+  'La tesis es ofrecer opciones vegetarianas junto con las existentes y revisar su uso. «Eliminar toda comida no vegetariana» contradice el límite explícito, aunque hable del mismo tema.'
+ ],'Integra la propuesta con sus condiciones y contrasta la síntesis con el inicio, desarrollo y cierre del pasaje.');
+ module('Función de un fragmento',[
+  'Preguntar por la función de una frase no es pedir que repitas su contenido: debes explicar para qué la incluye el autor dentro del texto. Puede ejemplificar, justificar, contrastar, advertir, limitar una tesis o proponer una mejora.',
+  'Lee lo que viene antes y después. Los conectores, como sin embargo o además, muestran relaciones. La respuesta debe unir el fragmento con la idea a la que contribuye, en lugar de atribuirle un propósito externo.'
+ ],[
+  'Piensa en las piezas de una bicicleta: describir que una pieza es redonda no explica para qué sirve. Con una frase pasa lo mismo: importa qué trabajo realiza en el argumento.',
+  'Tapa el fragmento por un momento y pregunta qué se perdería: ¿un ejemplo, una precaución, una razón? Esa diferencia ayuda a nombrar su función.'
+ ],'Texto nuevo: «Conviene ampliar el horario del gimnasio. Sin embargo, habrá que reservar horas de descanso para quienes viven al lado». ¿Qué función tiene la segunda oración?',[
+  'La primera presenta una propuesta: abrir más tiempo. La segunda empieza con «sin embargo», señal de un límite o contraste.',
+  'La mención del descanso incorpora una condición para aplicar la propuesta sin ignorar a los vecinos.',
+  'Su función es limitar o matizar la ampliación, no negarla por completo ni demostrar con una medición que ya produjo molestias. Propuesta y precaución pueden coexistir.'
+ ],'Relaciona la frase con el argumento o la escena que la rodea y nombra qué aporta, no solo de qué habla.');
+ module('Evaluar evidencia pertinente',[
+  'Evaluar una propuesta exige decidir qué dato responde a su objetivo. Un indicador es una medida observable: si la propuesta busca mejorar acceso, debemos medir acceso y no solo gastos o anuncios.',
+  'Comparar antes y después ayuda a identificar cambios; condiciones comparables y grupos de comparación, cuando corresponden, hacen más sólida la evaluación. Una comparación simple no demuestra por sí sola una causa exclusiva.'
+ ],[
+  'Si quieres saber si un paraguas sirve, miras cuánto te moja la lluvia, no cuántos colores tiene. Un dato puede ser exacto y aun así no servir para la pregunta.',
+  'Antes de buscar números, completa «queremos saber si mejoró…». Luego elige qué observación mostraría realmente esa mejora y con qué situación previa o alternativa compararla.'
+ ],'Texto nuevo: «Se instalaron paneles para reducir el ruido de la sala». ¿Qué evidencia evaluaría mejor la medida: su color, su precio o el ruido registrado con un procedimiento comparable?',[
+  'El objetivo es reducir ruido. Color y precio miden otros aspectos, por lo que no evalúan directamente el resultado.',
+  'Comparamos niveles de ruido antes y después en condiciones equivalentes de ocupación y actividad; si fuera posible, añadimos una sala de comparación.',
+  'Un descenso comparable respalda que el ruido se redujo. Para atribuirlo solo a los paneles habría que descartar cambios como menos personas o actividades más silenciosas. El indicador pertinente no elimina automáticamente toda incertidumbre.'
+ ],'Identifica el objetivo concreto del pasaje y elige un indicador que mida ese resultado, con una comparación pertinente.');
+ module('Límites de una conclusión',[
+  'Un dato observado, una inferencia y una conclusión causal no son lo mismo. Observar que dos cosas cambian juntas puede apoyar una hipótesis, pero no basta para demostrar que una produce todo el cambio de la otra.',
+  'Revisa el alcance: qué personas, lugares y período se estudiaron y qué variables no se controlaron. Palabras como siempre, todas o exclusivamente exigen más evidencia que una observación limitada.'
+ ],[
+  'Una foto de una esquina no muestra toda la ciudad ni todos los días. Puedes describir lo que ves sin inventar cómo es cada calle del país.',
+  'La conclusión es como una caja: no debe ser más grande que lo que los datos pueden sostener. Reconocer que falta información no niega lo que sí se observó.'
+ ],'Texto nuevo: «En un curso, veinte estudiantes usaron una guía y subió el promedio. Ese mes también tuvieron clases de apoyo». ¿Podemos afirmar que la guía causó toda la mejora?',[
+  'Se observó un aumento del promedio en ese curso. Eso es un resultado concreto, no una ley sobre todos los cursos.',
+  'También cambiaron las clases de apoyo. Sin separar ambos factores, no podemos asignar toda la mejora a la guía.',
+  'La conclusión prudente reconoce la mejora y propone estudiar las causas con comparaciones adicionales. Tampoco podemos concluir que la guía no sirvió: falta aislar su aporte.'
+ ],'Conserva los datos observados y distingue lo que sugieren de lo que realmente demuestran; busca variables alternativas y generalizaciones excesivas.');
+ module('Cambio de un personaje',[
+  'Para interpretar la evolución de un personaje compara sus expectativas o acciones iniciales con las finales. Una transformación debe apoyarse en conductas, palabras o decisiones narradas.',
+  'No necesitamos que el narrador nombre una emoción para inferirla, pero sí pistas coherentes. Un cambio durante una escena no demuestra que el personaje abandonó para siempre una afición o cambió toda su vida.'
+ ],[
+  'Es como ver dos fotografías del mismo personaje antes y después de una experiencia, pero mirando también qué ocurrió entre ambas. El cambio no se adivina solo por cómo te sentirías tú.',
+  'Busca el «antes quería…» y el «después hizo…». Si ambos se sostienen en el relato, puedes describir el cambio sin inventar una intención secreta.'
+ ],'Texto nuevo: «Nico fue a devolver una llave y pensaba irse enseguida. Encontró al vecino clasificando cartas de su familia. Al terminar la tarde, Nico había guardado el teléfono y le preguntaba por cada nombre». ¿Qué cambió?',[
+  'Al inicio Nico quería cumplir una tarea rápida. Al final dedica tiempo a escuchar e interesarse por las historias.',
+  'El hallazgo de las cartas y la conversación unen ambos momentos. Se puede inferir un cambio desde la prisa hacia la curiosidad.',
+  'No se puede afirmar que Nico dejará de usar teléfonos para siempre: solo lo guardó durante esa escena. La interpretación se limita al cambio que las acciones muestran.'
+ ],'Compara el inicio y el final del personaje y usa el acontecimiento intermedio para justificar el cambio de atención o valoración.');
+ module('Imagen literaria y tema',[
+  'Una imagen literaria puede relacionar un objeto o acción concreta con un significado afectivo o una idea más amplia. Su sentido se interpreta en el contexto del relato, no siempre literalmente.',
+  'El tema se sostiene por detalles que se repiten o resultan decisivos para los personajes. Para elegir evidencia, busca qué detalle conecta directamente con la interpretación, en vez de un elemento decorativo que solo ubica la escena.'
+ ],[
+  'Un objeto de familia puede ser más que su material: una chaqueta remendada puede recordar el cuidado de quien la arregló. El relato debe mostrar esa conexión; no basta con que el objeto sea antiguo.',
+  'Para justificar una interpretación, señala el puente entre el objeto y la experiencia humana. El color de la chaqueta no demuestra por sí solo un vínculo afectivo.'
+ ],'Texto nuevo: «Ana guardó el chaleco que su madre había remendado. Cada puntada le parecía una forma de abrazo». ¿Qué aporta esa imagen?',[
+  'Las puntadas son costuras reales, pero no brazos que abracen físicamente.',
+  'El relato conecta el trabajo de reparar con el cariño de la madre: la comparación representa cuidado y memoria afectiva.',
+  'La lectura válida explica esa relación. No transforma la frase en una instrucción de costura ni en una prueba científica sobre efectos del tejido.'
+ ],'Relaciona el detalle con lo que significa para el personaje y distingue la imagen afectiva de una afirmación literal.');
+ module('Tabla y relaciones entre datos',[
+  'En una tabla cada valor pertenece al cruce de dos criterios, como mes y producto. Localiza primero ambos y conserva la unidad antes de sumar, comparar o describir tendencias.',
+  'Un aumento de cantidad no siempre implica más personas distintas ni mayor eficiencia. La eficiencia compara resultado con recursos; una tendencia describe cómo cambia el dato y no demuestra sola su causa.'
+ ],[
+  'Imagina un edificio con pisos y puertas: acertar el piso pero equivocarte de puerta lleva a otra vivienda. En una tabla, mes y categoría funcionan como esas dos coordenadas.',
+  'Después de encontrar los casilleros correctos, pregunta si buscan uno, la suma de varios o una diferencia. Los mismos números pueden resolver preguntas distintas con operaciones diferentes.'
+ ],'Texto nuevo: «Lunes: cuadernos 8, lápices 12. Martes: cuadernos 6, lápices 15». ¿Cuántos cuadernos se vendieron en ambos días y cuál fue su tendencia?',[
+  'Seleccionamos solo cuadernos: ocho el lunes y seis el martes. Los doce y quince pertenecen a lápices.',
+  'El total es 8 + 6 = 14 cuadernos. La tendencia es una disminución de 8 a 6, es decir dos menos.',
+  'No confundimos el total de catorce con un valor diario ni atribuimos la caída a una causa que el texto no explica. Leer la tabla incluye preservar categorías y alcance.'
+ ],'Ubica la fila y categoría pertinentes, aplica la operación solicitada y no atribuyas causas o cantidades de personas que la tabla no mide.');
+ module('Pregunta de afirmación no respaldada',[
+  'Algunas preguntas piden la alternativa incorrecta, injustificada, incompatible o que exagera. Primero reconoce esa consigna: aquí se responde identificando el problema, no aceptando la afirmación como verdadera.',
+  'Compara todas las opciones con el pasaje. Puede haber tres afirmaciones respaldadas y una que inventa una intención, contradice una condición o generaliza demasiado. Explica tanto la evidencia válida como el salto que no autoriza.'
+ ],[
+  'Es como buscar la pieza que no encaja en un rompecabezas. Señalarla no significa que encaje: significa que detectaste su diferencia.',
+  'Subraya mentalmente «no», «excede» o «exagera». Si eliges una frase verdadera porque aparece en el relato, podrías contestar lo contrario de lo que se pidió.'
+ ],'Texto nuevo: «En la prueba piloto participaron doce vecinas y diez volvieron a la segunda reunión». ¿Qué afirmación excede la evidencia: participaron doce, volvieron diez o todas las vecinas de la ciudad apoyan el proyecto?',[
+  'Las dos primeras afirmaciones repiten cantidades que el texto sí da.',
+  'La tercera cambia un grupo de doce participantes por todas las vecinas de la ciudad y atribuye un apoyo que no fue medido.',
+  'Esa tercera opción es la respuesta correcta a la pregunta de exceso, pero su contenido no queda demostrado. Detectar el exceso no lo convierte en una conclusión válida.'
+ ],'Relee la consigna negativa y busca el salto que la evidencia no permite; no presentes esa alternativa como una afirmación respaldada.');
+ function row(n,key,p,quote,reason,check,wrong=null){rows[n]={key,p,quote,reason,check,wrong};}
+ row(1,'Dato explícito',0,'dos veces por semana','La pregunta pide frecuencia del recorrido, no el día de una parada añadida. La expresión cuantifica directamente cuántas visitas se realizan cada semana.','Dos veces es la frecuencia explícita; las ferias de los sábados no sustituyen esa frecuencia.');
+ row(2,'Dato explícito',2,'Allí continuaron los talleres y el acceso a computadores','El adverbio Allí retoma la sede central nombrada antes. Hay que conservar esa referencia, sin trasladarle actividades de la camioneta.','Talleres y computadores pertenecen a la sede; préstamos y devoluciones se atribuyen principalmente al vehículo.');
+ row(3,'Relación causal',1,'Esa información permitió modificar las paradas','Esa información remite a los registros de uso, consultas y recomendaciones. El texto enlaza esos datos con añadir ferias y reducir visitas con poca demanda.','El ajuste responde a información de uso; no al reemplazo de talleres ni a nuevos computadores.');
+ row(4,'Idea global y tesis',2,'comparar el uso del servicio por barrios y no solo contar libros prestados','El problema de los dos buses, la adaptación de paradas y la evaluación por barrios apuntan al acceso territorial. El cierre conserva además la complementariedad con la sede.','La síntesis integra barrera, adaptación y evaluación; contar solo préstamos o reemplazar la sede omitiría partes decisivas.');
+ row(5,'Evaluar evidencia pertinente',0,'Quienes vivían en sectores alejados debían tomar dos buses para devolver un libro','La desigualdad que se quiere reducir es territorial. Comparar usuarios nuevos de esos barrios antes y después se relaciona con el acceso, mientras combustible y paradas miden insumos o actividad.','La comparación de usuarios por barrio sirve al objetivo; por sí sola todavía no demuestra una causa exclusiva.');
+ row(6,'Dato explícito',0,'Las mediciones se realizaron a las 15:00','Se pide horario de medición y el fragmento lo entrega con una hora exacta. No hay que deducir la hora a partir de los grados.','15:00 es tiempo del procedimiento; no es un valor de temperatura.');
+ row(7,'Dato explícito',1,'la Plaza Sur 36 °C','El sujeto Plaza Sur está unido al valor treinta y seis. El veintiocho pertenece a la Norte y el ocho es una diferencia calculada entre ambas.','Se responde la temperatura de Sur, 36 °C, sin cambiarla por la de Norte ni por la diferencia.');
+ row(8,'Límites de una conclusión',1,'las plazas también diferían en tránsito de vehículos y tipo de pavimento','Si además de árboles cambian tránsito y pavimento, cualquiera de esos factores puede aportar al resultado. La comparación no aisló un único factor.','La cautela no niega el efecto posible de la sombra; limita la atribución de toda la diferencia a ella.');
+ row(9,'Función de un fragmento',2,'repetir las mediciones en más horarios y comparar lugares con pavimentos semejantes','La recomendación busca observar más situaciones y hacer más comparables las superficies. Su función es mejorar el estudio que se acaba de describir.','Ampliar observaciones fortalece la evidencia; no elimina automáticamente otras causas.');
+ row(10,'Límites de una conclusión',1,'no era correcto atribuir toda la diferencia solo a los árboles','Hay una diferencia observada de 36 − 28 = 8 °C. El propio texto separa ese resultado de una atribución causal exclusiva.','Está sustentada la diferencia térmica observada, acompañada de la necesidad de aislar sus causas.');
+ row(11,'Dato explícito',1,'guardarlos durante explicaciones','La condición de guardar aparece dentro de la lista de acuerdos. No equivale a guardarlos durante toda actividad, porque la siguiente regla permite usos indicados.','La alternativa debe conservar el momento exacto: durante las explicaciones.');
+ row(12,'Idea global y tesis',2,'una norma es mejor cuando protege la atención y a la vez enseña a decidir','El autor reconoce las distracciones, cuestiona prohibir absolutamente y propone acuerdos. La tesis combina límites y aprendizaje de decisiones, sin uso irrestricto.','Regular según finalidad reúne las razones del texto mejor que permitir o prohibir todo.');
+ row(13,'Función de un fragmento',2,'No sostengo que toda actividad requiera pantallas','La lista de lectura, discusión y experimentos responde a una posible exageración de su postura. Muestra que aceptar usos educativos no vuelve necesarias las pantallas siempre.','El fragmento limita el alcance de la tesis; no exige reemplazar actividades manuales.');
+ row(14,'Evaluar evidencia pertinente',2,'protege la atención','La propuesta busca cuidar la atención con reglas. Comparar ese resultado bajo reglas claras y prohibición total es más pertinente que contar teléfonos o preferencias sin resultados.','La atención medida de manera comparable permite contrastar las normas; no basta una opinión aislada para afirmar su efecto.');
+ row(15,'Función de un fragmento',1,'Una escuela que permita usar celulares sin reglas también corre riesgos','El autor concede un problema de la opción que podría parecer más permisiva. Los acuerdos que siguen son su respuesta a ese riesgo.','Reconoce problemas del uso sin reglas y los atiende mediante regulación; no niega la necesidad de consecuencias.');
+ row(16,'Tabla y relaciones entre datos',0,'junio, lechugas 12 kg, tomates 16 kg, zanahorias 10 kg','Seleccionamos junio y después tomates, sin cambiar de mes ni de cultivo. Ese cruce entrega dieciséis kilogramos.','Diez pertenece a zanahorias y doce a lechugas; seis es tomate de mayo.');
+ row(17,'Tabla y relaciones entre datos',0,'abril, lechugas 18 kg','La serie completa de lechugas es 18, 15, 12. Ambas variaciones son negativas: −3 y −3; tomates y zanahorias suben.','La condición exige bajar cada mes, y solo lechugas cumple los dos cambios.');
+ row(18,'Relación causal',1,'los tomates comenzaron a madurar más tarde que las lechugas','La observación explica por qué tomates aparecen con cero en abril y luego seis y dieciséis. No pretende explicar la caída de lechugas ni igualar todos los cultivos.','La maduración tardía funciona como explicación del inicio tardío de la cosecha de tomates.');
+ row(19,'Tabla y relaciones entre datos',0,'mayo, lechugas 15 kg, tomates 6 kg, zanahorias 8 kg','El total mensual reúne los tres cultivos de la misma fila: 15 + 6 = 21 y 21 + 8 = 29 kg.','Sumamos solo mayo y todos sus cultivos: veintinueve kilogramos.');
+ row(20,'Evaluar evidencia pertinente',2,'cantidad de agua utilizada','Eficiencia hídrica relaciona producción con agua, no solo una de las dos. Litros por kilogramo permite comparar cuánto recurso requiere cada unidad de cosecha.','Un indicador que conserva agua y producción responde al objetivo; más cosecha por sí sola no demuestra menor gasto hídrico.');
+ row(21,'Dato explícito',0,'dificultar el acceso a un consultorio','Se pregunta por una instalación de salud. Consultorio es la nombrada; cruces y paraderos sí aparecen, pero pertenecen a otro tipo de lugar.','La respuesta debe conservar tanto el nombre como la categoría solicitada: consultorio.');
+ row(22,'Idea global y tesis',1,'conocer efectos que el plano no muestra y explicar públicamente por qué se adopta una decisión','El autor define escuchar por dos tareas: incorporar información y dar razones. Aclara que no implica satisfacer toda solicitud.','La paráfrasis correcta conserva escuchar y justificar sin prometer aprobación automática.');
+ row(23,'Función de un fragmento',2,'Si los resultados no coinciden con lo previsto, modificar el diseño','Los indicadores se miden después de construir para contrastar expectativas con efectos reales. El ajuste depende de esa evaluación.','Su función es comprobar resultados y orientar correcciones, no sustituir la consulta previa.');
+ row(24,'Idea global y tesis',0,'decidir su recorrido mirando solo un plano es insuficiente','El plano puede mostrar una ruta recta y omitir efectos sobre personas. La crítica se dirige a tratar eficiencia geométrica como utilidad universal.','No se rechaza planificar ni evaluar: se cuestiona que el plano por sí solo garantice un buen recorrido para todos.');
+ row(25,'Función de un fragmento',2,'La participación tampoco garantiza por sí sola una obra exitosa','Reconocer ese límite evita prometer éxito automático. La propuesta añade mediciones posteriores y correcciones, haciendo más defendible su alcance.','La fuerza del argumento proviene de sus límites y mecanismos de evaluación, no de una garantía sin evidencia.');
+ row(26,'Dato explícito',0,'al lado de cada título, escribía una fecha','El dato buscado acompaña a cada canción en el cuaderno: una fecha. La pregunta no solicita todavía interpretar para qué servía.','Fecha responde el dato literal; hora, precio y nombre de Mara no se atribuyen a esas anotaciones.');
+ row(27,'Dato explícito',1,'Desde la calle llegaba la música de un grupo que ensayaba en la plaza','El corte apaga la radio, pero el relato sitúa una segunda fuente musical en la plaza. Hay que distinguir la música habitual de la escena durante el corte.','La música viene del grupo de la plaza, no de otra radio que el texto nunca menciona.');
+ row(28,'Imagen literaria y tema',2,'una manera de conservar momentos','Las fechas del cuaderno y el recuerdo del baile conectan canciones con experiencias. El cierre explicita que no es solo un catálogo musical.','El cuaderno vincula música y memoria personal; no organiza compras ni transmisiones futuras.');
+ row(29,'Cambio de un personaje',2,'Preguntó por Ernesto y escuchó una historia','Mara podría volver a la radio cuando regresa la luz, pero decide preguntar y escuchar. Su atención pasa al recuerdo que la melodía despertó.','La acción final respalda curiosidad por Elvira; no se describe una avería permanente ni una prohibición musical.');
+ row(30,'Imagen literaria y tema',1,'Primer baile con Ernesto. Llovía','La anotación vincula una melodía con una experiencia concreta del pasado. La conversación posterior desarrolla ese recuerdo, a diferencia de detalles decorativos de la radio.','Baile y conversación constituyen evidencia del tema de la memoria; el color o marca de un aparato no lo demostrarían.');
+ row(31,'Dato explícito',1,'una cinta amarilla que advertía sobre un derrumbe reciente','La advertencia del sendero se nombra directamente. El relato no asocia esa cinta a incendio, sequía ni protección de fauna.','Derrumbe reciente conserva el peligro literal que informa la cinta.');
+ row(32,'Dato explícito',2,'Al día siguiente avisaron al municipio sobre el derrumbe','La referencia temporal distingue esta acción de lo ocurrido durante el paseo. El aviso se dirige al municipio y no equivale a cerrar todas las rutas.','El día siguiente corresponde al aviso del derrumbe, sin acciones adicionales inventadas.');
+ row(33,'Cambio de un personaje',1,'si retrocedían, perderían la mejor luz para fotografiar','Ignacio quiere llegar a tiempo para las fotos, pero la cinta y las piedras muestran un riesgo. El conflicto reúne esa meta y la necesidad de actuar con prudencia.','El dilema es rapidez frente a seguridad; no compra de cámara, concurso ni trabajo.');
+ row(34,'Cambio de un personaje',2,'No llegamos al lugar esperado, pero aprendimos a mirar el camino','La oposición entre no llegar y sí aprender cambia el criterio de valorar la salida. La experiencia no se reduce a obtener la fotografía planificada.','Valora el trayecto sin renunciar para siempre a las aves ni culpar a su hermana.');
+ row(35,'Evaluar evidencia pertinente',1,'Su hermana observó piedras sueltas junto al borde','La hermana suma una señal física al aviso de derrumbe. Regresar por el camino señalizado responde a ese riesgo concreto, aunque cueste tiempo.','La ruta de regreso es la decisión mejor justificada por las señales disponibles; el objetivo fotográfico no elimina el peligro.');
+ row(36,'Dato explícito',0,'reunió fotografías de distintos puntos y registró los horarios','La primera actuación de la agrupación es observacional: toma imágenes y anota cuándo y dónde. El laboratorio interviene después.','Fotografías y horarios corresponden al registro inicial; no se describen certificados ni muestras de sangre.');
+ row(37,'Dato explícito',1,'un aumento de partículas en suspensión','Los resultados afirman un aumento de partículas, pero limitan lo que pueden decir sobre una sustancia concreta. Hay que leer el resultado junto con esa salvedad.','Más partículas es el hallazgo; no se confirmó un tóxico específico ni un cambio en todas las especies.');
+ row(38,'Límites de una conclusión',2,'una señal útil para investigar, no una prueba suficiente para señalar a un responsable','El cambio visible da una razón para muestrear. No identifica por sí mismo la composición química ni una responsabilidad.','Observación útil y prueba causal son niveles diferentes: el texto reconoce el primero y limita el segundo.');
+ row(39,'Función de un fragmento',1,'repetir el muestreo tras otras lluvias','La propuesta vuelve a observar cuando se repite la condición de lluvia. Permite comprobar si el patrón persiste en vez de convertir un episodio en una regla.','El propósito es ampliar la comprobación del fenómeno, no excluir datos contradictorios.');
+ row(40,'Límites de una conclusión',1,'no permitieron confirmar la presencia de un contaminante específico','Un titular fiel debe mencionar el aumento observado y la necesidad de nuevos análisis. Potabilidad total, culpabilidad y daño irreversible exceden lo establecido.','Detectar sedimentos y pedir análisis conserva el hallazgo y su incertidumbre.');
+ row(41,'Dato explícito',2,'escuelas y municipios organicen talleres demostrativos','Buscamos quiénes organizarían, no qué objetos se repararían. El sujeto propuesto aparece en la frase citada.','Escuelas y municipios son los organizadores sugeridos; los otros pares institucionales no aparecen.');
+ row(42,'Dato explícito',1,'fallas peligrosas, insistir sin diagnóstico puede poner en riesgo','El contexto habla de un artefacto eléctrico. La condición de peligro es insistir en reparar esas fallas sin diagnóstico, no una simple tarea de limpieza.','La alternativa debe conservar riesgo eléctrico y ausencia de diagnóstico juntos.');
+ row(43,'Idea global y tesis',2,'No se trata de idealizar todo objeto antiguo','El comienzo propone considerar reparación antes de reemplazar y el segundo párrafo limita esa opción por seguridad, costo y vida útil. La tesis debe mantener esas condiciones.','Reparar cuando resulte viable y seguro integra el argumento; conservar cualquier cosa a todo costo lo contradice.');
+ row(44,'Función de un fragmento',1,'Reparar no siempre es la alternativa correcta','La segunda parte matiza la propuesta inicial mediante riesgos y costos. Así evita que considerar reparar se entienda como una obligación universal.','El párrafo introduce límites para una decisión responsable, no historia de talleres ni marcas comerciales.');
+ row(45,'Evaluar evidencia pertinente',0,'Esa decisión puede reducir residuos','Para evaluar ese beneficio hay que medir objetos que continuaron usándose en vez de desecharse gracias a una reparación. Los anuncios y colores no describen residuos evitados.','Contar objetos reparados que no se desecharon sirve al objetivo; su masa y vida útil adicional podrían precisar aún más la evaluación.');
+ row(46,'Dato explícito',0,'sobre el mesón de la imprenta','El hallazgo inicial ocurre en el trabajo. El cajón familiar aparece al final, cuando Lucía guarda la fotografía, y no debe confundirse con el primer lugar.','El lugar de encontrar el sobre es el mesón; el cajón pertenece a otra acción posterior.');
+ row(47,'Relación causal',1,'se quedó en el pueblo porque consiguió trabajo en la imprenta','El conector porque expresa la causa del cambio de plan del padre. Robo, rutas cerradas y pérdida de imagen no explican su permanencia en el relato.','El trabajo en la imprenta explica por qué no realizó el viaje planeado.');
+ row(48,'Cambio de un personaje',2,'no había sido una promesa solemne','Lucía comienza imaginando un secreto importante. La explicación familiar le permite valorar una decisión cotidiana con efectos sobre su historia.','El cambio es de un supuesto gran misterio a una decisión significativa; no desacredita todos los recuerdos de Rosa.');
+ row(49,'Relación causal',2,'para preguntarle más a su padre esa noche','El propio cierre explica el propósito de dejar el sobre abierto. No necesitamos inventar venta, anonimato ni ocultamiento.','El motivo de esa acción es continuar la conversación familiar.');
+ row(50,'Función de un fragmento',1,'su tía Rosa, quien se rio antes de explicar','Rosa ofrece la información que cambia la lectura del supuesto secreto: se trataba de vender la bicicleta y aceptar un trabajo. Ese nuevo contexto produce el giro.','La explicación transforma la interpretación de Lucía; el color del sobre no aporta esa revelación.');
+ // CONTINUAR_FILAS_PROFESOR
+ for(const q of window.READING_QUESTIONS){const n=Number(q.id.slice(4)),r=rows[n];if(!r)continue;
+  const p=window.READING_PASSAGES.find(p=>p.id===q.passageId),base=modules[r.key];
+  const negative=r.key==='Pregunta de afirmación no respaldada';
+  const application=['En el párrafo '+(r.p+1)+' de «'+p.title+'» encontramos esta evidencia: «'+r.quote+'».',r.reason,(negative?'La opción que debemos señalar por su falta de respaldo es «':'La respuesta que se justifica es «')+q.options[q.answer]+'». '+r.check];
+  const t={revision:'tutor-profesor-2026-10-15',qualityBefore:'básica',quality:'adecuada',aim:(negative?'Buscamos la afirmación que falla, sin aceptarla como verdadera. ':'Identifiquemos qué pide la consigna y cómo justificarlo con este pasaje. ')+q.question,foundation:base.foundation.slice(),application,check:r.check,intuition:base.intuition.slice(),example:{...base.example,steps:base.example.steps.slice()},evidence:[{passageId:p.id,paragraph:r.p,quote:r.quote}]};
+  q.explanations=q.options.map((o,i)=>{if(i===q.answer)return '¡Cachaste! '+r.check;const old=q.explanations[i].split(' La alternativa respaldada')[0].split(' La conclusión respaldada')[0].split(' La respuesta respaldada')[0];return r.wrong?'Elegiste «'+o+'». '+r.wrong[i]+' '+r.check+' La alternativa que responde a esta consigna es «'+q.options[q.answer]+'».':old+' '+r.check+' La alternativa que responde a esta consigna es «'+q.options[q.answer]+'». ';});
+  t.selectedFeedback=q.options.map((_,i)=>i===q.answer?null:{diagnosis:q.explanations[i],repair:application.slice()});q.teaching=t;q.concept=r.key;q.transferGroup=q.passageId+'-'+r.key;
+  q.steps=[t.aim,...t.foundation,...application,t.check];q.easy=[...t.intuition,...application].join('\n\n');q.example=[t.example.problem,...t.example.steps,t.example.bridge].join('\n\n');
+ }
+})();

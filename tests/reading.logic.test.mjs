@@ -83,7 +83,7 @@ test('Lectura: práctica Express permite pistas y explicación sin inflar confia
  a.win.readingHint();assert.equal(a.get().session.hint,1);
  a.win.readingChoose(q.answer);a.win.readingCheck();
  assert.ok(a.elements.view.innerHTML.includes('Te lo explico de otra forma'));
- a.win.readingExplanation('easy');assert.ok(a.elements.view.innerHTML.includes(q.easy));
+ a.win.readingExplanation('easy');for(const part of q.teaching?[...q.teaching.intuition,...q.teaching.application]:[q.easy])assert.ok(a.elements.view.innerHTML.includes(part),q.id+' explicación accesible y aplicación completas');
  a.win.readingAdvance();
  assert.equal(a.get().history.at(-1).assisted,true);
 });

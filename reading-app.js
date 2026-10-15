@@ -138,8 +138,8 @@ function home(){
 function feedback(q){
  const correct=session.selected===q.answer;
  const intro=correct?(session.hint?'¡Bien! Lo resolviste con una pista.':'¡Cachaste! Bien por encontrar la evidencia.'):'No resultó esta vez. Mira cómo se resuelve.';
- const details=feedbackMode==='steps'?'<ol>'+q.steps.map(s=>'<li>'+esc(s)+'</li>').join('')+'</ol>':feedbackMode==='easy'?'<p>'+esc(q.easy)+'</p>':'<p>'+esc(q.example)+'</p>';
- return '<div class="feedback '+(correct?'right':'wrong')+'" role="status"><strong>'+intro+'</strong><p>'+esc(q.explanations[session.selected])+'</p><p><b>Respuesta correcta: '+String.fromCharCode(65+q.answer)+') '+esc(q.options[q.answer])+'</b></p></div>'+
+ const details=window.CachasteLearning.lesson(q,feedbackMode);
+ return '<div class="feedback '+(correct?'right':'wrong')+'" role="status"><strong>'+intro+'</strong><p><b>Elegiste: '+esc(q.options[session.selected])+'</b></p><p>'+esc(q.explanations[session.selected])+'</p><p><b>Respuesta correcta: '+String.fromCharCode(65+q.answer)+') '+esc(q.options[q.answer])+'</b></p></div>'+
  '<h3>Te lo explico de otra forma</h3><div class="tabs">'+[['steps','Paso a paso'],['easy','Más fácil'],['example','Con un ejemplo']].map(([key,label])=>'<button class="'+(feedbackMode===key?'active':'')+'" onclick="readingExplanation(&quot;'+key+'&quot;)">'+label+'</button>').join('')+'</div><div class="explanation">'+details+'</div>';
 }
 function examJump(n){if(!session||session.mode!=='completo'||!Number.isInteger(n)||n<0||n>=session.ids.length)return;if(Date.now()>=session.deadline){finish();return}session.index=n;session.selected=session.answers[current().id]??null;examConfirm=false;save();render(true)}
