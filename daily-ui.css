@@ -36,3 +36,8 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 .teacher-step .wise-cat p{background:#fff;line-height:1.7!important;white-space:pre-line}
 .teacher-step .cat-frame{width:100px;height:100px}
 @media(max-width:390px){.teacher-step .cat-frame{width:76px;height:76px}.teacher-step{padding:11px}.teacher-step .wise-cat{gap:7px}.teacher-step .wise-cat p{padding:11px;font-size:14px}}
+
+.pace-panel{padding:16px;margin:14px 0 18px;border:2px solid var(--game-border);border-radius:18px;background:#faf6ff}
+.pace-panel strong{display:block;font-size:17px}
+.pace-panel p{margin:9px 0 14px;line-height:1.55;font-size:14px}
+.pace-panel button{min-height:44px}
