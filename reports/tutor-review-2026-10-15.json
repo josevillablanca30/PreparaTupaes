@@ -3,15 +3,15 @@
   "scope": "Revisión editorial asistida; no medición de aprendizaje con estudiantes. No se clasifica como excelente por longitud. Los ítems pendientes no se presentan como revisados.",
   "summary": {
     "total": 623,
-    "reviewed": 171,
-    "pending": 452,
-    "rewrittenThreeModes": 171,
+    "reviewed": 211,
+    "pending": 412,
+    "rewrittenThreeModes": 211,
     "excellent": 0
   },
   "bySubject": {
     "M1": {
       "total": 116,
-      "reviewed": 0
+      "reviewed": 40
     },
     "Ciencias": {
       "total": 206,
@@ -34,242 +34,602 @@
     {
       "subject": "M1",
       "id": 1,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 2,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 3,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 4,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 5,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 101,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 102,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 103,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 104,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 105,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 106,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 107,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 108,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 109,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 110,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 111,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 112,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 113,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 114,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 115,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 200,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 201,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 202,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 203,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 204,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 205,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 206,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 207,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 208,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 209,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 210,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 211,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 212,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 213,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 214,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 215,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 216,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 217,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 218,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",
       "id": 219,
-      "review": "pendiente_revision_pedagogica_individual",
-      "quality": null
+      "review": "revision_editorial_asistida_de_contenido",
+      "quality": "adecuada",
+      "qualityBefore": "básica",
+      "evidence": [
+        "Fundamentos definidos",
+        "Aplicación propia conservada y revisada",
+        "Comprobación específica",
+        "Estrategia cotidiana diferente",
+        "Otro problema resuelto y puente de transferencia",
+        "Distractor elegido identificado y procedimiento de reparación"
+      ]
     },
     {
       "subject": "M1",

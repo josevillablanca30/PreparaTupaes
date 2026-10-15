@@ -75,5 +75,17 @@
   function summary(mode, rows, extra = {}) {
     return { id: extra.id || 'round-' + Date.now(), mode, at: new Date().toISOString(), total: rows.length, correct: rows.filter(x => x.correct).length, results: rows, ...extra };
   }
-  global.CachasteLearning = { concept, profile, select, transfer, validSession, cleanRows, cleanAssessment, summary };
+  function lesson(q, mode) {
+    const esc=value=>String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    if(mode==='basic')mode='easy';
+    const t=q.teaching,e=q.editorial||q;
+    const paragraphs=values=>values.map(value=>'<p>'+esc(value)+'</p>').join('');
+    const steps=values=>'<ol>'+values.map(value=>'<li>'+esc(value)+'</li>').join('')+'</ol>';
+    if(!t)return mode==='steps'?steps(e.steps):paragraphs(String(mode==='easy'?e.easy:e.example).split('\n\n'));
+    const section=(heading,body,kind='')=>'<section class="teaching-section '+kind+'"><h4>'+heading+'</h4>'+body+'</section>';
+    if(mode==='steps')return section('Entendamos qué buscamos',paragraphs([t.aim]))+section('El concepto desde cero',paragraphs(t.foundation))+section('Resolvamos tu pregunta',steps(t.application))+section('Comprobemos el resultado',paragraphs([t.check]),'teaching-check');
+    if(mode==='easy')return section('Imagínalo así',paragraphs(t.intuition))+section('Conectémoslo con tu ejercicio',steps(t.application));
+    return section('Un problema distinto',paragraphs([t.example.problem]),'teaching-example')+section('Vamos a resolverlo',steps(t.example.steps))+section('Qué puedes llevar a tu pregunta',paragraphs([t.example.bridge]));
+  }
+  global.CachasteLearning = { lesson, concept, profile, select, transfer, validSession, cleanRows, cleanAssessment, summary };
 })(typeof window !== 'undefined' ? window : globalThis);
