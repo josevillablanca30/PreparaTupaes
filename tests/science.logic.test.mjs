@@ -127,8 +127,8 @@ test('Ciencias: tutor enseña con pistas, corrección por alternativa y explicac
  a.window.answer(first.answer);a.window.check();
  assert.ok(a.elements.view.innerHTML.includes('¡Cachaste, con una pista!'));
  assert.ok(a.elements.view.innerHTML.includes(first.explanations[first.answer]));
- a.window.changeMode('easy');assert.ok(a.elements.view.innerHTML.includes(first.easy));
- a.window.changeMode('example');assert.ok(a.elements.view.innerHTML.includes(first.example));
+ a.window.changeMode('easy');for(const part of first.teaching?[...first.teaching.intuition,...first.teaching.application]:[first.easy])assert.ok(a.elements.view.innerHTML.includes(part),first.id+' explicación accesible completa');
+ a.window.changeMode('example');for(const part of first.teaching?[first.teaching.example.problem,...first.teaching.example.steps,first.teaching.example.bridge]:[first.example])assert.ok(a.elements.view.innerHTML.includes(part),first.id+' ejemplo completo');
  const data=a.saved();assert.equal(data.history.length,1);
  assert.equal(data.history[0].assisted,true);
 });

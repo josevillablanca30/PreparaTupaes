@@ -1,0 +1,11 @@
+# Profesor de Ciencias · 15 de octubre de 2026
+
+Lote 1: SCI-001–036. Se preservan enunciados, cuatro opciones, claves, módulos y elegibilidad de las 206 preguntas. La instantánea anterior está en `pedagogy/science-before-2026-10-15.json`. No se incorporan preguntas nuevas ni se reclasifica material complementario como elegible para ensayo.
+
+Las clases enseñan fundamentos, mecanismo o fórmula con símbolos y unidades, aplicación original ampliada, comprobación específica, analogía distinta y otro problema resuelto. Los fundamentos y ejemplos son compartidos por mecanismo; el razonamiento y comprobación se escriben individualmente. Se conservan los diagnósticos específicos de distractores después de revisarlos y se vinculan a la reparación del procedimiento. Calificación editorial adecuada, sin afirmar medición de aprendizaje ni excelencia.
+
+Antes SCI-016 decía «rapidez = distancia/tiempo; 120/20 = 6». Ahora explica qué significa repartir distancia por segundos, diferencia rapidez y aceleración, define unidades, aplica el reparto al caso, comprueba seis metros por segundo y enseña otro caso con una cinta transportadora y un cambio de velocidad. SCI-004 desarrolla la secuencia impulso-calcio-vesículas-mensajero-receptor y explica por qué no atraviesa la hendidura una vesícula completa.
+
+Referencias primarias contrastadas para los fundamentos: [OMS, preservativos](https://www.who.int/news-room/fact-sheets/detail/condoms), [OMS, vacunación y memoria](https://www.who.int/news-room/questions-and-answers/item/vaccines-and-immunization-what-is-vaccination), [USGS, placas y magma](https://www.usgs.gov/faqs/are-tectonic-plates-floating-magma). Se distingue reducción de riesgo de garantía absoluta y manto principalmente sólido de un océano global de magma. Los contenidos de vacunas se aplicarán a sus lotes correspondientes.
+
+Validación: 128 pruebas de lógica y 18 pruebas de navegador Android Chrome/320 px aprobadas. Las pruebas recorren todos los distractores y modos de las 36 clases y preservan los datos curriculares. No equivalen a revisión externa por un docente ni a prueba física en teléfono. Pendientes de Ciencias en este checkpoint: 170.
