@@ -66,6 +66,30 @@ test('Los hitos se ganan al comprobar aprendizajes, sin porcentajes ficticios',a
  await test.info().attach('15-mapa-con-mision-superada',{body:await page.screenshot({fullPage:true,animations:'disabled'}),contentType:'image/png'});
 });
 
+test('Al completar un mundo aparece el portal y se puede volver a jugar',async({page})=>{
+ await page.goto('./inicio.html#courses');
+ await page.locator('[data-action=pick-course][data-subject=M1]').click();
+ await page.evaluate(()=>{
+  const e=CachasteDailyApp.engine,b=CachasteDailyApp.basics;
+  e.state.basics||={};
+  for(const l of b.lessons.filter(x=>!x.subject)){
+   e.state.basics[l.id]={history:l.checks.slice(0,2).map(q=>({id:q.id,correct:true,hinted:false}))};
+  }
+  (e.state.stages||={}).M1='basics';
+  e.save();CachasteDailyApp.render();
+ });
+ await expect(page.locator('.adventure-world')).toHaveClass(/world-foundation/);
+ await expect(page.locator('.world-hud')).toContainText('5 de 5 misiones dominadas');
+ await expect(page.locator('.world-gate')).toHaveClass(/gate-ready/);
+ await expect(page.locator('.world-gate-cat .cat-frame')).toBeVisible();
+ await test.info().attach('16-portal-mundo-completado',{body:await page.screenshot({fullPage:true,animations:'disabled'}),contentType:'image/png'});
+ await page.locator('.world-gate [data-action=next-stage]').click();
+ await expect(page.locator('.adventure-world')).toHaveClass(/world-numbers/);
+ await page.locator('.stage-banner [data-action=units]').click();
+ await page.locator('[data-action=stage][data-stage=basics]').click();
+ await expect(page.locator('.world-gate')).toHaveClass(/gate-ready/);
+});
+
 test('Mapa accesible y estable en pantallas pequeñas y con movimiento reducido',async({page})=>{
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.goto('./inicio.html#courses');
