@@ -66,12 +66,12 @@
 
 
  function curriculumOverview(expanded=false){
-  const scope=C.secondaryScope?.[subject]||[],list=units();
+  const scope=C.secondaryScope?.[subject]||[],list=units(),roadmap=C.roadmap(pool(),subject),ready=roadmap.reduce((a,x)=>a+x.readyLevels,0),total=roadmap.reduce((a,x)=>a+x.levels,0);
   const topicGroups=[...new Set(list.map(u=>u.axis))];
   return '<details class="curriculum-overview"'+(expanded?' open':'')+'><summary><span>Programa de enseñanza media</span><strong>Ver contenidos de 1.º a 4.º medio</strong></summary>'+
    '<p class="curriculum-overview-note">Los contenidos se ordenan según los ejes DEMRE y los índices de los materiales de preparación revisados. Avanza por la ruta o elige una unidad; los prerrequisitos se refuerzan solo cuando hacen falta.</p>'+
    '<div class="curriculum-scope">'+scope.map(x=>'<div class="scope-theme"><strong>'+esc(x.title)+'</strong><p>'+esc(x.topics)+'</p></div>').join('')+'</div>'+
-   '<p class="curriculum-coverage"><strong>Disponible ahora:</strong> '+list.length+' unidades del banco actual, distribuidas en '+topicGroups.length+' ejes. La cobertura de ejercicios todavía se está ampliando: este mapa no certifica que cada objetivo de 1.º a 4.º medio ya tenga preguntas suficientes.</p>'+
+   '<p class="curriculum-coverage"><strong>Disponible ahora:</strong> '+list.length+' unidades del banco actual, distribuidas en '+topicGroups.length+' ejes. '+(ready+' de '+total+' habilidades tienen al menos dos variantes en el banco. Las demás necesitan más ejercicios; este mapa no declara cubierta toda la enseñanza media.')+'</p>'+
    button('units','Explorar las unidades disponibles','','primary')+'</details>';
  }
 
@@ -90,17 +90,25 @@
 
 
 
+
  function unitPicker(){
-  const list=units(),basics=B.lessons.filter(l=>(l.subject||'M1')===subject||(subject==='M2'&&!l.subject)),allStages=[
-   ...list.map(u=>({ls:u.levels,name:u.name,axis:u.axis,id:u.axis+'|'+u.name,u})),
-   ...(basics.length?[{basic:true,ls:basics,name:'Refuerzo de prerrequisitos (opcional)',axis:'Solo si alguna base te dificulta avanzar',id:'basics'}]:[])
-  ];
+  const list=units(),sourceRoute=C.roadmap(pool(),subject),basics=B.lessons.filter(l=>(l.subject||'M1')===subject||(subject==='M2'&&!l.subject));
   const mastered=profile(subject).filter(p=>p.status==='comprobado').length;
-  return toolbar()+'<section class="world-picker"><span class="world-picker-kicker">TU AVENTURA PAES</span><h1>Contenido de enseñanza media</h1><p>Elige qué quieres estudiar: ya asumimos conocimientos de educación básica. Puedes partir por cualquier unidad y repasar solo aquello que te cueste.</p>'+
-   curriculumOverview(true)+'<div class="world-picker-list">'+allStages.map((stage,i)=>{
-    const done=stage.ls.filter(l=>levelComplete(l,!!stage.basic)).length,whole=stage.ls.length,finished=whole>0&&done===whole,theme=sceneTheme(!!stage.basic,stage.u);
-    return '<button type="button" class="world-picker-tile world-'+theme+(stage.basic?' optional-support':'')+'" data-action="stage" data-stage="'+esc(stage.id)+'"><span class="world-picker-number">'+(stage.basic?'↩':finished?'✓':i+1)+'</span><span class="world-picker-details"><small>'+esc(stage.axis)+'</small><strong>'+esc(stage.name)+'</strong><span>'+done+' de '+whole+' misiones dominadas'+(stage.basic?' · No obligatorias':'')+'</span></span><span class="world-picker-arrow" aria-hidden="true">›</span></button>';
-   }).join('')+'</div><p>'+mastered+' habilidades comprobadas en '+esc(C.subjects[subject].name)+'.</p>'+button('home','Volver al mapa','','primary')+'</section>';
+  const lessonTile=(stage,i,basic=false)=>{
+   const done=stage.ls.filter(l=>levelComplete(l,basic)).length,whole=stage.ls.length,finished=whole>0&&done===whole,theme=sceneTheme(basic,stage.u);
+   const note=basic?'Refuerzo voluntario cuando te falta una base':stage.meta.partial?'Ejercitación en ampliación · sigue avanzando':'Con variantes para practicar y comprobar';
+   return '<button type="button" class="world-picker-tile world-'+theme+(basic?' optional-support':'')+'" data-action="stage" data-stage="'+esc(stage.id)+'"><span class="world-picker-number">'+(basic?'↩':finished?'✓':i+1)+'</span><span class="world-picker-details"><small>'+esc(stage.axis)+'</small><strong>'+esc(stage.name)+'</strong><span>'+done+' de '+whole+' misiones dominadas</span><span class="world-tile-evidence">'+esc(note)+(basic?'':' · '+stage.meta.questions+' preguntas en el banco')+'</span></span><span class="world-picker-arrow" aria-hidden="true">›</span></button>';
+  };
+  let idx=0;
+  return toolbar()+'<section class="world-picker"><span class="world-picker-kicker">TU AVENTURA PAES</span><h1>Programa y misiones</h1>'+
+   '<p>La ruta sigue los ejes evaluados por DEMRE y las secuencias pedagógicas de los preuniversitarios. La dificultad aumenta según tu desempeño: no tienes que repetir contenidos de básica.</p>'+
+   curriculumOverview(true)+
+   '<div class="world-picker-list">'+sourceRoute.map(section=>{
+    const cards=section.units.map(u=>{const original=list.find(x=>x.axis+'|'+x.name===u.id);return lessonTile({ls:original.levels,name:original.name,axis:original.axis,id:u.id,u:original,meta:u},++idx)}).join('');
+    return '<section class="curriculum-chapter"><header class="curriculum-chapter-header"><small>EJE DE ESTUDIO '+(sourceRoute.indexOf(section)+1)+'</small><h2>'+esc(section.axis)+'</h2><p>'+esc(section.goal)+'</p><div class="curriculum-source">Referencia didáctica: '+esc(section.source)+'</div><span class="curriculum-chapter-evidence">'+section.questions+' preguntas · '+section.readyLevels+'/'+section.levels+' habilidades con variantes disponibles</span></header><div class="curriculum-chapter-units">'+cards+'</div></section>';
+   }).join('')+
+   (basics.length?'<section class="curriculum-chapter support-chapter"><header class="curriculum-chapter-header"><small>REFUERZO VOLUNTARIO</small><h2>Solo si necesitas recuperar una base</h2><p>No es parte obligatoria de tu recorrido PAES.</p></header>'+lessonTile({ls:basics,name:'Reforzar prerrequisitos',axis:'Herramienta de apoyo',id:'basics'},idx+1,true)+'</section>':'')+
+   '</div><p>'+mastered+' habilidades comprobadas en '+esc(C.subjects[subject].name)+'.</p>'+button('home','Volver al mapa','','primary')+'</section>';
  }
 
  function level(id){const l=levels().find(l=>l.id===id);if(!l)return home();const p=levelState(l),support=C.prerequisites(subject,l.objective).map(req=>{const target=C.course(items,req.subject).flatMap(u=>u.levels).find(x=>x.objective===req.concept);return target?'<div class="prerequisite-card"><p>Antes de esta misión puedes repasar <strong>'+esc(req.concept)+'</strong> en '+esc(C.subjects[req.subject].name)+'.</p>'+button('base','Repasar base','data-subject="'+esc(req.subject)+'" data-level="'+esc(target.id)+'"')+'</div>':'';}).join('');return'<div class="lesson-top">'+button('home','← Volver al camino')+'<span>Tu misión</span></div>'+cat('explaining','Vamos a comprender '+l.objective.toLowerCase()+'. Primero lo vemos juntos; después te toca a ti.')+'<section class="mission-preview"><span class="mission-emblem" aria-hidden="true">✦</span><h1>'+esc(l.objective)+'</h1><p>Una explicación, un ejemplo y una práctica a tu ritmo.</p>'+support+'<div class="daily-actions">'+button('lesson','Empezar misión','data-concept="'+esc(l.objective)+'"','primary')+button('study','Repasar la clase','data-level="'+esc(l.id)+'"')+'</div>'+(p.status==='comprobado'?'<p>Ya demostraste este aprendizaje. Puedes repasarlo cuando quieras.</p>':'')+'</section>';}
