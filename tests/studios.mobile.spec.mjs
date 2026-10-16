@@ -13,14 +13,9 @@ for(const [subject,concept] of pilots){
   await page.goto('./inicio.html#courses');
   await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();
   if(subject==='Ciencias')await page.locator('[data-action=pick-track][data-track=Biología]').click();
-  await page.evaluate(({subject,concept})=>{
-   const q=window.CACHASTE_DAILY_CATALOG.items.find(x=>x.subjectKey===subject&&x.concept===concept);
-   if(!q)throw new Error('Missing real PAES question for pilot');
-   location.hash='#level:'+encodeURIComponent(q.levelId);
-   CachasteDailyApp.render();
-  },{subject,concept});
-  await expect(page.locator('[data-action=studio-open]')).toBeVisible();
-  await page.locator('[data-action=studio-open]').click();
+  await expect(page.locator('.studio-feature')).toBeVisible();
+  await expect(page.locator('.studio-feature')).toContainText('MISIÓN ESPECIAL');
+  await page.locator('.studio-feature [data-action=studio-open]').click();
   await expect(page.locator('.studio-panel')).toBeVisible();
   await expect(page.locator('.studio-card .cat-frame')).toHaveCount(1);
   await expect(page.locator('.studio-goals li')).toHaveCount(3);
