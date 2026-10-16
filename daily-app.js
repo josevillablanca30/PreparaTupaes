@@ -7,7 +7,7 @@
  const cat=(state,text)=>'<aside class="wise-cat" data-cat-state="'+state+'" aria-live="polite">'+avatar(state)+'<p>'+esc(text)+'</p></aside>';
  const teacherStep=(state,text,index,total)=>'<div class="teacher-step"><div class="teacher-step-meta">EL GATITO TE EXPLICA · PASO '+(index+1)+' DE '+total+'</div><div class="wise-cat" data-cat-state="'+state+'">'+avatar(state)+'<p class="lesson-text">'+esc(text)+'</p></div></div>';
  const button=(action,label,attrs='',cls='')=>'<button type="button" data-action="'+action+'" '+attrs+' class="'+cls+'">'+esc(label)+'</button>';
- const goto=hash=>{if(location.hash!==hash)location.hash=hash;render();window.scrollTo(0,0);};
+ const goto=hash=>{if(location.hash!==hash){location.hash=hash;return;}render();window.scrollTo(0,0);};
  const selectedSubject=()=>button('courses',C.subjects[subject].name+(subject==='Ciencias'?' · '+(E.state.track||'Elige tu mención'):''),'','course-switch');
  const pool=()=>C.sciencePool(items,subject==='Ciencias'?E.state.track:null);
  function units(){return C.course(pool(),subject);}
