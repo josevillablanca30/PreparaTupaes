@@ -127,6 +127,26 @@ public class OfflineAppTest {
         InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
         waitFor("document.querySelector('[data-action=resume]')");
     }
+    @Test public void adventureMapWorksOfflineAndKeepsItsPlace() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp && document.querySelector('[data-action=pick-course]')");
+        js("document.querySelector('[data-action=pick-course][data-subject=M1]').click();true");
+        waitFor("document.querySelector('.adventure-world.world-foundation .trail-node')");
+        assertEquals("true", js("document.querySelector('.road-track').getAttribute('d').startsWith('M ')"));
+        assertEquals("true", js("document.querySelector('.world-hud').textContent.includes('0 de 5 misiones dominadas')"));
+        js("document.querySelector('.world-quest-banner [data-action=basic-level]').click();true");
+        waitFor("document.querySelector('[data-action=basic-start]')");
+        js("document.querySelector('[data-action=basic-start]').click();true");
+        waitFor("document.querySelector('.teacher-step')");
+        assertEquals("true", js("CachasteDailyApp.engine.state.foundationDraft.lesson==='cantidad'"));
+        scenario.recreate();
+        waitFor("window.CachasteDailyApp && document.querySelector('.teacher-step')");
+        assertEquals("true", js("CachasteDailyApp.engine.state.foundationDraft.lesson==='cantidad'"));
+        js("document.querySelector('[data-action=pause]').click();true");
+        waitFor("document.querySelector('.adventure-world')");
+        assertEquals("true", js("document.querySelector('[data-action=resume]')!==null"));
+        js("document.querySelector('[data-action=resume]').click();true");
+        waitFor("document.querySelector('.teacher-step')");
+    }
     @Test public void foundationsTeachVisuallyAndPreserveTheirOwnEvidence() throws Exception {
         open("inicio.html", "window.CachasteDailyApp");
         js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.state.foundationDraft=null;CachasteDailyApp.basics.start('cantidad');location.hash='#basic';CachasteDailyApp.render();true");
