@@ -2,46 +2,9 @@
   "inspected_at": "2026-10-16",
   "root": "Material PAES",
   "status": "Partial recursive inventory, not full individual book review",
-  "directories_scanned": 119,
-  "directories_unscanned": [
-    {
-      "id": "1zFagloSJqFPUhEdd-Ud95jVer2hLQQ6x",
-      "path": "PDV/Lectura/Controles /Solucionario"
-    },
-    {
-      "id": "1SPOYziyy3n7ye4pcygsZGXwbnDiW_IlQ",
-      "path": "PDV/Química/ Ensayos /Solucionario"
-    },
-    {
-      "id": "1wKKpEn-QqUK6m5UI7MfSEPch_4WZqYG0",
-      "path": "CPECH/Historia/Ensayo/Solucionario "
-    },
-    {
-      "id": "1c_FnDdZnod4ueF-bL2EZ-h4hn-j74I28",
-      "path": "CPECH/Historia/Cuadernillo/Solucionario "
-    },
-    {
-      "id": "1l9pKWrj8G5MJ0QhAajrCdGa2W7aqnG1L",
-      "path": "CPECH/Biología/Ensayos/Solucionario "
-    },
-    {
-      "id": "1LHymutAPNNhWqBh0NIaonHDrWChRtRyk",
-      "path": "FILADD/Física/EJE 0/Ejercicios "
-    },
-    {
-      "id": "1Nvy83Ug6c_irAWbIChHCD69hHSY1D2Jw",
-      "path": "M30M/M1/Ensayos/Solucionario "
-    },
-    {
-      "id": "1xyo9vhYttyXSjKjKI_pVSnq1oPFH77R7",
-      "path": "DEMRE/M1/Solucionario "
-    },
-    {
-      "id": "1v8HVEyowV3Yw5EGhsijr3lRrY0i69o5N",
-      "path": "Más libros/Física/Guías "
-    }
-  ],
-  "documents_found": 507,
+  "directories_scanned": 128,
+  "directories_unscanned": [],
+  "documents_found": 526,
   "groups": {
     "TESLA/Historia": {
       "files": 4,
@@ -496,5 +459,55 @@
       "name": "LE40_-_Ejercitación_gloobal_PAES_07.pdf",
       "path": "PDV/Lectura/Guias/LE40_-_Ejercitación_gloobal_PAES_07.pdf"
     }
-  ]
+  ],
+  "groups_by_source": {
+    "FILADD": 59,
+    "M30M": 20,
+    "Flashcards": 3,
+    "CPECH": 46,
+    "PDV": 251,
+    "TESLA": 126,
+    "Cumbres": 6,
+    "ciencias_850": 1,
+    "Más libros": 7,
+    "Resúmenes": 1,
+    "DEMRE": 1,
+    "Libros Clave": 1,
+    "Libros Moraleja": 3,
+    "Manual puntaje nacional": 1
+  },
+  "file_year_mentions": {
+    "2015": 1,
+    "2016": 1,
+    "2018": 1,
+    "2020": 19,
+    "2021": 4,
+    "2022": 22,
+    "2023": 1,
+    "2024": 6,
+    "2025": 9
+  },
+  "included_root_books": [
+    {
+      "id": "1I1stMkC5pkUqWOB_b_e7byp5oH306KwI",
+      "path": "Libros Clave"
+    },
+    {
+      "id": "1RvHmpvRurMMp40T0K0sR4bPG4AnoNJZs",
+      "path": "Libros Moraleja"
+    },
+    {
+      "id": "1KotS2OkIle49-6IN4-rk20RNm3IKGa3-",
+      "path": "Libros Moraleja"
+    },
+    {
+      "id": "1dF7h0xG7o9JN4tT1dRAncbCGEtvX7htw",
+      "path": "Libros Moraleja"
+    },
+    {
+      "id": "1J3s8TW9uaIOTI-rOgrVwEvFj2jZfPxlt",
+      "path": "Manual puntaje nacional"
+    }
+  ],
+  "note": "All discovered nested directories listed in parts 01–12 were scanned, though this is not a complete text audit of 500+ documents; directories with >=500 items may need pagination."
 }
