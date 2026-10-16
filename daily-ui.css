@@ -526,3 +526,39 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .mission-actions [data-action=check-first]{background:#7150ac!important;border:2px solid #7150ac!important;color:white!important;box-shadow:0 5px 0 #4f307d!important}
 #daily-root .mission-actions [data-action=lesson]{background:#f5efff!important;color:#634395!important;border:2px solid #bba4da!important;box-shadow:0 4px 0 #d7cbe8!important}
 #daily-root .mission-actions [data-action=study]{background:white!important;color:#625675!important;border:2px solid #e3dbe8!important;min-height:44px!important;box-shadow:none!important}
+
+
+/* MIT-clone challenge lifecycle adapted for offline PAES: original ordering interaction. */
+#daily-root .arcade-session{max-width:710px;margin:12px auto 45px;padding:clamp(16px,4vw,26px);border-radius:27px;border:2px solid #e8dbee;background:linear-gradient(155deg,#ffffff 10%,#f8f4ff 100%);box-shadow:0 10px 22px #3a275d12}
+#daily-root .arcade-kicker{font-size:11px;letter-spacing:.1em;font-weight:900;color:#7452ac}
+#daily-root .arcade-session h1{font-size:clamp(23px,5vw,32px);line-height:1.14;letter-spacing:-.035em;margin:7px 0 12px;color:#392950}
+#daily-root .arcade-session h2{font-size:15px;margin:17px 0 9px;color:#614482}
+#daily-root .arcade-session .wise-cat{margin:13px 0;align-items:center}
+#daily-root .arcade-session .wise-cat .cat-frame{width:79px;height:79px;flex-shrink:0}
+#daily-root .arcade-session .wise-cat p{line-height:1.43;font-size:13px}
+#daily-root .arcade-prompt{padding:15px 16px;margin:14px 0;border-radius:17px;background:#efe8fc;border:1px solid #e1d3f5;font-size:15px;line-height:1.53;color:#423151}
+#daily-root .arcade-chosen{list-style:none;padding:7px 0;margin:8px 0 16px;display:grid;gap:8px;min-height:64px}
+#daily-root .arcade-chosen li{display:flex;align-items:flex-start;gap:11px;padding:12px;background:#eaf5ed;border:2px solid #a2d2b1;border-radius:14px;font-size:14px;font-weight:650;line-height:1.45;color:#284f3e}
+#daily-root .arcade-chosen .arcade-placeholder{background:#f5f3f8;border:2px dashed #cdbfd8;color:#756982;font-weight:500}
+#daily-root .arcade-counter{width:29px;height:29px;display:grid;place-items:center;border-radius:10px;background:#d2edda;color:#266b46;flex-shrink:0;font-size:13px;font-weight:900}
+#daily-root .arcade-options{display:grid;gap:9px}
+#daily-root .arcade-options .arcade-tile{white-space:normal;min-height:60px;width:100%;text-align:left;justify-content:flex-start;padding:13px 15px!important;border:2px solid #bcb1d4!important;border-bottom:5px solid #bcb1d4!important;border-radius:15px!important;color:#483554!important;background:#fff!important;line-height:1.47;font-size:14px;font-weight:630;transition:transform .15s,border-color .15s,background .15s}
+#daily-root .arcade-options .arcade-tile:active{transform:scale(.988)}
+#daily-root .arcade-options .arcade-tile:focus-visible{outline:3px solid #7958b1;outline-offset:3px}
+#daily-root .arcade-options .arcade-tile.arcade-used,#daily-root .arcade-options .arcade-tile:disabled{opacity:.38!important;cursor:not-allowed}
+#daily-root .arcade-feedback{border-radius:17px;margin:16px 0 12px;padding:14px 16px;font-size:14px;line-height:1.5}
+#daily-root .arcade-feedback strong{display:block;font-size:16px;margin-bottom:4px}
+#daily-root .arcade-feedback p{margin:0}
+#daily-root .arcade-feedback.correct{background:#e6f8e9;border:1.5px solid #9cdaad;color:#285c3b}
+#daily-root .arcade-feedback.retry{background:#fff3df;border:1.5px solid #eac78f;color:#774e20}
+#daily-root .arcade-actions{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0}
+#daily-root .arcade-actions button{min-height:48px;flex:1 1 170px}
+#daily-root .arcade-honesty{margin:15px 0 0;font-size:12px;line-height:1.5;color:#756a80}
+@media(max-width:390px){
+ #daily-root .arcade-session{padding:12px}
+ #daily-root .arcade-session .wise-cat .cat-frame{width:64px;height:64px}
+ #daily-root .arcade-chosen li{padding:10px;font-size:13px}
+ #daily-root .arcade-options .arcade-tile{font-size:13px;padding:12px!important}
+ #daily-root .arcade-actions button{flex-basis:100%}
+}
+@media(prefers-reduced-motion:reduce){#daily-root .arcade-options .arcade-tile{transition:none!important}}
