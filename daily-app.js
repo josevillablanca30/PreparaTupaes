@@ -23,11 +23,11 @@
  function courses(){const icons={M1:'±',M2:'ƒ',Lectura:'Aa',Ciencias:'⚗',Historia:'H'};return'<section class="course-picker"><h1>¿Qué quieres aprender?</h1>'+cat('neutral','Elige una materia. Guardaré tu lugar en cada recorrido.')+'<div class="course-choices">'+Object.entries(C.subjects).map(([key,v])=>'<button data-action="pick-course" data-subject="'+key+'" class="course-tile"><span class="course-icon '+key+'" aria-hidden="true">'+icons[key]+'</span><span><strong>'+v.name+'</strong><small>'+(key==='Ciencias'?'Biología, Física, Química o TP':key==='M1'?'Desde las bases hasta la PAES':key==='M2'?'Profundiza con apoyo de M1':key==='Lectura'?'Encuentra, interpreta y evalúa':'Comprende procesos y ciudadanía')+'</small></span><span aria-hidden="true">›</span></button>').join('')+'</div>'+button('home','Volver a mi recorrido')+'</section>';}
  function tracks(){return'<h1>Tu camino en Ciencias</h1>'+cat('explaining','Todos los caminos incluyen las tres ciencias. Tu mención agrega profundidad en la especialidad que elijas.')+'<div class="course-choices">'+[['Biología','Células, organismos y herencia','🧬'],['Física','Movimiento, ondas y energía','⚡'],['Química','Materia, átomos y reacciones','⚗'],['TP','Formación técnico profesional','TP']].map(([key,description,icon])=>'<button class="course-tile" data-action="pick-track" data-track="'+key+'"><span class="course-icon">'+icon+'</span><span><strong>'+key+'</strong><small>'+description+'</small></span><span>›</span></button>').join('')+'</div>'+button('courses','Volver a materias');}
  function stageKey(){return subject+(subject==='Ciencias'?':'+E.state.track:'');}
- function stage(){const list=units(),saved=E.state.stages?.[stageKey()];if(saved==='basics'&&B.lessons.some(l=>(l.subject||'M1')===subject||(subject==='M2'&&!l.subject)))return{basic:true};const found=list.find(u=>u.axis+'|'+u.name===saved);if(found)return{unit:found};if(pendingBasic())return{basic:true};const rec=recommend();return{unit:list.find(u=>u.levels.some(l=>l.id===rec?.id))||list[0]};}
+ function stage(){const list=units(),saved=E.state.stages?.[stageKey()];if(saved==='basics'&&(E.state.basicsOptional?.[stageKey()]||E.state.foundationDraft&&B.lesson(E.state.foundationDraft.lesson)?.subject===subject))return{basic:true};const found=list.find(u=>u.axis+'|'+u.name===saved);if(found)return{unit:found};const rec=recommend(),preferred=({M1:'Potencias',M2:'Álgebra',Lectura:'Relaciones y sentido',Ciencias:'Organización, estructura y actividad celular',Historia:'Historia de Chile'})[subject];return{unit:list.find(u=>u.name===preferred)||list.find(u=>u.levels.some(l=>l.id===rec?.id))||list[0]};}
  function examKey(u){return u.axis+'|'+u.name;}
  function examResult(u){return E.state.unitExams?.[subject+':'+(subject==='Ciencias'?E.state.track||'':'')+':'+examKey(u)];}
  function examPanel(u){if(!u)return '';const result=examResult(u),concepts=u.levels.map(l=>l.objective),bank=items.filter(q=>q.subjectKey===subject&&concepts.includes(q.concept)&&(subject!=='Ciencias'||q.module==='MC'||(E.state.track==='TP'?q.module==='MTP':q.module==='ME'&&q.subject===E.state.track))),families=new Set(bank.map(q=>q.family));return '<section class="pace-panel"><h2>¿Ya dominas esta unidad?</h2><p>Rinde una prueba de 10 preguntas. Con 8 respuestas correctas o más puedes eximirte y pasar a la siguiente unidad. No hay pistas durante la prueba.</p>'+(result?'<p role="status">Último resultado: '+result.correct+'/10 · '+(result.passed?'Unidad eximida':'Sigue reforzando y vuelve a intentarlo')+'</p>':'')+(families.size>=10?button('unit-exam','Dar prueba para eximirme','data-unit="'+esc(examKey(u))+'"','primary'):'<p>Esta unidad todavía no dispone de diez preguntas diferentes para una prueba válida.</p>')+'</section>';}
- function saveStage(key){(E.state.stages||={})[stageKey()]=key;E.save();}
+ function saveStage(key){(E.state.stages||={})[stageKey()]=key;(E.state.basicsOptional||={})[stageKey()]=key==='basics';E.save();}
  // Ruta ondulante: adaptación de lesson-button.tsx, © 2024 Mohanad AL Faleet (MIT).
  function trailOffset(index){const phase=index%8;const indentation=phase<=2?phase:phase<=4?4-phase:phase<=6?4-phase:phase-8;return -indentation*29;}
 
@@ -48,7 +48,7 @@
  }
  function worldMap(ls,basic,u,n,list,current){
   const theme=sceneTheme(basic,u),total=ls.length,completed=ls.filter(l=>levelComplete(l,basic)).length,allDone=total>0&&completed===total;
-  const isLast=!list[n],guide=allDone?'¡Dominaste las misiones de esta zona! Puedes explorar el siguiente mundo.':completed?'Buen avance. Las misiones pendientes te esperan en el camino.':'Elige una estrella para comenzar tu aventura.';
+  const isLast=basic?list.length===0:!list[n+1],guide=allDone?'¡Dominaste las misiones de esta zona! Puedes explorar el siguiente mundo.':completed?'Buen avance. Las misiones pendientes te esperan en el camino.':'Elige una estrella para comenzar tu aventura.';
   return '<section class="adventure-world world-'+theme+'" aria-label="Mapa de misiones: '+esc(sceneMotif(theme))+'">'+
    '<div class="world-landscape" aria-hidden="true"><span class="world-orb"></span><span class="world-cloud cloud-a"></span><span class="world-cloud cloud-b"></span><span class="world-hills far"></span><span class="world-hills near"></span><span class="world-tower tower-a"></span><span class="world-tower tower-b"></span><span class="world-sprout sprout-a"></span><span class="world-sprout sprout-b"></span></div>'+
    '<header class="world-hud"><div><span class="world-kicker">MUNDO '+(n+1)+'</span><h2>'+esc(sceneMotif(theme))+'</h2><p>'+completed+' de '+total+' misiones dominadas</p></div><div class="world-medal" aria-label="'+completed+' misiones completadas">✦ <strong>'+completed+'/'+total+'</strong></div></header>'+
@@ -64,27 +64,42 @@
 
  function missionTeaser(stats){const done=Math.min(3,Number(stats.mission)||0);return '<section class="mission-teaser" aria-label="Misión de hoy"><div><strong>Tu misión de hoy</strong><p>'+done+' de 3 preguntas · '+(done===3?'¡Completada!':'Un ratito de práctica suma')+'</p><div class="daily-quest-progress" role="progressbar" aria-label="Preguntas de hoy" aria-valuemin="0" aria-valuemax="3" aria-valuenow="'+done+'"><span style="width:'+Math.round(done/3*100)+'%"></span></div></div>'+button(done===3?'progress':'mission-practice',done===3?'Ver logros':'Practicar')+'</section>';}
 
+
+ function curriculumOverview(expanded=false){
+  const scope=C.secondaryScope?.[subject]||[],list=units();
+  const topicGroups=[...new Set(list.map(u=>u.axis))];
+  return '<details class="curriculum-overview"'+(expanded?' open':'')+'><summary><span>Programa de enseñanza media</span><strong>Ver contenidos de 1.º a 4.º medio</strong></summary>'+
+   '<p class="curriculum-overview-note">Este es el panorama de contenidos y habilidades que vamos a trabajar hacia la PAES. No es un cuestionario de básica. Puedes elegir cualquier unidad y reforzar un prerrequisito solo si lo necesitas.</p>'+
+   '<div class="curriculum-scope">'+scope.map(x=>'<div class="scope-theme"><strong>'+esc(x.title)+'</strong><p>'+esc(x.topics)+'</p></div>').join('')+'</div>'+
+   '<p class="curriculum-coverage"><strong>Disponible ahora:</strong> '+list.length+' unidades del banco actual, distribuidas en '+topicGroups.length+' ejes. La cobertura de ejercicios todavía se está ampliando: este mapa no certifica que cada objetivo de 1.º a 4.º medio ya tenga preguntas suficientes.</p>'+
+   button('units','Explorar las unidades disponibles','','primary')+'</details>';
+ }
+
  function home(){
   if(subject==='Ciencias'&&!E.state.track)return tracks();
   const selected=stage(),list=units(),u=selected.unit,basic=!!selected.basic;
   const ls=basic?B.lessons.filter(l=>(l.subject||'M1')===subject||(subject==='M2'&&!l.subject)):u?.levels||[];
-  const n=basic?0:Math.max(1,list.findIndex(x=>examKey(x)===examKey(u))+1),title=basic?(subject==='M1'||subject==='M2'?'Construyamos la base':'Tu primera misión PAES'):u?.name||'Tu recorrido',stats=E.stats(),active=E.state.session||E.state.foundationDraft;
+  const n=basic?0:Math.max(0,list.findIndex(x=>examKey(x)===examKey(u))),title=basic?(subject==='M1'||subject==='M2'?'Construyamos la base':'Tu primera misión PAES'):u?.name||'Tu recorrido',stats=E.stats(),active=E.state.session||E.state.foundationDraft;
   const current=ls.find(l=>l.id===(basic?pendingBasic()?.id:recommend()?.id)&&!levelComplete(l,basic))||ls.find(l=>!levelComplete(l,basic))||null;
   return toolbar()+'<section class="stage-banner"><span>ETAPA '+(n+1)+' · '+esc(basic?starterTitle():u?.axis||'Mi recorrido')+'</span><h1>'+esc(title)+'</h1>'+button('units','Elegir mundo','','unit-link')+'</section>'+
    (active?'<div class="resume-strip">'+button('resume','Continuar mi sesión guardada','','primary')+'</div>':'')+
-   worldMap(ls,basic,u,n,list,current)+
+   curriculumOverview(false)+worldMap(ls,basic,u,n,list,current)+
    '<div class="world-after"><p>'+esc(paceMessage())+'</p>'+button('focus-quest','Encontrar mi misión','','focus-quest')+'</div>'+
    pendingReviewPanel()+missionTeaser(stats)+(basic?'':examPanel(u));
  }
 
 
+
  function unitPicker(){
-  const list=units(),basics=B.lessons.filter(l=>(l.subject||'M1')===subject||(subject==='M2'&&!l.subject)),allStages=[{basic:true,ls:basics,name:(subject==='M1'||subject==='M2'?'Fundamentos':'Herramientas PAES'),axis:(subject==='M1'||subject==='M2'?'Punto de partida':'Primer desafío'),id:'basics'},...list.map(u=>({ls:u.levels,name:u.name,axis:u.axis,id:u.axis+'|'+u.name,u}))];
+  const list=units(),basics=B.lessons.filter(l=>(l.subject||'M1')===subject||(subject==='M2'&&!l.subject)),allStages=[
+   ...list.map(u=>({ls:u.levels,name:u.name,axis:u.axis,id:u.axis+'|'+u.name,u})),
+   ...(basics.length?[{basic:true,ls:basics,name:'Refuerzo de prerrequisitos (opcional)',axis:'Solo si alguna base te dificulta avanzar',id:'basics'}]:[])
+  ];
   const mastered=profile(subject).filter(p=>p.status==='comprobado').length;
-  return toolbar()+'<section class="world-picker"><span class="world-picker-kicker">TU AVENTURA</span><h1>Elige tu próximo mundo</h1><p>Parte desde cero o descubre temas más avanzados. Explorar no marca una habilidad como aprendida: eso se consigue practicando.</p>'+
-   '<div class="world-picker-list">'+allStages.map((stage,i)=>{
+  return toolbar()+'<section class="world-picker"><span class="world-picker-kicker">TU AVENTURA PAES</span><h1>Contenido de enseñanza media</h1><p>Elige qué quieres estudiar: ya asumimos conocimientos de educación básica. Puedes partir por cualquier unidad y repasar solo aquello que te cueste.</p>'+
+   curriculumOverview(true)+'<div class="world-picker-list">'+allStages.map((stage,i)=>{
     const done=stage.ls.filter(l=>levelComplete(l,!!stage.basic)).length,whole=stage.ls.length,finished=whole>0&&done===whole,theme=sceneTheme(!!stage.basic,stage.u);
-    return '<button type="button" class="world-picker-tile world-'+theme+'" data-action="stage" data-stage="'+esc(stage.id)+'"><span class="world-picker-number">'+(finished?'✓':i+1)+'</span><span class="world-picker-details"><small>'+esc(stage.axis)+'</small><strong>'+esc(stage.name)+'</strong><span>'+done+' de '+whole+' misiones dominadas</span></span><span class="world-picker-arrow" aria-hidden="true">›</span></button>';
+    return '<button type="button" class="world-picker-tile world-'+theme+(stage.basic?' optional-support':'')+'" data-action="stage" data-stage="'+esc(stage.id)+'"><span class="world-picker-number">'+(stage.basic?'↩':finished?'✓':i+1)+'</span><span class="world-picker-details"><small>'+esc(stage.axis)+'</small><strong>'+esc(stage.name)+'</strong><span>'+done+' de '+whole+' misiones dominadas'+(stage.basic?' · No obligatorias':'')+'</span></span><span class="world-picker-arrow" aria-hidden="true">›</span></button>';
    }).join('')+'</div><p>'+mastered+' habilidades comprobadas en '+esc(C.subjects[subject].name)+'.</p>'+button('home','Volver al mapa','','primary')+'</section>';
  }
 
