@@ -128,7 +128,9 @@ public class OfflineAppTest {
         waitFor("document.querySelector('[data-action=resume]')");
     }
     @Test public void adventureMapWorksOfflineAndKeepsItsPlace() throws Exception {
-        open("inicio.html", "window.CachasteDailyApp && document.querySelector('[data-action=pick-course]')");
+        open("inicio.html", "window.CachasteDailyApp");
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.state.foundationDraft=null;CachasteDailyApp.engine.state.basics={};(CachasteDailyApp.engine.state.stages||={}).M1='basics';CachasteDailyApp.engine.save();location.hash='#courses';CachasteDailyApp.render();true");
+        waitFor("document.querySelector('[data-action=pick-course][data-subject=M1]')");
         js("document.querySelector('[data-action=pick-course][data-subject=M1]').click();true");
         waitFor("document.querySelector('.adventure-world.world-foundation .trail-node')");
         assertEquals("true", js("document.querySelector('.road-track').getAttribute('d').startsWith('M ')"));
