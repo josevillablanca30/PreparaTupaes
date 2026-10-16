@@ -64,11 +64,11 @@
    {title:'Investigación científica',topics:'Diseño experimental, variables, gráficos, evidencia y conclusiones; las menciones profundizan en su área'}
   ],
   Historia:[
-   {title:'Historia de Chile',topics:'Independencia, formación republicana, territorio, cuestión social, cambios del siglo XX, dictadura y democratización'},
-   {title:'Historia mundial',topics:'Ideas políticas modernas, revoluciones, industrialización, imperialismo, guerras mundiales, Guerra Fría y cambios contemporáneos'},
-   {title:'Formación ciudadana',topics:'Democracia, Constitución, Estado de derecho, derechos humanos, participación y representación'},
-   {title:'Economía y sociedad',topics:'Mercados, oferta y demanda, inflación, empleo, impuestos, bienes públicos y decisiones económicas'},
-   {title:'Interpretación histórica',topics:'Fuentes, temporalidad, multicausalidad, continuidad y cambio, perspectivas y contraste de evidencias'}
+   {title:'Historia mundial',topics:'Ilustración, transformaciones políticas e industriales del siglo XIX; guerras mundiales, crisis, Guerra Fría y cambios contemporáneos'},
+   {title:'Historia de Chile y América',topics:'Independencia, organización republicana, cambios territoriales y económicos, cuestión social, transformaciones del siglo XX y democratización'},
+   {title:'Interpretación de fuentes históricas',topics:'Pensamiento temporal, multicausalidad, continuidad y cambio, contraste de documentos y perspectivas'},
+   {title:'Formación ciudadana',topics:'Diversidad, derechos humanos, Estado de derecho, instituciones, democracia, representación y participación'},
+   {title:'Sistema económico',topics:'Escasez y distribución, funcionamiento de mercados, Estado, empleo, inflación y consumo responsable'}
   ]
  };
 
