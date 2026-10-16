@@ -453,3 +453,40 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 
 /* Mundo inicial: el punto de partida nunca aparece como una zona genérica. */
 #daily-root .adventure-world.world-foundation{--sky-top:#f2e5ff;--sky-mid:#f7edff;--sky-bottom:#f0fae5;--hills-far:#d6c3ee;--hills-near:#b4d4b4;--foliage:#7aaf82}
+
+
+/* Enseñanza media: una sola mascota por momento, diagramas de causas y mejor densidad móvil. */
+#daily-root .mission-kicker{display:block;color:#7651ab;font-size:11px;font-weight:850;letter-spacing:.085em;text-transform:uppercase;margin:10px 0 0}
+#daily-root .mission-preview .mission-meta{color:#756886;font-size:13px;line-height:1.55;margin:15px 0}
+#daily-root .mission-preview .wise-cat{margin:14px 0;padding:0}
+#daily-root .mission-preview .wise-cat .cat-frame{width:90px;height:90px}
+#daily-root .lesson-sheet{margin-top:12px!important}
+#daily-root .lesson-sheet>.question-title{margin:17px 0 14px!important}
+#daily-root .lesson-sheet>.wise-cat{margin:10px 0 12px}
+#daily-root .lesson-sheet>.wise-cat .cat-frame{width:85px;height:85px}
+#daily-root .lesson-sheet>.wise-cat p{font-size:14px;line-height:1.5!important}
+#daily-root .lesson-sheet .teacher-explanation{margin:12px 0!important;padding:0!important;background:transparent!important;border:0!important}
+#daily-root .lesson-sheet .teacher-step{padding:15px;border:1.5px solid #dbceec;background:#f6f1fd;border-radius:22px}
+#daily-root .lesson-sheet .teacher-step .wise-cat{gap:12px;margin:9px 0 0}
+#daily-root .lesson-sheet .teacher-step .cat-frame{width:82px;height:82px}
+#daily-root .lesson-sheet .teacher-step .wise-cat p{line-height:1.55!important;font-size:15px;padding:13px}
+#daily-root .teacher-step.text-only{background:transparent;border:0;padding:0}
+#daily-root .teacher-step.text-only .lesson-text{padding:15px 17px;background:#f8f4ff;border-left:4px solid #976ecf;border-radius:12px;white-space:pre-wrap}
+#daily-root .lesson-sheet .teacher-step-meta{font-size:11px;font-weight:800;letter-spacing:.08em}
+#daily-root .concept-bridge{margin:10px 0 18px;padding:15px 14px 13px;border:1.5px solid #e2d6f0;background:#faf6ff;border-radius:20px}
+#daily-root .concept-bridge figcaption{font-size:13px;font-weight:850;line-height:1.4;color:#624393;margin-bottom:14px}
+#daily-root .concept-bridge ol{list-style:none;display:flex;flex-direction:column;gap:0;margin:0;padding:0}
+#daily-root .concept-bridge li{position:relative;display:flex;align-items:center;gap:11px;line-height:1.38;font-size:14px;font-weight:650;color:#413151;padding:10px 12px;background:white;border:1px solid #d7c9e7;border-radius:13px;min-height:48px}
+#daily-root .concept-bridge li+li{margin-top:16px}
+#daily-root .concept-bridge li+li:before{content:'↓';position:absolute;left:50%;top:-22px;transform:translateX(-50%);color:#8159bd;font-size:19px;font-weight:900}
+#daily-root .concept-bridge-index{width:28px;height:28px;display:grid;place-items:center;flex-shrink:0;border-radius:9px;color:#69449f;background:#eee5fa;font-size:12px;font-weight:900}
+#daily-root .lesson-sheet .daily-options{margin:12px 0 18px}
+#daily-root .lesson-sheet [data-action=basic-hint]{font-size:13px;min-height:44px}
+@media(max-width:390px){
+ #daily-root .lesson-sheet .teacher-step .cat-frame{width:60px;height:60px}
+ #daily-root .lesson-sheet>.wise-cat .cat-frame{width:68px;height:68px}
+ #daily-root .lesson-sheet .teacher-step .wise-cat p{font-size:14px;padding:11px;line-height:1.5!important}
+ #daily-root .lesson-sheet .teacher-step{padding:12px}
+ #daily-root .concept-bridge{padding:12px}
+ #daily-root .concept-bridge li{font-size:13px}
+}
