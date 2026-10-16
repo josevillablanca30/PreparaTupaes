@@ -185,3 +185,36 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .daily-actions button,#daily-root .daily-card>button.primary{min-height:50px}
 @media(max-width:390px){#daily-root .wise-cat{gap:8px}#daily-root .wise-cat p{font-size:13px;padding:12px}#daily-root .daily-card fieldset .daily-actions{gap:5px}#daily-root .daily-card fieldset button{padding:8px 5px}}
 @media(prefers-reduced-motion:reduce){#daily-root .lesson-meter>span{transition:none}}
+
+
+/* Visual screenshot audit: make the mission path read as a playful level map on narrow phones. */
+#daily-root .learning-trail{
+  padding:30px 8px 38px;
+  border-radius:32px;
+  background:
+    radial-gradient(circle at 16% 11%,#f3e9ff 0 6px,transparent 7px),
+    radial-gradient(circle at 83% 29%,#e9dbfa 0 9px,transparent 10px),
+    radial-gradient(circle at 13% 57%,#f2e9ff 0 7px,transparent 8px),
+    radial-gradient(circle at 80% 81%,#e9dbfa 0 6px,transparent 7px),
+    linear-gradient(180deg,#fcfaff,#f8f3ff 52%,#fff);
+  border:1px solid #eee4f8;
+  gap:18px;
+}
+#daily-root .learning-trail::before{
+  width:12px;
+  background:repeating-linear-gradient(to bottom,#d8c6f0 0 22px,transparent 22px 33px);
+}
+#daily-root .trail-stop{margin-left:clamp(-45px,var(--offset),45px);gap:7px}
+#daily-root .trail-stop .trail-node{transition:box-shadow .2s ease,background-color .2s ease}
+#daily-root .trail-stop.current .trail-node::after{
+  content:"★";position:absolute;right:-13px;top:-14px;
+  display:grid;place-items:center;width:28px;height:28px;
+  background:#ffe9a6;color:#77501a;border:2px solid #d6a84e;
+  border-radius:50%;font-size:17px;box-shadow:0 2px 0 #c59b4a;
+}
+#daily-root .trail-stop.current strong{color:#56358b;font-size:15px}
+@media(max-width:360px){
+  #daily-root .learning-trail{padding-inline:4px;gap:14px;border-radius:22px}
+  #daily-root .trail-stop{margin-left:clamp(-28px,var(--offset),28px)}
+}
+@media(prefers-reduced-motion:reduce){#daily-root .trail-stop .trail-node{transition:none!important}}
