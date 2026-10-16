@@ -1,0 +1,60 @@
+import {test,expect} from '@playwright/test';
+
+test('Mapa videojuego: camino curvo, gato-guía, portal y mundos navegables',async({page})=>{
+ const errors=[];page.on('pageerror',error=>errors.push(error.message));
+ await page.goto('./inicio.html#courses');
+ await page.locator('[data-action=pick-course][data-subject=M1]').click();
+ const world=page.locator('.adventure-world');
+ await expect(world).toHaveClass(/world-foundation/);
+ await expect(world.locator('.trail-stop')).toHaveCount(5);
+ await expect(world.locator('.trail-stop.current')).toHaveCount(1);
+ await expect(world.locator('.trail-guide .cat-frame img')).toHaveAttribute('src','assets/gatito-sabio-poses-v1.png');
+ await expect(world.locator('.world-hud')).toContainText('0 de 5 misiones dominadas');
+ await expect(world.locator('.world-gate')).toBeVisible();
+ const road=await world.locator('.road-track').getAttribute('d');
+ expect(road).toMatch(/^M \d+ \d+ C /);
+ await page.locator('[data-action=focus-quest]').click();
+ await expect(world.locator('.trail-stop.current .trail-node')).toBeFocused();
+ await world.locator('[data-action=next-stage]').click();
+ await expect(world).toHaveClass(/world-numbers/);
+ await expect(world.locator('.world-hud')).toContainText('MUNDO 2');
+ await expect(world.locator('.trail-stop')).not.toHaveCount(0);
+ await page.locator('.stage-banner [data-action=units]').click();
+ await expect(page.locator('.world-picker')).toBeVisible();
+ await expect(page.locator('.world-picker-tile').first()).toContainText('Fundamentos');
+ await page.locator('[data-action=stage][data-stage=basics]').click();
+ await expect(world).toHaveClass(/world-foundation/);
+ expect(errors).toEqual([]);
+});
+
+test('Los mundos cambian según la asignatura y Ciencias conserva su mención',async({page})=>{
+ await page.goto('./inicio.html#courses');
+ for(const [subject,kind] of [['Lectura','reading'],['Historia','history'],['M2','foundation']]){
+  await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();
+  await expect(page.locator('.adventure-world')).toHaveClass(new RegExp('world-'+kind));
+  await page.locator('[data-action=courses]').first().click();
+ }
+ await page.locator('[data-action=pick-course][data-subject=Ciencias]').click();
+ await expect(page.locator('[data-action=pick-track]')).toHaveCount(4);
+ await page.locator('[data-action=pick-track][data-track="Biología"]').click();
+ await expect(page.locator('.adventure-world')).toHaveClass(/world-foundation/);
+ await expect(page.locator('.game-toolbar')).toContainText('Biología');
+ await page.reload();
+ await expect(page.locator('.game-toolbar')).toContainText('Biología');
+ await expect(page.locator('.adventure-world .trail-stop')).not.toHaveCount(0);
+});
+
+test('Mapa accesible y estable en pantallas pequeñas y con movimiento reducido',async({page})=>{
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await page.goto('./inicio.html#courses');
+ await page.locator('[data-action=pick-course][data-subject=M1]').click();
+ await expect(page.locator('.world-cloud').first()).toHaveCSS('animation-name','none');
+ await expect(page.locator('.trail-guide')).toHaveCSS('animation-name','none');
+ const details=await page.evaluate(()=>{
+  const el=document.documentElement,world=document.querySelector('.adventure-world'),road=world.querySelector('.adventure-road');
+  return {overflow:el.scrollWidth-window.innerWidth,hasRoad:!!road.querySelector('.road-track').getAttribute('d'),worldWidth:world.getBoundingClientRect().width};
+ });
+ expect(details.overflow).toBeLessThanOrEqual(1);
+ expect(details.hasRoad).toBe(true);
+ expect(details.worldWidth).toBeGreaterThan(200);
+});
