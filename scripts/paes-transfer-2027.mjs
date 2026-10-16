@@ -27,9 +27,9 @@ export const transferCases=[
  {base:"Historia:HIS-044",id:"TR-HIS-006",question:"Una planta industrial descarga ruido que afecta la salud de hogares vecinos, pero ese daño no aparece en los costos que paga la empresa. ¿Qué problema económico identifica mejor el caso?",options:["Un bien público sin rivalidad de consumo","Una externalidad negativa cuyo costo social excede el costo privado","Un mercado sin interacción con terceros","Una externalidad positiva que beneficia a los vecinos"],answer:1,steps:["La fábrica produce un efecto perjudicial sobre vecinos ajenos a la decisión de producción.","La empresa no incorpora plenamente ese daño en sus propios costos.","El costo social supera al costo privado: esa diferencia caracteriza una externalidad negativa."],errors:["Un bien público tiene características distintas; aquí se analiza un daño externo no contabilizado.","","La afectación de hogares es precisamente una interacción sobre terceros.","El ruido perjudica a los hogares y no genera un beneficio externo positivo."]}
 ];
 
-export function buildTransfers(originalItems){
+export function buildTransfers(originalItems,rows=transferCases){
  const byKey=new Map(originalItems.map(x=>[x.key,x])),ids=new Set(originalItems.map(x=>x.key));
- return transferCases.map(row=>{
+ return rows.map(row=>{
   const base=byKey.get(row.base);
   if(!base)throw Error("Caso base no encontrado: "+row.base);
   if(row.options.length!==4||row.errors.length!==4||row.answer<0||row.answer>3||row.errors.some((x,i)=>i!==row.answer&&x.length<24)||row.steps.length!==3||row.steps.some(x=>x.length<55))throw Error("Transferencia sin revisión estructural: "+row.id);
