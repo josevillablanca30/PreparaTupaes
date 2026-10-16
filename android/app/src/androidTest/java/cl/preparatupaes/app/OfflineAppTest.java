@@ -114,7 +114,7 @@ public class OfflineAppTest {
         waitFor("document.querySelector('[data-action=smart]')");
         js("document.querySelector('#daily-count').value='1';document.querySelector('[data-action=smart]').click();true");
         waitFor("document.querySelector('.question-title')");
-        assertEquals("623",js("CACHASTE_DAILY_CATALOG.items.length"));
+        assertEquals("true",js("CACHASTE_DAILY_CATALOG.items.length>=641 && new Set(CACHASTE_DAILY_CATALOG.items.map(q=>q.key)).size===CACHASTE_DAILY_CATALOG.items.length"));
         waitFor("document.querySelector('.wise-cat img').naturalWidth>0");
         js("document.querySelector('[data-action=choice]').click();document.querySelector('[data-confidence=duda]').click();true");
         String draft=js("localStorage.getItem('cachaste-daily-v1')");
@@ -166,7 +166,7 @@ public class OfflineAppTest {
         }
         waitFor("document.querySelector('.celebration-screen')");
         assertEquals("true",js("CachasteDailyApp.basics.status('cantidad').complete"));
-        assertEquals("623",js("CACHASTE_DAILY_CATALOG.items.length"));
+        assertEquals("true",js("CACHASTE_DAILY_CATALOG.items.length>=641 && new Set(CACHASTE_DAILY_CATALOG.items.map(q=>q.key)).size===CACHASTE_DAILY_CATALOG.items.length"));
     }
     @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
