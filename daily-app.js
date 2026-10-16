@@ -30,7 +30,7 @@
  // Ruta ondulante: adaptación de lesson-button.tsx, © 2024 Mohanad AL Faleet (MIT).
  function trailOffset(index){const phase=index%8;const indentation=phase<=2?phase:phase<=4?4-phase:phase<=6?4-phase:phase-8;return -indentation*29;}
 
- function sceneTheme(basic,u){if(basic)return'foundation';if(subject==='Lectura')return'reading';if(subject==='Ciencias')return'science';if(subject==='Historia')return'history';if(subject==='M2')return'cosmic';const a=(u?.axis||'').toLowerCase();return a.includes('geometr')?'geometry':a.includes('álgebra')?'algebra':a.includes('probabilidad')?'night':'numbers';}
+ function sceneTheme(basic,u){if(subject==='Lectura')return'reading';if(subject==='Ciencias')return'science';if(subject==='Historia')return'history';if(basic)return'foundation';if(subject==='M2')return'cosmic';const a=(u?.axis||'').toLowerCase();return a.includes('geometr')?'geometry':a.includes('álgebra')?'algebra':a.includes('probabilidad')?'night':'numbers';}
  function sceneMotif(theme){return({foundation:'La aldea de los fundamentos',numbers:'Las colinas de los números',algebra:'El bosque de las ecuaciones',geometry:'El valle de las formas',night:'El observatorio de los datos',cosmic:'La galaxia matemática',reading:'El bosque de las historias',science:'El laboratorio de los descubrimientos',history:'La ruta del tiempo'})[theme]||'Tu siguiente aventura';}
  function levelComplete(l,basic){return basic?B.status(l.id).complete:levelState(l).status==='comprobado';}
  function node(l,i,basic=false,currentId=''){
@@ -67,7 +67,7 @@
   if(subject==='Ciencias'&&!E.state.track)return tracks();
   const selected=stage(),list=units(),u=selected.unit,basic=!!selected.basic;
   const ls=basic?B.lessons.filter(l=>(l.subject||'M1')===subject||(subject==='M2'&&!l.subject)):u?.levels||[];
-  const n=basic?0:list.indexOf(u)+1,title=basic?'Construyamos la base':u?.name||'Tu recorrido',stats=E.stats(),active=E.state.session||E.state.foundationDraft;
+  const n=basic?0:Math.max(1,list.findIndex(x=>examKey(x)===examKey(u))+1),title=basic?'Construyamos la base':u?.name||'Tu recorrido',stats=E.stats(),active=E.state.session||E.state.foundationDraft;
   const current=ls.find(l=>l.id===(basic?pendingBasic()?.id:recommend()?.id)&&!levelComplete(l,basic))||ls.find(l=>!levelComplete(l,basic))||null;
   return toolbar()+'<section class="stage-banner"><span>ETAPA '+(n+1)+' · '+esc(basic?'Fundamentos':u?.axis||'Mi recorrido')+'</span><h1>'+esc(title)+'</h1>'+button('units','Elegir mundo','','unit-link')+'</section>'+
    (active?'<div class="resume-strip">'+button('resume','Continuar mi sesión guardada','','primary')+'</div>':'')+
@@ -143,7 +143,7 @@
   if(a==='pick-course'){subject=b.dataset.subject;E.state.subject=subject;E.state.chosenCourse=true;E.save();goto(subject==='Ciencias'?'#tracks':'#home');return;}
   if(a==='pick-track'){subject='Ciencias';E.state.subject=subject;E.state.track=b.dataset.track;E.save();goto('#home');return;}
   if(a==='stage'){saveStage(b.dataset.stage);goto('#home');return;}
-  if(a==='next-stage'){const st=stage(),all=units(),n=st.basic?-1:all.indexOf(st.unit);if(all[n+1])saveStage(all[n+1].axis+'|'+all[n+1].name);goto('#home');return;}
+  if(a==='next-stage'){const st=stage(),all=units(),n=st.basic?-1:all.findIndex(x=>examKey(x)===examKey(st.unit));if(all[n+1]){saveStage(all[n+1].axis+'|'+all[n+1].name);goto('#home');}else goto('#units');return;}
   if(a==='unit-exam'){const u=units().find(x=>examKey(x)===b.dataset.unit);if(!u){notice='No se encontró la unidad.';render();return;}const result=E.startUnitExam(subject,examKey(u),u.levels.map(l=>l.objective),subject==='Ciencias'?E.state.track:null);notice=result.message||'';if(E.state.session&&!result.blocked)goto('#session');else render();return;}
   if(a==='basic-level'){goto('#basiclevel:'+encodeURIComponent(b.dataset.basic));return;}
   if(a==='basic-start'){if(!B.start(b.dataset.basic)){notice='Tienes una misión guardada. Retómala antes de empezar otra.';render();return;}goto('#basic');return;}
