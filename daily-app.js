@@ -116,7 +116,7 @@
   const l=levels().find(l=>l.id===id);if(!l)return home();
   const u=units().find(u=>u.levels.some(x=>x.id===l.id)),p=levelState(l),source=C.sources?.[subject]?.[u?.axis];
   const checks=items.filter(q=>q.subjectKey===subject&&q.concept===l.objective&&(subject!=='Ciencias'||q.module==='MC'||(E.state.track==='TP'?q.module==='MTP':q.module==='ME'&&q.subject===E.state.track)));
-  const families=new Set(checks.map(q=>q.family));
+  const families=new Set(checks.map(q=>q.family)),studio=window.CachasteStudios.get(subject,l.objective);
   const support=C.prerequisites(subject,l.objective).map(req=>{
    const target=C.course(items,req.subject).flatMap(u=>u.levels).find(x=>x.objective===req.concept);
    return target?'<div class="prerequisite-card"><p>Si este contenido se te complica, puedes repasar <strong>'+esc(req.concept)+'</strong> en '+esc(C.subjects[req.subject].name)+'.</p>'+button('base','Repasar esa base','data-subject="'+esc(req.subject)+'" data-level="'+esc(target.id)+'"')+'</div>':'';
@@ -128,9 +128,48 @@
    cat('encouraging','¿Ya manejas este contenido? Pruébalo directamente. Si necesitas apoyo, te lo explico con ejemplos y luego lo comprobamos.')+
    '<div class="daily-actions mission-actions">'+button('check-first','Probar lo que sé','data-concept="'+esc(l.objective)+'"','primary')+
    button('lesson','Aprender con el gatito','data-concept="'+esc(l.objective)+'"')+
-   button('study','Ver la explicación','data-level="'+esc(l.id)+'"')+'</div>'+
+   button('study','Ver la explicación','data-level="'+esc(l.id)+'"')+(studio?button('studio-open','Jugar taller completo','data-studio="'+esc(studio.id)+'"','studio-entry'):'')+'</div>'+
    '<p class="mission-meta">'+(families.size>=2?'Hay '+families.size+' variantes independientes del concepto.':'Este concepto todavía necesita más variantes de ejercicios. No te mostraremos un dominio ficticio.')+'</p>'+support+
    (p.status==='comprobado'?'<p>Ya demostraste este aprendizaje. Puedes reforzarlo cuando quieras.</p>':'')+'</section>';
+ }
+
+
+ function studio(){
+  const P=window.CachasteStudios,d=E.state.studioDraft,l=P.byId.get(d?.id);
+  if(!l||!P.valid(d))return home();
+  if(l.subject!==subject)return home();
+  const progress=profile(subject).find(p=>p.concept===l.concept),evidence=(progress?.status||'sin explorar');
+  const header='<div class="lesson-top">'+button('studio-exit','← Volver a mi recorrido')+'<span>'+esc(C.subjects[subject].name)+'</span></div>'+
+   '<div class="studio-progress" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="'+(d.stage==='learn'?1:d.stage==='match'?2:3)+'" aria-label="Etapa del taller"><span style="width:'+((d.stage==='learn'?1:d.stage==='match'?2:3)/3*100)+'%"></span></div>';
+  const evidenceLine='<p class="studio-evidence">Dominio PAES: <strong>'+esc(evidence)+'</strong>. Acertar en un minijuego no modifica este resultado: se comprueba con preguntas nuevas y sin ayuda.</p>';
+  if(d.stage==='learn'){
+   const c=l.cards[d.card];
+   return header+'<section class="studio-panel"><span class="studio-kicker">LABORATORIO PAES · CONCEPTO '+(d.card+1)+'/'+l.cards.length+'</span>'+
+    '<h1>'+esc(l.title)+'</h1><p>'+esc(l.intro)+'</p>'+
+    '<div class="studio-goals"><strong>Qué aprenderás</strong><ul>'+l.goals.map(g=>'<li>'+esc(g)+'</li>').join('')+'</ul></div>'+
+    '<article class="studio-card"><h2>'+esc(c.title)+'</h2>'+cat('explaining',c.text)+'</article>'+
+    '<div class="studio-actions">'+button('studio-next-card',d.card+1<l.cards.length?'Siguiente idea':'Jugar: conecta las ideas','','primary')+'</div>'+
+    '<small class="studio-source">Referencia curricular: '+esc(l.source)+'. Explicaciones originales de ¿Cachaste?.</small></section>';
+  }
+  if(d.stage==='match'){
+   const pair=l.pairs[d.round],order=P.choices(l,d.round),wrong=d.checked&&!d.seen.at(-1)?.correct;
+   return header+'<section class="studio-panel"><span class="studio-kicker">JUEGO DE RELACIONES · '+(d.round+1)+'/'+l.pairs.length+'</span><h1>Conecta concepto y evidencia</h1>'+
+    cat(d.checked?(wrong?'thinking':'celebrating'):'encouraging',wrong?'Esa relación tiene un detalle importante. Revisa el porqué.':d.checked?'¡Bien conectado!':'Elige la explicación que corresponde a la situación. No se trata de memorizar palabras.')+
+    '<div class="studio-scenario"><strong>Situación</strong><p>'+esc(pair.prompt)+'</p></div>'+
+    '<div class="studio-options">'+order.map(id=>button('studio-choice',l.pairs[id].answer,'data-choice="'+id+'" '+(d.checked?'disabled':'')+' aria-pressed="'+(d.selected===id)+'"','studio-choice'+(d.checked&&id===d.round?' studio-right':'')+(d.checked&&id===d.selected&&id!==d.round?' studio-wrong':''))).join('')+'</div>'+
+    (d.checked?'<div class="studio-feedback" role="status"><strong>'+(wrong?'Revisa la relación':'¡Evidencia conectada!')+'</strong><p>'+esc(pair.why)+'</p>'+(wrong?'<p class="studio-repair">'+esc(l.confusion)+'</p>':'')+'</div>':'')+
+    '<div class="studio-actions">'+(d.checked?button('studio-advance',d.round+1<l.pairs.length?'Siguiente relación':'Ver mi resultado','','primary'):button('studio-check','Comprobar',d.selected===null?'disabled':'','primary'))+'</div>'+
+    '<p class="studio-evidence">Aquí puedes equivocarte sin perder vidas ni XP. El resultado no acredita dominio.</p></section>';
+  }
+  const strong=d.correct===l.pairs.length,message=strong?'Conectaste todas las relaciones. Lo importante ahora es transferir la idea a problemas nuevos.':'Identificamos relaciones que todavía necesitan refuerzo. Puedes repetir el juego o demostrar lo que sabes directamente.';
+  const subjectQuestions=items.filter(q=>q.subjectKey===subject&&q.concept===l.concept&&(subject!=='Ciencias'||q.module==='MC'||(E.state.track==='TP'?q.module==='MTP':q.module==='ME'&&q.subject===E.state.track)));
+  const families=new Set(subjectQuestions.map(q=>q.family)).size;
+  return header+'<section class="studio-panel studio-complete">'+avatar(strong?'celebrating':'encouraging','hero')+
+   '<span class="studio-kicker">TALLER PRÁCTICO COMPLETADO</span><h1>'+esc(l.title)+'</h1><p>'+esc(message)+'</p>'+
+   '<div class="studio-score"><strong>'+d.correct+'/'+l.pairs.length+'</strong><span>relaciones correctas · '+d.mistakes+' por revisar</span></div>'+evidenceLine+
+   '<div class="studio-actions">'+(families>=2?button('studio-assess','Comprobar con ejercicios PAES','','primary'):'<p>Este concepto necesita más familias independientes para una comprobación justa.</p>')+
+   button('studio-lesson','Ordenar razonamiento con el gatito')+button('studio-retry','Practicar las relaciones otra vez')+
+   button('studio-exit','Volver al camino')+'</div><small class="studio-source">Referencias: '+esc(l.source)+'</small></section>';
  }
 
  function starterMessage(phase,good=false){
@@ -225,8 +264,8 @@
   if(typeof ResizeObserver!=='undefined'){adventureObserver=new ResizeObserver(()=>syncAdventureRoad());adventureObserver.observe(world);}
  }
 
- function render(){profileCache=new Map();const h=location.hash||(E.state.chosenCourse?'#home':'#courses'),isTraditional=h==='#traditional',isLesson=['#session','#basic'].includes(h)||h.startsWith('#study:');traditional.hidden=!isTraditional;root.hidden=isTraditional;document.body.classList.toggle('is-learning',isLesson);document.body.classList.toggle('is-traditional',isTraditional);if(isTraditional){adventureObserver?.disconnect();adventureObserver=null;return;}let body;
-  try{if(h==='#courses')body=courses();else if(h==='#tracks')body=tracks();else if(h==='#practice')body=practice();else if(h==='#units')body=unitPicker();else if(h==='#session')body=session();else if(h==='#basic')body=basicSession();else if(h==='#celebrate')body=celebrate();else if(h==='#progress')body=progress();else if(h.startsWith('#level:'))body=level(decodeURIComponent(h.slice(7)));else if(h.startsWith('#basiclevel:'))body=basicLevel(decodeURIComponent(h.slice(12)));else if(h.startsWith('#study:')){const q=items.find(q=>q.levelId===decodeURIComponent(h.slice(7)));body=q?intro(q,true):home();}else body=home();
+ function render(){profileCache=new Map();const h=location.hash||(E.state.chosenCourse?'#home':'#courses'),isTraditional=h==='#traditional',isLesson=['#session','#basic','#studio'].includes(h)||h.startsWith('#study:');traditional.hidden=!isTraditional;root.hidden=isTraditional;document.body.classList.toggle('is-learning',isLesson);document.body.classList.toggle('is-traditional',isTraditional);if(isTraditional){adventureObserver?.disconnect();adventureObserver=null;return;}let body;
+  try{if(h==='#courses')body=courses();else if(h==='#tracks')body=tracks();else if(h==='#practice')body=practice();else if(h==='#units')body=unitPicker();else if(h==='#session')body=session();else if(h==='#basic')body=basicSession();else if(h==='#studio')body=studio();else if(h==='#celebrate')body=celebrate();else if(h==='#progress')body=progress();else if(h.startsWith('#level:'))body=level(decodeURIComponent(h.slice(7)));else if(h.startsWith('#basiclevel:'))body=basicLevel(decodeURIComponent(h.slice(12)));else if(h.startsWith('#study:')){const q=items.find(q=>q.levelId===decodeURIComponent(h.slice(7)));body=q?intro(q,true):home();}else body=home();
    const previousCat=root.querySelector('.wise-cat[data-cat-state]'),previousState=previousCat?.dataset.catState||'',previousWords=previousCat?.querySelector('p')?.textContent||'';
    root.innerHTML=(notice?'<div class="daily-notice" role="status">'+esc(notice)+'</div>':'')+(E.warning?'<p role="alert">'+esc(E.warning)+'</p>':'')+body+(!isLesson&&h!=='#celebrate'?navigate(h):'');
    observeAdventureRoad();
@@ -236,6 +275,31 @@
  }
  root.addEventListener('change',e=>{if(e.target.id==='daily-time')document.getElementById('daily-count').value=e.target.value;});
  root.addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b)return;const a=b.dataset.action,s=E.state.session,d=E.state.foundationDraft;notice='';
+  if(a==='studio-open'){
+   const pilot=window.CachasteStudios.byId.get(b.dataset.studio);
+   if(!pilot||pilot.subject!==subject)return;
+   if(E.state.session||E.state.foundationDraft){notice='Primero termina o pausa tu sesión en curso.';render();return;}
+   const draft=E.state.studioDraft;
+   if(!window.CachasteStudios.valid(draft)||draft.id!==pilot.id)E.state.studioDraft=window.CachasteStudios.start(pilot);
+   E.save();goto('#studio');return;
+  }
+  if(a==='studio-exit'){E.save();goto('#home');return;}
+  if(a.startsWith('studio-')){
+   const P=window.CachasteStudios,draft=E.state.studioDraft,l=P.byId.get(draft?.id);
+   if(!l||!P.valid(draft)||l.subject!==subject){goto('#home');return;}
+   if(a==='studio-next-card')P.nextCard(draft);
+   else if(a==='studio-choice')P.choose(draft,Number(b.dataset.choice));
+   else if(a==='studio-check')P.check(draft);
+   else if(a==='studio-advance')P.advance(draft);
+   else if(a==='studio-retry')P.retry(draft);
+   else if(a==='studio-assess'||a==='studio-lesson'){
+    if(E.state.session||E.state.foundationDraft){notice='Continúa la sesión guardada antes de iniciar otra.';render();return;}
+    const mode=a==='studio-lesson'?'lesson':'free';
+    const r=E.start(subject,2,mode,l.concept);
+    notice=r.message||'';E.save();goto(E.state.session&&!r.blocked?'#session':'#studio');return;
+   }
+   E.save();render();scrollToLessonStart();return;
+  }
   if(a==='review-due'){if(E.state.session||E.state.foundationDraft){notice='Primero termina la sesión que dejaste guardada.';goto('#home');return;}const due=E.dueReviews(subject,subject==='Ciencias'?E.state.track:null);const target=due[0];if(target){const result=E.start(subject,2,'smart',target.concept);notice=result.message||'';goto(E.state.session&&!result.blocked?'#session':'#home');}return;}
   if(a==='focus-quest'){const target=root.querySelector('.trail-stop.current .trail-node')||root.querySelector('.trail-stop:not(.mastered) .trail-node')||root.querySelector('.world-gate');if(target){target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});if(target.tagName==='BUTTON')target.focus({preventScroll:true});}return;}
   if(['home','path','progress','courses','tracks','practice','units','traditional','mission-practice'].includes(a)){goto('#'+(a==='mission-practice'?'practice':a));return;}
