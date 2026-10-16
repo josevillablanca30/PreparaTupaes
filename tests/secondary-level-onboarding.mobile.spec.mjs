@@ -57,7 +57,7 @@ test('El antiguo 8 ya no aparece como la misión 1 de Historia y el registro ant
   e.save();CachasteDailyApp.render();
  });
  await expect(page.locator('.world-hud')).toContainText('0 de 1 misiones dominadas');
- await page.locator('[data-action=basic-level]').click();
+ await page.locator('.trail-stop.current [data-action=basic-level]').click();
  await expect(page.locator('.mission-emblem')).toHaveText('1');
  await expect(page.locator('.mission-preview h1')).toContainText('Conectar procesos de Chile y el mundo');
 });
