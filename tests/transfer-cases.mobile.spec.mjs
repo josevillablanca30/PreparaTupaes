@@ -3,7 +3,10 @@ import {test,expect} from '@playwright/test';
 const cases=[
  {subject:'M1',concept:'Parte porcentual',id:'TR-M1-001'},
  {subject:'Ciencias',concept:'Variable independiente',id:'TR-SCI-001'},
- {subject:'Historia',concept:'Razón y crítica ilustrada',id:'TR-HIS-001'}
+ {subject:'Historia',concept:'Razón y crítica ilustrada',id:'TR-HIS-001'},
+ {subject:'M1',concept:'Unidades de una escala gráfica',id:'TR-M1-007'},
+ {subject:'Ciencias',concept:'Respiración celular y ATP',id:'TR-SCI-007'},
+ {subject:'Historia',concept:'Secularización del Estado',id:'TR-HIS-007'}
 ];
 for(const spec of cases){
  test(spec.subject+': evaluación de transferencia usa dos contextos distintos, explicaciones y guardado',async({page})=>{
