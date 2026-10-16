@@ -48,3 +48,37 @@ test('El panorama del 1.º a 4.º medio está declarado para las cinco materias 
   'Historia mundial','Historia de Chile y América','Interpretación de fuentes históricas','Formación ciudadana','Sistema económico'
  ]);
 });
+
+
+test('El motor expone capítulos reales, sus fuentes y los vacíos de cobertura sin inventar logros',()=>{
+ for(const subject of Object.keys(C.subjects)){
+  const input=subject==='Ciencias'?C.sciencePool(items,'Biología'):items;
+  const route=Array.from(C.roadmap(input,subject));
+  assert.ok(route.length>=3,subject);
+  assert.deepEqual(route.flatMap(section=>section.units.map(unit=>unit.id)),
+    Array.from(C.course(input,subject),u=>u.axis+'|'+u.name),subject);
+  const count=route.reduce((s,x)=>s+x.questions,0);
+  assert.equal(count,input.filter(q=>q.subjectKey===subject).length,subject);
+  for(const section of route){
+   assert.ok(section.goal.length>=30&&section.source.length>=16,subject+' '+section.axis);
+   assert.ok(section.readyLevels<=section.levels);
+   for(const unit of section.units){
+    assert.ok(unit.questions>=1,subject+' '+unit.name);
+    assert.ok(unit.families>=1);
+    assert.equal(unit.partial,unit.checkableLevels<unit.levels);
+    assert.ok(unit.checkableLevels<=unit.levels);
+   }
+  }
+ }
+});
+test('La ruta no confunde cinco preguntas sobre el mismo caso con cinco evidencias independientes',()=>{
+ const fake=[
+  {subjectKey:'Historia',axis:'Historia',unit:'Historia mundial',concept:'Causalidad',levelId:'h1',id:'a',family:'mismo-caso'},
+  {subjectKey:'Historia',axis:'Historia',unit:'Historia mundial',concept:'Causalidad',levelId:'h1',id:'b',family:'mismo-caso'}
+ ];
+ const sections=C.roadmap(fake,'Historia');
+ assert.equal(sections[0].units[0].questions,2);
+ assert.equal(sections[0].units[0].families,1);
+ assert.equal(sections[0].readyLevels,0);
+ assert.equal(sections[0].units[0].partial,true);
+});
