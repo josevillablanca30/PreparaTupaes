@@ -10,7 +10,7 @@ test('El banco preserva todos sus originales y agrega 12 transferencias nuevas, 
  const originals=loadBanks();
  assert.deepEqual(['M1','M2','Lectura','Ciencias','Historia'].map(s=>originals[s].length),[116,106,130,206,65]);
  assert.equal(items.length,683);
- assert.equal(new Set(items.map(q=>q.key)).size,671);
+ assert.equal(new Set(items.map(q=>q.key)).size,683);
  assert.equal(cases.length,12);
  assert.deepEqual([cases.filter(r=>r.base.startsWith('Ciencias:')).length,cases.filter(r=>r.base.startsWith('Historia:')).length],[6,6]);
  assert.equal(new Set(cases.map(r=>r.base)).size,12,'Usar distintos conceptos originales, no doce cambios cosméticos');
