@@ -269,3 +269,48 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
  #daily-root .trail-stop.current .trail-node{width:88px;height:88px;min-height:88px}
 }
 @media(prefers-reduced-motion:reduce){#daily-root .trail-stop.current .next-label{animation:none!important}}
+
+
+/* Cachaste's own visual identity: purple adventure world with the approved wise cat as guide. */
+#daily-root .game-world{
+ position:relative;isolation:isolate;overflow:hidden;
+ margin:22px 0 28px;padding:17px 12px 20px;
+ border-radius:30px;border:2px solid #e4d5f5;
+ background:linear-gradient(165deg,#f6efff 0%,#fff 53%,#f6f0ff 100%);
+ box-shadow:0 7px 0 #e7daf5;
+}
+#daily-root .game-world-heading{text-align:center;padding:8px 8px 4px;color:#54358c}
+#daily-root .game-world-heading>span{
+ display:inline-block;font-size:10px;font-weight:900;letter-spacing:.15em;
+ color:#7047a6;background:#e8daf8;border-radius:100px;padding:7px 12px;
+}
+#daily-root .game-world-heading strong{display:block;font-size:clamp(19px,5vw,25px);margin:9px 0 4px;line-height:1.2}
+#daily-root .game-world-heading p{font-size:13px;color:#735f8d;margin:0}
+#daily-root .game-world-companion{
+ display:flex;justify-content:center;align-items:center;gap:5px;
+ margin:8px 0 -9px;position:relative;z-index:2;
+}
+#daily-root .game-world-companion .cat-frame.large{width:92px;height:92px}
+#daily-root .game-world-companion>span:last-child{
+ max-width:155px;padding:10px 12px;background:#fff;
+ border:2px solid #d9c5ed;border-radius:18px 18px 18px 4px;
+ color:#583b89;font-weight:800;font-size:13px;
+ box-shadow:0 3px 0 #e5d9f1;
+}
+#daily-root .game-world .learning-trail{
+ border:0;box-shadow:none;margin:0;padding:14px 4px 10px;
+ background:transparent;
+}
+#daily-root .game-world .trail-stop strong{
+ background:#fff;border:1px solid #eadcf7;border-radius:13px;
+ padding:7px 10px;box-shadow:0 2px 0 #e7d8f5;
+}
+#daily-root .game-world .trail-stop.current .next-label{
+ background:#6740aa;color:#fff;
+}
+#daily-root .game-guide .wise-cat{background:#faf7ff;border-radius:24px}
+@media(max-width:360px){
+ #daily-root .game-world{padding:12px 5px 16px;border-radius:23px}
+ #daily-root .game-world-companion .cat-frame.large{width:78px;height:78px}
+ #daily-root .game-world-companion>span:last-child{font-size:12px}
+}
