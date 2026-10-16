@@ -1,5 +1,6 @@
 (function(){'use strict';
  const root=document.getElementById('daily-root'),traditional=document.getElementById('traditional-section'),C=window.CachasteCurriculum,{items,texts}=window.CACHASTE_DAILY_CATALOG,E=window.CachasteDaily.create(localStorage,items,C.subjects),B=window.CachasteBasics.attach(E),esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const workshopCoverage=window.CachasteStudios.hydrate(items,C);
  let subject=Object.hasOwn(C.subjects,E.state.subject)?E.state.subject:'M1',notice='',profileCache=new Map();
  const profile=s=>{if(!profileCache.has(s))profileCache.set(s,E.profile(s));return profileCache.get(s);};
  const poses={neutral:[0,0],explaining:[1,0],thinking:[2,0],celebrating:[0,1],error:[1,1],encouraging:[1,1],walking:[2,1]};
@@ -77,14 +78,14 @@
 
  function home(){
   if(subject==='Ciencias'&&!E.state.track)return tracks();
-  const pilot=window.CachasteStudios.lessons.find(x=>x.subject===subject);
+  const pilot=window.CachasteStudios.lessons.find(x=>x.subject===subject&&!x.generatedType);
   const selected=stage(),list=units(),u=selected.unit,basic=!!selected.basic;
   const ls=basic?B.lessons.filter(l=>(l.subject||'M1')===subject||(subject==='M2'&&!l.subject)):u?.levels||[];
   const n=basic?0:Math.max(0,list.findIndex(x=>examKey(x)===examKey(u))),title=basic?(subject==='M1'||subject==='M2'?'Construyamos la base':'Tu primera misión PAES'):u?.name||'Tu recorrido',stats=E.stats(),active=E.state.session||E.state.foundationDraft;
   const current=ls.find(l=>l.id===(basic?pendingBasic()?.id:recommend()?.id)&&!levelComplete(l,basic))||ls.find(l=>!levelComplete(l,basic))||null;
   return toolbar()+'<section class="stage-banner"><span>ETAPA '+(n+1)+' · '+esc(basic?starterTitle():u?.axis||'Mi recorrido')+'</span><h1>'+esc(title)+'</h1>'+button('units','Elegir mundo','','unit-link')+'</section>'+
    (active?'<div class="resume-strip">'+button('resume','Continuar mi sesión guardada','','primary')+'</div>':'')+
-   curriculumOverview(false)+(pilot?'<section class="studio-feature"><span class="studio-kicker">MISIÓN ESPECIAL · DEMOSTRACIÓN JUGABLE</span><h2>'+esc(pilot.title)+'</h2><p>'+esc(pilot.intro)+'</p><small>3 ideas · 3 relaciones · comprobación con preguntas de esta materia</small>'+button('studio-open','Jugar unidad piloto','data-studio="'+esc(pilot.id)+'"','primary')+button('studio-direct-test','Ya lo manejo: probar sin clase','data-studio="'+esc(pilot.id)+'"')+'</section>':'')+worldMap(ls,basic,u,n,list,current)+
+   curriculumOverview(false)+'<p class="studio-coverage-note">'+esc(workshopCoverage.bySubject[subject]||0)+' conceptos de esta materia tienen un taller con explicación y actividad disponible en el mapa. El dominio solo se acredita con problemas independientes.</p>'+(pilot?'<section class="studio-feature"><span class="studio-kicker">MISIÓN ESPECIAL · DEMOSTRACIÓN JUGABLE</span><h2>'+esc(pilot.title)+'</h2><p>'+esc(pilot.intro)+'</p><small>3 ideas · 3 relaciones · comprobación con preguntas de esta materia</small>'+button('studio-open','Jugar unidad piloto','data-studio="'+esc(pilot.id)+'"','primary')+button('studio-direct-test','Ya lo manejo: probar sin clase','data-studio="'+esc(pilot.id)+'"')+'</section>':'')+worldMap(ls,basic,u,n,list,current)+
    '<div class="world-after"><p>'+esc(paceMessage())+'</p>'+button('focus-quest','Encontrar mi misión','','focus-quest')+'</div>'+
    pendingReviewPanel()+missionTeaser(stats)+(basic?'':examPanel(u));
  }
@@ -129,7 +130,7 @@
    cat('encouraging','¿Ya manejas este contenido? Pruébalo directamente. Si necesitas apoyo, te lo explico con ejemplos y luego lo comprobamos.')+
    '<div class="daily-actions mission-actions">'+button('check-first','Probar lo que sé','data-concept="'+esc(l.objective)+'"','primary')+
    button('lesson','Aprender con el gatito','data-concept="'+esc(l.objective)+'"')+
-   button('study','Ver la explicación','data-level="'+esc(l.id)+'"')+(studio?button('studio-open','Jugar taller completo','data-studio="'+esc(studio.id)+'"','studio-entry'):'')+'</div>'+
+   button('study','Ver la explicación','data-level="'+esc(l.id)+'"')+(studio?button('studio-open',studio.generatedType?'Explorar este concepto con el gatito':'Jugar taller completo','data-studio="'+esc(studio.id)+'"','studio-entry'):'')+'</div>'+
    '<p class="mission-meta">'+(families.size>=2?'Hay '+families.size+' variantes independientes del concepto.':'Este concepto todavía necesita más variantes de ejercicios. No te mostraremos un dominio ficticio.')+'</p>'+support+
    (p.status==='comprobado'?'<p>Ya demostraste este aprendizaje. Puedes reforzarlo cuando quieras.</p>':'')+'</section>';
  }
@@ -147,7 +148,8 @@
    const c=l.cards[d.card];
    return header+'<section class="studio-panel"><span class="studio-kicker">LABORATORIO PAES · CONCEPTO '+(d.card+1)+'/'+l.cards.length+'</span>'+
     '<h1>'+esc(l.title)+'</h1><p>'+esc(l.intro)+'</p>'+
-    '<div class="studio-goals"><strong>Qué aprenderás</strong><ul>'+l.goals.map(g=>'<li>'+esc(g)+'</li>').join('')+'</ul></div>'+
+    (l.generatedType?'<p class="studio-example-problem"><strong>Problema que guía esta clase:</strong> '+esc(l.exampleProblem)+'</p>':'')+
+   '<div class="studio-goals"><strong>Qué aprenderás</strong><ul>'+l.goals.map(g=>'<li>'+esc(g)+'</li>').join('')+'</ul></div>'+
     '<article class="studio-card"><h2>'+esc(c.title)+'</h2>'+cat('explaining',c.text)+'</article>'+
     '<div class="studio-actions">'+button('studio-next-card',d.card+1<l.cards.length?'Siguiente idea':'Jugar: conecta las ideas','','primary')+button('studio-direct-test','Ya domino esto: ir a preguntas PAES','data-studio="'+esc(l.id)+'"')+'</div>'+
     '<small class="studio-source">Referencia curricular: '+esc(l.source)+'. Explicaciones originales de ¿Cachaste?.</small></section>';
@@ -156,9 +158,9 @@
    const pair=l.pairs[d.round],order=P.choices(l,d.round),wrong=d.checked&&!d.seen.at(-1)?.correct;
    return header+'<section class="studio-panel"><span class="studio-kicker">JUEGO DE RELACIONES · '+(d.round+1)+'/'+l.pairs.length+'</span><h1>Conecta concepto y evidencia</h1>'+
     cat(d.checked?(wrong?'thinking':'celebrating'):'encouraging',wrong?'Esa relación tiene un detalle importante. Revisa el porqué.':d.checked?'¡Bien conectado!':'Elige la explicación que corresponde a la situación. No se trata de memorizar palabras.')+
-    '<div class="studio-scenario"><strong>Situación</strong><p>'+esc(pair.prompt)+'</p></div>'+
+    '<div class="studio-scenario"><strong>'+(l.generatedType?'Problema y razonamiento':'Situación')+'</strong>'+(l.generatedType?'<p class="studio-problem">'+esc(l.exampleProblem)+'</p>':'')+'<p>'+esc(pair.prompt)+'</p></div>'+
     '<div class="studio-options">'+order.map(id=>button('studio-choice',l.pairs[id].answer,'data-choice="'+id+'" '+(d.checked?'disabled':'')+' aria-pressed="'+(d.selected===id)+'"','studio-choice'+(d.checked&&id===d.round?' studio-right':'')+(d.checked&&id===d.selected&&id!==d.round?' studio-wrong':''))).join('')+'</div>'+
-    (d.checked?'<div class="studio-feedback" role="status"><strong>'+(wrong?'Revisa la relación':'¡Evidencia conectada!')+'</strong><p>'+esc(pair.why)+'</p>'+(wrong?'<p class="studio-repair">La tarjeta elegida corresponde a «'+esc(l.pairs[d.selected]?.prompt||'otra situación')+'». '+esc(l.confusion)+'</p>':'')+'</div>':'')+
+    (d.checked?'<div class="studio-feedback" role="status"><strong>'+(wrong?'Revisa la relación':'¡Evidencia conectada!')+'</strong><p>'+esc(pair.why)+'</p>'+(wrong?'<p class="studio-repair">'+(l.generatedType?'Elegiste un paso que no corresponde todavía: «'+esc(l.pairs[d.selected]?.answer||'')+'». ':'La tarjeta elegida corresponde a «'+esc(l.pairs[d.selected]?.prompt||'otra situación')+'». ')+esc(l.confusion)+'</p>':'')+'</div>':'')+
     '<div class="studio-actions">'+(d.checked?button('studio-advance',d.round+1<l.pairs.length?'Siguiente relación':'Ver mi resultado','','primary'):button('studio-check','Comprobar',d.selected===null?'disabled':'','primary'))+'</div>'+
     '<p class="studio-evidence">Aquí puedes equivocarte sin perder vidas ni XP. El resultado no acredita dominio.</p></section>';
   }
