@@ -13,5 +13,42 @@
  function prerequisites(s,objective){const map={'Cambios porcentuales sucesivos':['M1','Parte porcentual'],'Recuperar valor original':['M1','Parte porcentual'],'Descuento porcentual':['M1','Parte porcentual'],'Variación porcentual':['M1','Parte porcentual'],'Interés compuesto':['M1','Cambios porcentuales sucesivos'],'Interés simple':['M1','Parte porcentual'],'Logaritmos':['M1','Producto de potencias'],'Composición de funciones':['M1','Evaluación de función afín'],'Dominio de raíces':['M1','Raíz cuadrada principal'],'Modelo binomial':['M1','Eventos independientes'],'Probabilidad sin reposición':['M1','Extracción sin reposición'],'Ecuaciones exponenciales':['M1','Producto de potencias'],'Vértice de una cuadrática':['M1','Extremo de una cuadrática']};const p=map[objective];return p&&!(p[0]===s&&p[1]===objective)?[{subject:p[0],concept:p[1]}]:[];}
  function sciencePool(items,track){return items.filter(q=>q.subjectKey!=='Ciencias'||!track||q.module==='MC'||(track==='TP'?q.module==='MTP':q.module==='ME'&&q.subject===track));}
  function course(items,s){const units=organize(items,s).flatMap(a=>a.units.map(u=>({...u,axis:a.name})));if(s==='M1'){const order=['Enteros','Racionales','Potencias','Raíces','Álgebra','Ecuaciones','Inecuaciones','Sistemas 2×2','Proporcionalidad','Porcentajes','Función afín','Función cuadrática','Geometría','Pitágoras','Polígonos','Círculos','Cuerpos geométricos','Cilindros','Transformaciones','Semejanza','Tablas y gráficos','Estadística','Cuartiles','Probabilidad','Probabilidad compuesta'];units.sort((a,b)=>(order.includes(a.name)?order.indexOf(a.name):99)-(order.includes(b.name)?order.indexOf(b.name):99));}return units;}
- g.CachasteCurriculum={subjects,classify,organize,prerequisites,sciencePool,course};
+
+ // Panorama escolar 1.º–4.º medio: líneas temáticas orientativas, no equivalencias de grado
+ // ni declaración de que cada contenido ya tenga ejercicios suficientes.
+ const secondaryScope={
+  M1:[
+   {title:'Números y operaciones',topics:'Enteros y racionales, porcentajes, potencias, raíces, números reales y aplicaciones'},
+   {title:'Álgebra y funciones',topics:'Expresiones algebraicas, productos notables, ecuaciones, sistemas, proporcionalidad, funciones lineales y cuadráticas'},
+   {title:'Geometría',topics:'Figuras y cuerpos, Pitágoras, semejanza, transformaciones y medición'},
+   {title:'Datos y probabilidades',topics:'Lectura de gráficos, medidas estadísticas, variabilidad y probabilidades simples y combinadas'}
+  ],
+  M2:[
+   {title:'Profundización numérica y algebraica',topics:'Números reales, expresiones, ecuaciones, logaritmos y modelación'},
+   {title:'Funciones y cambios',topics:'Funciones y sus representaciones, composición, modelos y análisis de situaciones'},
+   {title:'Geometría y razonamiento',topics:'Relaciones espaciales, modelación geométrica y suficiencia de datos'},
+   {title:'Azar, datos y decisiones',topics:'Probabilidades, distribuciones, interpretación y evaluación de información'}
+  ],
+  Lectura:[
+   {title:'Comprensión de textos',topics:'Ideas globales y locales, vocabulario en contexto, inferencias, conexiones y propósito'},
+   {title:'Géneros y discursos',topics:'Textos narrativos, poéticos, dramáticos, expositivos y argumentativos'},
+   {title:'Lectura crítica',topics:'Perspectiva del emisor, calidad de argumentos, evidencia, sesgos y credibilidad'},
+   {title:'Integración de información',topics:'Comparación de fuentes, lectura de gráficos en textos y evaluación de conclusiones'}
+  ],
+  Ciencias:[
+   {title:'Biología',topics:'Células, sistemas del organismo, reproducción, genética, evolución, salud y ecosistemas'},
+   {title:'Física',topics:'Movimiento, fuerzas, energía, ondas, electricidad y fenómenos de la Tierra'},
+   {title:'Química',topics:'Estructura de la materia, enlaces, reacciones químicas, estequiometría y química orgánica'},
+   {title:'Investigación científica',topics:'Diseño experimental, variables, gráficos, evidencia y conclusiones; las menciones profundizan en su área'}
+  ],
+  Historia:[
+   {title:'Historia de Chile',topics:'Independencia, formación republicana, territorio, cuestión social, cambios del siglo XX, dictadura y democratización'},
+   {title:'Historia mundial',topics:'Ideas políticas modernas, revoluciones, industrialización, imperialismo, guerras mundiales, Guerra Fría y cambios contemporáneos'},
+   {title:'Formación ciudadana',topics:'Democracia, Constitución, Estado de derecho, derechos humanos, participación y representación'},
+   {title:'Economía y sociedad',topics:'Mercados, oferta y demanda, inflación, empleo, impuestos, bienes públicos y decisiones económicas'},
+   {title:'Interpretación histórica',topics:'Fuentes, temporalidad, multicausalidad, continuidad y cambio, perspectivas y contraste de evidencias'}
+  ]
+ };
+
+ g.CachasteCurriculum={subjects,classify,organize,prerequisites,sciencePool,course,secondaryScope};
 })(typeof window==='undefined'?globalThis:window);
