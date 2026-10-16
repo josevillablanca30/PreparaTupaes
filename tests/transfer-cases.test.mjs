@@ -54,7 +54,7 @@ test('Las 18 claves numéricas y explicaciones editoriales tienen resultados cor
  };
  for(const [id,answer]of Object.entries(expected))assert.equal(answerOf(id),answer,id);
  assert.equal(450*.18,81);
- assert.equal(36000/(.9*.8),50000);
+ assert.ok(Math.abs(36000/(.9*.8)-50000)<1e-8);
  assert.equal(3**4*3**2/3**3,3**3);
  assert.equal(4*(2*2-3)-2*(2+1),6*2-14);
  assert.ok(Math.abs(1-.8**3-.488)<1e-12);
