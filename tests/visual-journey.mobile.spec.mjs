@@ -9,6 +9,8 @@ test('Auditoría visual: materias, mapa, fundamentos, respuesta y celebración',
  await start(page);
  await expect(page.locator('.trail-stop.current')).toHaveCount(1);
  await expect(page.locator('.trail-stop.current .trail-node')).toBeVisible();
+ await page.locator('.stage-banner [data-action=units]').click();
+ await page.locator('[data-action=stage][data-stage=basics]').click();
  await page.locator('[data-action=basic-level]').first().click();
  await capture(page,'03-mision');
  await page.locator('[data-action=basic-start]').click();
@@ -57,6 +59,8 @@ test('Auditoría de movimiento reducido: mascota y recompensas accesibles',async
  await page.emulateMedia({reducedMotion:'reduce'});
  await start(page);
  await expect(page.locator('.trail-stop.current .trail-node')).toHaveCSS('animation-name','none');
+ await page.locator('.stage-banner [data-action=units]').click();
+ await page.locator('[data-action=stage][data-stage=basics]').click();
  await page.locator('[data-action=basic-level]').first().click();
  await page.locator('[data-action=basic-start]').click();
  await expect(page.locator('.wise-cat .cat-frame').first()).toHaveCSS('animation-name','none');
