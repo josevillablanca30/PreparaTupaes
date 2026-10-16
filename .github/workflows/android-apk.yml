@@ -1,7 +1,7 @@
 name: Android APK · compilación de prueba
 on:
   push:
-    branches: [main, work/cachaste-respaldo-2026-10-15]
+    branches: [main, work/cachaste-respaldo-2026-10-15, work/cachaste-motor-duolingo-20261016]
     paths: ['daily-*','assets/**','learning-core.js', 'm1-teaching.js', 'study-app.js', 'study-ui.css', 'index.html', 'inicio.html', 'science.html', 'science-bank.js', 'science-app.js', 'reading.html', 'reading-bank.js', 'reading-app.js', 'm2.html', 'm2-bank.js', 'm2-app.js', 'history.html', 'history-bank.js', 'history-app.js', 'android/**', 'tests/**', 'scripts/**', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
   workflow_dispatch:
 concurrency:
