@@ -84,7 +84,7 @@
   const current=ls.find(l=>l.id===(basic?pendingBasic()?.id:recommend()?.id)&&!levelComplete(l,basic))||ls.find(l=>!levelComplete(l,basic))||null;
   return toolbar()+'<section class="stage-banner"><span>ETAPA '+(n+1)+' · '+esc(basic?starterTitle():u?.axis||'Mi recorrido')+'</span><h1>'+esc(title)+'</h1>'+button('units','Elegir mundo','','unit-link')+'</section>'+
    (active?'<div class="resume-strip">'+button('resume','Continuar mi sesión guardada','','primary')+'</div>':'')+
-   curriculumOverview(false)+(pilot?'<section class="studio-feature"><span class="studio-kicker">MISIÓN ESPECIAL · DEMOSTRACIÓN JUGABLE</span><h2>'+esc(pilot.title)+'</h2><p>'+esc(pilot.intro)+'</p><small>3 ideas · 3 relaciones · comprobación con preguntas de esta materia</small>'+button('studio-open','Jugar unidad piloto','data-studio="'+esc(pilot.id)+'"','primary')+'</section>':'')+worldMap(ls,basic,u,n,list,current)+
+   curriculumOverview(false)+(pilot?'<section class="studio-feature"><span class="studio-kicker">MISIÓN ESPECIAL · DEMOSTRACIÓN JUGABLE</span><h2>'+esc(pilot.title)+'</h2><p>'+esc(pilot.intro)+'</p><small>3 ideas · 3 relaciones · comprobación con preguntas de esta materia</small>'+button('studio-open','Jugar unidad piloto','data-studio="'+esc(pilot.id)+'"','primary')+button('studio-direct-test','Ya lo manejo: probar sin clase','data-studio="'+esc(pilot.id)+'"')+'</section>':'')+worldMap(ls,basic,u,n,list,current)+
    '<div class="world-after"><p>'+esc(paceMessage())+'</p>'+button('focus-quest','Encontrar mi misión','','focus-quest')+'</div>'+
    pendingReviewPanel()+missionTeaser(stats)+(basic?'':examPanel(u));
  }
@@ -149,7 +149,7 @@
     '<h1>'+esc(l.title)+'</h1><p>'+esc(l.intro)+'</p>'+
     '<div class="studio-goals"><strong>Qué aprenderás</strong><ul>'+l.goals.map(g=>'<li>'+esc(g)+'</li>').join('')+'</ul></div>'+
     '<article class="studio-card"><h2>'+esc(c.title)+'</h2>'+cat('explaining',c.text)+'</article>'+
-    '<div class="studio-actions">'+button('studio-next-card',d.card+1<l.cards.length?'Siguiente idea':'Jugar: conecta las ideas','','primary')+'</div>'+
+    '<div class="studio-actions">'+button('studio-next-card',d.card+1<l.cards.length?'Siguiente idea':'Jugar: conecta las ideas','','primary')+button('studio-direct-test','Ya domino esto: ir a preguntas PAES','data-studio="'+esc(l.id)+'"')+'</div>'+
     '<small class="studio-source">Referencia curricular: '+esc(l.source)+'. Explicaciones originales de ¿Cachaste?.</small></section>';
   }
   if(d.stage==='match'){
@@ -158,7 +158,7 @@
     cat(d.checked?(wrong?'thinking':'celebrating'):'encouraging',wrong?'Esa relación tiene un detalle importante. Revisa el porqué.':d.checked?'¡Bien conectado!':'Elige la explicación que corresponde a la situación. No se trata de memorizar palabras.')+
     '<div class="studio-scenario"><strong>Situación</strong><p>'+esc(pair.prompt)+'</p></div>'+
     '<div class="studio-options">'+order.map(id=>button('studio-choice',l.pairs[id].answer,'data-choice="'+id+'" '+(d.checked?'disabled':'')+' aria-pressed="'+(d.selected===id)+'"','studio-choice'+(d.checked&&id===d.round?' studio-right':'')+(d.checked&&id===d.selected&&id!==d.round?' studio-wrong':''))).join('')+'</div>'+
-    (d.checked?'<div class="studio-feedback" role="status"><strong>'+(wrong?'Revisa la relación':'¡Evidencia conectada!')+'</strong><p>'+esc(pair.why)+'</p>'+(wrong?'<p class="studio-repair">'+esc(l.confusion)+'</p>':'')+'</div>':'')+
+    (d.checked?'<div class="studio-feedback" role="status"><strong>'+(wrong?'Revisa la relación':'¡Evidencia conectada!')+'</strong><p>'+esc(pair.why)+'</p>'+(wrong?'<p class="studio-repair">La tarjeta elegida corresponde a «'+esc(l.pairs[d.selected]?.prompt||'otra situación')+'». '+esc(l.confusion)+'</p>':'')+'</div>':'')+
     '<div class="studio-actions">'+(d.checked?button('studio-advance',d.round+1<l.pairs.length?'Siguiente relación':'Ver mi resultado','','primary'):button('studio-check','Comprobar',d.selected===null?'disabled':'','primary'))+'</div>'+
     '<p class="studio-evidence">Aquí puedes equivocarte sin perder vidas ni XP. El resultado no acredita dominio.</p></section>';
   }
@@ -283,6 +283,13 @@
    const draft=E.state.studioDraft;
    if(!window.CachasteStudios.valid(draft)||draft.id!==pilot.id)E.state.studioDraft=window.CachasteStudios.start(pilot);
    E.save();goto('#studio');return;
+  }
+  if(a==='studio-direct-test'){
+   const l=window.CachasteStudios.byId.get(b.dataset.studio);
+   if(!l||l.subject!==subject)return;
+   if(E.state.session||E.state.foundationDraft){notice='Primero termina la sesión guardada.';render();return;}
+   const result=E.start(subject,2,'free',l.concept);notice=result.message||'';
+   goto(E.state.session&&!result.blocked?'#session':'#home');return;
   }
   if(a==='studio-exit'){E.save();goto('#home');return;}
   if(a.startsWith('studio-')){
