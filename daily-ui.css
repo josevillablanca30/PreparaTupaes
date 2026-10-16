@@ -562,3 +562,53 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
  #daily-root .arcade-actions button{flex-basis:100%}
 }
 @media(prefers-reduced-motion:reduce){#daily-root .arcade-options .arcade-tile{transition:none!important}}
+
+
+/* Talleres PAES: la explicación, práctica interactiva y comprobación comparten el mismo lenguaje. */
+#daily-root .mission-actions .studio-entry{background:#e3f5ed!important;color:#245943!important;border:2px solid #a9dbc2!important;min-height:51px!important;box-shadow:0 4px 0 #c3e8d5!important}
+#daily-root .studio-progress{height:9px;margin:10px auto 0;max-width:750px;border-radius:99px;background:#e9e1f2;overflow:hidden}
+#daily-root .studio-progress>span{display:block;height:100%;background:linear-gradient(90deg,#7bbd91,#664db1);border-radius:99px;transition:width .3s ease}
+#daily-root .studio-panel{max-width:740px;margin:14px auto 50px;padding:clamp(16px,4vw,26px);border-radius:27px;border:1.5px solid #ddd0ec;background:linear-gradient(155deg,#fff,#f9f6ff);box-shadow:0 8px 22px #31215111}
+#daily-root .studio-kicker{display:block;font-size:11px;color:#7554a3;letter-spacing:.07em;font-weight:900;margin-bottom:7px}
+#daily-root .studio-panel h1{font-size:clamp(23px,5vw,32px);line-height:1.18;letter-spacing:-.02em;margin:7px 0 12px;color:#39294a}
+#daily-root .studio-panel>p{font-size:14px;line-height:1.55;color:#625270}
+#daily-root .studio-goals{border-radius:16px;border:1px solid #e5dbef;background:#faf7ff;padding:12px 16px;margin:17px 0}
+#daily-root .studio-goals strong{color:#593b81;font-size:13px}
+#daily-root .studio-goals ul{padding-left:19px;margin:8px 0 2px}
+#daily-root .studio-goals li{font-size:13px;line-height:1.55;color:#635871;padding:3px 0}
+#daily-root .studio-card{background:#f4effb;border:1.5px solid #dcd0e8;border-radius:18px;padding:16px;margin:14px 0 19px}
+#daily-root .studio-card h2{font-size:20px;margin:0 0 11px;color:#4a326a}
+#daily-root .studio-card .wise-cat{margin:0;align-items:start;gap:12px}
+#daily-root .studio-card .wise-cat .cat-frame{width:91px;height:91px;flex-shrink:0}
+#daily-root .studio-card .wise-cat p{font-size:15px;line-height:1.65;background:white;border:1px solid #e7def2;border-radius:15px;padding:15px}
+#daily-root .studio-scenario{background:#f3f0fa;border-left:5px solid #997ac5;padding:15px 17px;border-radius:13px;margin:18px 0}
+#daily-root .studio-scenario strong{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#6e519a}
+#daily-root .studio-scenario p{font-size:17px;line-height:1.45;font-weight:750;color:#443354;margin:8px 0 0}
+#daily-root .studio-options{display:grid;gap:12px;margin:18px 0}
+#daily-root .studio-options .studio-choice{text-align:left;white-space:normal!important;justify-content:flex-start;border:2px solid #c4b6dc!important;border-bottom:5px solid #a996ca!important;border-radius:15px!important;padding:15px!important;font-size:14px;line-height:1.46;min-height:62px;background:#fff!important;color:#423252!important;font-weight:700;transition:transform .15s}
+#daily-root .studio-options .studio-choice[aria-pressed=true]:not(:disabled){background:#ece6fc!important;border-color:#7551b8!important}
+#daily-root .studio-options .studio-choice.studio-right{background:#e4f8eb!important;border-color:#7bbb94!important;color:#225a36!important;opacity:1!important}
+#daily-root .studio-options .studio-choice.studio-wrong{background:#fff0ea!important;border-color:#e6b6a1!important;color:#814d3c!important;opacity:1!important}
+#daily-root .studio-options .studio-choice:active{transform:scale(.99)}
+#daily-root .studio-options .studio-choice:focus-visible{outline:3px solid #8062ac;outline-offset:2px}
+#daily-root .studio-feedback{background:#f0f9f3;border:1.5px solid #badccb;border-radius:17px;padding:15px;font-size:14px;line-height:1.5;color:#345f42}
+#daily-root .studio-feedback strong{display:block;margin-bottom:5px}
+#daily-root .studio-feedback p{margin:6px 0}
+#daily-root .studio-feedback .studio-repair{color:#734b25;background:#fff9e9;border-radius:12px;padding:10px 12px}
+#daily-root .studio-actions{display:grid;gap:11px;margin:19px 0 13px}
+#daily-root .studio-actions button{width:100%;min-height:49px;font-weight:800;white-space:normal}
+#daily-root .studio-evidence{color:#736583;font-size:12px!important;line-height:1.5;margin:17px 0}
+#daily-root .studio-score{background:#f4f0fc;border:1px solid #dcd1ed;border-radius:18px;padding:15px;display:flex;align-items:center;gap:16px}
+#daily-root .studio-score strong{font-size:36px;color:#5c3c93}
+#daily-root .studio-score span{font-size:13px;color:#665777}
+#daily-root .studio-complete{text-align:center}
+#daily-root .studio-complete .cat-frame.hero{display:inline-block;margin:10px auto}
+#daily-root .studio-source{display:block;margin-top:14px;font-size:12px;line-height:1.5;color:#756984}
+@media(max-width:390px){
+#daily-root .studio-panel{padding:14px}
+#daily-root .studio-card{padding:11px}
+#daily-root .studio-card .wise-cat .cat-frame{width:70px;height:70px}
+#daily-root .studio-card .wise-cat p{font-size:13px;padding:12px}
+#daily-root .studio-options .studio-choice{min-height:53px;padding:12px!important;font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){#daily-root .studio-options .studio-choice,#daily-root .studio-progress>span{transition:none!important}}
