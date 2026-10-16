@@ -1,0 +1,1089 @@
+{
+  "updated": "2026-10-16",
+  "bankSize": 683,
+  "originalQuestions": 623,
+  "originalTransfers": 60,
+  "originalConcepts": 287,
+  "baselineSingleQuestionConcepts": 136,
+  "conceptsWithNewSecondItem": 54,
+  "remainingOneQuestionConcepts": 82,
+  "remainingBySubject": {
+    "M1": 14,
+    "Ciencias": 51,
+    "Historia": 17
+  },
+  "notes": [
+    "60 transfer items do not imply 60 previously-unverifiable concepts resolved. Five were added to already represented concepts and a separate base was used twice.",
+    "This file tracks original concepts with one question and new transfer base keys; the live readinessAudit and CI are authoritative for independent family counts.",
+    "Two distinct questions may still share assumptions and be pedagogically dependent. Editorial review is required.",
+    "New exercises authored independently against DEMRE 2027 and the user's Drive, not copied from proprietary PDFs."
+  ],
+  "remaining": [
+    {
+      "subject": "M1",
+      "axis": "Números",
+      "unit": "Potencias",
+      "concept": "Potencias y operaciones",
+      "ids": [
+        "4"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH M1 · PDV Tutoría Números · TESLA M1",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "M1",
+      "axis": "Álgebra y funciones",
+      "unit": "Álgebra",
+      "concept": "Términos semejantes",
+      "ids": [
+        "216"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH M1 · TESLA Álgebra",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "M1",
+      "axis": "Álgebra y funciones",
+      "unit": "Álgebra",
+      "concept": "Sustitución con signos",
+      "ids": [
+        "217"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH M1 · TESLA Álgebra",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "M1",
+      "axis": "Probabilidad y estadística",
+      "unit": "Tablas y gráficos",
+      "concept": "Máximos y empates",
+      "ids": [
+        "265"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Datos y Azar · CPECH M1",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "M1",
+      "axis": "Probabilidad y estadística",
+      "unit": "Cuartiles",
+      "concept": "Cálculo de cuartiles",
+      "ids": [
+        "255"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Datos y Azar · CPECH M1",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "M1",
+      "axis": "Probabilidad y estadística",
+      "unit": "Cuartiles",
+      "concept": "Percentiles",
+      "ids": [
+        "256"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Datos y Azar · CPECH M1",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "M1",
+      "axis": "Probabilidad y estadística",
+      "unit": "Probabilidad compuesta",
+      "concept": "Eventos independientes",
+      "ids": [
+        "260"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Datos y Azar · CPECH M1",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "M1",
+      "axis": "Geometría",
+      "unit": "Polígonos",
+      "concept": "Área de un paralelogramo",
+      "ids": [
+        "239"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Geometría · TESLA Geometría · CPECH M1",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "M1",
+      "axis": "Geometría",
+      "unit": "Cuerpos geométricos",
+      "concept": "Superficie total de un cubo",
+      "ids": [
+        "242"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Geometría · TESLA Geometría · CPECH M1",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "M1",
+      "axis": "Geometría",
+      "unit": "Cilindros",
+      "concept": "Cilindro: superficie lateral",
+      "ids": [
+        "244"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Geometría · TESLA Geometría · CPECH M1",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "M1",
+      "axis": "Geometría",
+      "unit": "Transformaciones",
+      "concept": "Traslación",
+      "ids": [
+        "246"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Geometría · TESLA Geometría · CPECH M1",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "M1",
+      "axis": "Geometría",
+      "unit": "Transformaciones",
+      "concept": "Rotación",
+      "ids": [
+        "247"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Geometría · TESLA Geometría · CPECH M1",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "M1",
+      "axis": "Geometría",
+      "unit": "Semejanza",
+      "concept": "Semejanza de longitudes",
+      "ids": [
+        "249"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Geometría · TESLA Geometría · CPECH M1",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "M1",
+      "axis": "Geometría",
+      "unit": "Semejanza",
+      "concept": "Escala de áreas",
+      "ids": [
+        "288"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Geometría · TESLA Geometría · CPECH M1",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Biología",
+      "unit": "Organización, estructura y actividad celular",
+      "concept": "ARN mensajero y traducción",
+      "ids": [
+        "SCI-118"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Biología · PDV Biología · FILADD Ejes 1–4",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Biología",
+      "unit": "Organización, estructura y actividad celular",
+      "concept": "Superficie de intercambio",
+      "ids": [
+        "SCI-169"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Biología · PDV Biología · FILADD Ejes 1–4",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Biología",
+      "unit": "Organización, estructura y actividad celular",
+      "concept": "Digestión intracelular",
+      "ids": [
+        "SCI-200"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Biología · PDV Biología · FILADD Ejes 1–4",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Biología",
+      "unit": "Procesos y funciones biológicas",
+      "concept": "Enzimas y estructura",
+      "ids": [
+        "SCI-076"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Biología · PDV Biología · FILADD Ejes 1–4",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Biología",
+      "unit": "Procesos y funciones biológicas",
+      "concept": "Inflamación local",
+      "ids": [
+        "SCI-123"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Biología · PDV Biología · FILADD Ejes 1–4",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Biología",
+      "unit": "Procesos y funciones biológicas",
+      "concept": "Fecundación y diploidía",
+      "ids": [
+        "SCI-167"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Biología · PDV Biología · FILADD Ejes 1–4",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Biología",
+      "unit": "Procesos y funciones biológicas",
+      "concept": "Eventos del ciclo reproductivo",
+      "ids": [
+        "SCI-168"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Biología · PDV Biología · FILADD Ejes 1–4",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Biología",
+      "unit": "Procesos y funciones biológicas",
+      "concept": "Agentes de ITS",
+      "ids": [
+        "SCI-180"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Biología · PDV Biología · FILADD Ejes 1–4",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Biología",
+      "unit": "Procesos y funciones biológicas",
+      "concept": "Consentimiento y autonomía",
+      "ids": [
+        "SCI-199"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Biología · PDV Biología · FILADD Ejes 1–4",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Biología",
+      "unit": "Herencia y evolución",
+      "concept": "ADN y ascendencia común",
+      "ids": [
+        "SCI-087"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Biología · PDV Biología · FILADD Ejes 1–4",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Biología",
+      "unit": "Herencia y evolución",
+      "concept": "Separación de homólogos",
+      "ids": [
+        "SCI-117"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Biología · PDV Biología · FILADD Ejes 1–4",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Biología",
+      "unit": "Herencia y evolución",
+      "concept": "Homología y función",
+      "ids": [
+        "SCI-183"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Biología · PDV Biología · FILADD Ejes 1–4",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Biología",
+      "unit": "Organismo y ambiente",
+      "concept": "Diversidad y parentesco",
+      "ids": [
+        "SCI-083"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Biología · PDV Biología · FILADD Ejes 1–4",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Ondas",
+      "concept": "Ángulos de reflexión",
+      "ids": [
+        "SCI-097"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Ondas",
+      "concept": "Reflexión y eco",
+      "ids": [
+        "SCI-152"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Ondas",
+      "concept": "Lente convergente y foco",
+      "ids": [
+        "SCI-185"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Ondas",
+      "concept": "Imagen en espejo plano",
+      "ids": [
+        "SCI-201"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Mecánica",
+      "concept": "Peso gravitatorio",
+      "ids": [
+        "SCI-090"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Mecánica",
+      "concept": "Aceleración media",
+      "ids": [
+        "SCI-091"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Mecánica",
+      "concept": "Trabajo de una fuerza constante",
+      "ids": [
+        "SCI-092"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Mecánica",
+      "concept": "Roce y desaceleración",
+      "ids": [
+        "SCI-147"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Mecánica",
+      "concept": "Elasticidad y ley de Hooke",
+      "ids": [
+        "SCI-172"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Mecánica",
+      "concept": "Referencia y suma de velocidades",
+      "ids": [
+        "SCI-187"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Mecánica",
+      "concept": "Modelos astronómicos y observación",
+      "ids": [
+        "SCI-188"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Mecánica",
+      "concept": "Elipse y primera ley de Kepler",
+      "ids": [
+        "SCI-206"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Energía – Tierra",
+      "concept": "Energía potencial y transformación",
+      "ids": [
+        "SCI-094"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Energía – Tierra",
+      "concept": "Transformaciones en generadores",
+      "ids": [
+        "SCI-151"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Electricidad",
+      "concept": "Eficiencia energética",
+      "ids": [
+        "SCI-093"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Electricidad",
+      "concept": "Potencia eléctrica",
+      "ids": [
+        "SCI-126"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Electricidad",
+      "concept": "Trayectoria de un circuito cerrado",
+      "ids": [
+        "SCI-149"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Física",
+      "unit": "Electricidad",
+      "concept": "Protección frente a sobrecorriente",
+      "ids": [
+        "SCI-150"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Física · PDV Compendios Física · TESLA Física",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Estructura atómica",
+      "concept": "Representación de pares de datos",
+      "ids": [
+        "SCI-042"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Estructura atómica",
+      "concept": "Enlace iónico",
+      "ids": [
+        "SCI-106"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Estructura atómica",
+      "concept": "Electrones de valencia",
+      "ids": [
+        "SCI-136"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Estructura atómica",
+      "concept": "Carga del electrón",
+      "ids": [
+        "SCI-153"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Estructura atómica",
+      "concept": "Tabla periódica y valencia",
+      "ids": [
+        "SCI-154"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Estructura atómica",
+      "concept": "Modelo nuclear y evidencia",
+      "ids": [
+        "SCI-175"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Estructura atómica",
+      "concept": "Densidad de una muestra",
+      "ids": [
+        "SCI-204"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Química orgánica",
+      "concept": "Grupo aldehído",
+      "ids": [
+        "SCI-135"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Química orgánica",
+      "concept": "Conectividad e isomería",
+      "ids": [
+        "SCI-138"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Química orgánica",
+      "concept": "Geometría e hibridación",
+      "ids": [
+        "SCI-177"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Química orgánica",
+      "concept": "Grupo éster",
+      "ids": [
+        "SCI-196"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Química orgánica",
+      "concept": "Grupo éter",
+      "ids": [
+        "SCI-197"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Reacciones químicas y estequiometría",
+      "concept": "Masa de una solución",
+      "ids": [
+        "SCI-157"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Reacciones químicas y estequiometría",
+      "concept": "Comparación de concentraciones",
+      "ids": [
+        "SCI-158"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Reacciones químicas y estequiometría",
+      "concept": "Porcentaje masa por masa",
+      "ids": [
+        "SCI-178"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Reacciones químicas y estequiometría",
+      "concept": "Molalidad",
+      "ids": [
+        "SCI-191"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Reacciones químicas y estequiometría",
+      "concept": "Fracción molar",
+      "ids": [
+        "SCI-192"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Reacciones químicas y estequiometría",
+      "concept": "Partes por millón en masa",
+      "ids": [
+        "SCI-193"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Reacciones químicas y estequiometría",
+      "concept": "Mezcla de soluciones y moles",
+      "ids": [
+        "SCI-194"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Ciencias",
+      "axis": "Química",
+      "unit": "Reacciones químicas y estequiometría",
+      "concept": "Fórmula empírica",
+      "ids": [
+        "SCI-195"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "PDV Química · TESLA QC01 a QC09 · CPECH Química",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Historia",
+      "unit": "Historia de Chile",
+      "concept": "Reforma agraria y tenencia de tierra",
+      "ids": [
+        "HIS-025"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácoras Historia: Mundo/Chile XIX y XX",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Historia",
+      "unit": "Historia de Chile",
+      "concept": "Ocupación de la Araucanía",
+      "ids": [
+        "HIS-056"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácoras Historia: Mundo/Chile XIX y XX",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Historia",
+      "unit": "Historia de Chile",
+      "concept": "Nacionalización del cobre",
+      "ids": [
+        "HIS-061"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácoras Historia: Mundo/Chile XIX y XX",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Historia",
+      "unit": "Historia mundial",
+      "concept": "Igualdad jurídica en 1789",
+      "ids": [
+        "HIS-031"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácoras Historia: Mundo/Chile XIX y XX",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Historia",
+      "unit": "Historia mundial",
+      "concept": "Imperialismo y dominio colonial",
+      "ids": [
+        "HIS-032"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácoras Historia: Mundo/Chile XIX y XX",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Historia",
+      "unit": "Historia mundial",
+      "concept": "Descolonización y autodeterminación",
+      "ids": [
+        "HIS-033"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácoras Historia: Mundo/Chile XIX y XX",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Historia",
+      "unit": "Historia mundial",
+      "concept": "Detonante y causas de la Primera Guerra Mundial",
+      "ids": [
+        "HIS-052"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácoras Historia: Mundo/Chile XIX y XX",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Historia",
+      "unit": "Historia mundial",
+      "concept": "Reconstrucción y Plan Marshall",
+      "ids": [
+        "HIS-057"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácoras Historia: Mundo/Chile XIX y XX",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Historia",
+      "unit": "Historia mundial",
+      "concept": "Gran Depresión de 1929",
+      "ids": [
+        "HIS-062"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácoras Historia: Mundo/Chile XIX y XX",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Formación ciudadana",
+      "unit": "Formación ciudadana",
+      "concept": "Participación ciudadana",
+      "ids": [
+        "HIS-036"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácora Formación Ciudadana · TESLA FC",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Formación ciudadana",
+      "unit": "Formación ciudadana",
+      "concept": "Debido proceso",
+      "ids": [
+        "HIS-039"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácora Formación Ciudadana · TESLA FC",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Sistema económico",
+      "unit": "Economía y sociedad",
+      "concept": "Precio y cantidad demandada",
+      "ids": [
+        "HIS-008"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácora Sistema Económico",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Sistema económico",
+      "unit": "Economía y sociedad",
+      "concept": "Bienes públicos y recursos comunes",
+      "ids": [
+        "HIS-019"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácora Sistema Económico",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Sistema económico",
+      "unit": "Economía y sociedad",
+      "concept": "Producción final y PIB",
+      "ids": [
+        "HIS-040"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácora Sistema Económico",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Sistema económico",
+      "unit": "Economía y sociedad",
+      "concept": "Diversificación y riesgo",
+      "ids": [
+        "HIS-045"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácora Sistema Económico",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Sistema económico",
+      "unit": "Economía y sociedad",
+      "concept": "Ahorro por aportes periódicos",
+      "ids": [
+        "HIS-054"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácora Sistema Económico",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    },
+    {
+      "subject": "Historia",
+      "axis": "Sistema económico",
+      "unit": "Economía y sociedad",
+      "concept": "Ingreso y demanda de bienes normales",
+      "ids": [
+        "HIS-064"
+      ],
+      "questionFamiliesObserved": 1,
+      "sourceGuide": "CPECH Bitácora Sistema Económico",
+      "editorialStatus": "new independently designed and audited item required",
+      "priority": "high"
+    }
+  ]
+}
