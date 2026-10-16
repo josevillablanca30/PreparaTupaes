@@ -118,9 +118,11 @@
    const order=t.example.steps.slice(0,3).map(v=>String(v).trim()),parts=(t.application||[]).filter(Boolean);
    const num=q.subjectKey==='Ciencias'?q.subject:q.subjectKey;
    const m=C?.sources?.[q.subjectKey]?.[q.axis]||null;
+   // The bank's tutor aim sometimes repeats the exact assessment stem; never teach an exam item verbatim before testing.
+   const aim=String(t.aim||'').includes(q.question)?(m?.goal||('Comprende '+q.concept+' y aplica sus relaciones a situaciones distintas.')):String(t.aim||'');
    const cards=[
     {title:'Qué necesitas comprender',text:t.foundation.join(' ')},
-    {title:'De la teoría a una situación PAES',text:[t.aim,...parts.slice(0,2)].filter(Boolean).join(' ')},
+    {title:'De la teoría a una situación PAES',text:[aim,...parts.slice(0,2)].filter(Boolean).join(' ')},
     {title:'Un ejemplo explicado con evidencia',text:[t.example.problem,...order,t.example.bridge,t.check].filter(Boolean).join(' ')}
    ];
    if(cards.some(c=>c.text.length<100))continue;
@@ -135,7 +137,7 @@
     subject:q.subjectKey,concept:q.concept,
     title:q.concept,
     axis:q.axis,source:'DEMRE · '+(m?.source||('Banco educativo revisado de '+num)),
-    intro:t.aim||('Resuelve problemas relacionados con '+q.concept+' explicando qué evidencia permite decidir.'),
+    intro:aim||('Resuelve problemas relacionados con '+q.concept+' explicando qué evidencia permite decidir.'),
     goals:[t.foundation[0],parts[0]||t.foundation[1],t.check||t.example.bridge].filter(Boolean).map(x=>x.slice(0,160)),
     cards,pairs:order.map((answer,i)=>({prompt:pairPrompts[i],answer,why:why[i]})),
     confusion:((t.intuition||[]).join(' ')||t.check||t.example.bridge||'Revisa qué información depende de los pasos anteriores.'),
