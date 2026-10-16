@@ -450,3 +450,6 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 @keyframes map-stop-enter{from{opacity:0;translate:0 9px}to{opacity:1;translate:0 0}}
 @keyframes portal-scout{from{opacity:.2;transform:translateY(15px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(prefers-reduced-motion:reduce){#daily-root .adventure-world,#daily-root .trail-stop,#daily-root .world-gate-cat .cat-frame{animation:none!important}}
+
+/* Mundo inicial: el punto de partida nunca aparece como una zona genérica. */
+#daily-root .adventure-world.world-foundation{--sky-top:#f2e5ff;--sky-mid:#f7edff;--sky-bottom:#f0fae5;--hills-far:#d6c3ee;--hills-near:#b4d4b4;--foliage:#7aaf82}
