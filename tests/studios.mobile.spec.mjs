@@ -86,3 +86,38 @@ test('Diagnóstico previo sin clases no crea XP, ni da por dominada una habilida
  expect(facts.xp).toBe(0);
  expect(facts.studio??null).toBeNull();
 });
+
+
+for(const subject of ['M1','M2','Lectura','Ciencias','Historia']){
+ test(subject+': taller ampliado usa textos del profesor existente y pasos razonados',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('./inicio.html#courses');
+  await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();
+  if(subject==='Ciencias')await page.locator('[data-action=pick-track][data-track=Biología]').click();
+  const info=await page.evaluate(s=>{
+   const S=window.CachasteStudios,E=CachasteDailyApp.engine;
+   const level=S.lessons.find(l=>l.generatedType&&l.subject===s&&(s!=='Ciencias'||(window.CACHASTE_DAILY_CATALOG.items.find(q=>q.key===l.generatedFrom)?.module==='MC')));
+   if(!level)throw Error('No hay taller derivado del contenido de '+s);
+   const q=window.CACHASTE_DAILY_CATALOG.items.find(q=>q.key===level.generatedFrom);
+   location.hash='#level:'+encodeURIComponent(q.levelId);CachasteDailyApp.render();
+   return {concept:level.concept,problem:level.exampleProblem,generatedFrom:level.generatedFrom};
+  },subject);
+  await page.locator('.mission-preview [data-action=studio-open]').click();
+  await expect(page.locator('.studio-panel')).toBeVisible();
+  await expect(page.locator('.studio-panel')).toContainText(info.concept);
+  await expect(page.locator('.studio-panel')).toContainText(info.problem);
+  for(let i=0;i<3;i++)await page.locator('[data-action=studio-next-card]').click();
+  await expect(page.locator('.studio-options .studio-choice')).toHaveCount(3);
+  for(let i=0;i<3;i++){
+   await page.locator('[data-action=studio-choice][data-choice="'+i+'"]').click();
+   await page.locator('[data-action=studio-check]').click();
+   await expect(page.locator('.studio-feedback')).toBeVisible();
+   await page.locator('[data-action=studio-advance]').click();
+  }
+  await expect(page.locator('.studio-complete')).toBeVisible();
+  const state=await page.evaluate(()=>({q:CachasteDailyApp.engine.state.attempts.length,d:CachasteDailyApp.engine.state.studioDraft}));
+  expect(state.q).toBe(0);
+  expect(state.d.correct).toBe(3);
+  expect(errors).toEqual([]);
+ });
+}
