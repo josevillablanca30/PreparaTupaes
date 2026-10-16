@@ -10,3 +10,32 @@ test('Ciencias: los cuatro recorridos mezclan común con la mención correcta',(
 test('M1: números y fracciones preceden potencias, raíces, ecuaciones y porcentajes',()=>{const names=C.course(items,'M1').map(u=>u.name);assert.equal(names[0],'Enteros');for(const[a,b]of[['Racionales','Potencias'],['Potencias','Raíces'],['Raíces','Ecuaciones'],['Ecuaciones','Porcentajes']])assert.ok(names.indexOf(a)<names.indexOf(b),a+' antes de '+b);});
 
 test('Tres materias adicionales parten desde cero con ejercicios independientes',()=>{for(const subject of ['Lectura','Ciencias','Historia']){const l=c.CachasteBasics.lessons.find(x=>x.subject===subject);assert.ok(l,subject);assert.equal(l.cards.length,3);assert.equal(l.checks.length,4);const{e,b}=setup();assert.equal(b.status(l.id).complete,false);b.start(l.id);assert.equal(b.current().id,l.checks[0].id);b.answer(l.checks[0].answer);b.next();b.answer(l.checks[1].answer);assert.equal(b.status(l.id).complete,true);b.next();assert.equal(e.state.completed.at(-1).subject,subject);}});
+
+test('Fundamentos: dominio aprobado no se pierde tras errores, pistas ni repasos',()=>{
+ const{b,store}=setup();
+ assert.equal(b.start('cantidad'),true);
+ b.answer(b.current().answer);
+ assert.equal(b.next(),false);
+ b.answer(b.current().answer);
+ assert.equal(b.status('cantidad').complete,true);
+ assert.equal(b.next(),true);
+ assert.equal(b.start('cantidad'),true);
+ b.answer((b.current().answer+1)%4);
+ assert.equal(b.status('cantidad').complete,true,'un error de repaso no revoca el logro');
+ assert.equal(b.next(),false,'un repaso conserva al menos dos ejercicios');
+ const q=b.current();
+ b.answer(q.answer);
+ assert.equal(b.next(),true);
+ assert.equal(setup(store).b.status('cantidad').complete,true,'el logro persiste después de recargar');
+});
+
+test('Fundamentos: datos antiguos mantienen dominio aun si hubo un error posterior',()=>{
+ const{e,b,store}=setup();
+ e.state.basics.cantidad={history:[
+ {id:'cantidad-1',correct:true,hinted:false},
+ {id:'cantidad-2',correct:true,hinted:false},
+ {id:'cantidad-3',correct:false,hinted:false}
+ ]};
+ e.save();
+ assert.equal(setup(store).b.status('cantidad').complete,true);
+});
