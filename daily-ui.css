@@ -233,3 +233,7 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .due-review button{flex-shrink:0;min-height:50px}
 @media(max-width:390px){#daily-root .due-review{flex-direction:column;align-items:stretch}#daily-root .due-review button{width:100%}}
 @media(prefers-reduced-motion:reduce){#daily-root .challenge-meter>span{transition:none!important}}
+
+#daily-root .exam-reflection{text-align:left;background:#fff;border:2px solid #dfd1ee;border-radius:20px;padding:16px 18px;margin:18px auto;max-width:420px}
+#daily-root .exam-reflection h2{font-size:17px;color:#513287;margin:0 0 9px}
+#daily-root .exam-reflection p{margin:8px 0;font-size:14px;line-height:1.6}
