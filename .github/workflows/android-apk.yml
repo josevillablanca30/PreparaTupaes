@@ -113,7 +113,9 @@ jobs:
       - name: Permitir aceleración del emulador
         run: |
           sudo chmod a+rw /dev/kvm
-      - name: Probar APK instalado, WebView sin red, persistencia y botón Atrás
+      - name: Probar APK instalado, WebView sin red, persistencia y botón Atrás (Android 36)
+        id: emulator_primary
+        continue-on-error: true
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 36
@@ -122,6 +124,22 @@ jobs:
           profile: pixel_2
           disable-animations: true
           script: cd android && gradle --no-daemon :app:connectedDebugAndroidTest
+      - name: Reintentar emulador Android 35 si el SDK 36 falla
+        id: emulator_fallback
+        if: steps.emulator_primary.outcome == 'failure'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          profile: pixel_2
+          disable-animations: true
+          script: cd android && gradle --no-daemon :app:connectedDebugAndroidTest
+      - name: Confirmar pruebas nativas antes de publicar APK
+        if: always() && steps.emulator_primary.outcome != 'success' && steps.emulator_fallback.outcome != 'success'
+        run: |
+          echo 'Ninguno de los emuladores Android completó la batería de pruebas.'
+          exit 1
       - name: Conservar resultados Android
         if: always()
         uses: actions/upload-artifact@v4
