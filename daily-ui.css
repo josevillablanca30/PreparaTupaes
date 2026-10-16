@@ -644,3 +644,13 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .personal-plan-card span{color:#7b6b82;font-size:11px;line-height:1.4}
 #daily-root .personal-plan-card button{flex:0 0 auto;min-height:43px;font-size:12px;font-weight:800}
 @media(max-width:390px){#daily-root .personal-plan-card{flex-direction:column;align-items:stretch}#daily-root .personal-plan-card button{width:100%}}
+
+
+/* Tutor grounded in the selected misconception, never one canned "incorrect" message. */
+#daily-root .selected-repair{margin:15px 0;padding:16px;border-radius:18px;background:#f9f3ff;border:1.5px solid #d7c1ed;color:#513c69}
+#daily-root .selected-repair h3{margin:0 0 8px;font-size:17px;color:#51327e}
+#daily-root .selected-repair p{line-height:1.55;font-size:14px;margin:0 0 9px}
+#daily-root .selected-repair ol{margin:9px 0 14px;padding-left:25px;display:grid;gap:9px}
+#daily-root .selected-repair li{padding-left:3px;font-size:14px;line-height:1.5}
+#daily-root .selected-repair small{display:block;border-top:1px solid #e4d8ec;padding-top:9px;color:#746083;line-height:1.45}
+@media(max-width:390px){#daily-root .selected-repair{padding:12px}#daily-root .selected-repair ol{padding-left:21px}}
