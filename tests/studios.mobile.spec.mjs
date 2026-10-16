@@ -56,6 +56,7 @@ test('Un estudiante puede ir del juego a una clase con el gatito sin perder prog
   location.hash='#level:'+encodeURIComponent(q.levelId);CachasteDailyApp.render();
  });
  await page.locator('[data-action=studio-open]').click();
+ await expect(page.locator('.studio-card')).toBeVisible();
  while(await page.locator('[data-action=studio-next-card]').count())await page.locator('[data-action=studio-next-card]').click();
  for(let i=0;i<3;i++){
   await page.locator('[data-action=studio-choice][data-choice="'+i+'"]').click();
