@@ -6,7 +6,10 @@ const cases=[
  {subject:'Historia',concept:'Razón y crítica ilustrada',id:'TR-HIS-001'},
  {subject:'M1',concept:'Unidades de una escala gráfica',id:'TR-M1-007'},
  {subject:'Ciencias',concept:'Respiración celular y ATP',id:'TR-SCI-007'},
- {subject:'Historia',concept:'Secularización del Estado',id:'TR-HIS-007'}
+ {subject:'Historia',concept:'Secularización del Estado',id:'TR-HIS-007'},
+ {subject:'M1',concept:'Raíz cuadrada principal',id:'TR-M1-013'},
+ {subject:'Ciencias',concept:'Pregunta investigable',id:'TR-SCI-021'},
+ {subject:'Historia',concept:'Guerra Fría',id:'TR-HIS-019'}
 ];
 for(const spec of cases){
  test(spec.subject+' '+spec.id+': evaluación de transferencia usa dos contextos distintos, explicaciones y guardado',async({page})=>{
