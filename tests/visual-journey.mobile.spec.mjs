@@ -12,7 +12,7 @@ test('Auditoría visual: materias, mapa, fundamentos, respuesta y celebración',
  await page.locator('[data-action=basic-level]').first().click();
  await capture(page,'03-mision');
  await page.locator('[data-action=basic-start]').click();
- await expect(page.locator('.wise-cat[data-cat-state=explaining]')).toBeVisible();
+ await expect(page.locator('aside.wise-cat[data-cat-state=explaining]')).toBeVisible();
  await expect(page.locator('.lesson-meter[role=progressbar]')).toBeVisible();
  await capture(page,'04-gatito-explica');
  while(await page.locator('[data-action=basic-forward]').count())await page.locator('[data-action=basic-forward]').click();
