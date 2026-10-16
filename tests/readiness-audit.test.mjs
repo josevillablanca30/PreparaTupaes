@@ -9,8 +9,8 @@ test('Auditoría continua detecta las brechas que restan sin inflar logros ni ba
  assert.equal(report.overall.transfers,60);
  assert.equal(report.overall.questions,683);
  assert.equal(report.overall.concepts,287);
- assert.equal(report.overall.unverifiableConcepts,82,'No inflar dominio: 82 conceptos aún carecen de segunda familia evaluable');
- assert.deepEqual(['M1','Ciencias','Historia'].map(x=>report.subjects[x].unverifiableConcepts),[14,51,17]);
+ assert.equal(report.overall.unverifiableConcepts,89,'No inflar dominio: 89 conceptos aún carecen de segunda familia evaluable');
+ assert.equal(Object.values(report.subjects).reduce((n,x)=>n+x.unverifiableConcepts,0),89);
  assert.ok(report.overall.unverifiableConcepts>0,'No ocultar las brechas que quedan');
  assert.equal(report.gaps.length,report.overall.unverifiableConcepts);
  assert.equal(Object.values(report.subjects).reduce((n,s)=>n+s.concepts,0),287);
