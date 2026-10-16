@@ -18,7 +18,7 @@ test('El banco conserva 623 ítems originales e incorpora 18 nuevos casos indepe
  assert.equal(items.length,659);
  assert.equal(new Set(items.map(q=>q.key)).size,659);
  for(const name of ['M1','Ciencias','Historia']){
-  assert.equal(items.filter(q=>q.subjectKey===name&&q.origin==='original-transfer-2027').length,6,name);
+  assert.equal(items.filter(q=>q.subjectKey===name&&q.origin==='original-transfer-2027').length,12,name);
  }
  for(const r of transferCases){
   const newQ=items.find(q=>q.id===r.id),base=items.find(q=>q.key===r.base);
