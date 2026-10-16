@@ -218,3 +218,18 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
   #daily-root .trail-stop{margin-left:clamp(-28px,var(--offset),28px)}
 }
 @media(prefers-reduced-motion:reduce){#daily-root .trail-stop .trail-node{transition:none!important}}
+
+/* MIT-inspired lesson-player structure: challenge progress, actionable feedback and due reviews.
+ * Original color palette, approved cat sprite and PAES content remain ours. */
+#daily-root .challenge-meter{height:13px;border-radius:999px;background:#e9e1f3;overflow:hidden;margin:11px 2px 19px;border:1px solid #dccceb}
+#daily-root .challenge-meter>span{display:block;height:100%;background:linear-gradient(90deg,#7450b8,#a880e1);border-radius:999px;transition:width .25s ease}
+#daily-root .confidence-guide{padding:17px 18px;margin:14px 0 22px;border:2px solid #cdb5eb;border-radius:20px;background:#fbf7ff;box-shadow:0 4px 0 #e7dafa}
+#daily-root .confidence-guide strong{display:block;color:#513287;font-size:16px}
+#daily-root .confidence-guide p{margin:8px 0;line-height:1.55;color:#3d3255}
+#daily-root .confidence-guide small{display:block;font-size:13px;color:#6b597e;line-height:1.45}
+#daily-root .due-review{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#f3fafa;border:2px solid #b4dcd0;box-shadow:0 4px 0 #d6ebe4;border-radius:22px;padding:17px 18px;margin:18px 0}
+#daily-root .due-review strong{display:block;color:#265f53;font-size:17px}
+#daily-root .due-review p{margin:5px 0 0;font-size:14px;color:#44645d}
+#daily-root .due-review button{flex-shrink:0;min-height:50px}
+@media(max-width:390px){#daily-root .due-review{flex-direction:column;align-items:stretch}#daily-root .due-review button{width:100%}}
+@media(prefers-reduced-motion:reduce){#daily-root .challenge-meter>span{transition:none!important}}
