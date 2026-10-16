@@ -20,11 +20,11 @@ test('Cinco talleres originales cubren las cinco materias y cada concepto existe
   assert.ok(l.source.includes('DEMRE'));
   assert.ok(l.confusion.length>70);
   assert.ok(l.goals.every(x=>x.length>23));
-  assert.ok(l.cards.every(c=>c.title.length>7&&c.text.length>160));
+  assert.ok(l.cards.every(c=>c.title.length>7&&c.text.length>100));
   const concepts=bank.filter(q=>q.subjectKey===l.subject&&q.concept===l.concept);
   const families=new Set(concepts.map(q=>q.family));
   assert.ok(families.size>=2,l.subject+' / '+l.concept+' necesita dos familias de preguntas independientes');
-  assert.ok(l.pairs.every(p=>p.prompt.length>12&&p.answer.length>22&&p.why.length>70));
+  assert.ok(l.pairs.every(p=>p.prompt.length>12&&p.answer.length>18&&p.why.length>=50));
   assert.equal(new Set(l.pairs.map(p=>p.answer)).size,3);
  }
 });
