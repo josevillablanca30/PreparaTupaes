@@ -519,3 +519,10 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .curriculum-chapter-header h2{font-size:19px}
 #daily-root .world-picker-details>span.world-tile-evidence{font-size:10px}
 }
+
+/* El estudiante decide cuánto necesita aprender antes de jugar. */
+#daily-root .mission-actions{display:grid;grid-template-columns:1fr;gap:11px;margin:18px 0 13px}
+#daily-root .mission-actions button{min-height:52px!important;width:100%;font-weight:800!important}
+#daily-root .mission-actions [data-action=check-first]{background:#7150ac!important;border:2px solid #7150ac!important;color:white!important;box-shadow:0 5px 0 #4f307d!important}
+#daily-root .mission-actions [data-action=lesson]{background:#f5efff!important;color:#634395!important;border:2px solid #bba4da!important;box-shadow:0 4px 0 #d7cbe8!important}
+#daily-root .mission-actions [data-action=study]{background:white!important;color:#625675!important;border:2px solid #e3dbe8!important;min-height:44px!important;box-shadow:none!important}
