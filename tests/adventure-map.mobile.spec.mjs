@@ -21,6 +21,9 @@ test('Mapa videojuego: camino curvo, gato-guía, portal y mundos navegables',asy
  await test.info().attach('13-mundo-numeros',{body:await page.screenshot({fullPage:true,animations:'disabled'}),contentType:'image/png'});
  await expect(world.locator('.world-hud')).toContainText('MUNDO 2');
  await expect(world.locator('.trail-stop')).not.toHaveCount(0);
+ await world.locator('.world-gate [data-action=next-stage]').click();
+ await expect(world.locator('.world-hud')).toContainText('MUNDO 3');
+ await expect(world).toHaveClass(/world-numbers/);
  await page.locator('.stage-banner [data-action=units]').click();
  await expect(page.locator('.world-picker')).toBeVisible();
  await expect(page.locator('.world-picker-tile').first()).toContainText('Fundamentos');
@@ -39,7 +42,7 @@ test('Los mundos cambian según la asignatura y Ciencias conserva su mención',a
  await page.locator('[data-action=pick-course][data-subject=Ciencias]').click();
  await expect(page.locator('[data-action=pick-track]')).toHaveCount(4);
  await page.locator('[data-action=pick-track][data-track="Biología"]').click();
- await expect(page.locator('.adventure-world')).toHaveClass(/world-foundation/);
+ await expect(page.locator('.adventure-world')).toHaveClass(/world-science/);
  await test.info().attach('14-ciencias-mencion-biologia',{body:await page.screenshot({fullPage:true,animations:'disabled'}),contentType:'image/png'});
  await expect(page.locator('.game-toolbar')).toContainText('Biología');
  await page.reload();
