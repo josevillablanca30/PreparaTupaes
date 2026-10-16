@@ -72,5 +72,51 @@
   ]
  };
 
- g.CachasteCurriculum={subjects,classify,organize,prerequisites,sciencePool,course,secondaryScope};
+
+ // Instructional source map: textbook sequence informs learning order; DEMRE defines test scope.
+ // This catalogue intentionally references material, and never embeds proprietary pages.
+ const sources={
+  M1:{
+   'Números':{source:'CPECH M1 · PDV Tutoría Números · TESLA M1',goal:'Operaciones, relaciones y problemas con números de nivel medio'},
+   'Álgebra y funciones':{source:'CPECH M1 · TESLA Álgebra',goal:'Expresiones, ecuaciones, proporcionalidad y modelos'},
+   'Geometría':{source:'PDV Geometría · TESLA Geometría · CPECH M1',goal:'Razona a partir de propiedades geométricas y representaciones'},
+   'Probabilidad y estadística':{source:'PDV Datos y Azar · CPECH M1',goal:'Interpreta datos, variación y fenómenos aleatorios'}
+  },
+  M2:{
+   'Números':{source:'TESLA M2: Números irracionales/reales y logaritmos',goal:'Profundiza en propiedades numéricas y expresiones'},
+   'Álgebra y funciones':{source:'PDV M2 · TESLA M2',goal:'Modela relaciones, funciones y sus transformaciones'},
+   'Geometría':{source:'PDV M2 · TESLA M2: Homotecia',goal:'Resuelve problemas y relaciones geométricas'},
+   'Probabilidad y estadística':{source:'TESLA M2: Conteo, dispersión y probabilidad condicional',goal:'Analiza información, azar y decisiones'}
+  },
+  Lectura:{
+   'Localizar':{source:'PDV LE01 + LE20 a LE22 · CPECH/PDV Lectura',goal:'Localiza y reconoce información explícita incluso reformulada'},
+   'Interpretar':{source:'PDV LE24 a LE27 · CPECH/PDV Lectura',goal:'Integra ideas, relaciones e inferencias del texto'},
+   'Evaluar':{source:'PDV LE29 a LE31 · CPECH/PDV Lectura',goal:'Evalúa postura del emisor, argumentos, recursos y pertinencia'}
+  },
+  Ciencias:{
+   'Biología':{source:'CPECH Biología · PDV Biología · FILADD Ejes 1–4',goal:'Comprende procesos celulares, funcionales, genéticos y ambientales'},
+   'Física':{source:'CPECH Física · PDV Compendios Física · TESLA Física',goal:'Interpreta modelos, magnitudes, energía y fenómenos físicos'},
+   'Química':{source:'PDV Química · TESLA QC01 a QC09 · CPECH Química',goal:'Analiza propiedades y transformaciones de la materia'}
+  },
+  Historia:{
+   'Historia':{source:'CPECH Bitácoras Historia: Mundo/Chile XIX y XX',goal:'Relaciona procesos históricos, causalidad y evidencia'},
+   'Formación ciudadana':{source:'CPECH Bitácora Formación Ciudadana · TESLA FC',goal:'Aplica principios democráticos, derechos e institucionalidad'},
+   'Sistema económico':{source:'CPECH Bitácora Sistema Económico',goal:'Explica decisiones, mercados, Estado y sus efectos sociales'}
+  }
+ };
+ function roadmap(items,s){
+  const units=course(items,s),bank=items.filter(q=>q.subjectKey===s),byId=new Map(bank.map(q=>[String(q.id),q]));
+  const result=[];
+  for(const u of units){
+   let section=result.find(a=>a.axis===u.axis);
+   if(!section){const m=sources[s]?.[u.axis]||{source:'Banco PAES original · contrastar temario DEMRE',goal:'Aplicar y comprobar habilidades de la prueba'};section={axis:u.axis,goal:m.goal,source:m.source,units:[],questions:0,levels:0,readyLevels:0};result.push(section);}
+   const ids=[...new Set(u.levels.flatMap(l=>l.ids))],unique=ids.map(id=>byId.get(String(id))).filter(Boolean),families=new Set(unique.map(q=>q.family||q.transferGroup||q.id));
+   const independent=u.levels.filter(l=>new Set(l.ids.map(id=>byId.get(String(id))).filter(Boolean).map(q=>q.family||q.transferGroup||q.id)).size>=2).length;
+   const item={axis:u.axis,name:u.name,id:u.axis+'|'+u.name,questions:unique.length,families:families.size,levels:u.levels.length,checkableLevels:independent,partial:independent<u.levels.length};
+   section.units.push(item);section.questions+=unique.length;section.levels+=u.levels.length;section.readyLevels+=independent;
+  }
+  return result;
+ }
+
+ g.CachasteCurriculum={subjects,classify,organize,prerequisites,sciencePool,course,secondaryScope,sources,roadmap};
 })(typeof window==='undefined'?globalThis:window);
