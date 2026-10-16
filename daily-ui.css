@@ -218,3 +218,54 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
   #daily-root .trail-stop{margin-left:clamp(-28px,var(--offset),28px)}
 }
 @media(prefers-reduced-motion:reduce){#daily-root .trail-stop .trail-node{transition:none!important}}
+
+
+/* Open-source adaptation experiment: learning-path zigzag and circular progress.
+   Based on the path geometry / progress-ring interaction of
+   Mohanad AL Faleet's Duolingo Next.js clone (MIT, 2024).
+   https://github.com/mohannadofficial/duolingo-nextjs
+   Reimplemented for Cachaste's offline vanilla-JS engine. */
+#daily-root .learning-trail{gap:13px}
+#daily-root .learning-trail::before{display:none}
+#daily-root .trail-stop{
+  margin-left:clamp(-52px,var(--offset),52px);
+  width:min(235px,80%);
+  padding:13px 0 16px;
+}
+#daily-root .trail-stop .trail-node{
+  width:82px;height:82px;min-height:82px;border-radius:50%;
+  border:0;
+  background:conic-gradient(#9a72d3 var(--quest-progress),#e9dff3 var(--quest-progress));
+  box-shadow:none;
+  display:grid;place-items:center;
+  isolation:isolate;
+}
+#daily-root .trail-stop .trail-node::before{
+  content:"";position:absolute;inset:6px;z-index:-1;
+  border-radius:50%;background:#e8dcf8;
+  box-shadow:inset 0 -6px 0 #c4acdF,0 3px 0 #baa2d4;
+}
+#daily-root .trail-stop.current .trail-node{
+  width:98px;height:98px;min-height:98px;
+  background:conic-gradient(#8b5ad1 var(--quest-progress),#e8d6ff var(--quest-progress));
+  box-shadow:0 0 0 5px #f5edff;
+}
+#daily-root .trail-stop.current .trail-node::before{
+  background:#8055c2;box-shadow:inset 0 -7px 0 #56368e,0 4px 0 #452b79;
+}
+#daily-root .trail-stop.mastered .trail-node{
+  background:conic-gradient(#60b980 100%,#dce9df 100%);
+}
+#daily-root .trail-stop.mastered .trail-node::before{
+  background:#c9efd5;box-shadow:inset 0 -6px 0 #83c79c,0 3px 0 #76b38a;
+}
+#daily-root .trail-stop.practiced .trail-node::before{background:#fff3df}
+#daily-root .trail-stop .trail-node>span{position:relative;z-index:1}
+#daily-root .trail-stop.current .trail-node>span{font-size:38px}
+#daily-root .trail-stop.current .next-label{animation:quest-pulse 2.6s ease-in-out infinite}
+@media(max-width:360px){
+ #daily-root .trail-stop{margin-left:clamp(-28px,var(--offset),28px)}
+ #daily-root .trail-stop .trail-node{width:76px;height:76px;min-height:76px}
+ #daily-root .trail-stop.current .trail-node{width:88px;height:88px;min-height:88px}
+}
+@media(prefers-reduced-motion:reduce){#daily-root .trail-stop.current .next-label{animation:none!important}}
