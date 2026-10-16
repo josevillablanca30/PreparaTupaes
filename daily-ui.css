@@ -41,3 +41,41 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 .pace-panel strong{display:block;font-size:17px}
 .pace-panel p{margin:9px 0 14px;line-height:1.55;font-size:14px}
 .pace-panel button{min-height:44px}
+
+/* UX refinement: clear visual hierarchy, thumb-friendly controls, restrained motion. */
+:root{--game-ink:#292137;--game-muted:#655a74;--game-purple:#6843af;--game-deep:#452679;--game-border:#ded5e9}
+#daily-root{font-size:16px}
+#daily-root h1,#daily-root h2,#daily-root h3{overflow-wrap:normal;hyphens:auto}
+#daily-root h1{font-weight:850;letter-spacing:-.75px}
+#daily-root p{line-height:1.58}
+#daily-root .screen-subtitle,#daily-root .daily-note{color:var(--game-muted)}
+#daily-root button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#daily-root button:focus-visible{outline:3px solid #d28b17;outline-offset:3px}
+#daily-root .stage-banner{position:relative;isolation:isolate}
+#daily-root .stage-banner h1{max-width:24ch}
+#daily-root .daily-options{display:grid;gap:12px}
+#daily-root .daily-options button{width:100%;min-height:58px;text-align:left;line-height:1.45;padding:14px 17px;white-space:normal}
+#daily-root .daily-actions button{min-height:52px}
+#daily-root .daily-card{box-shadow:0 6px 22px rgba(43,26,72,.035)}
+#daily-root .lesson-sheet{overflow-wrap:anywhere}
+#daily-root .teacher-step{background:#f8f4ff;border-color:#d9cbea}
+#daily-root .teacher-step .lesson-text{font-size:16px;line-height:1.65!important;color:var(--game-ink)}
+#daily-root .pace-panel{background:#f9f6ff}
+#daily-root .pace-panel h2{font-size:19px;margin:0 0 8px}
+#daily-root .pace-panel p{font-size:15px;line-height:1.55}
+#daily-root .answer-feedback{border-radius:18px;overflow-wrap:anywhere}
+#daily-root .daily-session-head{gap:12px}
+#daily-root .lesson-meter{overflow:hidden}
+@media(max-width:390px){
+ body>main{padding-left:14px!important;padding-right:14px!important}
+ #daily-root h1{font-size:25px}
+ #daily-root h2{font-size:21px}
+ #daily-root .daily-card{padding:16px}
+ #daily-root .daily-actions{gap:8px}
+ #daily-root .daily-actions button{flex-basis:100%}
+ #daily-root .daily-options button{min-height:56px}
+ #daily-root .teacher-step .lesson-text{font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){
+ #daily-root *,#daily-root *::before,#daily-root *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
