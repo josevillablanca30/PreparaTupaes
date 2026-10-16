@@ -9,7 +9,7 @@ const cases=[
  {subject:'Historia',concept:'Secularización del Estado',id:'TR-HIS-007'}
 ];
 for(const spec of cases){
- test(spec.subject+': evaluación de transferencia usa dos contextos distintos, explicaciones y guardado',async({page})=>{
+ test(spec.subject+' '+spec.id+': evaluación de transferencia usa dos contextos distintos, explicaciones y guardado',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('./inicio.html#courses');
   await page.locator('[data-action=pick-course][data-subject="'+spec.subject+'"]').click();
