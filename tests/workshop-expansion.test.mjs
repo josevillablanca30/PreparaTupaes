@@ -11,7 +11,8 @@ const coverage=S.hydrate(items,C);
 
 test('Ampliación pedagógica utiliza ejemplos del banco y llega a todas las materias, sin fabricar preguntas',()=>{
  console.log('COBERTURA DE TALLERES:',JSON.stringify(coverage));
- assert.ok(coverage.total>=25,'Deben existir muchas más clases que los cinco pilotos iniciales');
+ const goals=new Set(items.map(q=>q.subjectKey+':'+q.concept));
+ assert.equal(coverage.total,goals.size,'Cada concepto real del banco debe tener su taller, no un porcentaje inventado');
  for(const subject of Object.keys(C.subjects))assert.ok(coverage.bySubject[subject]>=3,subject+' carece de talleres reales');
  const keys=new Set();
  for(const lesson of S.lessons){
@@ -28,6 +29,7 @@ test('Ampliación pedagógica utiliza ejemplos del banco y llega a todas las mat
    assert.equal(question.concept,lesson.concept);
    assert.equal(lesson.exampleProblem,question.teaching.example.problem);
    assert.notEqual(lesson.exampleProblem,question.question,'Ejemplo filtró respuesta de evaluación');
+   assert.ok(!lesson.intro.includes(question.question),'La introducción filtró el enunciado evaluado: '+lesson.id);
    assert.deepEqual(Array.from(lesson.pairs,p=>p.answer),Array.from(question.teaching.example.steps.slice(0,3)));
   }
  }
