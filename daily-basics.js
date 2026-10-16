@@ -71,7 +71,24 @@
  q('historia-inicio-v2-4','Quieres evaluar las condiciones laborales en una fábrica británica del siglo XIX. ¿Qué estrategia ofrece evidencia más sólida?',['Usar solamente la publicidad de la empresa','Suponer que todas las fábricas eran idénticas','Consultar una imagen moderna sin fecha ni contexto','Contrastar testimonios obreros, inspecciones y registros de la época'],3,'Comparar fuentes de distintas procedencias permite examinar coincidencias, intereses y limitaciones; no basta una única voz para caracterizar un proceso complejo.')
  ]}
 
+
  ];
+ // Pistas que orientan el razonamiento, sin entregar la alternativa correcta.
+ const hints={
+  'lectura-inicio-v2-1':'Delimita el lugar y el número de casos descritos. ¿Qué parte es un hecho observado y qué parte sería generalizar?',
+  'lectura-inicio-v2-2':'Compara el tamaño y origen de la muestra con la población sobre la que se intenta concluir.',
+  'lectura-inicio-v2-3':'Identifica si la frase afirma certeza, probabilidad o solo una opinión.',
+  'lectura-inicio-v2-4':'Distingue la postura del editorial de los datos utilizados para sostenerla.',
+  'ciencias-inicio-v2-1':'Separa variable independiente (la que se cambia) y dependiente (la que se mide).',
+  'ciencias-inicio-v2-2':'Pregunta qué otro factor, además de la luz, pudo cambiar los resultados.',
+  'ciencias-inicio-v2-3':'Piensa en el alcance de tres ensayos: ¿permiten extrapolar sin límites?',
+  'ciencias-inicio-v2-4':'Prioriza una mejora que muestre si el resultado se repite y cuánto varía.',
+  'historia-inicio-v2-1':'Busca una combinación de condiciones económicas, energéticas y tecnológicas; descarta causas únicas.',
+  'historia-inicio-v2-2':'Conecta cambios en la productividad agrícola con disponibilidad de personas y recursos.',
+  'historia-inicio-v2-3':'Relaciona expansión de fábricas con desplazamientos de población y conflictos laborales.',
+  'historia-inicio-v2-4':'Evalúa quién produjo cada fuente, con qué intención y cómo contrastarla.'
+ };
+ for(const l of lessons)for(const item of l.checks)if(hints[item.id])item.hint=hints[item.id];
  function attach(engine){const s=engine.state;s.basics=s.basics&&typeof s.basics==='object'?s.basics:{};const validDraft=d=>d&&lessons.some(l=>l.id===d.lesson)&&['learn','practice'].includes(d.stage)&&Number.isInteger(d.card)&&Array.isArray(d.queue)&&d.queue.every(id=>lessons.find(l=>l.id===d.lesson).checks.some(q=>q.id===id))&&Number.isInteger(d.index)&&d.index>=0&&d.index<d.queue.length&&Array.isArray(d.results);if(s.foundationDraft&&!validDraft(s.foundationDraft))s.foundationDraft=null;
  const lesson=id=>lessons.find(l=>l.id===id),status=id=>{const current=lesson(id),ids=new Set((current?.checks||[]).map(q=>q.id)),h=(s.basics[id]?.history||[]).filter(r=>ids.has(r.id));let evidence=new Set(),mastered=false;for(const r of h){if(!r.correct||r.hinted)evidence.clear();else evidence.add(r.id);if(evidence.size>=2)mastered=true;}return{complete:mastered,evidence:evidence.size,needsReview:mastered&&evidence.size<2,attempts:h.length};};
  function start(id){if(engine.state.session||s.foundationDraft)return false;const l=lesson(id);if(!l)return false;const used=new Set((s.basics[id]?.history||[]).filter(r=>l.checks.some(q=>q.id===r.id)).map(r=>r.id));const queue=[...l.checks.filter(q=>!used.has(q.id)),...l.checks.filter(q=>used.has(q.id))].map(q=>q.id);s.foundationDraft={lesson:id,stage:'learn',card:0,queue,index:0,selected:null,checked:false,hinted:false,reviewMode:status(id).complete,results:[],started:Date.now()};engine.save();return true;}
