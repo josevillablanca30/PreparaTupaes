@@ -122,6 +122,7 @@
   const world=root.querySelector('.adventure-world');
   if(!world)return;
   syncAdventureRoad();
+  world.addEventListener('animationend',event=>{if(event.target===world||event.target.classList?.contains('trail-stop'))syncAdventureRoad();});
   if(typeof ResizeObserver!=='undefined'){adventureObserver=new ResizeObserver(()=>syncAdventureRoad());adventureObserver.observe(world);}
  }
 
