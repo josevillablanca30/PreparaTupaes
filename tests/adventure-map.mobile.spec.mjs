@@ -6,6 +6,7 @@ test('Mapa videojuego: camino curvo, gato-guía, portal y mundos navegables',asy
  await page.locator('[data-action=pick-course][data-subject=M1]').click();
  const world=page.locator('.adventure-world');
  await expect(world).toHaveClass(/world-foundation/);
+ await test.info().attach('12-mapa-videojuego-fundamentos',{body:await page.screenshot({fullPage:true,animations:'disabled'}),contentType:'image/png'});
  await expect(world.locator('.trail-stop')).toHaveCount(5);
  await expect(world.locator('.trail-stop.current')).toHaveCount(1);
  await expect(world.locator('.trail-guide .cat-frame img')).toHaveAttribute('src','assets/gatito-sabio-poses-v1.png');
@@ -17,6 +18,7 @@ test('Mapa videojuego: camino curvo, gato-guía, portal y mundos navegables',asy
  await expect(world.locator('.trail-stop.current .trail-node')).toBeFocused();
  await world.locator('[data-action=next-stage]').click();
  await expect(world).toHaveClass(/world-numbers/);
+ await test.info().attach('13-mundo-numeros',{body:await page.screenshot({fullPage:true,animations:'disabled'}),contentType:'image/png'});
  await expect(world.locator('.world-hud')).toContainText('MUNDO 2');
  await expect(world.locator('.trail-stop')).not.toHaveCount(0);
  await page.locator('.stage-banner [data-action=units]').click();
@@ -38,10 +40,30 @@ test('Los mundos cambian según la asignatura y Ciencias conserva su mención',a
  await expect(page.locator('[data-action=pick-track]')).toHaveCount(4);
  await page.locator('[data-action=pick-track][data-track="Biología"]').click();
  await expect(page.locator('.adventure-world')).toHaveClass(/world-foundation/);
+ await test.info().attach('14-ciencias-mencion-biologia',{body:await page.screenshot({fullPage:true,animations:'disabled'}),contentType:'image/png'});
  await expect(page.locator('.game-toolbar')).toContainText('Biología');
  await page.reload();
  await expect(page.locator('.game-toolbar')).toContainText('Biología');
  await expect(page.locator('.adventure-world .trail-stop')).not.toHaveCount(0);
+});
+
+test('Los hitos se ganan al comprobar aprendizajes, sin porcentajes ficticios',async({page})=>{
+ await page.goto('./inicio.html#courses');
+ await page.locator('[data-action=pick-course][data-subject=M1]').click();
+ await expect(page.locator('.world-hud')).toContainText('0 de 5 misiones dominadas');
+ await page.evaluate(()=>{
+   const e=CachasteDailyApp.engine;
+   e.state.basics.cantidad={history:[
+    {id:'cantidad-1',correct:true,hinted:false},
+    {id:'cantidad-2',correct:true,hinted:false}
+   ]};
+   e.save();CachasteDailyApp.render();
+ });
+ await expect(page.locator('.world-hud')).toContainText('1 de 5 misiones dominadas');
+ await expect(page.locator('.trail-stop.mastered')).toHaveCount(1);
+ await expect(page.locator('.trail-stop.current')).toHaveCount(1);
+ await expect(page.locator('.world-gate')).toHaveClass(/gate-distant/);
+ await test.info().attach('15-mapa-con-mision-superada',{body:await page.screenshot({fullPage:true,animations:'disabled'}),contentType:'image/png'});
 });
 
 test('Mapa accesible y estable en pantallas pequeñas y con movimiento reducido',async({page})=>{
