@@ -612,3 +612,12 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .studio-options .studio-choice{min-height:53px;padding:12px!important;font-size:13px}
 }
 @media(prefers-reduced-motion:reduce){#daily-root .studio-options .studio-choice,#daily-root .studio-progress>span{transition:none!important}}
+
+
+/* Pilot lesson discovery stays above the long mission path. */
+#daily-root .studio-feature{max-width:740px;margin:15px auto 24px;padding:20px;border:2px solid #c8d8dd;border-radius:22px;background:linear-gradient(130deg,#e8f6ee,#f4eeff);box-shadow:0 6px 0 #d9e7e0}
+#daily-root .studio-feature h2{color:#3f315b;font-size:21px;line-height:1.22;margin:8px 0 9px}
+#daily-root .studio-feature p{color:#5c5066;font-size:13px;line-height:1.5;margin:0 0 11px}
+#daily-root .studio-feature small{display:block;color:#50705d;font-size:12px;line-height:1.5;margin:0 0 13px}
+#daily-root .studio-feature [data-action=studio-open]{width:100%;min-height:51px;font-weight:800}
+@media(max-width:390px){#daily-root .studio-feature{padding:15px}#daily-root .studio-feature h2{font-size:19px}}
