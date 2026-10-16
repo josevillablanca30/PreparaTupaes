@@ -111,7 +111,27 @@
    '</div><p>'+mastered+' habilidades comprobadas en '+esc(C.subjects[subject].name)+'.</p>'+button('home','Volver al mapa','','primary')+'</section>';
  }
 
- function level(id){const l=levels().find(l=>l.id===id);if(!l)return home();const p=levelState(l),support=C.prerequisites(subject,l.objective).map(req=>{const target=C.course(items,req.subject).flatMap(u=>u.levels).find(x=>x.objective===req.concept);return target?'<div class="prerequisite-card"><p>Antes de esta misión puedes repasar <strong>'+esc(req.concept)+'</strong> en '+esc(C.subjects[req.subject].name)+'.</p>'+button('base','Repasar base','data-subject="'+esc(req.subject)+'" data-level="'+esc(target.id)+'"')+'</div>':'';}).join('');return'<div class="lesson-top">'+button('home','← Volver al camino')+'<span>Tu misión</span></div>'+cat('explaining','Vamos a comprender '+l.objective.toLowerCase()+'. Primero lo vemos juntos; después te toca a ti.')+'<section class="mission-preview"><span class="mission-emblem" aria-hidden="true">✦</span><h1>'+esc(l.objective)+'</h1><p>Una explicación, un ejemplo y una práctica a tu ritmo.</p>'+support+'<div class="daily-actions">'+button('lesson','Empezar misión','data-concept="'+esc(l.objective)+'"','primary')+button('study','Repasar la clase','data-level="'+esc(l.id)+'"')+'</div>'+(p.status==='comprobado'?'<p>Ya demostraste este aprendizaje. Puedes repasarlo cuando quieras.</p>':'')+'</section>';}
+
+ function level(id){
+  const l=levels().find(l=>l.id===id);if(!l)return home();
+  const u=units().find(u=>u.levels.some(x=>x.id===l.id)),p=levelState(l),source=C.sources?.[subject]?.[u?.axis];
+  const checks=items.filter(q=>q.subjectKey===subject&&q.concept===l.objective&&(subject!=='Ciencias'||q.module==='MC'||(E.state.track==='TP'?q.module==='MTP':q.module==='ME'&&q.subject===E.state.track)));
+  const families=new Set(checks.map(q=>q.family));
+  const support=C.prerequisites(subject,l.objective).map(req=>{
+   const target=C.course(items,req.subject).flatMap(u=>u.levels).find(x=>x.objective===req.concept);
+   return target?'<div class="prerequisite-card"><p>Si este contenido se te complica, puedes repasar <strong>'+esc(req.concept)+'</strong> en '+esc(C.subjects[req.subject].name)+'.</p>'+button('base','Repasar esa base','data-subject="'+esc(req.subject)+'" data-level="'+esc(target.id)+'"')+'</div>':'';
+  }).join('');
+  return '<div class="lesson-top">'+button('home','← Volver al camino')+'<span>Desafío PAES</span></div>'+
+   '<section class="mission-preview"><span class="mission-emblem" aria-hidden="true">✦</span>'+
+   '<span class="mission-kicker">'+esc(u?.axis||C.subjects[subject].name)+' · '+esc(u?.name||'Misión')+'</span>'+
+   '<h1>'+esc(l.objective)+'</h1><p>'+esc(source?.goal||'Aprende a resolver y justificar situaciones con esta habilidad.')+'</p>'+
+   cat('encouraging','¿Ya manejas este contenido? Pruébalo directamente. Si necesitas apoyo, te lo explico con ejemplos y luego lo comprobamos.')+
+   '<div class="daily-actions mission-actions">'+button('check-first','Probar lo que sé','data-concept="'+esc(l.objective)+'"','primary')+
+   button('lesson','Aprender con el gatito','data-concept="'+esc(l.objective)+'"')+
+   button('study','Ver la explicación','data-level="'+esc(l.id)+'"')+'</div>'+
+   '<p class="mission-meta">'+(families.size>=2?'Hay '+families.size+' variantes independientes del concepto.':'Este concepto todavía necesita más variantes de ejercicios. No te mostraremos un dominio ficticio.')+'</p>'+support+
+   (p.status==='comprobado'?'<p>Ya demostraste este aprendizaje. Puedes reforzarlo cuando quieras.</p>':'')+'</section>';
+ }
 
  function starterMessage(phase,good=false){
   if(subject==='Historia')return phase==='question'?'Analiza las causas y los efectos. Busca la alternativa con mejor evidencia.':good?'¡Bien fundamentado! Ahora aplicaremos ese criterio a otro caso.':'Revisa qué causa, consecuencia o evidencia descarta las otras alternativas.';
@@ -211,6 +231,7 @@
   if(a.startsWith('basic-')&&d){if(a==='basic-prev')d.card=Math.max(0,d.card-1);if(a==='basic-forward'){if(d.card+1<B.lesson(d.lesson).cards.length)d.card++;else d.stage='practice';}
    if(a==='basic-choice'&&!d.checked)d.selected=Number(b.dataset.index);if(a==='basic-hint'&&!d.checked)d.hinted=true;if(a==='basic-check')B.answer(d.selected);
    if(a==='basic-next'){const copy={title:B.lesson(d.lesson).title,total:d.results.length,correct:d.results.filter(r=>r.correct).length,mastered:B.status(d.lesson).complete};if(B.next()){E.state.celebration=copy;E.save();goto('#celebrate');return;}}E.save();render();scrollToLessonStart();return;}
+  if(a==='check-first'){if(subject==='Ciencias'&&!E.state.track){goto('#tracks');return;}const result=E.start(subject,2,'free',b.dataset.concept||null);notice=result.message||'';if(E.state.session&&!result.blocked)goto('#session');else render();return;}
   if(['smart','free','lesson'].includes(a)){if(subject==='Ciencias'&&!E.state.track){goto('#tracks');return;}const n=a==='lesson'?2:Math.max(1,Math.min(10,Number(document.getElementById('daily-count')?.value)||4)),result=E.start(subject,n,a==='lesson'?'lesson':a,b.dataset.concept||null);notice=result.message||'';if(E.state.session&&!result.blocked)goto('#session');else render();return;}
   if(!s)return;
   if(a==='intro-next')s.card++;if(a==='intro-prev')s.card=Math.max(0,s.card-1);
