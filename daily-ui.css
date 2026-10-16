@@ -87,3 +87,17 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .next-mission-card p{font-size:14px;margin:10px 0 16px;color:#584e65}
 #daily-root .next-mission-card button{width:100%;min-height:56px}
 @media(max-width:390px){#daily-root .next-mission-card{padding:17px 15px}#daily-root .next-mission-card strong{font-size:20px}}
+
+/* Onboarding: one clearly labeled choice per course, no visual clutter. */
+.course-picker .course-eyebrow{display:block;color:var(--game-deep);font-size:12px;font-weight:850;letter-spacing:.13em;margin-top:15px}
+.course-picker .course-intro{color:var(--game-muted);font-size:15px;margin:0 0 18px;line-height:1.5}
+#daily-root .course-choices{display:grid;gap:12px;margin:20px 0}
+#daily-root .course-tile{width:100%;min-height:86px;display:grid;grid-template-columns:58px minmax(0,1fr) 20px;align-items:center;gap:13px;text-align:left;padding:13px 15px;border-radius:21px;background:#fff}
+#daily-root .course-tile:active{transform:translateY(2px)}
+#daily-root .course-tile .course-icon{display:grid;place-items:center;width:56px;height:56px;border-radius:16px;background:#f1e8ff;color:var(--game-deep);font-weight:850;font-size:23px}
+#daily-root .course-tile .course-copy{display:grid;gap:4px}
+#daily-root .course-tile strong{font-size:17px;line-height:1.25}
+#daily-root .course-tile small{display:block;font-size:13px;color:var(--game-muted);line-height:1.35;font-weight:500}
+#daily-root .course-chevron{font-size:25px;color:var(--game-deep);font-weight:600}
+#daily-root .course-tile:focus-visible{outline:3px solid #d28b17;outline-offset:3px}
+@media(max-width:360px){#daily-root .course-tile{grid-template-columns:46px minmax(0,1fr) 14px;gap:10px;padding:11px}#daily-root .course-tile .course-icon{width:46px;height:46px;font-size:19px}#daily-root .course-tile strong{font-size:16px}}
