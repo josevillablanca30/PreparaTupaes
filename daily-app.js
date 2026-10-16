@@ -77,13 +77,14 @@
 
  function home(){
   if(subject==='Ciencias'&&!E.state.track)return tracks();
+  const pilot=window.CachasteStudios.lessons.find(x=>x.subject===subject);
   const selected=stage(),list=units(),u=selected.unit,basic=!!selected.basic;
   const ls=basic?B.lessons.filter(l=>(l.subject||'M1')===subject||(subject==='M2'&&!l.subject)):u?.levels||[];
   const n=basic?0:Math.max(0,list.findIndex(x=>examKey(x)===examKey(u))),title=basic?(subject==='M1'||subject==='M2'?'Construyamos la base':'Tu primera misión PAES'):u?.name||'Tu recorrido',stats=E.stats(),active=E.state.session||E.state.foundationDraft;
   const current=ls.find(l=>l.id===(basic?pendingBasic()?.id:recommend()?.id)&&!levelComplete(l,basic))||ls.find(l=>!levelComplete(l,basic))||null;
   return toolbar()+'<section class="stage-banner"><span>ETAPA '+(n+1)+' · '+esc(basic?starterTitle():u?.axis||'Mi recorrido')+'</span><h1>'+esc(title)+'</h1>'+button('units','Elegir mundo','','unit-link')+'</section>'+
    (active?'<div class="resume-strip">'+button('resume','Continuar mi sesión guardada','','primary')+'</div>':'')+
-   curriculumOverview(false)+worldMap(ls,basic,u,n,list,current)+
+   curriculumOverview(false)+(pilot?'<section class="studio-feature"><span class="studio-kicker">MISIÓN ESPECIAL · DEMOSTRACIÓN JUGABLE</span><h2>'+esc(pilot.title)+'</h2><p>'+esc(pilot.intro)+'</p><small>3 ideas · 3 relaciones · comprobación con preguntas de esta materia</small>'+button('studio-open','Jugar unidad piloto','data-studio="'+esc(pilot.id)+'"','primary')+'</section>':'')+worldMap(ls,basic,u,n,list,current)+
    '<div class="world-after"><p>'+esc(paceMessage())+'</p>'+button('focus-quest','Encontrar mi misión','','focus-quest')+'</div>'+
    pendingReviewPanel()+missionTeaser(stats)+(basic?'':examPanel(u));
  }
