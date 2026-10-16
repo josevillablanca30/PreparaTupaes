@@ -31,6 +31,8 @@ test('El clon MIT inspira un minijuego funcional: ordenar, equivocarse, corregir
  for(const index of ordered)await page.locator('.arcade-tile[data-index="'+index+'"]').click();
  await page.locator('[data-action=arcade-check]').click();
  await expect(page.locator('.arcade-feedback.correct')).toBeVisible();
+ await expect(page.locator('[data-action=begin-question]')).toHaveCount(1);
+ await expect(page.locator('.arcade-tile').first()).not.toHaveAttribute('aria-label',/Elegir paso/);
  await test.info().attach('reto-razonamiento-PAES',{body:await page.screenshot({fullPage:true,animations:'disabled'}),contentType:'image/png'});
  expect(await page.evaluate(()=>CachasteDailyApp.engine.state.attempts.length)).toBe(0);
  await page.locator('[data-action=begin-question]').first().click();
