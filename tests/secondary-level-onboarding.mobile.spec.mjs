@@ -5,11 +5,14 @@ const firstCourse=async(page,subject)=>{
  await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();
  if(subject==='Ciencias')await page.locator('[data-action=pick-track][data-track="Biología"]').click();
  await expect(page.locator('.adventure-world')).toBeVisible();
+ await expect(page.locator('.curriculum-overview')).toBeVisible();
+ await page.locator('.stage-banner [data-action=units]').click();
+ await page.locator('[data-action=stage][data-stage=basics]').click();
  await page.locator('[data-action=basic-level]').first().click();
 };
 
 for(const [subject,title,firstQuestion] of [
- ['Historia','¿Por qué comenzó la Revolución Industrial?',/condiciones.*industrialización/i],
+ ['Historia','Conectar procesos de Chile y el mundo',/Primera Junta de Gobierno.*independencia/i],
  ['Lectura','Leer entre líneas',/columna sostiene/i],
  ['Ciencias','Investigar con criterio',/reacciones químicas/i]
 ]){
@@ -42,6 +45,8 @@ for(const [subject,title,firstQuestion] of [
 test('El antiguo 8 ya no aparece como la misión 1 de Historia y el registro antiguo no acredita la nueva evaluación',async({page})=>{
  await page.goto('./inicio.html#courses');
  await page.locator('[data-action=pick-course][data-subject=Historia]').click();
+ await page.locator('.stage-banner [data-action=units]').click();
+ await page.locator('[data-action=stage][data-stage=basics]').click();
  await page.evaluate(()=>{
   const e=CachasteDailyApp.engine;
   e.state.basics??={};
@@ -54,5 +59,5 @@ test('El antiguo 8 ya no aparece como la misión 1 de Historia y el registro ant
  await expect(page.locator('.world-hud')).toContainText('0 de 1 misiones dominadas');
  await page.locator('[data-action=basic-level]').click();
  await expect(page.locator('.mission-emblem')).toHaveText('1');
- await expect(page.locator('.mission-preview h1')).toContainText('Revolución Industrial');
+ await expect(page.locator('.mission-preview h1')).toContainText('Conectar procesos de Chile y el mundo');
 });
