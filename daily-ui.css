@@ -630,3 +630,17 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .studio-coverage-note{margin:13px 0;padding:10px 13px;border-radius:13px;background:#f1f8f3;border:1px solid #b9dbc4;color:#356747;font-weight:700;font-size:12px;line-height:1.5}
 #daily-root .studio-example-problem{padding:13px 15px;border-radius:14px;background:#fff;border:1px solid #e5dcee;color:#54416e;line-height:1.5}
 #daily-root .studio-scenario .studio-problem{color:#554b5c;font-size:14px;font-weight:500;line-height:1.5;margin-bottom:9px}
+
+
+/* Tutor-led recommendations avoid fake placement scores and expose real bank limitations. */
+#daily-root .personal-plan{max-width:740px;margin:16px auto 24px}
+#daily-root .personal-plan>h2{font-size:21px;color:#4e347c;margin:0 0 8px}
+#daily-root .personal-plan>p{font-size:13px;line-height:1.5;color:#70627d;margin:0 0 12px}
+#daily-root .personal-plan-list{display:grid;gap:10px}
+#daily-root .personal-plan-card{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid #d9cde8;border-radius:17px;background:#fff;box-shadow:0 3px 0 #efe7f4}
+#daily-root .personal-plan-card>div{min-width:0;flex:1;display:grid;gap:4px}
+#daily-root .personal-plan-card small{color:#906dba;font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:850}
+#daily-root .personal-plan-card strong{color:#453059;font-size:14px}
+#daily-root .personal-plan-card span{color:#7b6b82;font-size:11px;line-height:1.4}
+#daily-root .personal-plan-card button{flex:0 0 auto;min-height:43px;font-size:12px;font-weight:800}
+@media(max-width:390px){#daily-root .personal-plan-card{flex-direction:column;align-items:stretch}#daily-root .personal-plan-card button{width:100%}}
