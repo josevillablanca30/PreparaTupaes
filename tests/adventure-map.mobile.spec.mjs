@@ -29,7 +29,7 @@ test('Mapa videojuego: camino curvo, gato-guía, portal y mundos navegables',asy
  await page.locator('.stage-banner [data-action=units]').click();
  await expect(page.locator('.world-picker')).toBeVisible();
  await expect(page.locator('.world-picker-tile').first()).toContainText('Enteros');
- await expect(page.locator('.world-picker-tile').last()).toContainText('Refuerzo de prerrequisitos');
+ await expect(page.locator('.world-picker-tile').last()).toContainText('Reforzar prerrequisitos');
  await page.locator('[data-action=stage][data-stage=basics]').click();
  await expect(world).toHaveClass(/world-foundation/);
  expect(errors).toEqual([]);
