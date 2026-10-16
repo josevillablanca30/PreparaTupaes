@@ -10,3 +10,39 @@ test('Ciencias: los cuatro recorridos mezclan común con la mención correcta',(
 test('M1: números y fracciones preceden potencias, raíces, ecuaciones y porcentajes',()=>{const names=C.course(items,'M1').map(u=>u.name);assert.equal(names[0],'Enteros');for(const[a,b]of[['Racionales','Potencias'],['Potencias','Raíces'],['Raíces','Ecuaciones'],['Ecuaciones','Porcentajes']])assert.ok(names.indexOf(a)<names.indexOf(b),a+' antes de '+b);});
 
 test('Tres materias adicionales parten desde cero con ejercicios independientes',()=>{for(const subject of ['Lectura','Ciencias','Historia']){const l=c.CachasteBasics.lessons.find(x=>x.subject===subject);assert.ok(l,subject);assert.equal(l.cards.length,3);assert.equal(l.checks.length,4);const{e,b}=setup();assert.equal(b.status(l.id).complete,false);b.start(l.id);assert.equal(b.current().id,l.checks[0].id);b.answer(l.checks[0].answer);b.next();b.answer(l.checks[1].answer);assert.equal(b.status(l.id).complete,true);b.next();assert.equal(e.state.completed.at(-1).subject,subject);}});
+
+
+test('Historia, Lectura y Ciencias comienzan con razonamiento de enseñanza media, no trivialidades',()=>{
+ const courses={Historia:/Revolución Industrial/,Lectura:/Leer entre líneas/,Ciencias:/Investigar con criterio/};
+ for(const[subject,title]of Object.entries(courses)){
+  const lesson=c.CachasteBasics.lessons.find(l=>l.subject===subject);
+  assert.match(lesson.title,title);
+  assert.equal(lesson.checks.length,4);
+  assert.equal(new Set(lesson.checks.map(q=>q.id)).size,4);
+  for(const question of lesson.checks){
+   assert.ok(question.id.includes('-v2-'),question.id);
+   assert.ok(question.hint?.length>=50,question.id);
+   assert.ok(question.why?.length>=70,question.id);
+  }
+ }
+ const history=c.CachasteBasics.lessons.find(l=>l.subject==='Historia');
+ assert.match(history.cards[0].text,/Gran Bretaña/);
+ assert.match(history.cards[0].text,/siglo XVIII/);
+ assert.ok(history.checks.some(q=>/fábricas|trabajo|industrializaci/i.test(q.prompt)));
+ assert.ok(!history.checks.some(q=>/fotografía antigua|año ocurrió primero|qué es una causa/i.test(q.prompt)));
+});
+test('La mejora PAES no da dominio a respuestas del antiguo cuestionario trivial ni borra el registro',()=>{
+ const{e,b}=setup();
+ e.state.basics['historia-inicio']={history:[
+  {id:'historia-inicio-1',correct:true,hinted:false},
+  {id:'historia-inicio-2',correct:true,hinted:false}
+ ]};
+ assert.equal(b.status('historia-inicio').complete,false);
+ assert.equal(b.status('historia-inicio').attempts,0);
+ assert.equal(b.start('historia-inicio'),true);
+ assert.equal(b.current().id,'historia-inicio-v2-1');
+ b.answer(b.current().answer);b.next();
+ b.answer(b.current().answer);
+ assert.equal(b.status('historia-inicio').complete,true);
+ assert.equal(e.state.basics['historia-inicio'].history.length,4);
+});
