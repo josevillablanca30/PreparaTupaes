@@ -172,7 +172,7 @@
   const s=E.state.session,G=window.CachasteGameplay,a=s?.arcade,steps=G.clean(q);
   if(!G.valid(q,a))return intro(q);
   const selected=a.chosen.map((id,i)=>'<li><span class="arcade-counter">'+(i+1)+'</span><span>'+esc(steps[id])+'</span></li>').join('');
-  const opts=a.order.map((id,i)=>button('arcade-pick',steps[id],'data-index="'+i+'" '+(a.chosen.includes(id)?'disabled':'')+' aria-label="Elegir paso '+(a.chosen.length+1)+'"','arcade-tile'+(a.chosen.includes(id)?' arcade-used':''))).join('');
+  const opts=a.order.map((id,i)=>button('arcade-pick',steps[id],'data-index="'+i+'" '+(a.chosen.includes(id)?'disabled':''),'arcade-tile'+(a.chosen.includes(id)?' arcade-used':''))).join('');
   const status=a.checked?'<div role="status" class="arcade-feedback '+(a.correct?'correct':'retry')+'"><strong>'+(a.correct?'¡Ordenaste el razonamiento!':'El orden todavía tiene un salto')+'</strong><p>'+(a.correct?'Bien conectado: cada paso prepara el siguiente. Ahora demuestra que sabes aplicar la idea sin ayuda.':'Piensa qué información necesitas obtener antes de realizar cada operación. Puedes reorganizar los pasos y volver a intentarlo.')+'</p></div>':'';
   return '<div class="lesson-top">'+button('pause','✕ Pausar')+'<span>Mini-juego · '+esc(q.concept)+'</span></div>'+
    '<section class="arcade-session" aria-label="Ordenar el razonamiento">'+
@@ -185,7 +185,7 @@
    (!a.checked?button('arcade-check','Comprobar orden',(a.chosen.length!==steps.length?'disabled':''),'primary'):'')+
    (a.checked&&!a.correct?button('arcade-retry','Intentarlo de nuevo','','primary'):'')+
    (a.checked&&a.correct?button('begin-question','Resolver un desafío PAES','','primary'):'')+
-   button('begin-question',a.checked&&a.correct?'':'Ir directamente a la pregunta')+'</div>'+
+   (!a.checked||!a.correct?button('begin-question','Ir directamente a la pregunta'):'')+'</div>'+
    '<p class="arcade-honesty">Este minijuego sirve para practicar el procedimiento. El dominio se comprueba con preguntas PAES distintas y sin ayuda.</p>'+
    '</section>';
  }
