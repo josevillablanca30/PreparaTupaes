@@ -69,3 +69,19 @@ test('Un estudiante puede ir del juego a una clase con el gatito sin perder prog
  expect(session.mode).toBe('lesson');
  expect(session.stage).toBe('intro');
 });
+
+test('Diagnóstico previo sin clases no crea XP, ni da por dominada una habilidad',async({page})=>{
+ await page.goto('./inicio.html#courses');
+ await page.locator('[data-action=pick-course][data-subject=Historia]').click();
+ await expect(page.locator('.studio-feature [data-action=studio-direct-test]')).toBeVisible();
+ await page.locator('.studio-feature [data-action=studio-direct-test]').click();
+ await expect(page.locator('.question-title')).toBeVisible();
+ const facts=await page.evaluate(()=>{
+  const e=CachasteDailyApp.engine;
+  return{mode:e.state.session.mode,concept:e.state.session.concept,xp:e.stats().xp,studio:e.state.studioDraft};
+ });
+ expect(facts.mode).toBe('free');
+ expect(facts.concept).toBe('Funciones y separación de poderes');
+ expect(facts.xp).toBe(0);
+ expect(facts.studio??null).toBeNull();
+});
