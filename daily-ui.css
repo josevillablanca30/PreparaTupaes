@@ -621,3 +621,12 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .studio-feature small{display:block;color:#50705d;font-size:12px;line-height:1.5;margin:0 0 13px}
 #daily-root .studio-feature [data-action=studio-open]{width:100%;min-height:51px;font-weight:800}
 @media(max-width:390px){#daily-root .studio-feature{padding:15px}#daily-root .studio-feature h2{font-size:19px}}
+
+
+/* Real touch targets must remain geometrically stable; animate scenery, not buttons.
+   Continuous translateY caused WebKit/Chromium to reject clicks on the current node. */
+#daily-root .trail-stop.current .trail-node{animation:none!important;transform:none!important}
+#daily-root .trail-stop .trail-node:hover{transform:none}
+#daily-root .studio-coverage-note{margin:13px 0;padding:10px 13px;border-radius:13px;background:#f1f8f3;border:1px solid #b9dbc4;color:#356747;font-weight:700;font-size:12px;line-height:1.5}
+#daily-root .studio-example-problem{padding:13px 15px;border-radius:14px;background:#fff;border:1px solid #e5dcee;color:#54416e;line-height:1.5}
+#daily-root .studio-scenario .studio-problem{color:#554b5c;font-size:14px;font-weight:500;line-height:1.5;margin-bottom:9px}
