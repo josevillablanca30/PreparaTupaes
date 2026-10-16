@@ -92,7 +92,7 @@ jobs:
             test -s "android/app/src/main/assets/$page"
             grep -qi '<title>' "android/app/src/main/assets/$page"
           done
-          for script in daily-catalog.js daily-core.js daily-gameplay.js daily-curriculum.js daily-app.js m1-teaching.js learning-core.js study-app.js science-bank.js science-app.js reading-bank.js reading-app.js m2-bank.js m2-app.js history-bank.js history-app.js; do
+          for script in daily-catalog.js daily-core.js daily-gameplay.js daily-studios.js daily-curriculum.js daily-app.js m1-teaching.js learning-core.js study-app.js science-bank.js science-app.js reading-bank.js reading-app.js m2-bank.js m2-app.js history-bank.js history-app.js; do
             test -s "android/app/src/main/assets/$script"
           done
           for subject in index.html science.html reading.html m2.html history.html; do
