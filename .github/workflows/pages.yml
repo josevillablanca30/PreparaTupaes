@@ -2,10 +2,10 @@ name: Pages · pruebas móviles y despliegue
 
 on:
   push:
-    branches: [main]
+    branches: [main, work/cachaste-motor-duolingo-20261016]
     paths-ignore: ['README.md', 'docs/**']
   pull_request:
-    branches: [main]
+    branches: [main, work/quests-progress-ui-20261015]
     paths-ignore: ['README.md', 'docs/**']
   workflow_dispatch:
 
@@ -44,7 +44,7 @@ jobs:
           retention-days: 1
           if-no-files-found: ignore
       - name: Preparar publicación
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
@@ -52,7 +52,7 @@ jobs:
 
   deploy:
     name: Publicar en GitHub Pages
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 10
