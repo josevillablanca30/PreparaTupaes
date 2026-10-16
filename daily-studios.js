@@ -91,5 +91,61 @@
  function check(d){if(!valid(d)||d.stage!=='match'||d.checked||d.selected===null)return null;const ok=d.selected===d.round;d.checked=true;d.correct+=ok?1:0;d.mistakes+=ok?0:1;d.seen.push({round:d.round,selected:d.selected,correct:ok});return ok;}
  function advance(d){if(!valid(d)||d.stage!=='match'||!d.checked)return false;const l=byId.get(d.id);d.round++;d.selected=null;d.checked=false;if(d.round>=l.pairs.length)d.stage='complete';return true;}
  function retry(d){if(!valid(d)||d.stage!=='complete')return false;d.stage='match';d.round=0;d.selected=null;d.checked=false;d.correct=0;d.mistakes=0;d.seen=[];return true;}
- g.CachasteStudios={lessons,get,byId,valid,start,choices,nextCard,choose,check,advance,retry};
+
+ // Dynamically expose a workshop for every concept with verified, complete teaching
+ // already present in our PAES bank. Do not fabricate a chapter from a filename.
+ function hydrate(items,C){
+  const grouped=new Map(),failures={missingTutor:0,incompleteExample:0,shortExplanation:0,exampleRepeatsQuestion:0};
+  for(const q of items){
+   const key=q.subjectKey+':'+q.concept, t=q.teaching;
+   if(!t||!Array.isArray(t.foundation)||t.foundation.length<2||!t.example){failures.missingTutor++;continue;}
+   const steps=t.example.steps,problem=String(t.example.problem||'');
+   if(!Array.isArray(steps)||steps.length<3||steps.length>5){failures.incompleteExample++;continue;}
+   const clean=steps.map(x=>String(x||'').trim());
+   const corpus=[...t.foundation,...(t.application||[]),...clean,t.check].map(x=>String(x||'').trim());
+   if(clean.some(x=>x.length<20)||new Set(clean).size!==clean.length||corpus.filter(x=>x.length>=25).length<6){failures.shortExplanation++;continue;}
+   if(!problem||problem.length<25||problem===q.question){failures.exampleRepeatsQuestion++;continue;}
+   if(!grouped.has(key))grouped.set(key,[]);
+   grouped.get(key).push(q);
+  }
+  let made=0;
+  for(const [key,qs] of grouped){
+   if(byConcept.has(key))continue;
+   const q=qs.slice().sort((a,b)=>{
+    const score=z=>z.teaching.example.steps.join('').length+(z.teaching.foundation||[]).join('').length+(z.teaching.application||[]).join('').length;
+    return score(b)-score(a);
+   })[0],t=q.teaching;
+   const order=t.example.steps.slice(0,3).map(v=>String(v).trim()),parts=(t.application||[]).filter(Boolean);
+   const num=q.subjectKey==='Ciencias'?q.subject:q.subjectKey;
+   const m=C?.sources?.[q.subjectKey]?.[q.axis]||null;
+   const cards=[
+    {title:'Qué necesitas comprender',text:t.foundation.join(' ')},
+    {title:'De la teoría a una situación PAES',text:[t.aim,...parts.slice(0,2)].filter(Boolean).join(' ')},
+    {title:'Un ejemplo explicado con evidencia',text:[t.example.problem,...order,t.example.bridge,t.check].filter(Boolean).join(' ')}
+   ];
+   if(cards.some(c=>c.text.length<100))continue;
+   const why=order.map((step,i)=>step+' '+(i===2?(t.check||t.example.bridge||''):i===0?(t.foundation[0]||''):(t.example.bridge||t.check||'')));
+   const pairPrompts=[
+    '¿Qué razonamiento debe establecerse primero?',
+    'Con el primer paso resuelto, ¿qué razonamiento corresponde después?',
+    '¿Qué razonamiento permite cerrar la solución y revisar su sentido?'
+   ];
+   const lesson={
+    id:'autostudio-'+q.subjectKey.toLowerCase()+'-'+String(q.levelId||q.key||q.id).replace(/[^a-zA-Z0-9]+/g,'-').toLowerCase(),
+    subject:q.subjectKey,concept:q.concept,
+    title:q.concept,
+    axis:q.axis,source:'DEMRE · '+(m?.source||('Banco educativo revisado de '+num)),
+    intro:t.aim||('Resuelve problemas relacionados con '+q.concept+' explicando qué evidencia permite decidir.'),
+    goals:[t.foundation[0],parts[0]||t.foundation[1],t.check||t.example.bridge].filter(Boolean).map(x=>x.slice(0,160)),
+    cards,pairs:order.map((answer,i)=>({prompt:pairPrompts[i],answer,why:why[i]})),
+    confusion:((t.intuition||[]).join(' ')||t.check||t.example.bridge||'Revisa qué información depende de los pasos anteriores.'),
+    generatedFrom:q.key,generatedType:'ordenar-razonamiento',exampleProblem:t.example.problem
+   };
+   lessons.push(lesson);byId.set(lesson.id,lesson);byConcept.set(key,lesson);made++;
+  }
+  const bySubject={};for(const l of lessons)bySubject[l.subject]=(bySubject[l.subject]||0)+1;
+  return{total:lessons.length,generated:made,bySubject,limitations:failures};
+ }
+
+ g.CachasteStudios={lessons,get,byId,valid,start,choices,nextCard,choose,check,advance,retry,hydrate};
 })(typeof window==='undefined'?globalThis:window);
