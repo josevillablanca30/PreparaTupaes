@@ -50,7 +50,7 @@ test('Claves matemáticas correctas y unidades sin distractores equivalentes',()
  assert.equal(answer('TR-M1-015'),'(x − 7) m');
  assert.equal(answer('TR-M1-016'),'55 m²');
  assert.equal(Math.sqrt(196),14);
- assert.equal((6*Math.SQRT2)**2,72);
+ assert.ok(Math.abs((6*Math.SQRT2)**2-72)<1e-10);
  for(const x of [8,9,12,17])assert.equal((x+7)*(x-7),x*x-49);
  assert.equal((14+8)*5/2,55);
  assert.equal(answer('TR-SCI-019'),'17 protones y 17 electrones');
