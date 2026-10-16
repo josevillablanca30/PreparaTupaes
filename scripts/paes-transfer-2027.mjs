@@ -48,7 +48,7 @@ export function buildTransfers(originalItems,rows=transferCases){
     question:row.question,options:row.options.slice(),answer:row.answer,
     explanations:row.options.map((_,i)=>i===row.answer?"Correcto. "+row.steps.at(-1):"Elegiste «"+row.options[i]+"». "+row.errors[i]),
     hint:row.steps[0],steps:row.steps.slice(),easy:row.steps.join(" "),example:base.teaching?.example?.problem||"",
-    teaching,sourceKey:row.base,origin:"original-transfer-2027",reviewStatus:"editorial-structure-validated",supplementary:false,
+    teaching,sourceKey:row.base,sourceTrace:row.sourceTrace||null,origin:"original-transfer-2027",reviewStatus:"editorial-structure-validated",supplementary:false,
     difficulty:"PAES-intermedia"};
  });
 }
