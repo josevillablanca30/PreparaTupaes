@@ -345,34 +345,34 @@ export const transferCasesBatch4=[
       "sourceUse": "Referencia pedagógica; enunciado, alternativas y soluciones originales"
     }
   },
-  {
-    "base": "Historia:HIS-019",
+    {
+    "base": "Historia:HIS-038",
     "id": "TR-HIS-022",
-    "question": "Un municipio instala una sirena de alerta por inundación que pueden escuchar simultáneamente todas las personas del sector sin que el aviso se agote al ser recibido. ¿Qué propiedades económicas ilustra mejor el servicio de alerta?",
+    "question": "Una radio regional publica documentos contrastados sobre gastos municipales. Una autoridad propone retirar el reportaje únicamente porque afecta la imagen del municipio, sin mencionar una infracción legal. ¿Qué principio democrático resulta más pertinente?",
     "options": [
-      "Rivalidad y exclusión sencilla, como en una entrada numerada",
-      "No rivalidad y dificultad de exclusión del aviso para quienes están en su alcance",
-      "Que el servicio es privado solo porque usa electricidad",
-      "Que toda provisión municipal elimina cualquier costo social"
+      "Las autoridades pueden eliminar toda crítica que les resulte incómoda",
+      "La libertad de informar favorece el control ciudadano del poder, con responsabilidades legales",
+      "Los medios deben reproducir exclusivamente las declaraciones oficiales",
+      "La libertad de prensa impide corregir informaciones falsas en cualquier circunstancia"
     ],
     "answer": 1,
     "steps": [
-      "Una alerta sonora puede ser recibida por varias personas al mismo tiempo sin que la recepción de una reduzca la posibilidad de otra.",
-      "Dentro del alcance de la sirena no resulta sencillo impedir selectivamente que una persona escuche el mismo aviso que el resto.",
-      "Estas condiciones aproximan el aviso a un bien público no rival y difícil de excluir, sin asumir que carezca de costos de provisión."
+      "La situación plantea una publicación sobre decisiones y uso de recursos públicos que puede aportar información relevante a la ciudadanía.",
+      "En democracia, la libertad de expresión y el acceso a información permiten el escrutinio de autoridades, sujeto a responsabilidades establecidas por la ley.",
+      "El solo malestar de una autoridad frente a una crítica no demuestra motivo legítimo para censurar la publicación ni elimina el deber de verificar los hechos."
     ],
     "errors": [
-      "Una entrada numerada puede agotarse y permite restringir acceso, propiedades diferentes de una alarma audible compartida.",
+      "El desacuerdo de una autoridad con una investigación periodística no constituye por sí solo una justificación para eliminar toda crítica.",
       "",
-      "El origen eléctrico o técnico del dispositivo no decide si su servicio es rival o excluible.",
-      "Que un municipio financie el sistema no implica que instalarlo, operarlo y mantenerlo resulte gratuito."
+      "La prensa cumple funciones informativas independientes y no se limita a repetir declaraciones de organismos públicos.",
+      "La libertad de prensa no elimina las responsabilidades por errores ni impide rectificaciones conforme a las reglas aplicables."
     ],
     "sourceTrace": {
       "officialTemario": "https://acceso.mineduc.cl/wp-content/uploads/2026/03/Temario-PAESRegular-2026-Historia-v2.pdf",
-      "officialEje": "Sistema económico · bienes públicos y funcionamiento del mercado y Estado",
-      "driveFileId": "1bFruW8e2qlIYkve9LYwWeGuprEfKP-ka",
-      "driveMaterial": "CPECH · Bitácora sistema económico",
-      "alignmentRationale": "Aplicación de no rivalidad y exclusión a una infraestructura pública.",
+      "officialEje": "Formación ciudadana · democracia, información y comunicación masiva",
+      "driveFileId": "1GZTBELme_Gtv-uDFRDsuu2bmHKuhZHgf",
+      "driveMaterial": "CPECH · Bitácora Formación Ciudadana",
+      "alignmentRationale": "Libertad de información y medios como garantía de control ciudadano de autoridades.",
       "sourceUse": "Referencia pedagógica; enunciado, alternativas y soluciones originales"
     }
   }
