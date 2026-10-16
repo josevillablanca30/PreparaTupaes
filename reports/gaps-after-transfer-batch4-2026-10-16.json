@@ -13,6 +13,7 @@
     "Historia": 17
   },
   "notes": [
+    "CI live readinessAudit counts 89 concepts lacking two independent question families; 82 is merely the count of originally single-question concepts still awaiting another ID. The former is the actual educational release gate.",
     "60 transfer items do not imply 60 previously-unverifiable concepts resolved. Five were added to already represented concepts and a separate base was used twice.",
     "This file tracks original concepts with one question and new transfer base keys; the live readinessAudit and CI are authoritative for independent family counts.",
     "Two distinct questions may still share assumptions and be pedagogically dependent. Editorial review is required.",
@@ -1085,5 +1086,7 @@
       "editorialStatus": "new independently designed and audited item required",
       "priority": "high"
     }
-  ]
+  ],
+  "strictFamilyAuditUnverifiableConcepts": 89,
+  "differenceDueToSharedFamilyOrRedundantCases": 7
 }
