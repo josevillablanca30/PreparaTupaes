@@ -246,9 +246,9 @@ export const transferCasesBatch4=[
     "sourceTrace": {
       "officialTemario": "https://acceso.mineduc.cl/wp-content/uploads/2026/03/Temario-PAESRegular-2026-Ciencias-v1.pdf",
       "officialEje": "Física · electricidad, corriente y carga",
-      "driveFileId": "1P5lE3A4MVXtjLYwyYWljV1hFH8HgGuKs",
-      "driveMaterial": "PDV · Física cuadernillos",
-      "alignmentRationale": "Interpretar el ampere como razón física en un caso contextualizado.",
+      "driveFileId": "1Br-fqf2HsB1oeUK2RfiunAmsQrNrLD19",
+      "driveMaterial": "PDV · Cuaderno N.º 5: Electricidad, Física común",
+      "alignmentRationale": "El cuaderno define la corriente como carga por tiempo y explica el ampere; se modela otro caso.",
       "sourceUse": "Referencia pedagógica; enunciado, alternativas y soluciones originales"
     }
   },
@@ -308,9 +308,9 @@ export const transferCasesBatch4=[
     "sourceTrace": {
       "officialTemario": "https://acceso.mineduc.cl/wp-content/uploads/2026/03/Temario-PAESRegular-2026-Historia-v2.pdf",
       "officialEje": "Historia · análisis crítico de fuentes y datos sociales",
-      "driveFileId": "1GZTBELme_Gtv-uDFRDsuu2bmHKuhZHgf",
-      "driveMaterial": "CPECH · Formación ciudadana",
-      "alignmentRationale": "Evaluar alcance y límites de una fuente cuantitativa en el tiempo.",
+      "driveFileId": "1kb30RdHpKIhEsG1kr_4qQw5oNDk-5Ne1",
+      "driveMaterial": "CPECH · Bitácora Historia mundo, América y Chile siglo XX",
+      "alignmentRationale": "Interpretación de registros sociales e incremento de matrícula en contextos del siglo XX, sin inferir calidad.",
       "sourceUse": "Referencia pedagógica; enunciado, alternativas y soluciones originales"
     }
   },
@@ -345,7 +345,7 @@ export const transferCasesBatch4=[
       "sourceUse": "Referencia pedagógica; enunciado, alternativas y soluciones originales"
     }
   },
-    {
+  {
     "base": "Historia:HIS-038",
     "id": "TR-HIS-022",
     "question": "Una radio regional publica documentos contrastados sobre gastos municipales. Una autoridad propone retirar el reportaje únicamente porque afecta la imagen del municipio, sin mencionar una infracción legal. ¿Qué principio democrático resulta más pertinente?",
