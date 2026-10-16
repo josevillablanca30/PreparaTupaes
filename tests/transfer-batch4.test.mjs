@@ -66,7 +66,7 @@ test('Las interpretaciones científicas e históricas no convierten evidencia li
  assert.match(get('TR-SCI-021').options[get('TR-SCI-021').answer],/conservar el mismo bloque/);
  assert.match(get('TR-HIS-019').options[get('TR-HIS-019').answer],/confrontaciones indirectas/);
  assert.match(get('TR-HIS-021').options[get('TR-HIS-021').answer],/articulación/);
- assert.match(get('TR-HIS-022').options[get('TR-HIS-022').answer],/no rivalidad/i);
+ assert.match(get('TR-HIS-022').options[get('TR-HIS-022').answer],/libertad de informar/i);
  for(const row of additions)assert.ok(!row.question.includes('¿Qué es una revolución?'),row.id);
 });
 test('La incorporación reduce las brechas, sin fingir cobertura completa del temario',()=>{
