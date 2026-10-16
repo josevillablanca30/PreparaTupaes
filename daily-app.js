@@ -7,7 +7,8 @@
  const cat=(state,text)=>'<aside class="wise-cat" data-cat-state="'+state+'" aria-live="polite">'+avatar(state)+'<p>'+esc(text)+'</p></aside>';
  const teacherStep=(state,text,index,total,withMascot=true)=>'<div class="teacher-step'+(withMascot?'':' text-only')+'"><div class="teacher-step-meta">IDEA CLAVE · PASO '+(index+1)+' DE '+total+'</div>'+(withMascot?'<div class="wise-cat" data-cat-state="'+state+'">'+avatar(state)+'<p class="lesson-text">'+esc(text)+'</p></div>':'<p class="lesson-text">'+esc(text)+'</p>')+'</div>';
  const button=(action,label,attrs='',cls='')=>'<button type="button" data-action="'+action+'" '+attrs+' class="'+cls+'">'+esc(label)+'</button>';
- const goto=hash=>{if(location.hash!==hash){location.hash=hash;return;}render();window.scrollTo(0,0);};
+ const scrollToLessonStart=()=>{window.scrollTo(0,0);requestAnimationFrame(()=>{if(document.scrollingElement)document.scrollingElement.scrollTop=0;window.scrollTo(0,0);});};
+ const goto=hash=>{if(location.hash!==hash){location.hash=hash;return;}render();scrollToLessonStart();};
  const selectedSubject=()=>button('courses',C.subjects[subject].name+(subject==='Ciencias'?' · '+(E.state.track||'Elige tu mención'):''),'','course-switch');
  const pool=()=>C.sciencePool(items,subject==='Ciencias'?E.state.track:null);
  function units(){return C.course(pool(),subject);}
@@ -186,7 +187,7 @@
   if(a==='pause'){E.save();goto('#home');return;}
   if(a.startsWith('basic-')&&d){if(a==='basic-prev')d.card=Math.max(0,d.card-1);if(a==='basic-forward'){if(d.card+1<B.lesson(d.lesson).cards.length)d.card++;else d.stage='practice';}
    if(a==='basic-choice'&&!d.checked)d.selected=Number(b.dataset.index);if(a==='basic-hint'&&!d.checked)d.hinted=true;if(a==='basic-check')B.answer(d.selected);
-   if(a==='basic-next'){const copy={title:B.lesson(d.lesson).title,total:d.results.length,correct:d.results.filter(r=>r.correct).length,mastered:B.status(d.lesson).complete};if(B.next()){E.state.celebration=copy;E.save();goto('#celebrate');return;}}E.save();render();window.scrollTo(0,0);return;}
+   if(a==='basic-next'){const copy={title:B.lesson(d.lesson).title,total:d.results.length,correct:d.results.filter(r=>r.correct).length,mastered:B.status(d.lesson).complete};if(B.next()){E.state.celebration=copy;E.save();goto('#celebrate');return;}}E.save();render();scrollToLessonStart();return;}
   if(['smart','free','lesson'].includes(a)){if(subject==='Ciencias'&&!E.state.track){goto('#tracks');return;}const n=a==='lesson'?2:Math.max(1,Math.min(10,Number(document.getElementById('daily-count')?.value)||4)),result=E.start(subject,n,a==='lesson'?'lesson':a,b.dataset.concept||null);notice=result.message||'';if(E.state.session&&!result.blocked)goto('#session');else render();return;}
   if(!s)return;
   if(a==='intro-next')s.card++;if(a==='intro-prev')s.card=Math.max(0,s.card-1);
@@ -198,6 +199,6 @@
   E.save();render();if(['next','intro-next','intro-prev'].includes(a))window.scrollTo(0,0);
  });
  window.addEventListener('resize',()=>syncAdventureRoad(),{passive:true});
- window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0);});window.addEventListener('pagehide',E.save);document.addEventListener('visibilitychange',()=>{if(document.hidden)E.save();});
+ window.addEventListener('hashchange',()=>{render();scrollToLessonStart();});window.addEventListener('pagehide',E.save);document.addEventListener('visibilitychange',()=>{if(document.hidden)E.save();});
  window.cachasteNativeBack=()=>{if(location.hash&&location.hash!=='#home'){E.save();goto('#home');return true;}return false;};window.CachasteDailyApp={engine:E,basics:B,render};render();
 })();
