@@ -76,6 +76,20 @@
    button('units','Explorar las unidades disponibles','','primary')+'</details>';
  }
 
+
+ function recommendedWorkshops(){
+  const candidates=units().flatMap(u=>u.levels).map(l=>{
+   const studio=window.CachasteStudios.get(subject,l.objective);
+   if(!studio)return null;
+   const p=levelState(l),state=p.status,priority=state==='por reforzar'?0:state==='por comprobar'?1:state==='sin explorar'?2:3;
+   const familyCount=new Set(items.filter(q=>q.subjectKey===subject&&q.concept===l.objective&&(subject!=='Ciencias'||q.module==='MC'||(E.state.track==='TP'?q.module==='MTP':q.module==='ME'&&q.subject===E.state.track))).map(q=>q.family)).size;
+   return{studio,p,priority,familyCount};
+  }).filter(Boolean).filter(x=>x.priority!==3).sort((a,b)=>a.priority-b.priority).slice(0,3);
+  if(!candidates.length)return '';
+  return '<section class="personal-plan" aria-label="Siguientes actividades recomendadas"><h2>Tu siguiente desafío</h2><p>La ruta prioriza habilidades por reforzar o todavía sin comprobar. No necesitas repetir una clase que ya dominas.</p><div class="personal-plan-list">'+
+   candidates.map(x=>'<article class="personal-plan-card"><div><small>'+esc(x.p.status)+'</small><strong>'+esc(x.studio.title)+'</strong><span>'+x.familyCount+' '+(x.familyCount===1?'familia de preguntas disponible':'familias de preguntas disponibles')+'</span></div>'+button('studio-open','Aprender y practicar','data-studio="'+esc(x.studio.id)+'"')+'</article>').join('')+'</div></section>';
+ }
+
  function home(){
   if(subject==='Ciencias'&&!E.state.track)return tracks();
   const pilot=window.CachasteStudios.lessons.find(x=>x.subject===subject&&!x.generatedType);
@@ -85,7 +99,7 @@
   const current=ls.find(l=>l.id===(basic?pendingBasic()?.id:recommend()?.id)&&!levelComplete(l,basic))||ls.find(l=>!levelComplete(l,basic))||null;
   return toolbar()+'<section class="stage-banner"><span>ETAPA '+(n+1)+' · '+esc(basic?starterTitle():u?.axis||'Mi recorrido')+'</span><h1>'+esc(title)+'</h1>'+button('units','Elegir mundo','','unit-link')+'</section>'+
    (active?'<div class="resume-strip">'+button('resume','Continuar mi sesión guardada','','primary')+'</div>':'')+
-   curriculumOverview(false)+'<p class="studio-coverage-note">'+esc(workshopCoverage.bySubject[subject]||0)+' conceptos de esta materia tienen un taller con explicación y actividad disponible en el mapa. El dominio solo se acredita con problemas independientes.</p>'+(pilot?'<section class="studio-feature"><span class="studio-kicker">MISIÓN ESPECIAL · DEMOSTRACIÓN JUGABLE</span><h2>'+esc(pilot.title)+'</h2><p>'+esc(pilot.intro)+'</p><small>3 ideas · 3 relaciones · comprobación con preguntas de esta materia</small>'+button('studio-open','Jugar unidad piloto','data-studio="'+esc(pilot.id)+'"','primary')+button('studio-direct-test','Ya lo manejo: probar sin clase','data-studio="'+esc(pilot.id)+'"')+'</section>':'')+worldMap(ls,basic,u,n,list,current)+
+   curriculumOverview(false)+recommendedWorkshops()+'<p class="studio-coverage-note">'+esc(workshopCoverage.bySubject[subject]||0)+' conceptos de esta materia tienen un taller con explicación y actividad disponible en el mapa. El dominio solo se acredita con problemas independientes.</p>'+(pilot?'<section class="studio-feature"><span class="studio-kicker">MISIÓN ESPECIAL · DEMOSTRACIÓN JUGABLE</span><h2>'+esc(pilot.title)+'</h2><p>'+esc(pilot.intro)+'</p><small>3 ideas · 3 relaciones · comprobación con preguntas de esta materia</small>'+button('studio-open','Jugar unidad piloto','data-studio="'+esc(pilot.id)+'"','primary')+button('studio-direct-test','Ya lo manejo: probar sin clase','data-studio="'+esc(pilot.id)+'"')+'</section>':'')+worldMap(ls,basic,u,n,list,current)+
    '<div class="world-after"><p>'+esc(paceMessage())+'</p>'+button('focus-quest','Encontrar mi misión','','focus-quest')+'</div>'+
    pendingReviewPanel()+missionTeaser(stats)+(basic?'':examPanel(u));
  }
