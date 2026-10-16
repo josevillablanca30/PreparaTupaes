@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 
 // A repository subpath catches the same relative-path mistakes as GitHub Pages.
 const files = new Map([
- ...['daily-foundation-visuals.js','daily-basics.js','daily-visuals.js','daily-curriculum.js','daily-core.js','daily-gameplay.js','daily-app.js','daily-catalog.js','daily-ui.css'].map(f=>['/PreparaTupaes/'+f,[f,f.endsWith('.css')?'text/css':'text/javascript']]),
+ ...['daily-foundation-visuals.js','daily-basics.js','daily-visuals.js','daily-curriculum.js','daily-core.js','daily-gameplay.js','daily-studios.js','daily-app.js','daily-catalog.js','daily-ui.css'].map(f=>['/PreparaTupaes/'+f,[f,f.endsWith('.css')?'text/css':'text/javascript']]),
  ['/PreparaTupaes/assets/gatito-sabio-poses-v1.png',['assets/gatito-sabio-poses-v1.png','image/png']],
  ['/PreparaTupaes/assets/gatito-sabio-oficial.png',['assets/gatito-sabio-oficial.png','image/png']],
   ['/PreparaTupaes/m1-teaching.js', ['m1-teaching.js', 'text/javascript; charset=utf-8']],
