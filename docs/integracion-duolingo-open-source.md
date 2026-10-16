@@ -12,6 +12,17 @@
 3. **Seguimiento con propósito pedagógico propio.** Nuestra selección adaptativa incorpora la certeza del estudiante (seguro, duda, azar), los errores y el uso de ayudas. Se agenda un refuerzo offline y se muestra al estudiante por qué se recomienda. Esta política **es original de ¿Cachaste?**; no se atribuye al clon.
 4. **Prueba de unidad.** La certeza no revela respuestas ni cambia el umbral de aprobación. Una vez terminada la prueba, se muestran diferencias entre seguridad y acierto y se programan refuerzos de respuestas falladas o dudosas.
 
+## Segunda pasada: motor de desafíos PAES interactivos
+
+- Referencias técnicas revisadas directamente: Quiz, Challenge, Card y Footer del proyecto MIT. Son componentes React/Next.js que dependen de Clerk, Drizzle, Stripe y servicios online: **no se incorporó su servidor ni sus paquetes**.
+- Código nuevo: daily-gameplay.js implementa una transición de actividad **seleccionar pasos → comprobar orden → retroalimentación → reintentar o continuar**. Se inspira en el flujo del clon y usa un barajado reproducible para impedir que siempre aparezcan las tarjetas en orden correcto.
+- Solo activa "Ordenar el razonamiento" cuando el ejercicio existente tiene entre tres y cinco pasos explicativos **diferentes y suficientemente desarrollados**. No inventa pasos ni transforma un PDF automáticamente en preguntas.
+- Se integra en la vista de clase de daily-app.js. El paso es **voluntario**: "Ir directamente a la pregunta" mantiene acceso a PAES incluso si el estudiante no quiere jugar.
+- Se guarda con el historial local de sesiones en curso y se recupera tras recarga/recreación del WebView Android. No afecta la puntuación, la prueba formal, el banco ni la evidencia de dominio, que exige respuestas independientes y sin ayuda.
+- Incluido en build estático y APK; verificación específica en tests/gameplay.test.mjs y tests/gameplay.mobile.spec.mjs.
+- Créditos y aviso MIT conservados aquí y en el archivo fuente. No se atribuye a Duolingo oficial.
+- Trabajo posterior: más modalidades de minijuegos **solo** cuando existan materiales y rúbricas para validar la actividad y sus distractores. Evitar gamificación vacía.
+
 ## Qué NO se importó
 - Bases de datos, Next.js, Clerk, Stripe, ElevenLabs, corazones de pago, conexión permanente o membresías.
 - Imágenes, texto, logos ni mascota de Duolingo. El gato aprobado y el material PAES se preservan.
