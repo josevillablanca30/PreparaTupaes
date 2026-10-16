@@ -5,7 +5,7 @@
  const poses={neutral:[0,0],explaining:[1,0],thinking:[2,0],celebrating:[0,1],error:[1,1],encouraging:[1,1],walking:[2,1]};
  const avatar=(state,size='')=>{const[c,r]=poses[state]||poses.neutral;return'<span class="cat-frame '+size+'" role="img" aria-label="Gatito sabio '+esc(state)+'"><img src="assets/gatito-sabio-poses-v1.png" alt="" style="left:'+(-c*100)+'%;top:'+(-r*100)+'%" width="1536" height="1024"></span>';};
  const cat=(state,text)=>'<aside class="wise-cat" data-cat-state="'+state+'">'+avatar(state)+'<p>'+esc(text)+'</p></aside>';
- const teacherStep=(state,text,index,total)=>'<div class="teacher-step"><div class="teacher-step-meta">EL GATITO TE EXPLICA · PASO '+(index+1)+' DE '+total+'</div>'+cat(state,text)+'</div>';
+ const teacherStep=(state,text,index,total)=>'<div class="teacher-step"><div class="teacher-step-meta">EL GATITO TE EXPLICA · PASO '+(index+1)+' DE '+total+'</div><div class="wise-cat" data-cat-state="'+state+'">'+avatar(state)+'<p class="lesson-text">'+esc(text)+'</p></div></div>';
  const button=(action,label,attrs='',cls='')=>'<button type="button" data-action="'+action+'" '+attrs+' class="'+cls+'">'+esc(label)+'</button>';
  const goto=hash=>{if(location.hash!==hash)location.hash=hash;render();window.scrollTo(0,0);};
  const selectedSubject=()=>button('courses',C.subjects[subject].name+(subject==='Ciencias'?' · '+(E.state.track||'Elige tu mención'):''),'','course-switch');
