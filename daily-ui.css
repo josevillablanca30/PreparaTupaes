@@ -8,3 +8,17 @@ html{background:var(--game-paper)}body{margin:0;background:var(--game-paper);col
 body.is-learning #daily-root{display:flex;flex-direction:column}body.is-learning #daily-root>.lesson-top,body.is-learning #daily-root>.daily-session-head{order:-2}body.is-learning #daily-root>.lesson-meter{order:-1}
 
 body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{display:block;width:100%;margin-top:18px}#daily-root .cat-frame{aspect-ratio:1}
+
+/* El gatito mantiene presencia viva sin tapar la lectura. Cada pose conserva su fotograma del sprite. */
+.wise-cat .cat-frame{transform-origin:50% 88%;animation:cat-breathe 4.6s ease-in-out infinite}
+.wise-cat[data-cat-state=explaining] .cat-frame{animation:cat-explain 1.65s ease-in-out infinite}
+.wise-cat[data-cat-state=thinking] .cat-frame{animation:cat-think 3.2s ease-in-out infinite}
+.wise-cat[data-cat-state=encouraging] .cat-frame,.wise-cat[data-cat-state=walking] .cat-frame{animation:cat-encourage 1.9s ease-in-out infinite}
+.wise-cat[data-cat-state=error] .cat-frame{animation:cat-soft-react .7s ease-in-out 1}
+.wise-cat[data-cat-state=explaining] p{animation:cat-bubble 2.8s ease-in-out infinite}
+@keyframes cat-breathe{0%,100%{transform:translateY(0) rotate(0) scale(1)}48%{transform:translateY(-3px) rotate(-1deg) scale(1.015)}}
+@keyframes cat-explain{0%,100%{transform:translateY(0) rotate(0)}35%{transform:translateY(-5px) rotate(-2deg)}68%{transform:translateY(-2px) rotate(1deg)}}
+@keyframes cat-think{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-2px) rotate(2deg)}}
+@keyframes cat-encourage{0%,100%{transform:translateY(0) rotate(0)}45%{transform:translateY(-6px) rotate(2deg)}72%{transform:translateY(-2px) rotate(-1deg)}}
+@keyframes cat-soft-react{0%,100%{transform:translateX(0)}30%{transform:translateX(-3px) rotate(-2deg)}65%{transform:translateX(2px) rotate(1deg)}}
+@keyframes cat-bubble{0%,84%,100%{transform:translateY(0)}91%{transform:translateY(-2px)}}
