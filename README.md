@@ -22,7 +22,7 @@ La auditoría automática de los bancos detecta problemas estructurales, claves 
 
 ## Estado del producto
 
-**Todavía no está aprobado como producto comercial ni como versión final para estudiantes.** La última beta verificada en los reportes es M1 v0.6, de octubre de 2026. Desde entonces se integraron las cinco materias al paquete, una experiencia de aprendizaje por niveles, misiones iniciales y seis poses del gatito. La animación reciente reutiliza esas poses con movimiento CSS suave.
+**Todavía no está aprobado como producto comercial ni como versión final para estudiantes.** El último reporte histórico de producto describe M1 v0.6; el flujo automatizado del 17 de octubre produjo y probó una beta 1.3.0 con las cinco materias, la experiencia por niveles, misiones iniciales y seis poses del gatito. La animación reutiliza esas poses con movimiento CSS suave, y la validación actual aún requiere revisión humana y en teléfono físico.
 
 En el commit `6afb7c3116df835378b52b789ab7044da30ffaa8`, el flujo de GitHub Actions pasó pruebas de lógica y contenido, auditoría de los cinco bancos, build web, uso táctil y vista de 320 px. También compiló la APK beta, comprobó su firma, instaló la aplicación en un emulador y pasó modo sin red, persistencia local y botón Atrás. La verificación es automatizada en emulador; falta validarla en un teléfono físico. La APK beta se firma con la clave de pruebas y no es una firma de distribución comercial.
 
@@ -32,7 +32,7 @@ La publicación de Pages no pudo completarse: el job de validación pasó, pero 
 
 ### Bloqueos para cerrar la versión comercial
 
-1. Terminar la clasificación del material de Drive para las cinco materias y verificar cobertura con sus temarios DEMRE.
+1. Completar el inventario recursivo de Drive y la trazabilidad archivo-página-pregunta para las cinco materias; verificar cobertura con sus temarios DEMRE vigentes.
 2. Completar la revisión humana de preguntas, respuestas, distractores, explicaciones, dificultad y derechos de uso en cada banco.
 3. Revisar visualmente la experiencia completa en Android y comprobar continuidad de progreso, navegación, accesibilidad y funcionamiento sin conexión.
 4. Habilitar GitHub Pages en **Settings → Pages → Build and deployment → Source: GitHub Actions**. El primer encendido requiere acceso del propietario; después, el flujo puede publicar y verificar el sitio.
