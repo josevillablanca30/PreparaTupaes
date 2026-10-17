@@ -60,8 +60,8 @@ Meta de cierre: 31 de octubre de 2026, para habilitar el uso durante noviembre. 
 - [x] Existe flujo de build web, auditoría de contenido, pruebas automatizadas móviles y empaquetado Android beta.
 - [x] La última validación histórica registrada pasó lógica, auditoría, build, viewport de 320 px, WebView, uso sin conexión, persistencia y navegación Atrás en emulador.
 - [x] Ejecutar `npm ci`, pruebas de lógica (158/158), auditoría de bancos (623 preguntas, 0 críticas y 2 alertas) y build web en el commit `e96360c`.
-- [ ] Completar Playwright móvil en Chromium y WebKit; en esta ejecución local no fue posible descargar los navegadores desde el CDN.
-- [ ] Instalar y recorrer las cinco pruebas en un teléfono físico; registrar modelo, sistema y resultados.
+- [x] Completar Playwright móvil en Chromium y WebKit: 597 pruebas aprobadas en el flujo CI del commit `30d1b56`.
+- [ ] Instalar y recorrer las cinco pruebas en un teléfono físico; la APK beta pasó instalación, WebView sin red, persistencia y botón Atrás en emulador (CI, commit `30d1b56`), pero falta registrar modelo, sistema y resultados de un teléfono real.
 - [ ] Probar pérdida de almacenamiento, sesiones interrumpidas, volver desde el sistema, teclado/zoom y conectividad intermitente.
 - [ ] Confirmar que la app completa se abre y funciona sin red en Android, incluyendo fuentes, ilustraciones, datos y páginas enlazadas.
 - [ ] Revisar dependencias, permisos Android, manifiesto, orientación, ícono, nombre y versión antes de publicar.
@@ -86,7 +86,7 @@ Meta de cierre: 31 de octubre de 2026, para habilitar el uso durante noviembre. 
 
 ## Registro de avances
 
-| 17-10-2026 · `30d1b56` | M2 llega a 113 preguntas con lectura logarítmica original y referencia Drive | 158/158 pruebas lógicas, auditoría 630 (0 críticas/2 heurísticas), build y 597 pruebas móviles aprobadas; APK en emulador y Pages aún pendientes. |
+| 17-10-2026 · `30d1b56` | M2 llega a 113 preguntas con lectura logarítmica original y referencia Drive | 158/158 pruebas lógicas, auditoría 630 (0 críticas/2 heurísticas), build, 597 pruebas móviles y APK beta instalada en emulador (offline, persistencia, Atrás) aprobados. Artefacto Actions: `Cachaste-v1.3.0-beta-camino-30d1b56`; Pages requiere habilitación del propietario. |
 
 | Fecha / commit | Avance | Evidencia / estado |
 | --- | --- | --- |
