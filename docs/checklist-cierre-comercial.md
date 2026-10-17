@@ -37,6 +37,7 @@ Meta de cierre: 31 de octubre de 2026, para habilitar el uso durante noviembre. 
 - [x] El último informe de referencia contó 623 preguntas y no reportó fallas críticas; registró dos alertas heurísticas breves de M1 que se revisaron manualmente.
 - [x] Revalidar los bancos tras añadir cuatro preguntas originales a M2: 627 ítems, 0 alertas críticas y 2 alertas heurísticas; 158/158 pruebas lógicas y build local aprobados.
 - [x] Revalidar tras añadir M2-111–112: 158/158 pruebas lógicas, auditoría 629 ítems (0 críticas, 2 heurísticas), `npm run build` y `git diff --check` aprobados.
+- [x] Revalidar M2-114: auditoría 631 (0 críticas/2 heurísticas), 158/158 pruebas lógicas, build, 597 pruebas móviles en Chromium/WebKit —incluye M2-113/114— y 7 pruebas de APK en emulador aprobados en `4f9a419`.
 - [ ] Hacer revisión conceptual humana completa y guardar sus decisiones por pregunta.
 - [ ] Revisar conceptualmente cada respuesta, procedimiento, unidad, gráfico y alternativa.
 - [ ] Confirmar que cada distractor represente un error plausible y que cada explicación responda por qué esa alternativa se acepta o descarta.
@@ -61,8 +62,8 @@ Meta de cierre: 31 de octubre de 2026, para habilitar el uso durante noviembre. 
 - [x] Existe flujo de build web, auditoría de contenido, pruebas automatizadas móviles y empaquetado Android beta.
 - [x] La última validación histórica registrada pasó lógica, auditoría, build, viewport de 320 px, WebView, uso sin conexión, persistencia y navegación Atrás en emulador.
 - [x] Ejecutar `npm ci`, pruebas de lógica (158/158), auditoría de bancos (623 preguntas, 0 críticas y 2 alertas) y build web en el commit `e96360c`.
-- [x] Completar Playwright móvil en Chromium y WebKit: 597 pruebas aprobadas en el flujo CI del commit `30d1b56`.
-- [ ] Instalar y recorrer las cinco pruebas en un teléfono físico; la APK beta pasó instalación, WebView sin red, persistencia y botón Atrás en emulador (CI, commit `30d1b56`), pero falta registrar modelo, sistema y resultados de un teléfono real.
+- [x] Completar Playwright móvil en Chromium y WebKit: 597 pruebas aprobadas; el lote M2 recorre M2-001–114 en `4f9a419`.
+- [ ] Instalar y recorrer las cinco pruebas en un teléfono físico; la APK beta pasó 7 verificaciones en emulador, con WebView sin red, persistencia y botón Atrás (CI, commit `4f9a419`), pero falta registrar modelo, sistema y resultados de un teléfono real.
 - [ ] Probar pérdida de almacenamiento, sesiones interrumpidas, volver desde el sistema, teclado/zoom y conectividad intermitente.
 - [ ] Confirmar que la app completa se abre y funciona sin red en Android, incluyendo fuentes, ilustraciones, datos y páginas enlazadas.
 - [ ] Revisar dependencias, permisos Android, manifiesto, orientación, ícono, nombre y versión antes de publicar.
