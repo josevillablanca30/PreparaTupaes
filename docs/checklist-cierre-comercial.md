@@ -17,6 +17,7 @@ Criterio: solo se marca **Hecho** con evidencia reproducible; una prueba estruct
 - [x] Material PAES de Google Drive está declarado como base principal de investigación.
 - [x] Se recorrieron recursivamente todas las carpetas accesibles de la carpeta principal: 143 carpetas, profundidad 4, 668 elementos listados, 513 PDF identificados y 0 errores de listado.
 - [x] Completar el recorrido recursivo de la estructura accesible: sin errores y ninguna carpeta alcanzó el tope de 200 elementos por consulta.
+- [x] Contrastar M2 contra el temario Regular 2027 y ampliar el banco con probabilidad condicionada y contextos hipotéticos de crédito compuesto y ahorro previsional; preguntas originales M2-107–109 con tutor y distractores propios.
 - [ ] Preparar un catálogo duradero y revisable de los 526 archivos con título, ruta, tipo, proveedor, versión y estado de lectura; detectar duplicados y cambios posteriores.
 - [ ] Clasificar cada archivo por prueba, materia, proveedor, año/versión y formato; registrar si se pudo leer o revisar visualmente.
 - [ ] Verificar el temario DEMRE vigente, separado por M1, M2, Competencia Lectora, cada módulo de Ciencias e Historia.
@@ -28,7 +29,7 @@ Criterio: solo se marca **Hecho** con evidencia reproducible; una prueba estruct
 
 - [x] Hay auditoría automática estructural para los cinco bancos.
 - [x] El último informe de referencia contó 623 preguntas y no reportó fallas críticas; registró dos alertas heurísticas breves de M1 que se revisaron manualmente.
-- [x] Revalidar la estructura de los cinco bancos en el último código disponible: 623 preguntas, 0 fallas críticas y 2 alertas heurísticas de revisión.
+- [x] Revalidar los bancos tras añadir tres preguntas originales a M2: 626 ítems, 0 alertas críticas y 2 alertas heurísticas; 158/158 pruebas lógicas y build local aprobados.
 - [ ] Hacer revisión conceptual humana completa y guardar sus decisiones por pregunta.
 - [ ] Revisar conceptualmente cada respuesta, procedimiento, unidad, gráfico y alternativa.
 - [ ] Confirmar que cada distractor represente un error plausible y que cada explicación responda por qué esa alternativa se acepta o descarta.
@@ -86,4 +87,5 @@ Criterio: solo se marca **Hecho** con evidencia reproducible; una prueba estruct
 | 17-10-2026 · `e2e3ad3` | Indicador accesible de dominio por etapa y navegación tras última unidad | `node --check daily-app.js` pasó |
 | 17-10-2026 · `84fcd70` | Diseño adaptable de barra de progreso | CSS balanceado; CI pendiente de confirmar |
 | 17-10-2026 | Recorrido recursivo de Drive actualizado | 143 carpetas, 668 elementos, 513 PDF; metadatos solamente, sin lectura de contenido |
+| 17-10-2026 · revisión M2 | M2 pasa de 106 a 109 preguntas; añadidas una pregunta condicional y dos aplicaciones financieras expresamente hipotéticas | Banco original ampliado, tres clases del tutor y explicación por alternativa; 158/158 pruebas lógicas, auditoría estructural (626 ítems; 0 críticas, 2 heurísticas) y build local pasan. Referencia de Drive consultada: `Copia de JMA-M2-07-2024.pdf`, usada para contrastar interés compuesto y contextos matemáticos; no se reprodujeron sus preguntas. Revisión humana externa pendiente. |
 

@@ -7,7 +7,7 @@ const loaded=loadBanks();
 const banks={M1:loaded.M1.map(q=>({...q,question:q.q})),Ciencias:loaded.Ciencias,Lectura:loaded.Lectura,M2:loaded.M2,Historia:loaded.Historia};
 const stop=/^(no|nunca|siempre|todos|todas|ningún|ninguna|únicamente|exclusivamente|completamente|absolutamente|imposible|desaparec|elimina|prohíbe|sustituye|solo funciona|solo sirve)\b/i;
 const normalize=s=>(/\b(?:AA|Aa|aa)\b/.test(String(s))?String(s):String(s).toLowerCase()).replace(/−/g,'-').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\p{L}\p{N}+*/=<>^%×÷≤≥√:-]/gu,' ').trim().replace(/\s+/g,' ');
-const output={date:'2026-10-15',scope:'Auditoría heurística estructural de cinco bancos; no certificación de corrección conceptual',totals:{},flags:[],coverage:{}};
+const output={date:new Date().toISOString().slice(0,10),scope:'Auditoría heurística estructural de cinco bancos; no certificación de corrección conceptual',totals:{},flags:[],coverage:{}};
 let critical=0;
 for(const [name,questions] of Object.entries(banks)){
  if(!Array.isArray(questions))throw Error('Banco ausente: '+name);
