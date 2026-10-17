@@ -5,7 +5,7 @@ Actualizada: 17 de octubre de 2026. Estado de contenido: banco de práctica form
 ## Fuentes y método
 
 - Temario oficial DEMRE, PAES Regular admisión 2027: https://demre.cl/publicaciones/pdf/2027-26-03-19-temario-paes-regular-m2.pdf
-- Base de investigación de la app: carpeta Material PAES de Google Drive. En esta pasada se consultó `Copia de JMA-M2-07-2024.pdf` para revisar tipos de contexto matemático/financiero y el índice del resumen M30M PAES 2025 para localizar unidades. La Drive es material de referencia; las preguntas publicadas por Cachaste deben seguir siendo originales y cada futura pregunta debe tener procedencia anotada.
+- Base de investigación de la app: carpeta Material PAES de Google Drive. En esta pasada se consultó `Copia de JMA-M2-07-2024.pdf` para revisar tipos de contexto matemático/financiero y `Resumen M30M PAES 2025.pdf` para localizar unidades y tipos de ejercicio; se usaron títulos/secciones pertinentes como guía, sin copiar preguntas. La Drive es material de referencia; las preguntas publicadas por Cachaste deben seguir siendo originales y cada futura pregunta debe tener procedencia anotada.
 - Inventario del banco `m2-bank.js`: 112 preguntas, M2-001 a M2-112. Los IDs señalan presencia de al menos un ejercicio relacionado, no suficiencia de variedad, dificultad, habilidad ni calidad.
 
 ## Criterio de estado
@@ -20,11 +20,11 @@ Actualizada: 17 de octubre de 2026. Estado de contenido: banco de práctica form
 | Números: matemática financiera (AFP/jubilación, crédito hipotecario, crédito de consumo) | M2-009, M2-076, M2-077, M2-108–110 | Parcial | Validar supuestos, unidades y escenarios; incluir comparación de alternativas, costos y lectura de condiciones. El ítem previsional es hipotético y no describe reglas vigentes. |
 | Números: logaritmos, relación entre potencias y raíces, propiedades y problemas | M2-007, M2-028, M2-056–057 | Parcial | Añadir propiedades, restricciones de dominio, ecuaciones y problemas contextualizados; diversificar bases. |
 | Álgebra y funciones: sistemas lineales 2×2 con solución única, infinitas o ninguna | M2-026, M2-047, M2-059, M2-079 | Presente | Asegurar interpretación gráfica y modelación, además del cálculo algebraico. |
-| Álgebra y funciones: gráficos de funciones potencia, exponencial y logarítmica; problemas | M2-001, M2-002, M2-018, M2-020, M2-024, M2-058, M2-086 | Parcial | Brecha clara de representación gráfica: incorporar lectura y comparación de gráficos, parámetros, transformaciones y modelación. |
+| Álgebra y funciones: gráficos de funciones potencia, exponencial y logarítmica; problemas | M2-001, M2-002, M2-018, M2-020, M2-024, M2-058, M2-086, M2-111 | Parcial | M2-111 incorpora lectura de crecimiento, punto (0,1) y asíntota de una exponencial. Falta cubrir gráficamente potencia y logaritmo, transformar parámetros y resolver más contextos. |
 | Álgebra y funciones: gráficos seno y coseno; problemas | M2-060–061 | Parcial | Confirmar que los dos ítems incluyan gráfico e interpretación; ampliar periodo, amplitud, traslación y contexto. |
 | Geometría: homotecia de figuras planas | M2-062–063 | Parcial | Añadir lectura de centro/razón y efectos sobre longitudes, áreas, orientación y representación. |
 | Geometría: razones trigonométricas seno, coseno y tangente en triángulos rectángulos | M2-064–065 | Parcial | Comprobar que las tres razones y problemas de ángulo/elevación queden cubiertos con unidades y figuras. |
-| Geometría: circunferencia — ángulos/arcos, cuerdas/secantes y problemas | M2-066, M2-080, M2-112 | Parcial | Brecha concreta: añadir relaciones métricas de cuerdas y secantes y conectar con ángulos/arcos. |
+| Geometría: circunferencia — ángulos/arcos, cuerdas/secantes y problemas | M2-066, M2-080, M2-112 | Parcial | M2-112 incorpora dos secantes desde un punto exterior. Falta variedad de secantes y cubrir arco/ángulo, cuerdas y aplicaciones en más de un formato. |
 | Geometría: superficie y volumen de esfera | M2-067, M2-105 | Parcial | Revisar que haya al menos un ejercicio de superficie y uno de volumen, con unidades cúbicas/cuadradas. |
 | Geometría: rectas en el plano y posiciones relativas | M2-010, M2-016, M2-043, M2-085 | Parcial | Añadir paralelas, coincidentes y secantes desde ecuaciones/gráficos, y problemas de intersección. |
 | Probabilidad y estadística: medidas de dispersión de uno o más grupos | M2-074–075 | Parcial | Incorporar comparación e interpretación de rango, varianza/desviación según datos y contexto; revisar qué medida exige el programa. |
