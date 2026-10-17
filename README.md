@@ -16,7 +16,7 @@ Los módulos se empaquetan en una aplicación Android WebView con recursos local
 
 La carpeta de **Material PAES** en Google Drive es la base principal de investigación y desarrollo. El temario DEMRE Regular vigente define qué contenidos incluir. El material de otras instituciones sirve para estudiar habilidades, métodos y errores frecuentes, después de comprobar que corresponda al temario actual.
 
-Las preguntas publicadas deben ser originales, con respuesta comprobada y explicación específica para cada alternativa. Los archivos de terceros se usan como referencia y no se reproducen en la aplicación sin autorización. El informe [Biblioteca Drive como referencia principal](docs/fuentes-drive-m1-2026.md) documenta el inventario realizado para M1; la clasificación de la biblioteca y la revisión equivalente del resto de las materias siguen pendientes.
+Las preguntas publicadas deben ser originales, con respuesta comprobada y explicación específica para cada alternativa. Los archivos de terceros se usan como referencia y no se reproducen en la aplicación sin autorización. El [inventario general de Material PAES](docs/inventario-drive-material-paes-2026-10.md) registra la estructura por materia y proveedor observada en Drive; el [informe de fuentes para M1](docs/fuentes-drive-m1-2026.md) documenta la revisión específica de M1. Aún faltan el inventario recursivo y la trazabilidad archivo-página-pregunta para las cinco materias.
 
 La auditoría automática de los bancos detecta problemas estructurales, claves inválidas y explicaciones faltantes. **No certifica por sí sola la corrección conceptual, la alineación completa con DEMRE, la dificultad ni los derechos de uso.**
 
@@ -68,5 +68,6 @@ URL prevista, aún sujeta a habilitar Pages y completar el despliegue: https://j
 - [Cierre funcional y controles QA de M1](docs/m1-cierre-funcional-2026.md)
 - [Estabilidad de progreso y repaso](docs/qa-m1-estabilidad-2026-10-13.md)
 - [Expansión de gráficos y tutor](docs/qa-m1-expansion-100-2026-10-13.md)
+- [Inventario general de Material PAES en Drive](docs/inventario-drive-material-paes-2026-10.md)
 - [Fuentes y protocolo para Drive](docs/fuentes-drive-m1-2026.md)
 - [Contrato para importar preguntas](content/README.md)
