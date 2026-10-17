@@ -17,12 +17,13 @@ Criterio: solo se marca **Hecho** con evidencia reproducible; una prueba estruct
 - [x] Material PAES de Google Drive está declarado como base principal de investigación.
 - [x] Se recorrieron recursivamente todas las carpetas accesibles de la carpeta principal: 143 carpetas, profundidad 4, 668 elementos listados, 513 PDF identificados y 0 errores de listado.
 - [x] Completar el recorrido recursivo de la estructura accesible: sin errores y ninguna carpeta alcanzó el tope de 200 elementos por consulta.
-- [x] Contrastar M2 contra el temario Regular 2027 y ampliar el banco con probabilidad condicionada y contextos hipotéticos de crédito compuesto y ahorro previsional; preguntas originales M2-107–109 con tutor y distractores propios.
+- [x] Contrastar M2 contra el temario Regular 2027 y ampliar el banco con probabilidad condicionada y contextos hipotéticos de finanzas; preguntas originales M2-107–110 con tutor y distractores propios.
+- [x] Crear una primera matriz M2 2027 enlazada a IDs actuales; identificar brechas explícitas y separar presencia de cobertura validada: [cobertura-m2-2027.md](cobertura-m2-2027.md).
 - [ ] Preparar un catálogo duradero y revisable de los 526 archivos con título, ruta, tipo, proveedor, versión y estado de lectura; detectar duplicados y cambios posteriores.
 - [ ] Clasificar cada archivo por prueba, materia, proveedor, año/versión y formato; registrar si se pudo leer o revisar visualmente.
 - [ ] Verificar el temario DEMRE vigente, separado por M1, M2, Competencia Lectora, cada módulo de Ciencias e Historia.
-- [ ] Construir matriz de cobertura objetivo → unidad → nivel → preguntas para las cinco pruebas y menciones.
-- [ ] Cerrar brechas de cobertura y distribución por eje, habilidad y dificultad sin rellenar con material fuera de temario.
+- [ ] Completar matrices de cobertura objetivo → unidad → nivel → preguntas para las cinco pruebas y menciones; la primera matriz M2 es exploratoria y todavía no está revisada por persona experta.
+- [ ] Cerrar brechas M2 (incluida cobertura heredada M1) y distribución por eje, habilidad y dificultad sin rellenar con material fuera de temario.
 - [ ] Añadir trazabilidad de cada pregunta original: fuente Drive y página/sección de referencia, objetivo oficial, ID de pregunta y revisor.
 
 ## 3. Calidad pedagógica y derechos
