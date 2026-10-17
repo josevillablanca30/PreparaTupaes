@@ -1,77 +1,68 @@
-# Cachaste 💜
+# ¿Cachaste? 💜
 
-Aplicación de preparación PAES Chile. **Primera meta: Matemática M1 Regular 2026 / Admisión 2027**.
+Aplicación chilena para aprender y practicar los contenidos de la PAES. El proyecto integra **Matemática M1, Matemática M2, Competencia Lectora, Ciencias e Historia y Ciencias Sociales** en una experiencia móvil que puede funcionar sin conexión.
 
-## Tres áreas dentro de una sola aplicación
-La pantalla inicial `inicio.html` permite elegir **Matemática M1**, **Competencia Lectora** o **Ciencias**. La prueba de Ciencias incluye las tres materias mezcladas y permite escoger la **mención Biología/Física/Química** o modalidad **TP**. Todos los módulos funcionan dentro de un mismo APK WebView con recursos offline; sus datos de aprendizaje están separados localmente.
+## Experiencia de aprendizaje
 
-### Ciencias · banco ampliado
-- **158 preguntas originales**: **54 MC** (18 de cada ciencia), **78 ME** (26 por cada mención Biología, Física y Química) y **26 TP** (9 Biología, 9 Física, 8 Química).
-- **Diagnóstico 30:** 27 MC y 3 preguntas de la mención o TP; respuestas mezcladas. **Express 10:** 7 MC y 3 de especialidad, adaptado a errores y dudas.
-- **Ensayo completo formativo:** 80 preguntas únicas (54 MC + 26 ME o TP), reloj de 160 minutos, sin revelar respuestas durante la prueba y resultados separados por ciencia al terminar. **No es una reproducción de ítems oficiales ni un estimador validado de puntaje.**
-- Tutor con explicaciones por distractor, pistas, confianza («Lo tengo claro», «Tengo dudas», «Fue al azar»), progreso separado y observaciones científicas exportables. Su revisión editorial continúa siendo necesaria.
+- La pantalla inicial permite elegir materia y la experiencia diaria organiza objetivos en cursos, unidades y niveles.
+- El gatito guía la sesión con poses para explicar, pensar, celebrar y acompañar.
+- En Matemática hay lecciones base con apoyos visuales para comenzar desde los fundamentos.
+- El progreso y las respuestas se guardan en el dispositivo mediante almacenamiento local.
+- Los módulos tradicionales incluyen diagnósticos, prácticas y ensayos formativos. Sus instrucciones y cantidad de preguntas se revisan por materia; no deben presentarse como ensayos oficiales.
 
-### Competencia Lectora · primera fase integrada
-- **15 textos originales y 75 preguntas únicas:** 27 Localizar, 30 Interpretar y 18 Evaluar. Incluye narrativa, exposición, argumentación y lectura de registros.
-- **Diagnóstico 30**, **Express 10** y **ensayo formativo 65 preguntas en 150 minutos**, con preguntas agrupadas por texto, reloj, confianza en respuestas, tutor y recuperación de sesiones.
-- El diagnóstico orienta la práctica por habilidad débil y se conserva el avance en `localStorage`. El corpus y el nivel de exigencia todavía requieren revisión pedagógica adicional para equipararlos a las lecturas extensas de la PAES real.
+Los módulos se empaquetan en una aplicación Android WebView con recursos locales. Las cinco materias están contempladas en el flujo de construcción; cada banco y experiencia requiere su propia validación pedagógica y funcional.
 
-### Instalación y actualizaciones
-La beta Android unificada mantiene por seguridad el identificador debug independiente `cl.preparatupaes.app.sciencebeta`, de manera que puede coexistir con la aplicación M1 v0.6 ya probada, sin desinstalarla ni borrar sus datos. Las firmas de depuración de distintos runners podrían impedir actualizar betas anteriores en el teléfono; **no desinstales M1 v0.6 si quieres conservar su progreso**. Para una versión distribuible actualizable hace falta configurar una firma estable y segura.
+## Contenidos y fuentes
 
-**Estado de la nueva beta v1.0:** código integrado y pruebas automatizadas en curso; no declarar APK aprobado ni instalación física hasta comprobar CI y binario.
+La carpeta de **Material PAES** en Google Drive es la base principal de investigación y desarrollo. El temario DEMRE Regular vigente define qué contenidos incluir. El material de otras instituciones sirve para estudiar habilidades, métodos y errores frecuentes, después de comprobar que corresponda al temario actual.
 
-## Estado actual
-- 116 preguntas originales de práctica, incluidas 16 con gráficos y figuras con alternativas, explicaciones por error y resolución.
-- Banco basado en habilidades de la biblioteca educativa de Drive y el temario oficial; no reproduce preguntas de pago sin permiso.
-- **Nueva entrada simplificada:** Diagnóstico de 30 preguntas (8 Números, 8 Álgebra y funciones, 7 Geometría, 7 Estadística), Express de 10 y ensayo completo de 65. El diagnóstico inicial desbloquea los ensayos para estudiantes nuevos y orienta un plan de refuerzo. Las prácticas antiguas de 3, 5, 8 y 12 quedan plegadas como opciones de refuerzo, preservando su funcionalidad.
-- Tutor con pistas progresivas: aciertos con ayuda se distinguen del dominio sin pistas.
-- Simulacro **formativo** de 65 preguntas, tiempo de 140 minutos, mapa navegable, marcadores y confirmación al entregar.
-- Guardado local de respuestas, **reanudación de diagnóstico M1 de 30 preguntas**, reanudación de simulacro y resultados por eje.
-- Lista persistente de errores pendientes: rondas de diez preguntas sin perder las restantes; dominio confirmado al acertar sin pistas.
-- Progreso móvil resumido por los cuatro ejes, con detalles de habilidades plegables y acciones para reforzar.
-- Etiquetas pedagógicas estimadas: 45 iniciales, 40 intermedias y 31 desafíos.
-- Marca e icono Android: **Cachaste**. Versión **0.6.0** compilada exitosamente como APK de prueba (debug).
-- **No es aún una versión comercial aprobada**, ni sus aciertos equivalen a una conversión oficial de puntaje.
-- El 13-10-2026 GitHub Actions confirmó **48/48 pruebas de navegador móvil aprobadas** en Android Chrome, iPhone WebKit y 320 px; el workflow de Android confirmó pruebas de lógica, 32/32 pruebas táctiles y compilación exitosa de APK de prueba. El APK se verificó como ZIP/APK íntegro con código y recursos incluidos. **Pendientes: instalación y pruebas en un teléfono físico y publicación web por Pages.**
+Las preguntas publicadas deben ser originales, con respuesta comprobada y explicación específica para cada alternativa. Los archivos de terceros se usan como referencia y no se reproducen en la aplicación sin autorización. El informe [Biblioteca Drive como referencia principal](docs/fuentes-drive-m1-2026.md) documenta el inventario realizado para M1; la clasificación de la biblioteca y la revisión equivalente del resto de las materias siguen pendientes.
 
-Consulta [resultado de CI y APK v0.6](docs/qa-ci-apk-cachaste-2026-10-13.md), [cierre de M1 y controles QA](docs/m1-cierre-funcional-2026.md), [estabilización de progreso y repaso](docs/qa-m1-estabilidad-2026-10-13.md), [pasada grande de gráficos y tutor](docs/qa-m1-expansion-100-2026-10-13.md), [reporte de QA anterior](docs/qa-m1-pasada-calidad-2026-10-13.md) y [biblioteca y fuentes de Drive](docs/fuentes-drive-m1-2026.md).
+La auditoría automática de los bancos detecta problemas estructurales, claves inválidas y explicaciones faltantes. **No certifica por sí sola la corrección conceptual, la alineación completa con DEMRE, la dificultad ni los derechos de uso.**
 
-## Probar
-Abrir `index.html` con el navegador, o ejecutar:
+## Estado del producto
+
+**Todavía no está aprobado como producto comercial ni como versión final para estudiantes.** La última beta verificada en los reportes es M1 v0.6, de octubre de 2026. Desde entonces se integraron las cinco materias al paquete, una experiencia de aprendizaje por niveles, misiones iniciales y seis poses del gatito. La animación reciente reutiliza esas poses con movimiento CSS suave.
+
+Los controles de GitHub Actions ejecutan pruebas de lógica, auditoría estructural de contenido, compilación web y pruebas táctiles en navegador. El workflow de Android compila una APK de prueba. Una prueba automática exitosa no sustituye la revisión editorial completa ni la prueba en un teléfono físico.
+
+### Bloqueos para cerrar la versión comercial
+
+1. Terminar la clasificación del material de Drive para las cinco materias y verificar cobertura con sus temarios DEMRE.
+2. Completar la revisión humana de preguntas, respuestas, distractores, explicaciones, dificultad y derechos de uso en cada banco.
+3. Revisar visualmente la experiencia completa en Android y comprobar continuidad de progreso, navegación, accesibilidad y funcionamiento sin conexión.
+4. Habilitar GitHub Pages en **Settings → Pages → Build and deployment → Source: GitHub Actions**. El primer encendido requiere acceso del propietario; después, el flujo puede publicar y verificar el sitio.
+5. Preparar una firma Android de distribución estable, separar credenciales de prueba y producción y validar la instalación/actualización en un equipo real antes de distribuirla.
+6. Definir cómo se entregará soporte, privacidad y manejo de datos. Hoy no hay cuentas ni sincronización en la nube; el progreso queda en el dispositivo. El tutor entrega explicaciones escritas, no respuestas generadas por una IA en vivo.
+
+No se declara una fecha de lanzamiento ni un puntaje predictivo. Los ensayos son formativos y no equivalen a una prueba oficial DEMRE.
+
+## Probar en desarrollo
+
+Abrir `index.html` en un navegador o ejecutar:
 
 ```bash
 npm ci
 npm run test:logic
+npm run audit:pedagogy
 npm run build
 npx playwright install --with-deps chromium webkit
 npm test
 ```
 
-La aplicación no necesita dependencias en el navegador. Node y Playwright se utilizan únicamente para construir el paquete y probarlo.
+Node y Playwright se usan para empaquetar y probar. La aplicación web no requiere dependencias remotas para cargar sus recursos locales.
 
-## Publicación automática
+## Publicación web
 
-El flujo `.github/workflows/pages.yml` se ejecuta al cambiar código en `main`, en pull requests y manualmente desde Actions. Los cambios solo de documentación no generan otro despliegue.
+El flujo `.github/workflows/pages.yml` valida los cambios de código en `main` y en pull requests. Si las verificaciones pasan, publica `dist/` en GitHub Pages y comprueba que el sitio sirva el mismo commit.
 
-1. Ejecuta las pruebas de lógica y clave editorial, además de las pruebas táctiles en Chromium Android, WebKit iPhone y pantalla de 320 px.
-2. Si pasan, publica únicamente `dist/` en GitHub Pages. Las pull requests solo validan, sin publicar.
-3. Comprueba que la URL pública sirve el mismo commit y repite las pruebas móviles sobre HTTPS.
+URL prevista, aún sujeta a habilitar Pages y completar el despliegue: https://josevillablanca30.github.io/PreparaTupaes/
 
-Activación inicial requerida: **Settings → Pages → Source → GitHub Actions**. El flujo estándar no puede activar Pages por primera vez con `GITHUB_TOKEN`; la configuración necesita acceso del propietario. Una vez activado, cada cambio de código en `main` se publica automáticamente si supera las pruebas.
+## Reportes
 
-URL prevista (solo válida después de un despliegue exitoso): https://josevillablanca30.github.io/PreparaTupaes/
-
-Los reportes y capturas de las pruebas quedan en el run de Actions con retención de un día. La emulación móvil comprueba interfaz y funcionalidad cuando CI finaliza exitosamente; no equivale a una prueba en un teléfono físico. El flujo del APK ahora exige primero Node, QA editorial y Playwright Android/320 px.
-
-## Alcance y advertencias
-Esta es una **versión formativa funcional en desarrollo**, no un producto comercial terminado. Las preguntas son originales de práctica y no son ensayos DEMRE ni representan una simulación oficial validada. El tutor actual usa explicaciones y pistas redactadas previamente, no un modelo de IA generativo. No hay cuentas, backend, sincronización entre dispositivos ni estimador validado de puntaje.
-
-La biblioteca PAES descomprimida de Drive se ha podido consultar por archivos individuales. Aún falta completar su clasificación editorial y verificar derechos de uso para cualquier reproducción de material de terceros.
-
-## Siguiente desarrollo
-1. Ejecutar las pruebas completas Node y Playwright sobre el último commit, corregir cualquier regresión móvil.
-2. Validar matemáticamente los nuevos problemas visuales y sus distracciones con otra revisión pedagógica.
-3. Agregar más ítems de interpretación compleja, no únicamente cálculos directos.
-4. Estabilizar la compilación Android y verificar un APK descargable antes de presentarlo como listo.
-
+- [QA Android y móvil de M1 v0.6](docs/qa-ci-apk-cachaste-2026-10-13.md)
+- [Cierre funcional y controles QA de M1](docs/m1-cierre-funcional-2026.md)
+- [Estabilidad de progreso y repaso](docs/qa-m1-estabilidad-2026-10-13.md)
+- [Expansión de gráficos y tutor](docs/qa-m1-expansion-100-2026-10-13.md)
+- [Fuentes y protocolo para Drive](docs/fuentes-drive-m1-2026.md)
+- [Contrato para importar preguntas](content/README.md)
