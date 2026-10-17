@@ -26,7 +26,7 @@ La auditoría automática de los bancos detecta problemas estructurales, claves 
 
 En el commit `c467dcaae1d3bea8271c7d1c6f698e64e9a70410`, la validación web y móvil pasó, y el flujo Android compiló e instaló la APK en un emulador. Pasó la comprobación sin red, guardado local y botón Atrás. Es una prueba automatizada en emulador; todavía no hay validación en un teléfono físico.
 
-La auditoría estructural de ese commit encontró **623 preguntas y 0 fallas críticas, además de 129 alertas que requieren revisión**. De estas, 107 corresponden a Ciencias; predominan pasos de razonamiento breves (89 alertas en total) y distractores absolutos (35). Son alertas heurísticas, no errores confirmados; cada una debe revisarse en contexto contra Drive y el temario. Cero fallas críticas no equivale a aprobación pedagógica.
+La auditoría estructural más reciente (commit `6afb7c3116df835378b52b789ab7044da30ffaa8`, 17 de octubre de 2026) cubre 623 preguntas de las cinco materias y registra **0 fallas críticas y 2 alertas heurísticas** de enunciado breve (M1-210 de potencias y M1-224 de inecuaciones). Revisé ambos casos: son preguntas concisas con operación, alternativas, clave y explicación; el detector no evalúa suficiencia pedagógica. La auditoría no certifica corrección conceptual, cobertura exhaustiva del temario ni derechos de uso.
 
 La publicación de Pages no pudo completarse: el job de validación pasó, pero el job de despliegue falló porque Pages aún no está habilitado en la configuración del repositorio.
 
