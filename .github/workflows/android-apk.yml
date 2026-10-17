@@ -101,15 +101,20 @@ jobs:
           test -s android/app/src/main/assets/assets/cachaste-icon.svg
           test -s android/app/src/main/assets/assets/cachaste-logo.svg
           echo "Cinco materias, ocho scripts y marca Cachaste presentes en assets Android"
-      - name: Compilar APK de prueba
+      - name: Compilar APK beta y verificar paquete AAB release sin firma
         working-directory: android
-        run: gradle --no-daemon :app:assembleDebug
+        run: gradle --no-daemon :app:assembleDebug :app:bundleRelease
       - name: Verificar firma del APK y conservar solo su certificado público
         run: |
           test -s "$CACHASTE_DEBUG_KEYSTORE"
           "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs \
             android/app/build/outputs/apk/debug/app-debug.apk \
             > android/app/build/outputs/apk/debug/APK-CERTIFICATE.txt
+      - name: Comprobar que se generó el AAB de verificación
+        run: |
+          test -s android/app/build/outputs/bundle/release/app-release.aab
+          echo "AAB generado para validar el empaquetado. Está sin firma de Play y no es publicable."
+
       - name: Permitir aceleración del emulador
         run: |
           sudo chmod a+rw /dev/kvm
@@ -129,6 +134,13 @@ jobs:
           name: cachaste-qa-android-${{ github.run_id }}
           path: android/app/build/reports/androidTests/connected/
           if-no-files-found: ignore
+          retention-days: 3
+      - name: Conservar AAB release de verificación (sin firma)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cachaste-AAB-UNSIGNED-NOT-FOR-PLAY-${{ github.sha }}
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
           retention-days: 3
       - name: Publicar APK descargable
         uses: actions/upload-artifact@v4
