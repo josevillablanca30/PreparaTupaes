@@ -5,12 +5,12 @@ import {readinessAudit} from '../scripts/readiness-audit.mjs';
 import {transferCasesBatch6 as cases} from '../scripts/paes-transfer-batch6-2027.mjs';
 
 const {items}=dailyCatalog(),byKey=new Map(items.map(q=>[q.key,q]));
-test('Lote 6: cierra con preguntas originales las diez brechas M1 trazadas a DEMRE y Drive',()=>{
- assert.equal(cases.length,10);
- assert.equal(items.length,705);
- assert.equal(new Set(items.map(q=>q.key)).size,705);
- assert.equal(items.filter(q=>q.origin==='original-transfer-2027').length,82);
- assert.deepEqual(cases.map(c=>c.id),Array.from({length:10},(_,i)=>'TR-M1-'+String(i+21).padStart(3,'0')));
+test('Lote 6: cierra con preguntas originales las once brechas M1 trazadas a DEMRE y Drive',()=>{
+ assert.equal(cases.length,11);
+ assert.equal(items.length,706);
+ assert.equal(new Set(items.map(q=>q.key)).size,706);
+ assert.equal(items.filter(q=>q.origin==='original-transfer-2027').length,83);
+ assert.deepEqual(cases.map(c=>c.id),Array.from({length:11},(_,i)=>'TR-M1-'+String(i+21).padStart(3,'0')));
  for(const c of cases){
   const base=byKey.get(c.base),q=byKey.get('M1:'+c.id);
   assert.ok(base&&q,c.id);
@@ -31,13 +31,14 @@ test('Lote 6: cierra con preguntas originales las diez brechas M1 trazadas a DEM
  }
  const gate=readinessAudit(items);
  assert.equal(gate.overall.originals,623);
- assert.equal(gate.overall.transfers,82);
- assert.equal(gate.overall.questions,705);
+ assert.equal(gate.overall.transfers,83);
+ assert.equal(gate.overall.questions,706);
  assert.equal(gate.overall.concepts,287);
- assert.equal(gate.overall.unverifiableConcepts,67);
+ assert.equal(gate.overall.unverifiableConcepts,66);
  assert.equal(gate.subjects.M1.unverifiableConcepts,0);
- assert.equal(gate.subjects.Ciencias.unverifiableConcepts,47);
- assert.equal(gate.subjects.Historia.unverifiableConcepts,13);
+ assert.equal(gate.subjects.M2.unverifiableConcepts,1);
+ assert.equal(gate.subjects.Ciencias.unverifiableConcepts,51);
+ assert.equal(gate.subjects.Historia.unverifiableConcepts,14);
 });
 test('Las claves del lote M1 se comprueban por cálculo independiente',()=>{
  const answer=id=>{const c=cases.find(x=>x.id===id);assert.ok(c,id);return c.options[c.answer]};
@@ -62,4 +63,6 @@ test('Las claves del lote M1 se comprueban por cálculo independiente',()=>{
  assert.equal(4*(7.5/3),10);
  assert.equal(answer('TR-M1-030'),'54 cm²');
  assert.equal(6*3**2,54);
+ assert.equal(answer('TR-M1-031'),'63 cm²');
+ assert.equal(14*9/2,63);
 });
