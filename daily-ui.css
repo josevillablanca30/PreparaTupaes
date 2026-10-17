@@ -46,5 +46,5 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 .journey-progress-bar>span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#8e65ca,#55a88a);transition:width .45s cubic-bezier(.2,.8,.2,1)}
 @media(max-width:360px){.journey-progress{padding:13px}.journey-progress-head{font-size:13px}.journey-progress-head span{font-size:12px}}
 /* Alterna el gesto de enseñanza con una breve bienvenida para que el gatito no se sienta congelado. */
-.wise-cat[data-cat-state=explaining] .cat-frame img{animation:cat-explain-frames 4.8s steps(1,end) infinite}
-@keyframes cat-explain-frames{0%,63%,88%,100%{left:-100%;top:0}64%,87%{left:0;top:0}}
+.wise-cat[data-cat-state=explaining] .cat-frame img{animation:cat-explain-frames 6s steps(1,end) infinite}
+@keyframes cat-explain-frames{0%,16%,100%{left:-100%;top:0}17%,32%{left:0;top:0}33%,49%{left:-200%;top:0}50%,66%{left:-100%;top:-100%}67%,82%{left:0;top:-100%}83%,99%{left:-200%;top:-100%}}
