@@ -4,11 +4,11 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const src=readFileSync(new URL('../m2-bank.js',import.meta.url),'utf8');
 const app=readFileSync(new URL('../m2-app.js',import.meta.url),'utf8');
-test('M2: banco de 110 preguntas originales válidas en seis áreas',()=>{
+test('M2: banco de preguntas originales válidas en seis áreas',()=>{
  const window={};vm.runInNewContext(src,{window});
  const bank=window.CACHASTE_M2;
- assert.equal(bank.length,110);
- assert.equal(new Set(bank.map(q=>q.id)).size,110);
+ assert.equal(bank.length,112);
+ assert.equal(new Set(bank.map(q=>q.id)).size,112);
  assert.equal(new Set(bank.map(q=>q.area)).size,6);
  const distribution=Object.fromEntries([...new Set(bank.map(q=>q.area))].map(area=>[area,bank.filter(q=>q.area===area).length]));
  assert.ok(Object.values(distribution).every(count=>count>=5),JSON.stringify(distribution));
@@ -26,6 +26,12 @@ test('M2: banco de 110 preguntas originales válidas en seis áreas',()=>{
   assert.ok(q.question.includes('hipotétic')||q.id==='M2-107',id);
   assert.equal(q.explanations.length,q.options.length,id);
   assert.ok(q.teaching?.check,id+' debe tener tutor');
+ }
+ for(const [id,answer] of [['M2-111','2^x'],['M2-112','2']]){
+  const q=bank.find(q=>q.id===id);assert.ok(q,id);assert.equal(q.options[q.answer],answer,id);
+  assert.equal(q.explanations.length,q.options.length,id);
+  assert.ok(q.teaching?.foundation?.length>=2,id+' debe incluir tutor');
+  assert.ok(q.editorial?.steps?.length>=3,id+' debe incluir procedimiento');
  }
  assert.equal(3/6,1/2,'probabilidad condicionada tras actualizar la urna');
  assert.equal(Math.round(300_000*1.01**3*100)/100,309_090.30,'capitalización mensual del crédito hipotético');

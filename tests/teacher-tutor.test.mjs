@@ -5,10 +5,10 @@ import {loadBanks} from '../scripts/load-banks.mjs';
 const before=JSON.parse(readFileSync(new URL('../pedagogy/m2-before-2026-10-15.json',import.meta.url)));
 const banks=loadBanks(),after=banks.M2;
 const revisedOptions=new Map([['M2-011',['x≥5','x>0','x≤5','x≥0']],['M2-072',['0,5','0,25','0,95','Depende de σ']],['M2-083',['x≤4','x>0','x≥4','x>4']]]);
-test('Tutor: las 106 preguntas de beta 1.1 conservan claves y hay 4 preguntas nuevas',()=>{
- assert.equal(after.length,110);
+test('Tutor: las 106 preguntas de beta 1.1 conservan claves y hay 6 preguntas nuevas',()=>{
+ assert.equal(after.length,112);
  for(const old of before){const q=after.find(q=>q.id===old.id);assert.ok(q,old.id);assert.equal(q.question,old.question);assert.deepEqual(Array.from(q.options),revisedOptions.get(q.id)||old.options);assert.equal(q.answer,old.answer);}
- assert.deepEqual(Object.fromEntries(Object.entries(banks).map(([k,v])=>[k,v.length])),{M1:116,Ciencias:206,Lectura:130,M2:110,Historia:65,texts:20});
+ assert.deepEqual(Object.fromEntries(Object.entries(banks).map(([k,v])=>[k,v.length])),{M1:116,Ciencias:206,Lectura:130,M2:112,Historia:65,texts:20});
 });
 test('Tutor: cada clase tiene fundamentos, aplicación propia, comprobación y ejemplo resuelto',()=>{
  for(const q of after.filter(q=>q.teaching)){
@@ -45,7 +45,7 @@ test('Tutor: una explicación corresponde a cada alternativa y se reparan los va
  for(const [subject,bank]of Object.entries(banks)){if(subject==='texts')continue;for(const q of bank)assert.equal(q.explanations.length,q.options.length,subject+' '+q.id);}
  const abs=after.find(q=>q.id==='M2-027');assert.match(abs.explanations[1],/viola x>3/);assert.match(abs.explanations[2],/\|5−3\|=2/);assert.match(abs.explanations[3],/\|3−3\|=0/);
  const q=after.find(q=>q.id==='M2-024');assert.match(q.explanations[1],/3²/);assert.equal(3**2,9);assert.equal(3*2**2,12);
- assert.equal(after.filter(q=>q.teaching).length,110,'M2 completo, sin contar materias pendientes');
+ assert.equal(after.filter(q=>q.teaching).length,112,'M2 completo, sin contar materias pendientes');
  assert.match(after.find(q=>q.id==='M2-107').teaching.foundation.join(' '),/condicionada/);
  assert.match(after.find(q=>q.id==='M2-108').teaching.check,/capitalización/);
  assert.match(after.find(q=>q.id==='M2-109').teaching.check,/hipotétic/);

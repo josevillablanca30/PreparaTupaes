@@ -6,7 +6,7 @@ Actualizada: 17 de octubre de 2026. Estado de contenido: banco de práctica form
 
 - Temario oficial DEMRE, PAES Regular admisión 2027: https://demre.cl/publicaciones/pdf/2027-26-03-19-temario-paes-regular-m2.pdf
 - Base de investigación de la app: carpeta Material PAES de Google Drive. En esta pasada se consultó `Copia de JMA-M2-07-2024.pdf` para revisar tipos de contexto matemático/financiero y el índice del resumen M30M PAES 2025 para localizar unidades. La Drive es material de referencia; las preguntas publicadas por Cachaste deben seguir siendo originales y cada futura pregunta debe tener procedencia anotada.
-- Inventario del banco `m2-bank.js`: 110 preguntas, M2-001 a M2-110. Los IDs señalan presencia de al menos un ejercicio relacionado, no suficiencia de variedad, dificultad, habilidad ni calidad.
+- Inventario del banco `m2-bank.js`: 112 preguntas, M2-001 a M2-112. Los IDs señalan presencia de al menos un ejercicio relacionado, no suficiencia de variedad, dificultad, habilidad ni calidad.
 
 ## Criterio de estado
 
@@ -24,7 +24,7 @@ Actualizada: 17 de octubre de 2026. Estado de contenido: banco de práctica form
 | Álgebra y funciones: gráficos seno y coseno; problemas | M2-060–061 | Parcial | Confirmar que los dos ítems incluyan gráfico e interpretación; ampliar periodo, amplitud, traslación y contexto. |
 | Geometría: homotecia de figuras planas | M2-062–063 | Parcial | Añadir lectura de centro/razón y efectos sobre longitudes, áreas, orientación y representación. |
 | Geometría: razones trigonométricas seno, coseno y tangente en triángulos rectángulos | M2-064–065 | Parcial | Comprobar que las tres razones y problemas de ángulo/elevación queden cubiertos con unidades y figuras. |
-| Geometría: circunferencia — ángulos/arcos, cuerdas/secantes y problemas | M2-066, M2-080 | Parcial | Brecha concreta: añadir relaciones métricas de cuerdas y secantes y conectar con ángulos/arcos. |
+| Geometría: circunferencia — ángulos/arcos, cuerdas/secantes y problemas | M2-066, M2-080, M2-112 | Parcial | Brecha concreta: añadir relaciones métricas de cuerdas y secantes y conectar con ángulos/arcos. |
 | Geometría: superficie y volumen de esfera | M2-067, M2-105 | Parcial | Revisar que haya al menos un ejercicio de superficie y uno de volumen, con unidades cúbicas/cuadradas. |
 | Geometría: rectas en el plano y posiciones relativas | M2-010, M2-016, M2-043, M2-085 | Parcial | Añadir paralelas, coincidentes y secantes desde ecuaciones/gráficos, y problemas de intersección. |
 | Probabilidad y estadística: medidas de dispersión de uno o más grupos | M2-074–075 | Parcial | Incorporar comparación e interpretación de rango, varianza/desviación según datos y contexto; revisar qué medida exige el programa. |
@@ -35,7 +35,7 @@ Actualizada: 17 de octubre de 2026. Estado de contenido: banco de práctica form
 
 ## Alcance heredado de M1
 
-El temario oficial indica explícitamente que **todos los conocimientos de M1 pueden evaluarse también en M2**. El banco actual contiene ítems de varios contenidos M1, pero 110 preguntas no bastan para acreditar amplitud integral, niveles y habilidades de ambas pruebas. La matriz M1 disponible en `cobertura-m1-2027.md` ya describe brechas importantes, por lo que M2 no debe marcarse como cubierto al 100 % hasta cerrar esa matriz y ampliar su banco.
+El temario oficial indica explícitamente que **todos los conocimientos de M1 pueden evaluarse también en M2**. El banco actual contiene ítems de varios contenidos M1, pero 112 preguntas no bastan para acreditar amplitud integral, niveles y habilidades de ambas pruebas. La matriz M1 disponible en `cobertura-m1-2027.md` ya describe brechas importantes, por lo que M2 no debe marcarse como cubierto al 100 % hasta cerrar esa matriz y ampliar su banco.
 
 ## Habilidades transversales
 
@@ -48,7 +48,7 @@ Marcar una unidad como **validada** solo cuando exista una matriz a nivel de obj
 ## Orden sugerido de producción
 
 1. Corregir brechas explícitas: gráficos potencia/exponencial/logarítmica, cuerdas/secantes, rectas relativas, área bajo normal y dispersión comparativa.
-2. Completar M2 específico con variedad de contexto, formato, habilidad y dificultad; revisar M2-001–110 humanamente.
+2. Completar M2 específico con variedad de contexto, formato, habilidad y dificultad; revisar M2-001–112 humanamente.
 3. Cerrar y vincular cobertura M1 heredada.
 4. Añadir trazabilidad pregunta–objetivo–fuente Drive–revisor y ejecutar auditoría de duplicados/balance.
 5. Armar una forma M2 completa solo después de revisión, con temporizador y resultados por eje; mantener claro que no es oficial DEMRE.

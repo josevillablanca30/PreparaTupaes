@@ -5,7 +5,7 @@
     "M1": 116,
     "Ciencias": 206,
     "Lectura": 130,
-    "M2": 110,
+    "M2": 112,
     "Historia": 65
   },
   "flags": [
@@ -73,9 +73,9 @@
       "Evaluar": 32
     },
     "M2": {
-      "Funciones": 19,
+      "Funciones": 20,
       "Probabilidad": 24,
-      "Geometría": 25,
+      "Geometría": 26,
       "Álgebra": 18,
       "Modelación": 16,
       "Suficiencia de datos": 8
@@ -91,6 +91,6 @@
   "summary": {
     "critical": 0,
     "review": 2,
-    "questionCount": 627
+    "questionCount": 629
   }
 }
