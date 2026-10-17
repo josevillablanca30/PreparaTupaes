@@ -1,0 +1,72 @@
+{
+  "commit": "3c4a17e5298ea05e1ee846ea520d5c054101ac8f",
+  "apk": "Cachaste-Tutor-M2-Historia-3c4a17e.apk",
+  "sha256": "c40b184f3896859334c9e23c542b40feddd452bb9c7a43e03ae063d15b8116dd",
+  "bytes": 467172,
+  "sourceAssets": [
+    "index.html",
+    "inicio.html",
+    "science.html",
+    "reading.html",
+    "m2.html",
+    "history.html",
+    "learning-core.js",
+    "study-app.js",
+    "study-ui.css",
+    "science-bank.js",
+    "science-app.js",
+    "reading-bank.js",
+    "reading-app.js",
+    "m2-bank.js",
+    "m2-app.js",
+    "history-bank.js",
+    "history-app.js",
+    "assets/cachaste-icon.svg",
+    "assets/cachaste-logo.svg"
+  ],
+  "certificateSha256": "06fea3ef23af90358868d6c7edf877a871404027e1f7104036ed25ff7b05df22",
+  "bankCounts": {
+    "M1": 116,
+    "M2": 106,
+    "Ciencias": 206,
+    "Lectura": 130,
+    "Historia": 65
+  },
+  "deepTeachingReviewed": {
+    "M1": 0,
+    "M2": 106,
+    "Ciencias": 0,
+    "Lectura": 0,
+    "Historia": 65
+  },
+  "reviewed": 171,
+  "pending": 452,
+  "historyDistractorsRewritten": 195,
+  "historyConcepts": 50,
+  "historyConceptsWithAnotherFamily": 12,
+  "tests": {
+    "logic": 117,
+    "browserCi": 261,
+    "browserCiAndroidAnd320": 174,
+    "nativeAndroidApi36": 5,
+    "nativeFailures": 0,
+    "nativeSkipped": 0,
+    "physicalDevice": false
+  },
+  "ci": {
+    "androidMain": 38767466651,
+    "browserAndPages": 38767466645,
+    "androidBackupSigningProof": 38766714437
+  },
+  "signingCacheMainSaved": true,
+  "signingCacheBackupVerified": true,
+  "compatibleWithPriorBeta0a3f2f6": false,
+  "pagesPublished": false,
+  "pagesBlock": "configure-pages: Not Found; habilitación administrativa pendiente",
+  "sourceAssetsMatch": true,
+  "signingContinuityRuns": [
+    38765814462,
+    38766714437,
+    38767466651
+  ]
+}

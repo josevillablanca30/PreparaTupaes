@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Prepara tu PAES - pregunta",
+  "type": "object",
+  "required": [
+    "id",
+    "subject",
+    "skill",
+    "prompt",
+    "options",
+    "answerIndex",
+    "explanations",
+    "steps",
+    "status",
+    "origin"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject": {
+      "enum": [
+        "M1",
+        "M2",
+        "LECTORA",
+        "CIENCIAS",
+        "HISTORIA"
+      ]
+    },
+    "skill": {
+      "type": "string",
+      "minLength": 1
+    },
+    "prompt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "passage": {
+      "type": "string"
+    },
+    "media": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "url",
+          "alt"
+        ],
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "alt": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "options": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 5,
+      "items": {
+        "type": "string"
+      }
+    },
+    "answerIndex": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4
+    },
+    "explanations": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 5,
+      "items": {
+        "type": "string"
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "difficulty": {
+      "enum": [
+        "inicial",
+        "intermedio",
+        "avanzado"
+      ]
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "reviewed",
+        "published"
+      ]
+    },
+    "origin": {
+      "type": "object",
+      "required": [
+        "type",
+        "rights"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "original",
+            "third-party"
+          ]
+        },
+        "rights": {
+          "enum": [
+            "owned",
+            "licensed",
+            "unknown"
+          ]
+        },
+        "reference": {
+          "type": "string"
+        }
+      }
+    },
+    "relatedIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

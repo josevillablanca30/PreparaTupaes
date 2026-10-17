@@ -1,0 +1,144 @@
+{
+ "scanned": "2026-10-16",
+ "root": "Material PAES",
+ "contents": [
+  {
+   "id": "1zFagloSJqFPUhEdd-Ud95jVer2hLQQ6x",
+   "path": "PDV/Lectura/Controles /Solucionario",
+   "items": [
+    {
+     "id": "1WSwKVtUaUdUeQdcxGFZPdE4TKWui4Jym",
+     "name": "Copia de 5415-Claves_Control_N°2_Lenguaje.pdf",
+     "type": "application/pdf",
+     "bytes": 332749
+    }
+   ]
+  },
+  {
+   "id": "1SPOYziyy3n7ye4pcygsZGXwbnDiW_IlQ",
+   "path": "PDV/Química/ Ensayos /Solucionario",
+   "items": [
+    {
+     "id": "1Vf8zWIVrxC8p-unM9addBO_6lvrm2CHq",
+     "name": "Copia de pauta 8.pdf",
+     "type": "application/pdf",
+     "bytes": 355951
+    },
+    {
+     "id": "1aTrp9kxVBt0EdSsGprAGcfYPO1F0DykZ",
+     "name": "Copia de pauta 1.pdf",
+     "type": "application/pdf",
+     "bytes": 355923
+    }
+   ]
+  },
+  {
+   "id": "1wKKpEn-QqUK6m5UI7MfSEPch_4WZqYG0",
+   "path": "CPECH/Historia/Ensayo/Solucionario ",
+   "items": [
+    {
+     "id": "1GBHHdZF2vI2sT4VlYRiVbcGN6Ea9KZWf",
+     "name": "Copia de Sol 064.pdf",
+     "type": "application/pdf",
+     "bytes": 1133845
+    }
+   ]
+  },
+  {
+   "id": "1c_FnDdZnod4ueF-bL2EZ-h4hn-j74I28",
+   "path": "CPECH/Historia/Cuadernillo/Solucionario ",
+   "items": [
+    {
+     "id": "1LWJdfY6YsWCNTy3EDTpEgwBGdZb1e8W0",
+     "name": "Sol.Introducción al sistema económico conceptualizaciones.pdf",
+     "type": "application/pdf",
+     "bytes": 645102
+    }
+   ]
+  },
+  {
+   "id": "1l9pKWrj8G5MJ0QhAajrCdGa2W7aqnG1L",
+   "path": "CPECH/Biología/Ensayos/Solucionario ",
+   "items": [
+    {
+     "id": "1Mf8riDC3_9w5gNoIniDHhJM1wZX4I1OY",
+     "name": "Copia de Solucionario bio (3).pdf",
+     "type": "application/pdf",
+     "bytes": 3442035
+    }
+   ]
+  },
+  {
+   "id": "1LHymutAPNNhWqBh0NIaonHDrWChRtRyk",
+   "path": "FILADD/Física/EJE 0/Ejercicios ",
+   "items": [
+    {
+     "id": "1fQ3e8wgBtTa1Sdv6bUMBnB05LWKM3ruf",
+     "name": "0.5.pdf",
+     "type": "application/pdf",
+     "bytes": 889666
+    },
+    {
+     "id": "1GxOe5KTTKiwBp77a0jYapIbYGI6oj7AT",
+     "name": "0.2.pdf",
+     "type": "application/pdf",
+     "bytes": 715270
+    }
+   ]
+  },
+  {
+   "id": "1Nvy83Ug6c_irAWbIChHCD69hHSY1D2Jw",
+   "path": "M30M/M1/Ensayos/Solucionario ",
+   "items": [
+    {
+     "id": "1oKyXYWZbPU24y0PGZyx0joWxfT3wdAmR",
+     "name": "Claves m30m 8.docx",
+     "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+     "bytes": 14241
+    }
+   ]
+  },
+  {
+   "id": "1xyo9vhYttyXSjKjKI_pVSnq1oPFH77R7",
+   "path": "DEMRE/M1/Solucionario ",
+   "items": [
+    {
+     "id": "10AxwOKj8jZRqbpLEb2rSWkCC20Z7ALMD",
+     "name": "Copia de Clavijero Invierno 2024.pdf",
+     "type": "application/pdf",
+     "bytes": 225299
+    }
+   ]
+  },
+  {
+   "id": "1v8HVEyowV3Yw5EGhsijr3lRrY0i69o5N",
+   "path": "Más libros/Física/Guías ",
+   "items": [
+    {
+     "id": "19qzLMWckXhAqtEqacmUzODo66gQkTWCv",
+     "name": "Guía Fuerza y Leyes de Newton (1).pdf",
+     "type": "application/pdf",
+     "bytes": 24278988
+    },
+    {
+     "id": "187g0g4xOgFQOcWXMm8uhlejdgl0wE5lH",
+     "name": "Guía Método Científico [Preugram] (1).pdf",
+     "type": "application/pdf",
+     "bytes": 7245580
+    },
+    {
+     "id": "1UEUyZWxjxs9vM-uMQgOXARMgQTnOYAkF",
+     "name": "Guía Luz y Óptica  (2).pdf",
+     "type": "application/pdf",
+     "bytes": 5135845
+    },
+    {
+     "id": "1-S_1_9ycJbHanMrDY63tzb-Ezf9ux7S_",
+     "name": "Guía Ondas y Sonido.pdf",
+     "type": "application/pdf",
+     "bytes": 1562817
+    }
+   ]
+  }
+ ]
+}

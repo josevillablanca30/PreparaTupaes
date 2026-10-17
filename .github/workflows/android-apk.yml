@@ -1,0 +1,170 @@
+name: Android APK · compilación de prueba
+on:
+  push:
+    branches: [main, work/cachaste-respaldo-2026-10-15, work/cachaste-motor-duolingo-20261016]
+    paths: ['daily-*','assets/**','learning-core.js', 'm1-teaching.js', 'study-app.js', 'study-ui.css', 'index.html', 'inicio.html', 'science.html', 'science-bank.js', 'science-app.js', 'reading.html', 'reading-bank.js', 'reading-app.js', 'm2.html', 'm2-bank.js', 'm2-app.js', 'history.html', 'history-bank.js', 'history-app.js', 'android/**', 'tests/**', 'scripts/**', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
+  workflow_dispatch:
+concurrency:
+  group: cachaste-android-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      CACHASTE_DEBUG_KEYSTORE: ${{ github.workspace }}/android/cachaste-debug.keystore
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Instalar dependencias
+        run: npm ci
+      - name: Validar lógica y clave editorial antes del APK
+        run: npm run test:logic
+      - name: Validar integridad de los cinco bancos y generar informe
+        run: npm run audit:pedagogy
+      - name: Adjuntar informe editorial de auditoría
+        uses: actions/upload-artifact@v4
+        with:
+          name: cachaste-auditoria-pedagogica
+          path: reports/pedagogical-audit.json
+          retention-days: 14
+      - name: Construir aplicación web empaquetada
+        run: npm run build
+      - name: Instalar navegador de pruebas
+        run: npx playwright install --with-deps chromium
+      - name: Validar recorrido jugable, profesor y materias antes de empaquetar
+        run: npx playwright test tests/adventure-map.mobile.spec.mjs tests/visual-journey.mobile.spec.mjs tests/gameplay.mobile.spec.mjs tests/studios.mobile.spec.mjs tests/answer-repair.mobile.spec.mjs tests/transfer-cases.mobile.spec.mjs tests/confidence-journey.mobile.spec.mjs tests/five-subjects.mobile.spec.mjs --project=Android-Chrome --project=mobile-320px
+      - name: Guardar capturas de errores móviles
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cachaste-qa-movil-fallido
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 1
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Preparar SDK Android preinstalado
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          test -d "$ANDROID_HOME/platforms"
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0"
+          echo "sdk.dir=$ANDROID_HOME" > android/local.properties
+          ls "$ANDROID_HOME/platforms"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - name: Recuperar firma de pruebas desde una ruta explícita
+        uses: actions/cache@v4
+        with:
+          path: android/cachaste-debug.keystore
+          key: cachaste-debug-signing-v2
+      - name: Preparar y comprobar la clave exclusiva de beta
+        run: |
+          set -euo pipefail
+          if [ ! -s "$CACHASTE_DEBUG_KEYSTORE" ]; then
+            keytool -genkeypair -noprompt -keystore "$CACHASTE_DEBUG_KEYSTORE" \
+              -storepass android -keypass android -alias androiddebugkey \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=Android Debug,O=Cachaste Beta,C=CL"
+          fi
+          keytool -list -keystore "$CACHASTE_DEBUG_KEYSTORE" -storepass android -alias androiddebugkey >/dev/null
+      - name: Empaquetar la versión web local para Android
+        run: |
+          mkdir -p android/app/src/main/assets
+          cp dist/index.html android/app/src/main/assets/index.html
+          mkdir -p android/app/src/main/assets/assets
+          cp dist/assets/gatito-sabio-poses-v1.png dist/assets/gatito-sabio-oficial.png dist/assets/cachaste-icon.svg dist/assets/cachaste-logo.svg android/app/src/main/assets/assets/
+          cp dist/daily-*.js dist/daily-ui.css dist/m1-teaching.js dist/learning-core.js dist/study-app.js dist/study-ui.css dist/inicio.html dist/science.html dist/science-bank.js dist/science-app.js dist/reading.html dist/reading-bank.js dist/reading-app.js dist/m2.html dist/m2-bank.js dist/m2-app.js dist/history.html dist/history-bank.js dist/history-app.js android/app/src/main/assets/
+      - name: Auditar las cinco materias dentro del paquete Android
+        run: |
+          set -euo pipefail
+          for page in index.html science.html reading.html m2.html history.html; do
+            test -s "android/app/src/main/assets/$page"
+            grep -qi '<title>' "android/app/src/main/assets/$page"
+          done
+          for script in daily-catalog.js daily-core.js daily-gameplay.js daily-studios.js daily-curriculum.js daily-app.js m1-teaching.js learning-core.js study-app.js science-bank.js science-app.js reading-bank.js reading-app.js m2-bank.js m2-app.js history-bank.js history-app.js; do
+            test -s "android/app/src/main/assets/$script"
+          done
+          for subject in index.html science.html reading.html m2.html history.html; do
+            test -f "dist/$subject"
+          done
+          test -s android/app/src/main/assets/assets/cachaste-icon.svg
+          test -s android/app/src/main/assets/assets/cachaste-logo.svg
+          echo "Cinco materias, ocho scripts y marca Cachaste presentes en assets Android"
+      - name: Compilar APK beta y verificar paquete AAB release sin firma
+        working-directory: android
+        run: gradle --no-daemon :app:assembleDebug :app:bundleRelease
+      - name: Verificar firma del APK y conservar solo su certificado público
+        run: |
+          test -s "$CACHASTE_DEBUG_KEYSTORE"
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs \
+            android/app/build/outputs/apk/debug/app-debug.apk \
+            > android/app/build/outputs/apk/debug/APK-CERTIFICATE.txt
+      - name: Comprobar que se generó el AAB de verificación
+        run: |
+          test -s android/app/build/outputs/bundle/release/app-release.aab
+          echo "AAB generado para validar empaquetado; está sin firma de Play y no es publicable."
+      - name: Permitir aceleración del emulador
+        run: |
+          sudo chmod a+rw /dev/kvm
+      - name: Probar APK instalado, WebView sin red, persistencia y botón Atrás (Android 36)
+        id: emulator_primary
+        continue-on-error: true
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          arch: x86_64
+          target: google_apis
+          profile: pixel_2
+          disable-animations: true
+          script: cd android && gradle --no-daemon :app:connectedDebugAndroidTest
+      - name: Reintentar emulador Android 35 si el SDK 36 falla
+        id: emulator_fallback
+        if: steps.emulator_primary.outcome == 'failure'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          profile: pixel_2
+          disable-animations: true
+          script: cd android && gradle --no-daemon :app:connectedDebugAndroidTest
+      - name: Confirmar pruebas nativas antes de publicar APK
+        if: always() && steps.emulator_primary.outcome != 'success' && steps.emulator_fallback.outcome != 'success'
+        run: |
+          echo 'Ninguno de los emuladores Android completó la batería de pruebas.'
+          exit 1
+      - name: Conservar resultados Android
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cachaste-qa-android-${{ github.run_id }}
+          path: android/app/build/reports/androidTests/connected/
+          if-no-files-found: ignore
+          retention-days: 3
+      - name: Conservar AAB release de verificación (sin firma)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cachaste-AAB-UNSIGNED-NOT-FOR-PLAY-${{ github.sha }}
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 3
+      - name: Publicar APK descargable
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cachaste-v1.3.0-beta-camino-${{ github.sha }}
+          path: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            android/app/build/outputs/apk/debug/APK-CERTIFICATE.txt
+          if-no-files-found: error
+          retention-days: 3

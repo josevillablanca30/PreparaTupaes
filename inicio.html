@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f9f7fd">
+<meta name="description" content="Cachaste: prepárate para la PAES de Chile con Matemática M1, Matemática M2, Competencia Lectora, Ciencias e Historia.">
+<title>¿Cachaste? · Un ratito a la vez</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#27233c;background:#faf9fe;color-scheme:light}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 85% 0%,#e9e2ff 0%,transparent 36%),radial-gradient(ellipse at 3% 85%,#fdf0e5 0%,transparent 35%),#faf9fe}
+main{max-width:950px;margin:auto;padding:22px max(18px,env(safe-area-inset-left)) calc(70px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:5px 0 30px}
+.logo{display:flex;gap:11px;align-items:center;font-size:22px;letter-spacing:-.8px;font-weight:850}
+.symbol{display:grid;place-items:center;background:#7357d8;color:#fff;width:40px;height:40px;border-radius:13px;font-size:29px;box-shadow:0 5px 13px #7357d828}
+.version{font-size:12px;font-weight:700;color:#61538b;background:#f0ecfb;border-radius:24px;padding:9px 13px}
+.kicker{text-transform:uppercase;letter-spacing:1.7px;color:#7657c6;font-weight:800;font-size:12px}
+h1{font-size:clamp(33px,7vw,58px);line-height:1.09;letter-spacing:-2px;margin:13px 0 17px;max-width:740px}
+.lead{font-size:clamp(16px,2.8vw,19px);line-height:1.6;color:#68617b;max-width:650px;margin:0 0 36px}
+.section-title{display:flex;gap:15px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:30px 0 14px}
+h2{font-size:21px;letter-spacing:-.6px;margin:0}.section-title p{font-size:13px;color:#82798d;margin:0;line-height:1.5}
+.gridsci{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.subject{position:relative;display:flex;flex-direction:column;align-items:stretch;justify-content:space-between;background:white;text-decoration:none;color:inherit;border:1px solid #eae5f2;border-radius:24px;padding:clamp(18px,4vw,25px);min-height:235px;box-shadow:0 9px 25px #3025570a;transition:transform .18s,box-shadow .18s,border-color .18s}
+.subject:hover{transform:translateY(-3px);box-shadow:0 14px 30px #3a266a18;border-color:#b5a3e3}.subject:focus-visible,.subnav:focus-visible{outline:3px solid #4e32ab;outline-offset:4px}
+.subject:active{transform:scale(.99)}
+.subject.m1{min-height:204px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:18px;background:linear-gradient(118deg,#fff 46%,#f3eefe)}
+.subject-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.icon{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;font-size:24px;font-weight:850}
+.m1 .icon{background:#ede7ff;color:#6045be}.read .icon{background:#e4f2ff;color:#2463a4}.subject.read{min-height:190px;background:linear-gradient(115deg,#fff 50%,#eef6ff)}.subject.read .action{margin-top:16px}.bio .icon{background:#e7f5eb;color:#207e4d}.quim .icon{background:#fff1e2;color:#9d6228}.fis .icon{background:#e8f0ff;color:#346bb0}
+.chip{font-size:11px;font-weight:800;border-radius:30px;background:#f1edfc;color:#66529c;padding:7px 10px;white-space:nowrap}
+.subject h3{font-size:clamp(21px,3vw,28px);letter-spacing:-.7px;margin:15px 0 6px}
+.subject p{color:#6d667b;font-size:14px;line-height:1.5;margin:0}
+.action{color:#6247b8;font-size:14px;font-weight:800;display:inline-flex;align-items:center;gap:6px;margin-top:23px}
+.m1 .action{margin-top:18px}
+.subject .foot{display:flex;justify-content:space-between;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.subnav{display:inline-flex;align-items:center;justify-content:center;min-height:45px;padding:10px 15px;border-radius:13px;color:#6049ad;font-weight:750;text-decoration:none;background:#f0ecfd;font-size:13px}
+.sci-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px;background:#f1eef9;border-radius:16px;padding:14px 17px;color:#61547c;font-size:13px;line-height:1.5}
+.sci-meta a{font-weight:750;color:#6148a9;text-underline-offset:3px}
+.progress{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:35px}
+.progress article{background:#fff;border:1px solid #eee9f5;border-radius:17px;padding:18px}
+.progress span{font-size:13px;color:#6d6882}.progress strong{font-size:23px;font-weight:800;display:block;margin-top:4px;letter-spacing:-.5px}
+.bottom-note{font-size:12px;color:#8a8495;line-height:1.6;margin:22px 0}
+@media(max-width:700px){.progress{grid-template-columns:minmax(0,1fr)}.progress article{min-width:0;overflow-wrap:anywhere}header{margin-bottom:35px}.gridsci{grid-template-columns:1fr}.subject{min-height:162px}.subject.m1{grid-template-columns:minmax(0,1fr) auto;min-height:184px}.subject:not(.m1) .action{margin-top:15px}.subject h3{margin-top:10px}.section-title{margin-top:26px}.lead{margin-bottom:28px}}
+@media(max-width:370px){main{padding:15px 16px 70px}h1{letter-spacing:-1.5px}.subject.m1{grid-template-columns:1fr}.subject.m1 .icon{order:-1}.progress{grid-template-columns:1fr}.sci-meta{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+
+.subject{transition:transform .15s ease,border-color .15s ease}.subject:active{transform:scale(.99)}.progress{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}.continue-card{margin:24px 0;padding:20px;border:1px solid #d8c9f2;background:#f0eafd;border-radius:20px}.continue-card a{display:inline-flex;align-items:center;min-height:46px;padding:10px 16px;background:#6846bb;color:white;border-radius:12px;text-decoration:none;font-weight:750}.continue-card p{margin:8px 0 12px}@media(max-width:500px){header{margin-bottom:28px}.gridsci{gap:10px}.gridsci .subject{padding:17px}.gridsci .subject p{font-size:14px}.section-title{align-items:flex-start;gap:8px;flex-wrap:wrap}}@media(prefers-reduced-motion:reduce){.subject{transition:none}}
+</style><link rel="stylesheet" href="daily-ui.css">
+</head>
+<body><main>
+<section id="daily-root" aria-label="Aprendizaje diario"></section><section id="traditional-section" hidden><header class="exam-header"><a href="#home">← Volver a aprender</a><h1>Diagnósticos, prácticas y ensayos PAES</h1></header><h2>Diagnósticos, prácticas y ensayos PAES</h2><p>Conserva tus sesiones tradicionales y elige tu mención en Ciencias.</p>
+<div id="continue-study" aria-live="polite"></div>
+<section aria-labelledby="math-title"><div class="section-title"><h2 id="math-title">Matemática</h2><p>Comprende primero, practica después.</p></div>
+<a class="subject m1" href="index.html" aria-label="Entrar a Matemática M1">
+<div><div class="subject-top"><span class="chip">116 ejercicios originales</span></div>
+<h3>Matemática M1</h3><p>Desde cero: pistas, ejercicios visuales, diagnóstico y simulacro formativo.</p><span class="action">Entrar a M1 <span aria-hidden="true">→</span></span></div>
+<div class="icon" aria-hidden="true">x²</div></a><a class="subject m1" href="m2.html" aria-label="Entrar a Matemática M2"><div><div class="subject-top"><span class="chip">106 ejercicios originales</span></div><h3>Matemática M2</h3><p>Funciones, probabilidad, geometría, álgebra y modelación con explicaciones paso a paso.</p><span class="action">Practicar M2 <span aria-hidden="true">→</span></span></div><div class="icon" aria-hidden="true">M2</div></a></section>
+<section aria-labelledby="reading-title"><div class="section-title"><h2 id="reading-title">Competencia Lectora</h2><p>20 textos originales · 130 preguntas</p></div>
+<a class="subject read" href="reading.html" aria-label="Entrar a Competencia Lectora"><div class="subject-top"><span class="icon" aria-hidden="true">Aa</span><span class="chip">Tres habilidades</span></div><h3>Comprende lo que lees</h3><p>Aprende a localizar, interpretar y evaluar. Diagnóstico, Express y ensayo completo de 65 preguntas.</p><span class="action">Entrar a Competencia Lectora →</span></a></section>
+<section aria-labelledby="history-title"><div class="section-title"><h2 id="history-title">Historia y Ciencias Sociales</h2><p>65 preguntas disponibles</p></div><a class="subject read" href="history.html"><div class="subject-top"><span class="icon" aria-hidden="true">H</span><span class="chip">65 ejercicios originales</span></div><h3>Comprende los procesos históricos</h3><p>Historia de Chile, ciudadanía, economía e historia mundial. Diagnóstico, Express y práctica guiada con explicaciones.</p><span class="action">Practicar Historia →</span></a></section><section aria-labelledby="science-title"><div class="section-title"><h2 id="science-title">Ciencias · elige tu mención</h2><a class="subnav" href="science.html">Ver Ciencias completa →</a></div>
+<div class="gridsci">
+<a class="subject bio" href="science.html?asignatura=biologia" aria-label="Elegir mención Biología"><div><div class="subject-top"><span class="icon" aria-hidden="true">🧬</span><span class="chip">MC + mención</span></div><h3>Biología</h3><p>Células, sistemas, herencia, evolución y ambiente.</p></div><span class="action">Elegir mención Biología →</span></a>
+<a class="subject quim" href="science.html?asignatura=quimica" aria-label="Elegir mención Química"><div><div class="subject-top"><span class="icon" aria-hidden="true">⚗</span><span class="chip">MC + mención</span></div><h3>Química</h3><p>Átomos, enlaces, reacciones y cálculos químicos.</p></div><span class="action">Elegir mención Química →</span></a>
+<a class="subject fis" href="science.html?asignatura=fisica" aria-label="Elegir mención Física"><div><div class="subject-top"><span class="icon" aria-hidden="true">⚡</span><span class="chip">MC + mención</span></div><h3>Física</h3><p>Movimiento, ondas, electricidad y planeta Tierra.</p></div><span class="action">Elegir mención Física →</span></a>
+</div><div class="sci-meta"><span>La práctica de Ciencias siempre mezcla Biología, Física y Química. Tu mención tendrá más preguntas, sin dejar de repasar las otras dos.</span><a href="science.html">Elegir mi módulo →</a></div></section>
+<section class="progress" aria-label="Resumen local del aprendizaje">
+<article><span>Matemática M1</span><strong id="m1-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article>
+<article><span>Ciencias</span><strong id="science-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article>
+<article><span>Competencia Lectora</span><strong id="reading-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article>
+<article><span>Matemática M2</span><strong id="m2-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article><article><span>Historia</span><strong id="history-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article></section><p class="bottom-note">Tu progreso se guarda en este dispositivo y se mantiene separado por área. Cachaste es una aplicación independiente de preparación PAES; no contiene preguntas oficiales.</p>
+</section></main>
+<script>
+(function(){
+function safeRead(key){try{const value=JSON.parse(localStorage.getItem(key)||'null');return value&&typeof value==='object'?value:null}catch{return null}}
+const m=safeRead('prepara-paes-demo-v1');
+const h=Array.isArray(m)?m:Array.isArray(m?.history)?m.history:[];
+const sc=safeRead('cachaste-science-v1');
+const sh=Array.isArray(sc?.history)?sc.history:[];
+if(h.length)document.getElementById('m1-progress').textContent=h.length+' '+(h.length===1?'respuesta':'respuestas');
+if(sh.length)document.getElementById('science-progress').textContent=sh.length+' '+(sh.length===1?'respuesta':'respuestas');
+const reading=safeRead('cachaste-reading-v1');const rh=Array.isArray(reading?.history)?reading.history:[];
+if(rh.length)document.getElementById('reading-progress').textContent=rh.length+' '+(rh.length===1?'respuesta':'respuestas');
+for(const [key,id]of [['cachaste-m2-v1','m2-progress'],['cachaste-history-v1','history-progress']]){const v=safeRead(key);const rows=Array.isArray(v?.history)?v.history.filter(r=>r&&typeof r.correct==='boolean'):[];const el=document.getElementById(id);if(rows.length&&el)el.textContent=rows.length+' '+(rows.length===1?'respuesta':'respuestas');}
+const m1Draft=safeRead('cachaste-m1-diagnostic-draft-v1'),m1Exam=safeRead('prepara-paes-active-exam-v1');
+const possible=[['index.html','Matemática M1',m1Exam||m1Draft],['science.html','Ciencias',sc?.session],['reading.html','Competencia Lectora',reading?.session],['m2.html','Matemática M2',safeRead('cachaste-m2-v1')?.session],['history.html','Historia',safeRead('cachaste-history-v1')?.session]];
+const pending=possible.filter(([, ,ses])=>ses&&Array.isArray(ses.ids)&&ses.ids.length&&Number.isInteger(ses.index)&&ses.index>=0&&ses.index<ses.ids.length);
+const next=pending.sort((a,b)=>(b[2].started||0)-(a[2].started||0))[0],container=document.getElementById('continue-study');
+if(next&&container){const [href,title,ses]=next;container.innerHTML='<section class="continue-card"><span class="kicker">SIGAMOS DESDE DONDE QUEDASTE</span><h2>'+title+'</h2><p>Pregunta '+(ses.index+1)+' de '+ses.ids.length+'. Tu sesión está guardada en este dispositivo.</p><a href="'+href+'">Retomar mi preparación →</a></section>';}
+})();
+</script>
+<script src="learning-core.js"></script><script src="daily-curriculum.js"></script><script src="daily-catalog.js"></script><script src="daily-foundation-visuals.js"></script><script src="daily-basics.js"></script><script src="daily-core.js"></script><script src="daily-visuals.js"></script><script src="daily-gameplay.js"></script><script src="daily-studios.js"></script><script src="daily-app.js"></script></body></html>
