@@ -6,35 +6,36 @@ Carpeta principal observada: [Material PAES 💗](https://drive.google.com/drive
 
 ## Alcance del inventario
 
-La carpeta principal muestra 14 categorías y 41 carpetas de materia en su nivel siguiente. El recorrido registró esa estructura y una muestra de nombres; no fue un inventario recursivo de cada PDF, página o versión. Algunas categorías se subdividen en guías, ejercicios, pruebas, ensayos y libros. Por eso, esta tabla describe disponibilidad visible por materia y proveedor, no certifica cobertura completa ni vigencia del contenido.
+Se recorrieron recursivamente las carpetas accesibles desde la carpeta principal el 17 de octubre de 2026. La pasada visitó 143 carpetas (incluida la raíz), llegó hasta profundidad 4, listó 668 elementos y no devolvió errores ni carpetas con 200 o más elementos, el límite usado por consulta. Esto cierra el recorrido de la estructura visible en esa pasada. La revisión de metadatos no descargó ni leyó los documentos, y no certifica vigencia, cobertura oficial, calidad pedagógica ni derechos.
 
 | Materia o área | Carpetas visibles en la estructura de Drive |
 | --- | --- |
-| M1 | DEMRE/M1/Solucionario; TESLA/M1; Cumbres/M1; PDV/M1; CPECH/M1; Más libros/M1; M30M/M1; Libros Moraleja (libros de Matemática 1 y 2, tomos I y II) |
-| M2 | TESLA/M2; Cumbres/M2; PDV/M2; M30M/M2; Libros Moraleja (tomos compartidos M1 y M2) |
-| Competencia Lectora | Libros Clave (PDF de comprensión lectora); TESLA/CL; Cumbres/CL; PDV/CL; FILADD/CL y PDF de ensayos clasificados; ciencias_850 (libro de Lenguaje) |
-| Historia y Ciencias Sociales | TESLA/Historia; Cumbres/Historia; PDV/Historia; CPECH/Historia; Manual puntaje nacional (Historia.pdf); M30M/Historia; Libros Moraleja (Historia, 5.ª edición) |
+| M1 | DEMRE/M1/Solucionario; TESLA/M1; Cumbres/M1; PDV/M1; CPECH/M1; Más libros/M1; M30M/M1; Libros Moraleja (libros compartidos de Matemática 1 y 2) |
+| M2 | TESLA/M2; Cumbres/M2; PDV/M2; M30M/M2; Libros Moraleja (libros compartidos de Matemática 1 y 2) |
+| Competencia Lectora | Libros Clave; TESLA/CL; Cumbres/CL; PDV/CL; FILADD/CL y ensayos clasificados; ciencias_850 (libro de Lenguaje) |
+| Historia y Ciencias Sociales | TESLA/Historia; Cumbres/Historia; PDV/Historia; CPECH/Historia; Manual puntaje nacional; M30M/Historia; Libros Moraleja |
 | Ciencias: Biología | TESLA/Biología; Cumbres/Biología; PDV/Biología; CPECH/Biología; FILADD/Biología; Flashcards/Biología; Resúmenes/Biología; M30M/Expediente secreto/Ciencias |
 | Ciencias: Física | TESLA/Física; Cumbres/Física; PDV/Física; CPECH/Física; Más libros/Física; FILADD/Física |
 | Ciencias: Química | TESLA/Química; PDV/Química; CPECH/Química; Flashcards/Química; M30M/Química |
 
-## Catálogo de archivos: snapshot de metadatos
+## Catálogo de archivos: snapshot recursivo de metadatos
 
-En una pasada del 17 de octubre de 2026 se visitaron **128 carpetas** (hasta tres niveles de recorrido) y se listaron **635 elementos**: 128 carpetas y 507 archivos; 495 de estos archivos se identificaron como PDF, además de presentaciones e imágenes. El listado es un snapshot de nombres, rutas y tipos; no se descargaron ni leyeron los 495 PDF. Carpetas con más de 100 elementos o ramas más profundas pueden requerir nuevas pasadas, así que esto todavía no es un inventario recursivo exhaustivo.
+El recorrido registró **668 elementos**: 142 subcarpetas y 526 archivos. De los archivos, **513 son PDF**, 11 son presentaciones PPTX, uno es una imagen PNG y uno es un documento DOCX. Se visitaron todas las carpetas accesibles detectadas; este snapshot refleja nombres, rutas y tipos, no lectura del contenido de los 513 PDF.
 
-Clasificación orientativa por materia, inferida de nombres y rutas y con posibles solapamientos (por ejemplo, textos de M1 y M2 compartidos):
+Clasificación orientativa de los PDF por nombre y ruta:
 
-| Materia o área | PDF atribuidos por nombre/ruta |
+| Materia o área | PDF atribuidos |
 | --- | ---: |
-| M1 | 31 |
+| M1 | 80 |
 | M2 | 28 |
-| Competencia Lectora | 149 |
-| Historia y Ciencias Sociales | 28 |
-| Biología | 70 |
-| Física | 39 |
-| Química | 102 |
+| Competencia Lectora | 152 |
+| Historia y Ciencias Sociales | 30 |
+| Biología | 73 |
+| Física | 44 |
+| Química | 107 |
+| Sin asignación por nombre/ruta | 1 |
 
-Estas cantidades no representan preguntas disponibles ni cobertura del temario. No deduplican necesariamente versiones y pueden dejar material sin clasificar o asignarlo a más de un área. El catálogo archivo por archivo permanece en Drive; no se publican aquí identificadores privados ni enlaces individuales.
+Dos libros de Moraleja titulados para Matemática 1 y 2 se cuentan en ambas materias. Las cifras son una ayuda de navegación, no cantidad de preguntas, cobertura del temario, deduplicación de versiones ni revisión de contenido. Un PDF genérico de Ciencias no se asignó a una mención. El registro detallado de archivo por archivo queda en Drive; este documento no publica identificadores ni enlaces individuales.
 
 ## Proveedores y tipos de material observados
 
