@@ -26,7 +26,7 @@ La auditoría automática de los bancos detecta problemas estructurales, claves 
 
 En el commit `6afb7c3116df835378b52b789ab7044da30ffaa8`, el flujo de GitHub Actions pasó pruebas de lógica y contenido, auditoría de los cinco bancos, build web, uso táctil y vista de 320 px. También compiló la APK beta, comprobó su firma, instaló la aplicación en un emulador y pasó modo sin red, persistencia local y botón Atrás. La verificación es automatizada en emulador; falta validarla en un teléfono físico. La APK beta se firma con la clave de pruebas y no es una firma de distribución comercial.
 
-La validación local actual cubre **627 preguntas** de las cinco materias (M2 pasó de 106 a 110) y registra **0 alertas críticas y 2 alertas heurísticas** de enunciado breve (M1-210 y M1-224). Las 158 pruebas lógicas y el build pasan. M2-107–110 agregan probabilidad condicionada y contextos financieros hipotéticos de crédito, ahorro previsional y pie hipotecario, con tutor y explicación por alternativa. Las heurísticas de M1 se revisaron manualmente en la pasada anterior. La auditoría no certifica por sí sola corrección conceptual, cobertura exhaustiva del temario ni derechos de uso; el cambio aún requiere la comprobación CI y revisión humana externa.
+El último corte local cubre **629 preguntas** de las cinco materias (M2 tiene 112) y registra **0 alertas críticas y 2 heurísticas** de enunciado breve (M1-210 y M1-224). Pasan 158 pruebas lógicas, auditoría y build. M2-107–110 amplía probabilidad condicionada y finanzas hipotéticas; M2-111–112 aborda lectura de gráficos exponenciales y secantes. La auditoría no certifica por sí sola cobertura completa, corrección conceptual ni derechos de uso; el CI remoto de este corte aún debe terminar.
 
 La publicación de Pages no pudo completarse: el job de validación pasó, pero el job de despliegue falló porque Pages aún no está habilitado en la configuración del repositorio.
 
@@ -39,7 +39,7 @@ La publicación de Pages no pudo completarse: el job de validación pasó, pero 
 5. Preparar una firma Android de distribución estable, separar credenciales de prueba y producción y validar la instalación/actualización en un equipo real antes de distribuirla.
 6. Definir cómo se entregará soporte, privacidad y manejo de datos. Hoy no hay cuentas ni sincronización en la nube; el progreso queda en el dispositivo. El tutor entrega explicaciones escritas, no respuestas generadas por una IA en vivo.
 
-No se declara una fecha de lanzamiento ni un puntaje predictivo. Los ensayos son formativos y no equivalen a una prueba oficial DEMRE.
+La meta de cierre es el 31 de octubre de 2026, para llegar con acceso a estudiantes durante noviembre. El plan y sus dependencias están en [Plan de cierre para lanzamiento de noviembre](docs/plan-cierre-31-octubre-2026.md). La PAES Regular de Admisión 2027 se rinde el 30 de noviembre, 1 y 2 de diciembre de 2026. No se ofrece puntaje predictivo: los ensayos son formativos y no equivalen a una prueba oficial DEMRE.
 
 ## Probar en desarrollo
 
@@ -70,5 +70,9 @@ URL prevista, aún sujeta a habilitar Pages y completar el despliegue: https://j
 - [Expansión de gráficos y tutor](docs/qa-m1-expansion-100-2026-10-13.md)
 - [Inventario recursivo de metadatos de Material PAES en Drive](docs/inventario-drive-material-paes-2026-10.md)
 - [Checklist de cierre comercial](docs/checklist-cierre-comercial.md)
+- [Matriz de cobertura M2 2027](docs/cobertura-m2-2027.md)
+- [Plan de cierre para lanzamiento de noviembre](docs/plan-cierre-31-octubre-2026.md)
+- [Matriz de cobertura M2 2027](docs/cobertura-m2-2027.md)
+- [Plan de cierre para lanzamiento de noviembre](docs/plan-cierre-31-octubre-2026.md)
 - [Fuentes y protocolo para Drive](docs/fuentes-drive-m1-2026.md)
 - [Contrato para importar preguntas](content/README.md)
