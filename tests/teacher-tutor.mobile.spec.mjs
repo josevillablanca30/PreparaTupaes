@@ -29,9 +29,9 @@ for(const id of ['M2-001','M2-003','M2-007','M2-050']){
   expect(transfer.length).toBeGreaterThan(0);expect(transfer.every(q=>q.id!==id)).toBe(true);expect(new Set(transfer.map(q=>q.concept)).size).toBe(1);expect(errors).toEqual([]);
  });
 }
-// Recorre las 113 preguntas reales en lotes de diez: no solo cuatro ejemplos escogidos.
-for(let start=1;start<=113;start+=10){
- const ids=Array.from({length:Math.min(10,113-start)},(_,i)=>'M2-'+String(start+i).padStart(3,'0'));
+// Recorre las 114 preguntas reales en lotes de diez: no solo cuatro ejemplos escogidos.
+for(let start=1;start<=114;start+=10){
+ const ids=Array.from({length:Math.min(10,115-start)},(_,i)=>'M2-'+String(start+i).padStart(3,'0'));
  test('M2 completo '+ids[0]+'–'+ids.at(-1)+': cada modo corresponde al ítem y al distractor',async({page})=>{
   await page.addInitScript(ids=>localStorage.setItem('cachaste-m2-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'all-teaching',mode:'express',ids,index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:ids.map(()=>null),flags:[]}})),ids);
   await page.goto('./m2.html');await page.locator('#resume').click();
