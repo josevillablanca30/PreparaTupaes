@@ -10,10 +10,10 @@ La carpeta principal muestra 14 categorías y 41 carpetas de materia en su nivel
 
 | Materia o área | Carpetas visibles en la estructura de Drive |
 | --- | --- |
-| M1 | DEMRE/M1/Solucionario; TESLA/M1; Cumbres/M1; PDV/M1; CPECH/M1; Más libros/M1; M30M/M1; Libros Moraleja (tomos compartidos M1 y M2) |
+| M1 | DEMRE/M1/Solucionario; TESLA/M1; Cumbres/M1; PDV/M1; CPECH/M1; Más libros/M1; M30M/M1; Libros Moraleja (libros de Matemática 1 y 2, tomos I y II) |
 | M2 | TESLA/M2; Cumbres/M2; PDV/M2; M30M/M2; Libros Moraleja (tomos compartidos M1 y M2) |
-| Competencia Lectora | Libros Clave; TESLA/CL; Cumbres/CL; PDV/CL; FILADD/CL y Ensayos clasificados; ciencias_850/CL |
-| Historia y Ciencias Sociales | TESLA/Historia; Cumbres/Historia; PDV/Historia; CPECH/Historia; Manual puntaje nacional; M30M/Historia; Libros Moraleja/Historia |
+| Competencia Lectora | Libros Clave (PDF de comprensión lectora); TESLA/CL; Cumbres/CL; PDV/CL; FILADD/CL y PDF de ensayos clasificados; ciencias_850 (libro de Lenguaje) |
+| Historia y Ciencias Sociales | TESLA/Historia; Cumbres/Historia; PDV/Historia; CPECH/Historia; Manual puntaje nacional (Historia.pdf); M30M/Historia; Libros Moraleja (Historia, 5.ª edición) |
 | Ciencias: Biología | TESLA/Biología; Cumbres/Biología; PDV/Biología; CPECH/Biología; FILADD/Biología; Flashcards/Biología; Resúmenes/Biología; M30M/Expediente secreto/Ciencias |
 | Ciencias: Física | TESLA/Física; Cumbres/Física; PDV/Física; CPECH/Física; Más libros/Física; FILADD/Física |
 | Ciencias: Química | TESLA/Química; PDV/Química; CPECH/Química; Flashcards/Química; M30M/Química |
