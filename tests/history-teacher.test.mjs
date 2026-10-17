@@ -5,9 +5,10 @@ import {loadBanks} from '../scripts/load-banks.mjs';
 import vm from 'node:vm';
 const before=JSON.parse(readFileSync(new URL('../pedagogy/history-before-2026-10-15.json',import.meta.url)));
 const bank=loadBanks().Historia,by=n=>bank.find(q=>q.id==='HIS-'+String(n).padStart(3,'0'));
+const revisedOptions=new Map([['HIS-038',['Facilita información y fiscalización del poder','Permite difundir información sin evaluar su evidencia','Reemplaza el control que ejerce el Congreso','Permite que los medios apliquen sanciones judiciales']],['HIS-041',['Personas sin trabajo que buscan empleo y están disponibles','Personas que buscan empleo, aunque no estén disponibles','Personas sin trabajo que no buscan empleo activamente','Personas ocupadas que buscan cambiar de trabajo']],['HIS-047',['La matrícula creció en el período mostrado','La calidad educativa creció en la misma proporción','La matrícula aumentó por igual en todas las regiones','La tasa de egreso creció al mismo ritmo que la matrícula']],['HIS-055',['Participaron siete de cada diez personas habilitadas','El 70% de todas las personas residentes participó','La participación se distribuyó por igual entre regiones','El número de votos aumentó 70% respecto de la elección anterior']]]);
 test('Historia: las 65 claves, preguntas y alternativas de la beta se conservan',()=>{
  assert.equal(bank.length,65);
- for(const old of before){const q=bank.find(q=>q.id===old.id);assert.equal(q.question,old.question);assert.equal(q.answer,old.answer);assert.deepEqual(Array.from(q.options),old.options);}
+ for(const old of before){const q=bank.find(q=>q.id===old.id);assert.equal(q.question,old.question);assert.equal(q.answer,old.answer);assert.deepEqual(Array.from(q.options),revisedOptions.get(q.id)||old.options);}
 });
 test('Historia: cada clase revisada integra fundamentos, aplicación, otra estrategia y tres errores particulares',()=>{
  const reviewed=bank.filter(q=>q.teaching);assert.equal(reviewed.length,65);
