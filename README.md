@@ -24,7 +24,11 @@ La auditoría automática de los bancos detecta problemas estructurales, claves 
 
 **Todavía no está aprobado como producto comercial ni como versión final para estudiantes.** La última beta verificada en los reportes es M1 v0.6, de octubre de 2026. Desde entonces se integraron las cinco materias al paquete, una experiencia de aprendizaje por niveles, misiones iniciales y seis poses del gatito. La animación reciente reutiliza esas poses con movimiento CSS suave.
 
-Los controles de GitHub Actions ejecutan pruebas de lógica, auditoría estructural de contenido, compilación web y pruebas táctiles en navegador. El workflow de Android compila una APK de prueba. Una prueba automática exitosa no sustituye la revisión editorial completa ni la prueba en un teléfono físico.
+En el commit `c467dcaae1d3bea8271c7d1c6f698e64e9a70410`, la validación web y móvil pasó, y el flujo Android compiló e instaló la APK en un emulador. Pasó la comprobación sin red, guardado local y botón Atrás. Es una prueba automatizada en emulador; todavía no hay validación en un teléfono físico.
+
+La auditoría estructural de ese commit encontró **623 preguntas y 0 fallas críticas, además de 129 alertas que requieren revisión**. De estas, 107 corresponden a Ciencias; predominan pasos de razonamiento breves (89 alertas en total) y distractores absolutos (35). Son alertas heurísticas, no errores confirmados; cada una debe revisarse en contexto contra Drive y el temario. Cero fallas críticas no equivale a aprobación pedagógica.
+
+La publicación de Pages no pudo completarse: el job de validación pasó, pero el job de despliegue falló porque Pages aún no está habilitado en la configuración del repositorio.
 
 ### Bloqueos para cerrar la versión comercial
 
