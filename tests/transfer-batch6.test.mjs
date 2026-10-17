@@ -1,0 +1,65 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {dailyCatalog} from '../scripts/daily-catalog.mjs';
+import {readinessAudit} from '../scripts/readiness-audit.mjs';
+import {transferCasesBatch6 as cases} from '../scripts/paes-transfer-batch6-2027.mjs';
+
+const {items}=dailyCatalog(),byKey=new Map(items.map(q=>[q.key,q]));
+test('Lote 6: cierra con preguntas originales las diez brechas M1 trazadas a DEMRE y Drive',()=>{
+ assert.equal(cases.length,10);
+ assert.equal(items.length,705);
+ assert.equal(new Set(items.map(q=>q.key)).size,705);
+ assert.equal(items.filter(q=>q.origin==='original-transfer-2027').length,82);
+ assert.deepEqual(cases.map(c=>c.id),Array.from({length:10},(_,i)=>'TR-M1-'+String(i+21).padStart(3,'0')));
+ for(const c of cases){
+  const base=byKey.get(c.base),q=byKey.get('M1:'+c.id);
+  assert.ok(base&&q,c.id);
+  assert.equal(q.concept,base.concept,c.id);
+  assert.equal(q.levelId,base.levelId,c.id);
+  assert.notEqual(q.family,base.family,c.id);
+  assert.notEqual(q.question,base.question,c.id);
+  assert.equal(q.question,c.question);
+  assert.equal(q.answer,c.answer);
+  assert.deepEqual(q.options,c.options);
+  assert.equal(new Set(q.options).size,4);
+  assert.ok(c.steps.every(s=>s.length>=55),c.id);
+  assert.ok(c.errors.every((s,i)=>i===c.answer?s==='' : s.length>=24),c.id);
+  assert.equal(q.teaching.selectedFeedback.filter(Boolean).length,3);
+  assert.ok(c.sourceTrace.officialTemario.includes('Temario-PAESRegular-2026-M1'),c.id);
+  assert.equal(c.sourceTrace.driveFileId,'1tgKp8r5wl6_PDk-G8yHUTDU4xHlldsvA');
+  assert.ok(c.sourceTrace.alignmentRationale.length>=35,c.id);
+ }
+ const gate=readinessAudit(items);
+ assert.equal(gate.overall.originals,623);
+ assert.equal(gate.overall.transfers,82);
+ assert.equal(gate.overall.questions,705);
+ assert.equal(gate.overall.concepts,287);
+ assert.equal(gate.overall.unverifiableConcepts,67);
+ assert.equal(gate.subjects.M1.unverifiableConcepts,0);
+ assert.equal(gate.subjects.Ciencias.unverifiableConcepts,47);
+ assert.equal(gate.subjects.Historia.unverifiableConcepts,13);
+});
+test('Las claves del lote M1 se comprueban por cálculo independiente',()=>{
+ const answer=id=>{const c=cases.find(x=>x.id===id);assert.ok(c,id);return c.options[c.answer]};
+ assert.equal(answer('TR-M1-021'),'5');
+ assert.equal((5**4*5**2)/5**5,5);
+ assert.equal(answer('TR-M1-022'),'Dibujo y música comparten la frecuencia máxima');
+ assert.equal(Math.max(12,15,15,8),15);
+ assert.equal(answer('TR-M1-023'),'9');
+ assert.equal((14+16)/2-(5+7)/2,9);
+ assert.equal(answer('TR-M1-024'),'28 min');
+ assert.equal(Math.ceil(.65*20),13);
+ assert.equal([10,12,13,15,16,17,18,20,22,23,25,26,28,30,31,33,35,37,39,40][12],28);
+ assert.equal(answer('TR-M1-025'),'150 cm²');
+ assert.equal(6*5**2,150);
+ assert.equal(answer('TR-M1-026'),'48π cm²');
+ assert.equal(2*Math.PI*4*6,48*Math.PI);
+ assert.equal(answer('TR-M1-027'),' (2, −2)'.trim());
+ assert.deepEqual([-4+6,3-5],[2,-2]);
+ assert.equal(answer('TR-M1-028'),' (−1, 3)'.trim());
+ assert.deepEqual([-1*1,3],[ -1,3]);
+ assert.equal(answer('TR-M1-029'),'10 cm');
+ assert.equal(4*(7.5/3),10);
+ assert.equal(answer('TR-M1-030'),'54 cm²');
+ assert.equal(6*3**2,54);
+});

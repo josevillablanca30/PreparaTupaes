@@ -6,15 +6,15 @@ import {readinessAudit} from '../scripts/readiness-audit.mjs';
 const {items}=dailyCatalog(),report=readinessAudit(items);
 test('Auditoría continua detecta las brechas que restan sin inflar logros ni bancos',()=>{
  assert.equal(report.overall.originals,623);
- assert.equal(report.overall.transfers,72);
- assert.equal(report.overall.questions,695);
+ assert.equal(report.overall.transfers,82);
+ assert.equal(report.overall.questions,705);
  assert.equal(report.overall.concepts,287);
- assert.equal(report.overall.unverifiableConcepts,77,'No inflar dominio: 77 conceptos aún carecen de segunda familia evaluable');
- assert.equal(Object.values(report.subjects).reduce((n,x)=>n+x.unverifiableConcepts,0),77);
+ assert.equal(report.overall.unverifiableConcepts,67,'No inflar dominio: 67 conceptos aún carecen de segunda familia evaluable');
+ assert.equal(Object.values(report.subjects).reduce((n,x)=>n+x.unverifiableConcepts,0),67);
  assert.ok(report.overall.unverifiableConcepts>0,'No ocultar las brechas que quedan');
  assert.equal(report.gaps.length,report.overall.unverifiableConcepts);
  assert.equal(Object.values(report.subjects).reduce((n,s)=>n+s.concepts,0),287);
- assert.equal(Object.values(report.subjects).reduce((n,s)=>n+s.transfers,0),72);
+ assert.equal(Object.values(report.subjects).reduce((n,s)=>n+s.transfers,0),82);
  for(const gap of report.gaps){assert.equal(gap.families,1);assert.ok(gap.questions>=1);assert.ok(gap.concept.length>3);}
  console.log('BRECHAS AÚN PENDIENTES:',JSON.stringify(Object.fromEntries(Object.entries(report.subjects).map(([k,v])=>[k,{concepts:v.concepts,pendientes:v.unverifiableConcepts,transferencias:v.transfers}]))));
 });

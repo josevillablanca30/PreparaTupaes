@@ -9,8 +9,8 @@ const byKey=new Map(items.map(q=>[q.key,q]));
 const sourceDomains=['acceso.mineduc.cl'];
 test('12 ítems nuevos verificables, distintos de los originales y trazados a temarios DEMRE y documentos del Drive',()=>{
  assert.equal(additions.length,12);
- assert.equal(items.length,695);
- assert.equal(items.filter(x=>x.origin==='original-transfer-2027').length,72);
+ assert.equal(items.length,705);
+ assert.equal(items.filter(x=>x.origin==='original-transfer-2027').length,82);
  assert.equal(new Set(additions.map(x=>x.id)).size,12);
  assert.equal(new Set(additions.map(x=>x.base)).size,12);
  assert.deepEqual(['M1','Ciencias','Historia'].map(s=>additions.filter(x=>x.base.startsWith(s+':')).length),[4,4,4]);
@@ -72,7 +72,7 @@ test('Las interpretaciones científicas e históricas no convierten evidencia li
 test('La incorporación reduce las brechas, sin fingir cobertura completa del temario',()=>{
  const report=readinessAudit(items);
  assert.equal(report.overall.originals,623);
- assert.equal(report.overall.transfers,72);
+ assert.equal(report.overall.transfers,82);
  assert.equal(report.overall.concepts,287);
  assert.ok(report.overall.unverifiableConcepts<100);
  for(const row of additions)assert.ok(!report.gaps.some(g=>g.subject===row.base.split(':')[0]&&g.concept===byKey.get(row.base).concept),row.id);
