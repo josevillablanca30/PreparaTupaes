@@ -1,6 +1,7 @@
 /* Auditoría estructural reproducible de los cinco bancos. No sustituye revisión humana de validez disciplinar. */
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {loadBanks} from './load-banks.mjs';
+import {hasCompleteReasoningSequence} from './reasoning-quality.mjs';
 const root=new URL('../',import.meta.url);
 const loaded=loadBanks();
 const banks={M1:loaded.M1.map(q=>({...q,question:q.q})),Ciencias:loaded.Ciencias,Lectura:loaded.Lectura,M2:loaded.M2,Historia:loaded.Historia};
@@ -25,7 +26,7 @@ for(const [name,questions] of Object.entries(banks)){
   if(name==='Ciencias'||name==='Lectura'){
    if(!q.easy||q.easy.trim().length<95)flag('vague_easy','review','Modo Más fácil demasiado breve: requiere explicación comprensible y concreta');
    if(!q.example||q.example.trim().length<105||/En otro caso parecido|Para comprobarlo, vuelve al fragmento indicado/i.test(q.example))flag('generic_example','review','Ejemplo o aplicación demasiado genérico para enseñar el concepto');
-   if((q.steps||[]).some(x=>String(x).trim().length<45))flag('short_reasoning_step','review','Paso del razonamiento demasiado breve o poco explicativo');
+   if(!hasCompleteReasoningSequence(q.steps))flag('short_reasoning_sequence','review','Revisar la explicación completa: faltan pasos desarrollados o contexto suficiente');
   }
   if(name==='M2'||name==='Historia'){
    if(!q.why||q.why.trim().length<85)flag('vague_core_reasoning','review','Justificación breve: revisar mecanismo, evidencia y conclusión');
