@@ -51,6 +51,7 @@ Meta de cierre: 31 de octubre de 2026, para habilitar el uso durante noviembre. 
 - [x] La ruta diaria organiza materias, unidades y niveles.
 - [x] Se añadió progreso de dominio por etapa y una salida al recorrido completo al terminar la última unidad.
 - [x] El gatito usa poses existentes con movimiento CSS por estado; caminar y celebrar recibieron animaciones adicionales.
+- [x] El estado «explicando» recorre las seis celdas del sprite en secuencia lenta; cambio de CSS guardado en `abe108d` y respeta la regla existente de movimiento reducido.
 - [ ] Revisar visualmente todas las pantallas en Android/iPhone y anchos de 320 px, incluyendo diagnóstico, tutor, resultados, progreso, Ciencias y ensayos.
 - [ ] Comprobar que navegación atrás, continuar sesión, cambio de materia y progreso guardado sean comprensibles y consistentes.
 - [ ] Revisar lector de pantalla, foco, contraste, tamaños táctiles, errores y movimiento reducido.
