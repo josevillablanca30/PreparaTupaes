@@ -21,7 +21,7 @@ Meta de cierre: 31 de octubre de 2026, para habilitar el uso durante noviembre. 
 - [x] Completar el recorrido recursivo de la estructura accesible: sin errores y ninguna carpeta alcanzó el tope de 200 elementos por consulta.
 - [x] Contrastar M2 contra el temario Regular 2027 y ampliar el banco con probabilidad condicionada y contextos hipotéticos de finanzas; preguntas originales M2-107–110 con tutor y distractores propios.
 - [x] Cerrar dos brechas iniciales con preguntas M2-111 (lectura de gráfico exponencial) y M2-112 (secantes desde punto exterior); ambas tienen tutor y explicación por alternativa.
-- [x] Añadir M2-113, lectura de dominio, crecimiento y asíntota vertical de la función logarítmica; CI y revisión humana de este lote pendientes.
+- [x] Añadir M2-113, lectura de dominio, crecimiento y asíntota vertical de la función logarítmica; CI pasó (158 pruebas, auditoría 630, Playwright móvil); revisión humana pendiente.
 - [x] Crear una primera matriz M2 2027 enlazada a IDs actuales; identificar brechas explícitas y separar presencia de cobertura validada: [cobertura-m2-2027.md](cobertura-m2-2027.md).
 - [ ] Preparar un catálogo duradero y revisable de los 668 elementos listados (513 PDF y carpetas) con título, ruta, tipo, proveedor, versión y estado de lectura; detectar duplicados y cambios posteriores.
 - [ ] Clasificar cada archivo por prueba, materia, proveedor, año/versión y formato; registrar si se pudo leer o revisar visualmente.
@@ -85,6 +85,8 @@ Meta de cierre: 31 de octubre de 2026, para habilitar el uso durante noviembre. 
 - Aportar permisos comerciales si se reproducirá contenido protegido y definir responsable de soporte/privacidad.
 
 ## Registro de avances
+
+| 17-10-2026 · `30d1b56` | M2 llega a 113 preguntas con lectura logarítmica original y referencia Drive | 158/158 pruebas lógicas, auditoría 630 (0 críticas/2 heurísticas), build y 597 pruebas móviles aprobadas; APK en emulador y Pages aún pendientes. |
 
 | Fecha / commit | Avance | Evidencia / estado |
 | --- | --- | --- |
