@@ -6,6 +6,8 @@ Criterio: solo se marca **Hecho** con evidencia reproducible; una prueba estruct
 
 ## 1. Producto y alcance
 
+Meta de cierre: 31 de octubre de 2026, para habilitar el uso durante noviembre. La PAES Regular 2026 se rinde el 30 de noviembre, 1 y 2 de diciembre. La secuencia y criterios de salida están en [plan de cierre](plan-cierre-31-octubre-2026.md).
+
 - [x] Existe una app móvil con M1, M2, Competencia Lectora, Ciencias e Historia.
 - [x] Ciencias ofrece elección de mención.
 - [x] Hay práctica, sesiones por niveles, progreso local y módulos tradicionales.
@@ -20,7 +22,7 @@ Criterio: solo se marca **Hecho** con evidencia reproducible; una prueba estruct
 - [x] Contrastar M2 contra el temario Regular 2027 y ampliar el banco con probabilidad condicionada y contextos hipotéticos de finanzas; preguntas originales M2-107–110 con tutor y distractores propios.
 - [x] Cerrar dos brechas iniciales con preguntas M2-111 (lectura de gráfico exponencial) y M2-112 (secantes desde punto exterior); ambas tienen tutor y explicación por alternativa.
 - [x] Crear una primera matriz M2 2027 enlazada a IDs actuales; identificar brechas explícitas y separar presencia de cobertura validada: [cobertura-m2-2027.md](cobertura-m2-2027.md).
-- [ ] Preparar un catálogo duradero y revisable de los 526 archivos con título, ruta, tipo, proveedor, versión y estado de lectura; detectar duplicados y cambios posteriores.
+- [ ] Preparar un catálogo duradero y revisable de los 668 elementos listados (513 PDF y carpetas) con título, ruta, tipo, proveedor, versión y estado de lectura; detectar duplicados y cambios posteriores.
 - [ ] Clasificar cada archivo por prueba, materia, proveedor, año/versión y formato; registrar si se pudo leer o revisar visualmente.
 - [ ] Verificar el temario DEMRE vigente, separado por M1, M2, Competencia Lectora, cada módulo de Ciencias e Historia.
 - [ ] Completar matrices de cobertura objetivo → unidad → nivel → preguntas para las cinco pruebas y menciones; la primera matriz M2 es exploratoria y todavía no está revisada por persona experta.
