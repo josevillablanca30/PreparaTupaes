@@ -26,7 +26,7 @@ La auditoría automática de los bancos detecta problemas estructurales, claves 
 
 En el commit `6afb7c3116df835378b52b789ab7044da30ffaa8`, el flujo de GitHub Actions pasó pruebas de lógica y contenido, auditoría de los cinco bancos, build web, uso táctil y vista de 320 px. También compiló la APK beta, comprobó su firma, instaló la aplicación en un emulador y pasó modo sin red, persistencia local y botón Atrás. La verificación es automatizada en emulador; falta validarla en un teléfono físico. La APK beta se firma con la clave de pruebas y no es una firma de distribución comercial.
 
-El último corte validado cubrió **629 preguntas** de las cinco materias (M2 tenía 112) y registró **0 alertas críticas y 2 heurísticas** de enunciado breve. El lote siguiente suma M2-113 sobre gráficos logarítmicos; queda pendiente de CI y revisión humana. La auditoría no certifica por sí sola cobertura completa, corrección conceptual ni derechos de uso.
+El corte de CI del 17 de octubre cubre **630 preguntas** de las cinco materias (M2 tiene 113): 158/158 pruebas lógicas, auditoría con 0 alertas críticas y 2 heurísticas, build web y 597 pruebas móviles de Chromium/WebKit aprobadas. M2-113 agrega lectura original de gráficos logarítmicos y tiene explicación por alternativa; la revisión humana del banco sigue pendiente. La auditoría no certifica por sí sola cobertura completa, corrección conceptual ni derechos de uso. La prueba final de APK en emulador y el despliegue público siguen pendientes.
 
 La publicación de Pages no pudo completarse: el job de validación pasó, pero el job de despliegue falló porque Pages aún no está habilitado en la configuración del repositorio.
 
