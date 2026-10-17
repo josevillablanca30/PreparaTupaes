@@ -7,8 +7,8 @@ const app=readFileSync(new URL('../m2-app.js',import.meta.url),'utf8');
 test('M2: banco de preguntas originales válidas en seis áreas',()=>{
  const window={};vm.runInNewContext(src,{window});
  const bank=window.CACHASTE_M2;
- assert.equal(bank.length,112);
- assert.equal(new Set(bank.map(q=>q.id)).size,112);
+ assert.equal(bank.length,113);
+ assert.equal(new Set(bank.map(q=>q.id)).size,113);
  assert.equal(new Set(bank.map(q=>q.area)).size,6);
  const distribution=Object.fromEntries([...new Set(bank.map(q=>q.area))].map(area=>[area,bank.filter(q=>q.area===area).length]));
  assert.ok(Object.values(distribution).every(count=>count>=5),JSON.stringify(distribution));
@@ -27,7 +27,7 @@ test('M2: banco de preguntas originales válidas en seis áreas',()=>{
   assert.equal(q.explanations.length,q.options.length,id);
   assert.ok(q.teaching?.check,id+' debe tener tutor');
  }
- for(const [id,answer] of [['M2-111','2^x'],['M2-112','2']]){
+ for(const [id,answer] of [['M2-111','2^x'],['M2-112','2'],['M2-113','Su dominio es x>0, es creciente y tiene asíntota vertical x=0.']]){
   const q=bank.find(q=>q.id===id);assert.ok(q,id);assert.equal(q.options[q.answer],answer,id);
   assert.equal(q.explanations.length,q.options.length,id);
   assert.ok(q.teaching?.foundation?.length>=2,id+' debe incluir tutor');

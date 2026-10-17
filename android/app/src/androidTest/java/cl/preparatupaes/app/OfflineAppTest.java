@@ -50,7 +50,7 @@ public class OfflineAppTest {
         open("reading.html", "Array.isArray(window.READING_QUESTIONS) && document.querySelector('h1')");
         assertEquals("130",js("window.READING_QUESTIONS.length"));
         open("m2.html", "document.getElementById('diagnostic')");
-        assertEquals("112",js("window.CACHASTE_M2.length"));
+        assertEquals("113",js("window.CACHASTE_M2.length"));
         open("history.html", "document.getElementById('diagnostic')");
         assertEquals("65",js("window.CACHASTE_HISTORIA.length"));
     }
@@ -114,7 +114,7 @@ public class OfflineAppTest {
         waitFor("document.querySelector('[data-action=smart]')");
         js("document.querySelector('#daily-count').value='1';document.querySelector('[data-action=smart]').click();true");
         waitFor("document.querySelector('.question-title')");
-        assertEquals("629",js("CACHASTE_DAILY_CATALOG.items.length"));
+        assertEquals("630",js("CACHASTE_DAILY_CATALOG.items.length"));
         waitFor("document.querySelector('.wise-cat img').naturalWidth>0");
         js("document.querySelector('[data-action=choice]').click();document.querySelector('[data-confidence=duda]').click();true");
         String draft=js("localStorage.getItem('cachaste-daily-v1')");
@@ -144,7 +144,7 @@ public class OfflineAppTest {
         }
         waitFor("document.querySelector('.celebration-screen')");
         assertEquals("true",js("CachasteDailyApp.basics.status('cantidad').complete"));
-        assertEquals("629",js("CACHASTE_DAILY_CATALOG.items.length"));
+        assertEquals("630",js("CACHASTE_DAILY_CATALOG.items.length"));
     }
     @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();

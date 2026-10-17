@@ -708,3 +708,20 @@ window.CACHASTE_M2.push({
  origin:'original',difficulty:'intermedio',reviewStatus:'revision_interna_pendiente'
 });
 for(const q of window.CACHASTE_M2.filter(q=>q.id==='M2-111'||q.id==='M2-112'))q.teaching.selectedFeedback=q.explanations.map((text,i)=>i===q.answer?null:{diagnosis:text,repair:q.editorial.steps.slice()});
+window.CACHASTE_M2.push({
+ id:'M2-113',area:'Funciones',concept:'Función logarítmica',
+ question:'La gráfica de g(x)=log₂(x) cruza el eje x en (1,0). ¿Qué descripción corresponde?',
+ options:['Su dominio es x>0, es creciente y tiene asíntota vertical x=0.','Su dominio son todos los números reales, es creciente y tiene asíntota horizontal y=0.','Su dominio es x>0, es decreciente y tiene asíntota vertical x=0.','Su dominio es x>0, es creciente y tiene asíntota horizontal y=0.'],answer:0,
+ why:'Como la base 2 es mayor que 1, log₂(x) es creciente. Solo está definida para x>0 y su gráfica se acerca a x=0 sin tocarla.',
+ hint:'Comprueba dónde está definida, si sube o baja y si su asíntota es vertical u horizontal.',
+ explanations:['La función logarítmica requiere x>0; con base 2 crece y se aproxima al eje y (x=0), su asíntota vertical.','El dominio no son todos los reales y la asíntota de una función logarítmica es vertical; la horizontal y=0 caracteriza aquí una exponencial.','La base 2 genera una función creciente; la decreciente corresponde a una base entre 0 y 1.','El dominio y crecimiento son correctos, pero la asíntota es la recta vertical x=0, no la horizontal y=0.'],
+ editorial:{steps:['El argumento debe ser positivo, así que el dominio es x>0.','log₂(1)=0, por eso la gráfica cruza el eje x en (1,0); como la base 2 es mayor que 1, es creciente.','Al acercarse x a 0 por la derecha, los valores disminuyen sin límite: x=0 es una asíntota vertical.'],easy:'Una logarítmica con base mayor que 1 solo acepta valores de x positivos, pasa por (1,0), sube hacia la derecha y se pega al eje vertical sin tocarlo.',example:'Para h(x)=log₃(x), el dominio es x>0, h(1)=0 y h(3)=1. La función crece y se acerca a la recta x=0 por la derecha.'},
+ teaching:{quality:'adecuada',revision:'tutor-profesor-2026-10-15',aim:'Reconocer dominio, monotonicidad e intersección de la gráfica logarítmica.',
+ foundation:['En g(x)=log_b(x), se requiere x>0 y el punto (1,0) siempre pertenece al gráfico.','Si b>1, la función es creciente; la recta x=0 es asíntota vertical. Si 0<b<1, es decreciente.'],
+ application:['El argumento x debe ser positivo, así que el dominio es x>0.','log₂(1)=0 y la base 2>1; la gráfica cruza en (1,0) y es creciente.','Al acercarse x a 0 por la derecha, los valores disminuyen sin límite; la asíntota vertical es x=0.'],
+ check:'Verifica dos rasgos: log₂(1)=0 y log₂(2)=1. La gráfica sube hacia la derecha, solo existe para x>0 y se aproxima a x=0 sin tocarla.',
+ intuition:['La función logarítmica pregunta qué exponente produce un número positivo.','El uno es especial: cualquier base válida elevada a cero da uno, por eso el logaritmo de uno vale cero.'],
+ example:{problem:'¿Qué rasgos tiene f(x)=log₅(x)?',steps:['Su argumento debe ser positivo: x>0.','log₅(1)=0 y log₅(5)=1.','Como 5>1, es creciente y su asíntota vertical es x=0.'],bridge:'En un gráfico logarítmico busca primero el dominio, el punto (1,0), el sentido de crecimiento y la asíntota vertical.'}},
+ origin:'original',difficulty:'intermedio',reviewStatus:'revision_interna_pendiente'
+});
+for(const q of window.CACHASTE_M2.filter(q=>q.id==='M2-113'))q.teaching.selectedFeedback=q.explanations.map((text,i)=>i===q.answer?null:{diagnosis:text,repair:q.editorial.steps.slice()});
