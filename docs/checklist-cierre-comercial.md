@@ -22,6 +22,7 @@ Meta de cierre: 31 de octubre de 2026, para habilitar el uso durante noviembre. 
 - [x] Contrastar M2 contra el temario Regular 2027 y ampliar el banco con probabilidad condicionada y contextos hipotéticos de finanzas; preguntas originales M2-107–110 con tutor y distractores propios.
 - [x] Cerrar dos brechas iniciales con preguntas M2-111 (lectura de gráfico exponencial) y M2-112 (secantes desde punto exterior); ambas tienen tutor y explicación por alternativa.
 - [x] Añadir M2-113, lectura de dominio, crecimiento y asíntota vertical de la función logarítmica; CI pasó (158 pruebas, auditoría 630, Playwright móvil); revisión humana pendiente.
+- [x] Añadir M2-114, lectura original de decrecimiento exponencial y asíntota horizontal, guiada por referencia de Drive; controles de clave y total actualizados. CI de este corte y revisión humana siguen pendientes.
 - [x] Crear una primera matriz M2 2027 enlazada a IDs actuales; identificar brechas explícitas y separar presencia de cobertura validada: [cobertura-m2-2027.md](cobertura-m2-2027.md).
 - [ ] Preparar un catálogo duradero y revisable de los 668 elementos listados (513 PDF y carpetas) con título, ruta, tipo, proveedor, versión y estado de lectura; detectar duplicados y cambios posteriores.
 - [ ] Clasificar cada archivo por prueba, materia, proveedor, año/versión y formato; registrar si se pudo leer o revisar visualmente.
