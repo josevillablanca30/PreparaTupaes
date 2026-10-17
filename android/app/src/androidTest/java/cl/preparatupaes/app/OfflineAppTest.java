@@ -144,7 +144,7 @@ public class OfflineAppTest {
         }
         waitFor("document.querySelector('.celebration-screen')");
         assertEquals("true",js("CachasteDailyApp.basics.status('cantidad').complete"));
-        assertEquals("630",js("CACHASTE_DAILY_CATALOG.items.length"));
+        assertEquals("631",js("CACHASTE_DAILY_CATALOG.items.length"));
     }
     @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
