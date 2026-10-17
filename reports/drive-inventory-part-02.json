@@ -1,0 +1,288 @@
+{
+ "scanned": "2026-10-16",
+ "root": "Material PAES",
+ "contents": [
+  {
+   "path": "Cumbres/M1",
+   "id": "107LPkrX64gO50BdoXDYeuXSw4j8kUcB8",
+   "items": [
+    {
+     "id": "1GOsFf5sZFDcqaGFyqInc3AUsVZf5-kTd",
+     "name": "Ensayos ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    }
+   ]
+  },
+  {
+   "path": "PDV/Biología",
+   "id": "1FDrD-nv-AvH8DgJ6GuUMe8q8vh9uEzKe",
+   "items": [
+    {
+     "id": "1f3YmmXdan_9vJJ66zZabsKhw22EVGMhX",
+     "name": "Ejercicios",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1mC6zwotOFzVD29UepcyusZ37yDbl7MyZ",
+     "name": "Cuadernillos",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1dxJ52_-zqf0tMh7HYIR9sCH4f8jxsPpn",
+     "name": "Ensayos ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1R1Ja2yveHnyiaoCnhyILLxzNpIy0_NCV",
+     "name": "Talleres",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    }
+   ]
+  },
+  {
+   "path": "PDV/Lectura",
+   "id": "1lZYsFgfKMqTmPKUSZlxx8P9HKdT3YC-L",
+   "items": [
+    {
+     "id": "1TJYatIeqbp7EVtrGTVmrpHzOfTd4RPda",
+     "name": "Libros",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1VzKFne4JcpS0vXY2hNfjI8bhnxxTRGTj",
+     "name": "Guias",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1wxzrJ1rOhEqLYd0m0SK8vse5tihV5yRg",
+     "name": "Ensayos",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1nLh79uCr35NKXwL0pAgbCbUy8m3z4oDF",
+     "name": "Talleres",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1VEQW0fer0w_V-W2ZmAqXQr8jLFl2y2Bf",
+     "name": "Controles ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1pJtfwmyV_rqW1V2VLCDhHp_ubBhyesGN",
+     "name": "Material",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    }
+   ]
+  },
+  {
+   "path": "PDV/Historia",
+   "id": "14U2uA9pB89QDeCYwDEh-RFNjZE89FMDs",
+   "items": [
+    {
+     "id": "110LvQsef0YE19FHZuXqDUSwDJS7heuzU",
+     "name": "Ensayos ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    }
+   ]
+  },
+  {
+   "path": "PDV/M1",
+   "id": "1dKNE8VKA6rmGAPGXd3eyYCdcn04S2qEM",
+   "items": [
+    {
+     "id": "19N0gqy0ldRGk1w3cAkMTjeu01oeOqcwv",
+     "name": "Ensayos ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1mLe2lkiHyr3KtJLR4JhrbbyPlfjZueZx",
+     "name": "Tutorias ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    }
+   ]
+  },
+  {
+   "path": "PDV/Física",
+   "id": "1bCLTBXcfAa_iuww0JqZMblpHklB_WWcR",
+   "items": [
+    {
+     "id": "1ap_Sva1XDolPCKPum0vXBJQX7YYpoyxd",
+     "name": "Ejercicios ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1P5lE3A4MVXtjLYwyYWljV1hFH8HgGuKs",
+     "name": "Cuadernillos ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1EwasC74k04fSSpj4SBhYDG-PH3RqqeYE",
+     "name": "Controles",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1KJ475ujvE_oHJlNfXAnmVCoRWX_Y6PvW",
+     "name": " Talleres de reforzamiento ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    }
+   ]
+  },
+  {
+   "path": "PDV/M2",
+   "id": "1Z4J0XJplfWk50Q0mMavFEZTzVcCsM43I",
+   "items": [
+    {
+     "id": "1h8SWC0jGFKinobX3G4BsZr4j5EP1hC3Z",
+     "name": " Ensayos ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    }
+   ]
+  },
+  {
+   "path": "PDV/Química",
+   "id": "1kwOHBGTjEy1UsDFmLOaGwzsD5gQW5ckq",
+   "items": [
+    {
+     "id": "1C95-c275QO-K86uClwPwi08d27LkJFmN",
+     "name": "Cuadernillos ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1bwWiBa0V4g1UyEW25Rq5XR2TXLgQcV8U",
+     "name": "Controles ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "15CLacP4cX0KSv_95kZ_vho36w4RBiE1z",
+     "name": " Ejercicios ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1Y-VJDNpJ1E9ir1JgolhpemlbF5apKn-J",
+     "name": " Talleres de reforzamiento ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1a1I3hZoGepxDMAodavVq-6VUY67sKIkT",
+     "name": " Ensayos ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    }
+   ]
+  },
+  {
+   "path": "CPECH/M1",
+   "id": "1K9ikR4rWYMxuVLLPlU6gMuBJMgCFPhE8",
+   "items": [
+    {
+     "id": "1V-VRrFJnL1aREnlB1_fF-JWnv2GJP-5o",
+     "name": "Cuadernillo ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    }
+   ]
+  },
+  {
+   "path": "CPECH/Historia",
+   "id": "1nPoHldRyfgA4Juqr2UiFahy3TT6C5pwA",
+   "items": [
+    {
+     "id": "1gszmQELydoxTOdnEu11GqcZyYqjCop2D",
+     "name": "Ensayo",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1S5LSmuVqy6h6g_a5057gTarkvdHf-EbH",
+     "name": "Cuadernillo",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1cOZeFcaZbIrRdK65GSc89cC_rTw9xcDF",
+     "name": "Libros",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "19pxyzROV0wRzqhas2AHxqZjwRjx6LfEX",
+     "name": "PPT",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    }
+   ]
+  },
+  {
+   "path": "CPECH/Biología",
+   "id": "1A0AxEYyOCuyjYgXgs3NCmnPbh3HwiYOi",
+   "items": [
+    {
+     "id": "1zR6uBBhIaKsDr1JNHMa-MEUxlS8pvA6X",
+     "name": "Guías",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1Skd9MMf-x2EP1xwlb-vR8rb4MpHjwQm5",
+     "name": "Libros",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1KGeh6enBL8x75KJVSv0KTo3bieS05371",
+     "name": "Ensayos",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    }
+   ]
+  },
+  {
+   "path": "CPECH/Química",
+   "id": "1fYG3gzNtuaVjxZB7ktOwN2lmo7x2BzjM",
+   "items": [
+    {
+     "id": "1RUcVd_l4Fpu3GNDc1kFfZ-5Sn3EmMWXW",
+     "name": "Cuadernillos",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1bvI5n0Epeg3Jjbompg1Nxdo6rBobDTFP",
+     "name": "Ensayos",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1n4Hc074eEG6lAoi6jU-Z79JN2VTu66YU",
+     "name": "PPT",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    }
+   ]
+  }
+ ]
+}

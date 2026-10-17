@@ -1,12 +1,12 @@
 {
-  "date": "2026-10-15",
-  "scope": "Auditoría heurística estructural de cinco bancos; no certificación de corrección conceptual",
+  "date": "2026-10-16",
+  "scope": "Auditoría heurística estructural de cinco bancos y 18 transferencias; no certificación de corrección conceptual",
   "totals": {
-    "M1": 116,
-    "Ciencias": 206,
+    "M1": 147,
+    "Ciencias": 232,
     "Lectura": 130,
     "M2": 106,
-    "Historia": 65
+    "Historia": 91
   },
   "flags": [
     {
@@ -906,6 +906,30 @@
       "detail": "Paso del razonamiento demasiado breve o poco explicativo"
     },
     {
+      "bank": "Ciencias",
+      "id": "TR-SCI-010",
+      "area": "Herencia y evolución",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "TR-SCI-016",
+      "area": "Electricidad",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "TR-SCI-017",
+      "area": "Reacciones químicas y estequiometría",
+      "type": "generic_example",
+      "level": "review",
+      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+    },
+    {
       "bank": "Lectura",
       "id": "LEC-017",
       "area": "Localizar",
@@ -1044,44 +1068,44 @@
   ],
   "coverage": {
     "M1": {
-      "Porcentajes": 11,
-      "Ecuaciones": 6,
-      "Proporcionalidad": 5,
-      "Potencias": 5,
-      "Probabilidad": 7,
-      "Geometría": 4,
+      "Porcentajes": 14,
+      "Ecuaciones": 7,
+      "Proporcionalidad": 6,
+      "Potencias": 8,
+      "Probabilidad": 8,
+      "Geometría": 5,
       "Estadística": 7,
       "Enteros": 3,
-      "Racionales": 5,
-      "Raíces": 2,
-      "Álgebra": 4,
+      "Racionales": 6,
+      "Raíces": 4,
+      "Álgebra": 8,
       "Inecuaciones": 3,
       "Sistemas 2×2": 2,
       "Función afín": 8,
       "Función cuadrática": 4,
       "Pitágoras": 4,
-      "Círculos": 3,
-      "Polígonos": 5,
-      "Cuerpos geométricos": 3,
-      "Cilindros": 3,
-      "Transformaciones": 4,
-      "Semejanza": 3,
-      "Tablas y gráficos": 6,
-      "Cuartiles": 5,
-      "Probabilidad compuesta": 4
+      "Círculos": 4,
+      "Polígonos": 7,
+      "Cuerpos geométricos": 4,
+      "Cilindros": 4,
+      "Transformaciones": 6,
+      "Semejanza": 5,
+      "Tablas y gráficos": 8,
+      "Cuartiles": 7,
+      "Probabilidad compuesta": 5
     },
     "Ciencias": {
-      "Organización, estructura y actividad celular": 13,
-      "Procesos y funciones biológicas": 25,
-      "Herencia y evolución": 20,
-      "Organismo y ambiente": 16,
-      "Ondas": 19,
-      "Mecánica": 20,
+      "Organización, estructura y actividad celular": 17,
+      "Procesos y funciones biológicas": 27,
+      "Herencia y evolución": 22,
+      "Organismo y ambiente": 18,
+      "Ondas": 21,
+      "Mecánica": 24,
       "Energía – Tierra": 11,
-      "Electricidad": 17,
-      "Estructura atómica": 20,
+      "Electricidad": 20,
+      "Estructura atómica": 23,
       "Química orgánica": 17,
-      "Reacciones químicas y estequiometría": 28
+      "Reacciones químicas y estequiometría": 32
     },
     "Lectura": {
       "Localizar": 45,
@@ -1097,16 +1121,16 @@
       "Suficiencia de datos": 8
     },
     "Historia": {
-      "Historia de Chile": 18,
-      "Formación ciudadana": 15,
-      "Economía y sociedad": 13,
-      "Historia mundial": 11,
-      "Interpretación de fuentes": 8
+      "Historia de Chile": 28,
+      "Formación ciudadana": 21,
+      "Economía y sociedad": 18,
+      "Historia mundial": 14,
+      "Interpretación de fuentes": 10
     }
   },
   "summary": {
     "critical": 0,
-    "review": 129,
-    "questionCount": 623
+    "review": 132,
+    "questionCount": 706
   }
 }

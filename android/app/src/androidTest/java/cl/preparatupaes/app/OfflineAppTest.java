@@ -114,7 +114,7 @@ public class OfflineAppTest {
         waitFor("document.querySelector('[data-action=smart]')");
         js("document.querySelector('#daily-count').value='1';document.querySelector('[data-action=smart]').click();true");
         waitFor("document.querySelector('.question-title')");
-        assertEquals("623",js("CACHASTE_DAILY_CATALOG.items.length"));
+        assertEquals("true",js("CACHASTE_DAILY_CATALOG.items.length>=641 && new Set(CACHASTE_DAILY_CATALOG.items.map(q=>q.key)).size===CACHASTE_DAILY_CATALOG.items.length"));
         waitFor("document.querySelector('.wise-cat img').naturalWidth>0");
         js("document.querySelector('[data-action=choice]').click();document.querySelector('[data-confidence=duda]').click();true");
         String draft=js("localStorage.getItem('cachaste-daily-v1')");
@@ -126,6 +126,28 @@ public class OfflineAppTest {
         assertEquals("true",js("CachasteDailyApp.engine.state.attempts.length>=1"));
         InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
         waitFor("document.querySelector('[data-action=resume]')");
+    }
+    @Test public void adventureMapWorksOfflineAndKeepsItsPlace() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp");
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.state.foundationDraft=null;CachasteDailyApp.engine.state.basics={};(CachasteDailyApp.engine.state.stages||={}).M1='basics';(CachasteDailyApp.engine.state.basicsOptional||={}).M1=true;CachasteDailyApp.engine.save();location.hash='#courses';CachasteDailyApp.render();true");
+        waitFor("document.querySelector('[data-action=pick-course][data-subject=M1]')");
+        js("document.querySelector('[data-action=pick-course][data-subject=M1]').click();true");
+        waitFor("document.querySelector('.adventure-world.world-foundation .trail-node')");
+        assertEquals("true", js("document.querySelector('.road-track').getAttribute('d').startsWith('M ')"));
+        assertEquals("true", js("document.querySelector('.world-hud').textContent.includes('0 de 5 misiones dominadas')"));
+        js("document.querySelector('.world-quest-banner [data-action=basic-level]').click();true");
+        waitFor("document.querySelector('[data-action=basic-start]')");
+        js("document.querySelector('[data-action=basic-start]').click();true");
+        waitFor("document.querySelector('.teacher-step')");
+        assertEquals("true", js("CachasteDailyApp.engine.state.foundationDraft.lesson==='cantidad'"));
+        scenario.recreate();
+        waitFor("window.CachasteDailyApp && document.querySelector('.teacher-step')");
+        assertEquals("true", js("CachasteDailyApp.engine.state.foundationDraft.lesson==='cantidad'"));
+        js("document.querySelector('[data-action=pause]').click();true");
+        waitFor("document.querySelector('.adventure-world')");
+        assertEquals("true", js("document.querySelector('[data-action=resume]')!==null"));
+        js("document.querySelector('[data-action=resume]').click();true");
+        waitFor("document.querySelector('.teacher-step')");
     }
     @Test public void foundationsTeachVisuallyAndPreserveTheirOwnEvidence() throws Exception {
         open("inicio.html", "window.CachasteDailyApp");
@@ -144,7 +166,7 @@ public class OfflineAppTest {
         }
         waitFor("document.querySelector('.celebration-screen')");
         assertEquals("true",js("CachasteDailyApp.basics.status('cantidad').complete"));
-        assertEquals("623",js("CACHASTE_DAILY_CATALOG.items.length"));
+        assertEquals("true",js("CACHASTE_DAILY_CATALOG.items.length>=641 && new Set(CACHASTE_DAILY_CATALOG.items.map(q=>q.key)).size===CACHASTE_DAILY_CATALOG.items.length"));
     }
     @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();

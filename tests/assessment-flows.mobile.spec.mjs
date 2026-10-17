@@ -87,3 +87,25 @@ for(const subject of [{page:'science.html',key:'cachaste-science-v1'},{page:'rea
   await page.getByRole('button',{name:/diagnóstico/i}).first().click();await expect(page.locator('.option,.choice').first()).toBeVisible();expect(errors).toEqual([]);
  });
 }
+
+
+test('Alumno de enseñanza media puede demostrar un concepto antes de escuchar una clase obligatoria',async({page})=>{
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('./inicio.html#courses');
+ await page.locator('[data-action=pick-course][data-subject=Historia]').click();
+ await page.locator('.adventure-world [data-action=level]').first().click();
+ await expect(page.locator('.mission-preview')).toBeVisible();
+ await expect(page.locator('[data-action=check-first]')).toBeVisible();
+ await expect(page.locator('[data-action=lesson]')).toContainText('Aprender con el gatito');
+ await page.locator('[data-action=check-first]').click();
+ await expect(page.locator('.question-title')).toBeVisible();
+ await expect(page.locator('.daily-session-head')).toContainText('Historia');
+ await expect(page.locator('.teacher-step')).toHaveCount(0);
+ const session=await page.evaluate(()=>CachasteDailyApp.engine.state.session);
+ expect(session.stage).toBe('question');
+ expect(session.mode).toBe('free');
+ expect(session.subject).toBe('Historia');
+ await page.locator('[data-action=pause]').click();
+ await expect(page.locator('[data-action=resume]')).toBeVisible();
+ expect(errors).toEqual([]);
+});
