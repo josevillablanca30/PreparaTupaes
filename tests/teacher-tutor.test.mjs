@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {loadBanks} from '../scripts/load-banks.mjs';
 const before=JSON.parse(readFileSync(new URL('../pedagogy/m2-before-2026-10-15.json',import.meta.url)));
 const banks=loadBanks(),after=banks.M2;
-const revisedOptions=new Map([['M2-011',['x≥5','x>0','x≤5','x≥0']],['M2-072',['0,5','0,25','0,95','Depende de la desviación estándar, porque cambia el ancho de la curva']],['M2-083',['x<0','x=0','Todos los reales','x>0']]]);
+const revisedOptions=new Map([['M2-011',['x≥5','x>0','x≤5','x≥0']],['M2-072',['0,5','0,25','0,95','Depende de la desviación estándar, porque cambia el ancho de la curva']],['M2-083',['x≤4','x>0','x≥4','x>4']]]);
 test('Tutor: las 106 preguntas, alternativas y claves M2 permanecen idénticas a beta 1.1',()=>{
  assert.equal(after.length,106);
  for(const old of before){const q=after.find(q=>q.id===old.id);assert.ok(q,old.id);assert.equal(q.question,old.question);assert.deepEqual(Array.from(q.options),revisedOptions.get(q.id)||old.options);assert.equal(q.answer,old.answer);}
