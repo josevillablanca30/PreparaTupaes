@@ -7,7 +7,7 @@ Carpeta central: https://drive.google.com/drive/folders/1kYf2Mh9gGOIEFdxPfDozYAN
 - Los tres documentos son accesibles y permiten extraer texto. **Ojo: sus introducciones indican que fueron desarrollados para PSU**, por lo que algunos temas —por ejemplo, números complejos— pueden quedar fuera de M1 vigente. No importar indiscriminadamente.
 - PDV > M1 > Ensayos: ensayos de distintas fechas, incluido Experiencia PAES M1 marzo 2025.
 - M30M > M1: seis ensayos detectados, un resumen PAES 2025 y un archivo de claves para ensayo 8.
-- DEMRE > M1 > Solucionario: clavijero de invierno 2024.
+- DEMRE > M1 > Solucionario: `Copia de Clavijero Invierno 2024.pdf`. Revisé el contenido: identifica **65 preguntas en la prueba y 60 consideradas para el puntaje**, con cinco ítems marcados fuera del cálculo. Es evidencia del formato de esa prueba de invierno, no el temario ni una clave aplicable a la PAES Regular 2026 / Admisión 2027.
 
 ## Norma para construir el banco
 1. **Primario para aprendizaje y auditoría:** los archivos de Drive, clasificando conceptos, habilidades, metodologías, dificultad y errores recurrentes.
