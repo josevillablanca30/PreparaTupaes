@@ -15,8 +15,9 @@ Criterio: solo se marca **Hecho** con evidencia reproducible; una prueba estruct
 ## 2. Material PAES y cobertura oficial
 
 - [x] Material PAES de Google Drive está declarado como base principal de investigación.
-- [x] Se documentó un snapshot de metadatos: 128 carpetas visitadas, 635 elementos listados y 495 PDF reconocidos.
-- [ ] Completar el índice recursivo de Drive, incluyendo niveles no recorridos, carpetas con más de 100 elementos, versiones y duplicados.
+- [x] Se recorrieron recursivamente todas las carpetas accesibles de la carpeta principal: 143 carpetas, profundidad 4, 668 elementos listados, 513 PDF identificados y 0 errores de listado.
+- [x] Completar el recorrido recursivo de la estructura accesible: sin errores y ninguna carpeta alcanzó el tope de 200 elementos por consulta.
+- [ ] Preparar un catálogo duradero y revisable de los 526 archivos con título, ruta, tipo, proveedor, versión y estado de lectura; detectar duplicados y cambios posteriores.
 - [ ] Clasificar cada archivo por prueba, materia, proveedor, año/versión y formato; registrar si se pudo leer o revisar visualmente.
 - [ ] Verificar el temario DEMRE vigente, separado por M1, M2, Competencia Lectora, cada módulo de Ciencias e Historia.
 - [ ] Construir matriz de cobertura objetivo → unidad → nivel → preguntas para las cinco pruebas y menciones.
@@ -82,5 +83,5 @@ Criterio: solo se marca **Hecho** con evidencia reproducible; una prueba estruct
 | 17-10-2026 · `bea865e` | Pulso suave para destacar el siguiente nivel | Código guardado; sin resultado CI reportado en la consulta |
 | 17-10-2026 · `e2e3ad3` | Indicador accesible de dominio por etapa y navegación tras última unidad | `node --check daily-app.js` pasó |
 | 17-10-2026 · `84fcd70` | Diseño adaptable de barra de progreso | CSS balanceado; CI pendiente de confirmar |
-| 17-10-2026 | Snapshot de Drive incorporado al inventario | 128 carpetas, 495 PDF reconocidos; no exhaustivo |
+| 17-10-2026 | Recorrido recursivo de Drive actualizado | 143 carpetas, 668 elementos, 513 PDF; metadatos solamente, sin lectura de contenido |
 
