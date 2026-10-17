@@ -4,11 +4,11 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const src=readFileSync(new URL('../m2-bank.js',import.meta.url),'utf8');
 const app=readFileSync(new URL('../m2-app.js',import.meta.url),'utf8');
-test('M2: banco de 109 preguntas originales válidas en seis áreas',()=>{
+test('M2: banco de 110 preguntas originales válidas en seis áreas',()=>{
  const window={};vm.runInNewContext(src,{window});
  const bank=window.CACHASTE_M2;
- assert.equal(bank.length,109);
- assert.equal(new Set(bank.map(q=>q.id)).size,109);
+ assert.equal(bank.length,110);
+ assert.equal(new Set(bank.map(q=>q.id)).size,110);
  assert.equal(new Set(bank.map(q=>q.area)).size,6);
  const distribution=Object.fromEntries([...new Set(bank.map(q=>q.area))].map(area=>[area,bank.filter(q=>q.area===area).length]));
  assert.ok(Object.values(distribution).every(count=>count>=5),JSON.stringify(distribution));
@@ -21,15 +21,16 @@ test('M2: banco de 109 preguntas originales válidas en seis áreas',()=>{
   assert.ok(q.hint.length>20,q.id);
   assert.equal(q.origin,'original');
  }
- for(const [id,answer] of [['M2-107','1/2'],['M2-108','$309.090,30'],['M2-109','$85.000']]){
+ for(const [id,answer] of [['M2-107','1/2'],['M2-108','$309.090,30'],['M2-109','$85.000'],['M2-110','1.920 UF']]){
   const q=bank.find(q=>q.id===id);assert.ok(q,id);assert.equal(q.options[q.answer],answer,id);
-  assert.ok(q.why.includes('hipotétic')||q.id==='M2-107',id);
+  assert.ok(q.question.includes('hipotétic')||q.id==='M2-107',id);
   assert.equal(q.explanations.length,q.options.length,id);
   assert.ok(q.teaching?.check,id+' debe tener tutor');
  }
  assert.equal(3/6,1/2,'probabilidad condicionada tras actualizar la urna');
  assert.equal(Math.round(300_000*1.01**3*100)/100,309_090.30,'capitalización mensual del crédito hipotético');
  assert.equal(850_000*0.10,85_000,'porcentaje del ingreso hipotético');
+ assert.equal(2_400*(1-0.20),1_920,'saldo hipotecario hipotético después del pie');
 });
 test('M2: interfaz incluye guardado local y no presenta puntajes oficiales',()=>{
  assert.match(readFileSync(new URL('../study-app.js',import.meta.url),'utf8'),/localStorage\.setItem/);
