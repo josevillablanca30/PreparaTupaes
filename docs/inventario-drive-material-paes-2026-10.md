@@ -18,6 +18,24 @@ La carpeta principal muestra 14 categorías y 41 carpetas de materia en su nivel
 | Ciencias: Física | TESLA/Física; Cumbres/Física; PDV/Física; CPECH/Física; Más libros/Física; FILADD/Física |
 | Ciencias: Química | TESLA/Química; PDV/Química; CPECH/Química; Flashcards/Química; M30M/Química |
 
+## Catálogo de archivos: snapshot de metadatos
+
+En una pasada del 17 de octubre de 2026 se visitaron **128 carpetas** (hasta tres niveles de recorrido) y se listaron **635 elementos**: 128 carpetas y 507 archivos; 495 de estos archivos se identificaron como PDF, además de presentaciones e imágenes. El listado es un snapshot de nombres, rutas y tipos; no se descargaron ni leyeron los 495 PDF. Carpetas con más de 100 elementos o ramas más profundas pueden requerir nuevas pasadas, así que esto todavía no es un inventario recursivo exhaustivo.
+
+Clasificación orientativa por materia, inferida de nombres y rutas y con posibles solapamientos (por ejemplo, textos de M1 y M2 compartidos):
+
+| Materia o área | PDF atribuidos por nombre/ruta |
+| --- | ---: |
+| M1 | 31 |
+| M2 | 28 |
+| Competencia Lectora | 149 |
+| Historia y Ciencias Sociales | 28 |
+| Biología | 70 |
+| Física | 39 |
+| Química | 102 |
+
+Estas cantidades no representan preguntas disponibles ni cobertura del temario. No deduplican necesariamente versiones y pueden dejar material sin clasificar o asignarlo a más de un área. El catálogo archivo por archivo permanece en Drive; no se publican aquí identificadores privados ni enlaces individuales.
+
 ## Proveedores y tipos de material observados
 
 - **DEMRE:** en esta estructura se ve una rama para M1 con una carpeta de solucionario. El temario oficial vigente debe verificarse como fuente separada para cada prueba; la presencia de esta rama no implica cobertura oficial de todas las materias.
