@@ -725,3 +725,22 @@ window.CACHASTE_M2.push({
  origin:'original',difficulty:'intermedio',reviewStatus:'revision_interna_pendiente'
 });
 for(const q of window.CACHASTE_M2.filter(q=>q.id==='M2-113'))q.teaching.selectedFeedback=q.explanations.map((text,i)=>i===q.answer?null:{diagnosis:text,repair:q.editorial.steps.slice()});
+
+window.CACHASTE_M2.push({
+ id:'M2-114',area:'Funciones',concept:'Función exponencial',
+ question:'Un modelo para la concentración de una sustancia es C(t)=200(0,6)^t, con t en horas y C en mg/L. ¿Qué descripción coincide con su gráfica?',
+ options:['Parte en (0, 200), disminuye y se acerca a y=0 sin tocarla.','Parte en (200, 0), disminuye y se acerca a x=0.','Parte en (0, 200), aumenta y se acerca a y=0.','Parte en (0, 0), aumenta en línea recta.'],answer:0,
+ why:'C(0)=200 y la base 0,6 está entre 0 y 1, así que el modelo disminuye. Sus valores siguen siendo positivos y se aproximan a cero cuando t crece.',
+ hint:'Evalúa el modelo en t=0 y t=1; después fíjate en qué provoca que la base esté entre 0 y 1.',
+ explanations:['C(0)=200 y C(1)=120. Como la base está entre 0 y 1, la curva decrece y tiene asíntota horizontal y=0.','Las coordenadas invierten el orden: el eje horizontal representa t, así que al inicio el punto es (0,200).','La base 0,6 está entre 0 y 1; por eso cada hora el valor se multiplica por un número menor que uno y disminuye.','C(0)=200, no cero. Además, una potencia con exponente variable no describe una recta.'],
+ editorial:{steps:['Sustituye t=0: C(0)=200(0,6)^0=200; el gráfico parte en (0,200).','La base 0,6 está entre cero y uno. Al aumentar t, cada valor se multiplica nuevamente por 0,6, así que la concentración baja.','La potencia nunca es negativa ni llega a cero para un t finito; al aumentar t se aproxima a cero. La asíntota horizontal es y=0.'],easy:'Parte en 200 cuando t vale cero. Cada hora queda el 60% del valor anterior, así que la curva baja y se acerca cada vez más a cero.',example:'Si el modelo comienza en 200 mg/L, después de una hora estima 120 mg/L y después de dos horas 72 mg/L. La curva desciende, pero estos valores siguen siendo positivos.'},
+ teaching:{quality:'adecuada',revision:'tutor-profesor-2026-10-17',aim:'Interpretar inicio, decrecimiento y asíntota horizontal en un modelo exponencial.',
+ foundation:['En f(t)=A·b^t, f(0)=A porque b^0=1. El punto inicial es (0,A).','Si 0<b<1 y A>0, los valores decrecen y permanecen positivos; cuando t aumenta, se aproximan a cero.'],
+ application:['Calcula el valor inicial: C(0)=200, por lo que el gráfico parte en (0,200).','Calcula una hora después: C(1)=200·0,6=120. El factor menor que uno hace que disminuya.','La curva se acerca al eje horizontal y=0 sin alcanzarlo para un tiempo finito; esa recta es la asíntota horizontal.'],
+ check:'Comprueba C(0)=200 y C(1)=120. Luego compara 72·0,6=43,2: cada hora baja, pero permanece sobre cero.',
+ intuition:['Multiplicar por 0,6 equivale a conservar el 60% del valor anterior.','En un modelo exponencial decreciente, el gráfico se acerca al eje horizontal aunque cada valor siga siendo positivo.'],
+ example:{problem:'Un indicador sigue H(t)=500·(0,8)^t. ¿Qué rasgos tiene su gráfico?',steps:['H(0)=500·1=500; comienza en (0,500).','H(1)=500·0,8=400; como 0,8 está entre cero y uno, disminuye.','Los valores se acercan a cero cuando t aumenta, por lo que y=0 es una asíntota horizontal.'],bridge:'Evalúa primero t=0 para ubicar el inicio y luego compara la base con 1 para decidir si el modelo crece o decrece.'}},
+ origin:'original',difficulty:'intermedio',reviewStatus:'revision_interna_pendiente'
+});
+const q=window.CACHASTE_M2.find(q=>q.id==='M2-114');
+q.teaching.selectedFeedback=q.explanations.map((text,i)=>i===q.answer?null:{diagnosis:text,repair:q.editorial.steps.slice()});
