@@ -709,7 +709,7 @@ window.CACHASTE_M2.push({
 });
 for(const q of window.CACHASTE_M2.filter(q=>q.id==='M2-111'||q.id==='M2-112'))q.teaching.selectedFeedback=q.explanations.map((text,i)=>i===q.answer?null:{diagnosis:text,repair:q.editorial.steps.slice()});
 window.CACHASTE_M2.push({
- id:'M2-113',area:'Funciones',concept:'Función logarítmica',
+ id:'M2-113',area:'Funciones',concept:'Logaritmos',
  question:'La gráfica de g(x)=log₂(x) cruza el eje x en (1,0). ¿Qué descripción corresponde?',
  options:['Su dominio es x>0, es creciente y tiene asíntota vertical x=0.','Su dominio son todos los números reales, es creciente y tiene asíntota horizontal y=0.','Su dominio es x>0, es decreciente y tiene asíntota vertical x=0.','Su dominio es x>0, es creciente y tiene asíntota horizontal y=0.'],answer:0,
  why:'Como la base 2 es mayor que 1, log₂(x) es creciente. Solo está definida para x>0 y su gráfica se acerca a x=0 sin tocarla.',

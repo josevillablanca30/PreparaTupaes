@@ -5,7 +5,7 @@ import {loadBanks} from '../scripts/load-banks.mjs';
 const before=JSON.parse(readFileSync(new URL('../pedagogy/m2-before-2026-10-15.json',import.meta.url)));
 const banks=loadBanks(),after=banks.M2;
 const revisedOptions=new Map([['M2-011',['x≥5','x>0','x≤5','x≥0']],['M2-072',['0,5','0,25','0,95','Depende de σ']],['M2-083',['x≤4','x>0','x≥4','x>4']]]);
-test('Tutor: las 106 preguntas de beta 1.1 conservan claves y hay 6 preguntas nuevas',()=>{
+test('Tutor: las 106 preguntas de beta 1.1 conservan claves y hay 7 preguntas nuevas',()=>{
  assert.equal(after.length,113);
  for(const old of before){const q=after.find(q=>q.id===old.id);assert.ok(q,old.id);assert.equal(q.question,old.question);assert.deepEqual(Array.from(q.options),revisedOptions.get(q.id)||old.options);assert.equal(q.answer,old.answer);}
  assert.deepEqual(Object.fromEntries(Object.entries(banks).map(([k,v])=>[k,v.length])),{M1:116,Ciencias:206,Lectura:130,M2:113,Historia:65,texts:20});

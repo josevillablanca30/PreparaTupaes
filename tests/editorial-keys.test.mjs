@@ -7,7 +7,7 @@ for(const name of ['m2-bank.js','science-bank.js'])vm.runInContext(readFileSync(
 // Claves independientes transcritas después de comprobar operaciones y condiciones
 // de los 55 enunciados de M2. Este control detecta regresiones; no certifica temario.
 const expected=["x=2","6","3/10","0,2","3π","5","8","7","$121.000","3","x≥5","8","25","1/8","3/10","-1/2","5","3","x²-9","1600","6","7","x=-4","12","(x+6)/3","7","8","3","0","x>4","20","13","5","120°","(5,3)","1/2","5","7","2/5","0","$3200","120","y=-2x+3","$1100","90","Cada una por sí sola","Ambas juntas, ninguna por sí sola","Solo (2)","Ambas juntas, ninguna por sí sola","Se requiere información adicional","Cada una por sí sola","9","1/6","25π","100"];
-test('M2: 55 claves matemáticas revisadas y distractores distintos',()=>{
+test('M2: 56 claves matemáticas revisadas y distractores distintos',()=>{
  const bank=context.window.CACHASTE_M2;assert.equal(bank.length,113);
  for(let i=0;i<expected.length;i++){
   const q=bank[i];assert.equal(q.id,'M2-'+String(i+1).padStart(3,'0'));
@@ -15,7 +15,7 @@ test('M2: 55 claves matemáticas revisadas y distractores distintos',()=>{
   assert.equal(q.options.filter(x=>x===expected[i]).length,1,q.id+' clave duplicada');
   assert.ok(q.why?.trim().length>=20||q.editorial?.steps?.length>=3,q.id+' justificación insuficiente');
  }
- assert.deepEqual(Array.from(bank.slice(-6),q=>q.options[q.answer]),['1/2','$309.090,30','$85.000','1.920 UF','2^x','2']);
+ assert.deepEqual(Array.from(bank.slice(-7),q=>q.options[q.answer]),['1/2','$309.090,30','$85.000','1.920 UF','2^x','2','Su dominio es x>0, es creciente y tiene asíntota vertical x=0.']);
 });
 test('Ciencias: Aa x Aa distingue genotipo 1:2:1 y fenotipo 3:1',()=>{
  const q=context.window.SCIENCE_BANK.find(x=>x.id==='SCI-043');
