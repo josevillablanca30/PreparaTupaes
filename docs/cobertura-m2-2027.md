@@ -5,7 +5,7 @@ Actualizada: 17 de octubre de 2026. Estado de contenido: banco de práctica form
 ## Fuentes y método
 
 - Temario oficial DEMRE, PAES Regular admisión 2027: https://demre.cl/publicaciones/pdf/2027-26-03-19-temario-paes-regular-m2.pdf
-- Base de investigación de la app: carpeta Material PAES de Google Drive. En esta pasada se consultó `Copia de JMA-M2-07-2024.pdf` para revisar tipos de contexto matemático/financiero y `Resumen M30M PAES 2025.pdf` para localizar unidades y tipos de ejercicio; se usaron títulos/secciones pertinentes como guía, sin copiar preguntas. La Drive es material de referencia; las preguntas publicadas por Cachaste deben seguir siendo originales y cada futura pregunta debe tener procedencia anotada.
+- Base de investigación de la app: carpeta Material PAES de Google Drive. En esta pasada se consultó `Copia de JMA-M2-07-2024.pdf` para tipos de contexto matemático/financiero y `Resumen M30M PAES 2025.pdf` para ubicar unidades y tipos de ejercicio. Para M2-111 se revisó `M2-IM-ME4.pdf`, ejercicio 8, sobre crecimiento exponencial; para M2-112 se consultó `1. Geometria 250.pdf`, ejercicios 150, 155 y 157, sobre tangente-secante y secantes desde un punto exterior. Se usaron objetivos y estructuras como guía, sin copiar enunciados ni alternativas. Falta verificar página exacta para registrar la trazabilidad completa; las preguntas de Cachaste son originales y deben conservar esa referencia.
 - Inventario del banco `m2-bank.js`: 112 preguntas, M2-001 a M2-112. Los IDs señalan presencia de al menos un ejercicio relacionado, no suficiencia de variedad, dificultad, habilidad ni calidad.
 
 ## Criterio de estado
