@@ -37,7 +37,7 @@ Meta de cierre: 31 de octubre de 2026, para habilitar el uso durante noviembre. 
 - [x] El último informe de referencia contó 623 preguntas y no reportó fallas críticas; registró dos alertas heurísticas breves de M1 que se revisaron manualmente.
 - [x] Revalidar los bancos tras añadir cuatro preguntas originales a M2: 627 ítems, 0 alertas críticas y 2 alertas heurísticas; 158/158 pruebas lógicas y build local aprobados.
 - [x] Revalidar tras añadir M2-111–112: 158/158 pruebas lógicas, auditoría 629 ítems (0 críticas, 2 heurísticas), `npm run build` y `git diff --check` aprobados.
-- [x] Revalidar M2-114: auditoría 631 (0 críticas/2 heurísticas), 158/158 pruebas lógicas, build, 597 pruebas móviles en Chromium/WebKit —incluye M2-113/114— y 7 pruebas de APK en emulador aprobados en `4f9a419`.
+- [x] Revalidar M2-114: auditoría 631 (0 críticas/2 heurísticas), pruebas lógicas y build aprobados; en `abe108d`, 597 pruebas móviles en Chromium/WebKit (incluye M2-113/114) y 7 pruebas de APK en emulador también aprobadas. GitHub Pages sigue pendiente porque la sesión conectada no está autenticada.
 - [ ] Hacer revisión conceptual humana completa y guardar sus decisiones por pregunta.
 - [ ] Revisar conceptualmente cada respuesta, procedimiento, unidad, gráfico y alternativa.
 - [ ] Confirmar que cada distractor represente un error plausible y que cada explicación responda por qué esa alternativa se acepta o descarta.
@@ -71,7 +71,7 @@ Meta de cierre: 31 de octubre de 2026, para habilitar el uso durante noviembre. 
 
 ## 6. Publicación y operación comercial
 
-- [ ] Habilitar GitHub Pages en la configuración del repositorio y desplegar el commit validado; revisar URL pública y HTTPS.
+- [ ] Habilitar GitHub Pages en la configuración del repositorio y desplegar el commit validado; la corrida `abe108d` confirma bloqueo de configuración (requiere sesión autorizada). Luego revisar URL pública y HTTPS.
 - [ ] Preparar firma Android de distribución controlada por el propietario; nunca incluir claves privadas en GitHub.
 - [ ] Firmar release, validar instalación/actualización en dispositivo real y conservar procedimiento seguro de recuperación de la clave.
 - [ ] Definir responsable, canal y tiempos de soporte.
@@ -92,6 +92,7 @@ Meta de cierre: 31 de octubre de 2026, para habilitar el uso durante noviembre. 
 | Fecha / commit | Avance | Evidencia / estado |
 | --- | --- | --- |
 | 17-10-2026 · `4f9a419` | M2 llega a 114 preguntas y QA móvil cubre el tutor de M2-113/114 | 158/158 lógicas, auditoría 631 (0 críticas/2 heurísticas), build, 597 pruebas móviles y 7 pruebas Android en emulador aprobados. Artefacto beta temporal hasta 20-10; Pages requiere habilitación del propietario. |
+| 17-10-2026 · `abe108d` | Gatito explicativo recorre las seis poses existentes del sprite | 597/597 pruebas móviles y 7/7 pruebas Android en emulador aprobadas; build, auditoría y pruebas lógicas pasaron. Pages falló solo en su paso de habilitación por falta de sesión autenticada. |
 | 17-10-2026 · `30d1b56` | M2 llega a 113 preguntas con lectura logarítmica original y referencia Drive | 158/158 pruebas lógicas, auditoría 630 (0 críticas/2 heurísticas), build, 597 pruebas móviles y APK beta instalada en emulador (offline, persistencia, Atrás) aprobados. Artefacto Actions: `Cachaste-v1.3.0-beta-camino-30d1b56`; Pages requiere habilitación del propietario. |
 | 17-10-2026 · `8cb1941` | Movimiento de caminar y doble salto de celebración del gatito | Código guardado; sin resultado CI reportado en la consulta |
 | 17-10-2026 · `bea865e` | Pulso suave para destacar el siguiente nivel | Código guardado; sin resultado CI reportado en la consulta |
