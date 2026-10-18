@@ -27,4 +27,5 @@ test('M2 recuperado: claves cuantitativas y rasgos de funciones se verifican por
  assert.equal(Math.log2(1),0);assert.ok(Math.log2(2)>Math.log2(1));assert.match(key('M2-113'),/x>0.*creciente.*vertical x=0/);
  assert.equal(200*.6**0,200);assert.equal(200*.6,120);assert.ok(200*.6**10>0&&200*.6**10<120);assert.match(key('M2-114'),/\(0, 200\).*disminuye.*y=0/);
  assert.match(find('M2-107').teaching.aim,/solo la probabilidad de la segunda/);
+ const conditional=find('M2-107');assert.match(conditional.explanations[conditional.answer],/solo la probabilidad de la segunda/);assert.doesNotMatch(conditional.explanations[conditional.answer],/Necesitamos que ocurran dos resultados seguidos/);
 });

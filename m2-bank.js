@@ -707,7 +707,7 @@ window.CACHASTE_M2.push(...[
       "example": "Una caja contiene 5 tarjetas verdes y 4 amarillas. Se retiró una amarilla sin devolverla. ¿Qué probabilidad tiene la siguiente de ser verde?\n\nLa tarjeta retirada es amarilla: quedan las 5 verdes y solo 3 amarillas.\n\nHay 8 tarjetas posibles y 5 favorables, por lo que la probabilidad condicionada es 5/8.\n\nNo multiplicamos por 4/9: eso incluiría la probabilidad del primer resultado, que el problema ya nos informa.\n\nActualiza los colores y el total según lo que ya ocurrió; después calcula únicamente el evento solicitado."
     },
     "explanations": [
-      "Necesitamos que ocurran dos resultados seguidos. Antes de calcular, aclara si el primer objeto vuelve al conjunto: «sin reposición» significa que no vuelve y cambia las posibilidades siguientes.\n\nUna probabilidad compara casos favorables con casos posibles, cuando todos los objetos se eligen con la misma posibilidad. Para dos éxitos consecutivos se multiplica la probabilidad del primero por la del segundo condicionada a que el primero haya ocurrido. «Condicionada» significa que actualizamos la información.\n\nSi el primer objeto cumple la condición deseada y lo retiramos, quedan un objeto favorable menos y un objeto total menos. Es incorrecto mantener la misma fracción en ambas extracciones. No sumamos porque se exige el primer resultado Y el segundo, no uno U otro.\n\nLa condición «la primera fue roja» cambia la información disponible para la segunda extracción.\n\nQuedan 6 fichas: 3 azules y 3 rojas.\n\nP(roja en la segunda | roja en la primera)=3/6=1/2.\n\nLa primera roja ya no está en la urna: quedan 6 fichas, 3 rojas. La probabilidad condicionada de otra roja es 3/6=1/2. La cifra 3/7 ignora la información de que la primera fue roja.",
+      "La primera extracción ya ocurrió y sabemos que fue roja. Calcularemos solo la probabilidad de la segunda bajo esa condición.\n\nUna probabilidad condicionada utiliza la información conocida para actualizar el conjunto de casos posibles. Aquí la primera roja ya fue retirada, así que no calculamos la probabilidad de que ocurra ese primer resultado.\n\nSin reposición quedan una ficha roja menos y una ficha total menos: 3 rojas y 3 azules entre 6 fichas. Cada ficha restante tiene la misma posibilidad de salir.\n\nLa condición «la primera fue roja» cambia la información disponible para la segunda extracción.\n\nQuedan 6 fichas: 3 azules y 3 rojas.\n\nP(roja en la segunda | roja en la primera)=3/6=1/2.\n\nLa primera roja ya no está en la urna: quedan 6 fichas, 3 rojas. La probabilidad condicionada de otra roja es 3/6=1/2. La cifra 3/7 ignora la información de que la primera fue roja.",
       "3/7 usa el total antes de retirar la primera ficha.",
       "2/3 conserva las cuatro rojas iniciales como favorables y solo actualiza el total a seis; también hay que descontar la primera roja.",
       "4/7 es la probabilidad de que la primera ficha fuera roja, que ya está dada."
@@ -716,7 +716,7 @@ window.CACHASTE_M2.push(...[
     "difficulty": "intermedio",
     "reviewStatus": "revision_individual_2026-10-17",
     "teaching": {
-      "revision": "tutor-profesor-2026-10-15",
+      "revision": "tutor-reconciliacion-2026-10-18",
       "quality": "adecuada",
       "aim": "La primera extracción ya ocurrió y sabemos que fue roja. Calcularemos solo la probabilidad de la segunda bajo esa condición.",
       "foundation": [
@@ -800,11 +800,11 @@ window.CACHASTE_M2.push(...[
         "El saldo es $309.090,30.",
         "Calcula por período: 300.000·1,01=$303.000; luego $306.030; al tercer mes $309.090,30. $309.000 aplica interés simple y omite la capitalización."
       ],
-      "easy": "Imagina una bola de nieve que crece una décima parte de su tamaño en cada vuelta. La segunda décima parte se toma de una bola más grande. No agregas siempre el mismo trozo de nieve.\n\nPuedes evitar la fórmula haciendo una cuenta por período: monto anterior, interés calculado sobre ese monto y nuevo total. Si cada interés sale idéntico pese a que el saldo aumentó, probablemente aplicaste interés simple.\n\nCada mes el saldo completo se multiplica por 1,01.\n\nDespués de 3 meses: 300.000·1,01³.\n\nEl saldo es $309.090,30.",
+      "easy": "Imagina una bola de nieve que crece una centésima parte de su tamaño en cada vuelta. Esa parte representa el 1%. La segunda centésima parte se toma de una bola más grande: no agregas siempre el mismo trozo de nieve.\n\nPuedes evitar la fórmula haciendo una cuenta por período: monto anterior, interés calculado sobre ese monto y nuevo total. Si cada interés sale idéntico pese a que el saldo aumentó, probablemente aplicaste interés simple.",
       "example": "Otro problema: dos modelos de ahorro parten de $10.000 y pagan 10% por período. Uno calcula siempre sobre el capital inicial y el otro reinvierte lo ganado. ¿Por qué después de dos períodos difieren?\n\nEn ambos modelos el primer interés es 10.000·0,10=$1.000, así que llegan a $11.000.\n\nEl simple vuelve a ganar $1.000: saldo $12.000. El compuesto calcula 11.000·0,10=$1.100: saldo $12.100.\n\nLos $100 de diferencia son el 10% de los $1.000 ganados antes. Esto explica el interés sobre interés; no son un cargo adicional inventado.\n\nReconstruye los períodos de tu ejercicio con sus propios montos y tasas. Comprueba si la alternativa elegida detuvo el proceso antes o mantuvo por error el capital inicial como base."
     },
     "explanations": [
-      "Determina si se pide el saldo completo o solo lo ganado, y cuántos períodos de interés pasan. Este es un modelo matemático hipotético con las condiciones indicadas, no una predicción de una cuenta real.\n\nEl capital es la cantidad de partida. La tasa r representa la fracción que se añade en cada período: 10%=0,10. En interés compuesto, la base se actualiza después de cada período, por lo que el interés posterior también incluye lo ganado antes.\n\nEl factor 1+r conserva el monto anterior y añade su fracción de interés. Después de n períodos: monto=C(1+r)^n, con C capital inicial. La tasa y el tiempo deben usar el mismo período: una tasa mensual se aplica por meses. El interés total es monto menos C, no el monto completo.\n\nCada mes el saldo completo se multiplica por 1,01.\n\nDespués de 3 meses: 300.000·1,01³.\n\nEl saldo es $309.090,30.\n\nCalcula por período: 300.000·1,01=$303.000; luego $306.030; al tercer mes $309.090,30. $309.000 aplica interés simple y omite la capitalización.",
+      "Determina si se pide el saldo completo o solo lo ganado, y cuántos períodos de interés pasan. Este es un modelo matemático hipotético con las condiciones indicadas, no una predicción de una cuenta real.\n\nEl capital es la cantidad de partida. La tasa r representa la fracción que se añade en cada período: 1%=0,01. En interés compuesto, la base se actualiza después de cada período, por lo que el interés posterior también incluye lo ganado antes.\n\nEl factor 1+r conserva el monto anterior y añade su fracción de interés. Después de n períodos: monto=C(1+r)^n, con C capital inicial. La tasa y el tiempo deben usar el mismo período: una tasa mensual se aplica por meses. El interés total es monto menos C, no el monto completo.\n\nCada mes el saldo completo se multiplica por 1,01.\n\nDespués de 3 meses: 300.000·1,01³.\n\nEl saldo es $309.090,30.\n\nCalcula por período: 300.000·1,01=$303.000; luego $306.030; al tercer mes $309.090,30. $309.000 aplica interés simple y omite la capitalización.",
       "$309.000 aplica interés simple y omite la capitalización.",
       "$303.000 calcula solo un mes de interés.",
       "$330.000 agrega $30.000, el 10% del capital inicial, en vez de capitalizar el 1% mensual durante tres meses."
@@ -813,11 +813,11 @@ window.CACHASTE_M2.push(...[
     "difficulty": "intermedio",
     "reviewStatus": "revision_individual_2026-10-17",
     "teaching": {
-      "revision": "tutor-profesor-2026-10-15",
+      "revision": "tutor-reconciliacion-2026-10-18",
       "quality": "adecuada",
       "aim": "Determina si se pide el saldo completo o solo lo ganado, y cuántos períodos de interés pasan. Este es un modelo matemático hipotético con las condiciones indicadas, no una predicción de una cuenta real.",
       "foundation": [
-        "El capital es la cantidad de partida. La tasa r representa la fracción que se añade en cada período: 10%=0,10. En interés compuesto, la base se actualiza después de cada período, por lo que el interés posterior también incluye lo ganado antes.",
+        "El capital es la cantidad de partida. La tasa r representa la fracción que se añade en cada período: 1%=0,01. En interés compuesto, la base se actualiza después de cada período, por lo que el interés posterior también incluye lo ganado antes.",
         "El factor 1+r conserva el monto anterior y añade su fracción de interés. Después de n períodos: monto=C(1+r)^n, con C capital inicial. La tasa y el tiempo deben usar el mismo período: una tasa mensual se aplica por meses. El interés total es monto menos C, no el monto completo."
       ],
       "application": [
@@ -827,7 +827,7 @@ window.CACHASTE_M2.push(...[
       ],
       "check": "Calcula por período: 300.000·1,01=$303.000; luego $306.030; al tercer mes $309.090,30. $309.000 aplica interés simple y omite la capitalización.",
       "intuition": [
-        "Imagina una bola de nieve que crece una décima parte de su tamaño en cada vuelta. La segunda décima parte se toma de una bola más grande. No agregas siempre el mismo trozo de nieve.",
+        "Imagina una bola de nieve que crece una centésima parte de su tamaño en cada vuelta. Esa parte representa el 1%. La segunda centésima parte se toma de una bola más grande: no agregas siempre el mismo trozo de nieve.",
         "Puedes evitar la fórmula haciendo una cuenta por período: monto anterior, interés calculado sobre ese monto y nuevo total. Si cada interés sale idéntico pese a que el saldo aumentó, probablemente aplicaste interés simple."
       ],
       "example": {
