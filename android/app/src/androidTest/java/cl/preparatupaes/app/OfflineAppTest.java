@@ -50,7 +50,7 @@ public class OfflineAppTest {
         open("reading.html", "Array.isArray(window.READING_QUESTIONS) && document.querySelector('h1')");
         assertEquals("130",js("window.READING_QUESTIONS.length"));
         open("m2.html", "document.getElementById('diagnostic')");
-        assertEquals("106",js("window.CACHASTE_M2.length"));
+        assertEquals("114",js("window.CACHASTE_M2.length"));
         open("history.html", "document.getElementById('diagnostic')");
         assertEquals("65",js("window.CACHASTE_HISTORIA.length"));
     }

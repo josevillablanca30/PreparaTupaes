@@ -4,16 +4,16 @@ Actualizado 18/10/2026. No solicitar prueba al usuario antes de resolver las bre
 
 ## Estado vigente
 
-El catálogo contiene **780 preguntas: 623 originales y 157 transferencias**. De ellas, **747 están habilitadas para práctica PAES** y **33 son complementarias**. Se conservan sus identificadores y el historial. Las transferencias heredan el alcance de su base; una pregunta complementaria no se convierte en PAES por tener un ID nuevo.
+El catálogo contiene **788 preguntas: 631 originales y 157 transferencias**. De ellas, **755 están habilitadas para práctica PAES** y **33 son complementarias**. Se conservan sus identificadores y el historial. Las transferencias heredan el alcance de su base; una pregunta complementaria no se convierte en PAES por tener un ID nuevo.
 
 | Materia | Preguntas totales | Preguntas PAES | Conceptos PAES | Conceptos PAES sin segunda familia |
 |---|---:|---:|---:|---:|
 | M1 | 147 | 147 | 65 | 0 |
-| M2 | 107 | 107 | 48 | 0 |
+| M2 | 115 | 115 | 48 | 0 |
 | Lectora | 130 | 130 | 10 | 0 |
 | Ciencias | 293 | 262 | 99 | 0 |
 | Historia | 103 | 101 | 48 | 0 |
-| **Total** | **780** | **747** | **270** | **0** |
+| **Total** | **788** | **755** | **270** | **0** |
 
 Las rutas de Ciencias se comprueban con su selección real: módulo común más la mención elegida, o módulo técnico profesional. Un caso de otra ruta no puede cerrar artificialmente la brecha.
 
@@ -30,9 +30,9 @@ Las rutas comparten el módulo común; sus cantidades no se suman como bancos in
 
 ## Verificación de esta pasada
 
-- **214/214 pruebas lógicas aprobadas**, incluidas claves cuantitativas, herencia curricular, disponibilidad por mención y conservación de historial.
+- **217/217 pruebas lógicas aprobadas**, incluidas claves cuantitativas, herencia curricular, disponibilidad por mención y conservación de historial.
 - **Compilación web correcta**; el catálogo ampliado llega al recorrido diario y a las pantallas tradicionales de M2 e Historia.
-- **0 errores críticos estructurales; 134 observaciones heurísticas** abiertas. El número no equivale a defectos confirmados.
+- **0 errores críticos estructurales; 102 observaciones heurísticas** abiertas. El número no equivale a defectos confirmados.
 - **741/741 pruebas Playwright aprobadas en CI (`c59a80e`)**, con escenarios nuevos para M2, Historia y las cuatro rutas de Ciencias.
 - Android sobre `c59a80e`: 88 pruebas rápidas y 8 pruebas nativas aprobadas. Validación técnica completada; continúan pendientes los criterios editoriales, de cobertura y pilotaje indicados abajo.
 
@@ -63,3 +63,8 @@ La autorización resuelve el rechazo automático inicial. El checkout no dispone
 
 
 Seguimiento de CI, regresión de Historia y muestra visual: [informe de esta pasada](pasada-amplia-2026-10-18.md).
+
+
+Revisión editorial posterior: 33 soluciones de Ciencias reescritas, retroalimentación de M2-007 ampliada y 44 alertas clasificadas. [Detalle y pendientes](revision-editorial-2026-10-18.md). Las cifras de CI de `c59a80e` corresponden al cierre anterior; la nueva revisión de contenido es `69ad25a`.
+
+Recuperación de ocho preguntas M2 y estado de validación separado del antecedente: [continuidad maestra](continuidad-maestra-2026-10-18.md).

@@ -1,0 +1,708 @@
+{
+  "main": "560e48cb937cdced1556d86a866c10d5c8012fc7",
+  "work": "69ad25a2535e7dfb3e2ef49b9aa1fc50f8983c6a",
+  "rows": [
+    {
+      "bank": "M1",
+      "id": 291,
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "M1",
+      "id": 292,
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "M1",
+      "id": 294,
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "M2",
+      "id": "M2-007",
+      "change": "different",
+      "fields": [
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "M2",
+      "id": "M2-011",
+      "change": "different",
+      "fields": [
+        "options"
+      ]
+    },
+    {
+      "bank": "M2",
+      "id": "M2-072",
+      "change": "different",
+      "fields": [
+        "options"
+      ]
+    },
+    {
+      "bank": "M2",
+      "id": "M2-083",
+      "change": "different",
+      "fields": [
+        "options"
+      ]
+    },
+    {
+      "bank": "M2",
+      "id": "M2-107",
+      "change": "only-main",
+      "question": "En una urna hay 4 fichas rojas y 3 azules. La primera ficha extraída es roja y no se devuelve. Sabiendo esto, ¿cuál es la probabilidad de que la segunda también sea roja?"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-108",
+      "change": "only-main",
+      "question": "Un crédito de consumo hipotético de $300.000 aumenta 1% mensual compuesto durante 3 meses, sin pagos ni cargos. ¿Cuál es el saldo al final?"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-109",
+      "change": "only-main",
+      "question": "En un ejercicio hipotético de ahorro previsional, se deposita el 10% de un ingreso mensual de $850.000. ¿Cuánto se deposita ese mes?"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-110",
+      "change": "only-main",
+      "question": "En un ejemplo hipotético de crédito hipotecario, una vivienda cuesta 2.400 UF y el pie corresponde al 20% del precio. Sin otros cargos ni reajustes, ¿qué monto se financia?"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-111",
+      "change": "only-main",
+      "question": "El gráfico de una función exponencial creciente f pasa por (0,1) y se aproxima al eje x hacia la izquierda. ¿Cuál podría ser f(x)?"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-112",
+      "change": "only-main",
+      "question": "Desde un punto exterior se trazan dos secantes a una circunferencia. La primera tiene segmento exterior 3 y segmento interior 5; la segunda tiene segmento exterior 4 y segmento interior x. ¿Cuánto vale x?"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-113",
+      "change": "only-main",
+      "question": "La gráfica de g(x)=log₂(x) cruza el eje x en (1,0). ¿Qué descripción corresponde?"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-114",
+      "change": "only-main",
+      "question": "Un modelo para la concentración de una sustancia es C(t)=200(0,6)^t, con t en horas y C en mg/L. ¿Qué descripción coincide con su gráfica?"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-006",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-009",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-014",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-016",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-017",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-020",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-022",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-024",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-027",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-035",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-036",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-043",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-044",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-048",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-051",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-054",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-063",
+      "change": "different",
+      "fields": [
+        "question",
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-064",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-067",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-071",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-073",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-078",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-079",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-080",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-082",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-088",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-089",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-090",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-091",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-095",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-099",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-113",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-114",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-117",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-124",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-126",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-128",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-129",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-132",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-137",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-143",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-146",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-155",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-157",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-172",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-185",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-187",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-189",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-192",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-193",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-194",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-204",
+      "change": "different",
+      "fields": [
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-017",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-051",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-053",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-054",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-077",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-087",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-088",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-101",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-038",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-041",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-045",
+      "change": "different",
+      "fields": [
+        "examEligible"
+      ]
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-047",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-054",
+      "change": "different",
+      "fields": [
+        "examEligible"
+      ]
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-055",
+      "change": "different",
+      "fields": [
+        "options",
+        "explanations",
+        "teaching"
+      ]
+    }
+  ]
+}

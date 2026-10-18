@@ -676,3 +676,783 @@ window.CACHASTE_M2_TEACH({
 });
 /* El mismo conjunto de datos no constituye una pregunta nueva de transferencia. */
 for(const id of ['M2-037','M2-096'])window.CACHASTE_M2.find(q=>q.id===id).transferGroup='m2-mean-2-4-6-8';
+
+// Recuperación selectiva de M2-107–114 desde main 560e48c; conserva IDs y claves.
+window.CACHASTE_M2.push(...[
+  {
+    "id": "M2-107",
+    "area": "Probabilidad",
+    "concept": "Probabilidad sin reposición",
+    "question": "En una urna hay 4 fichas rojas y 3 azules. La primera ficha extraída es roja y no se devuelve. Sabiendo esto, ¿cuál es la probabilidad de que la segunda también sea roja?",
+    "options": [
+      "1/2",
+      "3/7",
+      "2/3",
+      "4/7"
+    ],
+    "answer": 0,
+    "why": "La primera extracción ya ocurrió y sabemos que fue roja. Calcularemos solo la probabilidad de la segunda bajo esa condición.\n\nUna probabilidad condicionada utiliza la información conocida para actualizar el conjunto de casos posibles. Aquí la primera roja ya fue retirada, así que no calculamos la probabilidad de que ocurra ese primer resultado.\n\nSin reposición quedan una ficha roja menos y una ficha total menos: 3 rojas y 3 azules entre 6 fichas. Cada ficha restante tiene la misma posibilidad de salir.\n\nLa condición «la primera fue roja» cambia la información disponible para la segunda extracción.\n\nQuedan 6 fichas: 3 azules y 3 rojas.\n\nP(roja en la segunda | roja en la primera)=3/6=1/2.\n\nLa primera roja ya no está en la urna: quedan 6 fichas, 3 rojas. La probabilidad condicionada de otra roja es 3/6=1/2. La cifra 3/7 ignora la información de que la primera fue roja.",
+    "hint": "Tacha la ficha roja ya retirada y vuelve a contar las rojas y el total que quedan en la urna.",
+    "editorial": {
+      "steps": [
+        "La primera extracción ya ocurrió y sabemos que fue roja. Calcularemos solo la probabilidad de la segunda bajo esa condición.",
+        "Una probabilidad condicionada utiliza la información conocida para actualizar el conjunto de casos posibles. Aquí la primera roja ya fue retirada, así que no calculamos la probabilidad de que ocurra ese primer resultado.",
+        "Sin reposición quedan una ficha roja menos y una ficha total menos: 3 rojas y 3 azules entre 6 fichas. Cada ficha restante tiene la misma posibilidad de salir.",
+        "La condición «la primera fue roja» cambia la información disponible para la segunda extracción.",
+        "Quedan 6 fichas: 3 azules y 3 rojas.",
+        "P(roja en la segunda | roja en la primera)=3/6=1/2.",
+        "La primera roja ya no está en la urna: quedan 6 fichas, 3 rojas. La probabilidad condicionada de otra roja es 3/6=1/2. La cifra 3/7 ignora la información de que la primera fue roja."
+      ],
+      "easy": "Dibuja las siete fichas y tacha una roja, porque sabemos que esa fue retirada. La segunda elección ocurre entre las seis que todavía están en la urna.\n\nMultiplicar por 4/7 respondería otra pregunta: la probabilidad de obtener ambas rojas antes de comenzar. Aquí el primer resultado ya es información conocida.\n\nLa condición «la primera fue roja» cambia la información disponible para la segunda extracción.\n\nQuedan 6 fichas: 3 azules y 3 rojas.\n\nP(roja en la segunda | roja en la primera)=3/6=1/2.",
+      "example": "Una caja contiene 5 tarjetas verdes y 4 amarillas. Se retiró una amarilla sin devolverla. ¿Qué probabilidad tiene la siguiente de ser verde?\n\nLa tarjeta retirada es amarilla: quedan las 5 verdes y solo 3 amarillas.\n\nHay 8 tarjetas posibles y 5 favorables, por lo que la probabilidad condicionada es 5/8.\n\nNo multiplicamos por 4/9: eso incluiría la probabilidad del primer resultado, que el problema ya nos informa.\n\nActualiza los colores y el total según lo que ya ocurrió; después calcula únicamente el evento solicitado."
+    },
+    "explanations": [
+      "Necesitamos que ocurran dos resultados seguidos. Antes de calcular, aclara si el primer objeto vuelve al conjunto: «sin reposición» significa que no vuelve y cambia las posibilidades siguientes.\n\nUna probabilidad compara casos favorables con casos posibles, cuando todos los objetos se eligen con la misma posibilidad. Para dos éxitos consecutivos se multiplica la probabilidad del primero por la del segundo condicionada a que el primero haya ocurrido. «Condicionada» significa que actualizamos la información.\n\nSi el primer objeto cumple la condición deseada y lo retiramos, quedan un objeto favorable menos y un objeto total menos. Es incorrecto mantener la misma fracción en ambas extracciones. No sumamos porque se exige el primer resultado Y el segundo, no uno U otro.\n\nLa condición «la primera fue roja» cambia la información disponible para la segunda extracción.\n\nQuedan 6 fichas: 3 azules y 3 rojas.\n\nP(roja en la segunda | roja en la primera)=3/6=1/2.\n\nLa primera roja ya no está en la urna: quedan 6 fichas, 3 rojas. La probabilidad condicionada de otra roja es 3/6=1/2. La cifra 3/7 ignora la información de que la primera fue roja.",
+      "3/7 usa el total antes de retirar la primera ficha.",
+      "2/3 conserva las cuatro rojas iniciales como favorables y solo actualiza el total a seis; también hay que descontar la primera roja.",
+      "4/7 es la probabilidad de que la primera ficha fuera roja, que ya está dada."
+    ],
+    "origin": "original",
+    "difficulty": "intermedio",
+    "reviewStatus": "revision_individual_2026-10-17",
+    "teaching": {
+      "revision": "tutor-profesor-2026-10-15",
+      "quality": "adecuada",
+      "aim": "La primera extracción ya ocurrió y sabemos que fue roja. Calcularemos solo la probabilidad de la segunda bajo esa condición.",
+      "foundation": [
+        "Una probabilidad condicionada utiliza la información conocida para actualizar el conjunto de casos posibles. Aquí la primera roja ya fue retirada, así que no calculamos la probabilidad de que ocurra ese primer resultado.",
+        "Sin reposición quedan una ficha roja menos y una ficha total menos: 3 rojas y 3 azules entre 6 fichas. Cada ficha restante tiene la misma posibilidad de salir."
+      ],
+      "application": [
+        "La condición «la primera fue roja» cambia la información disponible para la segunda extracción.",
+        "Quedan 6 fichas: 3 azules y 3 rojas.",
+        "P(roja en la segunda | roja en la primera)=3/6=1/2."
+      ],
+      "check": "La primera roja ya no está en la urna: quedan 6 fichas, 3 rojas. La probabilidad condicionada de otra roja es 3/6=1/2. La cifra 3/7 ignora la información de que la primera fue roja.",
+      "intuition": [
+        "Dibuja las siete fichas y tacha una roja, porque sabemos que esa fue retirada. La segunda elección ocurre entre las seis que todavía están en la urna.",
+        "Multiplicar por 4/7 respondería otra pregunta: la probabilidad de obtener ambas rojas antes de comenzar. Aquí el primer resultado ya es información conocida."
+      ],
+      "example": {
+        "problem": "Una caja contiene 5 tarjetas verdes y 4 amarillas. Se retiró una amarilla sin devolverla. ¿Qué probabilidad tiene la siguiente de ser verde?",
+        "steps": [
+          "La tarjeta retirada es amarilla: quedan las 5 verdes y solo 3 amarillas.",
+          "Hay 8 tarjetas posibles y 5 favorables, por lo que la probabilidad condicionada es 5/8.",
+          "No multiplicamos por 4/9: eso incluiría la probabilidad del primer resultado, que el problema ya nos informa."
+        ],
+        "bridge": "Actualiza los colores y el total según lo que ya ocurrió; después calcula únicamente el evento solicitado."
+      },
+      "selectedFeedback": [
+        null,
+        {
+          "diagnosis": "3/7 usa el total antes de retirar la primera ficha.",
+          "repair": [
+            "La condición «la primera fue roja» cambia la información disponible para la segunda extracción.",
+            "Quedan 6 fichas: 3 azules y 3 rojas.",
+            "P(roja en la segunda | roja en la primera)=3/6=1/2."
+          ]
+        },
+        {
+          "diagnosis": "2/3 conserva las cuatro rojas iniciales como favorables y solo actualiza el total a seis; también hay que descontar la primera roja.",
+          "repair": [
+            "La condición «la primera fue roja» cambia la información disponible para la segunda extracción.",
+            "Quedan 6 fichas: 3 azules y 3 rojas.",
+            "P(roja en la segunda | roja en la primera)=3/6=1/2."
+          ]
+        },
+        {
+          "diagnosis": "4/7 es la probabilidad de que la primera ficha fuera roja, que ya está dada.",
+          "repair": [
+            "La condición «la primera fue roja» cambia la información disponible para la segunda extracción.",
+            "Quedan 6 fichas: 3 azules y 3 rojas.",
+            "P(roja en la segunda | roja en la primera)=3/6=1/2."
+          ]
+        }
+      ]
+    },
+    "recoveredFrom": {
+      "branch": "main",
+      "commit": "560e48cb937cdced1556d86a866c10d5c8012fc7",
+      "reviewedAt": "2026-10-18"
+    }
+  },
+  {
+    "id": "M2-108",
+    "area": "Modelación",
+    "concept": "Interés compuesto",
+    "question": "Un crédito de consumo hipotético de $300.000 aumenta 1% mensual compuesto durante 3 meses, sin pagos ni cargos. ¿Cuál es el saldo al final?",
+    "options": [
+      "$309.090,30",
+      "$309.000",
+      "$303.000",
+      "$330.000"
+    ],
+    "answer": 0,
+    "why": "Determina si se pide el saldo completo o solo lo ganado, y cuántos períodos de interés pasan. Este es un modelo matemático hipotético con las condiciones indicadas, no una predicción de una cuenta real.\n\nEl capital es la cantidad de partida. La tasa r representa la fracción que se añade en cada período: 10%=0,10. En interés compuesto, la base se actualiza después de cada período, por lo que el interés posterior también incluye lo ganado antes.\n\nEl factor 1+r conserva el monto anterior y añade su fracción de interés. Después de n períodos: monto=C(1+r)^n, con C capital inicial. La tasa y el tiempo deben usar el mismo período: una tasa mensual se aplica por meses. El interés total es monto menos C, no el monto completo.\n\nCada mes el saldo completo se multiplica por 1,01.\n\nDespués de 3 meses: 300.000·1,01³.\n\nEl saldo es $309.090,30.\n\nCalcula por período: 300.000·1,01=$303.000; luego $306.030; al tercer mes $309.090,30. $309.000 aplica interés simple y omite la capitalización.",
+    "hint": "Determina si se pide el saldo completo o solo lo ganado, y cuántos períodos de interés pasan. Este es un modelo matemático hipotético con las condiciones indicadas, no una predicción de una cuenta real.",
+    "editorial": {
+      "steps": [
+        "Determina si se pide el saldo completo o solo lo ganado, y cuántos períodos de interés pasan. Este es un modelo matemático hipotético con las condiciones indicadas, no una predicción de una cuenta real.",
+        "El capital es la cantidad de partida. La tasa r representa la fracción que se añade en cada período: 10%=0,10. En interés compuesto, la base se actualiza después de cada período, por lo que el interés posterior también incluye lo ganado antes.",
+        "El factor 1+r conserva el monto anterior y añade su fracción de interés. Después de n períodos: monto=C(1+r)^n, con C capital inicial. La tasa y el tiempo deben usar el mismo período: una tasa mensual se aplica por meses. El interés total es monto menos C, no el monto completo.",
+        "Cada mes el saldo completo se multiplica por 1,01.",
+        "Después de 3 meses: 300.000·1,01³.",
+        "El saldo es $309.090,30.",
+        "Calcula por período: 300.000·1,01=$303.000; luego $306.030; al tercer mes $309.090,30. $309.000 aplica interés simple y omite la capitalización."
+      ],
+      "easy": "Imagina una bola de nieve que crece una décima parte de su tamaño en cada vuelta. La segunda décima parte se toma de una bola más grande. No agregas siempre el mismo trozo de nieve.\n\nPuedes evitar la fórmula haciendo una cuenta por período: monto anterior, interés calculado sobre ese monto y nuevo total. Si cada interés sale idéntico pese a que el saldo aumentó, probablemente aplicaste interés simple.\n\nCada mes el saldo completo se multiplica por 1,01.\n\nDespués de 3 meses: 300.000·1,01³.\n\nEl saldo es $309.090,30.",
+      "example": "Otro problema: dos modelos de ahorro parten de $10.000 y pagan 10% por período. Uno calcula siempre sobre el capital inicial y el otro reinvierte lo ganado. ¿Por qué después de dos períodos difieren?\n\nEn ambos modelos el primer interés es 10.000·0,10=$1.000, así que llegan a $11.000.\n\nEl simple vuelve a ganar $1.000: saldo $12.000. El compuesto calcula 11.000·0,10=$1.100: saldo $12.100.\n\nLos $100 de diferencia son el 10% de los $1.000 ganados antes. Esto explica el interés sobre interés; no son un cargo adicional inventado.\n\nReconstruye los períodos de tu ejercicio con sus propios montos y tasas. Comprueba si la alternativa elegida detuvo el proceso antes o mantuvo por error el capital inicial como base."
+    },
+    "explanations": [
+      "Determina si se pide el saldo completo o solo lo ganado, y cuántos períodos de interés pasan. Este es un modelo matemático hipotético con las condiciones indicadas, no una predicción de una cuenta real.\n\nEl capital es la cantidad de partida. La tasa r representa la fracción que se añade en cada período: 10%=0,10. En interés compuesto, la base se actualiza después de cada período, por lo que el interés posterior también incluye lo ganado antes.\n\nEl factor 1+r conserva el monto anterior y añade su fracción de interés. Después de n períodos: monto=C(1+r)^n, con C capital inicial. La tasa y el tiempo deben usar el mismo período: una tasa mensual se aplica por meses. El interés total es monto menos C, no el monto completo.\n\nCada mes el saldo completo se multiplica por 1,01.\n\nDespués de 3 meses: 300.000·1,01³.\n\nEl saldo es $309.090,30.\n\nCalcula por período: 300.000·1,01=$303.000; luego $306.030; al tercer mes $309.090,30. $309.000 aplica interés simple y omite la capitalización.",
+      "$309.000 aplica interés simple y omite la capitalización.",
+      "$303.000 calcula solo un mes de interés.",
+      "$330.000 agrega $30.000, el 10% del capital inicial, en vez de capitalizar el 1% mensual durante tres meses."
+    ],
+    "origin": "original",
+    "difficulty": "intermedio",
+    "reviewStatus": "revision_individual_2026-10-17",
+    "teaching": {
+      "revision": "tutor-profesor-2026-10-15",
+      "quality": "adecuada",
+      "aim": "Determina si se pide el saldo completo o solo lo ganado, y cuántos períodos de interés pasan. Este es un modelo matemático hipotético con las condiciones indicadas, no una predicción de una cuenta real.",
+      "foundation": [
+        "El capital es la cantidad de partida. La tasa r representa la fracción que se añade en cada período: 10%=0,10. En interés compuesto, la base se actualiza después de cada período, por lo que el interés posterior también incluye lo ganado antes.",
+        "El factor 1+r conserva el monto anterior y añade su fracción de interés. Después de n períodos: monto=C(1+r)^n, con C capital inicial. La tasa y el tiempo deben usar el mismo período: una tasa mensual se aplica por meses. El interés total es monto menos C, no el monto completo."
+      ],
+      "application": [
+        "Cada mes el saldo completo se multiplica por 1,01.",
+        "Después de 3 meses: 300.000·1,01³.",
+        "El saldo es $309.090,30."
+      ],
+      "check": "Calcula por período: 300.000·1,01=$303.000; luego $306.030; al tercer mes $309.090,30. $309.000 aplica interés simple y omite la capitalización.",
+      "intuition": [
+        "Imagina una bola de nieve que crece una décima parte de su tamaño en cada vuelta. La segunda décima parte se toma de una bola más grande. No agregas siempre el mismo trozo de nieve.",
+        "Puedes evitar la fórmula haciendo una cuenta por período: monto anterior, interés calculado sobre ese monto y nuevo total. Si cada interés sale idéntico pese a que el saldo aumentó, probablemente aplicaste interés simple."
+      ],
+      "example": {
+        "problem": "Otro problema: dos modelos de ahorro parten de $10.000 y pagan 10% por período. Uno calcula siempre sobre el capital inicial y el otro reinvierte lo ganado. ¿Por qué después de dos períodos difieren?",
+        "steps": [
+          "En ambos modelos el primer interés es 10.000·0,10=$1.000, así que llegan a $11.000.",
+          "El simple vuelve a ganar $1.000: saldo $12.000. El compuesto calcula 11.000·0,10=$1.100: saldo $12.100.",
+          "Los $100 de diferencia son el 10% de los $1.000 ganados antes. Esto explica el interés sobre interés; no son un cargo adicional inventado."
+        ],
+        "bridge": "Reconstruye los períodos de tu ejercicio con sus propios montos y tasas. Comprueba si la alternativa elegida detuvo el proceso antes o mantuvo por error el capital inicial como base."
+      },
+      "selectedFeedback": [
+        null,
+        {
+          "diagnosis": "$309.000 aplica interés simple y omite la capitalización.",
+          "repair": [
+            "Cada mes el saldo completo se multiplica por 1,01.",
+            "Después de 3 meses: 300.000·1,01³.",
+            "El saldo es $309.090,30."
+          ]
+        },
+        {
+          "diagnosis": "$303.000 calcula solo un mes de interés.",
+          "repair": [
+            "Cada mes el saldo completo se multiplica por 1,01.",
+            "Después de 3 meses: 300.000·1,01³.",
+            "El saldo es $309.090,30."
+          ]
+        },
+        {
+          "diagnosis": "$330.000 agrega $30.000, el 10% del capital inicial, en vez de capitalizar el 1% mensual durante tres meses.",
+          "repair": [
+            "Cada mes el saldo completo se multiplica por 1,01.",
+            "Después de 3 meses: 300.000·1,01³.",
+            "El saldo es $309.090,30."
+          ]
+        }
+      ]
+    },
+    "recoveredFrom": {
+      "branch": "main",
+      "commit": "560e48cb937cdced1556d86a866c10d5c8012fc7",
+      "reviewedAt": "2026-10-18"
+    }
+  },
+  {
+    "id": "M2-109",
+    "area": "Modelación",
+    "concept": "Porcentajes",
+    "question": "En un ejercicio hipotético de ahorro previsional, se deposita el 10% de un ingreso mensual de $850.000. ¿Cuánto se deposita ese mes?",
+    "options": [
+      "$85.000",
+      "$8.500",
+      "$765.000",
+      "$935.000"
+    ],
+    "answer": 0,
+    "why": "Un porcentaje es una proporción del valor de referencia. Primero identifica esa referencia y después distingue el cambio calculado del valor final que preguntan.\n\nPor ciento significa «por cada cien»: p%=p/100. El p% de una cantidad C es (p/100)·C. En un aumento se suma ese cambio a C; en una disminución se resta. Por eso el factor final es 1+p/100 o 1−p/100, respectivamente.\n\nNo interpretes 20% como veinte unidades: sería así solo si la base fuera cien. Tampoco confundas «aumenta en 25%» con «queda en 25%»: la primera conserva el 100% previo y añade 25%; la segunda deja únicamente una cuarta parte.\n\nConvierte 10% a decimal: 0,10.\n\nMultiplica el ingreso por la tasa: 850.000·0,10.\n\nEl depósito del ejercicio es $85.000.\n\nEl 10% es 0,10; 850.000·0,10=85.000. La tasa la fija este ejercicio hipotético y no debe confundirse con una tasa normativa.",
+    "hint": "Un porcentaje es una proporción del valor de referencia. Primero identifica esa referencia y después distingue el cambio calculado del valor final que preguntan.",
+    "editorial": {
+      "steps": [
+        "Un porcentaje es una proporción del valor de referencia. Primero identifica esa referencia y después distingue el cambio calculado del valor final que preguntan.",
+        "Por ciento significa «por cada cien»: p%=p/100. El p% de una cantidad C es (p/100)·C. En un aumento se suma ese cambio a C; en una disminución se resta. Por eso el factor final es 1+p/100 o 1−p/100, respectivamente.",
+        "No interpretes 20% como veinte unidades: sería así solo si la base fuera cien. Tampoco confundas «aumenta en 25%» con «queda en 25%»: la primera conserva el 100% previo y añade 25%; la segunda deja únicamente una cuarta parte.",
+        "Convierte 10% a decimal: 0,10.",
+        "Multiplica el ingreso por la tasa: 850.000·0,10.",
+        "El depósito del ejercicio es $85.000.",
+        "El 10% es 0,10; 850.000·0,10=85.000. La tasa la fija este ejercicio hipotético y no debe confundirse con una tasa normativa."
+      ],
+      "easy": "Imagina una barra completa que representa el valor original. Dividirla en cien partes permite decir qué fracción añadimos o quitamos sin importar cuánto medía la barra. Veinticinco de esas partes son una cuarta parte de esa barra, no necesariamente veinticinco pesos.\n\nPuedes empezar con fracciones conocidas: 50% es mitad, 25% cuarta parte y 10% décima parte. Esa estimación te ayuda a comprobar si el cambio calculado tiene un tamaño razonable.\n\nConvierte 10% a decimal: 0,10.\n\nMultiplica el ingreso por la tasa: 850.000·0,10.\n\nEl depósito del ejercicio es $85.000.",
+      "example": "Otro problema: una cuenta de $24.000 incluye un cargo adicional del 10%. ¿Cuánto se agrega y qué porcentaje de la cuenta original representa el total?\n\nLa décima parte de $24.000 es $2.400: ese es el cargo, no el total.\n\nAl sumar: 24.000+2.400=$26.400. El total representa 100%+10%=110% del valor original.\n\nPodemos comprobarlo con el factor: 24.000·1,10=26.400. Si después se descontara 10% del nuevo total, no volveríamos al original, porque la referencia habría cambiado.\n\nUsa la cantidad inicial de tu ejercicio como base y conserva el sentido del cambio. Antes de escoger una alternativa, decide si ese número corresponde al incremento, al descuento o al resultado completo."
+    },
+    "explanations": [
+      "Un porcentaje es una proporción del valor de referencia. Primero identifica esa referencia y después distingue el cambio calculado del valor final que preguntan.\n\nPor ciento significa «por cada cien»: p%=p/100. El p% de una cantidad C es (p/100)·C. En un aumento se suma ese cambio a C; en una disminución se resta. Por eso el factor final es 1+p/100 o 1−p/100, respectivamente.\n\nNo interpretes 20% como veinte unidades: sería así solo si la base fuera cien. Tampoco confundas «aumenta en 25%» con «queda en 25%»: la primera conserva el 100% previo y añade 25%; la segunda deja únicamente una cuarta parte.\n\nConvierte 10% a decimal: 0,10.\n\nMultiplica el ingreso por la tasa: 850.000·0,10.\n\nEl depósito del ejercicio es $85.000.\n\nEl 10% es 0,10; 850.000·0,10=85.000. La tasa la fija este ejercicio hipotético y no debe confundirse con una tasa normativa.",
+      "$8.500 corresponde a 1% del ingreso.",
+      "$765.000 es el ingreso restante, no el depósito.",
+      "$935.000 suma el ingreso y el 10%; no calcula la parte porcentual."
+    ],
+    "origin": "original",
+    "difficulty": "intermedio",
+    "reviewStatus": "revision_individual_2026-10-17",
+    "teaching": {
+      "revision": "tutor-profesor-2026-10-15",
+      "quality": "adecuada",
+      "aim": "Un porcentaje es una proporción del valor de referencia. Primero identifica esa referencia y después distingue el cambio calculado del valor final que preguntan.",
+      "foundation": [
+        "Por ciento significa «por cada cien»: p%=p/100. El p% de una cantidad C es (p/100)·C. En un aumento se suma ese cambio a C; en una disminución se resta. Por eso el factor final es 1+p/100 o 1−p/100, respectivamente.",
+        "No interpretes 20% como veinte unidades: sería así solo si la base fuera cien. Tampoco confundas «aumenta en 25%» con «queda en 25%»: la primera conserva el 100% previo y añade 25%; la segunda deja únicamente una cuarta parte."
+      ],
+      "application": [
+        "Convierte 10% a decimal: 0,10.",
+        "Multiplica el ingreso por la tasa: 850.000·0,10.",
+        "El depósito del ejercicio es $85.000."
+      ],
+      "check": "El 10% es 0,10; 850.000·0,10=85.000. La tasa la fija este ejercicio hipotético y no debe confundirse con una tasa normativa.",
+      "intuition": [
+        "Imagina una barra completa que representa el valor original. Dividirla en cien partes permite decir qué fracción añadimos o quitamos sin importar cuánto medía la barra. Veinticinco de esas partes son una cuarta parte de esa barra, no necesariamente veinticinco pesos.",
+        "Puedes empezar con fracciones conocidas: 50% es mitad, 25% cuarta parte y 10% décima parte. Esa estimación te ayuda a comprobar si el cambio calculado tiene un tamaño razonable."
+      ],
+      "example": {
+        "problem": "Otro problema: una cuenta de $24.000 incluye un cargo adicional del 10%. ¿Cuánto se agrega y qué porcentaje de la cuenta original representa el total?",
+        "steps": [
+          "La décima parte de $24.000 es $2.400: ese es el cargo, no el total.",
+          "Al sumar: 24.000+2.400=$26.400. El total representa 100%+10%=110% del valor original.",
+          "Podemos comprobarlo con el factor: 24.000·1,10=26.400. Si después se descontara 10% del nuevo total, no volveríamos al original, porque la referencia habría cambiado."
+        ],
+        "bridge": "Usa la cantidad inicial de tu ejercicio como base y conserva el sentido del cambio. Antes de escoger una alternativa, decide si ese número corresponde al incremento, al descuento o al resultado completo."
+      },
+      "selectedFeedback": [
+        null,
+        {
+          "diagnosis": "$8.500 corresponde a 1% del ingreso.",
+          "repair": [
+            "Convierte 10% a decimal: 0,10.",
+            "Multiplica el ingreso por la tasa: 850.000·0,10.",
+            "El depósito del ejercicio es $85.000."
+          ]
+        },
+        {
+          "diagnosis": "$765.000 es el ingreso restante, no el depósito.",
+          "repair": [
+            "Convierte 10% a decimal: 0,10.",
+            "Multiplica el ingreso por la tasa: 850.000·0,10.",
+            "El depósito del ejercicio es $85.000."
+          ]
+        },
+        {
+          "diagnosis": "$935.000 suma el ingreso y el 10%; no calcula la parte porcentual.",
+          "repair": [
+            "Convierte 10% a decimal: 0,10.",
+            "Multiplica el ingreso por la tasa: 850.000·0,10.",
+            "El depósito del ejercicio es $85.000."
+          ]
+        }
+      ]
+    },
+    "recoveredFrom": {
+      "branch": "main",
+      "commit": "560e48cb937cdced1556d86a866c10d5c8012fc7",
+      "reviewedAt": "2026-10-18"
+    }
+  },
+  {
+    "id": "M2-110",
+    "area": "Modelación",
+    "concept": "Porcentajes",
+    "question": "En un ejemplo hipotético de crédito hipotecario, una vivienda cuesta 2.400 UF y el pie corresponde al 20% del precio. Sin otros cargos ni reajustes, ¿qué monto se financia?",
+    "options": [
+      "1.920 UF",
+      "480 UF",
+      "2.400 UF",
+      "2.880 UF"
+    ],
+    "answer": 0,
+    "why": "Un porcentaje es una proporción del valor de referencia. Primero identifica esa referencia y después distingue el cambio calculado del valor final que preguntan.\n\nPor ciento significa «por cada cien»: p%=p/100. El p% de una cantidad C es (p/100)·C. En un aumento se suma ese cambio a C; en una disminución se resta. Por eso el factor final es 1+p/100 o 1−p/100, respectivamente.\n\nNo interpretes 20% como veinte unidades: sería así solo si la base fuera cien. Tampoco confundas «aumenta en 25%» con «queda en 25%»: la primera conserva el 100% previo y añade 25%; la segunda deja únicamente una cuarta parte.\n\nCalcula el pie: 20% de 2.400 UF.\n\nEl pie es 0,20·2.400=480 UF.\n\nResta al precio total: 2.400−480=1.920 UF financiadas.\n\nEl pie cubre 20% de 2.400 UF, o sea 480 UF. Queda por financiar el 80%: 2.400−480=1.920 UF. No añadas el pie al precio ni respondas con el aporte.",
+    "hint": "Un porcentaje es una proporción del valor de referencia. Primero identifica esa referencia y después distingue el cambio calculado del valor final que preguntan.",
+    "editorial": {
+      "steps": [
+        "Un porcentaje es una proporción del valor de referencia. Primero identifica esa referencia y después distingue el cambio calculado del valor final que preguntan.",
+        "Por ciento significa «por cada cien»: p%=p/100. El p% de una cantidad C es (p/100)·C. En un aumento se suma ese cambio a C; en una disminución se resta. Por eso el factor final es 1+p/100 o 1−p/100, respectivamente.",
+        "No interpretes 20% como veinte unidades: sería así solo si la base fuera cien. Tampoco confundas «aumenta en 25%» con «queda en 25%»: la primera conserva el 100% previo y añade 25%; la segunda deja únicamente una cuarta parte.",
+        "Calcula el pie: 20% de 2.400 UF.",
+        "El pie es 0,20·2.400=480 UF.",
+        "Resta al precio total: 2.400−480=1.920 UF financiadas.",
+        "El pie cubre 20% de 2.400 UF, o sea 480 UF. Queda por financiar el 80%: 2.400−480=1.920 UF. No añadas el pie al precio ni respondas con el aporte."
+      ],
+      "easy": "Imagina una barra completa que representa el valor original. Dividirla en cien partes permite decir qué fracción añadimos o quitamos sin importar cuánto medía la barra. Veinticinco de esas partes son una cuarta parte de esa barra, no necesariamente veinticinco pesos.\n\nPuedes empezar con fracciones conocidas: 50% es mitad, 25% cuarta parte y 10% décima parte. Esa estimación te ayuda a comprobar si el cambio calculado tiene un tamaño razonable.\n\nCalcula el pie: 20% de 2.400 UF.\n\nEl pie es 0,20·2.400=480 UF.\n\nResta al precio total: 2.400−480=1.920 UF financiadas.",
+      "example": "Otro problema: una cuenta de $24.000 incluye un cargo adicional del 10%. ¿Cuánto se agrega y qué porcentaje de la cuenta original representa el total?\n\nLa décima parte de $24.000 es $2.400: ese es el cargo, no el total.\n\nAl sumar: 24.000+2.400=$26.400. El total representa 100%+10%=110% del valor original.\n\nPodemos comprobarlo con el factor: 24.000·1,10=26.400. Si después se descontara 10% del nuevo total, no volveríamos al original, porque la referencia habría cambiado.\n\nUsa la cantidad inicial de tu ejercicio como base y conserva el sentido del cambio. Antes de escoger una alternativa, decide si ese número corresponde al incremento, al descuento o al resultado completo."
+    },
+    "explanations": [
+      "Un porcentaje es una proporción del valor de referencia. Primero identifica esa referencia y después distingue el cambio calculado del valor final que preguntan.\n\nPor ciento significa «por cada cien»: p%=p/100. El p% de una cantidad C es (p/100)·C. En un aumento se suma ese cambio a C; en una disminución se resta. Por eso el factor final es 1+p/100 o 1−p/100, respectivamente.\n\nNo interpretes 20% como veinte unidades: sería así solo si la base fuera cien. Tampoco confundas «aumenta en 25%» con «queda en 25%»: la primera conserva el 100% previo y añade 25%; la segunda deja únicamente una cuarta parte.\n\nCalcula el pie: 20% de 2.400 UF.\n\nEl pie es 0,20·2.400=480 UF.\n\nResta al precio total: 2.400−480=1.920 UF financiadas.\n\nEl pie cubre 20% de 2.400 UF, o sea 480 UF. Queda por financiar el 80%: 2.400−480=1.920 UF. No añadas el pie al precio ni respondas con el aporte.",
+      "480 UF es el pie calculado, no el saldo financiado.",
+      "2.400 UF repite el precio completo y no descuenta el aporte inicial.",
+      "2.880 UF suma 20% al precio en vez de separar el monto aportado."
+    ],
+    "origin": "original",
+    "difficulty": "intermedio",
+    "reviewStatus": "revision_individual_2026-10-17",
+    "teaching": {
+      "revision": "tutor-profesor-2026-10-15",
+      "quality": "adecuada",
+      "aim": "Un porcentaje es una proporción del valor de referencia. Primero identifica esa referencia y después distingue el cambio calculado del valor final que preguntan.",
+      "foundation": [
+        "Por ciento significa «por cada cien»: p%=p/100. El p% de una cantidad C es (p/100)·C. En un aumento se suma ese cambio a C; en una disminución se resta. Por eso el factor final es 1+p/100 o 1−p/100, respectivamente.",
+        "No interpretes 20% como veinte unidades: sería así solo si la base fuera cien. Tampoco confundas «aumenta en 25%» con «queda en 25%»: la primera conserva el 100% previo y añade 25%; la segunda deja únicamente una cuarta parte."
+      ],
+      "application": [
+        "Calcula el pie: 20% de 2.400 UF.",
+        "El pie es 0,20·2.400=480 UF.",
+        "Resta al precio total: 2.400−480=1.920 UF financiadas."
+      ],
+      "check": "El pie cubre 20% de 2.400 UF, o sea 480 UF. Queda por financiar el 80%: 2.400−480=1.920 UF. No añadas el pie al precio ni respondas con el aporte.",
+      "intuition": [
+        "Imagina una barra completa que representa el valor original. Dividirla en cien partes permite decir qué fracción añadimos o quitamos sin importar cuánto medía la barra. Veinticinco de esas partes son una cuarta parte de esa barra, no necesariamente veinticinco pesos.",
+        "Puedes empezar con fracciones conocidas: 50% es mitad, 25% cuarta parte y 10% décima parte. Esa estimación te ayuda a comprobar si el cambio calculado tiene un tamaño razonable."
+      ],
+      "example": {
+        "problem": "Otro problema: una cuenta de $24.000 incluye un cargo adicional del 10%. ¿Cuánto se agrega y qué porcentaje de la cuenta original representa el total?",
+        "steps": [
+          "La décima parte de $24.000 es $2.400: ese es el cargo, no el total.",
+          "Al sumar: 24.000+2.400=$26.400. El total representa 100%+10%=110% del valor original.",
+          "Podemos comprobarlo con el factor: 24.000·1,10=26.400. Si después se descontara 10% del nuevo total, no volveríamos al original, porque la referencia habría cambiado."
+        ],
+        "bridge": "Usa la cantidad inicial de tu ejercicio como base y conserva el sentido del cambio. Antes de escoger una alternativa, decide si ese número corresponde al incremento, al descuento o al resultado completo."
+      },
+      "selectedFeedback": [
+        null,
+        {
+          "diagnosis": "480 UF es el pie calculado, no el saldo financiado.",
+          "repair": [
+            "Calcula el pie: 20% de 2.400 UF.",
+            "El pie es 0,20·2.400=480 UF.",
+            "Resta al precio total: 2.400−480=1.920 UF financiadas."
+          ]
+        },
+        {
+          "diagnosis": "2.400 UF repite el precio completo y no descuenta el aporte inicial.",
+          "repair": [
+            "Calcula el pie: 20% de 2.400 UF.",
+            "El pie es 0,20·2.400=480 UF.",
+            "Resta al precio total: 2.400−480=1.920 UF financiadas."
+          ]
+        },
+        {
+          "diagnosis": "2.880 UF suma 20% al precio en vez de separar el monto aportado.",
+          "repair": [
+            "Calcula el pie: 20% de 2.400 UF.",
+            "El pie es 0,20·2.400=480 UF.",
+            "Resta al precio total: 2.400−480=1.920 UF financiadas."
+          ]
+        }
+      ]
+    },
+    "recoveredFrom": {
+      "branch": "main",
+      "commit": "560e48cb937cdced1556d86a866c10d5c8012fc7",
+      "reviewedAt": "2026-10-18"
+    }
+  },
+  {
+    "id": "M2-111",
+    "area": "Funciones",
+    "concept": "Función exponencial",
+    "question": "El gráfico de una función exponencial creciente f pasa por (0,1) y se aproxima al eje x hacia la izquierda. ¿Cuál podría ser f(x)?",
+    "options": [
+      "2^x",
+      "(1/2)^x",
+      "2x+1",
+      "log₂(x)"
+    ],
+    "answer": 0,
+    "why": "Leer un gráfico exponencial requiere atender a su punto de partida, crecimiento y asíntota.\n\nEn f(x)=a^x con a>1, el gráfico pasa por (0,1), es creciente y se aproxima al eje x hacia la izquierda. La asíntota y=0 no se alcanza.\n\nEn f(x)=a^x con 0<a<1, el gráfico pasa por (0,1), pero es decreciente. Una función logarítmica tiene dominio x>0 y asíntota vertical en x=0.\n\nEvalúa la intersección con el eje y: 2⁰=1.\n\nComo la base 2 es mayor que 1, la función exponencial es creciente.\n\nCuando x tiende a menos infinito, 2^x se acerca a 0 sin alcanzarlo; el eje x es una asíntota horizontal.\n\nComprobación: f(0)=2⁰=1. Al avanzar a la derecha los valores crecen; al retroceder, se acercan a cero.",
+    "hint": "Compara el valor en x=0, el sentido de crecimiento y la asíntota horizontal.",
+    "explanations": [
+      "Es creciente, f(0)=1 y tiene asíntota horizontal y=0 hacia la izquierda.",
+      "(1/2)^x también vale 1 en cero, pero decrece cuando x aumenta.",
+      "2x+1 es una recta, no tiene asíntota horizontal y no se aproxima al eje x.",
+      "log₂(x) no está definida para x=0 y tiene una asíntota vertical, no horizontal."
+    ],
+    "editorial": {
+      "steps": [
+        "Leer un gráfico exponencial requiere atender a su punto de partida, crecimiento y asíntota.",
+        "En f(x)=a^x con a>1, el gráfico pasa por (0,1), es creciente y se aproxima al eje x hacia la izquierda. La asíntota y=0 no se alcanza.",
+        "En f(x)=a^x con 0<a<1, el gráfico pasa por (0,1), pero es decreciente. Una función logarítmica tiene dominio x>0 y asíntota vertical en x=0.",
+        "Evalúa la intersección con el eje y: 2⁰=1.",
+        "Como la base 2 es mayor que 1, la función exponencial es creciente.",
+        "Cuando x tiende a menos infinito, 2^x se acerca a 0 sin alcanzarlo; el eje x es una asíntota horizontal.",
+        "Comprobación: f(0)=2⁰=1. Al avanzar a la derecha los valores crecen; al retroceder, se acercan a cero."
+      ],
+      "easy": "El exponente cero siempre produce uno, por eso estas curvas cruzan el eje vertical en altura uno.\n\nUna base mayor que uno aumenta el valor hacia la derecha; una base entre cero y uno lo reduce.\n\nEvalúa la intersección con el eje y: 2⁰=1.\n\nComo la base 2 es mayor que 1, la función exponencial es creciente.\n\nCuando x tiende a menos infinito, 2^x se acerca a 0 sin alcanzarlo; el eje x es una asíntota horizontal.",
+      "example": "¿Qué rasgos distinguen los gráficos de 3^x y (1/3)^x?\n\nAmbos pasan por (0,1), porque una base positiva elevada a cero es uno.\n\n3^x es creciente; (1/3)^x es decreciente.\n\nAmbas tienen asíntota horizontal y=0 y dominio de todos los reales.\n\nEn el gráfico revisa el cruce con los ejes, el sentido de cambio y si la asíntota es horizontal o vertical."
+    },
+    "teaching": {
+      "quality": "adecuada",
+      "revision": "tutor-profesor-2026-10-15",
+      "aim": "Leer un gráfico exponencial requiere atender a su punto de partida, crecimiento y asíntota.",
+      "foundation": [
+        "En f(x)=a^x con a>1, el gráfico pasa por (0,1), es creciente y se aproxima al eje x hacia la izquierda. La asíntota y=0 no se alcanza.",
+        "En f(x)=a^x con 0<a<1, el gráfico pasa por (0,1), pero es decreciente. Una función logarítmica tiene dominio x>0 y asíntota vertical en x=0."
+      ],
+      "application": [
+        "Evalúa la intersección con el eje y: 2⁰=1.",
+        "Como la base 2 es mayor que 1, la función exponencial es creciente.",
+        "Cuando x tiende a menos infinito, 2^x se acerca a 0 sin alcanzarlo; el eje x es una asíntota horizontal."
+      ],
+      "check": "Comprobación: f(0)=2⁰=1. Al avanzar a la derecha los valores crecen; al retroceder, se acercan a cero.",
+      "intuition": [
+        "El exponente cero siempre produce uno, por eso estas curvas cruzan el eje vertical en altura uno.",
+        "Una base mayor que uno aumenta el valor hacia la derecha; una base entre cero y uno lo reduce."
+      ],
+      "example": {
+        "problem": "¿Qué rasgos distinguen los gráficos de 3^x y (1/3)^x?",
+        "steps": [
+          "Ambos pasan por (0,1), porque una base positiva elevada a cero es uno.",
+          "3^x es creciente; (1/3)^x es decreciente.",
+          "Ambas tienen asíntota horizontal y=0 y dominio de todos los reales."
+        ],
+        "bridge": "En el gráfico revisa el cruce con los ejes, el sentido de cambio y si la asíntota es horizontal o vertical."
+      },
+      "selectedFeedback": [
+        null,
+        {
+          "diagnosis": "(1/2)^x también vale 1 en cero, pero decrece cuando x aumenta.",
+          "repair": [
+            "Evalúa la intersección con el eje y: 2⁰=1.",
+            "Como la base 2 es mayor que 1, la función exponencial es creciente.",
+            "Cuando x tiende a menos infinito, 2^x se acerca a 0 sin alcanzarlo; el eje x es una asíntota horizontal."
+          ]
+        },
+        {
+          "diagnosis": "2x+1 es una recta, no tiene asíntota horizontal y no se aproxima al eje x.",
+          "repair": [
+            "Evalúa la intersección con el eje y: 2⁰=1.",
+            "Como la base 2 es mayor que 1, la función exponencial es creciente.",
+            "Cuando x tiende a menos infinito, 2^x se acerca a 0 sin alcanzarlo; el eje x es una asíntota horizontal."
+          ]
+        },
+        {
+          "diagnosis": "log₂(x) no está definida para x=0 y tiene una asíntota vertical, no horizontal.",
+          "repair": [
+            "Evalúa la intersección con el eje y: 2⁰=1.",
+            "Como la base 2 es mayor que 1, la función exponencial es creciente.",
+            "Cuando x tiende a menos infinito, 2^x se acerca a 0 sin alcanzarlo; el eje x es una asíntota horizontal."
+          ]
+        }
+      ]
+    },
+    "origin": "original",
+    "difficulty": "intermedio",
+    "reviewStatus": "revision_interna_pendiente",
+    "recoveredFrom": {
+      "branch": "main",
+      "commit": "560e48cb937cdced1556d86a866c10d5c8012fc7",
+      "reviewedAt": "2026-10-18"
+    }
+  },
+  {
+    "id": "M2-112",
+    "area": "Geometría",
+    "concept": "Relaciones en la circunferencia",
+    "question": "Desde un punto exterior se trazan dos secantes a una circunferencia. La primera tiene segmento exterior 3 y segmento interior 5; la segunda tiene segmento exterior 4 y segmento interior x. ¿Cuánto vale x?",
+    "options": [
+      "2",
+      "4",
+      "3",
+      "6"
+    ],
+    "answer": 0,
+    "why": "Resolver secantes que parten de un punto exterior usando la longitud total de cada secante.\n\nPara dos secantes desde un punto exterior común, exterior₁·(exterior₁+interior₁)=exterior₂·(exterior₂+interior₂).\n\nDistingue estas secantes exteriores de dos cuerdas que se cruzan dentro. Para secantes se usa exterior por longitud total; para cuerdas interiores, los dos segmentos de cada cuerda.\n\nLa secante completa suma su parte exterior e interior.\n\nLa primera mide 3+5=8; la segunda mide 4+x.\n\nAplica 3·8=4·(4+x): 24=16+4x, por lo tanto x=2.\n\nComprueba sustituyendo x=2: 3·(3+5)=24 y 4·(4+2)=24.",
+    "hint": "Multiplica el segmento exterior por la longitud completa de cada secante.",
+    "explanations": [
+      "3·8=4·6=24; al despejar 24=16+4x resulta x=2.",
+      "4 no satisface la relación: 3·8=24, mientras 4·(4+4)=32.",
+      "3 no satisface la relación: 4·(4+3)=28, no 24.",
+      "6 no satisface la relación: 4·(4+6)=40, no 24."
+    ],
+    "editorial": {
+      "steps": [
+        "Resolver secantes que parten de un punto exterior usando la longitud total de cada secante.",
+        "Para dos secantes desde un punto exterior común, exterior₁·(exterior₁+interior₁)=exterior₂·(exterior₂+interior₂).",
+        "Distingue estas secantes exteriores de dos cuerdas que se cruzan dentro. Para secantes se usa exterior por longitud total; para cuerdas interiores, los dos segmentos de cada cuerda.",
+        "La secante completa suma su parte exterior e interior.",
+        "La primera mide 3+5=8; la segunda mide 4+x.",
+        "Aplica 3·8=4·(4+x): 24=16+4x, por lo tanto x=2.",
+        "Comprueba sustituyendo x=2: 3·(3+5)=24 y 4·(4+2)=24."
+      ],
+      "easy": "La parte exterior se cuenta como primer factor y la secante completa como segundo factor.\n\nSuma los dos pedazos para encontrar la longitud completa antes de multiplicar.\n\nLa secante completa suma su parte exterior e interior.\n\nLa primera mide 3+5=8; la segunda mide 4+x.\n\nAplica 3·8=4·(4+x): 24=16+4x, por lo tanto x=2.",
+      "example": "Una secante tiene parte exterior 2 e interior 7; otra tiene exterior 3 e interior x. Encuentra x.\n\nLa primera longitud completa es 2+7=9; su producto es 2·9=18.\n\nLa segunda mide 3+x. Iguala 3(3+x)=18.\n\nDivide por 3: 3+x=6; luego x=3 y 3·6=18.\n\nMarca el punto exterior común. En cada secante identifica el tramo exterior y suma exterior+interior."
+    },
+    "teaching": {
+      "quality": "adecuada",
+      "revision": "tutor-profesor-2026-10-15",
+      "aim": "Resolver secantes que parten de un punto exterior usando la longitud total de cada secante.",
+      "foundation": [
+        "Para dos secantes desde un punto exterior común, exterior₁·(exterior₁+interior₁)=exterior₂·(exterior₂+interior₂).",
+        "Distingue estas secantes exteriores de dos cuerdas que se cruzan dentro. Para secantes se usa exterior por longitud total; para cuerdas interiores, los dos segmentos de cada cuerda."
+      ],
+      "application": [
+        "La secante completa suma su parte exterior e interior.",
+        "La primera mide 3+5=8; la segunda mide 4+x.",
+        "Aplica 3·8=4·(4+x): 24=16+4x, por lo tanto x=2."
+      ],
+      "check": "Comprueba sustituyendo x=2: 3·(3+5)=24 y 4·(4+2)=24.",
+      "intuition": [
+        "La parte exterior se cuenta como primer factor y la secante completa como segundo factor.",
+        "Suma los dos pedazos para encontrar la longitud completa antes de multiplicar."
+      ],
+      "example": {
+        "problem": "Una secante tiene parte exterior 2 e interior 7; otra tiene exterior 3 e interior x. Encuentra x.",
+        "steps": [
+          "La primera longitud completa es 2+7=9; su producto es 2·9=18.",
+          "La segunda mide 3+x. Iguala 3(3+x)=18.",
+          "Divide por 3: 3+x=6; luego x=3 y 3·6=18."
+        ],
+        "bridge": "Marca el punto exterior común. En cada secante identifica el tramo exterior y suma exterior+interior."
+      },
+      "selectedFeedback": [
+        null,
+        {
+          "diagnosis": "4 no satisface la relación: 3·8=24, mientras 4·(4+4)=32.",
+          "repair": [
+            "La secante completa suma su parte exterior e interior.",
+            "La primera mide 3+5=8; la segunda mide 4+x.",
+            "Aplica 3·8=4·(4+x): 24=16+4x, por lo tanto x=2."
+          ]
+        },
+        {
+          "diagnosis": "3 no satisface la relación: 4·(4+3)=28, no 24.",
+          "repair": [
+            "La secante completa suma su parte exterior e interior.",
+            "La primera mide 3+5=8; la segunda mide 4+x.",
+            "Aplica 3·8=4·(4+x): 24=16+4x, por lo tanto x=2."
+          ]
+        },
+        {
+          "diagnosis": "6 no satisface la relación: 4·(4+6)=40, no 24.",
+          "repair": [
+            "La secante completa suma su parte exterior e interior.",
+            "La primera mide 3+5=8; la segunda mide 4+x.",
+            "Aplica 3·8=4·(4+x): 24=16+4x, por lo tanto x=2."
+          ]
+        }
+      ]
+    },
+    "origin": "original",
+    "difficulty": "intermedio",
+    "reviewStatus": "revision_interna_pendiente",
+    "recoveredFrom": {
+      "branch": "main",
+      "commit": "560e48cb937cdced1556d86a866c10d5c8012fc7",
+      "reviewedAt": "2026-10-18"
+    }
+  },
+  {
+    "id": "M2-113",
+    "area": "Funciones",
+    "concept": "Logaritmos",
+    "question": "La gráfica de g(x)=log₂(x) cruza el eje x en (1,0). ¿Qué descripción corresponde?",
+    "options": [
+      "Su dominio es x>0, es creciente y tiene asíntota vertical x=0.",
+      "Su dominio son todos los números reales, es creciente y tiene asíntota horizontal y=0.",
+      "Su dominio es x>0, es decreciente y tiene asíntota vertical x=0.",
+      "Su dominio es x>0, es creciente y tiene asíntota horizontal y=0."
+    ],
+    "answer": 0,
+    "why": "Reconocer dominio, monotonicidad e intersección de la gráfica logarítmica.\n\nEn g(x)=log_b(x), se requiere x>0 y el punto (1,0) siempre pertenece al gráfico.\n\nSi b>1, la función es creciente; la recta x=0 es asíntota vertical. Si 0<b<1, es decreciente.\n\nEl argumento x debe ser positivo, así que el dominio es x>0.\n\nlog₂(1)=0 y la base 2>1; la gráfica cruza en (1,0) y es creciente.\n\nAl acercarse x a 0 por la derecha, los valores disminuyen sin límite; la asíntota vertical es x=0.\n\nVerifica dos rasgos: log₂(1)=0 y log₂(2)=1. La gráfica sube hacia la derecha, solo existe para x>0 y se aproxima a x=0 sin tocarla.",
+    "hint": "Comprueba dónde está definida, si sube o baja y si su asíntota es vertical u horizontal.",
+    "explanations": [
+      "La función logarítmica requiere x>0; con base 2 crece y se aproxima al eje y (x=0), su asíntota vertical.",
+      "El dominio no son todos los reales y la asíntota de una función logarítmica es vertical; la horizontal y=0 caracteriza aquí una exponencial.",
+      "La base 2 genera una función creciente; la decreciente corresponde a una base entre 0 y 1.",
+      "El dominio y crecimiento son correctos, pero la asíntota es la recta vertical x=0, no la horizontal y=0."
+    ],
+    "editorial": {
+      "steps": [
+        "Reconocer dominio, monotonicidad e intersección de la gráfica logarítmica.",
+        "En g(x)=log_b(x), se requiere x>0 y el punto (1,0) siempre pertenece al gráfico.",
+        "Si b>1, la función es creciente; la recta x=0 es asíntota vertical. Si 0<b<1, es decreciente.",
+        "El argumento x debe ser positivo, así que el dominio es x>0.",
+        "log₂(1)=0 y la base 2>1; la gráfica cruza en (1,0) y es creciente.",
+        "Al acercarse x a 0 por la derecha, los valores disminuyen sin límite; la asíntota vertical es x=0.",
+        "Verifica dos rasgos: log₂(1)=0 y log₂(2)=1. La gráfica sube hacia la derecha, solo existe para x>0 y se aproxima a x=0 sin tocarla."
+      ],
+      "easy": "La función logarítmica pregunta qué exponente produce un número positivo.\n\nEl uno es especial: cualquier base válida elevada a cero da uno, por eso el logaritmo de uno vale cero.\n\nEl argumento x debe ser positivo, así que el dominio es x>0.\n\nlog₂(1)=0 y la base 2>1; la gráfica cruza en (1,0) y es creciente.\n\nAl acercarse x a 0 por la derecha, los valores disminuyen sin límite; la asíntota vertical es x=0.",
+      "example": "¿Qué rasgos tiene f(x)=log₅(x)?\n\nSu argumento debe ser positivo: x>0.\n\nlog₅(1)=0 y log₅(5)=1.\n\nComo 5>1, es creciente y su asíntota vertical es x=0.\n\nEn un gráfico logarítmico busca primero el dominio, el punto (1,0), el sentido de crecimiento y la asíntota vertical."
+    },
+    "teaching": {
+      "quality": "adecuada",
+      "revision": "tutor-profesor-2026-10-15",
+      "aim": "Reconocer dominio, monotonicidad e intersección de la gráfica logarítmica.",
+      "foundation": [
+        "En g(x)=log_b(x), se requiere x>0 y el punto (1,0) siempre pertenece al gráfico.",
+        "Si b>1, la función es creciente; la recta x=0 es asíntota vertical. Si 0<b<1, es decreciente."
+      ],
+      "application": [
+        "El argumento x debe ser positivo, así que el dominio es x>0.",
+        "log₂(1)=0 y la base 2>1; la gráfica cruza en (1,0) y es creciente.",
+        "Al acercarse x a 0 por la derecha, los valores disminuyen sin límite; la asíntota vertical es x=0."
+      ],
+      "check": "Verifica dos rasgos: log₂(1)=0 y log₂(2)=1. La gráfica sube hacia la derecha, solo existe para x>0 y se aproxima a x=0 sin tocarla.",
+      "intuition": [
+        "La función logarítmica pregunta qué exponente produce un número positivo.",
+        "El uno es especial: cualquier base válida elevada a cero da uno, por eso el logaritmo de uno vale cero."
+      ],
+      "example": {
+        "problem": "¿Qué rasgos tiene f(x)=log₅(x)?",
+        "steps": [
+          "Su argumento debe ser positivo: x>0.",
+          "log₅(1)=0 y log₅(5)=1.",
+          "Como 5>1, es creciente y su asíntota vertical es x=0."
+        ],
+        "bridge": "En un gráfico logarítmico busca primero el dominio, el punto (1,0), el sentido de crecimiento y la asíntota vertical."
+      },
+      "selectedFeedback": [
+        null,
+        {
+          "diagnosis": "El dominio no son todos los reales y la asíntota de una función logarítmica es vertical; la horizontal y=0 caracteriza aquí una exponencial.",
+          "repair": [
+            "El argumento debe ser positivo, así que el dominio es x>0.",
+            "log₂(1)=0, por eso la gráfica cruza el eje x en (1,0); como la base 2 es mayor que 1, es creciente.",
+            "Al acercarse x a 0 por la derecha, los valores disminuyen sin límite: x=0 es una asíntota vertical."
+          ]
+        },
+        {
+          "diagnosis": "La base 2 genera una función creciente; la decreciente corresponde a una base entre 0 y 1.",
+          "repair": [
+            "El argumento debe ser positivo, así que el dominio es x>0.",
+            "log₂(1)=0, por eso la gráfica cruza el eje x en (1,0); como la base 2 es mayor que 1, es creciente.",
+            "Al acercarse x a 0 por la derecha, los valores disminuyen sin límite: x=0 es una asíntota vertical."
+          ]
+        },
+        {
+          "diagnosis": "El dominio y crecimiento son correctos, pero la asíntota es la recta vertical x=0, no la horizontal y=0.",
+          "repair": [
+            "El argumento debe ser positivo, así que el dominio es x>0.",
+            "log₂(1)=0, por eso la gráfica cruza el eje x en (1,0); como la base 2 es mayor que 1, es creciente.",
+            "Al acercarse x a 0 por la derecha, los valores disminuyen sin límite: x=0 es una asíntota vertical."
+          ]
+        }
+      ]
+    },
+    "origin": "original",
+    "difficulty": "intermedio",
+    "reviewStatus": "revision_interna_pendiente",
+    "recoveredFrom": {
+      "branch": "main",
+      "commit": "560e48cb937cdced1556d86a866c10d5c8012fc7",
+      "reviewedAt": "2026-10-18"
+    }
+  },
+  {
+    "id": "M2-114",
+    "area": "Funciones",
+    "concept": "Función exponencial",
+    "question": "Un modelo para la concentración de una sustancia es C(t)=200(0,6)^t, con t en horas y C en mg/L. ¿Qué descripción coincide con su gráfica?",
+    "options": [
+      "Parte en (0, 200), disminuye y se acerca a y=0 sin tocarla.",
+      "Parte en (200, 0), disminuye y se acerca a x=0.",
+      "Parte en (0, 200), aumenta y se acerca a y=0.",
+      "Parte en (0, 0), aumenta en línea recta."
+    ],
+    "answer": 0,
+    "why": "Interpretar inicio, decrecimiento y asíntota horizontal en un modelo exponencial.\n\nEn f(t)=A·b^t, f(0)=A porque b^0=1. El punto inicial es (0,A).\n\nSi 0<b<1 y A>0, los valores decrecen y permanecen positivos; cuando t aumenta, se aproximan a cero.\n\nCalcula el valor inicial: C(0)=200, por lo que el gráfico parte en (0,200).\n\nCalcula una hora después: C(1)=200·0,6=120. El factor menor que uno hace que disminuya.\n\nLa curva se acerca al eje horizontal y=0 sin alcanzarlo para un tiempo finito; esa recta es la asíntota horizontal.\n\nComprueba C(0)=200 y C(1)=120. Luego compara 72·0,6=43,2: cada hora baja, pero permanece sobre cero.",
+    "hint": "Evalúa el modelo en t=0 y t=1; después fíjate en qué provoca que la base esté entre 0 y 1.",
+    "explanations": [
+      "C(0)=200 y C(1)=120. Como la base está entre 0 y 1, la curva decrece y tiene asíntota horizontal y=0.",
+      "Las coordenadas invierten el orden: el eje horizontal representa t, así que al inicio el punto es (0,200).",
+      "La base 0,6 está entre 0 y 1; por eso cada hora el valor se multiplica por un número menor que uno y disminuye.",
+      "C(0)=200, no cero. Además, una potencia con exponente variable no describe una recta."
+    ],
+    "editorial": {
+      "steps": [
+        "Interpretar inicio, decrecimiento y asíntota horizontal en un modelo exponencial.",
+        "En f(t)=A·b^t, f(0)=A porque b^0=1. El punto inicial es (0,A).",
+        "Si 0<b<1 y A>0, los valores decrecen y permanecen positivos; cuando t aumenta, se aproximan a cero.",
+        "Calcula el valor inicial: C(0)=200, por lo que el gráfico parte en (0,200).",
+        "Calcula una hora después: C(1)=200·0,6=120. El factor menor que uno hace que disminuya.",
+        "La curva se acerca al eje horizontal y=0 sin alcanzarlo para un tiempo finito; esa recta es la asíntota horizontal.",
+        "Comprueba C(0)=200 y C(1)=120. Luego compara 72·0,6=43,2: cada hora baja, pero permanece sobre cero."
+      ],
+      "easy": "Multiplicar por 0,6 equivale a conservar el 60% del valor anterior.\n\nEn un modelo exponencial decreciente, el gráfico se acerca al eje horizontal aunque cada valor siga siendo positivo.\n\nCalcula el valor inicial: C(0)=200, por lo que el gráfico parte en (0,200).\n\nCalcula una hora después: C(1)=200·0,6=120. El factor menor que uno hace que disminuya.\n\nLa curva se acerca al eje horizontal y=0 sin alcanzarlo para un tiempo finito; esa recta es la asíntota horizontal.",
+      "example": "Un indicador sigue H(t)=500·(0,8)^t. ¿Qué rasgos tiene su gráfico?\n\nH(0)=500·1=500; comienza en (0,500).\n\nH(1)=500·0,8=400; como 0,8 está entre cero y uno, disminuye.\n\nLos valores se acercan a cero cuando t aumenta, por lo que y=0 es una asíntota horizontal.\n\nEvalúa primero t=0 para ubicar el inicio y luego compara la base con 1 para decidir si el modelo crece o decrece."
+    },
+    "teaching": {
+      "quality": "adecuada",
+      "revision": "tutor-profesor-2026-10-17",
+      "aim": "Interpretar inicio, decrecimiento y asíntota horizontal en un modelo exponencial.",
+      "foundation": [
+        "En f(t)=A·b^t, f(0)=A porque b^0=1. El punto inicial es (0,A).",
+        "Si 0<b<1 y A>0, los valores decrecen y permanecen positivos; cuando t aumenta, se aproximan a cero."
+      ],
+      "application": [
+        "Calcula el valor inicial: C(0)=200, por lo que el gráfico parte en (0,200).",
+        "Calcula una hora después: C(1)=200·0,6=120. El factor menor que uno hace que disminuya.",
+        "La curva se acerca al eje horizontal y=0 sin alcanzarlo para un tiempo finito; esa recta es la asíntota horizontal."
+      ],
+      "check": "Comprueba C(0)=200 y C(1)=120. Luego compara 72·0,6=43,2: cada hora baja, pero permanece sobre cero.",
+      "intuition": [
+        "Multiplicar por 0,6 equivale a conservar el 60% del valor anterior.",
+        "En un modelo exponencial decreciente, el gráfico se acerca al eje horizontal aunque cada valor siga siendo positivo."
+      ],
+      "example": {
+        "problem": "Un indicador sigue H(t)=500·(0,8)^t. ¿Qué rasgos tiene su gráfico?",
+        "steps": [
+          "H(0)=500·1=500; comienza en (0,500).",
+          "H(1)=500·0,8=400; como 0,8 está entre cero y uno, disminuye.",
+          "Los valores se acercan a cero cuando t aumenta, por lo que y=0 es una asíntota horizontal."
+        ],
+        "bridge": "Evalúa primero t=0 para ubicar el inicio y luego compara la base con 1 para decidir si el modelo crece o decrece."
+      },
+      "selectedFeedback": [
+        null,
+        {
+          "diagnosis": "Las coordenadas invierten el orden: el eje horizontal representa t, así que al inicio el punto es (0,200).",
+          "repair": [
+            "Sustituye t=0: C(0)=200(0,6)^0=200; el gráfico parte en (0,200).",
+            "La base 0,6 está entre cero y uno. Al aumentar t, cada valor se multiplica nuevamente por 0,6, así que la concentración baja.",
+            "La potencia nunca es negativa ni llega a cero para un t finito; al aumentar t se aproxima a cero. La asíntota horizontal es y=0."
+          ]
+        },
+        {
+          "diagnosis": "La base 0,6 está entre 0 y 1; por eso cada hora el valor se multiplica por un número menor que uno y disminuye.",
+          "repair": [
+            "Sustituye t=0: C(0)=200(0,6)^0=200; el gráfico parte en (0,200).",
+            "La base 0,6 está entre cero y uno. Al aumentar t, cada valor se multiplica nuevamente por 0,6, así que la concentración baja.",
+            "La potencia nunca es negativa ni llega a cero para un t finito; al aumentar t se aproxima a cero. La asíntota horizontal es y=0."
+          ]
+        },
+        {
+          "diagnosis": "C(0)=200, no cero. Además, una potencia con exponente variable no describe una recta.",
+          "repair": [
+            "Sustituye t=0: C(0)=200(0,6)^0=200; el gráfico parte en (0,200).",
+            "La base 0,6 está entre cero y uno. Al aumentar t, cada valor se multiplica nuevamente por 0,6, así que la concentración baja.",
+            "La potencia nunca es negativa ni llega a cero para un t finito; al aumentar t se aproxima a cero. La asíntota horizontal es y=0."
+          ]
+        }
+      ]
+    },
+    "origin": "original",
+    "difficulty": "intermedio",
+    "reviewStatus": "revision_interna_pendiente",
+    "recoveredFrom": {
+      "branch": "main",
+      "commit": "560e48cb937cdced1556d86a866c10d5c8012fc7",
+      "reviewedAt": "2026-10-18"
+    }
+  }
+]);

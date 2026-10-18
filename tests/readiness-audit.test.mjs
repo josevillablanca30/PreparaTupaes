@@ -5,9 +5,9 @@ import {readinessAudit} from '../scripts/readiness-audit.mjs';
 
 const {items}=dailyCatalog(),report=readinessAudit(items);
 test('Auditoría continua detecta las brechas que restan sin inflar logros ni bancos',()=>{
- assert.equal(report.overall.originals,623);
+ assert.equal(report.overall.originals,631);
  assert.equal(report.overall.transfers,157);
- assert.equal(report.overall.questions,780);
+ assert.equal(report.overall.questions,788);
  assert.equal(report.overall.concepts,287);
  assert.equal(report.overall.unverifiableConcepts,7,'Los siete conceptos pendientes pertenecen a contenido complementario');
  assert.equal(Object.values(report.subjects).reduce((n,x)=>n+x.unverifiableConcepts,0),7);

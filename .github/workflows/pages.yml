@@ -2,7 +2,7 @@ name: Pages · pruebas móviles y despliegue
 
 on:
   push:
-    branches: [main, work/cachaste-motor-duolingo-20261016]
+    branches: [main]
     paths-ignore: ['README.md', 'docs/**', 'reports/**']
   pull_request:
     branches: [main, work/quests-progress-ui-20261015]

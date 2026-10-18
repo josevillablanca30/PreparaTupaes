@@ -7,8 +7,8 @@ import {transferCasesBatch6 as cases} from '../scripts/paes-transfer-batch6-2027
 const {items}=dailyCatalog(),byKey=new Map(items.map(q=>[q.key,q]));
 test('Lote 6: cierra con preguntas originales las once brechas M1 trazadas a DEMRE y Drive',()=>{
  assert.equal(cases.length,11);
- assert.equal(items.length,780);
- assert.equal(new Set(items.map(q=>q.key)).size,780);
+ assert.equal(items.length,788);
+ assert.equal(new Set(items.map(q=>q.key)).size,788);
  assert.equal(items.filter(q=>q.origin==='original-transfer-2027').length,157);
  assert.deepEqual(cases.map(c=>c.id),Array.from({length:11},(_,i)=>'TR-M1-'+String(i+21).padStart(3,'0')));
  for(const c of cases){
@@ -30,9 +30,9 @@ test('Lote 6: cierra con preguntas originales las once brechas M1 trazadas a DEM
   assert.ok(c.sourceTrace.alignmentRationale.length>=35,c.id);
  }
  const gate=readinessAudit(items);
- assert.equal(gate.overall.originals,623);
+ assert.equal(gate.overall.originals,631);
  assert.equal(gate.overall.transfers,157);
- assert.equal(gate.overall.questions,780);
+ assert.equal(gate.overall.questions,788);
  assert.equal(gate.overall.concepts,287);
  assert.equal(gate.overall.unverifiableConcepts,7);
  assert.equal(gate.subjects.M1.unverifiableConcepts,0);

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-18",
+  "generatedAt": "runtime",
   "overall": {
-    "questions": 780,
-    "originals": 623,
+    "questions": 788,
+    "originals": 631,
     "transfers": 157,
     "concepts": 287,
     "unverifiableConcepts": 7
@@ -18,13 +18,13 @@
       "verifiedCases": 146
     },
     "M2": {
-      "questions": 107,
-      "originals": 106,
+      "questions": 115,
+      "originals": 114,
       "transfers": 1,
       "concepts": 48,
       "verifiableConcepts": 48,
       "unverifiableConcepts": 0,
-      "verifiedCases": 106
+      "verifiedCases": 114
     },
     "Lectura": {
       "questions": 130,
@@ -109,8 +109,8 @@
     "paes": {
       "generatedAt": "runtime",
       "overall": {
-        "questions": 747,
-        "originals": 596,
+        "questions": 755,
+        "originals": 604,
         "transfers": 151,
         "concepts": 270,
         "unverifiableConcepts": 0
@@ -126,13 +126,13 @@
           "verifiedCases": 146
         },
         "M2": {
-          "questions": 107,
-          "originals": 106,
+          "questions": 115,
+          "originals": 114,
           "transfers": 1,
           "concepts": 48,
           "verifiableConcepts": 48,
           "unverifiableConcepts": 0,
-          "verifiedCases": 106
+          "verifiedCases": 114
         },
         "Lectura": {
           "questions": 130,
@@ -356,6 +356,5 @@
       },
       "gaps": []
     }
-  },
-  "interpretation": "Cuenta familias declaradas dentro del banco existente y por ruta. No certifica independencia semántica ni cobertura completa del temario."
+  }
 }

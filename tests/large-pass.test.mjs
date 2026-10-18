@@ -89,7 +89,7 @@ test('Elegibilidad heredada: una transferencia nunca promueve un contenido compl
 
 test('Cada ruta de Ciencias puede seleccionar dos familias PAES por concepto sin cambiar de mención',()=>{
  const report=readinessAudit(items);
- assert.equal(report.scopes.paes.overall.questions,747);assert.equal(report.scopes.paes.overall.concepts,270);
+ assert.equal(report.scopes.paes.overall.questions,755);assert.equal(report.scopes.paes.overall.concepts,270);
  assert.equal(report.scopes.paes.overall.unverifiableConcepts,0);
  assert.equal(report.overall.unverifiableConcepts,7);
  for(const track of ['Biología','Física','Química','TP']){

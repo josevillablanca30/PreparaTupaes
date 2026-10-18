@@ -9,8 +9,8 @@ test('Lote 9: seis transferencias originales de Ciencias cierran seis brechas pe
  assert.equal(cases.length,6);
  assert.deepEqual(cases.map(c=>c.id),Array.from({length:6},(_,i)=>`TR-SCI-${String(i+39).padStart(3,'0')}`));
  assert.equal(new Set(cases.map(c=>c.base)).size,6);
- assert.equal(items.length,780);
- assert.equal(new Set(items.map(q=>q.key)).size,780);
+ assert.equal(items.length,788);
+ assert.equal(new Set(items.map(q=>q.key)).size,788);
  assert.equal(items.filter(q=>q.origin==='original-transfer-2027').length,157);
  for(const c of cases){
   const base=byKey.get(c.base),q=byKey.get(`Ciencias:${c.id}`);
@@ -32,7 +32,7 @@ test('Lote 9: seis transferencias originales de Ciencias cierran seis brechas pe
   assert.ok(c.sourceTrace.alignmentRationale.length>=35,c.id);
  }
  const gate=readinessAudit(items);
- assert.equal(gate.overall.questions,780);
+ assert.equal(gate.overall.questions,788);
  assert.equal(gate.overall.transfers,157);
  assert.equal(gate.overall.unverifiableConcepts,7);
  assert.equal(gate.subjects.Ciencias.transfers,87);

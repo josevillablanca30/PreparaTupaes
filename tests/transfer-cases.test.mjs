@@ -13,10 +13,10 @@ const fakeStore=()=>{const map=new Map();return {getItem:k=>map.get(k)||null,set
 
 test('El banco conserva 623 ítems originales e incorpora 18 nuevos casos independientes con clave inequívoca',()=>{
  const old=loadBanks();
- assert.deepEqual([old.M1.length,old.M2.length,old.Lectura.length,old.Ciencias.length,old.Historia.length],[116,106,130,206,65]);
+ assert.deepEqual([old.M1.length,old.M2.length,old.Lectura.length,old.Ciencias.length,old.Historia.length],[116,114,130,206,65]);
  assert.equal(transferCases.length,18);
- assert.equal(items.length,780);
- assert.equal(new Set(items.map(q=>q.key)).size,780);
+ assert.equal(items.length,788);
+ assert.equal(new Set(items.map(q=>q.key)).size,788);
  for(const [name,count] of [['M1',31],['M2',1],['Ciencias',87],['Historia',38]]){
   assert.equal(items.filter(q=>q.subjectKey===name&&q.origin==='original-transfer-2027').length,count,name);
  }
