@@ -1,12 +1,12 @@
 {
-  "date": "2026-10-16",
-  "scope": "Auditoría heurística estructural de cinco bancos y 18 transferencias; no certificación de corrección conceptual",
+  "date": "2026-10-18",
+  "scope": "Auditoría heurística estructural de cinco bancos y 157 transferencias; no certificación de corrección conceptual",
   "totals": {
     "M1": 147,
-    "Ciencias": 232,
+    "Ciencias": 293,
     "Lectura": 130,
-    "M2": 106,
-    "Historia": 91
+    "M2": 107,
+    "Historia": 103
   },
   "flags": [
     {
@@ -915,19 +915,35 @@
     },
     {
       "bank": "Ciencias",
-      "id": "TR-SCI-016",
-      "area": "Electricidad",
-      "type": "generic_example",
+      "id": "TR-SCI-039",
+      "area": "Organismo y ambiente",
+      "type": "absolute_distractor",
       "level": "review",
-      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
     },
     {
       "bank": "Ciencias",
-      "id": "TR-SCI-017",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "generic_example",
+      "id": "TR-SCI-055",
+      "area": "Ondas",
+      "type": "absolute_distractor",
       "level": "review",
-      "detail": "Ejemplo o aplicación demasiado genérico para enseñar el concepto"
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "TR-SCI-080",
+      "area": "Estructura atómica",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "TR-SCI-084",
+      "area": "Organismo y ambiente",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
     },
     {
       "bank": "Lectura",
@@ -1095,17 +1111,17 @@
       "Probabilidad compuesta": 5
     },
     "Ciencias": {
-      "Organización, estructura y actividad celular": 17,
-      "Procesos y funciones biológicas": 27,
-      "Herencia y evolución": 22,
-      "Organismo y ambiente": 18,
-      "Ondas": 21,
-      "Mecánica": 24,
-      "Energía – Tierra": 11,
-      "Electricidad": 20,
-      "Estructura atómica": 23,
-      "Química orgánica": 17,
-      "Reacciones químicas y estequiometría": 32
+      "Organización, estructura y actividad celular": 20,
+      "Procesos y funciones biológicas": 33,
+      "Herencia y evolución": 28,
+      "Organismo y ambiente": 21,
+      "Ondas": 28,
+      "Mecánica": 31,
+      "Energía – Tierra": 12,
+      "Electricidad": 25,
+      "Estructura atómica": 30,
+      "Química orgánica": 23,
+      "Reacciones químicas y estequiometría": 42
     },
     "Lectura": {
       "Localizar": 45,
@@ -1114,23 +1130,23 @@
     },
     "M2": {
       "Funciones": 19,
-      "Probabilidad": 23,
+      "Probabilidad": 24,
       "Geometría": 25,
       "Álgebra": 18,
       "Modelación": 13,
       "Suficiencia de datos": 8
     },
     "Historia": {
-      "Historia de Chile": 28,
+      "Historia de Chile": 31,
       "Formación ciudadana": 21,
-      "Economía y sociedad": 18,
-      "Historia mundial": 14,
+      "Economía y sociedad": 21,
+      "Historia mundial": 20,
       "Interpretación de fuentes": 10
     }
   },
   "summary": {
     "critical": 0,
-    "review": 132,
-    "questionCount": 706
+    "review": 134,
+    "questionCount": 780
   }
 }

@@ -9,7 +9,7 @@ for(const wrongIndex of [1,2,3])for(let start=0;start<reviewedIds.length;start+=
   await page.addInitScript(ids=>localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'history-teacher',mode:'express',ids,index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:ids.map(()=>null),flags:[]}})),ids);
   await page.goto('./history.html');await page.locator('#resume').click();
   const result=await page.evaluate(({ids,wrongIndex})=>{
-   for(const id of ids){const q=window.CACHASTE_HISTORIA.find(q=>q.id===id);
+   for(const id of ids){const q=window.CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey==='Historia').find(q=>q.id===id);
     [...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.slice(3)===q.options[wrongIndex]).click();
     document.querySelector('[data-conf="duda"]').click();document.getElementById('check').click();
     const error=document.querySelector('.error-reason');

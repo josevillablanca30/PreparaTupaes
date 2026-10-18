@@ -9,16 +9,28 @@ const cases=[
  {subject:'Historia',concept:'Secularización del Estado',id:'TR-HIS-007'},
  {subject:'M1',concept:'Raíz cuadrada principal',id:'TR-M1-013'},
  {subject:'Ciencias',concept:'Pregunta investigable',id:'TR-SCI-021'},
- {subject:'Historia',concept:'Guerra Fría',id:'TR-HIS-019'}
+ {subject:'Historia',concept:'Guerra Fría',id:'TR-HIS-019'},
+ {subject:'M2',id:'TR-M2-001'},
+ {subject:'Historia',id:'TR-HIS-036'},
+ {subject:'Ciencias',id:'TR-SCI-079',track:'Biología'},
+ {subject:'Ciencias',id:'TR-SCI-079',track:'Física'},
+ {subject:'Ciencias',id:'TR-SCI-079',track:'Química'},
+ {subject:'Ciencias',id:'TR-SCI-079',track:'TP'}
 ];
 for(const spec of cases){
- test(spec.subject+' '+spec.id+': evaluación de transferencia usa dos contextos distintos, explicaciones y guardado',async({page})=>{
+ test(spec.subject+' '+spec.id+(spec.track?' '+spec.track:'')+': evaluación de transferencia usa dos contextos distintos, explicaciones y guardado',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('./inicio.html#courses');
   await page.locator('[data-action=pick-course][data-subject="'+spec.subject+'"]').click();
-  if(spec.subject==='Ciencias')await page.locator('[data-action=pick-track][data-track=Biología]').click();
+  if(spec.subject==='Ciencias')await page.locator('[data-action=pick-track][data-track="'+(spec.track||'Biología')+'"]').click();
   const picked=await page.evaluate(({subject,concept,id})=>{
-   const e=CachasteDailyApp.engine,r=e.start(subject,2,'free',concept);
+   const e=CachasteDailyApp.engine;
+   concept=concept||e.byKey.get(subject+':'+id).concept;
+   // Force the target plus a distinct available family, even when a concept has 3+ cases.
+   const route=CachasteCurriculum.sciencePool(CACHASTE_DAILY_CATALOG.items,e.state.track);
+   const target=e.byKey.get(subject+':'+id),other=route.find(q=>q.subjectKey===subject&&q.concept===concept&&q.family!==target.family&&!q.supplementary);
+   for(const q of route.filter(q=>q.subjectKey===subject&&q.concept===concept&&q.family!==target.family&&q.family!==other.family))e.state.seen[q.key]={first:Date.now(),last:Date.now(),count:1};
+   const r=e.start(subject,2,'free',concept);
    if(r.questions.length!==2)throw Error('Faltan los 2 contextos de '+concept+': '+r.message);
    location.hash='#session';CachasteDailyApp.render();
    return{keys:r.questions.map(q=>q.key),unique:new Set(r.questions.map(q=>q.family)).size};

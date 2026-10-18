@@ -1,7 +1,7 @@
 import {dailyCatalog} from './daily-catalog.mjs';
 
 /** A reproducible release gate, not a claim of textbook-page review. */
-export function readinessAudit(items=dailyCatalog().items){
+function summarize(items){
  const subjects={};
  for(const q of items){
   if(!subjects[q.subjectKey])subjects[q.subjectKey]={questions:0,originals:0,transfers:0,concepts:new Map()};
@@ -28,6 +28,19 @@ export function readinessAudit(items=dailyCatalog().items){
   report.overall.unverifiableConcepts+=detail.unverifiableConcepts;
  }
  report.gaps.sort((a,b)=>a.subject.localeCompare(b.subject,'es')||a.concept.localeCompare(b.concept,'es'));
+ return report;
+}
+export function readinessAudit(items=dailyCatalog().items){
+ const report=summarize(items);
+ const eligible=items.filter(q=>q.examEligible!==false&&!q.supplementary);
+ report.scopes={
+  paes:summarize(eligible),
+  complementary:summarize(items.filter(q=>q.examEligible===false||q.supplementary))
+ };
+ report.scienceTracks=Object.fromEntries(['Biología','Física','Química','TP'].map(track=>[
+  track,summarize(eligible.filter(q=>q.subjectKey==='Ciencias'&&(q.module==='MC'||
+   (track==='TP'?q.module==='MTP':q.module==='ME'&&q.subject===track))))
+ ]));
  return report;
 }
 if(import.meta.url===new URL(process.argv[1]||'', 'file:').href)process.stdout.write(JSON.stringify(readinessAudit(),null,2)+'\n');

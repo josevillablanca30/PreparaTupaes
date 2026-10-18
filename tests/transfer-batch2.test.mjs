@@ -8,8 +8,8 @@ const cases=transferCasesBatch2;
 
 test('Segundo lote: 18 problemas originales separados en M1, Ciencias e Historia',()=>{
  assert.equal(cases.length,18);
- assert.equal(items.length,706);
- assert.equal(new Set(items.map(q=>q.key)).size,706);
+ assert.equal(items.length,780);
+ assert.equal(new Set(items.map(q=>q.key)).size,780);
  assert.deepEqual(['M1','Ciencias','Historia'].map(subject=>cases.filter(r=>r.base.startsWith(subject+':')).length),[6,6,6]);
  assert.equal(new Set(cases.map(q=>q.base)).size,18,'No sustituir diferentes problemas con una misma habilidad');
  for(const row of cases){

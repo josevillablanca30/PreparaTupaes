@@ -3,6 +3,7 @@
 window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, count }) {
   const L = window.CachasteLearning, root = document.getElementById('app');
   const byId = new Map(BANK.map(q => [q.id, q]));
+  const ELIGIBLE = BANK.filter(q => q.examEligible !== false && !q.supplementary);
   const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   let stored = {}; try { stored = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch {}
   let history = Array.isArray(stored.history) ? stored.history.filter(r => r && byId.has(r.id) && typeof r.correct === 'boolean').slice(-5000) : [];
@@ -31,9 +32,8 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   function begin(mode) {
     if (!diagnosticDone && mode !== 'diagnostic') { notice = 'Completa primero el diagnóstico para orientar tu práctica.'; render(); return; }
     if (session) { notice = 'Tienes una sesión guardada. Retómala o descártala antes de iniciar otra.'; render(); return; }
-    // Mantén variedad cuando el banco alcanza; Historia necesita todos sus ítems para conservar 65.
-    const distinctFamilies = mode !== 'full' || new Set(BANK.map(q => q.transferGroup || q.id)).size >= count;
-    const pool = L.select(BANK, history, mode === 'diagnostic' ? 30 : mode === 'full' ? count : 10, { balanced: true, distinctFamilies });
+    const distinctFamilies = mode !== 'full' || new Set(ELIGIBLE.map(q => q.transferGroup || q.id)).size >= count;
+    const pool = L.select(ELIGIBLE, history, mode === 'diagnostic' ? 30 : mode === 'full' ? count : 10, { balanced: true, distinctFamilies });
     launch(mode, pool);
   }
   function launch(mode, pool) {
@@ -41,7 +41,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
     session = { id: 'study-' + Date.now(), mode, ids: pool.map(q => q.id), index: 0, selected: null, checked: false, confidence: null, results: [], started: Date.now(), deadline: mode === 'full' ? Date.now() + minutes * 60000 : null, answers: pool.map(() => null), flags: [] };
     screen = 'quiz'; notice = ''; confirming = false; mapOpen = false; save(); render(true);
   }
-  function reinforce() { if(session){notice='Retoma o descarta la sesión guardada antes de comenzar otra.';screen='home';render();return;}launch('reinforce', L.transfer(BANK, history, [...(lastResult?.results || []),...history.slice(-30)], 10)); }
+  function reinforce() { if(session){notice='Retoma o descarta la sesión guardada antes de comenzar otra.';screen='home';render();return;}launch('reinforce', L.transfer(ELIGIBLE, history, [...(lastResult?.results || []),...history.slice(-30)], 10)); }
   function choose(n) {
     if (!session || session.checked || !Number.isInteger(n) || n < 0 || n >= current().options.length) return;
     if (expired()) return;
@@ -104,7 +104,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
     return '<span class="eyebrow">Tu progreso</span><h1>Lo que ya estás comprendiendo</h1><p>Confirmamos un concepto al resolver dos preguntas distintas sin pistas ni dudas después del último error.</p><div class="report-grid">' + p.map(x => '<article class="mini-stat"><strong>' + esc(x.concept) + '</strong><p>' + esc(x.status) + ' · ' + x.correct + '/' + x.attempts + '</p></article>').join('') + '</div><h2>Historial de sesiones</h2>' + (assessments.length ? assessments.slice().reverse().map(a => '<button class="history-item" data-result="' + esc(a.id) + '">' + esc(({ diagnostic: 'Diagnóstico', full: 'Ensayo', express: 'Express', reinforce: 'Refuerzo' })[a.mode] || a.mode) + ' · ' + a.correct + '/' + a.total + '<small>' + esc(new Date(a.at).toLocaleDateString('es-CL')) + '</small></button>').join('') : '<p>Aún no completas una sesión.</p>') + '<button id="back" class="primary">Volver al inicio</button>';
   }
   function home() {
-    return '<span class="eyebrow">' + (diagnosticDone ? 'Sigue con tu preparación' : 'Partamos por conocerte') + '</span><h1>' + TITLE + '</h1><p class="lead">Te lo dejamos clarito para un buen resultado.</p>' + (session ? '<section class="resume-card"><strong>Tienes una sesión en curso</strong><p>Pregunta ' + (session.index + 1) + ' de ' + session.ids.length + (session.mode === 'full' ? '. El reloj del ensayo sigue corriendo.' : '.') + '</p><button class="primary" id="resume">Retomar sesión guardada</button><button id="discard">Descartar sesión</button></section>' : '') + '<div class="mode-list"><button class="mode-card" id="diagnostic"><span>01</span><strong>Diagnóstico · 30 preguntas</strong><small>Conoce desde dónde partir</small></button><button class="mode-card" id="express" ' + (!diagnosticDone ? 'disabled' : '') + '><span>02</span><strong>Express · 10 preguntas</strong><small>Practica según lo que necesitas</small></button><button class="mode-card" id="full" ' + (!diagnosticDone ? 'disabled' : '') + '><span>03</span><strong>Ensayo completo · ' + count + ' preguntas</strong><small>' + minutes + ' minutos · corrección al terminar</small></button></div><div class="actions"><button id="progress">Ver mi progreso</button>' + (lastResult ? '<button id="last">Ver último resultado</button>' : '') + '</div><p class="small">' + BANK.length + ' preguntas originales. No equivale a puntaje PAES oficial.</p>';
+    return '<span class="eyebrow">' + (diagnosticDone ? 'Sigue con tu preparación' : 'Partamos por conocerte') + '</span><h1>' + TITLE + '</h1><p class="lead">Te lo dejamos clarito para un buen resultado.</p>' + (session ? '<section class="resume-card"><strong>Tienes una sesión en curso</strong><p>Pregunta ' + (session.index + 1) + ' de ' + session.ids.length + (session.mode === 'full' ? '. El reloj del ensayo sigue corriendo.' : '.') + '</p><button class="primary" id="resume">Retomar sesión guardada</button><button id="discard">Descartar sesión</button></section>' : '') + '<div class="mode-list"><button class="mode-card" id="diagnostic"><span>01</span><strong>Diagnóstico · 30 preguntas</strong><small>Conoce desde dónde partir</small></button><button class="mode-card" id="express" ' + (!diagnosticDone ? 'disabled' : '') + '><span>02</span><strong>Express · 10 preguntas</strong><small>Practica según lo que necesitas</small></button><button class="mode-card" id="full" ' + (!diagnosticDone ? 'disabled' : '') + '><span>03</span><strong>Ensayo completo · ' + count + ' preguntas</strong><small>' + minutes + ' minutos · corrección al terminar</small></button></div><div class="actions"><button id="progress">Ver mi progreso</button>' + (lastResult ? '<button id="last">Ver último resultado</button>' : '') + '</div><p class="small">' + ELIGIBLE.length + ' preguntas para práctica PAES. No equivale a puntaje PAES oficial.</p>';
   }
   function quiz() {
     const q = current(), o = order(q), isExam = session.mode === 'full';

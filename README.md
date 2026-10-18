@@ -1,77 +1,65 @@
-# Cachaste 💜
+# ¿Cachaste? 💜
 
-Aplicación de preparación PAES Chile. **Primera meta: Matemática M1 Regular 2026 / Admisión 2027**.
+Aplicación offline de preparación PAES con Matemática M1 y M2, Competencia Lectora, Ciencias e Historia. La experiencia usa rutas progresivas, diagnóstico, práctica, ensayos formativos y tutoría explicada. El contenido y el progreso se guardan localmente.
 
-## Tres áreas dentro de una sola aplicación
-La pantalla inicial `inicio.html` permite elegir **Matemática M1**, **Competencia Lectora** o **Ciencias**. La prueba de Ciencias incluye las tres materias mezcladas y permite escoger la **mención Biología/Física/Química** o modalidad **TP**. Todos los módulos funcionan dentro de un mismo APK WebView con recursos offline; sus datos de aprendizaje están separados localmente.
+## Estado real del proyecto · 18/10/2026
 
-### Ciencias · banco ampliado
-- **158 preguntas originales**: **54 MC** (18 de cada ciencia), **78 ME** (26 por cada mención Biología, Física y Química) y **26 TP** (9 Biología, 9 Física, 8 Química).
-- **Diagnóstico 30:** 27 MC y 3 preguntas de la mención o TP; respuestas mezcladas. **Express 10:** 7 MC y 3 de especialidad, adaptado a errores y dudas.
-- **Ensayo completo formativo:** 80 preguntas únicas (54 MC + 26 ME o TP), reloj de 160 minutos, sin revelar respuestas durante la prueba y resultados separados por ciencia al terminar. **No es una reproducción de ítems oficiales ni un estimador validado de puntaje.**
-- Tutor con explicaciones por distractor, pistas, confianza («Lo tengo claro», «Tengo dudas», «Fue al azar»), progreso separado y observaciones científicas exportables. Su revisión editorial continúa siendo necesaria.
+- **780 preguntas:** 623 del banco original y 157 de transferencia. Las últimas 50 añaden 1 de M2, 12 de Historia y 37 de Ciencias.
+- **747 preguntas de alcance PAES y 33 complementarias.** Las complementarias se conservan para práctica opcional e historial, y quedan fuera de la selección general y los ensayos nuevos.
+- **287 conceptos organizados**, de los cuales 270 tienen preguntas de alcance PAES. Estos 270 disponen de al menos dos familias en el catálogo. La misma comprobación pasa por separado para Biología, Física, Química y TP.
+- Los **7 conceptos que aún tienen una sola familia pertenecen al contenido complementario**. Dos familias registradas no certifican independencia semántica, profundidad ni cobertura completa del temario oficial: esas revisiones siguen siendo necesarias.
+- **214 pruebas lógicas aprobadas**, compilación web correcta y auditoría estructural con **0 errores críticos y 134 observaciones heurísticas**. Las observaciones no son errores confirmados ni una certificación editorial.
+- La batería de navegador contiene **738 pruebas** para Android Chrome, iPhone WebKit y 320 px. La ejecución local sigue impedida por una descarga incompleta del navegador. La verificación de CI y del APK debe corresponder al commit vigente.
 
-### Competencia Lectora · primera fase integrada
-- **15 textos originales y 75 preguntas únicas:** 27 Localizar, 30 Interpretar y 18 Evaluar. Incluye narrativa, exposición, argumentación y lectura de registros.
-- **Diagnóstico 30**, **Express 10** y **ensayo formativo 65 preguntas en 150 minutos**, con preguntas agrupadas por texto, reloj, confianza en respuestas, tutor y recuperación de sesiones.
-- El diagnóstico orienta la práctica por habilidad débil y se conserva el avance en `localStorage`. El corpus y el nivel de exigencia todavía requieren revisión pedagógica adicional para equipararlos a las lecturas extensas de la PAES real.
+Estado reproducible: [matriz actual](reports/readiness-current.json), [pasada amplia](docs/pasada-amplia-2026-10-18.md) y [criterios de cierre](docs/criterios-cierre-profesional-2026.md).
 
-### Instalación y actualizaciones
-La beta Android unificada mantiene por seguridad el identificador debug independiente `cl.preparatupaes.app.sciencebeta`, de manera que puede coexistir con la aplicación M1 v0.6 ya probada, sin desinstalarla ni borrar sus datos. Las firmas de depuración de distintos runners podrían impedir actualizar betas anteriores en el teléfono; **no desinstales M1 v0.6 si quieres conservar su progreso**. Para una versión distribuible actualizable hace falta configurar una firma estable y segura.
+El código no está declarado como versión comercial aprobada. Los bancos son material formativo original; no son ítems oficiales DEMRE ni un instrumento psicométrico validado. Falta revisión pedagógica integral y pilotaje. No hay cuentas ni sincronización entre dispositivos.
 
-**Estado de la nueva beta v1.0:** código integrado y pruebas automatizadas en curso; no declarar APK aprobado ni instalación física hasta comprobar CI y binario.
+## Experiencia y materias
 
-## Estado actual
-- 116 preguntas originales de práctica, incluidas 16 con gráficos y figuras con alternativas, explicaciones por error y resolución.
-- Banco basado en habilidades de la biblioteca educativa de Drive y el temario oficial; no reproduce preguntas de pago sin permiso.
-- **Nueva entrada simplificada:** Diagnóstico de 30 preguntas (8 Números, 8 Álgebra y funciones, 7 Geometría, 7 Estadística), Express de 10 y ensayo completo de 65. El diagnóstico inicial desbloquea los ensayos para estudiantes nuevos y orienta un plan de refuerzo. Las prácticas antiguas de 3, 5, 8 y 12 quedan plegadas como opciones de refuerzo, preservando su funcionalidad.
-- Tutor con pistas progresivas: aciertos con ayuda se distinguen del dominio sin pistas.
-- Simulacro **formativo** de 65 preguntas, tiempo de 140 minutos, mapa navegable, marcadores y confirmación al entregar.
-- Guardado local de respuestas, **reanudación de diagnóstico M1 de 30 preguntas**, reanudación de simulacro y resultados por eje.
-- Lista persistente de errores pendientes: rondas de diez preguntas sin perder las restantes; dominio confirmado al acertar sin pistas.
-- Progreso móvil resumido por los cuatro ejes, con detalles de habilidades plegables y acciones para reforzar.
-- Etiquetas pedagógicas estimadas: 45 iniciales, 40 intermedias y 31 desafíos.
-- Marca e icono Android: **Cachaste**. Versión **0.6.0** compilada exitosamente como APK de prueba (debug).
-- **No es aún una versión comercial aprobada**, ni sus aciertos equivalen a una conversión oficial de puntaje.
-- El 13-10-2026 GitHub Actions confirmó **48/48 pruebas de navegador móvil aprobadas** en Android Chrome, iPhone WebKit y 320 px; el workflow de Android confirmó pruebas de lógica, 32/32 pruebas táctiles y compilación exitosa de APK de prueba. El APK se verificó como ZIP/APK íntegro con código y recursos incluidos. **Pendientes: instalación y pruebas en un teléfono físico y publicación web por Pages.**
+- **M1:** empieza desde fundamentos, avanza por Números, Álgebra y funciones, Geometría, y Probabilidad y estadística. Incluye diagnóstico, Express, ensayo formativo, tutor y refuerzo.
+- **M2:** banco y recorrido propios, separados de M1.
+- **Competencia Lectora:** textos originales con preguntas de Localizar, Interpretar y Evaluar.
+- **Ciencias:** Biología, Física y Química; selección de mención y modalidad TP.
+- **Historia:** recorrido propio con preguntas y tutor.
 
-Consulta [resultado de CI y APK v0.6](docs/qa-ci-apk-cachaste-2026-10-13.md), [cierre de M1 y controles QA](docs/m1-cierre-funcional-2026.md), [estabilización de progreso y repaso](docs/qa-m1-estabilidad-2026-10-13.md), [pasada grande de gráficos y tutor](docs/qa-m1-expansion-100-2026-10-13.md), [reporte de QA anterior](docs/qa-m1-pasada-calidad-2026-10-13.md) y [biblioteca y fuentes de Drive](docs/fuentes-drive-m1-2026.md).
+Las sesiones de ensayo no muestran respuestas ni pistas antes de entregar. La app diferencia respuestas seguras, dudosas y al azar. Un acierto con ayuda no prueba dominio.
 
-## Probar
-Abrir `index.html` con el navegador, o ejecutar:
+## Ejecutar
 
 ```bash
 npm ci
 npm run test:logic
+npm run audit:pedagogy
 npm run build
+```
+
+Para las pruebas de interfaz, instalar los navegadores de Playwright y ejecutar:
+
+```bash
 npx playwright install --with-deps chromium webkit
 npm test
 ```
 
-La aplicación no necesita dependencias en el navegador. Node y Playwright se utilizan únicamente para construir el paquete y probarlo.
+La app no necesita dependencias en el navegador. Node y Playwright se usan para construir y verificar el proyecto.
 
-## Publicación automática
+## Publicación web y Android
 
-El flujo `.github/workflows/pages.yml` se ejecuta al cambiar código en `main`, en pull requests y manualmente desde Actions. Los cambios solo de documentación no generan otro despliegue.
+El workflow de GitHub Actions valida el código y, si está habilitado GitHub Pages en Settings → Pages con origen GitHub Actions, publica `dist/` desde `main` después de las verificaciones. La URL prevista es <https://josevillablanca30.github.io/PreparaTupaes/>; solo se debe considerar activa cuando un despliegue exitoso y la prueba HTTPS confirmen el mismo commit.
 
-1. Ejecuta las pruebas de lógica y clave editorial, además de las pruebas táctiles en Chromium Android, WebKit iPhone y pantalla de 320 px.
-2. Si pasan, publica únicamente `dist/` en GitHub Pages. Las pull requests solo validan, sin publicar.
-3. Comprueba que la URL pública sirve el mismo commit y repite las pruebas móviles sobre HTTPS.
+El APK disponible en CI es de prueba. Antes de distribuirlo hay que verificar la compilación e instalación del artefacto vigente, configurar una firma de publicación estable y probarlo en teléfono físico. Los APK debug de distintos runners pueden no permitir actualización entre sí.
 
-Activación inicial requerida: **Settings → Pages → Source → GitHub Actions**. El flujo estándar no puede activar Pages por primera vez con `GITHUB_TOKEN`; la configuración necesita acceso del propietario. Una vez activado, cada cambio de código en `main` se publica automáticamente si supera las pruebas.
+## Prioridades de cierre
 
-URL prevista (solo válida después de un despliegue exitoso): https://josevillablanca30.github.io/PreparaTupaes/
+1. Revisar independencia real y cobertura de habilidades de los 270 conceptos de alcance PAES; la puerta de dos familias ya pasa por materia y por mención.
+2. Revisar individualmente explicaciones, claves y distractores de las cinco materias; las alertas automáticas no reemplazan esa revisión.
+3. Completar pruebas de interfaz y Android en CI, recuperar una ejecución de Playwright con navegadores disponibles y comprobar instalación offline.
+4. Pilotear con estudiantes y cerrar firma, publicación y sincronización si el producto lo requiere.
 
-Los reportes y capturas de las pruebas quedan en el run de Actions con retención de un día. La emulación móvil comprueba interfaz y funcionalidad cuando CI finaliza exitosamente; no equivale a una prueba en un teléfono físico. El flujo del APK ahora exige primero Node, QA editorial y Playwright Android/320 px.
+La aplicación no reproduce preguntas de editoriales ni de DEMRE. Los materiales de Drive son referencias de secuencia y objetivos; cualquier reproducción requiere autorización comprobada.
 
-## Alcance y advertencias
-Esta es una **versión formativa funcional en desarrollo**, no un producto comercial terminado. Las preguntas son originales de práctica y no son ensayos DEMRE ni representan una simulación oficial validada. El tutor actual usa explicaciones y pistas redactadas previamente, no un modelo de IA generativo. No hay cuentas, backend, sincronización entre dispositivos ni estimador validado de puntaje.
+## Envío y validación remota de esta pasada
 
-La biblioteca PAES descomprimida de Drive se ha podido consultar por archivos individuales. Aún falta completar su clasificación editorial y verificar derechos de uso para cualquier reproducción de material de terceros.
+El usuario autorizó el 18/10/2026 subir esta pasada a `work/cachaste-motor-duolingo-20261016` del repositorio público `josevillablanca30/PreparaTupaes`. La publicación se limita a la rama de trabajo y sus comprobaciones internas. La revisión de navegador y del APK debe corresponder a ese código; los resultados locales son 214 pruebas lógicas aprobadas, build correcto y cero errores críticos estructurales.
 
-## Siguiente desarrollo
-1. Ejecutar las pruebas completas Node y Playwright sobre el último commit, corregir cualquier regresión móvil.
-2. Validar matemáticamente los nuevos problemas visuales y sus distracciones con otra revisión pedagógica.
-3. Agregar más ítems de interpretación compleja, no únicamente cálculos directos.
-4. Estabilizar la compilación Android y verificar un APK descargable antes de presentarlo como listo.
-
+La autorización resuelve el rechazo automático inicial. El checkout no dispone de credenciales para `git push`; se utiliza el conector de GitHub con comprobación de árbol y actualización sin forzar. La fusión y el despliegue de `main` siguen sujetos a los criterios de cierre.

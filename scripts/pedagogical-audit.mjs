@@ -9,7 +9,7 @@ const transferItems=dailyCatalog().items.filter(q=>q.origin==='original-transfer
 for(const q of transferItems){if(!banks[q.subjectKey])throw Error('Materia no reconocida de transferencia '+q.id);banks[q.subjectKey].push(q);}
 const stop=/^(no|nunca|siempre|todos|todas|ningún|ninguna|únicamente|exclusivamente|completamente|absolutamente|imposible|desaparec|elimina|prohíbe|sustituye|solo funciona|solo sirve)\b/i;
 const normalize=s=>(/\b(?:AA|Aa|aa)\b/.test(String(s))?String(s):String(s).toLowerCase()).replace(/−/g,'-').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\p{L}\p{N}+*/=<>^%×÷≤≥√:-]/gu,' ').trim().replace(/\s+/g,' ');
-const output={date:'2026-10-16',scope:'Auditoría heurística estructural de cinco bancos y 18 transferencias; no certificación de corrección conceptual',totals:{},flags:[],coverage:{}};
+const output={date:'2026-10-18',scope:`Auditoría heurística estructural de cinco bancos y ${transferItems.length} transferencias; no certificación de corrección conceptual`,totals:{},flags:[],coverage:{}};
 let critical=0;
 for(const [name,questions] of Object.entries(banks)){
  if(!Array.isArray(questions))throw Error('Banco ausente: '+name);

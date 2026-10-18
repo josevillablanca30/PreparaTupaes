@@ -1,51 +1,62 @@
 # Criterios de cierre profesional — ¿Cachaste?
 
-Actualizado 16/10/2026 tras tercera ampliación y CI verde. **No solicitar al usuario que pruebe la aplicación antes de resolver las brechas relevantes.**
+Actualizado 18/10/2026. No solicitar prueba al usuario antes de resolver las brechas relevantes. Las compilaciones de la rama de trabajo son control interno.
 
-## Avance ya implementado
+## Estado vigente
 
-La aplicación conserva 671 preguntas de evaluación (623 originales y 48 transferencias originales en tres lotes), cinco materias, mapa progresivo, selección de mención de Ciencias, tutor de tres modos y refuerzo voluntario. La nueva estructura ofrece **287 talleres por concepto del banco**: M1 65; M2 48; Lectura 10; Ciencias 114; Historia 50. Cinco talleres son pilotos redactados individualmente; los otros 282 componen clases y secuencias usando explicaciones existentes del tutor. Que el código funcione no certifica calidad editorial individual.
+El catálogo contiene **780 preguntas: 623 originales y 157 transferencias**. De ellas, **747 están habilitadas para práctica PAES** y **33 son complementarias**. Se conservan sus identificadores y el historial. Las transferencias heredan el alcance de su base; una pregunta complementaria no se convierte en PAES por tener un ID nuevo.
 
-Los talleres permiten clase, actividad interactiva, retroalimentación por error, guardar estado y rendir preguntas PAES independientes. No dan XP ni declaran dominio por superar un juego. El estudiante que ya sabe puede rendir sin clase obligatoria.
+| Materia | Preguntas totales | Preguntas PAES | Conceptos PAES | Conceptos PAES sin segunda familia |
+|---|---:|---:|---:|---:|
+| M1 | 147 | 147 | 65 | 0 |
+| M2 | 107 | 107 | 48 | 0 |
+| Lectora | 130 | 130 | 10 | 0 |
+| Ciencias | 293 | 262 | 99 | 0 |
+| Historia | 103 | 101 | 48 | 0 |
+| **Total** | **780** | **747** | **270** | **0** |
 
-## Brechas por materia
+Las rutas de Ciencias se comprueban con su selección real: módulo común más la mención elegida, o módulo técnico profesional. Un caso de otra ruta no puede cerrar artificialmente la brecha.
 
-| Asignatura | Conceptos | Conceptos sin dos familias independientes de evaluación |
-|---|---:|---:|
-| M1 | 65 | 19 |
-| M2 | 48 | 1 |
-| Lectora | 10 | 0 |
-| Ciencias | 114 | 59 |
-| Historia | 50 | 22 |
-| **Total** | **287** | **101** |
+| Ruta de Ciencias | Preguntas PAES disponibles | Conceptos | Sin segunda familia |
+|---|---:|---:|---:|
+| Biología | 137 | 57 | 0 |
+| Física | 143 | 61 | 0 |
+| Química | 147 | 63 | 0 |
+| TP | 141 | 62 | 0 |
 
-Los 101 conceptos siguen sin dos familias independientes de evaluación, según la auditoría reproducible del último código. De ellos, al menos 94 todavía tienen solo un ítem. Dos IDs distintos no equivalen necesariamente a transferencia independiente. Ejecutar `node scripts/readiness-audit.mjs` para obtener el listado exacto actualizado. [El inventario del segundo lote](../reports/readiness-transfer-batch2-2026-10-16.json) es histórico, no el resultado final.
+Las rutas comparten el módulo común; sus cantidades no se suman como bancos independientes. La matriz general conserva **7 brechas complementarias**: inflamación local, reflexión y eco, tabla periódica y valencia, trabajo de una fuerza constante, transformaciones en generadores, ahorro por aportes periódicos y diversificación y riesgo.
 
-La última auditoría heurística registró **132 observaciones para revisión y 0 errores críticos automáticos**, sobre las 671 preguntas. No significa que las 132 observaciones sean errores confirmados ni que las preguntas estén certificadas: necesitan contraste editorial, solución y revisión de sus distractores.
+**Alcance de la conclusión:** la auditoría comprueba cantidad de familias por concepto existente. No demuestra que se hayan incorporado todos los objetivos del temario, que toda variante sea cognitivamente independiente ni que cada taller tenga profundidad suficiente. El dominio individual sigue requiriendo respuestas correctas y seguras de familias distintas, sin ayuda y después del último error.
+
+## Verificación de esta pasada
+
+- **214/214 pruebas lógicas aprobadas**, incluidas claves cuantitativas, herencia curricular, disponibilidad por mención y conservación de historial.
+- **Compilación web correcta**; el catálogo ampliado llega al recorrido diario y a las pantallas tradicionales de M2 e Historia.
+- **0 errores críticos estructurales; 134 observaciones heurísticas** abiertas. El número no equivale a defectos confirmados.
+- **738 pruebas Playwright declaradas**, con escenarios nuevos para M2, Historia y las cuatro rutas de Ciencias.
+- Ejecución de navegador local bloqueada por descarga incompleta del binario. Los resultados de CI anteriores no validan los cambios actuales. Comprobar la revisión exacta antes de entregar APK.
 
 ## Criterios obligatorios antes de declarar una versión completa
 
-1. Pertinencia: cotejar objetivos de todas las materias con los temarios DEMRE para PAES Regular 2026 / Admisión 2027; no trasladar indiscriminadamente material PSU o escolar fuera de temario.
-2. Editorial: revisar por separado cada clase, solución, distractor, explicación del error y ejemplo de transferencia contra contenidos adecuados.
-3. Evidencia: no marcar dominio sin al menos dos familias independientes de ejercicios correctos y seguros después del último error o ayuda.
-4. Pedagogía: enseñanzas de nivel medio sin trivializar conceptos, tutor accesible, retroalimentación específica según la opción escogida y refuerzo si se necesita.
-5. Juego: mapas usables, desafíos con tarea cognitiva auténtica, un solo gato expresivo por situación y progresión transparente.
-6. Técnico: CI lógico y de navegador sin fallos; Android, iPhone y pantalla pequeña; APK instalada y firmada; prueba offline, persistencia y botón Atrás.
-7. Biblioteca: los 526 archivos de Drive están inventariados para búsqueda por editorial y materia. **Todavía no han sido leídos ni contrastados individualmente en su totalidad**. No distribuir contenido completo de editoriales sin autorización.
-8. Producto: no pedir prueba al usuario ni fusionar el PR hasta que se cumplan los controles anteriores. Las compilaciones de GitHub son control interno.
+1. Pertinencia: contrastar los objetivos de todas las materias con DEMRE Regular 2026 / Admisión 2027. El material PSU antiguo de Drive no amplía el alcance oficial.
+2. Editorial: revisar individualmente cada clase, solución, distractor, explicación del error y ejemplo. Registrar resolución de las alertas heurísticas y contrastar independencia semántica de las familias.
+3. Cobertura: mapear cada objetivo oficial a contenido practicable y habilidades evaluadas. Cero brechas dentro del banco actual no significa temario íntegro cubierto.
+4. Pedagogía: nivel medio, tutor comprensible y retroalimentación específica. Los juegos y las clases no otorgan dominio por sí solos.
+5. Experiencia: revisar visualmente mapas, navegación, gato, animaciones y pantallas; mantener movimiento reducido y legibilidad en pantallas pequeñas.
+6. Técnico: CI de la revisión vigente en Android, iPhone y 320 px; APK instalada y firmada, offline, persistencia, reanudación y botón Atrás.
+7. Fuentes: los 526 archivos de Drive están inventariados. No se han leído íntegramente todos los volúmenes; consultar secciones y registrar el contraste real sin atribuir una revisión inexistente.
+8. Producto: completar los controles y el pilotaje antes de declarar una versión comercial y fusionar para producción.
 
-Documentación: [orden pedagógico Drive/DEMRE](orden-curricular-drive-demre-2026.md) · [contraste oficial](contraste-demre-2027.md) · [matriz de vacíos](../reports/readiness-curriculum-2026-10-16.json).
+## Evidencia e historial
 
-## Lote 1 de transferencia original (16/10/2026)
+- [Matriz vigente reproducible](../reports/readiness-current.json), generada con `node scripts/readiness-audit.mjs`.
+- [Cambios y fuentes de esta pasada](pasada-amplia-2026-10-18.md).
+- [Orden pedagógico Drive/DEMRE](orden-curricular-drive-demre-2026.md) y [contraste oficial](contraste-demre-2027.md).
+- Los informes `readiness-*-2026-10-16.json` son fotografías históricas. Sus cifras no describen el estado vigente.
+- El commit `fcfff21a891d90d9026eeedae807c5feb1735327` tuvo 188 pruebas lógicas, 711 móviles y emulador Android aprobados el 16/10. Esa evidencia se conserva como antecedente, no como validación de esta pasada.
 
-Se incorporaron 18 casos independientes (seis de M1, seis de Ciencias, seis de Historia) con resolución, cuatro distractores y explicaciones por alternativa. El banco pasa de 623 a 641 preguntas, y las brechas de una sola pregunta bajan de 136 a 118. Los archivos originales se conservaron sin cambios. La auditoría estructural y las pruebas automatizadas incluyen el lote; su evaluación disciplinar externa y el pilotaje con estudiantes siguen pendientes. Consulta [la matriz actualizada](../reports/readiness-transfer-batch1-2026-10-16.json).
+## Envío y validación remota de esta pasada
 
-## Estado actual verificado en GitHub Actions (16/10/2026)
+El usuario autorizó el 18/10/2026 subir esta pasada a `work/cachaste-motor-duolingo-20261016` del repositorio público `josevillablanca30/PreparaTupaes`. La publicación se limita a la rama de trabajo y sus comprobaciones internas. La revisión de navegador y del APK debe corresponder a ese código; los resultados locales son 214 pruebas lógicas aprobadas, build correcto y cero errores críticos estructurales.
 
-- **671 preguntas:** 623 del banco original y 48 casos nuevos de transferencia PAES en tres lotes.
-- **287 talleres por concepto** del banco actual, algunos compuestos automáticamente desde las explicaciones; la revisión individual de todos sus textos sigue pendiente.
-- **101 conceptos sin dos familias independientes**, M1 19, M2 1, Lectura 0, Ciencias 59, Historia 22. No mostrarlos como dominio demostrado.
-- **132 observaciones heurísticas** pendientes de revisión, sin bloqueos críticos detectados por el auditor automático.
-- GitHub Actions en el commit `fcfff21a891d90d9026eeedae807c5feb1735327`: [188 pruebas lógicas aprobadas](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38967454278), [711 pruebas móviles Playwright aprobadas](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38967454278), [APK compilada e instalada en emulador Android](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/38967448189). Validación CI no equivale a prueba pedagógica con estudiantes.
-- `main` permanece sin cambios; PR #5 está abierto y en borrador.
-
+La autorización resuelve el rechazo automático inicial. El checkout no dispone de credenciales para `git push`; se utiliza el conector de GitHub con comprobación de árbol y actualización sin forzar. La fusión y el despliegue de `main` siguen sujetos a los criterios de cierre.

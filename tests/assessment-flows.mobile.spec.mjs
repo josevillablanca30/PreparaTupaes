@@ -1,11 +1,11 @@
 import {test,expect} from '@playwright/test';
-const subjects=[{page:'m2.html',key:'cachaste-m2-v1',bank:'CACHASTE_M2',count:55,minutes:140},{page:'history.html',key:'cachaste-history-v1',bank:'CACHASTE_HISTORIA',count:65,minutes:120}];
+const subjects=[{page:'m2.html',key:'cachaste-m2-v1',bank:'M2',count:55,minutes:140},{page:'history.html',key:'cachaste-history-v1',bank:'Historia',count:65,minutes:120}];
 async function diagnosis(page,subject,wrong=false){
  await page.locator('#diagnostic').click();
  await page.evaluate(({key,bank,wrong})=>{
   for(let n=0;n<30;n++){
    const state=JSON.parse(localStorage.getItem(key)).session;
-   const q=window[bank].find(q=>q.id===state.ids[state.index]);
+   const q=window.CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey===bank).find(q=>q.id===state.ids[state.index]);
    const value=q.options[wrong?(q.answer+1)%q.options.length:q.answer];
    [...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.slice(3)===value).click();
    document.querySelector('[data-conf="seguro"]').click();document.getElementById('check').click();document.getElementById('next').click();
@@ -25,7 +25,7 @@ for(const subject of subjects){
   await expect(page.locator('#flag')).toHaveAttribute('aria-pressed','true');
   await expect(page.locator('.tutor-panel')).toHaveCount(0);await expect(page.locator('[data-conf]')).toHaveCount(0);
   await page.locator('[data-jump="'+(subject.count-1)+'"]').click();
-  await page.evaluate(({key,bank})=>{const s=JSON.parse(localStorage.getItem(key)).session,q=window[bank].find(q=>q.id===s.ids[s.index]);[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.slice(3)===q.options[q.answer]).click();},subject);
+  await page.evaluate(({key,bank})=>{const s=JSON.parse(localStorage.getItem(key)).session,q=window.CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey===bank).find(q=>q.id===s.ids[s.index]);[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.slice(3)===q.options[q.answer]).click();},subject);
   await page.locator('#pause').click();await page.reload();await page.locator('#resume').click();
   await expect(page.locator('[data-choice][aria-pressed="true"]')).toHaveCount(1);
   await page.locator('#exam-next').click();await expect(page.getByRole('heading',{name:'¿Entregar tu ensayo?'})).toBeVisible();

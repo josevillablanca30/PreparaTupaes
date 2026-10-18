@@ -10,7 +10,7 @@ for(const subject of [
   await expect(page.getByRole('button',{name:'Express · 10 preguntas'})).toBeDisabled();
   await page.getByRole('button',{name:'Diagnóstico · 30 preguntas'}).tap();
   await expect(page.locator('.eyebrow')).toContainText('1 de 30');
-  const sample=await page.evaluate(key=>{const s=JSON.parse(localStorage.getItem(key)).session;const bank=key.includes('m2')?window.CACHASTE_M2:window.CACHASTE_HISTORIA;return {ids:s.ids,areas:s.ids.map(id=>bank.find(q=>q.id===id).area)}},subject.key);
+  const sample=await page.evaluate(key=>{const s=JSON.parse(localStorage.getItem(key)).session;const bank=key.includes('m2')?window.CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey==='M2'):window.CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey==='Historia');return {ids:s.ids,areas:s.ids.map(id=>bank.find(q=>q.id===id).area)}},subject.key);
   expect(sample.ids.length).toBe(30);
   expect(new Set(sample.ids).size).toBe(30);
   const tally={};for(const area of sample.areas)tally[area]=(tally[area]||0)+1;
