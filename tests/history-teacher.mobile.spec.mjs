@@ -1,5 +1,9 @@
 import{test,expect}from'@playwright/test';
 import{loadBanks}from'../scripts/load-banks.mjs';
+import{dailyCatalog}from'../scripts/daily-catalog.mjs';
+const historyBank=dailyCatalog().items.filter(q=>q.subjectKey==='Historia'&&q.examEligible!==false);
+const sourceQuestion=historyBank.find(q=>q.id==='HIS-001');
+const siblingIds=historyBank.filter(q=>q.concept===sourceQuestion.concept&&q.id!==sourceQuestion.id).map(q=>q.id);
 const reviewedIds=loadBanks().Historia.filter(q=>q.teaching).map(q=>q.id);
 // Cada distractor del lote se usa realmente en la interfaz, en tres modos.
 for(const wrongIndex of [1,2,3])for(let start=0;start<reviewedIds.length;start+=10){
@@ -43,12 +47,22 @@ test('Historia: una decisión nueva comprueba costo de oportunidad después de r
  const ids=await page.evaluate(()=>JSON.parse(localStorage.getItem('cachaste-history-v1')).session.ids);
  expect(ids).toEqual(['HIS-059']);
 });
-test('Historia: no se ofrece un tema ajeno ni un dominio ficticio cuando falta otro ítem del concepto',async({page})=>{
- await page.addInitScript(()=>localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'no-unrelated-transfer',mode:'express',ids:['HIS-001'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}})));
+for(const exhausted of [false,true])test('Historia: '+(exhausted?'avisa cuando se agotaron las variantes recientes del concepto':'ofrece un refuerzo disponible del mismo concepto'),async({page})=>{
+ expect(siblingIds.length).toBeGreaterThan(0);
+ await page.addInitScript(history=>localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history,session:{id:'no-unrelated-transfer',mode:'express',ids:['HIS-001'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}})),exhausted?siblingIds.map(id=>({id,correct:true,confidence:'seguro'})):[]);
  await page.goto('./history.html');await page.locator('#resume').click();
  await page.getByRole('button').filter({hasText:'El reconocimiento del sufragio femenino'}).click();
  await page.locator('[data-conf="duda"]').click();await page.locator('#check').click();await page.locator('#next').click();
- await page.locator('#reinforce').click();await expect(page.locator('#study-notice')).toContainText('Ya trabajaste los ejercicios distintos disponibles');
+ await page.locator('#reinforce').click();
+ if(!exhausted){
+  const session=await page.evaluate(()=>JSON.parse(localStorage.getItem('cachaste-history-v1')).session);
+  expect(session.mode).toBe('reinforce');expect(session.ids.length).toBeGreaterThan(0);
+  for(const id of session.ids)expect(siblingIds).toContain(id);
+  expect(session.ids).not.toContain('HIS-001');
+  await expect(page.locator('#check')).toBeVisible();
+  return;
+ }
+ await expect(page.locator('#study-notice')).toContainText('Ya trabajaste los ejercicios distintos disponibles');
  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('cachaste-history-v1')).session)).toBeNull();
  await page.locator('#back').click();await page.locator('#full').click();
  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('cachaste-history-v1')).session.ids.length)).toBe(65);
