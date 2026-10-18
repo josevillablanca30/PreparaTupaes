@@ -9,7 +9,7 @@ Aplicación offline de preparación PAES con Matemática M1 y M2, Competencia Le
 - **287 conceptos organizados**, de los cuales 270 tienen preguntas de alcance PAES. Estos 270 disponen de al menos dos familias en el catálogo. La misma comprobación pasa por separado para Biología, Física, Química y TP.
 - Los **7 conceptos que aún tienen una sola familia pertenecen al contenido complementario**. Dos familias registradas no certifican independencia semántica, profundidad ni cobertura completa del temario oficial: esas revisiones siguen siendo necesarias.
 - **214 pruebas lógicas aprobadas**, compilación web correcta y auditoría estructural con **0 errores críticos y 134 observaciones heurísticas**. Las observaciones no son errores confirmados ni una certificación editorial.
-- La batería de navegador contiene **738 pruebas** para Android Chrome, iPhone WebKit y 320 px. La ejecución local sigue impedida por una descarga incompleta del navegador. La verificación de CI y del APK debe corresponder al commit vigente.
+- **741/741 pruebas de navegador aprobadas** en Android Chrome, iPhone WebKit y 320 px sobre `c59a80e`. Android también aprobó 88 pruebas rápidas y 8 pruebas nativas en esa revisión.
 
 Estado reproducible: [matriz actual](reports/readiness-current.json), [pasada amplia](docs/pasada-amplia-2026-10-18.md) y [criterios de cierre](docs/criterios-cierre-profesional-2026.md).
 
@@ -63,3 +63,6 @@ La aplicación no reproduce preguntas de editoriales ni de DEMRE. Los materiales
 El usuario autorizó el 18/10/2026 subir esta pasada a `work/cachaste-motor-duolingo-20261016` del repositorio público `josevillablanca30/PreparaTupaes`. La publicación se limita a la rama de trabajo y sus comprobaciones internas. La revisión de navegador y del APK debe corresponder a ese código; los resultados locales son 214 pruebas lógicas aprobadas, build correcto y cero errores críticos estructurales.
 
 La autorización resuelve el rechazo automático inicial. El checkout no dispone de credenciales para `git push`; se utiliza el conector de GitHub con comprobación de árbol y actualización sin forzar. La fusión y el despliegue de `main` siguen sujetos a los criterios de cierre.
+
+
+Seguimiento de CI, regresión de Historia y muestra visual: [informe de esta pasada](docs/pasada-amplia-2026-10-18.md).

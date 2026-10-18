@@ -33,8 +33,8 @@ Las rutas comparten el módulo común; sus cantidades no se suman como bancos in
 - **214/214 pruebas lógicas aprobadas**, incluidas claves cuantitativas, herencia curricular, disponibilidad por mención y conservación de historial.
 - **Compilación web correcta**; el catálogo ampliado llega al recorrido diario y a las pantallas tradicionales de M2 e Historia.
 - **0 errores críticos estructurales; 134 observaciones heurísticas** abiertas. El número no equivale a defectos confirmados.
-- **738 pruebas Playwright declaradas**, con escenarios nuevos para M2, Historia y las cuatro rutas de Ciencias.
-- Ejecución de navegador local bloqueada por descarga incompleta del binario. Los resultados de CI anteriores no validan los cambios actuales. Comprobar la revisión exacta antes de entregar APK.
+- **741/741 pruebas Playwright aprobadas en CI (`c59a80e`)**, con escenarios nuevos para M2, Historia y las cuatro rutas de Ciencias.
+- Android sobre `c59a80e`: 88 pruebas rápidas y 8 pruebas nativas aprobadas. Validación técnica completada; continúan pendientes los criterios editoriales, de cobertura y pilotaje indicados abajo.
 
 ## Criterios obligatorios antes de declarar una versión completa
 
@@ -60,3 +60,6 @@ Las rutas comparten el módulo común; sus cantidades no se suman como bancos in
 El usuario autorizó el 18/10/2026 subir esta pasada a `work/cachaste-motor-duolingo-20261016` del repositorio público `josevillablanca30/PreparaTupaes`. La publicación se limita a la rama de trabajo y sus comprobaciones internas. La revisión de navegador y del APK debe corresponder a ese código; los resultados locales son 214 pruebas lógicas aprobadas, build correcto y cero errores críticos estructurales.
 
 La autorización resuelve el rechazo automático inicial. El checkout no dispone de credenciales para `git push`; se utiliza el conector de GitHub con comprobación de árbol y actualización sin forzar. La fusión y el despliegue de `main` siguen sujetos a los criterios de cierre.
+
+
+Seguimiento de CI, regresión de Historia y muestra visual: [informe de esta pasada](pasada-amplia-2026-10-18.md).

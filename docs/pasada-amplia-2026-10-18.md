@@ -46,7 +46,7 @@ Los identificadores exactos y secciones están en cada `sourceTrace` de los lote
 
 - 214 pruebas lógicas aprobadas; build correcto; `git diff --check` limpio.
 - Auditoría estructural: 780 preguntas, 0 errores críticos, 134 observaciones de revisión.
-- 738 recorridos Playwright registrados; la ejecución local se bloqueó por descarga incompleta de Chromium. CI debe validar navegador y APK en la revisión que contenga estos cambios.
+- 741 recorridos Playwright aprobados en CI sobre `c59a80e`; 88 pruebas rápidas y 8 pruebas nativas Android aprobadas en la misma revisión.
 - No se declara la aplicación comercialmente terminada ni se solicita prueba al usuario con una APK anterior.
 
 ## Envío y validación remota de esta pasada
@@ -54,3 +54,14 @@ Los identificadores exactos y secciones están en cada `sourceTrace` de los lote
 El usuario autorizó el 18/10/2026 subir esta pasada a `work/cachaste-motor-duolingo-20261016` del repositorio público `josevillablanca30/PreparaTupaes`. La publicación se limita a la rama de trabajo y sus comprobaciones internas. La revisión de navegador y del APK debe corresponder a ese código; los resultados locales son 214 pruebas lógicas aprobadas, build correcto y cero errores críticos estructurales.
 
 La autorización resuelve el rechazo automático inicial. El checkout no dispone de credenciales para `git push`; se utiliza el conector de GitHub con comprobación de árbol y actualización sin forzar. La fusión y el despliegue de `main` siguen sujetos a los criterios de cierre.
+
+
+## Seguimiento de la validación móvil (18/10/2026)
+
+El código de aplicación `2dbdd7a` aprobó las 88 pruebas rápidas de navegador y las 8 pruebas nativas en Android 36 del run [39108072965](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/39108072965). Se comprobaron 32 recursos del APK contra el build de esa revisión.
+
+La batería completa inicial pasó 735 pruebas y detectó el mismo supuesto desactualizado en Historia en los tres dispositivos: HIS-001 ya dispone de TR-HIS-007, pero el escenario esperaba un banco agotado. La revisión `c59a80e` cambia únicamente la prueba: cubre tanto el refuerzo disponible como el agotamiento de todas las variantes recientes. El motor de aplicación permanece idéntico. La nueva batería contiene 741 casos.
+
+Se inspeccionó una muestra de capturas de Android, iPhone y 320 px: materias, mapa, fundamentos, pregunta, retroalimentación y tutor. Esta revisión visual no reemplaza el pilotaje ni la revisión editorial completa. La evidencia estructurada está en `reports/qa-pasada-2026-10-18.json`.
+
+Resultado final: **741 aprobadas, 0 fallidas** en [CI de navegador 39128171811](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/39128171811), con duración de 10,1 minutos. [Android 39128171791](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/39128171791) también aprobó sobre `c59a80e`. El despliegue de producción quedó omitido por tratarse de la rama de trabajo. Las modificaciones posteriores a esa revisión son únicamente documentación y evidencia.
