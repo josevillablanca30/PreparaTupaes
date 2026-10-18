@@ -123,22 +123,6 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-016",
-      "area": "Mecánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-017",
-      "area": "Mecánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-018",
       "area": "Mecánica",
       "type": "short_reasoning_step",
@@ -163,14 +147,6 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-022",
-      "area": "Electricidad",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-023",
       "area": "Electricidad",
       "type": "short_reasoning_step",
@@ -179,23 +155,7 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-024",
-      "area": "Electricidad",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-026",
-      "area": "Estructura atómica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-027",
       "area": "Estructura atómica",
       "type": "short_reasoning_step",
       "level": "review",
@@ -235,22 +195,6 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-035",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-036",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-039",
       "area": "Mecánica",
       "type": "short_reasoning_step",
@@ -280,22 +224,6 @@
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-048",
-      "area": "Mecánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-051",
-      "area": "Estructura atómica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
     },
     {
       "bank": "Ciencias",
@@ -363,14 +291,6 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-067",
-      "area": "Ondas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-068",
       "area": "Mecánica",
       "type": "short_reasoning_step",
@@ -403,14 +323,6 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-078",
-      "area": "Herencia y evolución",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-079",
       "area": "Herencia y evolución",
       "type": "absolute_distractor",
@@ -437,38 +349,6 @@
       "bank": "Ciencias",
       "id": "SCI-085",
       "area": "Procesos y funciones biológicas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-088",
-      "area": "Mecánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-089",
-      "area": "Mecánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-090",
-      "area": "Mecánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-091",
-      "area": "Mecánica",
       "type": "short_reasoning_step",
       "level": "review",
       "detail": "Paso del razonamiento demasiado breve o poco explicativo"
@@ -507,14 +387,6 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-099",
-      "area": "Electricidad",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-100",
       "area": "Electricidad",
       "type": "short_reasoning_step",
@@ -541,14 +413,6 @@
       "bank": "Ciencias",
       "id": "SCI-110",
       "area": "Química orgánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-113",
-      "area": "Reacciones químicas y estequiometría",
       "type": "short_reasoning_step",
       "level": "review",
       "detail": "Paso del razonamiento demasiado breve o poco explicativo"
@@ -587,14 +451,6 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-126",
-      "area": "Electricidad",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-127",
       "area": "Electricidad",
       "type": "short_reasoning_step",
@@ -611,24 +467,8 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-129",
-      "area": "Mecánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-131",
       "area": "Reacciones químicas y estequiometría",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-132",
-      "area": "Estructura atómica",
       "type": "short_reasoning_step",
       "level": "review",
       "detail": "Paso del razonamiento demasiado breve o poco explicativo"
@@ -659,14 +499,6 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-137",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-139",
       "area": "Organización, estructura y actividad celular",
       "type": "short_reasoning_step",
@@ -685,14 +517,6 @@
       "bank": "Ciencias",
       "id": "SCI-144",
       "area": "Procesos y funciones biológicas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-146",
-      "area": "Mecánica",
       "type": "short_reasoning_step",
       "level": "review",
       "detail": "Paso del razonamiento demasiado breve o poco explicativo"
@@ -723,24 +547,8 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-155",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-156",
       "area": "Química orgánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-157",
-      "area": "Reacciones químicas y estequiometría",
       "type": "short_reasoning_step",
       "level": "review",
       "detail": "Paso del razonamiento demasiado breve o poco explicativo"
@@ -787,14 +595,6 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-172",
-      "area": "Mecánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-174",
       "area": "Electricidad",
       "type": "short_reasoning_step",
@@ -835,46 +635,6 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-187",
-      "area": "Mecánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-189",
-      "area": "Electricidad",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-192",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-193",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-194",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-197",
       "area": "Química orgánica",
       "type": "short_reasoning_step",
@@ -893,14 +653,6 @@
       "bank": "Ciencias",
       "id": "SCI-203",
       "area": "Ondas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-204",
-      "area": "Estructura atómica",
       "type": "short_reasoning_step",
       "level": "review",
       "detail": "Paso del razonamiento demasiado breve o poco explicativo"
@@ -1016,14 +768,6 @@
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "M2",
-      "id": "M2-007",
-      "area": "Álgebra",
-      "type": "weak_wrong_feedback",
-      "level": "review",
-      "detail": "Explicación de distractor demasiado breve"
     },
     {
       "bank": "M2",
@@ -1146,7 +890,7 @@
   },
   "summary": {
     "critical": 0,
-    "review": 134,
+    "review": 102,
     "questionCount": 780
   }
 }

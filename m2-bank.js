@@ -62,7 +62,7 @@ const reviewRows = `
 4|Independencia de eventos|0,9 suma las probabilidades; se pide que ocurran ambos, no una suma.|0,1 es la diferencia entre probabilidades; no mide su intersección.|La independencia exige multiplicar 0,4 por 0,5: el producto es 0,2.
 5|Sectores circulares|6π es la circunferencia completa de radio 3, una longitud, no el área del sector.|9π es el área del círculo completo; el sector ocupa solo un tercio.|2π es la longitud del arco de 120°, no su área.
 6|Distancia en el plano|7 suma los desplazamientos horizontal y vertical; la distancia recta es la hipotenusa.|4 solo mide la diferencia vertical.|Falta elevar al cuadrado: bajo la raíz va 3²+4²=25, no 3+4.
-7|Logaritmos|6 multiplica base y exponente; el logaritmo pide la potencia 2³.|9 corresponde a 3², intercambiando base y exponente.|log₂(1)=0, no 3.
+7|Logaritmos|6 multiplica base y exponente; el logaritmo pide la potencia 2³.|9 corresponde a 3², intercambiando base y exponente.|El valor 1 corresponde al exponente cero, porque 2⁰=1. Aquí el exponente es 3: necesitas x=2³=8; así log₂(8)=3.
 8|Raíces y restricciones|−7 cumple a²=49, pero viola la condición a>0.|49 es el cuadrado de a, no a.|14 duplica 7; 14²=196, no 49.
 9|Interés compuesto|120.000 usa interés simple: ignora el interés del segundo año sobre los 10.000 ganados.|110.000 es el capital tras un año, no tras dos.|El segundo interés es 11.000 sobre 110.000: total 121.000, no 122.000.
 10|Rectas y pendiente|6 es el cambio vertical; falta dividirlo por el cambio horizontal 2.|2 es el cambio horizontal, no el cociente entre cambios.|5 es la ordenada al origen, no la pendiente.
