@@ -43,6 +43,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   }
   function reinforce() { if(session){notice='Retoma o descarta la sesión guardada antes de comenzar otra.';screen='home';render();return;}launch('reinforce', L.transfer(ELIGIBLE, history, [...(lastResult?.results || []),...history.slice(-30)], 10)); }
   function choose(n) {
+    if (sessionChanged()) return;
     if (!session || session.checked || !Number.isInteger(n) || n < 0 || n >= current().options.length) return;
     if (expired()) return;
     session.selected = n;
@@ -50,12 +51,13 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
     save(); render();
   }
   function confidence(c) { if (!session || session.checked || !['seguro', 'duda', 'azar'].includes(c)) return; session.confidence = c; save(); render(); }
-  function check() { if (!session || session.mode === 'full' || session.checked || session.selected === null || !session.confidence) return; session.checked = true; explainMode = 'steps'; save(); render(); }
+  function check() { if (sessionChanged()) return; if (!session || session.mode === 'full' || session.checked || session.selected === null || !session.confidence) return; session.checked = true; explainMode = 'steps'; save(); render(); }
   function row(q, selected, confidence, extra = {}) {
     const original = selected === null ? null : order(q).indices[selected];
     return { id: q.id, assessmentVersion: L.assessmentVersion(q), area: q.area, concept: L.concept(q), selected: original, correct: original !== null && original === q.answer, confidence: confidence || 'sin-declarar', unanswered: original === null, mode: session.mode, date: new Date().toISOString(), sessionId: session.id, ...extra };
   }
   function next() {
+    if (sessionChanged()) return;
     if (!session || !session.checked || session.mode === 'full') return;
     const rec = row(current(), session.selected, session.confidence);
     session.results.push(rec); history.push(rec);
@@ -73,9 +75,9 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
     if (session.mode === 'diagnostic' && session.results.length === 30) diagnosticDone = true;
     session = null; confirming = false; screen = 'result'; save(); render(true);
   }
-  function sessionChanged() { return session && L.sessionVersionStatus(session, BANK) === 'changed'; }
-  function expired() { if (session?.mode === 'full' && Date.now() >= session.deadline) { finish(); return true; } return false; }
-  function move(index) { if (!session || session.mode !== 'full' || expired()) return; session.index = Math.max(0, Math.min(index, session.ids.length - 1)); session.selected = session.answers[session.index]; confirming = false; save(); render(true); }
+  function sessionChanged() { return session && L.sessionVersionStatus(session, BANK) !== 'compatible'; }
+  function expired() { if (sessionChanged()) { notice = 'La sesión anterior se conserva sin recalificar; elige cómo continuar desde el inicio.'; screen = 'home'; render(); return true; } if (session?.mode === 'full' && Date.now() >= session.deadline) { finish(); return true; } return false; }
+  function move(index) { if (sessionChanged()) return; if (!session || session.mode !== 'full' || expired()) return; session.index = Math.max(0, Math.min(index, session.ids.length - 1)); session.selected = session.answers[session.index]; confirming = false; save(); render(true); }
   function timeLeft() { const secs = Math.max(0, Math.ceil((session.deadline - Date.now()) / 1000)); return Math.floor(secs / 60) + ':' + String(secs % 60).padStart(2, '0'); }
   function lesson(q, mode) {
     const t=q.teaching,e=q.editorial||q;
@@ -123,11 +125,11 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   function bind(id, fn) { const el = document.getElementById(id); if (el) el.onclick = fn; }
   function back() { screen = 'home'; confirming = false; save(); render(true); }
   function render(top = false) {
-    if (screen === 'quiz' && sessionChanged()) { screen = 'home'; notice = 'Esta sesión corresponde a preguntas que fueron actualizadas. Sus respuestas se conservan, pero por seguridad no se pueden evaluar con la versión nueva. No la descartes si necesitas recuperar su historial.'; }
+    if (screen === 'quiz' && sessionChanged()) { screen = 'home'; notice = 'Esta sesión antigua no tiene una versión verificable de sus preguntas. Está guardada sin recalificar: puedes conservarla hasta contar con recuperación de versiones anteriores o descartarla voluntariamente.'; }
     if (screen === 'quiz' && expired()) return;
     root.innerHTML = '<p id="study-notice" role="status">' + esc(notice) + '</p>' + (screen === 'home' ? home() : screen === 'result' ? result() : screen === 'progress' ? progress() : quiz());
     for (const mode of ['diagnostic', 'express', 'full']) bind(mode, () => begin(mode));
-    bind('resume', () => { if (!session || sessionChanged()) { notice = 'La sesión guardada contiene versiones anteriores: se mantiene intacta y no se recalifica.'; render(); return; } if (expired()) return; screen = 'quiz'; render(true); });
+    bind('resume', () => { if (!session || sessionChanged()) { notice = 'No podemos asegurar que las preguntas coincidan con la sesión guardada. Sus datos se conservan sin recalificar.'; render(); return; } if (expired()) return; screen = 'quiz'; render(true); });
     bind('discard', () => { root.innerHTML = '<section class="card"><h2>¿Descartar esta sesión?</h2><p>El progreso de sesiones anteriores se conserva.</p><button id="discard-confirm" class="primary">Descartar</button><button id="discard-cancel">Cancelar</button></section>'; bind('discard-confirm', () => { session = null; notice = ''; save(); render(); }); bind('discard-cancel', () => render()); });
     bind('check', check); bind('next', next); bind('back', back); bind('pause', back); bind('reinforce', reinforce);
     bind('progress', () => { screen = 'progress'; render(true); }); bind('last', () => { screen = 'result'; render(true); });
