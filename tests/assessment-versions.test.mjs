@@ -121,3 +121,33 @@ test('Una sesión con alternativas modificadas sigue siendo válida con archivo 
  assert.equal(L.validSession(session,[{...q,options:['5','6']}],['express']),true);
  assert.equal(L.validSession({...session,questionSnapshots:null},[{...q,options:['5','6']}],['express']),false);
 });
+
+test('Ensayo pausado: reanuda la versión original, conserva omisiones y no recalifica con banco cambiado',()=>{
+ const original={...question(),id:'M2-001',area:'Álgebra',question:'Pregunta original',options:['1','2','3','4'],answer:0};
+ const changed={...original,question:'Pregunta nueva',options:['10','20','30','40'],answer:2};
+ const session={id:'ensayo-congelado',mode:'full',ids:[original.id],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now()-1000,deadline:Date.now()+600000,answers:[null],flags:[0],assessmentVersions:[L.assessmentVersion(original)],questionSnapshots:[L.assessmentSnapshot(original)]};
+ const state={diagnosticDone:true,history:[],session};
+ const store=new Map([['cachaste-test-v1',JSON.stringify(state)]]);
+ const nodes=new Map(),root={innerHTML:'',querySelectorAll:()=>[]};
+ const document={getElementById:id=>id==='app'?root:(nodes.has(id)?nodes.get(id):nodes.set(id,{}).get(id)),addEventListener:()=>{},hidden:false};
+ const localStorage={getItem:key=>store.get(key)||null,setItem:(key,value)=>store.set(key,value)};
+ const window={addEventListener:()=>{},scrollTo:()=>{}};
+ const sandbox=vm.createContext({window,document,localStorage,setInterval:()=>0,Date,Intl});
+ vm.runInContext(readFileSync(new URL('../learning-core.js',import.meta.url),'utf8'),sandbox);
+ vm.runInContext(readFileSync(new URL('../study-app.js',import.meta.url),'utf8'),sandbox);
+ window.CachasteStudy({bank:[changed],key:'cachaste-test-v1',title:'M2',minutes:140,count:1});
+ nodes.get('resume').onclick();
+ assert.ok(root.innerHTML.includes('Pregunta original'));
+ assert.ok(!root.innerHTML.includes('Pregunta nueva'));
+ nodes.get('exam-next').onclick();
+ assert.ok(root.innerHTML.includes('Entregar tu ensayo'));
+ nodes.get('finish').onclick();
+ const saved=JSON.parse(store.get('cachaste-test-v1'));
+ assert.equal(saved.lastResult.total,1);
+ assert.equal(saved.lastResult.correct,0);
+ assert.equal(saved.lastResult.results[0].unanswered,true);
+ assert.equal(saved.lastResult.results[0].assessmentVersion,session.assessmentVersions[0]);
+ assert.equal(saved.lastResult.questionSnapshots[0].question,'Pregunta original');
+ assert.ok(root.innerHTML.includes('Pregunta original'));
+ assert.equal(saved.session,null);
+});
