@@ -48,6 +48,21 @@
     }
     return recovered;
   }
+  function verifiedAssessmentQuestion(assessment,row,bankQuestion){
+    if (!row || typeof row.assessmentVersion!=='string') return bankQuestion || null;
+    const snapshots=Array.isArray(assessment?.questionSnapshots)?assessment.questionSnapshots:[];
+    const candidates=snapshots.filter(q=>q && String(q.id)===String(row.id) && q.assessmentVersion===row.assessmentVersion);
+    if(candidates.length===1){
+      const q=candidates[0];
+      if(typeof q.question==='string' && Array.isArray(q.options) && q.options.length>=2 &&
+        q.options.every(x=>typeof x==='string') && Number.isInteger(q.answer) && q.answer>=0 && q.answer<q.options.length &&
+        assessmentVersion(q)===row.assessmentVersion){
+        const archived={...q,options:[...q.options],visual:q.visual==null?null:JSON.parse(JSON.stringify(q.visual))};
+        return bankQuestion && assessmentVersion(bankQuestion)===row.assessmentVersion ? {...bankQuestion,...archived} : archived;
+      }
+    }
+    return bankQuestion && assessmentVersion(bankQuestion)===row.assessmentVersion ? bankQuestion : null;
+  }
   function sessionVersionStatus(session,bank) {
     if (!session || !Array.isArray(session.ids)) return 'invalid';
     if (!Array.isArray(session.assessmentVersions)) return 'legacy';
@@ -146,5 +161,5 @@
     if(mode==='easy')return section('Imagínalo así',paragraphs(t.intuition))+section('Conectémoslo con tu ejercicio',steps(t.application));
     return section('Un problema distinto',paragraphs([t.example.problem]),'teaching-example')+section('Vamos a resolverlo',steps(t.example.steps))+section('Qué puedes llevar a tu pregunta',paragraphs([t.example.bridge]));
   }
-  global.CachasteLearning = { contentHash, assessmentVersion, assessmentSnapshot, archivedSessionQuestions, sessionVersionStatus, compatibleAttempt, bindPassages, lesson, concept, profile, select, transfer, validSession, cleanRows, cleanAssessment, summary };
+  global.CachasteLearning = { contentHash, assessmentVersion, assessmentSnapshot, archivedSessionQuestions, verifiedAssessmentQuestion, sessionVersionStatus, compatibleAttempt, bindPassages, lesson, concept, profile, select, transfer, validSession, cleanRows, cleanAssessment, summary };
 })(typeof window !== 'undefined' ? window : globalThis);
