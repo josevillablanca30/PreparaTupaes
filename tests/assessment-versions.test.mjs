@@ -100,3 +100,18 @@ test('La copia de evaluación preserva datos visuales y la huella lectora sin re
  assert.equal(copy.passageId,'T01');
  assert.notEqual(copy.assessmentVersion,L.assessmentVersion(q));
 });
+
+test('Respaldo completo recupera la pregunta original y rechaza manipulaciones',()=>{
+ const first=question(),second={...question(),id:'b',question:'¿Cuánto es 4 + 1?',transferGroup:'suma-b'};
+ const qs=[first,second],session={ids:qs.map(q=>q.id),assessmentVersions:qs.map(q=>L.assessmentVersion(q)),questionSnapshots:qs.map(q=>L.assessmentSnapshot(q))};
+ first.options[0]='100';second.question='Pregunta modificada';
+ const recovered=L.archivedSessionQuestions(session);
+ assert.equal(recovered[0].options[0],'5');
+ assert.equal(recovered[1].question,'¿Cuánto es 4 + 1?');
+ recovered[0].options[0]='edición';
+ assert.equal(session.questionSnapshots[0].options[0],'5');
+ assert.equal(L.archivedSessionQuestions({...session,questionSnapshots:session.questionSnapshots.map((q,i)=>i===0?{...q,answer:2}:q)}),null);
+ assert.equal(L.archivedSessionQuestions({...session,assessmentVersions:[session.assessmentVersions[1],session.assessmentVersions[0]]}),null);
+ assert.equal(L.archivedSessionQuestions({...session,questionSnapshots:[]}),null);
+ assert.equal(L.archivedSessionQuestions({ids:['a']}),null);
+});
