@@ -71,9 +71,9 @@ public class OfflineAppTest {
         // Seed from the dashboard: an active study page saves its own closure on pagehide.
         open("inicio.html", "document.querySelectorAll('a.subject').length>=5");
         js("localStorage.setItem('cachaste-m2-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'native-teacher',mode:'express',ids:['M2-001'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}}));true");
-        open("m2.html", "document.getElementById('resume')");
-        // This test verifies an active, versioned draft. Legacy drafts are intentionally blocked.
-        js("var record=JSON.parse(localStorage.getItem('cachaste-m2-v1'));record.session.assessmentVersions=record.session.ids.map(id=>CachasteLearning.assessmentVersion(window.CACHASTE_M2.find(q=>q.id===id)));localStorage.setItem('cachaste-m2-v1',JSON.stringify(record));var patchedDraft=JSON.stringify(record);window.addEventListener('pagehide',()=>localStorage.setItem('cachaste-m2-v1',patchedDraft),{once:true});true");
+        js("['m2-bank.js','learning-core.js','daily-catalog.js'].forEach(path=>{const script=document.createElement('script');script.src=path;document.head.appendChild(script)});true");
+        waitFor("window.CachasteLearning && window.CACHASTE_DAILY_CATALOG && window.CACHASTE_M2");
+        js("var record=JSON.parse(localStorage.getItem('cachaste-m2-v1'));record.session.assessmentVersions=record.session.ids.map(id=>CachasteLearning.assessmentVersion(CACHASTE_DAILY_CATALOG.items.find(q=>q.subjectKey==='M2'&&q.id===id)));localStorage.setItem('cachaste-m2-v1',JSON.stringify(record));true");
         open("m2.html", "document.getElementById('resume')");
         js("document.getElementById('resume').click();true");
         waitFor("document.querySelector('[data-choice]')");
@@ -96,9 +96,9 @@ public class OfflineAppTest {
     @Test public void historyTeacherSurvivesRecreationAndOffersDifferentDecision() throws Exception {
         open("inicio.html", "document.querySelectorAll('a.subject').length>=5");
         js("localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'native-history',mode:'express',ids:['HIS-009'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}}));true");
-        open("history.html", "document.getElementById('resume')");
-        // This test verifies an active, versioned draft. Legacy drafts are intentionally blocked.
-        js("var record=JSON.parse(localStorage.getItem('cachaste-history-v1'));record.session.assessmentVersions=record.session.ids.map(id=>CachasteLearning.assessmentVersion(window.CACHASTE_HISTORIA.find(q=>q.id===id)));localStorage.setItem('cachaste-history-v1',JSON.stringify(record));var patchedDraft=JSON.stringify(record);window.addEventListener('pagehide',()=>localStorage.setItem('cachaste-history-v1',patchedDraft),{once:true});true");
+        js("['history-bank.js','learning-core.js','daily-catalog.js'].forEach(path=>{const script=document.createElement('script');script.src=path;document.head.appendChild(script)});true");
+        waitFor("window.CachasteLearning && window.CACHASTE_DAILY_CATALOG && window.CACHASTE_HISTORIA");
+        js("var record=JSON.parse(localStorage.getItem('cachaste-history-v1'));record.session.assessmentVersions=record.session.ids.map(id=>CachasteLearning.assessmentVersion(CACHASTE_DAILY_CATALOG.items.find(q=>q.subjectKey==='Historia'&&q.id===id)));localStorage.setItem('cachaste-history-v1',JSON.stringify(record));true");
         open("history.html", "document.getElementById('resume')");
         js("document.getElementById('resume').click();[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.includes('etiqueta de un cuaderno')).click();document.querySelector('[data-conf=\"duda\"]').click();document.getElementById('check').click();true");
         waitFor("document.querySelector('.teaching-section')");
