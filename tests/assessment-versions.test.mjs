@@ -196,3 +196,24 @@ test('La revisión preservada distingue enunciados revisados sin reutilizar ense
  const unchanged=L.assessmentVersion(updated)===row.assessmentVersion?{...updated,...snapshot}:snapshot;
  assert.equal(unchanged.teaching.aim,'Tutor válido para la misma pregunta');
 });
+
+test('Revisión histórica: recupera clave antigua, conserva tutor si coincide y rechaza copias adulteradas',()=>{
+ const first=question(),old=L.assessmentSnapshot(first),version=old.assessmentVersion;
+ const row={id:first.id,assessmentVersion:version,correct:true,selected:0};
+ const newBank={...first,question:'Ahora se preguntan 3 + 3',options:['6','7','8','9'],answer:0,teaching:{aim:'Explicar nueva pregunta'}};
+ const result={results:[row],questionSnapshots:[old]};
+ const recovered=L.verifiedAssessmentQuestion(result,row,newBank);
+ assert.equal(recovered.question,first.question);
+ assert.equal(recovered.answer,first.answer);
+ assert.equal(recovered.teaching,undefined,'nunca mostrar tutor de una evaluación diferente');
+ recovered.options[0]='alterado';
+ assert.equal(result.questionSnapshots[0].options[0],'5','el historial no se modifica al revisar');
+ assert.equal(L.verifiedAssessmentQuestion({questionSnapshots:[{...old,answer:2}]},row,newBank),null);
+ assert.equal(L.verifiedAssessmentQuestion({questionSnapshots:[old,old]},row,newBank),null);
+ assert.equal(L.verifiedAssessmentQuestion({questionSnapshots:[]},row,newBank),null);
+ const compatible={...first,teaching:{aim:'Mejor explicación sin cambiar la evaluación'}};
+ const current=L.verifiedAssessmentQuestion(result,row,compatible);
+ assert.equal(current.teaching.aim,'Mejor explicación sin cambiar la evaluación');
+ assert.equal(L.verifiedAssessmentQuestion(null,row,compatible).question,first.question);
+ assert.equal(L.verifiedAssessmentQuestion(null,{...row,assessmentVersion:undefined},compatible),compatible);
+});
