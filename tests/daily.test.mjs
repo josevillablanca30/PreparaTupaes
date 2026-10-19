@@ -48,3 +48,14 @@ test('La clase no cuenta una pregunta como presentada antes de abrir la práctic
 test('Espejo tradicional conserva metadatos por asignatura y errores pendientes',()=>{for(const subject of ['M1','Ciencias','Lectura']){const store=memory(),e=engine(items,store);e.start(subject,1);const q=e.byKey.get(e.state.session.keys[0]);e.answer((q.answer+1)%4,'duda');const data=JSON.parse(store.getItem(C.subjects[subject].key)),row=Array.isArray(data)?data.at(-1):data.history.at(-1);assert.equal(row.skill,q.skill);assert.equal(row.concept,q.concept);assert.equal(row.area,q.area||q.axis);if(subject==='M1')assert.ok(JSON.parse(store.getItem('cachaste-m1-pending-review-v1')).ids.includes(q.sourceId));else{assert.equal(row.subject,q.subject||subject);assert.ok(data.pending.includes(q.sourceId));}}});
 test('Sesión diaria dañada se descarta sin tocar respuestas, racha ni borradores tradicionales',()=>{const store=memory(),e=engine(fixtures,store);e.start('M1',1);e.answer(0,'seguro');e.state.session.results={wrong:'format'};e.save();const recovered=engine(fixtures,store);assert.equal(recovered.state.session,null);assert.equal(recovered.state.attempts.length,1);assert.equal(recovered.stats().xp,15);assert.equal(recovered.history('M1').length,1);});
 test('M2: el contenido geométrico conserva su eje aunque el formato sea suficiencia de datos o modelación',()=>{for(const id of ['M2-049','M2-051','M2-101','M2-102'])assert.equal(items.find(q=>q.key==='M2:'+id).axis,'Geometría');});
+
+test('Estrellas del tutor provienen de evidencia independiente y no de XP ni pistas',()=>{
+ const L=ctx.CachasteLearning;
+ assert.equal(L.skillStars({attempts:0,correct:0,evidence:[],status:'sin explorar'}),0);
+ assert.equal(L.skillStars({attempts:2,correct:0,evidence:[],status:'por reforzar'}),1);
+ assert.equal(L.skillStars({attempts:2,correct:1,evidence:[],status:'por reforzar'}),2);
+ assert.equal(L.skillStars({attempts:1,correct:1,evidence:['familia-1'],status:'por comprobar'}),3);
+ assert.equal(L.skillStars({attempts:3,correct:3,evidence:['familia-1','familia-2'],status:'comprobado'}),4);
+ assert.equal(L.skillStars({attempts:3,correct:3,evidence:['familia-1','familia-2','familia-3'],status:'comprobado'}),5);
+ assert.equal(L.skillStars({attempts:4,correct:3,evidence:[],status:'por reforzar'}),2,'Una equivocación posterior no mantiene dominio ficticio');
+});
