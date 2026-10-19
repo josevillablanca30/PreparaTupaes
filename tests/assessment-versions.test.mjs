@@ -78,3 +78,14 @@ test('Una sesión sin huella no se considera compatible de forma implícita',()=
  assert.equal(L.sessionVersionStatus({ids:[q.id],assessmentVersions:[L.assessmentVersion(q)]},[q]),'compatible');
  assert.equal(L.sessionVersionStatus({ids:[q.id],assessmentVersions:['a1-'+ '0'.repeat(64)]},[q]),'changed');
 });
+
+
+test('Una sesión nueva guarda una copia independiente de su evaluación',()=>{
+ const q=question(),copy=L.assessmentSnapshot(q);
+ assert.equal(copy.assessmentVersion,L.assessmentVersion(q));
+ assert.equal(copy.question,'¿Cuánto es 2 + 3?');
+ q.question='Enunciado actualizado';q.options[0]='10';
+ assert.equal(copy.question,'¿Cuánto es 2 + 3?');
+ assert.equal(copy.options[0],'5');
+ assert.notEqual(copy.assessmentVersion,L.assessmentVersion(q));
+});
