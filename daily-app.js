@@ -142,15 +142,27 @@
   const gap=availableFamilies<2?'<p class="star-bank-warning">Esta habilidad aún no tiene suficientes familias independientes en el banco para certificar cuatro estrellas. Puedes estudiarla sin quedar bloqueado.</p>':'';
   return '<section class="star-tutor-guide" aria-label="Tus estrellas y tu próximo aprendizaje"><strong>'+stars+' de 5 estrellas · '+(stars>=4?'Habilidad dominada':remaining+' para alcanzar el dominio')+'</strong><p>'+esc(advice)+'</p>'+gap+'</section>';
  }
+ function skillGate(id){
+  const route=units().flatMap(u=>u.levels),index=route.findIndex(l=>l.id===id);
+  if(index<=0)return null;
+  const previous=route[index-1],state=E.profile(subject).find(x=>x.concept===previous.objective);
+  if(window.CachasteLearning.skillStars(state)>=4)return null;
+  const bank=items.filter(q=>q.subjectKey===subject&&q.concept===previous.objective&&(subject!=='Ciencias'||q.module==='MC'||(E.state.track==='TP'?q.module==='MTP':q.module==='ME'&&q.subject===E.state.track)));
+  const independent=new Set(bank.map(q=>q.transferGroup||q.family||q.key));
+  if(independent.size<2)return null; // Never block because of insufficient teaching material.
+  return{previous,stars:window.CachasteLearning.skillStars(state)};
+ }
  function level(id){
   const l=levels().find(l=>l.id===id);if(!l)return home();
   const u=units().find(u=>u.levels.some(x=>x.id===l.id)),p=levelState(l),source=C.sources?.[subject]?.[u?.axis];
   const checks=items.filter(q=>q.subjectKey===subject&&q.concept===l.objective&&(subject!=='Ciencias'||q.module==='MC'||(E.state.track==='TP'?q.module==='MTP':q.module==='ME'&&q.subject===E.state.track)));
   const families=new Set(checks.map(q=>q.family)),studio=window.CachasteStudios.get(subject,l.objective);
+  const gate=skillGate(id);
   const support=C.prerequisites(subject,l.objective).map(req=>{
    const target=C.course(items,req.subject).flatMap(u=>u.levels).find(x=>x.objective===req.concept);
    return target?'<div class="prerequisite-card"><p>Si este contenido se te complica, puedes repasar <strong>'+esc(req.concept)+'</strong> en '+esc(C.subjects[req.subject].name)+'.</p>'+button('base','Repasar esa base','data-subject="'+esc(req.subject)+'" data-level="'+esc(target.id)+'"')+'</div>':'';
   }).join('');
+  if(gate)return '<div class="lesson-top">'+button('home','← Volver al camino')+'<span>Próxima habilidad</span></div><section class="mission-preview skill-gate"><h1>'+esc(l.objective)+'</h1>'+cat('encouraging','Primero consigamos cuatro estrellas en '+gate.previous.objective+'. Te enseñaré lo que falta y luego lo comprobarás con ejercicios nuevos.')+'<p>'+gate.stars+' de 4 estrellas necesarias para avanzar. Puedes aprender y practicar la habilidad anterior sin perder tu progreso.</p>'+button('level','Volver a la habilidad anterior','data-level="'+esc(gate.previous.id)+'"','primary')+'</section>';
   return '<div class="lesson-top">'+button('home','← Volver al camino')+'<span>Desafío PAES</span></div>'+
    '<section class="mission-preview"><span class="mission-emblem" aria-hidden="true">✦</span>'+
    '<span class="mission-kicker">'+esc(u?.axis||C.subjects[subject].name)+' · '+esc(u?.name||'Misión')+'</span>'+
