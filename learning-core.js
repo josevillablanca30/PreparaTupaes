@@ -29,6 +29,25 @@
   function assessmentSnapshot(q) {
     return {id:q.id,assessmentVersion:assessmentVersion(q),question:q.question||q.q||'',options:[...q.options],answer:q.answer,concept:concept(q)||null,transferGroup:q.transferGroup||String(q.id),area:q.area||null,passageId:q.passageId||null,passageVersion:q.passageVersion||null,visual:q.visual==null?null:JSON.parse(JSON.stringify(q.visual))};
   }
+  // Recover only exact, self-consistent snapshots: never reinterpret an old answer with a new key.
+  function archivedSessionQuestions(session) {
+    if (!session || !Array.isArray(session.ids) || !Array.isArray(session.assessmentVersions) ||
+        !Array.isArray(session.questionSnapshots) || !session.ids.length ||
+        session.ids.length!==session.assessmentVersions.length ||
+        session.ids.length!==session.questionSnapshots.length) return null;
+    const seen=new Set(),recovered=[];
+    for (let i=0;i<session.ids.length;i++) {
+      const q=session.questionSnapshots[i],id=session.ids[i],version=session.assessmentVersions[i];
+      if (!q || typeof q!=='object' || String(q.id)!==String(id) || seen.has(String(id)) ||
+          typeof q.question!=='string' || !Array.isArray(q.options) ||
+          q.options.length<2 || q.options.some(x=>typeof x!=='string') ||
+          !Number.isInteger(q.answer) || q.answer<0 || q.answer>=q.options.length ||
+          !/^a1-[a-f0-9]{64}$/.test(version) || assessmentVersion(q)!==version) return null;
+      seen.add(String(id));
+      recovered.push({...q,options:[...q.options],visual:q.visual==null?null:JSON.parse(JSON.stringify(q.visual))});
+    }
+    return recovered;
+  }
   function sessionVersionStatus(session,bank) {
     if (!session || !Array.isArray(session.ids)) return 'invalid';
     if (!Array.isArray(session.assessmentVersions)) return 'legacy';
@@ -125,5 +144,5 @@
     if(mode==='easy')return section('Imagínalo así',paragraphs(t.intuition))+section('Conectémoslo con tu ejercicio',steps(t.application));
     return section('Un problema distinto',paragraphs([t.example.problem]),'teaching-example')+section('Vamos a resolverlo',steps(t.example.steps))+section('Qué puedes llevar a tu pregunta',paragraphs([t.example.bridge]));
   }
-  global.CachasteLearning = { contentHash, assessmentVersion, assessmentSnapshot, sessionVersionStatus, compatibleAttempt, bindPassages, lesson, concept, profile, select, transfer, validSession, cleanRows, cleanAssessment, summary };
+  global.CachasteLearning = { contentHash, assessmentVersion, assessmentSnapshot, archivedSessionQuestions, sessionVersionStatus, compatibleAttempt, bindPassages, lesson, concept, profile, select, transfer, validSession, cleanRows, cleanAssessment, summary };
 })(typeof window !== 'undefined' ? window : globalThis);
