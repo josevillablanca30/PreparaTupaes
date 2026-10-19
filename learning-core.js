@@ -26,6 +26,16 @@
     const version='a1-'+contentHash(source);versionCache.set(q,{source,version});return version;
   }
   function bindPassages(bank,passages){const versions=new Map(passages.map(p=>[p.id,contentHash(JSON.stringify([p.title,p.paragraphs]))]));for(const q of bank)if(q.passageId)q.passageVersion=versions.get(q.passageId)||'missing';}
+  function sessionVersionStatus(session,bank) {
+    if (!session || !Array.isArray(session.ids)) return 'invalid';
+    if (!Array.isArray(session.assessmentVersions)) return 'legacy';
+    if (session.assessmentVersions.length !== session.ids.length) return 'changed';
+    const byId=new Map(bank.map(q=>[String(q.id),q]));
+    return session.ids.every((id,i)=>{
+      const q=byId.get(String(id));
+      return q && session.assessmentVersions[i]===assessmentVersion(q);
+    }) ? 'compatible' : 'changed';
+  }
   function compatibleAttempt(q,row){return row.assessmentVersion==null||row.assessmentVersion===assessmentVersion(q);}
   function profile(bank, history) {
     const byId = new Map(bank.map(q => [q.id, q]));
@@ -112,5 +122,5 @@
     if(mode==='easy')return section('Imagínalo así',paragraphs(t.intuition))+section('Conectémoslo con tu ejercicio',steps(t.application));
     return section('Un problema distinto',paragraphs([t.example.problem]),'teaching-example')+section('Vamos a resolverlo',steps(t.example.steps))+section('Qué puedes llevar a tu pregunta',paragraphs([t.example.bridge]));
   }
-  global.CachasteLearning = { contentHash, assessmentVersion, compatibleAttempt, bindPassages, lesson, concept, profile, select, transfer, validSession, cleanRows, cleanAssessment, summary };
+  global.CachasteLearning = { contentHash, assessmentVersion, sessionVersionStatus, compatibleAttempt, bindPassages, lesson, concept, profile, select, transfer, validSession, cleanRows, cleanAssessment, summary };
 })(typeof window !== 'undefined' ? window : globalThis);
