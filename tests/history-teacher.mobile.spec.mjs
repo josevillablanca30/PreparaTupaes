@@ -26,7 +26,7 @@ for(const wrongIndex of [1,2,3])for(let start=0;start<reviewedIds.length;start+=
  const ids=reviewedIds.slice(start,start+10);
  test('Historia profesor '+ids[0]+'–'+ids.at(-1)+' alternativa '+wrongIndex,async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.addInitScript(ids=>(!JSON.parse(localStorage.getItem('cachaste-history-v1')||'null')?.session?.assessmentVersions&&localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'history-teacher',mode:'express',ids,index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:ids.map(()=>null),flags:[]}})),ids);
+  await page.addInitScript(ids=>!JSON.parse(localStorage.getItem('cachaste-history-v1')||'null')?.session?.assessmentVersions&&localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'history-teacher',mode:'express',ids,index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:ids.map(()=>null),flags:[]}})),ids);
   await page.goto('./history.html');await restoreVersionedDraft(page);await page.locator('#resume').click();
   const result=await page.evaluate(({ids,wrongIndex})=>{
    for(const id of ids){const q=window.CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey==='Historia').find(q=>q.id===id);
@@ -49,7 +49,7 @@ for(const wrongIndex of [1,2,3])for(let start=0;start<reviewedIds.length;start+=
  });
 }
 test('Historia: una decisión nueva comprueba costo de oportunidad después de recuperar la clase',async({page})=>{
- await page.addInitScript(()=>{if(localStorage.getItem('history-fixture'))return;localStorage.setItem('history-fixture','1');(!JSON.parse(localStorage.getItem('cachaste-history-v1')||'null')?.session?.assessmentVersions&&localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'history-transfer',mode:'express',ids:['HIS-009'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}}));});
+ await page.addInitScript(()=>{if(localStorage.getItem('history-fixture'))return;localStorage.setItem('history-fixture','1');!JSON.parse(localStorage.getItem('cachaste-history-v1')||'null')?.session?.assessmentVersions&&localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'history-transfer',mode:'express',ids:['HIS-009'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}}));});
  await page.goto('./history.html');await restoreVersionedDraft(page);await page.locator('#resume').click();
  const wrong='El precio escrito en la etiqueta de un cuaderno';await page.getByRole('button').filter({hasText:wrong}).click();
  await page.locator('[data-conf="duda"]').click();await page.locator('#check').click();
@@ -65,7 +65,7 @@ test('Historia: una decisión nueva comprueba costo de oportunidad después de r
 });
 for(const exhausted of [false,true])test('Historia: '+(exhausted?'avisa cuando se agotaron las variantes recientes del concepto':'ofrece un refuerzo disponible del mismo concepto'),async({page})=>{
  expect(siblingIds.length).toBeGreaterThan(0);
- await page.addInitScript(history=>(!JSON.parse(localStorage.getItem('cachaste-history-v1')||'null')?.session?.assessmentVersions&&localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history,session:{id:'no-unrelated-transfer',mode:'express',ids:['HIS-001'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}})),exhausted?siblingIds.map(id=>({id,correct:true,confidence:'seguro'})):[]);
+ await page.addInitScript(history=>!JSON.parse(localStorage.getItem('cachaste-history-v1')||'null')?.session?.assessmentVersions&&localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history,session:{id:'no-unrelated-transfer',mode:'express',ids:['HIS-001'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}})),exhausted?siblingIds.map(id=>({id,correct:true,confidence:'seguro'})):[]);
  await page.goto('./history.html');await restoreVersionedDraft(page);await page.locator('#resume').click();
  await page.getByRole('button').filter({hasText:'El reconocimiento del sufragio femenino'}).click();
  await page.locator('[data-conf="duda"]').click();await page.locator('#check').click();await page.locator('#next').click();
