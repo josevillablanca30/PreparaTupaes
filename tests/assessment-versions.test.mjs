@@ -167,7 +167,7 @@ test('Ensayo reanudado conserva selección, marcas y plazo original',()=>{
  window.CachasteStudy({bank:[changed],key:'study-timed',title:'M2',minutes:140,count:1});
  elements.get('resume').onclick();
  assert.ok(root.innerHTML.includes('Pregunta anterior'));
- assert.ok(root.innerHTML.includes('C) C'));
+ assert.ok(root.innerHTML.includes('C) A'));
  assert.ok(root.innerHTML.includes('aria-pressed="true"'));
  const persisted=JSON.parse(store.get('study-timed')).session;
  assert.equal(persisted.deadline,until);
