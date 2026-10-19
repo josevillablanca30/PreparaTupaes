@@ -26,6 +26,9 @@
     const version='a1-'+contentHash(source);versionCache.set(q,{source,version});return version;
   }
   function bindPassages(bank,passages){const versions=new Map(passages.map(p=>[p.id,contentHash(JSON.stringify([p.title,p.paragraphs]))]));for(const q of bank)if(q.passageId)q.passageVersion=versions.get(q.passageId)||'missing';}
+  function assessmentSnapshot(q) {
+    return {id:q.id,assessmentVersion:assessmentVersion(q),question:q.question||q.q||'',options:[...q.options],answer:q.answer,concept:concept(q)||null,transferGroup:q.transferGroup||String(q.id),area:q.area||null};
+  }
   function sessionVersionStatus(session,bank) {
     if (!session || !Array.isArray(session.ids)) return 'invalid';
     if (!Array.isArray(session.assessmentVersions)) return 'legacy';
@@ -122,5 +125,5 @@
     if(mode==='easy')return section('Imagínalo así',paragraphs(t.intuition))+section('Conectémoslo con tu ejercicio',steps(t.application));
     return section('Un problema distinto',paragraphs([t.example.problem]),'teaching-example')+section('Vamos a resolverlo',steps(t.example.steps))+section('Qué puedes llevar a tu pregunta',paragraphs([t.example.bridge]));
   }
-  global.CachasteLearning = { contentHash, assessmentVersion, sessionVersionStatus, compatibleAttempt, bindPassages, lesson, concept, profile, select, transfer, validSession, cleanRows, cleanAssessment, summary };
+  global.CachasteLearning = { contentHash, assessmentVersion, assessmentSnapshot, sessionVersionStatus, compatibleAttempt, bindPassages, lesson, concept, profile, select, transfer, validSession, cleanRows, cleanAssessment, summary };
 })(typeof window !== 'undefined' ? window : globalThis);
