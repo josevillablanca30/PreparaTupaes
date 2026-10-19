@@ -59,3 +59,21 @@ test('Estrellas del tutor provienen de evidencia independiente y no de XP ni pis
  assert.equal(L.skillStars({attempts:3,correct:3,evidence:['familia-1','familia-2','familia-3'],status:'comprobado'}),5);
  assert.equal(L.skillStars({attempts:4,correct:3,evidence:[],status:'por reforzar'}),2,'Una equivocación posterior no mantiene dominio ficticio');
 });
+
+test('Estrellas y tutor: una familia ya demostrada no desplaza ejercicios nuevos del mismo concepto',()=>{
+ const bank=[
+  {...fixtures[0],id:'A',sourceId:'A',key:'M1:A',family:'A',transferGroup:'A'},
+  {...fixtures[1],id:'B',sourceId:'B',key:'M1:B',family:'B',transferGroup:'B'},
+  {...fixtures[2],id:'C',sourceId:'C',key:'M1:C',family:'C',transferGroup:'C'}
+ ];
+ const e=engine(bank);
+ e.start('M1',1,'free','Porcentaje');
+ const first=e.state.session.keys[0];
+ e.answer(0,'seguro');
+ e.next();
+ const next=e.select('M1',2,{concept:'Porcentaje'});
+ assert.ok(next.questions.length>0);
+ assert.ok(next.questions.every(q=>q.key!==first),'El ejercicio presentado no debe repetirse inmediatamente');
+ assert.equal(e.profile('M1')[0].status,'por comprobar');
+ assert.equal(ctx.CachasteLearning.skillStars(e.profile('M1')[0]),3);
+});
