@@ -692,3 +692,8 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 @keyframes cachaste-cat-celebrate{0%{opacity:.5;transform:scale(.9)}60%{transform:scale(1.07)}100%{opacity:1;transform:scale(1)}}
 @keyframes cachaste-bubble-reveal{from{opacity:.65}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){#daily-root .wise-cat .cat-frame,#daily-root .wise-cat p{animation:none!important;transform:none!important}}
+
+/* World mastery uses verified learning evidence, never a cosmetic XP estimate. */
+#daily-root .world-hud .world-progress{width:min(210px,100%);height:9px;border-radius:20px;background:rgba(255,255,255,.42);overflow:hidden;margin-top:9px}
+#daily-root .world-hud .world-progress>span{display:block;height:100%;border-radius:20px;background:#fff;transition:width .35s ease}
+@media(prefers-reduced-motion:reduce){#daily-root .world-hud .world-progress>span{transition:none!important}}
