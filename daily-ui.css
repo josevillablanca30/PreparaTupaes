@@ -679,3 +679,16 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 @keyframes cachaste-gate-cat-hello{from{opacity:.4;filter:blur(4px)}to{opacity:1;filter:blur(0)}}
 @keyframes cachaste-quest-arrive{from{opacity:.3}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){#daily-root .adventure-world .world-orb,#daily-root .adventure-world .world-cloud,#daily-root .world-gate-cat .cat-frame,#daily-root .trail-stop.current .next-label{animation:none!important}}
+
+/* Distinct wise-cat expressions animate the artwork, never the touch controls. */
+#daily-root .wise-cat .cat-frame{transform-origin:50% 85%;animation:cachaste-cat-arrive .38s ease-out both}
+#daily-root .wise-cat[data-cat-state="explaining"] .cat-frame{animation:cachaste-cat-explain .6s ease-out both}
+#daily-root .wise-cat[data-cat-state="encouraging"] .cat-frame{animation:cachaste-cat-encourage .55s ease-out both}
+#daily-root .wise-cat[data-cat-state="celebrating"] .cat-frame{animation:cachaste-cat-celebrate .65s ease-out both}
+#daily-root .wise-cat p{animation:cachaste-bubble-reveal .32s ease-out both}
+@keyframes cachaste-cat-arrive{from{opacity:.5;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+@keyframes cachaste-cat-explain{0%{opacity:.6;transform:rotate(-3deg)}55%{transform:rotate(2deg)}100%{opacity:1;transform:rotate(0)}}
+@keyframes cachaste-cat-encourage{0%{opacity:.7;transform:scale(.95)}65%{transform:scale(1.035)}100%{opacity:1;transform:scale(1)}}
+@keyframes cachaste-cat-celebrate{0%{opacity:.5;transform:scale(.9)}60%{transform:scale(1.07)}100%{opacity:1;transform:scale(1)}}
+@keyframes cachaste-bubble-reveal{from{opacity:.65}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){#daily-root .wise-cat .cat-frame,#daily-root .wise-cat p{animation:none!important;transform:none!important}}
