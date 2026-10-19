@@ -58,3 +58,15 @@ test('La limpieza no recorta el índice histórico al reducir opciones de otra v
  assert.equal(cleaned[0].assessmentVersion,row.assessmentVersion);
  assert.equal(L.cleanRows([q],[{id:q.id,selected:3,correct:false}])[0].selected,null,'se conserva el saneamiento legado');
 });
+
+
+test('Una sesión abierta conserva versiones por pregunta y detecta cambios sin alterarla',()=>{
+ const q=question(),other={...question(),id:'b',question:'Otro ejercicio'};
+ const session={ids:['a','b'],assessmentVersions:[L.assessmentVersion(q),L.assessmentVersion(other)],answers:[2,null],index:1};
+ const before=JSON.stringify(session);
+ assert.equal(L.sessionVersionStatus(session,[q,other]),'compatible');
+ assert.equal(L.sessionVersionStatus({...session,assessmentVersions:undefined},[q,other]),'legacy');
+ assert.equal(L.sessionVersionStatus(session,[q,{...other,options:['4','6','7','8']}]),'changed');
+ assert.equal(L.sessionVersionStatus({...session,assessmentVersions:[session.assessmentVersions[0]]},[q,other]),'changed');
+ assert.equal(JSON.stringify(session),before);
+});
