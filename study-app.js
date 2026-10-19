@@ -38,7 +38,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   }
   function launch(mode, pool) {
     if (!pool.length) { notice = 'Ya trabajaste los ejercicios distintos disponibles de estos conceptos. Revisa el tutor y vuelve a una práctica Express.'; render(true); return; }
-    session = { id: 'study-' + Date.now(), mode, ids: pool.map(q => q.id), assessmentVersions: pool.map(q => L.assessmentVersion(q)), index: 0, selected: null, checked: false, confidence: null, results: [], started: Date.now(), deadline: mode === 'full' ? Date.now() + minutes * 60000 : null, answers: pool.map(() => null), flags: [] };
+    session = { id: 'study-' + Date.now(), mode, ids: pool.map(q => q.id), assessmentVersions: pool.map(q => L.assessmentVersion(q)), questionSnapshots: pool.map(q => L.assessmentSnapshot(q)), index: 0, selected: null, checked: false, confidence: null, results: [], started: Date.now(), deadline: mode === 'full' ? Date.now() + minutes * 60000 : null, answers: pool.map(() => null), flags: [] };
     screen = 'quiz'; notice = ''; confirming = false; mapOpen = false; save(); render(true);
   }
   function reinforce() { if(session){notice='Retoma o descarta la sesión guardada antes de comenzar otra.';screen='home';render();return;}launch('reinforce', L.transfer(ELIGIBLE, history, [...(lastResult?.results || []),...history.slice(-30)], 10)); }
