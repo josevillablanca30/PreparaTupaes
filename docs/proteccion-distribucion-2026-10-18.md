@@ -16,7 +16,7 @@ Estado al 18/10/2026: diseño preparado; repositorio fuente todavía público. `
 
 El repositorio público debe recibir una revisión identificable y solo artefactos de distribución: aplicación compilada, recursos visuales originales requeridos, versión, hashes, licencias/avisos y política pública aprobada. Excluir `.git`, `.github`, tests, informes internos, fuentes pedagógicas documentales de Drive, mapas de fuente, credenciales, claves de firma y configuraciones locales. Nunca copiar recursivamente el checkout.
 
-El build actual selecciona archivos de aplicación, pero `dist` no se limpia automáticamente: antes de empaquetar se requiere directorio nuevo o limpieza controlada de ese directorio y una comprobación de lista permitida. Falta automatizar ese control para una distribución candidata. El artefacto Android de CI es de prueba, no una entrega comercial firmada.
+El build limpia exclusivamente su directorio regenerable `dist` y verifica una lista explícita de 34 archivos permitidos. Rechaza archivos adicionales (incluidos mapas de fuente), directorios ajenos, enlaces simbólicos y salidas incompletas. Tres pruebas cubren estas exclusiones; se comprobó además que un archivo de prueba residual desaparece al recompilar. Este control limita qué archivos se empaquetan, no garantiza ausencia de secretos dentro de un archivo permitido ni sustituye revisión de licencias. El artefacto Android de CI es de prueba, no una entrega comercial firmada.
 
 La aplicación web distribuye JavaScript y su catálogo; la APK empaqueta recursos inspeccionables. Un repositorio privado oculta historial y herramientas internas, pero no evita extracción de contenidos ni ingeniería inversa. No enviar secretos en cliente. Privatizar tampoco retira clones o bifurcaciones ya existentes.
 
@@ -24,7 +24,7 @@ La aplicación web distribuye JavaScript y su catálogo; la APK empaqueta recurs
 
 Workflows revisados: Pages y Android APK. Ambos usan Ubuntu estándar, concurrencia con cancelación, permisos por trabajo y filtros por archivos. Pages conserva reportes un día; Android conserva algunos artefactos 14 días. No se cambiaron retenciones históricas ni eliminaron artefactos.
 
-El cambio de este bloque elimina la doble ejecución de Pages por push+PR en la rama motor. Mantiene el PR completo y Android; no reduce las pruebas. Los cambios exclusivamente en README/docs/reports no disparan Pages; el filtro de Android ya los excluye. Si un commit contiene código, agruparlo con sus pruebas y documentación.
+El cambio de este bloque elimina la doble ejecución de Pages por push+PR en la rama motor. Mantiene el PR completo y Android; no reduce las pruebas. En push, los filtros pueden omitir cambios documentales; en pull_request se evalúa el conjunto de diferencias del PR. Por eso un commit documental en un PR que contiene código puede volver a ejecutar Pages. Android mantiene su filtro de paths. Si un commit contiene código, agruparlo con sus pruebas y documentación.
 
 La documentación oficial distingue ejecución pública gratuita con runners estándar y cuotas privadas según el plan. GitHub Free incluye 2.000 minutos mensuales y 500 MB de almacenamiento de Actions compartido con Packages; el consumo real y el plan de esta cuenta **no están verificados**. Estimar ejecuciones mensuales usando duraciones observadas y margen para reintentos; decidir después si usar CI privado completo, validación local más CI de hitos o un runner propio ya disponible. Un runner propio requiere mantenimiento y no se considera costo cero por defecto.
 

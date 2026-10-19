@@ -30,9 +30,9 @@ Las rutas comparten el módulo común; sus cantidades no se suman como bancos in
 
 ## Verificación de esta pasada
 
-- **217/217 pruebas lógicas aprobadas**, incluidas claves cuantitativas, herencia curricular, disponibilidad por mención y conservación de historial.
+- **220/220 pruebas lógicas aprobadas**, incluidas claves cuantitativas, herencia curricular, disponibilidad por mención y conservación de historial.
 - **Compilación web correcta**; el catálogo ampliado llega al recorrido diario y a las pantallas tradicionales de M2 e Historia.
-- **0 errores críticos estructurales; 82 observaciones heurísticas** abiertas. El número no equivale a defectos confirmados.
+- **0 errores críticos estructurales; 63 observaciones heurísticas** abiertas. El número no equivale a defectos confirmados.
 - **741/741 pruebas Playwright aprobadas en CI (`c59a80e`)**, con escenarios nuevos para M2, Historia y las cuatro rutas de Ciencias.
 - Android sobre `c59a80e`: 88 pruebas rápidas y 8 pruebas nativas aprobadas. Validación técnica completada; continúan pendientes los criterios editoriales, de cobertura y pilotaje indicados abajo.
 

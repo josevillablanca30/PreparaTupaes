@@ -227,38 +227,6 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-100",
-      "area": "Electricidad",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-103",
-      "area": "Estructura atómica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-104",
-      "area": "Estructura atómica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-110",
-      "area": "Química orgánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-117",
       "area": "Herencia y evolución",
       "type": "short_reasoning_step",
@@ -291,51 +259,11 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-127",
-      "area": "Electricidad",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-128",
       "area": "Energía – Tierra",
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-131",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-133",
-      "area": "Química orgánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-134",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-136",
-      "area": "Estructura atómica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
     },
     {
       "bank": "Ciencias",
@@ -365,38 +293,6 @@
       "bank": "Ciencias",
       "id": "SCI-147",
       "area": "Mecánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-152",
-      "area": "Ondas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-153",
-      "area": "Estructura atómica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-156",
-      "area": "Química orgánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-158",
-      "area": "Reacciones químicas y estequiometría",
       "type": "short_reasoning_step",
       "level": "review",
       "detail": "Paso del razonamiento demasiado breve o poco explicativo"
@@ -435,24 +331,8 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-174",
-      "area": "Electricidad",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-181",
       "area": "Herencia y evolución",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-185",
-      "area": "Ondas",
       "type": "short_reasoning_step",
       "level": "review",
       "detail": "Paso del razonamiento demasiado breve o poco explicativo"
@@ -467,32 +347,8 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-186",
-      "area": "Ondas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-197",
-      "area": "Química orgánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-202",
       "area": "Energía – Tierra",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-203",
-      "area": "Ondas",
       "type": "short_reasoning_step",
       "level": "review",
       "detail": "Paso del razonamiento demasiado breve o poco explicativo"
@@ -592,14 +448,6 @@
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Lectura",
-      "id": "LEC-097",
-      "area": "Localizar",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
     },
     {
       "bank": "Lectura",
@@ -730,7 +578,7 @@
   },
   "summary": {
     "critical": 0,
-    "review": 82,
+    "review": 63,
     "questionCount": 788
   }
 }

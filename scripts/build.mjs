@@ -1,9 +1,13 @@
 import {dailyCatalog} from './daily-catalog.mjs';
-import { mkdir, readFile, writeFile, copyFile } from 'node:fs/promises';
+import {verifyDistribution} from './verify-distribution.mjs';
+import {fileURLToPath} from 'node:url';
+import { mkdir, readFile, writeFile, copyFile, rm } from 'node:fs/promises';
 
 const revision = process.env.GITHUB_SHA || 'local';
 if (!/^(local|[a-f0-9]{40})$/.test(revision)) throw new Error('Invalid build revision');
 const source = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+// Solo se limpia la salida regenerable del build; nunca el checkout ni datos del estudiante.
+await rm(new URL('../dist/', import.meta.url), { recursive: true, force: true });
 await mkdir(new URL('../dist/', import.meta.url), { recursive: true });
 const dashboard=await readFile(new URL('../inicio.html',import.meta.url),'utf8');
 await writeFile(new URL('../dist/inicio.html',import.meta.url),dashboard.replace('</head>',`<meta name="build-revision" content="${revision}"></head>`));
@@ -24,6 +28,9 @@ await mkdir(new URL('../dist/assets/',import.meta.url),{recursive:true});
 for(const asset of ['gatito-sabio-poses-v1.png','gatito-sabio-oficial.png','cachaste-icon.svg','cachaste-logo.svg'])await copyFile(new URL('../assets/'+asset,import.meta.url),new URL('../dist/assets/'+asset,import.meta.url));
 await writeFile(new URL('../dist/.nojekyll', import.meta.url), '');
 await writeFile(new URL('../dist/version.json', import.meta.url), JSON.stringify({ revision }) + '\n');
-console.log(`Static build ready (${revision}); only public application files are included.`);
+
 
 await writeFile(new URL('../dist/daily-catalog.js',import.meta.url),'window.CACHASTE_DAILY_CATALOG='+JSON.stringify(dailyCatalog())+';\n');
+
+const verified=await verifyDistribution(fileURLToPath(new URL('../dist/',import.meta.url)));
+console.log(`Static build ready (${revision}); ${verified.files} distribution files verified.`);

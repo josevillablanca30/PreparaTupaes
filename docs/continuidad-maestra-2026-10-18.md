@@ -20,7 +20,7 @@ Hay **37 evaluaciones con diferencias entre ramas** pendientes de reconciliació
 
 Respaldo completo anterior a este bloque: `Cachaste-Respaldo-Completo-20261018.tar.gz`, SHA-256 `6b09964f8ce38d6294cb3b039c5aaceb8e83f66bc29969e1313d5bcc049f10dc`. Incluye bundle de todas las referencias, manifiesto y trabajo editorial no confirmado. Se restauró como mirror, se compararon ocho referencias y pasó `git fsck --full`. No contiene ajustes de cuenta, secretos, firma privada ni datos de estudiantes.
 
-Se eliminó el disparador push duplicado del workflow Pages para esta rama: se conserva validación completa por PR, push en main y ejecución manual. Android mantiene su compilación y pruebas. Un push de aplicación con PR abierto debe iniciar dos workflows, en lugar de los tres anteriores. Un cambio solo documental no debe iniciar CI. Si se cierra el PR y se sigue programando en esta rama, ejecutar Pages manualmente o abrir el PR antes de considerar validado el código.
+Se eliminó el disparador push duplicado del workflow Pages para esta rama: se conserva validación completa por PR, push en main y ejecución manual. Android mantiene su compilación y pruebas. Un push de aplicación con PR abierto debe iniciar dos workflows, en lugar de los tres anteriores. Un cambio documental puede reiniciar el PR mientras el conjunto de diferencias contenga código; agrupar registro y aplicación en un solo envío. Si se cierra el PR y se sigue programando en esta rama, ejecutar Pages manualmente o abrir el PR antes de considerar validado el código.
 
 La migración, sus límites y puertas de aprobación están en `proteccion-distribucion-2026-10-18.md`. No se cambió visibilidad ni se creó Cachaste-Public.
 
@@ -56,4 +56,24 @@ CI de este código iniciada y aún en curso en el último chequeo:
 - Pages / PR: **39179180659**.
 - Android / push: **39179177883**.
 
-Primera acción de la siguiente continuación: consultar ambos runs y sus logs; si hay fallo, corregirlo antes del próximo lote. No atribuir al commit nuevo los 744/88/8 resultados de `17974df`. Luego continuar la revisión de evaluaciones y las 38 alertas de pasos breves. Este registro exclusivamente documental no debe iniciar más Actions.
+Primera acción de la siguiente continuación: consultar ambos runs y sus logs; si hay fallo, corregirlo antes del próximo lote. No atribuir al commit nuevo los 744/88/8 resultados de `17974df`. Luego continuar la revisión de evaluaciones y las 38 alertas de pasos breves. Ese supuesto resultó incorrecto para el evento pull_request: el registro documental inició otra ejecución porque el PR contiene código.
+
+## Continuación: 18 secuencias, Lectura y aislamiento del build
+
+Base remota inspeccionada: `782b986437526135e4e2f13725496378e462e889`. Se consultaron todas las ramas sin integrar ni modificar main. Android del lote anterior terminó correctamente: run 39179177883, 88 pruebas web, 8 instrumentadas y compilación exitosa. El run Pages 39179180659 fue cancelado por concurrencia cuando el commit documental inició 39179282012; no fue un fallo de tests y no se declara aprobado el run cancelado.
+
+Nuevo lote: SCI-100, 103, 104, 110, 127, 131, 133, 134, 136, 152, 153, 156, 158, 174, 185, 186, 197 y 203. Las 18 secuencias ahora conectan información, razonamiento y comprobación sin repetir los pasos antiguos. Se mantuvo la elegibilidad previa: mejorar eco u otro contenido complementario no lo convierte en PAES. Se distinguen resistencia y su inverso, número atómico y másico, carga individual y neutralidad del átomo, cantidad total y electrones de valencia, y composición general frente a familia orgánica específica.
+
+LEC-097: se leyó completo el pasaje «La escuela y el silencio digital». La comprobación ahora contrasta la excepción expresamente mencionada con alternativas que agregan motivos ausentes; evita repetir la respuesta como única explicación. No cambian texto, consigna ni alternativas.
+
+Los materiales de Drive ya registrados son antecedentes de Física/Química; no hubo nueva lectura integral de esos volúmenes en este lote. Esta revisión de claridad no certifica cobertura curricular ni dificultad PAES.
+
+Resultado local: **220/220 pruebas lógicas**, build correcto, **788 evaluaciones conservadas**, **63 alertas heurísticas y cero errores críticos**, con **19 alertas de paso breve** todavía pendientes. No se cambiaron umbrales de auditoría. Las pruebas de reconciliación mantienen las huellas de las 780 evaluaciones previas y de las ocho recuperadas de main.
+
+Distribución: el build limpia solo `dist` y valida una lista de 34 archivos. Se probaron salida incompleta, archivo extra, carpeta interna y enlace simbólico; también se insertó un archivo residual ficticio y se comprobó su eliminación al recompilar. No se creó Cachaste-Public, no se cambió visibilidad y no hubo publicación comercial.
+
+### Continuación sin reiniciar CI por documentación
+
+Este registro se envía junto con código y pruebas. Identificar el commit que incorpora esta sección en la rama y consultar Actions por su head SHA. No añadir inmediatamente otro commit documental solo para apuntar los runs: el PR puede reiniciarse. La validación de navegador/Android de este lote está pendiente al guardar; resultados anteriores no la sustituyen.
+
+Después de cerrar CI: quedan 19 pasos breves, las 24 reformulaciones cruzadas con main y la implementación de revisiones de evaluación antes de sustituir alternativas históricas. Empezar por el versionado y SCI-044/SCI-063, conservando los intentos originales. Compras y restauración de progreso siguen pendientes de implementación; los documentos comerciales son contratos de trabajo, no funciones ya activas.
