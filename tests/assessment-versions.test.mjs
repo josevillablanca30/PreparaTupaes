@@ -177,7 +177,7 @@ test('Ensayo reanudado conserva selección, marcas y plazo original',()=>{
  elements.get('finish').onclick();
  const final=JSON.parse(store.get('study-timed')).lastResult;
  assert.equal(final.correct,0);
- assert.equal(final.results[0].selected,2);
+ assert.equal(final.results[0].selected,0,'La respuesta visual C se guarda como índice original 0 tras la rotación de M2');
  assert.equal(final.results[0].assessmentVersion,session.assessmentVersions[0]);
  assert.equal(final.questionSnapshots[0].question,'Pregunta anterior');
 });
