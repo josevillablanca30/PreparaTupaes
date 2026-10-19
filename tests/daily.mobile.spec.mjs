@@ -25,3 +25,16 @@ test('Gatito expresa duda, pista y resultado sin perder controles táctiles',asy
  await expect(page.locator('[data-action=next]')).toBeVisible();
  await fit(page);
 });
+
+test('Mapa muestra avance real de dominio sin confundir XP con misiones completadas',async({page})=>{
+ await choose(page,'M1');
+ const progress=page.locator('.world-hud .world-progress');
+ await expect(progress).toHaveCount(1);
+ const expected=await page.locator('.learning-trail .trail-stop.mastered').count();
+ const total=await page.locator('.learning-trail .trail-stop').count();
+ await expect(progress).toHaveAttribute('aria-valuemin','0');
+ await expect(progress).toHaveAttribute('aria-valuemax',String(Math.max(1,total)));
+ await expect(progress).toHaveAttribute('aria-valuenow',String(expected));
+ await expect(progress.locator('span')).toHaveAttribute('style','width:'+Math.round(expected/Math.max(1,total)*100)+'%');
+ await fit(page);
+});
