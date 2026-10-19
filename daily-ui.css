@@ -654,3 +654,16 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .selected-repair li{padding-left:3px;font-size:14px;line-height:1.5}
 #daily-root .selected-repair small{display:block;border-top:1px solid #e4d8ec;padding-top:9px;color:#746083;line-height:1.45}
 @media(max-width:390px){#daily-root .selected-repair{padding:12px}#daily-root .selected-repair ol{padding-left:21px}}
+
+
+/* Celebration is a genuine next-step screen, not a dead-end reward.
+   Movement stays decorative so mobile touch targets remain stable. */
+#daily-root .celebration-screen{isolation:isolate;overflow:hidden}
+#daily-root .celebration-screen .celebration-sparks{display:block;letter-spacing:.45em;animation:cachaste-spark-reveal .8s ease-out both;pointer-events:none}
+#daily-root .celebration-screen .reward-card{animation:cachaste-reward-arrive .42s ease-out both}
+#daily-root .celebration-screen [data-action="mission-practice"],
+#daily-root .celebration-screen [data-action="home"]{min-height:50px;white-space:normal}
+@keyframes cachaste-spark-reveal{from{opacity:0;filter:blur(5px)}to{opacity:1;filter:blur(0)}}
+@keyframes cachaste-reward-arrive{from{opacity:.5;filter:blur(3px)}to{opacity:1;filter:blur(0)}}
+@media(max-width:390px){#daily-root .celebration-screen{padding-inline:14px}#daily-root .celebration-screen .reward-card{max-width:100%;box-sizing:border-box}}
+@media(prefers-reduced-motion:reduce){#daily-root .celebration-screen .celebration-sparks,#daily-root .celebration-screen .reward-card{animation:none!important}}
