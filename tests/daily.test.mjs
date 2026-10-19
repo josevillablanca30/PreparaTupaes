@@ -77,3 +77,25 @@ test('Estrellas y tutor: una familia ya demostrada no desplaza ejercicios nuevos
  assert.equal(e.profile('M1')[0].status,'por comprobar');
  assert.equal(ctx.CachasteLearning.skillStars(e.profile('M1')[0]),3);
 });
+
+test('Auditoría de cobertura para cuatro estrellas en cinco materias y menciones',()=>{
+ const routes=['M1','M2','Lectura','Historia','Ciencias'];
+ for(const subject of routes){
+  const tracks=subject==='Ciencias'?['Biología','Física','Química','TP']:[null];
+  for(const track of tracks){
+   const catalog=items.filter(q=>q.subjectKey===subject&&(subject!=='Ciencias'||q.module==='MC'||(track==='TP'?q.module==='MTP':q.module==='ME'&&q.subject===track)));
+   const concepts=new Set(catalog.map(q=>q.concept));
+   let scarce=0,ready=0;
+   for(const concept of concepts){
+    const matching=catalog.filter(q=>q.concept===concept);
+    const eligible=matching.filter(q=>!q.supplementary&&q.examEligible!==false);
+    const usable=eligible.length?eligible:matching;
+    const families=new Set(usable.map(q=>q.transferGroup||q.family||q.key));
+    if(families.size>=2)ready++;else scarce++;
+    assert.ok(families.size>=1,'No hay preguntas para '+subject+'/'+track+'/'+concept);
+   }
+   assert.equal(ready+scarce,concepts.size);
+   console.log('AUDITORÍA ESTRELLAS '+subject+(track?' '+track:'')+': '+ready+' habilidades con 2+ familias, '+scarce+' sin cobertura suficiente (sin bloqueo)');
+  }
+ }
+});
