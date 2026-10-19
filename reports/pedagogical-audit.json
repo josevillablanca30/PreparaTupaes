@@ -101,33 +101,9 @@
       "bank": "Ciencias",
       "id": "SCI-014",
       "area": "Ondas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-014",
-      "area": "Ondas",
       "type": "reverse_length_cue",
       "level": "review",
       "detail": "Distractor mucho más largo que la correcta"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-015",
-      "area": "Ondas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-018",
-      "area": "Mecánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
     },
     {
       "bank": "Ciencias",
@@ -144,70 +120,6 @@
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-023",
-      "area": "Electricidad",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-026",
-      "area": "Estructura atómica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-028",
-      "area": "Estructura atómica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-030",
-      "area": "Química orgánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-031",
-      "area": "Química orgánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-034",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-039",
-      "area": "Mecánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-041",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
     },
     {
       "bank": "Ciencias",
@@ -227,14 +139,6 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-052",
-      "area": "Química orgánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-054",
       "area": "Reacciones químicas y estequiometría",
       "type": "absolute_distractor",
@@ -245,22 +149,6 @@
       "bank": "Ciencias",
       "id": "SCI-055",
       "area": "Organización, estructura y actividad celular",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-058",
-      "area": "Electricidad",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-059",
-      "area": "Estructura atómica",
       "type": "short_reasoning_step",
       "level": "review",
       "detail": "Paso del razonamiento demasiado breve o poco explicativo"
@@ -288,22 +176,6 @@
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-068",
-      "area": "Mecánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-070",
-      "area": "Estructura atómica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
     },
     {
       "bank": "Ciencias",
@@ -349,38 +221,6 @@
       "bank": "Ciencias",
       "id": "SCI-085",
       "area": "Procesos y funciones biológicas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-093",
-      "area": "Electricidad",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-094",
-      "area": "Energía – Tierra",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-096",
-      "area": "Ondas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-097",
-      "area": "Ondas",
       "type": "short_reasoning_step",
       "level": "review",
       "detail": "Paso del razonamiento demasiado breve o poco explicativo"
@@ -890,7 +730,7 @@
   },
   "summary": {
     "critical": 0,
-    "review": 102,
+    "review": 82,
     "questionCount": 788
   }
 }

@@ -37,3 +37,7 @@ Fuentes oficiales consultadas el 18/10/2026:
 ## Aprobaciones pendientes
 
 Cambio de visibilidad, creación y publicación de distribución, firma/Play comercial y cualquier gasto. El desarrollo, pruebas y guardado de esta rama están autorizados y continúan sin nuevas solicitudes.
+
+## Medición observada (no saldo de facturación)
+
+Los jobs exitosos de `69ad25a` ocuparon 10 min 53 s en Pages y 6 min 11 s en Android. Es una muestra de duración de ejecución, no minutos facturados ni proyección garantizada. El endpoint de artefactos informó 242 entradas; las primeras 100 sumaron 592.655.066 bytes. Ese subtotal paginado no indica almacenamiento activo facturable ni permite calcular cupo restante; no se eliminaron archivos. Debe verificarse saldo real y retención antes de migrar a privado.

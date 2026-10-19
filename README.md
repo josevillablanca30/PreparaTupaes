@@ -8,8 +8,8 @@ Aplicación offline de preparación PAES con Matemática M1 y M2, Competencia Le
 - **755 preguntas de alcance PAES y 33 complementarias.** Las complementarias se conservan para práctica opcional e historial, y quedan fuera de la selección general y los ensayos nuevos.
 - **287 conceptos organizados**, de los cuales 270 tienen preguntas de alcance PAES. Estos 270 disponen de al menos dos familias en el catálogo. La misma comprobación pasa por separado para Biología, Física, Química y TP.
 - Los **7 conceptos que aún tienen una sola familia pertenecen al contenido complementario**. Dos familias registradas no certifican independencia semántica, profundidad ni cobertura completa del temario oficial: esas revisiones siguen siendo necesarias.
-- **217 pruebas lógicas aprobadas**, compilación web correcta y auditoría estructural con **0 errores críticos y 102 observaciones heurísticas**. Las observaciones no son errores confirmados ni una certificación editorial.
-- **741/741 pruebas de navegador aprobadas** en Android Chrome, iPhone WebKit y 320 px sobre `69ad25a`. Android también aprobó 88 pruebas rápidas y 8 pruebas nativas en esa revisión.
+- **217 pruebas lógicas aprobadas**, compilación web correcta y auditoría estructural con **0 errores críticos y 82 observaciones heurísticas**. Las observaciones no son errores confirmados ni una certificación editorial.
+- **744/744 pruebas de navegador aprobadas** en Android Chrome, iPhone WebKit y 320 px sobre `17974df`. Android también aprobó 88 pruebas rápidas y 8 pruebas nativas en esa revisión.
 
 Estado reproducible: [matriz actual](reports/readiness-current.json), [pasada amplia](docs/pasada-amplia-2026-10-18.md) y [criterios de cierre](docs/criterios-cierre-profesional-2026.md).
 
@@ -71,3 +71,5 @@ Seguimiento de CI, regresión de Historia y muestra visual: [informe de esta pas
 Revisión editorial posterior: 33 soluciones de Ciencias reescritas, retroalimentación de M2-007 ampliada y 44 alertas clasificadas. [Detalle y pendientes](docs/revision-editorial-2026-10-18.md). Las cifras de CI de `c59a80e` corresponden al cierre anterior; la nueva revisión de contenido es `69ad25a`.
 
 Continuidad del 18/10: [reconciliación y punto de continuación](docs/continuidad-maestra-2026-10-18.md). La validación del catálogo de 788 preguntas se registra allí por separado.
+
+Último lote editorial: otras 20 secuencias de Ciencias revisadas; 82 alertas heurísticas restantes. Las pruebas completas de este lote se registran por revisión en el documento de continuidad.

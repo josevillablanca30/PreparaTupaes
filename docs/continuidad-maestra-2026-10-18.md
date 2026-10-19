@@ -33,3 +33,17 @@ La migración, sus límites y puertas de aprobación están en `proteccion-distr
 5. Aplicar el protocolo de estudiante solo tras cerrar sus condiciones de entrada. No hay resultados ni testimonios.
 
 No hay versión candidata comercial aprobada, publicación en tienda ni cobros reales.
+
+## Cierre verificado de la recuperación M2
+
+Código `17974dfa43d720503b15254462b6b44fa4767cbe`: **217 pruebas lógicas, 744 de navegador, 88 web Android y 8 instrumentadas**, compilaciones APK beta y AAB sin firma exitosas. Runs **39156239368** (PR) y **39156234636** (Android), ambos exitosos. Deploy y verificación pública se omitieron por ser rama de trabajo. El commit inicial de recuperación fue `d7ce1037d9dbf2a30d3009fa0804f3b4d01f4c76`; sus runs fueron sustituidos por los de la corrección, no deben sumarse como validación adicional.
+
+## Lote editorial siguiente · pendiente de CI propio
+
+Se reescribieron otras **20 secuencias de Ciencias**: SCI-014, 015, 018, 023, 026, 028, 030, 031, 034, 039, 041, 052, 058, 059, 068, 070, 093, 094, 096 y 097. Cada una distingue datos/proceso, razonamiento y comprobación; se eliminaron las concatenaciones repetidas. Se explican errores como confundir rapidez con aceleración, porcentaje útil con pérdida, masa con moles, ángulo con la normal con ángulo respecto del espejo, y alcohol con carboxilo. Se conservan enunciados, alternativas, claves, familias y elegibilidad.
+
+Resultado local: 217/217 pruebas, build correcto; **82 alertas heurísticas**, incluidas **38 de paso breve**, y cero errores críticos. La reducción de 20 alertas proviene de revisión de contenido, sin cambiar umbrales. Los materiales de Física y Química consultados en la revisión editorial precedente son antecedentes; no se declara nueva lectura integral de Drive en este lote ni cobertura oficial adicional.
+
+La comparación individual de las 37 evaluaciones distintas está en `reports/reconciliation-triage-2026-10-18.json`: 28 candidatas para revisión de integración, 3 cambios equivalentes no prioritarios, 2 distractores actuales que conviene conservar y 4 casos bloqueados para importación directa (SCI-006, SCI-044, SCI-063, LEC-017). Las 37 conservan índice de clave entre ramas, pero cambian alternativas; eso no vuelve compatibles las respuestas históricas. Ninguna de esas 37 versiones de main se importó. Las decisiones son revisión editorial asistida, no certificación disciplinar.
+
+Próxima prioridad: diseño y pruebas de revisión de evaluaciones para preservar el texto/alternativa antigua y no reutilizar evidencia incompatible; después reconciliar candidatos de main y continuar las 38 alertas de pasos breves. SCI-063 necesita tarea de hipótesis sin dos opciones defendibles; SCI-044 necesita superar el enunciado tautológico.
