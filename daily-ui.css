@@ -667,3 +667,15 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 @keyframes cachaste-reward-arrive{from{opacity:.5;filter:blur(3px)}to{opacity:1;filter:blur(0)}}
 @media(max-width:390px){#daily-root .celebration-screen{padding-inline:14px}#daily-root .celebration-screen .reward-card{max-width:100%;box-sizing:border-box}}
 @media(prefers-reduced-motion:reduce){#daily-root .celebration-screen .celebration-sparks,#daily-root .celebration-screen .reward-card{animation:none!important}}
+
+
+/* Guide the eye through the adventure without moving clickable nodes. */
+#daily-root .world-quest-banner .quest-learning-hint{display:block;margin-top:5px;font-size:12px;line-height:1.45;font-weight:600;opacity:.9}
+#daily-root .adventure-world .world-orb{animation:cachaste-scenery-glow 5s ease-in-out infinite alternate}
+#daily-root .adventure-world .world-cloud{animation:cachaste-scenery-glow 7s ease-in-out infinite alternate}
+#daily-root .world-gate-cat .cat-frame{animation:cachaste-gate-cat-hello .8s ease-out both}
+#daily-root .trail-stop.current .next-label{animation:cachaste-quest-arrive .45s ease-out both}
+@keyframes cachaste-scenery-glow{from{opacity:.72}to{opacity:1}}
+@keyframes cachaste-gate-cat-hello{from{opacity:.4;filter:blur(4px)}to{opacity:1;filter:blur(0)}}
+@keyframes cachaste-quest-arrive{from{opacity:.3}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){#daily-root .adventure-world .world-orb,#daily-root .adventure-world .world-cloud,#daily-root .world-gate-cat .cat-frame,#daily-root .trail-stop.current .next-label{animation:none!important}}
