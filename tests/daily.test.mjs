@@ -91,7 +91,7 @@ test('Auditoría de cobertura para cuatro estrellas en cinco materias y mencione
     const eligible=matching.filter(q=>!q.supplementary&&q.examEligible!==false);
     const usable=eligible.length?eligible:matching;
     const families=new Set(usable.map(q=>q.transferGroup||q.family||q.key));
-    if(families.size>=2)ready++;else scarce++;
+    if(families.size>=2)ready++;else {scarce++;console.log('HABILIDAD CON COBERTURA INSUFICIENTE '+subject+(track?' '+track:'')+': '+concept+' ('+families.size+' familia independiente)');}
     assert.ok(families.size>=1,'No hay preguntas para '+subject+'/'+track+'/'+concept);
    }
    assert.equal(ready+scarce,concepts.size);
