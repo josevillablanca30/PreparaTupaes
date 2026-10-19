@@ -153,6 +153,9 @@ test('M2 e Historia tradicionales usan las transferencias, completan el ensayo y
   store.setItem(key,JSON.stringify({diagnosticDone:true,history,session:{id:'existing-transfer',mode:'express',ids:[transfer.id],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}}));
   vm.runInContext(readFileSync(new URL('../'+spec.file+'-app.js',import.meta.url),'utf8'),local);
   nodes.get('resume').onclick();
-  assert.ok(root.innerHTML.includes(transfer.question.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')),'No se perdió el ID de transferencia guardado');
+  const paused=JSON.parse(store.getItem(key));
+  assert.equal(paused.session.ids[0],transfer.id,'El ID de transferencia anterior permanece guardado');
+  assert.equal(paused.session.assessmentVersions,undefined,'No se inventa una huella de versión para la sesión anterior');
+  assert.ok(root.innerHTML.includes('sesión') && !root.innerHTML.includes('data-choice='),'La sesión sin versión no se recalifica contra el banco actual');
  }
 });
