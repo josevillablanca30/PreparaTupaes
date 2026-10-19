@@ -217,3 +217,11 @@ test('Revisión histórica: recupera clave antigua, conserva tutor si coincide y
  assert.equal(L.verifiedAssessmentQuestion(null,row,compatible).question,first.question);
  assert.equal(L.verifiedAssessmentQuestion(null,{...row,assessmentVersion:undefined},compatible),compatible);
 });
+
+test('Sesión verificada resiste la retirada de una pregunta del catálogo sin perder respuestas',()=>{
+ const q=question(),session={mode:'full',ids:[q.id],index:0,selected:2,results:[],answers:[2],assessmentVersions:[L.assessmentVersion(q)],questionSnapshots:[L.assessmentSnapshot(q)]};
+ assert.equal(L.validSession(session,[],['full']),true);
+ assert.equal(L.archivedSessionQuestions(session)[0].question,q.question);
+ assert.equal(L.validSession({...session,questionSnapshots:[]},[],['full']),false);
+ assert.equal(L.validSession({...session,questionSnapshots:[{...session.questionSnapshots[0],answer:3}]},[],['full']),false);
+});
