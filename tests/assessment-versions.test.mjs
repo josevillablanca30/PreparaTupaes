@@ -115,3 +115,9 @@ test('Respaldo completo recupera la pregunta original y rechaza manipulaciones',
  assert.equal(L.archivedSessionQuestions({...session,questionSnapshots:[]}),null);
  assert.equal(L.archivedSessionQuestions({ids:['a']}),null);
 });
+
+test('Una sesión con alternativas modificadas sigue siendo válida con archivo verificado',()=>{
+ const q=question(),session={mode:'express',ids:['a'],index:0,selected:3,results:[],assessmentVersions:[L.assessmentVersion(q)],questionSnapshots:[L.assessmentSnapshot(q)]};
+ assert.equal(L.validSession(session,[{...q,options:['5','6']}],['express']),true);
+ assert.equal(L.validSession({...session,questionSnapshots:null},[{...q,options:['5','6']}],['express']),false);
+});
