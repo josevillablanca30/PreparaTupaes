@@ -126,7 +126,10 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
     const rows = lastResult?.results || [], good = rows.filter(x => x.correct).length;
     return '<span class="eyebrow">Resultado de tu sesión</span><h1>' + good + ' de ' + rows.length + ' correctas</h1><p>Comprender el error es parte del avance. Revisa tus respuestas y después prueba con otro ejercicio del mismo concepto.</p>' + report(rows) + '<div class="actions"><button class="primary" id="reinforce">Practicar con preguntas nuevas</button><button id="back">Volver al inicio</button><button id="progress">Ver mi progreso</button></div><h2>Revisa y comprende</h2>' + rows.map(r => {
       const preserved = Array.isArray(lastResult?.questionSnapshots) ? lastResult.questionSnapshots.find(q => q.id === r.id && q.assessmentVersion === r.assessmentVersion) : null;
-      const q = preserved || byId.get(r.id); if (!q) return '';
+      const latest = byId.get(r.id);
+       const verified = preserved && L.assessmentVersion(preserved) === r.assessmentVersion;
+       const q = verified ? (latest && L.assessmentVersion(latest) === r.assessmentVersion ? {...latest, ...preserved} : preserved) : latest;
+       if (!q) return '';
       const e = q.editorial || q;
       return '<details class="review-item"><summary>' + (r.correct ? '✓ ' : '↗ ') + esc(q.question) + '</summary><p><strong>Tu respuesta:</strong> ' + esc(r.selected == null ? r.unanswered ? 'Sin responder' : 'No guardada en esta versión anterior' : q.options[r.selected]) + '</p><p><strong>Correcta:</strong> ' + esc(q.options[q.answer]) + '</p>' + (r.selected != null && !r.correct && q.explanations?.[r.selected] ? '<p>' + esc(q.explanations[r.selected]) + '</p>' : '') + '<h3>Paso a paso</h3>' + lesson(q,'steps') + '<h3>Más fácil</h3>' + lesson(q,'easy') + '<h3>Con un ejemplo</h3>' + lesson(q,'example') + '</details>';
     }).join('');
