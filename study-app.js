@@ -13,7 +13,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   const archivedById = () => new Map((archived() || []).map(q => [q.id, q]));
   const sessionQuestion = id => {
     const original = archivedById().get(id), latest = byId.get(id);
-    return original ? {...(latest || {}), ...original, teaching:latest?.teaching, editorial:latest?.editorial, explanations:latest?.explanations} : latest;
+    return original ? (latest && L.assessmentVersion(latest) === original.assessmentVersion ? {...latest, ...original} : {...original}) : latest;
   };
   let lastResult = L.cleanAssessment(BANK,stored.lastResult);
   let assessments = Array.isArray(stored.assessments) ? stored.assessments.map(r=>L.cleanAssessment(BANK,r)).filter(Boolean).slice(-100) : [];
