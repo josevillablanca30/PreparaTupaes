@@ -72,6 +72,9 @@ public class OfflineAppTest {
         open("inicio.html", "document.querySelectorAll('a.subject').length>=5");
         js("localStorage.setItem('cachaste-m2-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'native-teacher',mode:'express',ids:['M2-001'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}}));true");
         open("m2.html", "document.getElementById('resume')");
+        // This test verifies an active, versioned draft. Legacy drafts are intentionally blocked.
+        js("var record=JSON.parse(localStorage.getItem('cachaste-m2-v1'));record.session.assessmentVersions=record.session.ids.map(id=>CachasteLearning.assessmentVersion(window.CACHASTE_M2.find(q=>q.id===id)));localStorage.setItem('cachaste-m2-v1',JSON.stringify(record));true");
+        open("m2.html", "document.getElementById('resume')");
         js("document.getElementById('resume').click();true");
         waitFor("document.querySelector('[data-choice]')");
         js("[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.slice(3)==='x=4').click();document.querySelector('[data-conf=\"duda\"]').click();document.getElementById('check').click();true");
@@ -93,6 +96,9 @@ public class OfflineAppTest {
     @Test public void historyTeacherSurvivesRecreationAndOffersDifferentDecision() throws Exception {
         open("inicio.html", "document.querySelectorAll('a.subject').length>=5");
         js("localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'native-history',mode:'express',ids:['HIS-009'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}}));true");
+        open("history.html", "document.getElementById('resume')");
+        // This test verifies an active, versioned draft. Legacy drafts are intentionally blocked.
+        js("var record=JSON.parse(localStorage.getItem('cachaste-history-v1'));record.session.assessmentVersions=record.session.ids.map(id=>CachasteLearning.assessmentVersion(window.CACHASTE_HISTORIA.find(q=>q.id===id)));localStorage.setItem('cachaste-history-v1',JSON.stringify(record));true");
         open("history.html", "document.getElementById('resume')");
         js("document.getElementById('resume').click();[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.includes('etiqueta de un cuaderno')).click();document.querySelector('[data-conf=\"duda\"]').click();document.getElementById('check').click();true");
         waitFor("document.querySelector('.teaching-section')");
