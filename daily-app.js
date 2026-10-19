@@ -156,8 +156,8 @@
    '<span class="mission-kicker">'+esc(u?.axis||C.subjects[subject].name)+' · '+esc(u?.name||'Misión')+'</span>'+
    '<h1>'+esc(l.objective)+'</h1><p>'+esc(source?.goal||'Aprende a resolver y justificar situaciones con esta habilidad.')+'</p>'+
    cat('encouraging','¿Ya manejas este contenido? Pruébalo directamente. Si necesitas apoyo, te lo explico con ejemplos y luego lo comprobamos.')+starTutorGuide(l.objective,families.size)+
-   '<div class="daily-actions mission-actions">'+button('check-first','Probar lo que sé','data-concept="'+esc(l.objective)+'"','primary')+
-   button('lesson','Aprender con el gatito','data-concept="'+esc(l.objective)+'"')+
+   '<div class="daily-actions mission-actions">'+button('check-first',window.CachasteLearning.skillStars(p)>=3?'Comprobar mi siguiente estrella':'Probar lo que sé','data-concept="'+esc(l.objective)+'"',window.CachasteLearning.skillStars(p)>=3?'primary':'')+
+   button('lesson',window.CachasteLearning.skillStars(p)<3?'Aprender para mi siguiente estrella':'Repasar con el gatito','data-concept="'+esc(l.objective)+'"',window.CachasteLearning.skillStars(p)<3?'primary':'')+
    button('study','Ver la explicación','data-level="'+esc(l.id)+'"')+(studio?button('studio-open',studio.generatedType?'Explorar este concepto con el gatito':'Jugar taller completo','data-studio="'+esc(studio.id)+'"','studio-entry'):'')+'</div>'+
    '<p class="mission-meta">'+(families.size>=2?'Hay '+families.size+' variantes independientes del concepto.':'Este concepto todavía necesita más variantes de ejercicios. No te mostraremos un dominio ficticio.')+'</p>'+support+
    (p.status==='comprobado'?'<p>Ya demostraste este aprendizaje. Puedes reforzarlo cuando quieras.</p>':'')+'</section>';
