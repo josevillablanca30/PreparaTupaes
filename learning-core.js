@@ -94,6 +94,18 @@
     });
     return [...groups.values()].map(x => ({ ...x, evidence: [...x.evidence] }));
   }
+  // Stars are derived exclusively from the existing compatible evidence.
+  // 4 stars = two distinct unassisted confident transfer families (mastery).
+  // 5 stars = three such families; limited banks cannot fabricate the fifth.
+  function skillStars(state) {
+    if(!state || !Number.isFinite(state.attempts) || state.attempts<=0)return 0;
+    const distinct=new Set(Array.isArray(state.evidence)?state.evidence:[]).size;
+    if(distinct>=3 && state.status==='comprobado')return 5;
+    if(distinct>=2 && state.status==='comprobado')return 4;
+    if(distinct>=1 && state.status==='por comprobar')return 3;
+    if(state.correct>0)return 2;
+    return 1;
+  }
   function select(bank, history, count, { exclude = [], concepts = null, balanced = false, distinctFamilies = true, random = Math.random } = {}) {
     const blocked = new Set(exclude), seen = new Map(), latest = new Map();
     history.forEach(row => { if (!row) return; seen.set(row.id, (seen.get(row.id) || 0) + 1); latest.set(row.id, row); });
@@ -162,5 +174,5 @@
     if(mode==='easy')return section('Imagínalo así',paragraphs(t.intuition))+section('Conectémoslo con tu ejercicio',steps(t.application));
     return section('Un problema distinto',paragraphs([t.example.problem]),'teaching-example')+section('Vamos a resolverlo',steps(t.example.steps))+section('Qué puedes llevar a tu pregunta',paragraphs([t.example.bridge]));
   }
-  global.CachasteLearning = { contentHash, assessmentVersion, assessmentSnapshot, archivedSessionQuestions, verifiedAssessmentQuestion, sessionVersionStatus, compatibleAttempt, bindPassages, lesson, concept, profile, select, transfer, validSession, cleanRows, cleanAssessment, summary };
+  global.CachasteLearning = { contentHash, assessmentVersion, assessmentSnapshot, archivedSessionQuestions, verifiedAssessmentQuestion, sessionVersionStatus, compatibleAttempt, bindPassages, lesson, concept, profile, skillStars, select, transfer, validSession, cleanRows, cleanAssessment, summary };
 })(typeof window !== 'undefined' ? window : globalThis);
