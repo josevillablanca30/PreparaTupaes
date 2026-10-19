@@ -27,7 +27,7 @@
   }
   function bindPassages(bank,passages){const versions=new Map(passages.map(p=>[p.id,contentHash(JSON.stringify([p.title,p.paragraphs]))]));for(const q of bank)if(q.passageId)q.passageVersion=versions.get(q.passageId)||'missing';}
   function assessmentSnapshot(q) {
-    return {id:q.id,assessmentVersion:assessmentVersion(q),question:q.question||q.q||'',options:[...q.options],answer:q.answer,concept:concept(q)||null,transferGroup:q.transferGroup||String(q.id),area:q.area||null};
+    return {id:q.id,assessmentVersion:assessmentVersion(q),question:q.question||q.q||'',options:[...q.options],answer:q.answer,concept:concept(q)||null,transferGroup:q.transferGroup||String(q.id),area:q.area||null,passageId:q.passageId||null,passageVersion:q.passageVersion||null,visual:q.visual==null?null:JSON.parse(JSON.stringify(q.visual))};
   }
   function sessionVersionStatus(session,bank) {
     if (!session || !Array.isArray(session.ids)) return 'invalid';
