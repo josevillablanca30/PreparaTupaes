@@ -1,4 +1,20 @@
 import{test,expect}from'@playwright/test';
+async function restoreVersionedDraft(page){
+ const active=await page.evaluate(({key,subject})=>{
+  const saved=JSON.parse(localStorage.getItem(key)||'null');if(!saved?.session)return false;
+  const pool=CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey===subject);
+  const questions=saved.session.ids.map(id=>pool.find(q=>q.id===id));
+  if(questions.some(q=>!q))throw Error('Missing assessment fixture');
+  saved.session.assessmentVersions=questions.map(q=>CachasteLearning.assessmentVersion(q));
+  saved.session.questionSnapshots=questions.map(q=>CachasteLearning.assessmentSnapshot(q));
+  const payload=JSON.stringify(saved);localStorage.setItem(key,payload);
+  // The previous study closure saves on pagehide: restore our explicit versioned fixture last.
+  window.addEventListener('pagehide',()=>localStorage.setItem(key,payload),{once:true});
+  return true;
+ },{key:'cachaste-m2-v1',subject:'M2'});
+ if(active)await page.reload();
+}
+
 test('Ensayo M2 mantiene 55 preguntas sin elegir dos variantes equivalentes cuando hay banco suficiente',async({page})=>{
  await page.addInitScript(()=>{Math.random=()=>0.5;localStorage.setItem('cachaste-m2-v1',JSON.stringify({diagnosticDone:true,history:[]}));});
  await page.goto('./m2.html');
@@ -11,7 +27,7 @@ for(const id of ['M2-001','M2-003','M2-007','M2-050']){
  test('Profesor M2 '+id+': tres estrategias, error elegido, recuperación y transferencia real',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(id=>{if(!localStorage.getItem('teacher-fixture')){localStorage.setItem('teacher-fixture','1');localStorage.setItem('cachaste-m2-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'teacher-check',mode:'express',ids:[id],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}}));}},id);
-  await page.goto('./m2.html');await page.locator('#resume').click();
+  await page.goto('./m2.html');await restoreVersionedDraft(page);await page.locator('#resume').click();
   const chosen=await page.evaluate(id=>{const q=window.CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey==='M2').find(q=>q.id===id),wrong=q.options[(q.answer+1)%q.options.length];[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.slice(3)===wrong).click();return wrong;},id);
   await page.locator('[data-conf="duda"]').click();await page.locator('#check').click();
   const panel=page.locator('.tutor-panel');await expect(panel.getByText('Elegiste: '+chosen,{exact:true})).toBeVisible();await expect(panel.getByRole('heading',{name:'El concepto desde cero',exact:true})).toBeVisible();
@@ -32,7 +48,7 @@ for(let start=1;start<=114;start+=10){
  const ids=Array.from({length:Math.min(10,115-start)},(_,i)=>'M2-'+String(start+i).padStart(3,'0'));
  test('M2 completo '+ids[0]+'–'+ids.at(-1)+': cada modo corresponde al ítem y al distractor',async({page})=>{
   await page.addInitScript(ids=>localStorage.setItem('cachaste-m2-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'all-teaching',mode:'express',ids,index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:ids.map(()=>null),flags:[]}})),ids);
-  await page.goto('./m2.html');await page.locator('#resume').click();
+  await page.goto('./m2.html');await restoreVersionedDraft(page);await page.locator('#resume').click();
   const completed=await page.evaluate(ids=>{
    for(const id of ids){
     const q=window.CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey==='M2').find(q=>q.id===id),wrong=(q.answer+1)%q.options.length;
