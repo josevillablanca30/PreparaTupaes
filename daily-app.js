@@ -36,6 +36,12 @@
  function sceneTheme(basic,u){if(subject==='Lectura')return'reading';if(subject==='Ciencias')return'science';if(subject==='Historia')return'history';if(basic)return'foundation';if(subject==='M2')return'cosmic';const a=(u?.axis||'').toLowerCase();return a.includes('geometr')?'geometry':a.includes('álgebra')?'algebra':a.includes('probabilidad')?'night':'numbers';}
  function sceneMotif(theme){return({foundation:'La aldea de los fundamentos',numbers:'Las colinas de los números',algebra:'El bosque de las ecuaciones',geometry:'El valle de las formas',night:'El observatorio de los datos',cosmic:'La galaxia matemática',reading:'El bosque de las historias',science:'El laboratorio de los descubrimientos',history:'La ruta del tiempo'})[theme]||'Tu siguiente aventura';}
  function levelComplete(l,basic){return basic?B.status(l.id).complete:levelState(l).status==='comprobado';}
+ function starEvidence(l,basic=false){
+  if(basic)return null; // Basics use their own two-independent-check progression.
+  const state=levelState(l),stars=window.CachasteLearning.skillStars(state);
+  const title=stars>=4?'Habilidad demostrada':stars>=3?'Falta otra comprobación independiente':stars>=2?'Resuelve sin apoyo para demostrar lo aprendido':stars>=1?'Ya comenzaste a practicar':'Aún no has empezado';
+  return '<span class="skill-stars" aria-label="'+stars+' de 5 estrellas. '+title+'">'+Array.from({length:5},(_,i)=>'<span aria-hidden="true" class="'+(i<stars?'earned':'empty')+'">★</span>').join('')+'</span>';
+ }
  function node(l,i,basic=false,currentId=''){
   const p=basic?B.status(l.id):levelState(l),done=levelComplete(l,basic),practiced=basic?p.attempts>0:p.status!=='sin explorar',next=!done&&l.id===currentId;
   const attrs=basic?'data-basic="'+esc(l.id)+'"':'data-level="'+esc(l.id)+'"';
@@ -46,7 +52,7 @@
    '<button type="button" class="trail-node" data-action="'+(basic?'basic-level':'level')+'" '+attrs+' aria-label="'+esc(l.title||l.objective)+' · '+label+'"><span aria-hidden="true">'+(done?'✓':next?'★':practiced?'↗':i+1)+'</span></button>'+
    (next?'<span class="trail-guide" aria-hidden="true">'+avatar('walking','map-guide')+'</span>':'')+
    '</div><strong>'+esc(l.title||l.objective)+'</strong>'+
-   '<small class="trail-status">'+(done?'✓ Misión completada':next?'▶ JUGAR AHORA':practiced?'Volver a practicar':'Misión '+(i+1))+'</small></li>';
+   '<small class="trail-status">'+(done?'✓ Habilidad dominada':next?'▶ JUGAR AHORA':practiced?'Volver a practicar':'Misión '+(i+1))+'</small>'+(basic?'':starEvidence(l))+'</li>';
  }
  function worldMap(ls,basic,u,n,list,current){
   const theme=sceneTheme(basic,u),total=ls.length,completed=ls.filter(l=>levelComplete(l,basic)).length,allDone=total>0&&completed===total;
