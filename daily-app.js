@@ -135,6 +135,13 @@
  }
 
 
+ function starTutorGuide(concept,availableFamilies){
+  const state=E.profile(subject).find(x=>x.concept===concept)||{attempts:0,correct:0,evidence:[],status:'sin explorar'};
+  const stars=window.CachasteLearning.skillStars(state),remaining=Math.max(0,4-stars);
+  const advice=stars>=4?'¡Ahora sí cachaste! Demostraste esta habilidad con problemas distintos y sin ayuda. Puedes avanzar.':stars===3?'¡Buena! Ya resolviste un problema sin ayuda. Ahora intenta otro de una familia diferente y con seguridad.':stars===2?'Ya lograste acertar. Repasemos el porqué y después intenta resolver sin pistas.':stars===1?'Empezaste a practicar. Voy a explicártelo de otra forma y luego probaremos un ejercicio diferente.':'Primero te lo explico desde cero, con un ejemplo. Después practicaremos juntos.';
+  const gap=availableFamilies<2?'<p class="star-bank-warning">Esta habilidad aún no tiene suficientes familias independientes en el banco para certificar cuatro estrellas. Puedes estudiarla sin quedar bloqueado.</p>':'';
+  return '<section class="star-tutor-guide" aria-label="Tus estrellas y tu próximo aprendizaje"><strong>'+stars+' de 5 estrellas · '+(stars>=4?'Habilidad dominada':remaining+' para alcanzar el dominio')+'</strong><p>'+esc(advice)+'</p>'+gap+'</section>';
+ }
  function level(id){
   const l=levels().find(l=>l.id===id);if(!l)return home();
   const u=units().find(u=>u.levels.some(x=>x.id===l.id)),p=levelState(l),source=C.sources?.[subject]?.[u?.axis];
@@ -148,7 +155,7 @@
    '<section class="mission-preview"><span class="mission-emblem" aria-hidden="true">✦</span>'+
    '<span class="mission-kicker">'+esc(u?.axis||C.subjects[subject].name)+' · '+esc(u?.name||'Misión')+'</span>'+
    '<h1>'+esc(l.objective)+'</h1><p>'+esc(source?.goal||'Aprende a resolver y justificar situaciones con esta habilidad.')+'</p>'+
-   cat('encouraging','¿Ya manejas este contenido? Pruébalo directamente. Si necesitas apoyo, te lo explico con ejemplos y luego lo comprobamos.')+
+   cat('encouraging','¿Ya manejas este contenido? Pruébalo directamente. Si necesitas apoyo, te lo explico con ejemplos y luego lo comprobamos.')+starTutorGuide(l.objective,families.size)+
    '<div class="daily-actions mission-actions">'+button('check-first','Probar lo que sé','data-concept="'+esc(l.objective)+'"','primary')+
    button('lesson','Aprender con el gatito','data-concept="'+esc(l.objective)+'"')+
    button('study','Ver la explicación','data-level="'+esc(l.id)+'"')+(studio?button('studio-open',studio.generatedType?'Explorar este concepto con el gatito':'Jugar taller completo','data-studio="'+esc(studio.id)+'"','studio-entry'):'')+'</div>'+
