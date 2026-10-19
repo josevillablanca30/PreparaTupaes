@@ -70,3 +70,11 @@ test('Una sesión abierta conserva versiones por pregunta y detecta cambios sin 
  assert.equal(L.sessionVersionStatus({...session,assessmentVersions:[session.assessmentVersions[0]]},[q,other]),'changed');
  assert.equal(JSON.stringify(session),before);
 });
+
+
+test('Una sesión sin huella no se considera compatible de forma implícita',()=>{
+ const q=question();
+ assert.equal(L.sessionVersionStatus({ids:[q.id]},[q]),'legacy');
+ assert.equal(L.sessionVersionStatus({ids:[q.id],assessmentVersions:[L.assessmentVersion(q)]},[q]),'compatible');
+ assert.equal(L.sessionVersionStatus({ids:[q.id],assessmentVersions:['a1-'+ '0'.repeat(64)]},[q]),'changed');
+});
