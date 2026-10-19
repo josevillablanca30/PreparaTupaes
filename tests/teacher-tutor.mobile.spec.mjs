@@ -8,11 +8,15 @@ async function restoreVersionedDraft(page){
   saved.session.assessmentVersions=questions.map(q=>CachasteLearning.assessmentVersion(q));
   saved.session.questionSnapshots=questions.map(q=>CachasteLearning.assessmentSnapshot(q));
   const payload=JSON.stringify(saved);localStorage.setItem(key,payload);
-  // The previous study closure saves on pagehide: restore our explicit versioned fixture last.
+  // Study's visibilitychange/pagehide handlers may overwrite storage during reload.
+  // Reinstall the verified fixture immediately before application scripts run.
   window.addEventListener('pagehide',()=>localStorage.setItem(key,payload),{once:true});
   return true;
  },{key:'cachaste-m2-v1',subject:'M2'});
- if(active)await page.reload();
+ if(active){
+  await page.addInitScript(({key,payload})=>{const current=JSON.parse(localStorage.getItem(key)||'null');if(current?.session&&!current.session.assessmentVersions)localStorage.setItem(key,payload);},{key:'cachaste-m2-v1',payload:await page.evaluate(key=>localStorage.getItem(key),'cachaste-m2-v1')});
+  await page.reload();
+ }
 }
 
 test('Ensayo M2 mantiene 55 preguntas sin elegir dos variantes equivalentes cuando hay banco suficiente',async({page})=>{
