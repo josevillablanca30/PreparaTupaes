@@ -703,3 +703,10 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .skill-stars .earned{color:#bb7b0f;text-shadow:0 1px 0 #ffe1a0}
 #daily-root .skill-stars .empty{color:#b9b0c3;text-shadow:none}
 @media(max-width:390px){#daily-root .skill-stars{font-size:15px;gap:2px}}
+
+/* Learning stars are paired with actionable tutor feedback, not a decorative pay-off. */
+#daily-root .star-tutor-guide{margin:14px 0;padding:13px 16px;border:1.5px solid #dccbe9;border-radius:16px;background:#faf5ff;color:#513b69}
+#daily-root .star-tutor-guide strong{display:block;font-size:15px;font-weight:850}
+#daily-root .star-tutor-guide p{margin:7px 0 0;font-size:13px;line-height:1.55}
+#daily-root .star-tutor-guide .star-bank-warning{color:#8b4d24;font-weight:700}
+@media(max-width:390px){#daily-root .star-tutor-guide{padding:12px}}
