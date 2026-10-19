@@ -50,3 +50,18 @@ test('Tutor ofrece aprender antes de comprobar estrellas en una habilidad nueva'
  await expect(page.locator('.daily-session-head, .lesson-top').first()).toBeVisible();
  await fit(page);
 });
+
+test('Mapa: cuatro estrellas exigidas en la siguiente habilidad si hay ejercicios independientes',async({page})=>{
+ await choose(page,'M1');
+ const skill=await page.evaluate(()=>{
+  const app=CachasteDailyApp,e=app.engine,C=CachasteCurriculum;
+  const route=C.course(CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey==='M1'),'M1').flatMap(u=>u.levels);
+  const n=route.findIndex((level,i)=>i>0&&new Set(CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey==='M1'&&q.concept===route[i-1].objective).map(q=>q.transferGroup||q.family||q.key)).size>=2);
+  return n<0?null:{id:route[n].id,previous:route[n-1].objective};
+ });
+ if(!skill)return;
+ await page.goto('./inicio.html#level:'+encodeURIComponent(skill.id));
+ await expect(page.locator('.skill-gate')).toContainText('4 estrellas');
+ await expect(page.locator('.skill-gate [data-action=level]')).toBeVisible();
+ await fit(page);
+});
