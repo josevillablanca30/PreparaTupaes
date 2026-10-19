@@ -89,3 +89,14 @@ test('Una sesión nueva guarda una copia independiente de su evaluación',()=>{
  assert.equal(copy.options[0],'5');
  assert.notEqual(copy.assessmentVersion,L.assessmentVersion(q));
 });
+
+
+test('La copia de evaluación preserva datos visuales y la huella lectora sin referencias mutables',()=>{
+ const q={...question(),passageId:'T01',passageVersion:'huella-original',visual:{type:'bars',data:[2,4]}};
+ const copy=L.assessmentSnapshot(q);
+ q.visual.data[0]=999; q.passageVersion='huella-nueva';
+ assert.equal(copy.visual.data[0],2);
+ assert.equal(copy.passageVersion,'huella-original');
+ assert.equal(copy.passageId,'T01');
+ assert.notEqual(copy.assessmentVersion,L.assessmentVersion(q));
+});
