@@ -20,7 +20,8 @@ jobs:
   validate:
     name: Pruebas Android, iPhone y 320 px
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Full three-device Playwright suite has exceeded the previous 15-minute limit.
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
