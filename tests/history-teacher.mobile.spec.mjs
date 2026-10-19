@@ -8,11 +8,15 @@ async function restoreVersionedDraft(page){
   saved.session.assessmentVersions=questions.map(q=>CachasteLearning.assessmentVersion(q));
   saved.session.questionSnapshots=questions.map(q=>CachasteLearning.assessmentSnapshot(q));
   const payload=JSON.stringify(saved);localStorage.setItem(key,payload);
-  // The previous study closure saves on pagehide: restore our explicit versioned fixture last.
+  // Study's visibilitychange/pagehide handlers may overwrite storage during reload.
+  // Reinstall the verified fixture immediately before application scripts run.
   window.addEventListener('pagehide',()=>localStorage.setItem(key,payload),{once:true});
   return true;
  },{key:'cachaste-history-v1',subject:'Historia'});
- if(active)await page.reload();
+ if(active){
+  await page.addInitScript(({key,payload})=>{const current=JSON.parse(localStorage.getItem(key)||'null');if(current?.session&&!current.session.assessmentVersions)localStorage.setItem(key,payload);},{key:'cachaste-history-v1',payload:await page.evaluate(key=>localStorage.getItem(key),'cachaste-history-v1')});
+  await page.reload();
+ }
 }
 
 import{loadBanks}from'../scripts/load-banks.mjs';
