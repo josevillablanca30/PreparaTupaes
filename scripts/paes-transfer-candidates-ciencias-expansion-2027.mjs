@@ -1,0 +1,27 @@
+/* Candidatos de Ciencias: nueva aplicación por objetivo, aún no incorporados al banco comercial. */
+export const scienceExpansionCandidates=[
+ {base:'Ciencias:SCI-123',id:'TR-SCI-092',
+ question:'Una persona sufre una herida superficial en un dedo. Poco después presenta enrojecimiento, calor e hinchazón alrededor de la lesión, sin que se haya confirmado infección bacteriana. ¿Cuál explicación relaciona mejor estos signos?',
+ options:['La llegada de más sangre y la mayor permeabilidad de vasos locales pueden producir esos signos','Los glóbulos rojos se transforman en glóbulos blancos y bloquean por completo el daño','La hinchazón demuestra que todos los microorganismos fueron eliminados','Los vasos locales se cierran por completo e impiden la entrada de células defensivas'],answer:0,
+ steps:['La inflamación local es una respuesta del organismo ante señales de daño y no implica necesariamente que exista una infección confirmada.','La vasodilatación aumenta el flujo sanguíneo cercano y contribuye al enrojecimiento y calor; el aumento de permeabilidad favorece salida de líquido y llegada de células defensivas.','Por eso los tres signos pueden explicarse por cambios vasculares asociados a la respuesta innata, sin concluir que la herida está curada o libre de microorganismos.'],
+ errors:['','Los eritrocitos y leucocitos cumplen funciones diferentes; el organismo no necesita convertir unos en otros para responder a una lesión.','La inflamación informa una respuesta al daño, pero por sí sola no permite asegurar eliminación completa de microorganismos.','El cierre total impediría el aumento de flujo asociado al calor y enrojecimiento y dificultaría el reclutamiento celular.'],
+ transferDesign:{baseTask:'Reconocer señales de inflamación',newTask:'Explicar conjuntamente signos de lesión incluso cuando no se ha confirmado infección'},
+ sourceTrace:{subject:'Biología',officialEje:'Organismo y ambiente · respuesta innata',reviewStatus:'pendiente-cotejo-demre-y-drive'}
+ },
+ {base:'Ciencias:SCI-151',id:'TR-SCI-093',
+ question:'En una central hidroeléctrica, agua almacenada en altura baja por una tubería, mueve una turbina conectada a un generador y se suministra electricidad a la red. ¿Qué secuencia identifica la transformación energética principal?',
+ options:['Energía química del agua → energía nuclear → energía eléctrica','Energía potencial gravitatoria → energía mecánica de rotación → energía eléctrica','Energía térmica del agua → energía luminosa → energía química','Energía eléctrica inicial → energía gravitatoria → energía sonora'],answer:1,
+ steps:['El agua almacenada a cierta altura posee energía potencial gravitatoria debido a su posición en el campo gravitatorio.','Al descender y mover la turbina, parte de esa energía se transforma en movimiento del fluido y energía mecánica de rotación del conjunto turbina-generador.','El generador transforma energía mecánica en eléctrica; en un sistema real hay pérdidas, por lo que no toda la energía inicial llega a la red.'],
+ errors:['El agua no necesita transformarse químicamente ni experimentar procesos nucleares para impulsar la turbina.','','La generación hidroeléctrica no requiere que el agua se convierta primero en luz o en una sustancia nueva.','La secuencia invierte la fuente y el producto: se aprovecha la altura del agua para generar electricidad, no al revés.'],
+ transferDesign:{baseTask:'Reconocer cambios de energía en generadores',newTask:'Ordenar las etapas energéticas específicas de una central hidroeléctrica'},
+ sourceTrace:{subject:'Física',officialEje:'Energía · transformaciones y generadores',reviewStatus:'pendiente-cotejo-demre-y-drive'}
+ },
+ {base:'Ciencias:SCI-154',id:'TR-SCI-094',
+ question:'Un estudiante compara sodio (Na), ubicado en el grupo 1 de la tabla periódica, y cloro (Cl), ubicado en el grupo 17. Al formarse el compuesto iónico NaCl, ¿cuál descripción es consistente con sus electrones de valencia?',
+ options:['El sodio recibe un electrón del cloro y ambos forman iones negativos','Ambos átomos pierden un electrón y forman iones positivos','El sodio pierde un electrón y el cloro lo gana, generando iones de cargas opuestas','El cloro pierde siete electrones y el sodio los gana para completar sus capas'],answer:2,
+ steps:['Los elementos del grupo 1, como el sodio, poseen un electrón de valencia y suelen formar iones de carga positiva al perderlo.','El cloro pertenece al grupo 17, tiene siete electrones de valencia y puede ganar uno para completar su capa externa, formando un ion de carga negativa.','Al transferirse un electrón de Na a Cl se forman Na⁺ y Cl⁻, cuya atracción electrostática es compatible con un enlace iónico.'],
+ errors:['La dirección de transferencia está invertida: el sodio tiende a perder su electrón externo y el cloro a ganarlo.','El cloro no necesita perder un electrón para completar su capa externa en este caso; forma un anión.','','Perder siete electrones no es la vía habitual para alcanzar una capa externa estable en el cloro y contradice la formación conocida de NaCl.'],
+ transferDesign:{baseTask:'Identificar grupo y valencia',newTask:'Predecir transferencia electrónica y cargas iónicas usando dos grupos'},
+ sourceTrace:{subject:'Química',officialEje:'Estructura atómica · tabla periódica y enlace',reviewStatus:'pendiente-cotejo-demre-y-drive'}
+ }
+];
