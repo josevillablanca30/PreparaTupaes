@@ -130,6 +130,9 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
        const verified = preserved && L.assessmentVersion(preserved) === r.assessmentVersion;
        const q = verified ? (latest && L.assessmentVersion(latest) === r.assessmentVersion ? {...latest, ...preserved} : preserved) : latest;
        if (!q) return '';
+       if (typeof r.assessmentVersion === 'string' && L.assessmentVersion(q) !== r.assessmentVersion) {
+         return '<details class="review-item"><summary>Evaluación anterior · ' + esc(r.id) + '</summary><p>Conservamos tu resultado original, pero esta pregunta fue actualizada y no tenemos una copia verificable para mostrar una solución segura.</p></details>';
+       }
       const e = q.editorial || q;
       return '<details class="review-item"><summary>' + (r.correct ? '✓ ' : '↗ ') + esc(q.question) + '</summary><p><strong>Tu respuesta:</strong> ' + esc(r.selected == null ? r.unanswered ? 'Sin responder' : 'No guardada en esta versión anterior' : q.options[r.selected]) + '</p><p><strong>Correcta:</strong> ' + esc(q.options[q.answer]) + '</p>' + (r.selected != null && !r.correct && q.explanations?.[r.selected] ? '<p>' + esc(q.explanations[r.selected]) + '</p>' : '') + '<h3>Paso a paso</h3>' + lesson(q,'steps') + '<h3>Más fácil</h3>' + lesson(q,'easy') + '<h3>Con un ejemplo</h3>' + lesson(q,'example') + '</details>';
     }).join('');
