@@ -47,3 +47,13 @@ Resultado local: 217/217 pruebas, build correcto; **82 alertas heurísticas**, i
 La comparación individual de las 37 evaluaciones distintas está en `reports/reconciliation-triage-2026-10-18.json`: 28 candidatas para revisión de integración, 3 cambios equivalentes no prioritarios, 2 distractores actuales que conviene conservar y 4 casos bloqueados para importación directa (SCI-006, SCI-044, SCI-063, LEC-017). Las 37 conservan índice de clave entre ramas, pero cambian alternativas; eso no vuelve compatibles las respuestas históricas. Ninguna de esas 37 versiones de main se importó. Las decisiones son revisión editorial asistida, no certificación disciplinar.
 
 Próxima prioridad: diseño y pruebas de revisión de evaluaciones para preservar el texto/alternativa antigua y no reutilizar evidencia incompatible; después reconciliar candidatos de main y continuar las 38 alertas de pasos breves. SCI-063 necesita tarea de hipótesis sin dos opciones defendibles; SCI-044 necesita superar el enunciado tautológico.
+
+## Punto de continuación guardado
+
+Último código: **`6b78278b4dbac5e38d86859a38abaf02ba63a948`**, árbol **`72493c4a764d500e8b0e0dc793b88195482bf48f`**, rama `work/cachaste-motor-duolingo-20261016`. GitHub recibió el árbol completo y la referencia se actualizó sin forzar, comprobando el SHA anterior. Checkout limpio después de sincronizar.
+
+CI de este código iniciada y aún en curso en el último chequeo:
+- Pages / PR: **39179180659**.
+- Android / push: **39179177883**.
+
+Primera acción de la siguiente continuación: consultar ambos runs y sus logs; si hay fallo, corregirlo antes del próximo lote. No atribuir al commit nuevo los 744/88/8 resultados de `17974df`. Luego continuar la revisión de evaluaciones y las 38 alertas de pasos breves. Este registro exclusivamente documental no debe iniciar más Actions.
