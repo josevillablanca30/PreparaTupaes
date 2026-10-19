@@ -77,3 +77,13 @@ Distribución: el build limpia solo `dist` y valida una lista de 34 archivos. Se
 Este registro se envía junto con código y pruebas. Identificar el commit que incorpora esta sección en la rama y consultar Actions por su head SHA. No añadir inmediatamente otro commit documental solo para apuntar los runs: el PR puede reiniciarse. La validación de navegador/Android de este lote está pendiente al guardar; resultados anteriores no la sustituyen.
 
 Después de cerrar CI: quedan 19 pasos breves, las 24 reformulaciones cruzadas con main y la implementación de revisiones de evaluación antes de sustituir alternativas históricas. Empezar por el versionado y SCI-044/SCI-063, conservando los intentos originales. Compras y restauración de progreso siguen pendientes de implementación; los documentos comerciales son contratos de trabajo, no funciones ya activas.
+
+## Continuación del 19/10 · cierre de alertas de secuencia
+
+Base remota `ed48320a1a9ca61bbeafd848cdc0e6268ced15fc`, ya validada: runs 39180274230 (744 navegador) y 39180269563 (88 web Android, 8 nativas, build Android), ambos exitosos, 220 pruebas lógicas.
+
+Se retomó el lote de 19 secuencias preparado y se confirmaron 220 pruebas, build de 34 archivos y 44 observaciones, ninguna de paso breve. Fuentes, IDs revisados y límites: `revision-biologia-secuencias-2026-10-19.md`. No confundir ausencia de alertas de longitud con revisión pedagógica completa. Se mantienen los 788 registros de evaluación, alternativas y claves.
+
+El commit que incorpora esta sección se envía junto con el código. Consultar sus runs por head SHA antes de atribuirle validación móvil; no crear un commit documental separado que reinicie el PR.
+
+Siguiente bloque: versionado de evaluaciones y resolución de SCI-044/SCI-063. Inspección confirmó que `learning-core.js` asocia intentos al banco actual por ID; `study-app.js` guarda índice original de alternativa y genera un orden visual por ID. Cambiar alternativas bajo el mismo ID puede modificar lo que significa un índice guardado aunque la clave conserve su posición. Las sesiones guardan IDs e índices, no una copia de la evaluación: deben incluirse en la protección. No cambiar las 37 variantes de main antes de resolverlo en todas las superficies, incluido recorrido diario, M1 y las pantallas tradicionales.

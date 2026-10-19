@@ -51,43 +51,11 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-001",
-      "area": "Organización, estructura y actividad celular",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-004",
-      "area": "Procesos y funciones biológicas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-006",
-      "area": "Procesos y funciones biológicas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-006",
       "area": "Procesos y funciones biológicas",
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-007",
-      "area": "Herencia y evolución",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
     },
     {
       "bank": "Ciencias",
@@ -104,14 +72,6 @@
       "type": "reverse_length_cue",
       "level": "review",
       "detail": "Distractor mucho más largo que la correcta"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-020",
-      "area": "Energía – Tierra",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
     },
     {
       "bank": "Ciencias",
@@ -144,22 +104,6 @@
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-055",
-      "area": "Organización, estructura y actividad celular",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-063",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
     },
     {
       "bank": "Ciencias",
@@ -219,35 +163,11 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-085",
-      "area": "Procesos y funciones biológicas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-117",
-      "area": "Herencia y evolución",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-117",
       "area": "Herencia y evolución",
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-119",
-      "area": "Herencia y evolución",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
     },
     {
       "bank": "Ciencias",
@@ -267,14 +187,6 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-139",
-      "area": "Organización, estructura y actividad celular",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-143",
       "area": "Herencia y evolución",
       "type": "absolute_distractor",
@@ -283,75 +195,11 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-144",
-      "area": "Procesos y funciones biológicas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-147",
-      "area": "Mecánica",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-159",
-      "area": "Procesos y funciones biológicas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-162",
-      "area": "Procesos y funciones biológicas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-167",
-      "area": "Procesos y funciones biológicas",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-170",
-      "area": "Herencia y evolución",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-181",
-      "area": "Herencia y evolución",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-185",
       "area": "Ondas",
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-202",
-      "area": "Energía – Tierra",
-      "type": "short_reasoning_step",
-      "level": "review",
-      "detail": "Paso del razonamiento demasiado breve o poco explicativo"
     },
     {
       "bank": "Ciencias",
@@ -578,7 +426,7 @@
   },
   "summary": {
     "critical": 0,
-    "review": 63,
+    "review": 44,
     "questionCount": 788
   }
 }
