@@ -151,3 +151,33 @@ test('Ensayo pausado: reanuda la versión original, conserva omisiones y no reca
  assert.ok(root.innerHTML.includes('Pregunta original'));
  assert.equal(saved.session,null);
 });
+
+test('Ensayo reanudado conserva selección, marcas y plazo original',()=>{
+ const original={...question(),id:'M2-002',area:'Álgebra',question:'Pregunta anterior',options:['A','B','C','D'],answer:1};
+ const changed={...original,question:'Pregunta renovada',options:['E','F','G','H'],answer:0};
+ const until=Date.now()+900000,session={id:'timed',mode:'full',ids:[original.id],index:0,selected:2,checked:false,confidence:null,results:[],started:Date.now()-2000,deadline:until,answers:[2],flags:[0],assessmentVersions:[L.assessmentVersion(original)],questionSnapshots:[L.assessmentSnapshot(original)]};
+ const store=new Map([['study-timed',JSON.stringify({diagnosticDone:true,history:[],session})]]);
+ const root={innerHTML:'',querySelectorAll:()=>[]},elements=new Map();
+ const document={getElementById:id=>id==='app'?root:(elements.has(id)?elements.get(id):elements.set(id,{}).get(id)),addEventListener:()=>{},hidden:false};
+ const localStorage={getItem:key=>store.get(key)||null,setItem:(key,val)=>store.set(key,val)};
+ const window={addEventListener:()=>{},scrollTo:()=>{}};
+ const context=vm.createContext({window,document,localStorage,setInterval:()=>0,Date,Intl});
+ vm.runInContext(readFileSync(new URL('../learning-core.js',import.meta.url),'utf8'),context);
+ vm.runInContext(readFileSync(new URL('../study-app.js',import.meta.url),'utf8'),context);
+ window.CachasteStudy({bank:[changed],key:'study-timed',title:'M2',minutes:140,count:1});
+ elements.get('resume').onclick();
+ assert.ok(root.innerHTML.includes('Pregunta anterior'));
+ assert.ok(root.innerHTML.includes('C) C'));
+ assert.ok(root.innerHTML.includes('aria-pressed="true"'));
+ const persisted=JSON.parse(store.get('study-timed')).session;
+ assert.equal(persisted.deadline,until);
+ assert.equal(persisted.answers[0],2);
+ assert.deepEqual(persisted.flags,[0]);
+ elements.get('exam-next').onclick();
+ elements.get('finish').onclick();
+ const final=JSON.parse(store.get('study-timed')).lastResult;
+ assert.equal(final.correct,0);
+ assert.equal(final.results[0].selected,2);
+ assert.equal(final.results[0].assessmentVersion,session.assessmentVersions[0]);
+ assert.equal(final.questionSnapshots[0].question,'Pregunta anterior');
+});
