@@ -117,7 +117,9 @@
     if (!s || !Array.isArray(s.ids) || !s.ids.length || s.ids.length > limit || new Set(s.ids).size !== s.ids.length || !Number.isInteger(s.index) || s.index < 0 || s.index >= s.ids.length || !modes.includes(s.mode) || !Array.isArray(s.results) || s.results.length>s.ids.length || new Set(s.results.map(r=>r?.id)).size!==s.results.length) return false;
     const byId = new Map(bank.map(q => [q.id, q]));
     if (!s.ids.every(id => byId.has(id)) || s.results.some(r => !r || !byId.has(r.id) || !s.ids.includes(r.id) || typeof r.correct !== 'boolean')) return false;
-    if (s.selected != null && (!Number.isInteger(s.selected) || s.selected < 0 || s.selected >= byId.get(s.ids[s.index]).options.length)) return false;
+    const original=archivedSessionQuestions(s);
+    const active=original ? original[s.index] : byId.get(s.ids[s.index]);
+    if (s.selected != null && (!Number.isInteger(s.selected) || s.selected < 0 || s.selected >= active.options.length)) return false;
     return true;
   }
   function cleanRows(bank, rows, limit = 5000) {
