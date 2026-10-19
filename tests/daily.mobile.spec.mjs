@@ -38,3 +38,15 @@ test('Mapa muestra avance real de dominio sin confundir XP con misiones completa
  await expect(progress.locator('span')).toHaveAttribute('style','width:'+Math.round(expected/Math.max(1,total)*100)+'%');
  await fit(page);
 });
+
+test('Tutor ofrece aprender antes de comprobar estrellas en una habilidad nueva',async({page})=>{
+ await choose(page,'M1');
+ const target=page.locator('.trail-stop.current .trail-node').first();
+ await target.click();
+ await expect(page.locator('.star-tutor-guide')).toContainText('0 de 5 estrellas');
+ await expect(page.locator('.mission-actions [data-action=lesson]')).toHaveText('Aprender para mi siguiente estrella');
+ await expect(page.locator('.mission-actions [data-action=lesson]')).toHaveClass(/primary/);
+ await page.locator('.mission-actions [data-action=lesson]').click();
+ await expect(page.locator('.daily-session-head, .lesson-top').first()).toBeVisible();
+ await fit(page);
+});
