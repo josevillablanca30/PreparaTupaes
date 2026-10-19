@@ -18,6 +18,7 @@ for(const subject of subjects){
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('./'+subject.page);await diagnosis(page,subject);await page.locator('#back').click();await page.locator('#full').click();
   const start=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),subject.key);
+  expect(start.history.every(r=>/^a1-[a-f0-9]{64}$/.test(r.assessmentVersion))).toBe(true);
   expect(start.session.ids.length).toBe(subject.count);expect(start.session.deadline-start.session.started).toBeGreaterThanOrEqual(subject.minutes*60000);expect(start.session.deadline-start.session.started).toBeLessThan(subject.minutes*60000+1000);
   await page.locator('[data-choice]').first().click();await page.locator('#flag').click();await page.locator('#omit').click();
   await page.locator('#map').click();await page.locator('[data-jump="0"]').click();
@@ -51,7 +52,7 @@ for(const subject of subjects){
   await page.clock.install();await page.goto('./'+subject.page);await diagnosis(page,subject);await page.locator('#back').click();await page.locator('#full').click();
   await page.clock.fastForward((subject.minutes+1)*60000);
   await expect(page.getByRole('heading',{name:'0 de '+subject.count+' correctas',exact:true})).toBeVisible();
-  const saved=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),subject.key);expect(saved.assessments.length).toBe(2);expect(saved.lastResult.results.every(r=>r.unanswered)).toBe(true);
+  const saved=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),subject.key);expect(saved.history.every(r=>/^a1-[a-f0-9]{64}$/.test(r.assessmentVersion))).toBe(true);expect(saved.assessments.length).toBe(2);expect(saved.lastResult.results.every(r=>r.unanswered)).toBe(true);
   await page.clock.fastForward(60000);expect(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).assessments.length,subject.key)).toBe(2);
  });
 }
@@ -64,7 +65,7 @@ test('Lectura: siete textos, mapa, cambios y corrección completa al entregar',a
  await expect(page.getByText('¿Qué tan seguro estás?',{exact:true})).toHaveCount(0);
  await page.locator('.question-map button').last().click();await page.locator('button.option').first().click();await page.getByRole('button',{name:'Revisar entrega',exact:true}).click();
  await page.getByRole('button',{name:'Entregar ensayo',exact:true}).click();
- const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('cachaste-reading-v1')));expect(saved.session).toBeNull();expect(saved.recent.length).toBe(65);expect(saved.recent[0].unanswered).toBe(true);expect(saved.assessments.length).toBe(2);
+ const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('cachaste-reading-v1')));expect(saved.session).toBeNull();expect(saved.recent.length).toBe(65);expect(saved.recent[0].unanswered).toBe(true);expect(saved.history.every(r=>/^a1-[a-f0-9]{64}$/.test(r.assessmentVersion))).toBe(true);expect(saved.assessments.length).toBe(2);
  await page.reload();await expect(page.getByRole('heading',{name:'Historial de sesiones',exact:true})).toBeVisible();
 });
 test('M1: consultar un resultado antiguo conserva el ensayo activo y sus respuestas',async({page})=>{

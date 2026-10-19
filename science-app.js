@@ -119,7 +119,7 @@ function hint(){if(!session||session.checked||session.hint>=2||['diagnostico','c
 function confidence(value){if(!session||session.checked||!['seguro','duda','azar'].includes(value))return;session.confidence=value;store();render()}
 function check(){if(!session||session.mode==='completo'||session.checked||session.selected===null)return;const q=selected();if(!q)return;
  session.checked=true;
- const result={id:q.id,selected:session.selected,concept:q.concept||q.area,subject:q.subject,correct:session.selected===q.answer,assisted:session.hint>0,confidence:session.confidence||'duda',area:q.area,module:q.module,date:new Date().toISOString()};
+ const result={id:q.id,assessmentVersion:window.CachasteLearning.assessmentVersion(q),selected:session.selected,concept:q.concept||q.area,subject:q.subject,correct:session.selected===q.answer,assisted:session.hint>0,confidence:session.confidence||'duda',area:q.area,module:q.module,date:new Date().toISOString()};
  session.results.push(result);history.push(result);history=history.slice(-2000);
  if(!result.correct&&!pending.includes(q.id))pending.push(q.id);
  if(window.CachasteLearning){const proved=new Set(window.CachasteLearning.profile(BANK,history).filter(p=>p.status==='comprobado').map(p=>p.concept));pending=pending.filter(id=>!proved.has(BANK.find(q=>q.id===id).concept));}
@@ -137,7 +137,7 @@ function finishScienceExam(){
  if(!session||session.mode!=='completo')return;
  const legacy=session.legacyResults||[];
  const oldTail=history.slice(-legacy.length);if(legacy.length&&oldTail.length===legacy.length&&legacy.every((r,i)=>r.id===oldTail[i].id&&r.date&&r.date===oldTail[i].date&&r.correct===oldTail[i].correct))history=history.slice(0,-legacy.length);
- const results=session.ids.map(id=>{const q=BANK.find(x=>x.id===id),n=session.answers?.[id]??null,old=legacy.find(r=>r.id===id),unknownOld=n===null&&old&&!old.correct&&!old.unanswered&&!session.explicitlyOmitted?.includes(id);return {id,selected:n,subject:q.subject,concept:q.concept||q.area,correct:n!==null&&n===q.answer,assisted:false,confidence:'sin-declarar',area:q.area,module:q.module,unanswered:n===null&&!unknownOld,date:old?.date||new Date().toISOString()}});
+ const results=session.ids.map(id=>{const q=BANK.find(x=>x.id===id),n=session.answers?.[id]??null,old=legacy.find(r=>r.id===id),unknownOld=n===null&&old&&!old.correct&&!old.unanswered&&!session.explicitlyOmitted?.includes(id);return {id,assessmentVersion:window.CachasteLearning.assessmentVersion(q),selected:n,subject:q.subject,concept:q.concept||q.area,correct:n!==null&&n===q.answer,assisted:false,confidence:'sin-declarar',area:q.area,module:q.module,unanswered:n===null&&!unknownOld,date:old?.date||new Date().toISOString()}});
  history.push(...results);history=history.slice(-2000);
  for(const r of results)if(!r.correct&&!pending.includes(r.id))pending.push(r.id);
  remember('completo',results,session.track);session=null;screen='result';examConfirm=false;store();render(true);

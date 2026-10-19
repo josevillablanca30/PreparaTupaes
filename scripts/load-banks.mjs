@@ -4,6 +4,7 @@ const root = new URL('../', import.meta.url);
 export function loadBanks() {
   const context = vm.createContext({ window: { scrollTo() {} }, document: { getElementById() { return { innerHTML: '' }; } }, localStorage: { getItem() { return null; }, setItem() {}, removeItem() {} } });
   for (const file of ['learning-core.js', 'm1-teaching.js', 'science-bank.js', 'reading-bank.js', 'history-bank.js', 'm2-bank.js']) vm.runInContext(readFileSync(new URL(file, root), 'utf8'), context, { filename: file });
+  context.window.CachasteLearning.bindPassages(context.window.READING_QUESTIONS,context.window.READING_PASSAGES);
   const html = readFileSync(new URL('index.html', root), 'utf8');
   vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1], context, { filename: 'index.html' });
   return { M1: vm.runInContext('catalog', context), Ciencias: context.window.SCIENCE_BANK, Lectura: context.window.READING_QUESTIONS, M2: context.window.CACHASTE_M2, Historia: context.window.CACHASTE_HISTORIA, texts: context.window.READING_PASSAGES };

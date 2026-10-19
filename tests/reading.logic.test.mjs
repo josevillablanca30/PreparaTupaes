@@ -163,3 +163,10 @@ test('Lectura migra respuestas anteriores sin duplicar historial y conserva los 
  const b=reading(new Map([['cachaste-reading-v1',JSON.stringify(state)]]));b.win.readingResume();b.win.readingExamAction('submit');const done=b.get();
  assert.equal(done.history.length,95);assert.equal(done.recent[0].correct,true);assert.equal(done.recent[1].unanswered,false);
 });
+
+test('Lectura conserva versión y pasaje en diagnóstico y ensayo',()=>{
+ const a=reading();finishDiagnosis(a);
+ assert.ok(a.get().history.every(r=>r.assessmentVersion===a.win.CachasteLearning.assessmentVersion(a.items.find(q=>q.id===r.id))));
+ a.win.readingBegin('completo');a.win.readingExamAction('submit');
+ assert.ok(a.get().recent.every(r=>r.assessmentVersion===a.win.CachasteLearning.assessmentVersion(a.items.find(q=>q.id===r.id))));
+});

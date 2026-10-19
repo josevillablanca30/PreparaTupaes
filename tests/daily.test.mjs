@@ -12,6 +12,7 @@ test('Aciertos después de estudiar conservan XP e historial, sin dominio al rec
    e.state.session.studied=true;
    const row=e.answer(0,'seguro');
    assert.equal(row.afterStudy,true);
+   assert.match(row.assessmentVersion,/^a1-[a-f0-9]{64}$/);
    assert.equal(row.correct,true);
    e.next();
   }
@@ -23,6 +24,7 @@ test('Aciertos después de estudiar conservan XP e historial, sin dominio al rec
   const mirrored=JSON.parse(storage.getItem(C.subjects[subject].key));
   const rows=Array.isArray(mirrored)?mirrored:mirrored.history;
   assert.ok(rows.every(r=>r.afterStudy&&r.correct));
+  assert.deepEqual(rows.map(r=>r.assessmentVersion),Array.from(re.history(subject),r=>r.assessmentVersion));
   const sourceBank=bank.map(q=>({...q,id:q.sourceId}));
   assert.equal(ctx.CachasteLearning.profile(sourceBank,rows)[0].status,'por reforzar');
   assert.equal(storage.getItem(D.KEY),saved,'consultar progreso no borra intentos');

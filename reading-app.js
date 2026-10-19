@@ -2,6 +2,7 @@
 (function(){
 'use strict';
 const PASSAGES=window.READING_PASSAGES||[],BANK=window.READING_QUESTIONS||[];
+window.CachasteLearning.bindPassages(BANK,PASSAGES);
 const KEY='cachaste-reading-v1',view=document.getElementById('view'),status=document.getElementById('status');
 const skills=['Localizar','Interpretar','Evaluar'];
 const stored=(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch{return {}}})();
@@ -78,7 +79,7 @@ function advance(skip=false){
  if(session.mode==='completo'&&session.selected===null&&!skip)return;
  // Omitir debe registrar una respuesta en blanco incluso si había una alternativa marcada.
  const answer=skip?null:session.selected;
- const record={id:q.id,passageId:q.passageId,skill:q.skill,concept:q.concept,selected:answer,correct:answer!==null&&answer===q.answer,confidence:answer===null?'sin-declarar':session.confidence,assisted:session.hint>0,unanswered:answer===null,at:new Date().toISOString()};
+ const record={id:q.id,assessmentVersion:window.CachasteLearning.assessmentVersion(q),passageId:q.passageId,skill:q.skill,concept:q.concept,selected:answer,correct:answer!==null&&answer===q.answer,confidence:answer===null?'sin-declarar':session.confidence,assisted:session.hint>0,unanswered:answer===null,at:new Date().toISOString()};
  session.results.push(record);
  history.push(record);history=history.slice(-3000);
  if(!record.correct&&!pending.includes(q.id))pending.push(q.id);
@@ -92,7 +93,7 @@ function finish(){
  const done=session;
  if(done.mode==='completo'){
   const legacy=done.legacyResults||[],oldTail=history.slice(-legacy.length);if(legacy.length&&oldTail.length===legacy.length&&legacy.every((r,i)=>r.id===oldTail[i].id&&r.at&&r.at===oldTail[i].at&&r.correct===oldTail[i].correct))history=history.slice(0,-legacy.length);
-  done.results=done.ids.map(id=>{const q=qBy(id),n=done.answers[id]??null,old=legacy.find(r=>r.id===id),unknownOld=n===null&&old&&!old.correct&&!old.unanswered&&!done.explicitlyOmitted?.includes(id);return {id,passageId:q.passageId,skill:q.skill,concept:q.concept,selected:n,correct:n!==null&&n===q.answer,confidence:'sin-declarar',assisted:false,unanswered:n===null&&!unknownOld,at:old?.at||new Date().toISOString()}});
+  done.results=done.ids.map(id=>{const q=qBy(id),n=done.answers[id]??null,old=legacy.find(r=>r.id===id),unknownOld=n===null&&old&&!old.correct&&!old.unanswered&&!done.explicitlyOmitted?.includes(id);return {id,assessmentVersion:window.CachasteLearning.assessmentVersion(q),passageId:q.passageId,skill:q.skill,concept:q.concept,selected:n,correct:n!==null&&n===q.answer,confidence:'sin-declarar',assisted:false,unanswered:n===null&&!unknownOld,at:old?.at||new Date().toISOString()}});
   history.push(...done.results);history=history.slice(-3000);
   for(const r of done.results)if(!r.correct&&!pending.includes(r.id))pending.push(r.id);
  }

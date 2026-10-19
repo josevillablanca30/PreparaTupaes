@@ -457,3 +457,11 @@ test('M1 protege la sesión guardada al intentar iniciar otra desde inicio',()=>
  run("startExam('full')");assert.equal(run('localStorage.getItem(mathDraftKey)'),before);assert.equal(run('exam'),false);
  run('requestDiscardMath()');assert.equal(run('page'),'discard');run("navigate('home');resumeMathDiagnosis()");assert.equal(run('choice'),1);assert.equal(run('confidence'),'azar');
 });
+
+test('M1 guarda versión en práctica y ensayo sin cambiar el índice elegido',()=>{
+ const run=app();run("start('rapida');choice=0;check()");
+ assert.equal(run('history.at(-1).assessmentVersion'),run('window.CachasteLearning.assessmentVersion(queue[i])'));
+ assert.equal(run('history.at(-1).selected'),0);
+ const exam=app();exam("startExam('express');finishExam()");
+ assert.equal(exam('history.every(r=>r.assessmentVersion===window.CachasteLearning.assessmentVersion(catalog.find(q=>q.id===r.id)))'),true);
+});

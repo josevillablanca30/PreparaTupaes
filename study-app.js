@@ -53,7 +53,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   function check() { if (!session || session.mode === 'full' || session.checked || session.selected === null || !session.confidence) return; session.checked = true; explainMode = 'steps'; save(); render(); }
   function row(q, selected, confidence, extra = {}) {
     const original = selected === null ? null : order(q).indices[selected];
-    return { id: q.id, area: q.area, concept: L.concept(q), selected: original, correct: original !== null && original === q.answer, confidence: confidence || 'sin-declarar', unanswered: original === null, mode: session.mode, date: new Date().toISOString(), sessionId: session.id, ...extra };
+    return { id: q.id, assessmentVersion: L.assessmentVersion(q), area: q.area, concept: L.concept(q), selected: original, correct: original !== null && original === q.answer, confidence: confidence || 'sin-declarar', unanswered: original === null, mode: session.mode, date: new Date().toISOString(), sessionId: session.id, ...extra };
   }
   function next() {
     if (!session || !session.checked || session.mode === 'full') return;
