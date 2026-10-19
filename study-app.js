@@ -8,6 +8,13 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   let stored = {}; try { stored = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch {}
   let history = Array.isArray(stored.history) ? stored.history.filter(r => r && byId.has(r.id) && typeof r.correct === 'boolean').slice(-5000) : [];
   let session = L.validSession(stored.session, BANK, ['diagnostic', 'express', 'reinforce', 'full']) ? stored.session : null;
+  // The archive is self-validated. Use the original assessment, with current teaching only when available.
+  const archived = () => session ? L.archivedSessionQuestions(session) : null;
+  const archivedById = () => new Map((archived() || []).map(q => [q.id, q]));
+  const sessionQuestion = id => {
+    const original = archivedById().get(id), latest = byId.get(id);
+    return original ? {...(latest || {}), ...original, teaching:latest?.teaching, editorial:latest?.editorial, explanations:latest?.explanations} : latest;
+  };
   let lastResult = L.cleanAssessment(BANK,stored.lastResult);
   let assessments = Array.isArray(stored.assessments) ? stored.assessments.map(r=>L.cleanAssessment(BANK,r)).filter(Boolean).slice(-100) : [];
   let diagnosticDone = stored.diagnosticDone === true || lastResult?.mode === 'diagnostic' && lastResult.results.length === 30;
@@ -17,7 +24,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   if(session){session.selected=session.selected??null;session.checked=!!session.checked&&session.selected!==null;session.flags=Array.isArray(session.flags)?session.flags.filter(n=>Number.isInteger(n)&&n>=0&&n<session.ids.length):[];}
   if (session?.mode === 'full') {
     if (!Array.isArray(session.answers) || session.answers.length !== session.ids.length) session = null;
-    else if (session.answers.some((n, i) => n !== null && (!Number.isInteger(n) || n < 0 || n >= order(byId.get(session.ids[i])).options.length))) session = null;
+    else if (session.answers.some((n, i) => n !== null && (!Number.isInteger(n) || n < 0 || n >= order(sessionQuestion(session.ids[i])).options.length))) session = null;
   }
   function save() {
     try { localStorage.setItem(KEY, JSON.stringify({ version: 2, history, session, lastResult, diagnosticDone, assessments })); return true; }
@@ -28,7 +35,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
     const indices = q.options.map((_, i) => (i + shift) % q.options.length);
     return { options: indices.map(i => q.options[i]), answer: indices.indexOf(q.answer), indices };
   }
-  const current = () => session && byId.get(session.ids[session.index]);
+  const current = () => session && sessionQuestion(session.ids[session.index]);
   function begin(mode) {
     if (!diagnosticDone && mode !== 'diagnostic') { notice = 'Completa primero el diagnóstico para orientar tu práctica.'; render(); return; }
     if (session) { notice = 'Tienes una sesión guardada. Retómala o descártala antes de iniciar otra.'; render(); return; }
@@ -50,7 +57,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
     if (session.mode === 'full') session.answers[session.index] = n;
     save(); render();
   }
-  function confidence(c) { if (!session || session.checked || !['seguro', 'duda', 'azar'].includes(c)) return; session.confidence = c; save(); render(); }
+  function confidence(c) { if (sessionChanged() || !session || session.checked || !['seguro', 'duda', 'azar'].includes(c)) return; session.confidence = c; save(); render(); }
   function check() { if (sessionChanged()) return; if (!session || session.mode === 'full' || session.checked || session.selected === null || !session.confidence) return; session.checked = true; explainMode = 'steps'; save(); render(); }
   function row(q, selected, confidence, extra = {}) {
     const original = selected === null ? null : order(q).indices[selected];
@@ -67,7 +74,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   function finish() {
     if (!session || sessionChanged()) { notice = 'La sesión contiene versiones antiguas y no se puede calificar con preguntas nuevas.'; screen = 'home'; render(); return; }
     if (session.mode === 'full') {
-      session.results = session.ids.map((id, i) => row(byId.get(id), session.answers[i], null));
+      session.results = session.ids.map((id, i) => row(sessionQuestion(id), session.answers[i], null));
       history.push(...session.results);
     }
     lastResult = L.summary(session.mode, session.results.slice(), { id: session.id, duration: Math.max(0, Date.now() - session.started) });
@@ -75,7 +82,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
     if (session.mode === 'diagnostic' && session.results.length === 30) diagnosticDone = true;
     session = null; confirming = false; screen = 'result'; save(); render(true);
   }
-  function sessionChanged() { return session && L.sessionVersionStatus(session, BANK) !== 'compatible'; }
+  function sessionChanged() { return session && L.sessionVersionStatus(session, BANK) !== 'compatible' && !archived(); }
   function expired() { if (sessionChanged()) { notice = 'La sesión anterior se conserva sin recalificar; elige cómo continuar desde el inicio.'; screen = 'home'; render(); return true; } if (session?.mode === 'full' && Date.now() >= session.deadline) { finish(); return true; } return false; }
   function move(index) { if (sessionChanged()) return; if (!session || session.mode !== 'full' || expired()) return; session.index = Math.max(0, Math.min(index, session.ids.length - 1)); session.selected = session.answers[session.index]; confirming = false; save(); render(true); }
   function timeLeft() { const secs = Math.max(0, Math.ceil((session.deadline - Date.now()) / 1000)); return Math.floor(secs / 60) + ':' + String(secs % 60).padStart(2, '0'); }
@@ -83,7 +90,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
     const t=q.teaching,e=q.editorial||q;
     const paragraphs=values=>values.map(value=>'<p>'+esc(value)+'</p>').join('');
     const steps=values=>'<ol>'+values.map(value=>'<li>'+esc(value)+'</li>').join('')+'</ol>';
-    if(!t)return mode==='steps'?steps(e.steps):paragraphs(String(mode==='easy'?e.easy:e.example).split('\n\n'));
+    if(!t)return mode==='steps'?steps(Array.isArray(e.steps)?e.steps:['Resuelve el ejercicio conservado utilizando sus datos originales.']):paragraphs(String(mode==='easy'?(e.easy||'Revisa el procedimiento con los datos originales.'):(e.example||'Compara la respuesta elegida con la solución original.')).split('\n\n'));
     const section=(heading,body,kind='')=>'<section class="teaching-section '+kind+'"><h4>'+heading+'</h4>'+body+'</section>';
     if(mode==='steps')return section('Entendamos qué buscamos',paragraphs([t.aim]))+section('El concepto desde cero',paragraphs(t.foundation))+section('Resolvamos tu pregunta',steps(t.application))+section('Comprobemos el resultado',paragraphs([t.check]),'teaching-check');
     if(mode==='easy')return section('Imagínalo así',paragraphs(t.intuition))+section('Conectémoslo con tu ejercicio',steps(t.application));
@@ -117,7 +124,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   function result() {
     const rows = lastResult?.results || [], good = rows.filter(x => x.correct).length;
     return '<span class="eyebrow">Resultado de tu sesión</span><h1>' + good + ' de ' + rows.length + ' correctas</h1><p>Comprender el error es parte del avance. Revisa tus respuestas y después prueba con otro ejercicio del mismo concepto.</p>' + report(rows) + '<div class="actions"><button class="primary" id="reinforce">Practicar con preguntas nuevas</button><button id="back">Volver al inicio</button><button id="progress">Ver mi progreso</button></div><h2>Revisa y comprende</h2>' + rows.map(r => {
-      const q = byId.get(r.id); if (!q) return '';
+      const q = sessionQuestion(r.id); if (!q) return '';
       const e = q.editorial || q;
       return '<details class="review-item"><summary>' + (r.correct ? '✓ ' : '↗ ') + esc(q.question) + '</summary><p><strong>Tu respuesta:</strong> ' + esc(r.selected == null ? r.unanswered ? 'Sin responder' : 'No guardada en esta versión anterior' : q.options[r.selected]) + '</p><p><strong>Correcta:</strong> ' + esc(q.options[q.answer]) + '</p>' + (r.selected != null && !r.correct && q.explanations?.[r.selected] ? '<p>' + esc(q.explanations[r.selected]) + '</p>' : '') + '<h3>Paso a paso</h3>' + lesson(q,'steps') + '<h3>Más fácil</h3>' + lesson(q,'easy') + '<h3>Con un ejemplo</h3>' + lesson(q,'example') + '</details>';
     }).join('');
