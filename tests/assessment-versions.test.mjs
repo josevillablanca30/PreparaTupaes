@@ -181,3 +181,18 @@ test('Ensayo reanudado conserva selección, marcas y plazo original',()=>{
  assert.equal(final.results[0].assessmentVersion,session.assessmentVersions[0]);
  assert.equal(final.questionSnapshots[0].question,'Pregunta anterior');
 });
+
+test('La revisión preservada distingue enunciados revisados sin reutilizar enseñanza nueva',()=>{
+ const q=question(),snapshot=L.assessmentSnapshot(q);
+ const changed={...q,question:'Nuevo enunciado',teaching:{aim:'Tutor para otra evaluación'}};
+ const row={id:q.id,assessmentVersion:snapshot.assessmentVersion,selected:0,correct:true};
+ assert.notEqual(L.assessmentVersion(changed),row.assessmentVersion);
+ assert.equal(L.assessmentVersion(snapshot),row.assessmentVersion);
+ const verified=L.assessmentVersion(snapshot)===row.assessmentVersion;
+ const selected=verified?(L.assessmentVersion(changed)===row.assessmentVersion?{...changed,...snapshot}:snapshot):changed;
+ assert.equal(selected.question,q.question);
+ assert.equal(selected.teaching,undefined);
+ const updated={...q,teaching:{aim:'Tutor válido para la misma pregunta'}};
+ const unchanged=L.assessmentVersion(updated)===row.assessmentVersion?{...updated,...snapshot}:snapshot;
+ assert.equal(unchanged.teaching.aim,'Tutor válido para la misma pregunta');
+});
