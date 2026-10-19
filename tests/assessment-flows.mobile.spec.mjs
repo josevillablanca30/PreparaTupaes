@@ -97,7 +97,7 @@ test('Alumno de enseñanza media puede demostrar un concepto antes de escuchar u
  await page.locator('.adventure-world [data-action=level]').first().click();
  await expect(page.locator('.mission-preview')).toBeVisible();
  await expect(page.locator('[data-action=check-first]')).toBeVisible();
- await expect(page.locator('[data-action=lesson]')).toContainText('Aprender con el gatito');
+ await expect(page.locator('[data-action=lesson]')).toContainText('Aprender para mi siguiente estrella');
  await page.locator('[data-action=check-first]').click();
  await expect(page.locator('.question-title')).toBeVisible();
  await expect(page.locator('.daily-session-head')).toContainText('Historia');
