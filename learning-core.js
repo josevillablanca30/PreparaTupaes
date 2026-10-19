@@ -13,7 +13,7 @@
       const q = row && byId.get(row.id); if (!q) return;
       const item = groups.get(concept(q)); item.attempts++;
       if (row.correct) item.correct++;
-      if (!row.correct || row.assisted || row.confidence === 'azar' || row.confidence === 'duda') {
+      if (!row.correct || row.assisted || row.afterStudy || row.confidence === 'azar' || row.confidence === 'duda') {
         item.lastFailure = index; item.evidence.clear(); item.status = 'por reforzar';
       } else if(row.confidence === 'seguro') {
         item.evidence.add(q.transferGroup || row.id);
@@ -46,7 +46,7 @@
   }
   function transfer(bank, history, rows, count = 10) {
     const byId = new Map(bank.map(q => [q.id, q]));
-    const weak = [...new Set(rows.filter(r => r && (!r.correct || r.assisted || r.confidence === 'duda' || r.confidence === 'azar')).map(r => byId.get(r.id)).filter(Boolean).map(concept))];
+    const weak = [...new Set(rows.filter(r => r && (!r.correct || r.assisted || r.afterStudy || r.confidence === 'duda' || r.confidence === 'azar')).map(r => byId.get(r.id)).filter(Boolean).map(concept))];
     const seen = new Set(history.map(r => r?.id));
     const exclude = [...new Set([...rows.map(r => r?.id), ...history.slice(-10).map(r => r?.id)])];
     const blockedFamilies=new Set(exclude.map(id=>byId.get(id)).filter(Boolean).map(q=>q.transferGroup||q.id));

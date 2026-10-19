@@ -3,6 +3,31 @@ const ctx=vm.createContext({Intl,Date});for(const f of['learning-core.js','daily
 const memory=()=>{const m=new Map();return{getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v)}};
 const fixtures=Array.from({length:24},(_,i)=>({id:String(i),sourceId:i,key:'M1:'+i,subjectKey:'M1',concept:i<12?'Porcentaje':'Ecuación',family:'M1:'+i,options:['sí','no'],answer:0}));
 function engine(bank=fixtures,storage=memory(),now=()=>Date.parse('2026-10-15T15:00:00Z')){return D.create(storage,bank,C.subjects,now,()=>.5)}
+test('Aciertos después de estudiar conservan XP e historial, sin dominio al recargar ni en el espejo',()=>{
+ for(const subject of Object.keys(C.subjects)){
+  const bank=fixtures.map(q=>({...q,subjectKey:subject,key:subject+':'+q.id,family:subject+':'+q.id}));
+  const storage=memory(),e=engine(bank,storage);
+  e.start(subject,2,'lesson','Porcentaje');
+  for(let i=0;i<2;i++){
+   e.state.session.studied=true;
+   const row=e.answer(0,'seguro');
+   assert.equal(row.afterStudy,true);
+   assert.equal(row.correct,true);
+   e.next();
+  }
+  const saved=storage.getItem(D.KEY),re=engine(bank,storage);
+  assert.equal(re.stats().xp,30);
+  assert.equal(re.history(subject).length,2,'el espejo no duplica respuestas');
+  assert.equal(re.profile(subject)[0].status,'por reforzar',subject);
+  assert.equal(re.stats().achievements.includes('Dominio demostrado'),false);
+  const mirrored=JSON.parse(storage.getItem(C.subjects[subject].key));
+  const rows=Array.isArray(mirrored)?mirrored:mirrored.history;
+  assert.ok(rows.every(r=>r.afterStudy&&r.correct));
+  const sourceBank=bank.map(q=>({...q,id:q.sourceId}));
+  assert.equal(ctx.CachasteLearning.profile(sourceBank,rows)[0].status,'por reforzar');
+  assert.equal(storage.getItem(D.KEY),saved,'consultar progreso no borra intentos');
+ }
+});
 test('Currículo diario: clasifica 623 IDs estables sin cambiar claves ni perder las cinco materias',()=>{assert.equal(items.length,788);assert.equal(new Set(items.map(q=>q.key)).size,788);for(const s of Object.keys(C.subjects)){const axes=C.organize(items,s);assert.ok(axes.length);for(const q of items.filter(q=>q.subjectKey===s)){assert.ok(q.axis&&q.unit&&q.concept&&q.levelId);assert.ok(q.teaching);assert.ok(q.answer>=0&&q.answer<q.options.length);}}assert.equal(items.filter(q=>q.supplementary).length,33);assert.deepEqual(new Set(items.filter(q=>q.subjectKey==='Lectura').map(q=>q.axis)),new Set(['Localizar','Interpretar','Evaluar']));});
 test('Diagnóstico tradicional alimenta el mismo dominio sin modificar borradores ni evaluaciones',()=>{const storage=memory(),old={history:[{id:'M2-001',correct:false,confidence:'seguro',date:'2026-10-14'}],session:{id:'old'},assessments:[{id:'diagnosis'}]};storage.setItem(C.subjects.M2.key,JSON.stringify(old));const e=engine(items,storage);assert.equal(e.profile('M2').find(p=>p.concept===items.find(q=>q.key==='M2:M2-001').concept).status,'por reforzar');assert.equal(storage.getItem(C.subjects.M2.key),JSON.stringify(old));});
 test('Express: registrar presentación y reabrir impide repetir pregunta incluso abandonada',()=>{const storage=memory(),e=engine(fixtures,storage);e.start('M1',2);const first=e.state.session.keys[0];e.close();const resumed=engine(fixtures,storage);assert.ok(!resumed.select('M1',4).questions.some(q=>q.key===first));assert.equal(resumed.state.seen[first].count,1);});
