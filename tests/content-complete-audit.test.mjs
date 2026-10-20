@@ -51,3 +51,17 @@ test('Auditoría de contenido comercial por asignatura: claves coherentes, alter
  console.log('AUDITORÍA DE CONTENIDOS '+JSON.stringify(report));
  assert.equal(items.length,788,'No incrementar banco comercial por una auditoría');
 });
+
+test('Tutor particular: las cinco materias ofrecen pasos, versión fácil, ejemplo y corrección de distractores',()=>{
+ const {items}=dailyCatalog(),missing=[];
+ for(const q of items){
+  const t=q.teaching||{},example=t.example||{};
+  const modes={steps:[t.aim,...(t.foundation||[]),...(t.application||[]),t.check],easy:t.intuition||[],example:[example.problem,...(example.steps||[]),example.bridge]};
+  for(const [mode,cards] of Object.entries(modes)){
+   if(!cards.some(text=>typeof text==='string'&&text.trim().length>=8))missing.push(q.key+':'+mode);
+  }
+  if(!Array.isArray(q.explanations)||q.explanations.length!==q.options.length)missing.push(q.key+':distractores');
+ }
+ console.log('AUDITORÍA TUTOR '+JSON.stringify({questions:items.length,missing:missing.slice(0,30),totalMissing:missing.length}));
+ assert.deepEqual(missing,[],'Toda pregunta comercial debe tener explicaciones útiles en los tres modos del tutor');
+});
