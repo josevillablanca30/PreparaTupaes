@@ -4,10 +4,11 @@ import {join} from 'node:path';
 export const distributionFiles=Object.freeze([
  'index.html','inicio.html','science.html','reading.html','m2.html','history.html',
  'daily-foundation-visuals.js','daily-basics.js','daily-visuals.js','daily-curriculum.js',
- 'daily-school.js','daily-progression.js','daily-scenarios.js','daily-demonstrations.js','daily-lessons.js','daily-core.js','daily-gameplay.js','daily-studios.js','daily-app.js','daily-ui.css',
+ 'daily-school.js','daily-progression.js','daily-scenarios.js','daily-demonstrations.js','daily-lessons.js','daily-core.js','daily-gameplay.js','daily-studios.js','daily-app.js','daily-lesson-visuals.js','daily-reference.css','daily-ui.css',
  'learning-core.js','editorial-revisions.js','m1-teaching.js','study-app.js','study-ui.css','history-bank.js',
  'history-app.js','science-bank.js','science-app.js','reading-bank.js','reading-app.js',
  'm2-bank.js','m2-app.js','daily-catalog.js','.nojekyll','version.json',
+ 'assets/gatito-sabio-poses-v2.webp','assets/map-valley-v1.webp','assets/subject-m1-v1.webp','assets/subject-m2-v1.webp','assets/subject-reading-v1.webp','assets/subject-history-v1.webp','assets/subject-science-v1.webp',
  'assets/gatito-sabio-poses-v1.png','assets/gatito-sabio-oficial.png',
  'assets/cachaste-icon.svg','assets/cachaste-logo.svg',
  ...['algebra','mechanics','solutions','sources'].map(k=>'assets/lesson-cat-'+k+'-v2.webp'),

@@ -12,8 +12,8 @@ android {
         minSdk 24
         targetSdk 36
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        versionCode 19
-        versionName '1.4.0-rc5'
+        versionCode 20
+        versionName '1.4.0-rc6'
     }
     signingConfigs {
         if (hasReleaseSigning) {
