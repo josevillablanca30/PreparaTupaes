@@ -325,6 +325,6 @@
  }
  for(const c of entries)if(['territory','readingEvidence','readingUnsupported'].includes(c.id))c.art='sources';
  function get(q){return index[q.subjectKey+':'+q.concept]||null;}
- function cards(q){const c=get(q);if(!c)return[];const first={kind:'evidence',section:'Explorar',title:c.title,text:c.text,nodes:c.nodes,diagram:c.diagram,cue:'Examinemos cada parte del caso y conectemos la evidencia con la explicación.'};if(!c.quiz)return[first];return[first,{kind:'probe',section:'Explorar',title:'Apliquemos el criterio a otro caso',text:'Práctica guiada. Justifica tu elección; después comprobarás el dominio con problemas independientes.',...c.quiz}];}
+ function cards(q){const c=get(q);if(!c)return[];const first={kind:'evidence',section:'Explorar',title:c.title,text:c.text,nodes:c.nodes,diagram:c.diagram,cue:'Miremos qué aporta «'+c.nodes[0][0]+'» y cómo se relaciona con «'+c.nodes[c.nodes.length-1][0]+'».'};if(!c.quiz)return[first];return[first,{kind:'probe',section:'Explorar',title:'Apliquemos el criterio a otro caso',text:'Práctica guiada. Justifica tu elección; después comprobarás el dominio con problemas independientes.',...c.quiz}];}
  g.CachasteScenarios={entries,get,cards,render};
 })(typeof window==='undefined'?globalThis:window);

@@ -893,3 +893,5 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
  #daily-root .scenario-relationships span{font-size:14px;padding:12px;overflow-wrap:normal;word-break:normal}
  #daily-root .scenario-relationships b{align-self:center;transform:rotate(90deg)}
 }
+
+@media(max-width:360px){#daily-root .lesson-chapters{grid-template-columns:repeat(3,minmax(0,1fr))}#daily-root .lesson-chapters button{font-size:12px!important}}
