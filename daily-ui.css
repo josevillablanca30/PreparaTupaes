@@ -895,3 +895,6 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 }
 
 @media(max-width:360px){#daily-root .lesson-chapters{grid-template-columns:repeat(3,minmax(0,1fr))}#daily-root .lesson-chapters button{font-size:12px!important}}
+
+#daily-root .visual-explore button{overflow-wrap:normal;word-break:normal}
+@media(max-width:360px){#daily-root .visual-explore button{flex-basis:100%}}
