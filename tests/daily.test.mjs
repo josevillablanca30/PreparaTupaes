@@ -99,3 +99,22 @@ test('Auditoría de cobertura para cuatro estrellas en cinco materias y mencione
   }
  }
 });
+
+test('Tutor tipo Duolingo: cuatro estrellas requieren dos aciertos independientes y seguros',()=>{
+ const bank=fixtures.slice(0,4),e=engine(bank);
+ e.start('M1',1,'free','Porcentaje');
+ const first=e.state.session.keys[0],r1=e.answer(0,'seguro');
+ assert.equal(r1.correct,true);
+ assert.equal(ctx.CachasteLearning.skillStars(e.profile('M1')[0]),3,'Un solo acierto seguro no desbloquea la habilidad');
+ const transfer=e.transfer();
+ assert.equal(transfer.questions.length,1,'Debe proponer una nueva comprobación');
+ assert.notEqual(transfer.questions[0].family,e.byKey.get(first).family,'No repetir familia conceptual');
+ e.next();
+ const second=e.state.session.keys[e.state.session.index];
+ assert.equal(second,transfer.questions[0].key);
+ const r2=e.answer(0,'seguro');
+ assert.equal(r2.correct,true);
+ assert.equal(ctx.CachasteLearning.skillStars(e.profile('M1')[0]),4,'Dos aciertos independientes comprueban la habilidad');
+ const saved=e.state.attempts;
+ assert.equal(new Set(saved.map(x=>x.key)).size,2);
+});
