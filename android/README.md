@@ -4,9 +4,9 @@ La app se empaqueta dentro de una WebView y funciona sin internet. El progreso q
 
 ## APK beta
 
-GitHub Actions compila una APK de depuración, la instala en un emulador y verifica WebView sin red, persistencia y navegación Atrás. Para descargarla, abre la ejecución Android exitosa en **Actions** y descarga el artefacto `Cachaste-v1.3.0-beta-camino-<commit>`. El APK es para revisión funcional, no es una versión firmada para distribución comercial.
+GitHub Actions compila una APK de depuración, la instala en un emulador y verifica WebView sin red, persistencia y navegación Atrás. Para descargarla, abre la ejecución Android exitosa en **Actions** y descarga el artefacto `Cachaste-v1.3.1-rc1-<commit>`. El APK es para revisión funcional, no es una versión firmada para distribución comercial.
 
-Android podría advertir que el APK viene de fuera de Play Store. Instálala solo si reconoces el repositorio y la ejecución. Los artefactos de prueba se eliminan a los tres días.
+Android podría advertir que el APK viene de fuera de Play Store. Instálala solo si reconoces el repositorio y la ejecución. Los artefactos de prueba se eliminan a los treinta días.
 
 ## AAB de verificación
 

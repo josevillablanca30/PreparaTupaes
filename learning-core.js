@@ -162,6 +162,16 @@
   function summary(mode, rows, extra = {}) {
     return { id: extra.id || 'round-' + Date.now(), mode, at: new Date().toISOString(), total: rows.length, correct: rows.filter(x => x.correct).length, results: rows, ...extra };
   }
+  // One teaching sequence for the daily tutor in every subject. Easy mode must
+  // reconnect the analogy to the actual task and finish with a check.
+  function lessonCards(q, mode = 'steps') {
+    const t=q?.teaching||{}, example=t.example||{};
+    const cards=mode==='intro'?[t.aim,...(t.foundation||[]),example.problem?'Otro ejemplo: '+example.problem:'',...(example.steps||[]),example.bridge,t.check]:
+      mode==='easy'?[...(t.intuition||[]),...(t.application||[]),t.check]:
+      mode==='example'?[example.problem,...(example.steps||[]),example.bridge]:
+      [t.aim,...(t.foundation||[]),...(t.application||[]),t.check];
+    return cards.filter(value=>typeof value==='string'&&value.trim()).map(value=>value.trim()).filter((value,index,all)=>index===0||value!==all[index-1]);
+  }
   function lesson(q, mode) {
     const esc=value=>String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
     if(mode==='basic')mode='easy';
@@ -171,8 +181,8 @@
     if(!t)return mode==='steps'?steps(e.steps):paragraphs(String(mode==='easy'?e.easy:e.example).split('\n\n'));
     const section=(heading,body,kind='')=>'<section class="teaching-section '+kind+'"><h4>'+heading+'</h4>'+body+'</section>';
     if(mode==='steps')return section('Entendamos qué buscamos',paragraphs([t.aim]))+section('El concepto desde cero',paragraphs(t.foundation))+section('Resolvamos tu pregunta',steps(t.application))+section('Comprobemos el resultado',paragraphs([t.check]),'teaching-check');
-    if(mode==='easy')return section('Imagínalo así',paragraphs(t.intuition))+section('Conectémoslo con tu ejercicio',steps(t.application));
+    if(mode==='easy')return section('Imagínalo así',paragraphs(t.intuition))+section('Conectémoslo con tu ejercicio',steps(t.application))+section('Comprobemos el resultado',paragraphs([t.check]),'teaching-check');
     return section('Un problema distinto',paragraphs([t.example.problem]),'teaching-example')+section('Vamos a resolverlo',steps(t.example.steps))+section('Qué puedes llevar a tu pregunta',paragraphs([t.example.bridge]));
   }
-  global.CachasteLearning = { contentHash, assessmentVersion, assessmentSnapshot, archivedSessionQuestions, verifiedAssessmentQuestion, sessionVersionStatus, compatibleAttempt, bindPassages, lesson, concept, profile, skillStars, select, transfer, validSession, cleanRows, cleanAssessment, summary };
+  global.CachasteLearning = { contentHash, assessmentVersion, assessmentSnapshot, archivedSessionQuestions, verifiedAssessmentQuestion, sessionVersionStatus, compatibleAttempt, bindPassages, lessonCards, lesson, concept, profile, skillStars, select, transfer, validSession, cleanRows, cleanAssessment, summary };
 })(typeof window !== 'undefined' ? window : globalThis);

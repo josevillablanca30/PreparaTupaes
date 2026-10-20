@@ -38,7 +38,7 @@ jobs:
       - name: Instalar navegador de pruebas
         run: npx playwright install --with-deps chromium
       - name: Validar recorrido jugable, profesor y materias antes de empaquetar
-        run: npx playwright test tests/adventure-map.mobile.spec.mjs tests/visual-journey.mobile.spec.mjs tests/gameplay.mobile.spec.mjs tests/studios.mobile.spec.mjs tests/answer-repair.mobile.spec.mjs tests/transfer-cases.mobile.spec.mjs tests/confidence-journey.mobile.spec.mjs tests/five-subjects.mobile.spec.mjs --project=Android-Chrome --project=mobile-320px
+        run: npx playwright test tests/adventure-map.mobile.spec.mjs tests/visual-journey.mobile.spec.mjs tests/gameplay.mobile.spec.mjs tests/studios.mobile.spec.mjs tests/answer-repair.mobile.spec.mjs tests/transfer-cases.mobile.spec.mjs tests/confidence-journey.mobile.spec.mjs tests/five-subjects.mobile.spec.mjs tests/tutor-journey.mobile.spec.mjs tests/daily.mobile.spec.mjs --project=Android-Chrome --project=mobile-320px
       - name: Guardar capturas de errores móviles
         if: failure()
         uses: actions/upload-artifact@v4
@@ -162,7 +162,7 @@ jobs:
       - name: Publicar APK descargable
         uses: actions/upload-artifact@v4
         with:
-          name: Cachaste-v1.3.0-beta-camino-${{ github.sha }}
+          name: Cachaste-v1.3.1-rc1-${{ github.sha }}
           path: |
             android/app/build/outputs/apk/debug/app-debug.apk
             android/app/build/outputs/apk/debug/APK-CERTIFICATE.txt

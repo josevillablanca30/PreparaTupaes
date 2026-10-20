@@ -24,6 +24,13 @@ for(const subject of ['M1','M2','Lectura','Historia','Ciencias']){
    await expect(page.locator('.teacher-explanation')).not.toBeEmpty();
    await expect(page.locator('.daily-card.tutor [data-action=mode][data-mode="'+mode+'"]')).toHaveAttribute('aria-pressed','true');
   }
+  await page.locator('[data-action=mode][data-mode="easy"]').click();
+  const check=await page.evaluate(()=>{const e=CachasteDailyApp.engine,s=e.state.session;return e.byKey.get(s.keys[s.index]).teaching.check.trim();});
+  while(await page.locator('.daily-card.tutor [data-action=card-next]').count())await page.locator('.daily-card.tutor [data-action=card-next]').click();
+  await expect(page.locator('.teacher-explanation')).toContainText(check);
+  await page.reload();
+  await expect(page.locator('.teacher-explanation')).toContainText(check);
+  await expect(page.locator('[data-action=mode][data-mode="easy"]')).toHaveAttribute('aria-pressed','true');
   await expect(page.locator('.daily-card.tutor [data-action=study]')).toBeVisible();
   expect(errors).toEqual([]);
  });
