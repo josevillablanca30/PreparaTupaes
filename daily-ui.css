@@ -719,3 +719,17 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 .mode-tile>span{font-size:30px}.mode-tile strong{font-size:23px;line-height:1.2}.mode-tile small{font-size:15px;line-height:1.55;font-weight:400}
 .trail-stop.locked{opacity:.58}.trail-node:disabled{cursor:default;box-shadow:0 4px 0 #c8c1d7;background:#e5dfed;color:#726987;border-color:#d4cede}
 .path-summary{text-align:center;margin:26px 0 100px}.ordered-stages{display:grid;gap:16px;margin:24px 0}.ordered-stages strong,.ordered-stages small{display:block;text-align:left}.ordered-stages strong{font-size:19px;margin:5px 0}.world-picker-tile:disabled{opacity:.55;cursor:default}.gate-locked-note{font-size:14px;text-align:center}
+/* Put the playable mission above the fold; keep optional support's teaching banner. */
+#daily-root .stage-banner{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:12px;padding:14px 17px;margin-bottom:17px}
+#daily-root .stage-banner>span{grid-column:1;font-size:11px}
+#daily-root .stage-banner h1{grid-column:1;font-size:22px!important;margin:5px 0 0!important}
+#daily-root .stage-banner>p{display:none}
+#daily-root .stage-banner .unit-link{grid-column:2;grid-row:1 / span 2;font-size:12px!important;padding:6px 10px!important}
+#daily-root .adventure-world:not(.support-world) .world-quest-banner{display:none}
+#daily-root .adventure-world:not(.support-world) .world-hud{padding:15px 10px 4px}
+#daily-root .adventure-world:not(.support-world) .world-kicker,#daily-root .adventure-world:not(.support-world) .world-medal{display:none}
+#daily-root .adventure-world:not(.support-world) .world-hud h2{font-size:18px;margin:0 0 7px;max-width:none}
+#daily-root .adventure-world:not(.support-world) .world-gate.gate-distant{padding:16px;margin:0 6px 9px}
+#daily-root .adventure-world:not(.support-world) .gate-distant .world-gate-mark,#daily-root .adventure-world:not(.support-world) .gate-distant .world-gate-copy p{display:none}
+#daily-root .adventure-world:not(.support-world) .gate-distant .world-gate-copy strong{font-size:16px}
+#daily-root .adventure-world:not(.support-world) .gate-distant .gate-locked-note{font-size:12px;margin:8px 0 0}
