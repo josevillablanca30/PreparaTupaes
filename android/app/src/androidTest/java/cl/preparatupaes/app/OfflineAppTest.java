@@ -116,7 +116,7 @@ public class OfflineAppTest {
     }
     @Test public void dailyLearningWorksOfflineAndResumesAfterRecreation() throws Exception {
         open("inicio.html", "window.CachasteDailyApp");
-        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.state.foundationDraft=null;location.hash='#courses';CachasteDailyApp.render();document.querySelector('[data-action=pick-course][data-subject=M1]').click();true");
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.state.foundationDraft=null;(CachasteDailyApp.engine.state.stages||={}).M1='';(CachasteDailyApp.engine.state.basicsOptional||={}).M1=false;location.hash='#courses';CachasteDailyApp.render();document.querySelector('[data-action=pick-course][data-subject=M1]').click();true");
         waitFor("document.querySelector('[data-action=game-mode]')");
         js("document.querySelector('[data-action=game-mode]').click();true");
         waitFor("document.querySelector('.trail-stop.current .trail-node')");
