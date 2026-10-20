@@ -12,7 +12,7 @@ for(const subject of ['M1','M2','Lectura','Ciencias','Historia']){
    const q=eligible[0];
    const r=e.start(sub,1,'free',q.concept);
    if(!e.state.session)throw Error('No pudo abrir sesión: '+r.message);
-   e.state.session.keys=[q.key];e.save();
+   e.state.session.keys=[q.key];e.state.session.questionSnapshots=[{...q,assessmentVersion:CachasteLearning.assessmentVersion(q),...(q.passageId?{passageSnapshot:CACHASTE_DAILY_CATALOG.texts.find(p=>p.id===q.passageId)}:{})}];e.save();
    location.hash='#session';CachasteDailyApp.render();
    const wrong=q.options.findIndex((_,i)=>i!==q.answer&&q.teaching.selectedFeedback[i]?.repair?.length>=3);
    return{wrong,steps:q.teaching.selectedFeedback[wrong].repair};
