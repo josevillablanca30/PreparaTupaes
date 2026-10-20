@@ -118,3 +118,21 @@ test('Tutor tipo Duolingo: cuatro estrellas requieren dos aciertos independiente
  const saved=e.state.attempts;
  assert.equal(new Set(saved.map(x=>x.key)).size,2);
 });
+
+test('Tutor: equivocarse, acertar con duda o estudiar no certifica cuatro estrellas',()=>{
+ for(const mode of ['error','duda','estudiado']){
+  const e=engine(fixtures.slice(0,4));
+  e.start('M1',2,'free','Porcentaje');
+  if(mode==='estudiado')e.state.session.studied=true;
+  const first=e.answer(mode==='error'?1:0,mode==='duda'?'duda':'seguro');
+  assert.equal(first.correct,mode!=='error');
+  assert.equal(ctx.CachasteLearning.skillStars(e.profile('M1')[0])<4,true,mode);
+  const next=e.transfer();
+  assert.ok(next.questions.length,'El tutor debe poder proponer una comprobación diferente después de '+mode);
+  const firstKey=e.state.session.keys[0];
+  assert.notEqual(next.questions[0].family,e.byKey.get(firstKey).family,mode);
+  e.next();
+  e.answer(0,'seguro');
+  assert.equal(ctx.CachasteLearning.skillStars(e.profile('M1')[0])<4,true,'Un solo acierto independiente posterior al refuerzo no acredita dominio: '+mode);
+ }
+});
