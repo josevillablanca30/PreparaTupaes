@@ -43,7 +43,7 @@ test('Auditoría de contenido comercial por asignatura: claves coherentes, alter
    else if(new Set(q.options.map(normalize)).size!==q.options.length)duplicates++;
    if(!q.teaching||!(q.why||q.steps?.length||q.teaching?.application?.length))missingExplanation++;
    const key=normalize(q.question);
-   if(normalized.has(key)&&key)duplicates++;else normalized.add(key);
+   if(normalized.has(key)&&key){duplicates++;console.log('CONTENIDO DUPLICADO '+subject+': '+q.key+' — '+q.question);}else normalized.add(key);
   }
   report[subject]={total:bank.length,malformed,duplicates,missingExplanation};
   assert.equal(malformed,0,'Hay preguntas con estructura inválida en '+subject);
