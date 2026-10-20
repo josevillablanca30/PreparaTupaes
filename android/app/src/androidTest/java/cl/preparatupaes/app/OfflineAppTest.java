@@ -208,6 +208,22 @@ public class OfflineAppTest {
         assertEquals(xp,js("CachasteDailyApp.engine.stats().xp"));
         js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();location.hash='#home';CachasteDailyApp.render();true");
     }
+    @Test public void fullTeachingAndManipulableModelPersistWithoutAwardingMastery() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp && window.CachasteLessons");
+        js("var e=CachasteDailyApp.engine;e.close();e.state.foundationDraft=null;e.start('M1',2,'lesson','Descuento porcentual');location.hash='#session';CachasteDailyApp.render();true");
+        waitFor("document.querySelector('[data-laboratory=percent]')");
+        String xp=js("CachasteDailyApp.engine.stats().xp");
+        js("document.querySelector('[data-action=visual-lab][data-value=\"3\"]').click();true");
+        waitFor("document.querySelector('.lab-formula').textContent.includes('$150')");
+        scenario.recreate();
+        waitFor("window.CachasteDailyApp && document.querySelector('.lab-formula')");
+        assertEquals("true",js("document.querySelector('.lab-formula').textContent.includes('$150')"));
+        js("document.querySelector('[data-action=visual-read]').click();true");
+        waitFor("document.querySelector('.lesson-reader')");
+        assertEquals("true",js("(()=>{var e=CachasteDailyApp.engine,q=e.byKey.get(e.state.session.keys[0]),t=q.teaching,body=document.querySelector('.lesson-reader').textContent;return [...t.foundation,...t.intuition,t.example.problem,...t.example.steps,t.example.bridge].every(x=>body.includes(x))})()"));
+        assertEquals(xp,js("CachasteDailyApp.engine.stats().xp"));
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();location.hash='#home';CachasteDailyApp.render();true");
+    }
     @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         PackageInfo info=context.getPackageManager().getPackageInfo(context.getPackageName(),PackageManager.GET_PERMISSIONS);
