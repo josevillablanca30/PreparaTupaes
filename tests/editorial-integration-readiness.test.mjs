@@ -7,12 +7,13 @@ import {scienceCandidates} from '../scripts/paes-transfer-candidates-fisica-2027
 import {biologyCandidates} from '../scripts/paes-transfer-candidates-biologia-2027.mjs';
 import {scienceExpansionCandidates} from '../scripts/paes-transfer-candidates-ciencias-expansion-2027.mjs';
 import {scienceRemainingCandidates} from '../scripts/paes-transfer-candidates-ciencias-final-2027.mjs';
+import {tpCandidates} from '../scripts/paes-transfer-candidates-tp-2027.mjs';
 
 test('Puerta editorial: informar brechas reales tras simular once candidatos, sin desbloqueos ficticios',()=>{
  const {items}=dailyCatalog();
- const rows=[...historiaCandidates,...scienceCandidates,...biologyCandidates,...scienceExpansionCandidates,...scienceRemainingCandidates];
+ const rows=[...historiaCandidates,...scienceCandidates,...biologyCandidates,...scienceExpansionCandidates,...scienceRemainingCandidates,...tpCandidates];
  const candidates=buildTransfers(items,rows);
- assert.equal(candidates.length,11);
+ assert.equal(candidates.length,14);
  assert.equal(items.length,788,'No modificar el banco comercial sin una migración validada');
  const combined=[...items,...candidates];
  const missing=[];
@@ -32,7 +33,7 @@ test('Puerta editorial: informar brechas reales tras simular once candidatos, si
  }
  console.log('CANDIDATOS: '+candidates.length+'; BRECHAS TRAS INTEGRACIÓN HIPOTÉTICA: '+JSON.stringify(missing));
  assert.equal(missing.filter(x=>x.subject==='Historia').length,0,'Los dos candidatos de Historia deben aportar una segunda familia, incluso si son complementarios');
- assert.equal(missing.length,3,'Las once transferencias dejan tres brechas reales en Ciencias TP; no confundir mención Física con TP');
+ assert.equal(missing.length,0,'Las catorce transferencias candidatas cubren las brechas de evidencia sin cruzar menciones');
  assert.ok(missing.every(x=>x.track==='TP'&&['Ventilación y demanda metabólica','Defensas innatas y memoria inmune','Tono e intensidad del sonido'].includes(x.concept)));
  assert.ok(missing.every(x=>x.subject==='Ciencias'));
 });
