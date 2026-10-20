@@ -833,3 +833,10 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .visual-lesson-content:has(.worked-board) .teacher-step .lesson-text{margin:0!important;color:#30283e}
 #daily-root .worked-board li p{color:#30283e}
 @media(max-width:360px){#daily-root .lesson-chapters button{font-size:10.5px!important}}
+#daily-root .lab-legend{display:flex;flex-wrap:wrap;gap:8px 15px;margin-top:10px;font-size:12px;line-height:1.5}
+#daily-root .lab-legend span{display:flex;align-items:center;gap:5px}
+#daily-root .lab-legend i{width:10px;height:10px;flex:none;border-radius:3px;background:#e9b54d}
+#daily-root .lab-legend span+span i{background:#b59ad6}
+#daily-root [data-laboratory=probability] .lab-parts{background:#e9b54d}
+#daily-root [data-laboratory=probability] .lab-parts span,#daily-root [data-laboratory=probability] .lab-legend i{background:#8b63bb}
+#daily-root [data-laboratory=probability] .lab-legend span+span i{background:#e9b54d}
