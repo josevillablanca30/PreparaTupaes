@@ -133,3 +133,7 @@
 /* Long algebraic expressions stay complete and readable inside the full reader. */
 #daily-root .lesson-reader,#daily-root .lesson-reader li,#daily-root .lesson-reader h3,#daily-root .lesson-reader .worked-bridge{overflow-wrap:anywhere;word-break:normal;min-width:0}
 @media(max-width:360px){#daily-root .adventure-world:not(.support-world){margin-inline:-16px;padding-inline:16px}}
+/* The full-width world uses the same responsive gutter as its page container. */
+body>main{--reference-gutter:20px}
+@media(max-width:390px){body>main{--reference-gutter:14px}}
+#daily-root .adventure-world:not(.support-world){margin-inline:calc(-1 * var(--reference-gutter));padding-inline:var(--reference-gutter)}

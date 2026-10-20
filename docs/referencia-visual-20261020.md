@@ -33,3 +33,5 @@ Los modelos precisos permanecen en `daily-lesson-visuals.js`, `daily-demonstrati
 La nueva composición no constituye una revisión editorial comercial integral ni una ilustración raster distinta para cada objetivo. Siguen pendientes el cotejo completo del material adicional, más ilustraciones temáticas y la ficha/alta/publicación en Play Console. Ciencias y Lectura conservan una secuencia transversal; no se inventan equivalencias exclusivas a cursos escolares. La clave de carga existente se conserva fuera de Git.
 
 La auditoría de todos los lectores detectó ocho desarrollos algebraicos largos de M2 que necesitaban saltos de línea en 320 px. Se conservan completos y se añade regresión sobre los ocho casos; no se reduce su contenido ni el tamaño tipográfico.
+
+La batería iPhone detectó una diferencia entre los márgenes de página y los del mundo a 390 px. El fondo extendido ahora hereda una única variable de margen del contenedor (20 px o 14 px según el ancho), en lugar de combinar valores distintos. La regresión recorre 320, 360, 370, 390, 393 y 430 px con el movimiento reducido para comprobar el tamaño final, sin que la animación oculte desbordes transitorios.
