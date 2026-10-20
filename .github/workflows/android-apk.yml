@@ -167,4 +167,4 @@ jobs:
             android/app/build/outputs/apk/debug/app-debug.apk
             android/app/build/outputs/apk/debug/APK-CERTIFICATE.txt
           if-no-files-found: error
-          retention-days: 3
+          retention-days: 30
