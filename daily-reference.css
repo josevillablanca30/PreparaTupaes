@@ -130,3 +130,6 @@
 #daily-root .adventure-world:not(.support-world) .trail-node svg{width:26px;height:32px;display:block}
 #daily-root .adventure-world:not(.support-world) .trail-stop strong{font-size:13px!important}
 @media(max-width:360px){#daily-root .reference-welcome>div:first-child,#daily-root .reference-welcome h1{width:183px}#daily-root .reference-welcome h1{font-size:26px}#daily-root .reference-brand img{width:240px}}
+/* Long algebraic expressions stay complete and readable inside the full reader. */
+#daily-root .lesson-reader,#daily-root .lesson-reader li,#daily-root .lesson-reader h3,#daily-root .lesson-reader .worked-bridge{overflow-wrap:anywhere;word-break:normal;min-width:0}
+@media(max-width:360px){#daily-root .adventure-world:not(.support-world){margin-inline:-16px;padding-inline:16px}}

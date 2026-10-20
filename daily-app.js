@@ -72,7 +72,7 @@
    '</div>':'')+
    '<svg class="adventure-road" viewBox="0 0 400 900" preserveAspectRatio="none" aria-hidden="true"><path class="road-shadow"></path><path class="road-track"></path><path class="road-cleared"></path></svg>'+
    '<ol class="learning-trail daily-levels">'+ls.map((l,i)=>node(l,i,basic,current?.id||'')).join('')+'</ol>'+
-   '<div class="world-gate '+(allDone?'gate-ready':'gate-distant')+'"><div class="world-gate-mark" aria-hidden="true"><span>✦</span></div>'+(allDone?'<div class="world-gate-cat" aria-hidden="true">'+avatar('celebrating','map-portal-cat')+'</div>':'')+'<div class="world-gate-copy"><strong>'+(allDone?'¡Mundo completado!':'Portal a otra etapa')+'</strong><p>'+guide+'</p></div>'+
+   '<div class="world-gate '+(allDone?'gate-ready':'gate-distant')+'"><div class="world-gate-mark" aria-hidden="true"><span>✦</span></div>'+(allDone&&basic?'<div class="world-gate-cat" aria-hidden="true">'+avatar('celebrating','map-portal-cat')+'</div>':'')+'<div class="world-gate-copy"><strong>'+(allDone?'¡Mundo completado!':'Portal a otra etapa')+'</strong><p>'+guide+'</p></div>'+
    (allDone&&!isLast?button('next-stage','Entrar a la siguiente etapa','','gate-button'):'<p class="gate-locked-note">'+(allDone?'Recorrido completado':'La siguiente etapa se abrirá al completar esta')+'</p>')+
    '</div></section>';
  }
