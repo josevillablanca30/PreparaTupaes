@@ -733,3 +733,46 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .adventure-world:not(.support-world) .gate-distant .world-gate-mark,#daily-root .adventure-world:not(.support-world) .gate-distant .world-gate-copy p{display:none}
 #daily-root .adventure-world:not(.support-world) .gate-distant .world-gate-copy strong{font-size:16px}
 #daily-root .adventure-world:not(.support-world) .gate-distant .gate-locked-note{font-size:12px;margin:8px 0 0}
+/* A single narrated idea, an active demonstration, then independent practice. */
+#daily-root .visual-lesson{max-width:660px;margin:0 auto;padding-bottom:18px}
+#daily-root .visual-lesson-topic{font-size:12px;font-weight:750;color:#77638f;margin:10px 0}
+#daily-root .lesson-scene{margin:0;overflow:hidden;border-radius:24px;border:1px solid #e2d6ef;background:#eee4fa;box-shadow:0 5px 0 #e4d8ee}
+#daily-root .lesson-scene img{display:block;width:100%;height:auto;max-height:260px;object-fit:cover;animation:lesson-scene-arrive .35s ease-out both}
+#daily-root .lesson-character{text-align:center;background:linear-gradient(140deg,#f0e5ff,#e4f2f1);border-radius:24px;padding:14px}
+#daily-root .visual-lesson-content.daily-card{background:white!important;border:1px solid #e8def1!important;border-radius:23px!important;margin:15px 0!important;padding:19px!important;box-shadow:none!important}
+#daily-root .visual-lesson-content h2{font-size:23px!important;line-height:1.2;margin:0 0 12px!important}
+#daily-root .visual-lesson-content .teacher-step{padding:0;border:0;background:none;box-shadow:none}
+#daily-root .visual-lesson-content .lesson-text{font-size:16px;line-height:1.6!important;margin:0;white-space:normal}
+#daily-root .visual-lesson-content .teacher-explanation{margin:0}
+#daily-root .visual-lesson-actions{display:flex;gap:10px;margin:14px 0;flex-wrap:wrap}
+#daily-root .visual-lesson-actions .primary{flex:1;min-height:50px!important}
+#daily-root .visual-guided-note{font-size:11px;color:#83718e;line-height:1.5;margin:12px 3px}
+#daily-root .visual-choices{display:grid;gap:10px;margin-top:16px}
+#daily-root .visual-probe h3{font-size:18px;line-height:1.4;margin:20px 0 12px}
+#daily-root .visual-choices button{text-align:left!important;font-weight:600!important;line-height:1.45;font-size:15px!important;border:2px solid #d8c9e8!important;box-shadow:0 3px 0 #e5dcee!important}
+#daily-root .visual-response{font-size:14px;line-height:1.55;border-radius:15px;padding:14px;margin:15px 0 0}
+#daily-root .visual-response.right{background:#eaf7ef;border:1px solid #a2d5b4;color:#245e41}
+#daily-root .visual-response.try-again{background:#fff4df;border:1px solid #e7c88c;color:#725322}
+#daily-root .visual-choices button.right{background:#eaf7ef!important;border-color:#83bc9b!important}
+#daily-root .visual-choices button.try-again{background:#fff4df!important;border-color:#dcb571!important}
+#daily-root .visual-explore{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px;padding:14px;background:#f8f4fc;border-radius:18px}
+#daily-root .visual-explore button{font-size:13px!important;padding:12px!important;flex:1 1 40%;min-height:48px!important;box-shadow:0 3px 0 #ded0ec!important;line-height:1.35}
+#daily-root .visual-explore button[aria-pressed=true]{background:#7450b0!important;color:white!important;border-color:#7450b0!important}
+#daily-root .visual-discovery{flex:1 0 100%;font-size:14px;line-height:1.55;margin:9px 0 0;min-height:42px}
+#daily-root .numberline-demo,#daily-root .powers-demo,#daily-root .balance-demo,#daily-root .parabola-demo{margin:18px 0 0;padding:15px 10px;background:#f6f0fc;border-radius:19px;text-align:center}
+#daily-root .numberline{display:flex;justify-content:space-between;position:relative;gap:1px;border-bottom:3px solid #bba7d7;padding:10px 0}
+#daily-root .numberline span{width:24px;min-width:0;font-size:12px;padding:6px 0;border-radius:50%;font-variant-numeric:tabular-nums}
+#daily-root .numberline .active{background:#7650b6;color:white;font-weight:800;box-shadow:0 0 0 4px #e3d5f6;animation:lesson-token-arrive .28s ease-out}
+#daily-root .math-model{display:flex;align-items:center;justify-content:space-around;gap:10px;font-size:25px;font-weight:800;color:#61418f;margin:10px 0 17px}
+#daily-root .math-model span{padding:16px;border-radius:16px;background:white;flex:1}
+#daily-root .power-tokens{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
+#daily-root .power-tokens span{width:21px;height:21px;background:#a683d8;border-radius:7px;border-bottom:3px solid #7b57af;animation:lesson-token-arrive .25s ease-out}
+#daily-root .parabola-demo svg{display:block;width:100%;max-height:185px}
+#daily-root [data-visual-value]{display:block;width:100%;height:36px;accent-color:#7650b6}
+@keyframes lesson-scene-arrive{from{opacity:.5;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes lesson-token-arrive{from{transform:scale(.75)}to{transform:scale(1)}}
+@media(max-width:360px){#daily-root .visual-lesson-content.daily-card{padding:15px!important}#daily-root .visual-lesson-content h2{font-size:21px!important}#daily-root .visual-lesson-content .lesson-text{font-size:15px}#daily-root .visual-choices button{font-size:14px!important}}
+@media(prefers-reduced-motion:reduce){#daily-root .lesson-scene img,#daily-root .numberline .active,#daily-root .power-tokens span{animation:none!important}}
+#daily-root .lesson-character[data-emotion=celebrating] .cat-frame{animation:cat-cheer .6s ease-out 2}
+#daily-root .lesson-character[data-emotion=encouraging] .cat-frame{animation:cat-reassure .6s ease-out 1}
+@media(prefers-reduced-motion:reduce){#daily-root .lesson-character .cat-frame{animation:none!important}}

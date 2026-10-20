@@ -180,6 +180,34 @@ public class OfflineAppTest {
         assertEquals("true",js("CachasteDailyApp.basics.status('cantidad').complete"));
         assertEquals("true",js("CACHASTE_DAILY_CATALOG.items.length>=641 && new Set(CACHASTE_DAILY_CATALOG.items.map(q=>q.key)).size===CACHASTE_DAILY_CATALOG.items.length"));
     }
+    @Test public void visualBiologyLessonTeachesInteractsAndResumesOffline() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp && window.CachasteLessons");
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.state.foundationDraft=null;location.hash='#courses';CachasteDailyApp.render();document.querySelector('[data-action=pick-course][data-subject=Ciencias]').click();true");
+        waitFor("document.querySelector('[data-track=Biología]')");
+        js("document.querySelector('[data-track=Biología]').click();true");
+        waitFor("document.querySelector('[data-action=game-mode]')");
+        js("document.querySelector('[data-action=game-mode]').click();true");
+        waitFor("document.querySelector('.trail-stop.current .trail-node')");
+        js("document.querySelector('.trail-stop.current .trail-node').click();true");
+        waitFor("document.querySelector('[data-action=lesson]')");
+        js("document.querySelector('[data-action=lesson]').click();true");
+        waitFor("document.querySelector('.lesson-scene img') && document.querySelector('.lesson-scene img').naturalWidth>0");
+        assertEquals("0",js("document.querySelectorAll('.visual-lesson details').length"));
+        String xp=js("CachasteDailyApp.engine.stats().xp");
+        js("document.querySelector('[data-action=intro-next]').click();document.querySelectorAll('[data-action=visual-tap]')[2].click();true");
+        waitFor("document.querySelector('.visual-discovery').textContent.includes('acoplar')");
+        String draft=js("JSON.stringify(CachasteDailyApp.engine.state.session.visualLesson)");
+        scenario.recreate();
+        waitFor("window.CachasteDailyApp && document.querySelector('.visual-discovery')");
+        assertEquals(draft,js("JSON.stringify(CachasteDailyApp.engine.state.session.visualLesson)"));
+        js("document.querySelector('[data-action=intro-next]').click();document.querySelectorAll('[data-action=visual-choose]')[1].click();true");
+        waitFor("document.querySelector('.visual-response.try-again')");
+        assertEquals("true",js("document.querySelector('[data-action=intro-next]').disabled"));
+        js("document.querySelectorAll('[data-action=visual-choose]')[0].click();true");
+        waitFor("document.querySelector('.visual-response.right')");
+        assertEquals(xp,js("CachasteDailyApp.engine.stats().xp"));
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();location.hash='#home';CachasteDailyApp.render();true");
+    }
     @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         PackageInfo info=context.getPackageManager().getPackageInfo(context.getPackageName(),PackageManager.GET_PERMISSIONS);

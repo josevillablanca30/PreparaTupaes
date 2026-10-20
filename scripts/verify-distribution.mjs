@@ -4,12 +4,13 @@ import {join} from 'node:path';
 export const distributionFiles=Object.freeze([
  'index.html','inicio.html','science.html','reading.html','m2.html','history.html',
  'daily-foundation-visuals.js','daily-basics.js','daily-visuals.js','daily-curriculum.js',
- 'daily-progression.js','daily-core.js','daily-gameplay.js','daily-studios.js','daily-app.js','daily-ui.css',
+ 'daily-progression.js','daily-lessons.js','daily-core.js','daily-gameplay.js','daily-studios.js','daily-app.js','daily-ui.css',
  'learning-core.js','editorial-revisions.js','m1-teaching.js','study-app.js','study-ui.css','history-bank.js',
  'history-app.js','science-bank.js','science-app.js','reading-bank.js','reading-app.js',
  'm2-bank.js','m2-app.js','daily-catalog.js','.nojekyll','version.json',
  'assets/gatito-sabio-poses-v1.png','assets/gatito-sabio-oficial.png',
- 'assets/cachaste-icon.svg','assets/cachaste-logo.svg'
+ 'assets/cachaste-icon.svg','assets/cachaste-logo.svg',
+ ...['atp','numbers','balance','functions','reading','history'].map(k=>'assets/lesson-cat-'+k+'-v1.webp')
 ]);
 export async function verifyDistribution(root){
  const allowed=new Set(distributionFiles),found=new Set();
