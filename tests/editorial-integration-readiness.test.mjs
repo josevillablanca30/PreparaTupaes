@@ -30,6 +30,7 @@ test('Puerta editorial: informar brechas restantes después de revisar los nueve
   }
  }
  console.log('CANDIDATOS: '+candidates.length+'; BRECHAS TRAS INTEGRACIÓN HIPOTÉTICA: '+JSON.stringify(missing));
- assert.equal(missing.filter(x=>x.subject==='Historia').length,2,'Historia requiere contenido elegible: no declarar el vacío resuelto con ejercicios complementarios');
- assert.ok(missing.every(x=>x.subject==='Historia'||x.subject==='Ciencias'));
+ assert.equal(missing.filter(x=>x.subject==='Historia').length,0,'Los dos candidatos de Historia deben aportar una segunda familia, incluso si son complementarios');
+ assert.equal(missing.length,5,'La simulación identifica cinco brechas específicas aún pendientes en las menciones de Ciencias');
+ assert.ok(missing.every(x=>x.subject==='Ciencias'));
 });
