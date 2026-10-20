@@ -20,12 +20,12 @@ const m2Page=await readFile(new URL('../m2.html',import.meta.url),'utf8');
 await writeFile(new URL('../dist/m2.html',import.meta.url),m2Page.replace('</head>',`<meta name="build-revision" content="${revision}"></head>`));
 const historyPage=await readFile(new URL('../history.html',import.meta.url),'utf8');
 await writeFile(new URL('../dist/history.html',import.meta.url),historyPage.replace('</head>',`<meta name="build-revision" content="${revision}"></head>`));
-for(const file of ['daily-foundation-visuals.js','daily-basics.js','daily-visuals.js','daily-curriculum.js','daily-progression.js','daily-lessons.js','daily-core.js','daily-gameplay.js','daily-studios.js','daily-app.js','daily-ui.css','learning-core.js', 'editorial-revisions.js', 'm1-teaching.js','study-app.js','study-ui.css','history-bank.js','history-app.js','science-bank.js','science-app.js','reading-bank.js','reading-app.js','m2-bank.js','m2-app.js']){
+for(const file of ['daily-foundation-visuals.js','daily-basics.js','daily-visuals.js','daily-curriculum.js','daily-school.js','daily-progression.js','daily-scenarios.js','daily-demonstrations.js','daily-lessons.js','daily-core.js','daily-gameplay.js','daily-studios.js','daily-app.js','daily-ui.css','learning-core.js', 'editorial-revisions.js', 'm1-teaching.js','study-app.js','study-ui.css','history-bank.js','history-app.js','science-bank.js','science-app.js','reading-bank.js','reading-app.js','m2-bank.js','m2-app.js']){
   const body=await readFile(new URL('../'+file,import.meta.url),'utf8');
   await writeFile(new URL('../dist/'+file,import.meta.url),body);
 }
 await mkdir(new URL('../dist/assets/',import.meta.url),{recursive:true});
-for(const asset of ['gatito-sabio-poses-v1.png','gatito-sabio-oficial.png','cachaste-icon.svg','cachaste-logo.svg','lesson-cat-atp-v1.webp','lesson-cat-numbers-v1.webp','lesson-cat-balance-v1.webp','lesson-cat-functions-v1.webp','lesson-cat-reading-v1.webp','lesson-cat-history-v1.webp'])await copyFile(new URL('../assets/'+asset,import.meta.url),new URL('../dist/assets/'+asset,import.meta.url));
+for(const asset of ['gatito-sabio-poses-v1.png','gatito-sabio-oficial.png','cachaste-icon.svg','cachaste-logo.svg','lesson-cat-atp-v1.webp','lesson-cat-numbers-v1.webp','lesson-cat-balance-v1.webp','lesson-cat-functions-v1.webp','lesson-cat-reading-v1.webp','lesson-cat-history-v1.webp','lesson-cat-algebra-v2.webp','lesson-cat-mechanics-v2.webp','lesson-cat-solutions-v2.webp','lesson-cat-sources-v2.webp'])await copyFile(new URL('../assets/'+asset,import.meta.url),new URL('../dist/assets/'+asset,import.meta.url));
 await writeFile(new URL('../dist/.nojekyll', import.meta.url), '');
 await writeFile(new URL('../dist/version.json', import.meta.url), JSON.stringify({ revision }) + '\n');
 

@@ -224,6 +224,35 @@ public class OfflineAppTest {
         assertEquals(xp,js("CachasteDailyApp.engine.stats().xp"));
         js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();location.hash='#home';CachasteDailyApp.render();true");
     }
+    @Test public void numericGuidedPracticePersistsDecimalCommaWithoutMastery() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp && window.CachasteDemonstrations");
+        js("var e=CachasteDailyApp.engine;e.close();e.state.foundationDraft=null;e.start('M1',2,'lesson','Exponente negativo');location.hash='#session';CachasteDailyApp.render();true");
+        waitFor("document.querySelector('[data-visual-answer]')");
+        String xp=js("CachasteDailyApp.engine.stats().xp");
+        String attempts=js("CachasteDailyApp.engine.state.attempts.length");
+        js("var input=document.querySelector('[data-visual-answer]');input.value='-25';input.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('[data-action=visual-try]').click();true");
+        waitFor("document.querySelector('.visual-response.try-again')");
+        js("var input=document.querySelector('[data-visual-answer]');input.value='0,04';input.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('[data-action=visual-try]').click();true");
+        waitFor("document.querySelector('.visual-response.right')");
+        scenario.recreate();
+        waitFor("window.CachasteDailyApp && document.querySelector('.visual-response.right')");
+        assertEquals("\"0,04\"",js("document.querySelector('[data-visual-answer]').value"));
+        assertEquals(xp,js("CachasteDailyApp.engine.stats().xp"));
+        assertEquals(attempts,js("CachasteDailyApp.engine.state.attempts.length"));
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();location.hash='#home';CachasteDailyApp.render();true");
+    }
+    @Test public void thematicReadingCaseAndSchoolSequenceWorkOffline() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp && window.CachasteSchool && window.CachasteScenarios");
+        js("var e=CachasteDailyApp.engine;e.close();e.state.foundationDraft=null;e.start('Lectura',2,'lesson','Tabla y relaciones entre datos');location.hash='#session';CachasteDailyApp.render();true");
+        waitFor("document.querySelector('.scenario-table-wrap')");
+        js("document.querySelector('[data-action=visual-tap][data-value=\"1\"]').click();true");
+        waitFor("document.querySelector('.visual-discovery').textContent.includes('80%')");
+        scenario.recreate();
+        waitFor("window.CachasteDailyApp && document.querySelector('.visual-discovery')");
+        assertEquals("true",js("document.querySelector('.visual-discovery').textContent.includes('80%')"));
+        assertEquals("true",js("CachasteProgression.route(CACHASTE_DAILY_CATALOG.items,'M2',null,[]).units.every((u,i,a)=>!i||u.schoolYear>=a[i-1].schoolYear)"));
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();location.hash='#home';CachasteDailyApp.render();true");
+    }
     @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         PackageInfo info=context.getPackageManager().getPackageInfo(context.getPackageName(),PackageManager.GET_PERMISSIONS);

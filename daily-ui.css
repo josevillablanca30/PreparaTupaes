@@ -840,3 +840,56 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root [data-laboratory=probability] .lab-parts{background:#e9b54d}
 #daily-root [data-laboratory=probability] .lab-parts span,#daily-root [data-laboratory=probability] .lab-legend i{background:#8b63bb}
 #daily-root [data-laboratory=probability] .lab-legend span+span i{background:#e9b54d}
+/* Practice figures are computed from the chosen values, not generated labels. */
+#daily-root .demo-token-board{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:10px 0}
+#daily-root .demo-token-board span{display:grid;place-items:center;width:23px;height:23px;background:#e5b651;border-radius:7px;color:#573d12;font-size:13px;font-weight:800;border:1px solid #c99732}
+#daily-root .demo-token-board .chosen{background:#9370c4;border-color:#7553a3;color:white}
+#daily-root .demo-factor-groups,#daily-root .demo-machines{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;font-size:17px;line-height:1.6}
+#daily-root .demo-factor-groups span,#daily-root .demo-machines span{padding:10px;background:white;border:1px solid #d8c6eb;border-radius:13px}
+#daily-root .demo-ordered,#daily-root .demo-die{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;padding:12px 0}
+#daily-root .demo-ordered span,#daily-root .demo-die span{display:grid;place-items:center;min-width:30px;height:35px;border:2px solid #cbb8e0;border-radius:9px;background:white;font-size:15px}
+#daily-root .demo-ordered .middle,#daily-root .demo-die .chosen{background:#8058b1;color:white;border-color:#8058b1}
+#daily-root .demo-die .shared{outline:3px solid #d5a63e;outline-offset:2px}
+#daily-root .demo-key{font-size:12px;line-height:1.5;color:#695479}
+#daily-root .demo-sample-grid{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:4px}
+#daily-root .demo-sample-grid span{display:grid;place-items:center;min-height:30px;font-size:11px;border:1px solid #cbb8e0;border-radius:6px;background:white}
+#daily-root .demo-sample-grid .chosen{background:#8058b1;color:white;border-color:#8058b1}
+#daily-root .lab-task{margin:20px 0;padding:16px;background:white;border:2px solid #ddcfef;border-radius:18px}
+#daily-root .lab-task h3{font-size:18px;line-height:1.3;margin:0 0 12px}
+#daily-root .lab-task p{line-height:1.65;font-size:15px}
+#daily-root .lab-task label{display:grid;gap:7px;font-size:13px;font-weight:750;margin:12px 0}
+#daily-root .lab-task input{width:100%;box-sizing:border-box;min-height:48px;font-size:19px;border:2px solid #bda3da;border-radius:11px;padding:10px;color:#30283e;background:#fbf8fe}
+#daily-root .lab-task button{width:100%;min-height:48px!important}
+#daily-root .lab-task small{display:block;font-size:11px;line-height:1.5;margin-top:12px;color:#766187}
+#daily-root .scenario-relationships{margin:20px 0;padding:14px 10px;border:1px solid #dfd2ed;border-radius:17px;background:#f9f6fd}
+#daily-root .scenario-relationships>div{display:flex;align-items:center;gap:7px;justify-content:center}
+#daily-root .scenario-relationships span{flex:1;min-width:0;border:1px solid #d7c7e9;background:white;border-radius:12px;padding:11px 6px;text-align:center;font-size:12px;line-height:1.45;overflow-wrap:anywhere}
+#daily-root .scenario-relationships .chosen{background:#7d57b0;color:white;border-color:#7d57b0}
+#daily-root .scenario-relationships b{font-size:18px;color:#a185bd}
+#daily-root .scenario-relationships figcaption{font-size:11px;line-height:1.5;color:#796489;margin:12px 0 0}
+#daily-root .scenario-picture{margin:18px 0;padding:8px;background:#f8f4fc;border-radius:17px}
+#daily-root .scenario-picture svg{width:100%;display:block}
+#daily-root .scenario-table-wrap{margin:20px 0;overflow:auto;border-radius:14px;border:1px solid #d6c6e7}
+#daily-root .scenario-table-wrap table{width:100%;border-collapse:collapse;font-size:13px;line-height:1.5}
+#daily-root .scenario-table-wrap caption{font-weight:750;padding:12px;background:#f2ecfa}
+#daily-root .scenario-table-wrap td,#daily-root .scenario-table-wrap th{padding:10px 7px;text-align:left;border-bottom:1px solid #e6ddef;white-space:normal}
+#daily-root .scenario-table-wrap th{color:#59416f}
+#daily-root .scenario-punnett{max-width:230px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin:20px auto}
+#daily-root .scenario-punnett>*{display:grid;place-items:center;min-height:47px;border-radius:9px;background:#f1eafa;font-size:18px}
+#daily-root .scenario-punnett .chosen{background:#7c55b1;color:white}
+#daily-root .demo-molecule{font-size:22px;line-height:1.6;font-weight:800;color:#62438d;background:white;padding:18px 12px;border:1px solid #d8c6eb;border-radius:14px;text-align:center;overflow-wrap:anywhere}
+@media(max-width:360px){#daily-root .scenario-relationships span{font-size:11px;padding:9px 5px}#daily-root .scenario-relationships>div{gap:4px}#daily-root .scenario-relationships b{font-size:15px}}
+#daily-root .lesson-narration{padding:14px;margin:16px 0 0;border-radius:16px;background:#f2ebfa;border-left:4px solid #9874c7}
+#daily-root .lesson-narration p{margin:0;font-size:15px;line-height:1.65;color:#594471}
+#daily-root .school-band-heading{grid-column:1/-1;margin:22px 0 7px;font-size:19px;line-height:1.35;color:#614480}
+#daily-root .school-route-note{font-size:13px;line-height:1.6;color:#766289;max-width:650px}
+#daily-root .stage-banner .school-position{margin:8px 0 4px;font-size:12px;font-weight:750;color:#775996}
+#daily-root .demo-chart-legend{margin:8px 0;padding-left:24px;font-size:13px;line-height:1.7;color:#624e77}
+
+/* Keep chapter words intact and relationship labels readable on narrow phones. */
+#daily-root .lesson-chapters button{white-space:nowrap;word-break:normal;overflow-wrap:normal;letter-spacing:0!important}
+@media(max-width:520px){
+ #daily-root .scenario-relationships>div{flex-direction:column;align-items:stretch;gap:8px}
+ #daily-root .scenario-relationships span{font-size:14px;padding:12px;overflow-wrap:normal;word-break:normal}
+ #daily-root .scenario-relationships b{align-self:center;transform:rotate(90deg)}
+}
