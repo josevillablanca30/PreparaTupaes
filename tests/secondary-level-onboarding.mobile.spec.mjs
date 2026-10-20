@@ -2,10 +2,10 @@ import {test,expect} from '@playwright/test';
 
 const firstCourse=async(page,subject)=>{
  await page.goto('./inicio.html#courses');
- await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();
- if(subject==='Ciencias')await page.locator('[data-action=pick-track][data-track="Biología"]').click();
+ await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
+ if(subject==='Ciencias')await page.locator('[data-action=pick-track][data-track="Biología"]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
  await expect(page.locator('.adventure-world')).toBeVisible();
- await expect(page.locator('.curriculum-overview')).toBeVisible();
+ await expect(page.locator('.stage-banner')).toBeVisible();
  await page.locator('.stage-banner [data-action=units]').click();
  await page.locator('[data-action=stage][data-stage=basics]').click();
  await page.locator('[data-action=basic-level]').first().click();
@@ -44,7 +44,7 @@ for(const [subject,title,firstQuestion] of [
 
 test('El antiguo 8 ya no aparece como la misión 1 de Historia y el registro antiguo no acredita la nueva evaluación',async({page})=>{
  await page.goto('./inicio.html#courses');
- await page.locator('[data-action=pick-course][data-subject=Historia]').click();
+ await page.locator('[data-action=pick-course][data-subject=Historia]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
  await page.locator('.stage-banner [data-action=units]').click();
  await page.locator('[data-action=stage][data-stage=basics]').click();
  await page.evaluate(()=>{

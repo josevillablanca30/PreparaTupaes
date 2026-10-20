@@ -21,8 +21,8 @@ for(const spec of cases){
  test(spec.subject+' '+spec.id+(spec.track?' '+spec.track:'')+': evaluación de transferencia usa dos contextos distintos, explicaciones y guardado',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('./inicio.html#courses');
-  await page.locator('[data-action=pick-course][data-subject="'+spec.subject+'"]').click();
-  if(spec.subject==='Ciencias')await page.locator('[data-action=pick-track][data-track="'+(spec.track||'Biología')+'"]').click();
+  await page.locator('[data-action=pick-course][data-subject="'+spec.subject+'"]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
+  if(spec.subject==='Ciencias')await page.locator('[data-action=pick-track][data-track="'+(spec.track||'Biología')+'"]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
   const picked=await page.evaluate(({subject,concept,id})=>{
    const e=CachasteDailyApp.engine;
    concept=concept||e.byKey.get(subject+':'+id).concept;

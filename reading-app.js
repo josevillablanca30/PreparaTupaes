@@ -9,15 +9,17 @@ const stored=(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}ca
 let history=Array.isArray(stored.history)?stored.history.filter(h=>h&&typeof h.correct==='boolean'&&BANK.some(q=>q.id===h.id)).slice(-3000):[];
 let pending=Array.isArray(stored.pending)?stored.pending.filter(id=>BANK.some(q=>q.id===id)):[];
 let baseline=stored.baseline?.completed&&stored.baseline?.results?.length===30&&stored.baseline.results.every(r=>r&&typeof r.correct==='boolean')?stored.baseline:null;
+stored.session=window.CachasteLearning.restoreSession(stored.session,BANK);
+let cachedSnapshots=null,cachedQuestions=[];
 let session=validSession(stored.session)?stored.session:null;
 let recent=Array.isArray(stored.recent)?window.CachasteLearning.cleanRows(BANK,stored.recent,200):[],screen='home',feedbackMode='steps',examMap=false,examConfirm=false;
 let assessments=Array.isArray(stored.assessments)?stored.assessments.map(a=>window.CachasteLearning.cleanAssessment(BANK,a)).filter(Boolean).slice(-100):[];
 if(session?.mode==='completo'){if(!Number.isFinite(session.deadline))session=null;else{if(!session.answers)session.legacyResults=session.results.slice();session.answers=session.answers||Object.fromEntries(session.results.map(r=>[r.id,r.selected??(r.correct?qBy(r.id).answer:null)]));session.flags=Array.isArray(session.flags)?session.flags.filter(id=>session.ids.includes(id)):[];session.answers=Object.fromEntries(session.ids.map(id=>{const n=session.answers[id];return[id,Number.isInteger(n)&&n>=0&&n<qBy(id).options.length?n:null]}));}}
 if(session){session.selected=session.selected??null;session.hint=Number.isInteger(session.hint)?Math.max(0,Math.min(2,session.hint)):0;session.checked=!!session.checked&&session.selected!==null;}
 function validSession(s){return window.CachasteLearning.validSession(s,BANK,['diagnostico','express','completo','errores'],65)}
-function save(){try{localStorage.setItem(KEY,JSON.stringify({version:2,history,pending,baseline,session,recent,assessments}));return true}catch{if(status)status.textContent='Este dispositivo no permitió guardar. Puedes continuar, pero el avance podría perderse.';return false}}
+function save(){if(session&&!session.questionSnapshots)window.CachasteLearning.freezeSession(session,BANK);try{localStorage.setItem(KEY,JSON.stringify({version:2,history,pending,baseline,session,recent,assessments}));return true}catch{if(status)status.textContent='Este dispositivo no permitió guardar. Puedes continuar, pero el avance podría perderse.';return false}}
 function esc(t){return String(t??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
-function qBy(id){return BANK.find(q=>q.id===id)}
+function qBy(id){if(cachedSnapshots!==session?.questionSnapshots){cachedSnapshots=session?.questionSnapshots;cachedQuestions=window.CachasteLearning.archivedSessionQuestions(session)||[];}return cachedQuestions.find(q=>q.id===id)||BANK.find(q=>q.id===id)}
 function passageBy(id){return PASSAGES.find(p=>p.id===id)}
 function current(){return session?qBy(session.ids[session.index]):null}
 function score(q){
@@ -47,7 +49,6 @@ function select(count, quotas){
 }
 function begin(mode){
  if(session){notice('Tienes una sesión guardada. Retómala o descártala antes de comenzar otra.');screen='home';render();return;}
- if(mode==='completo'&&!baseline){notice('Completa primero el diagnóstico de 30 preguntas.');return}
  if(mode==='express'&&!baseline){notice('Completa primero el diagnóstico de 30 preguntas.');return}
  const quotas=mode==='diagnostico'?{Localizar:10,Interpretar:12,Evaluar:8}:mode==='express'?{Localizar:3,Interpretar:4,Evaluar:3}:{Localizar:23,Interpretar:26,Evaluar:16};
  let pool;
@@ -118,7 +119,7 @@ function weakness(){
 }
 function past(id){const a=assessments.find(a=>a.id===id);if(a){recent=a.results;screen='result';render(true)}}
 function historyCards(){return '<div class="card"><h2>Historial de sesiones</h2>'+assessments.slice().reverse().map(a=>'<button class="history-item" onclick="readingPast(&quot;'+esc(a.id)+'&quot;)">'+esc(a.mode)+' · '+a.correct+'/'+a.total+' · '+esc(new Date(a.at).toLocaleDateString('es-CL'))+'</button>').join('')+'</div>'}
-function reviewResults(rows){return '<div class="card"><h2>Revisa y comprende tus respuestas</h2>'+rows.map((r,n)=>{const q=qBy(r.id);return '<details class="review"><summary>'+(n+1)+'. '+(r.correct?'Correcta':r.unanswered?'En blanco':'Por reforzar')+' · '+esc(q.question)+'</summary><p><b>Tu respuesta:</b> '+esc(Number.isInteger(r.selected)?q.options[r.selected]:r.unanswered?'En blanco':'No registrada en esta versión anterior')+'</p><p><b>Respuesta correcta:</b> '+esc(q.options[q.answer])+'</p>'+(Number.isInteger(r.selected)?'<p>'+esc(q.explanations[r.selected])+'</p>':'')+'<h3>Paso a paso</h3>'+window.CachasteLearning.lesson(q,'steps')+'<h3>Más fácil</h3>'+window.CachasteLearning.lesson(q,'easy')+'<h3>Con un ejemplo</h3>'+window.CachasteLearning.lesson(q,'example')+'<details><summary>Volver al texto</summary>'+passageBy(q.passageId).paragraphs.map(x=>'<p>'+esc(x)+'</p>').join('')+'</details></details>'}).join('')+'</div>'}
+function reviewResults(rows){return '<div class="card"><h2>Revisa y comprende tus respuestas</h2>'+rows.map((r,n)=>{const q=window.CachasteLearning.verifiedAssessmentQuestion(null,r,BANK.find(q=>q.id===r.id));if(!q)return '';return '<details class="review"><summary>'+(n+1)+'. '+(r.correct?'Correcta':r.unanswered?'En blanco':'Por reforzar')+' · '+esc(q.question)+'</summary><p><b>Tu respuesta:</b> '+esc(Number.isInteger(r.selected)?q.options[r.selected]:r.unanswered?'En blanco':'No registrada en esta versión anterior')+'</p><p><b>Respuesta correcta:</b> '+esc(q.options[q.answer])+'</p>'+(Number.isInteger(r.selected)?'<p>'+esc(q.explanations[r.selected])+'</p>':'')+'<h3>Paso a paso</h3>'+window.CachasteLearning.lesson(q,'steps')+'<h3>Más fácil</h3>'+window.CachasteLearning.lesson(q,'easy')+'<h3>Con un ejemplo</h3>'+window.CachasteLearning.lesson(q,'example')+'<details><summary>Volver al texto</summary>'+passageBy(q.passageId).paragraphs.map(x=>'<p>'+esc(x)+'</p>').join('')+'</details></details>'}).join('')+'</div>'}
 function overview(){
  const blocks=skills.map(x=>{const rows=history.filter(h=>h.skill===x);return '<div class="skill-summary"><div class="row"><b>'+esc(x)+'</b><span>'+rows.filter(r=>r.correct).length+' / '+rows.length+' aciertos</span></div><div class="bar"><div style="width:'+(rows.length?rows.filter(r=>r.correct).length/rows.length*100:0)+'%"></div></div></div>'}).join('');
  return '<div class="card"><h2>Tu progreso lector</h2>'+blocks+'<p class="small">Estos resultados describen ejercicios formativos, no equivalen a un puntaje PAES oficial.</p></div>';
@@ -185,4 +186,5 @@ window.cachasteNativeBack=function(){if(screen!=='home'){back();return true}retu
 if(typeof setInterval==='function')setInterval(()=>{if(screen==='quiz'&&session?.deadline){if(Date.now()>=session.deadline){finish();return}const el=document.getElementById('reading-timer');if(el)el.textContent='Tiempo restante: '+timeLeft()}},1000);
 if(window.addEventListener)window.addEventListener('pagehide',save);
 render();
+if(typeof URLSearchParams!=='undefined'&&new URLSearchParams(window.location?.search||'').get('modo')==='ensayo'&&!session)begin('completo');
 })();

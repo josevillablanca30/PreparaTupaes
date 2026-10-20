@@ -3,8 +3,8 @@ for(const subject of ['M1','M2','Lectura','Ciencias','Historia']){
  test(subject+': el tutor explica el distractor elegido y tres reparaciones concretas',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('./inicio.html#courses');
-  await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();
-  if(subject==='Ciencias')await page.locator('[data-action=pick-track][data-track=Biología]').click();
+  await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
+  if(subject==='Ciencias')await page.locator('[data-action=pick-track][data-track=Biología]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
   const info=await page.evaluate(sub=>{
    const e=CachasteDailyApp.engine;
    const eligible=CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey===sub&&Array.isArray(q.teaching?.selectedFeedback)&&q.teaching.selectedFeedback.some(f=>f&&f.repair?.length>=3)&&(sub!=='Ciencias'||q.module==='MC'));

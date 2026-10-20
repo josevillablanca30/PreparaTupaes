@@ -8,12 +8,12 @@ const {items}=dailyCatalog(), recovered=new Set(fixture.recovered.map(q=>q.id));
 const sha=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
 const find=id=>items.find(q=>q.subjectKey==='M2'&&q.id===id);
 test('Reconciliación: los 780 registros anteriores conservan identidad, preguntas, claves y familias',()=>{
- const prior=items.filter(q=>!(q.subjectKey==='M2'&&recovered.has(q.id))).map(q=>({id:q.id,key:q.key,question:q.question,options:q.options,answer:q.answer,concept:q.concept,family:q.family,examEligible:q.examEligible,supplementary:q.supplementary}));
+ const prior=items.filter(q=>!['TR-HIS-067','TR-HIS-068','TR-SCI-088','TR-SCI-089','TR-SCI-090','TR-SCI-091','TR-SCI-092','TR-SCI-093','TR-SCI-094','TR-SCI-095','TR-SCI-096','TR-SCI-097','TR-SCI-098','TR-SCI-099'].includes(q.id)&&!(q.subjectKey==='M2'&&recovered.has(q.id))).map(current=>{const q={...current,...current.previousAssessments?.[0]};return ({id:q.id,key:q.key,question:q.question,options:q.options,answer:q.answer,concept:q.concept,family:q.family,examEligible:q.examEligible,supplementary:q.supplementary})});
  assert.equal(prior.length,780);assert.equal(sha(prior),fixture.previousAssessmentSha256);
 });
 test('Reconciliación: se recuperan las ocho evaluaciones de main con sus mismos IDs y claves',()=>{
  for(const entry of fixture.recovered){const q=find(entry.id);assert.ok(q,entry.id);assert.equal(sha([q.question,q.options,q.answer]),entry.assessmentSha256);assert.equal(q.recoveredFrom.commit,fixture.main);}
- assert.equal(items.length,788);assert.equal(new Set(items.map(q=>q.key)).size,788);
+ assert.equal(items.length,802);assert.equal(new Set(items.map(q=>q.key)).size,802);
 });
 test('M2 recuperado: claves cuantitativas y rasgos de funciones se verifican por separado',()=>{
  const key=id=>{const q=find(id);return q.options[q.answer]};

@@ -48,7 +48,7 @@ test('Las cinco materias y su catálogo diario generan la misma versión de cada
   }
  }
  assert.equal(checked,631);
- assert.equal(new Set(items.map(q=>q.subjectKey+':'+L.assessmentVersion(q))).size,788);
+ assert.equal(new Set(items.map(q=>q.subjectKey+':'+L.assessmentVersion(q))).size,802);
 });
 test('La limpieza no recorta el índice histórico al reducir opciones de otra versión',()=>{
  const q=question(),row={id:q.id,selected:3,correct:false,assessmentVersion:L.assessmentVersion(q)};

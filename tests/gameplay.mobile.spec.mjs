@@ -3,7 +3,7 @@ import {test,expect} from '@playwright/test';
 test('El clon MIT inspira un minijuego funcional: ordenar, equivocarse, corregir, retomar y resolver PAES',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('./inicio.html#courses');
- await page.locator('[data-action=pick-course][data-subject=M1]').click();
+ await page.locator('[data-action=pick-course][data-subject=M1]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
  await page.evaluate(()=>{
   const e=CachasteDailyApp.engine;
   e.start('M1',2,'lesson','Descuento porcentual');
@@ -42,7 +42,7 @@ test('El clon MIT inspira un minijuego funcional: ordenar, equivocarse, corregir
 });
 test('El estudiante puede saltarse el minijuego y la prueba de dominio no se modifica',async({page})=>{
  await page.goto('./inicio.html#courses');
- await page.locator('[data-action=pick-course][data-subject=M1]').click();
+ await page.locator('[data-action=pick-course][data-subject=M1]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
  await page.evaluate(()=>{CachasteDailyApp.engine.start('M1',2,'lesson','Descuento porcentual');location.hash='#session';CachasteDailyApp.render()});
  while(await page.locator('[data-action=intro-next]').count())await page.locator('[data-action=intro-next]').click();
  await page.locator('[data-action=begin-question]').first().click();

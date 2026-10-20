@@ -93,11 +93,11 @@ for(const subject of [{page:'science.html',key:'cachaste-science-v1'},{page:'rea
 test('Alumno de enseñanza media puede demostrar un concepto antes de escuchar una clase obligatoria',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('./inicio.html#courses');
- await page.locator('[data-action=pick-course][data-subject=Historia]').click();
+ await page.locator('[data-action=pick-course][data-subject=Historia]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
  await page.locator('.adventure-world [data-action=level]').first().click();
  await expect(page.locator('.mission-preview')).toBeVisible();
  await expect(page.locator('[data-action=check-first]')).toBeVisible();
- await expect(page.locator('[data-action=lesson]')).toContainText('Aprender para mi siguiente estrella');
+ await expect(page.locator('[data-action=lesson]')).toContainText('Comenzar lección');
  await page.locator('[data-action=check-first]').click();
  await expect(page.locator('.question-title')).toBeVisible();
  await expect(page.locator('.daily-session-head')).toContainText('Historia');

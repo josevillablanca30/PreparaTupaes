@@ -115,10 +115,14 @@ public class OfflineAppTest {
         assertEquals("true",js("JSON.parse(localStorage.getItem('cachaste-history-v1')).session.ids.join(',')==='HIS-059'"));
     }
     @Test public void dailyLearningWorksOfflineAndResumesAfterRecreation() throws Exception {
-        open("inicio.html", "window.CachasteDailyApp && document.querySelector('[data-action=practice]')");
-        js("document.querySelector('[data-action=practice]').click();true");
-        waitFor("document.querySelector('[data-action=smart]')");
-        js("document.querySelector('#daily-count').value='1';document.querySelector('[data-action=smart]').click();true");
+        open("inicio.html", "window.CachasteDailyApp");
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.state.foundationDraft=null;location.hash='#courses';CachasteDailyApp.render();document.querySelector('[data-action=pick-course][data-subject=M1]').click();true");
+        waitFor("document.querySelector('[data-action=game-mode]')");
+        js("document.querySelector('[data-action=game-mode]').click();true");
+        waitFor("document.querySelector('.trail-stop.current .trail-node')");
+        js("document.querySelector('.trail-stop.current .trail-node').click();true");
+        waitFor("document.querySelector('[data-action=check-first]')");
+        js("document.querySelector('[data-action=check-first]').click();true");
         waitFor("document.querySelector('.question-title')");
         assertEquals("true",js("CACHASTE_DAILY_CATALOG.items.length>=641 && new Set(CACHASTE_DAILY_CATALOG.items.map(q=>q.key)).size===CACHASTE_DAILY_CATALOG.items.length"));
         waitFor("document.querySelector('.wise-cat img').naturalWidth>0");
@@ -138,6 +142,8 @@ public class OfflineAppTest {
         js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.state.foundationDraft=null;CachasteDailyApp.engine.state.basics={};(CachasteDailyApp.engine.state.stages||={}).M1='basics';(CachasteDailyApp.engine.state.basicsOptional||={}).M1=true;CachasteDailyApp.engine.save();location.hash='#courses';CachasteDailyApp.render();true");
         waitFor("document.querySelector('[data-action=pick-course][data-subject=M1]')");
         js("document.querySelector('[data-action=pick-course][data-subject=M1]').click();true");
+        waitFor("document.querySelector('[data-action=game-mode]')");
+        js("document.querySelector('[data-action=game-mode]').click();true");
         waitFor("document.querySelector('.adventure-world.world-foundation .trail-node')");
         assertEquals("true", js("document.querySelector('.road-track').getAttribute('d').startsWith('M ')"));
         assertEquals("true", js("document.querySelector('.world-hud').textContent.includes('0 de 5 misiones dominadas')"));

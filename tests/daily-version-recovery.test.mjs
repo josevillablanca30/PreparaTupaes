@@ -53,7 +53,7 @@ test('Archivo de sesión corrupto no reinterpreta respuestas ni elimina XP e his
  const data=JSON.parse(storage.getItem(D.KEY));data.session.questionSnapshots[0].answer=(q.answer+1)%q.options.length;storage.setItem(D.KEY,JSON.stringify(data));
  const resumed=engine(bank,storage);assert.equal(resumed.state.session,null);assert.equal(resumed.stats().xp,15);assert.equal(resumed.history('M2').length,1);assert.match(resumed.warning,/verificar/);
 });
-test('Tutor: modo fácil conecta intuición, aplicación particular y comprobación en los 788 ejercicios',()=>{
+test('Tutor: modo fácil conecta intuición, aplicación particular y comprobación en los 802 ejercicios',()=>{
  for(const q of catalog.items){const cards=Array.from(L.lessonCards(q,'easy')),t=q.teaching;
   assert.ok(cards.includes(t.intuition[0].trim()),q.key+' sin intuición');assert.ok(cards.includes(t.application[0].trim()),q.key+' sin aplicación');assert.equal(cards.at(-1),t.check.trim(),q.key+' sin comprobación');
   assert.ok(cards.every(card=>card.trim()),q.key+' tarjeta vacía');

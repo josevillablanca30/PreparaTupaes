@@ -1,0 +1,26 @@
+/* Lote 14: catorce ejercicios originales revisados. La pertinencia del temario
+   se conserva desde la base: un ejercicio complementario nunca pasa a ensayo. */
+import {historiaCandidates} from './paes-transfer-candidates-historia-2027.mjs';
+import {scienceCandidates} from './paes-transfer-candidates-fisica-2027.mjs';
+import {biologyCandidates} from './paes-transfer-candidates-biologia-2027.mjs';
+import {scienceExpansionCandidates} from './paes-transfer-candidates-ciencias-expansion-2027.mjs';
+import {scienceRemainingCandidates} from './paes-transfer-candidates-ciencias-final-2027.mjs';
+import {tpCandidates} from './paes-transfer-candidates-tp-2027.mjs';
+const all=[...historiaCandidates,...scienceCandidates,...biologyCandidates,...scienceExpansionCandidates,...scienceRemainingCandidates,...tpCandidates];
+const materials={
+ Historia:['1bFruW8e2qlIYkve9LYwWeGuprEfKP-ka','CPECH · Bitácora Sistema económico','Conceptos económicos y decisiones; cálculo original de aportes y riesgo'],
+ Física:['1WTyLTfNs5Xt3aiO50cxVvSJlurZs_a0W','CPECH · Física Ciencias Plan Común','Trabajo de una fuerza, ondas sonoras y transformación de energía'],
+ Biología:['1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ','CPECH · Biología Ciencias Plan Común','Respiración, defensas del organismo y habilidades científicas'],
+ Química:['1DZ4ce-NoVWGMZwU0EtevBx2mIWeBTqWK','PDV · Compendio 1 Química','Electrones de valencia, tabla periódica y enlace iónico']
+};
+const special={
+ 'TR-SCI-097':{question:'Un pez aumenta su actividad muscular. Se observa mayor consumo de oxígeno y eliminación de dióxido de carbono. ¿Qué relación entre branquias, circulación y células explica mejor estas observaciones?',options:['Las branquias producen el ATP que los músculos gastan al nadar','El mayor trabajo muscular demanda ATP y el intercambio branquial contribuye al aporte de O₂ y retiro de CO₂','La sangre genera oxígeno al aumentar la velocidad de circulación','La mayor producción de CO₂ indica una disminución de la respiración celular'],answer:1,errors:['El ATP se produce y utiliza mediante procesos celulares; las branquias realizan intercambio de gases.','','La sangre transporta gases, pero no genera el oxígeno que utiliza el músculo.','Un aumento de CO₂ puede acompañar mayor metabolismo celular y no implica una disminución de ese proceso.']},
+ 'TR-SCI-098':{question:'Se comparan respuestas a un mismo antígeno: tras el primer contacto la respuesta tarda diez días, y tras un segundo contacto aparece en tres días con mayor magnitud. ¿Qué proceso explica mejor la diferencia?',options:['Una barrera externa ahora identifica ese antígeno de manera específica','La inflamación inicial convirtió eritrocitos en células productoras de anticuerpos','El primer contacto favoreció células de memoria de la respuesta adaptativa','Los receptores sensoriales almacenaron copias del antígeno para eliminarlo'],answer:2,errors:['Las barreras externas no explican por sí solas una memoria específica frente al mismo antígeno.','Los eritrocitos no se convierten en células productoras de anticuerpos como explicación de esa respuesta.','','La memoria inmunológica específica corresponde a componentes de la respuesta adaptativa, no a receptores sensoriales.']},
+ 'TR-SCI-099':{question:'Una guitarra emite una nota de 220 Hz y un violín una de 440 Hz. Ambas llegan a un punto con igual nivel de intensidad sonora, en el mismo aire. ¿Qué comparación de tono y propagación es correcta?',options:['El violín produce un tono más agudo sin que eso duplique la rapidez del sonido','El violín produce un sonido dos veces más intenso porque duplica la frecuencia','La guitarra produce un tono más agudo porque su período es mayor','El violín transmite el sonido al doble de rapidez por oscilar más veces por segundo'],answer:0,errors:['','La frecuencia diferencia el tono, mientras el enunciado fija igual nivel de intensidad sonora.','Una frecuencia menor corresponde a un tono más grave, no a uno más agudo.','En las mismas condiciones del aire, duplicar la frecuencia no duplica la rapidez de propagación sonora.']}
+};
+export const reviewedTransfers=all.map(row=>{
+ const subject=row.sourceTrace.subject,[driveFileId,driveMaterial,driveSection]=materials[subject];
+ const r={...row,...special[row.id]};
+ return {...r,sourceTrace:{...row.sourceTrace,officialTemario:'https://acceso.mineduc.cl/wp-content/uploads/2026/03/Temario-PAESRegular-2026-'+(subject==='Historia'?'Historia-v2':'Ciencias-v1')+'.pdf',driveFileId,driveMaterial,driveSection,reviewedAt:'2026-10-20',reviewStatus:'revision-editorial-2026-10-20',alignmentRationale:row.id==='TR-SCI-095'?'Habilidad científica de planificar investigaciones: identificar intervención, controles y variable dependiente.':'Se conserva la clasificación de la pregunta base; los temas no explícitos en el temario permanecen complementarios.',sourceUse:'Consulta conceptual acotada; enunciados, datos y soluciones originales.'},transferDesign:{...row.transferDesign,trackReview:row.targetModule==='MTP'?'Contexto independiente para la ruta TP; se conserva elegibilidad de la base.':undefined}};
+});
+export const reviewedTransferKeys=new Set(reviewedTransfers.map(q=>(q.base.startsWith('Historia:')?'Historia:':'Ciencias:')+q.id));

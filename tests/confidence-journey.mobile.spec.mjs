@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 
 test('La clase conserva sus aciertos sin acreditar dominio después de recargar',async({page})=>{
  await page.goto('./inicio.html#courses');
- await page.locator('[data-action=pick-course][data-subject=M1]').click();
+ await page.locator('[data-action=pick-course][data-subject=M1]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
  const count=await page.evaluate(()=>{
   const e=CachasteDailyApp.engine;
   const result=e.start('M1',2,'lesson','Descuento porcentual');
@@ -40,7 +40,7 @@ test('Móvil: la certeza tiene consecuencia visible y genera un repaso real',asy
  const errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  await page.goto('./inicio.html#courses');
- await page.locator('[data-action=pick-course][data-subject=M1]').click();
+ await page.locator('[data-action=pick-course][data-subject=M1]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
  const started=await page.evaluate(()=>{
   const e=CachasteDailyApp.engine;
   return e.start('M1',1,'smart','Descuento porcentual');

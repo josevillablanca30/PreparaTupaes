@@ -13,7 +13,7 @@ const candidates=[...historiaCandidates,...scienceCandidates,...biologyCandidate
 const normalize=s=>String(s||'').normalize('NFKC').trim().toLocaleLowerCase('es');
 
 test('Auditoría editorial integral: 14 candidatas con diagnóstico específico en cada distractor',()=>{
- const {items}=dailyCatalog(),built=buildTransfers(items,candidates);
+ const {items}=dailyCatalog({includeReviewed:false}),built=buildTransfers(items,candidates);
  assert.equal(built.length,14);
  for(let i=0;i<built.length;i++){
   const q=built[i],row=candidates[i],base=items.find(x=>x.key===row.base);
@@ -49,7 +49,7 @@ test('Auditoría de contenido comercial por asignatura: claves coherentes, alter
   assert.equal(malformed,0,'Hay preguntas con estructura inválida en '+subject);
  }
  console.log('AUDITORÍA DE CONTENIDOS '+JSON.stringify(report));
- assert.equal(items.length,788,'No incrementar banco comercial por una auditoría');
+ assert.equal(items.length,802,'No incrementar banco comercial por una auditoría');
 });
 
 test('Tutor particular: las cinco materias ofrecen pasos, versión fácil, ejemplo y corrección de distractores',()=>{

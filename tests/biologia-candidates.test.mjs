@@ -5,7 +5,7 @@ import {buildTransfers} from '../scripts/paes-transfer-2027.mjs';
 import {biologyCandidates} from '../scripts/paes-transfer-candidates-biologia-2027.mjs';
 
 test('Biología: ventilación y memoria inmunológica cuentan con transferencias independientes en revisión',()=>{
- const {items}=dailyCatalog();
+ const {items}=dailyCatalog({includeReviewed:false});
  assert.equal(items.length,788,'Los candidatos no modifican la versión estable');
  const generated=buildTransfers(items,biologyCandidates);
  assert.deepEqual(generated.map(q=>q.id),['TR-SCI-090','TR-SCI-091']);

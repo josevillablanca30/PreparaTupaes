@@ -41,11 +41,12 @@ test('Lectura: 20 textos originales y 130 preguntas únicas con tres habilidades
  assert.equal(distribution.Interpretar,53);
  assert.equal(distribution.Evaluar,32);
 });
-test('Lectura: diagnóstico obligatorio de 30 distribuye 10/12/8',()=>{
+test('Lectura: ensayo directo y diagnóstico independiente de 30 distribuye 10/12/8',()=>{
  const a=reading();a.win.readingBegin('express');
  assert.equal(a.get().session??null,null);
  a.win.readingBegin('completo');
- assert.equal(a.get().session??null,null);
+ assert.equal(a.get().session.ids.length,65);
+ a.win.readingDiscard();a.win.readingDiscard();
  a.win.readingBegin('diagnostico');
  const q=a.get().session.ids.map(id=>a.items.find(x=>x.id===id));
  assert.equal(q.length,30);assert.equal(new Set(q.map(x=>x.id)).size,30);

@@ -8,7 +8,7 @@ import {biologyCandidates} from '../scripts/paes-transfer-candidates-biologia-20
 import {scienceExpansionCandidates} from '../scripts/paes-transfer-candidates-ciencias-expansion-2027.mjs';
 
 test('Auditoría editorial conjunta: nueve candidatos independientes, identificables y sin modificar el banco comercial',()=>{
- const {items}=dailyCatalog();
+ const {items}=dailyCatalog({includeReviewed:false});
  const rows=[...historiaCandidates,...scienceCandidates,...biologyCandidates,...scienceExpansionCandidates];
  assert.equal(rows.length,9);
  assert.equal(new Set(rows.map(q=>q.id)).size,9);

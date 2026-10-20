@@ -1,12 +1,12 @@
 {
   "date": "2026-10-18",
-  "scope": "Auditoría heurística estructural de cinco bancos y 157 transferencias; no certificación de corrección conceptual",
+  "scope": "Auditoría heurística estructural de cinco bancos y 171 transferencias; no certificación de corrección conceptual",
   "totals": {
     "M1": 147,
-    "Ciencias": 293,
+    "Ciencias": 305,
     "Lectura": 130,
     "M2": 115,
-    "Historia": 103
+    "Historia": 105
   },
   "flags": [
     {
@@ -51,119 +51,7 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-006",
-      "area": "Procesos y funciones biológicas",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-009",
-      "area": "Herencia y evolución",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-014",
-      "area": "Ondas",
-      "type": "reverse_length_cue",
-      "level": "review",
-      "detail": "Distractor mucho más largo que la correcta"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-020",
-      "area": "Energía – Tierra",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-043",
-      "area": "Herencia y evolución",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-044",
-      "area": "Organización, estructura y actividad celular",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-054",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-063",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-064",
-      "area": "Organización, estructura y actividad celular",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-071",
-      "area": "Reacciones químicas y estequiometría",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-073",
-      "area": "Organización, estructura y actividad celular",
-      "type": "answer_length_cue",
-      "level": "review",
-      "detail": "La correcta es mucho más larga que un distractor"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-079",
-      "area": "Herencia y evolución",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-080",
-      "area": "Herencia y evolución",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-082",
-      "area": "Organismo y ambiente",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-117",
       "area": "Herencia y evolución",
       "type": "absolute_distractor",
       "level": "review",
@@ -179,32 +67,8 @@
     },
     {
       "bank": "Ciencias",
-      "id": "SCI-128",
-      "area": "Energía – Tierra",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "SCI-143",
-      "area": "Herencia y evolución",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
       "id": "SCI-185",
       "area": "Ondas",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Ciencias",
-      "id": "TR-SCI-010",
-      "area": "Herencia y evolución",
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
@@ -251,32 +115,8 @@
     },
     {
       "bank": "Lectura",
-      "id": "LEC-051",
-      "area": "Localizar",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Lectura",
       "id": "LEC-053",
       "area": "Interpretar",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Lectura",
-      "id": "LEC-054",
-      "area": "Interpretar",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Lectura",
-      "id": "LEC-077",
-      "area": "Localizar",
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
@@ -293,14 +133,6 @@
       "bank": "Lectura",
       "id": "LEC-088",
       "area": "Interpretar",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Lectura",
-      "id": "LEC-101",
-      "area": "Localizar",
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
@@ -331,32 +163,8 @@
     },
     {
       "bank": "Historia",
-      "id": "HIS-038",
-      "area": "Formación ciudadana",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Historia",
       "id": "HIS-041",
       "area": "Economía y sociedad",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-047",
-      "area": "Interpretación de fuentes",
-      "type": "absolute_distractor",
-      "level": "review",
-      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
-    },
-    {
-      "bank": "Historia",
-      "id": "HIS-055",
-      "area": "Interpretación de fuentes",
       "type": "absolute_distractor",
       "level": "review",
       "detail": "Alternativa con negación o absoluto: comprobar plausibilidad"
@@ -392,14 +200,14 @@
     },
     "Ciencias": {
       "Organización, estructura y actividad celular": 20,
-      "Procesos y funciones biológicas": 33,
+      "Procesos y funciones biológicas": 38,
       "Herencia y evolución": 28,
-      "Organismo y ambiente": 21,
-      "Ondas": 28,
-      "Mecánica": 31,
-      "Energía – Tierra": 12,
+      "Organismo y ambiente": 22,
+      "Ondas": 31,
+      "Mecánica": 32,
+      "Energía – Tierra": 13,
       "Electricidad": 25,
-      "Estructura atómica": 30,
+      "Estructura atómica": 31,
       "Química orgánica": 23,
       "Reacciones químicas y estequiometría": 42
     },
@@ -419,14 +227,14 @@
     "Historia": {
       "Historia de Chile": 31,
       "Formación ciudadana": 21,
-      "Economía y sociedad": 21,
+      "Economía y sociedad": 23,
       "Historia mundial": 20,
       "Interpretación de fuentes": 10
     }
   },
   "summary": {
     "critical": 0,
-    "review": 44,
-    "questionCount": 788
+    "review": 20,
+    "questionCount": 802
   }
 }

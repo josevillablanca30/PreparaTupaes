@@ -8,8 +8,8 @@ const cases=transferCasesBatch2;
 
 test('Segundo lote: 18 problemas originales separados en M1, Ciencias e Historia',()=>{
  assert.equal(cases.length,18);
- assert.equal(items.length,788);
- assert.equal(new Set(items.map(q=>q.key)).size,788);
+ assert.equal(items.length,802);
+ assert.equal(new Set(items.map(q=>q.key)).size,802);
  assert.deepEqual(['M1','Ciencias','Historia'].map(subject=>cases.filter(r=>r.base.startsWith(subject+':')).length),[6,6,6]);
  assert.equal(new Set(cases.map(q=>q.base)).size,18,'No sustituir diferentes problemas con una misma habilidad');
  for(const row of cases){
@@ -53,7 +53,7 @@ test('Validar resultados de Física/Química y sentido de los casos de Ciencias'
  assert.equal(get('TR-SCI-007'),'El cultivo con respiración aeróbica puede obtener mayor rendimiento de ATP');
  assert.equal(get('TR-SCI-008'),'El oxígeno es pequeño y no polar, mientras la glucosa requiere proteínas transportadoras');
  assert.equal(get('TR-SCI-009'),'El aparato de Golgi, que modifica y dirige proteínas hacia su destino');
- assert.equal(get('TR-SCI-010'),'La mutación que alcance un gameto que participe en la fecundación');
+ assert.equal(get('TR-SCI-010'),'La mutación de la línea germinal si un gameto portador participa en la fecundación');
  assert.equal(get('TR-SCI-011'),'16 m/s');
  assert.equal(get('TR-SCI-012'),'4 % m/v');
  assert.equal(4+1.5*8,16);

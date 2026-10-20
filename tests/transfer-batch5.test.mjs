@@ -7,9 +7,9 @@ import {transferCasesBatch5 as cases} from '../scripts/paes-transfer-batch5-2027
 const {items}=dailyCatalog(),byKey=new Map(items.map(q=>[q.key,q]));
 test('Lote 5: doce casos originales, referenciados a DEMRE y a archivos reales de la biblioteca',()=>{
  assert.equal(cases.length,12);
- assert.equal(items.length,788);
- assert.equal(new Set(items.map(q=>q.key)).size,788);
- assert.equal(items.filter(x=>x.origin==='original-transfer-2027').length,157);
+ assert.equal(items.length,802);
+ assert.equal(new Set(items.map(q=>q.key)).size,802);
+ assert.equal(items.filter(x=>x.origin==='original-transfer-2027').length,171);
  assert.deepEqual(['M1','Ciencias','Historia'].map(s=>cases.filter(c=>c.base.startsWith(s+':')).length),[4,4,4]);
  assert.equal(new Set(cases.map(x=>x.base)).size,12);
  for(const c of cases){
@@ -69,7 +69,7 @@ test('Historia distingue inferencias sociales, participación, justicia y movimi
 test('La puerta de liberación registra nuevas familias sin asumir certificación didáctica',()=>{
  const gate=readinessAudit(items);
  assert.equal(gate.overall.originals,631);
- assert.equal(gate.overall.transfers,157);
+ assert.equal(gate.overall.transfers,171);
  assert.equal(gate.overall.concepts,287);
  assert.ok(gate.overall.unverifiableConcepts<=77,'Ningún nuevo caso debe empeorar cobertura');
  for(const c of cases){

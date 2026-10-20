@@ -5,13 +5,14 @@ const BANK=window.SCIENCE_BANK||[],TOPICS=window.SCIENCE_TOPICS||{};
 const KEY='cachaste-science-v1',view=document.getElementById('view'),status=document.getElementById('status');
 const subjects=['Biología','Física','Química'];
 function load(){try{const value=JSON.parse(localStorage.getItem(KEY)||'{}');return value&&typeof value==='object'?value:{}}catch{return {}}}
-const saved=load();
+const saved=load();saved.session=window.CachasteLearning.restoreSession(saved.session,BANK);
 const subjectSlug=((window.location&&window.location.search)||'').toLowerCase();
 const focusSubject=/(?:^\?|&)asignatura=biologia(?:&|$)/.test(subjectSlug)?'Biología':/(?:^\?|&)asignatura=quimica(?:&|$)/.test(subjectSlug)?'Química':/(?:^\?|&)asignatura=fisica(?:&|$)/.test(subjectSlug)?'Física':null;
 let track=focusSubject||(['Biología','Física','Química','TP'].includes(saved.track)?saved.track:'Biología');
 let history=Array.isArray(saved.history)?saved.history.filter(x=>x&&BANK.some(q=>q.id===x.id)&&typeof x.correct==='boolean').slice(-2000):[];
 let pending=Array.isArray(saved.pending)?[...new Set(saved.pending.filter(id=>BANK.some(q=>q.id===id)))]:[];
 let notes=saved.notes&&typeof saved.notes==='object'&&!Array.isArray(saved.notes)?saved.notes:{};
+let cachedSnapshots=null,cachedQuestions=[];
 let session=validateSession(saved.session)?saved.session:null;
 let baseline=saved.baseline&&saved.baseline.completed===true&&Array.isArray(saved.baseline.results)&&saved.baseline.results.length===30&&saved.baseline.results.every(r=>r&&typeof r.correct==='boolean')?saved.baseline:null;
 let screen='home',showReview=false,displayMode='steps',copied=false;
@@ -21,18 +22,19 @@ let examMap=false,examConfirm=false;
 if(session){session.selected=session.selected??null;session.hint=Number.isInteger(session.hint)?Math.max(0,Math.min(2,session.hint)):0;session.checked=!!session.checked&&session.selected!==null;}
 if(session?.mode==='completo'){
  if(!session.answers)session.legacyResults=session.results.slice();
- const old=session.answers&&typeof session.answers==='object'?session.answers:Object.fromEntries(session.results.map(r=>[r.id,r.selected??(r.correct?BANK.find(q=>q.id===r.id).answer:null)]));
- session.answers=Object.fromEntries(session.ids.map(id=>{const n=old[id];return[id,Number.isInteger(n)&&n>=0&&n<BANK.find(q=>q.id===id).options.length?n:null]}));
+ const old=session.answers&&typeof session.answers==='object'?session.answers:Object.fromEntries(session.results.map(r=>[r.id,r.selected??(r.correct?activeQuestion(r.id).answer:null)]));
+ session.answers=Object.fromEntries(session.ids.map(id=>{const n=old[id];return[id,Number.isInteger(n)&&n>=0&&n<activeQuestion(id).options.length?n:null]}));
  session.flags=Array.isArray(session.flags)?session.flags.filter(id=>session.ids.includes(id)):[];
  if(!Number.isFinite(session.deadline))session=null;
 }
 function validateSession(value){return window.CachasteLearning.validSession(value,BANK,['diagnostico','express','mixto','completo','errores',...subjects,...subjects.map(s=>'electivo:'+s)],80)}
-function store(){try{localStorage.setItem(KEY,JSON.stringify({version:2,track,history,pending,notes,session,baseline,recent:lastResults,assessments}));return true}catch{message('No pudimos guardar este cambio en el dispositivo.');return false}}
+function store(){if(session&&!session.questionSnapshots)window.CachasteLearning.freezeSession(session,BANK);try{localStorage.setItem(KEY,JSON.stringify({version:2,track,history,pending,notes,session,baseline,recent:lastResults,assessments}));return true}catch{message('No pudimos guardar este cambio en el dispositivo.');return false}}
 function message(x){if(status)status.textContent=x}
 function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
 function list(pool,count){const fresh=pool.map(q=>({q,seen:history.filter(h=>h.id===q.id).length,tie:Math.random()})).sort((a,b)=>a.seen-b.seen||a.tie-b.tie);return fresh.slice(0,count).map(x=>x.q)}
 function skillMap(q){const name=q.area;if(name.includes('estructura')||name.includes('celular'))return 'Busca qué estructura realiza la función indicada.';if(name.includes('Reacciones'))return 'Escribe qué entra y qué sale; comprueba la conservación de la materia.';if(name==='Mecánica')return 'Identifica las magnitudes y sus unidades antes de calcular.';if(name==='Electricidad')return 'Distingue corriente, voltaje, resistencia, potencia y energía.';return 'Subraya la variable que cambia y la evidencia que permite responder.'}
-function selected(){return session?BANK.find(q=>q.id===session.ids[session.index]):null}
+function activeQuestion(id){if(cachedSnapshots!==session?.questionSnapshots){cachedSnapshots=session?.questionSnapshots;cachedQuestions=window.CachasteLearning.archivedSessionQuestions(session)||[];}return cachedQuestions.find(q=>q.id===id)||BANK.find(q=>q.id===id)}
+function selected(){return session?activeQuestion(session.ids[session.index]):null}
 function chooseTrack(next){if(!['Biología','Física','Química','TP'].includes(next))return;track=next;store();render()}
 function adaptiveScore(q){
  const record=baseline?baseline.results.filter(x=>x.subject===q.subject&&x.area===q.area):[];
@@ -92,7 +94,7 @@ function mixedSelection(mode){
 function setup(mode){
  if(session){message('Tienes una sesión guardada. Retómala o descártala antes de iniciar otra.');screen='home';render();return;}
  if(mode==='modulo')mode='express';
- if(!baseline&&mode!=='diagnostico'&&mode!=='errores'&&mode!=='resume'){
+ if(!baseline&&mode!=='diagnostico'&&mode!=='errores'&&mode!=='resume'&&mode!=='completo'){
   message('Primero completa el diagnóstico de 30 preguntas para preparar tu ruta de estudio.');return;
  }
  let pool=[];
@@ -137,7 +139,7 @@ function finishScienceExam(){
  if(!session||session.mode!=='completo')return;
  const legacy=session.legacyResults||[];
  const oldTail=history.slice(-legacy.length);if(legacy.length&&oldTail.length===legacy.length&&legacy.every((r,i)=>r.id===oldTail[i].id&&r.date&&r.date===oldTail[i].date&&r.correct===oldTail[i].correct))history=history.slice(0,-legacy.length);
- const results=session.ids.map(id=>{const q=BANK.find(x=>x.id===id),n=session.answers?.[id]??null,old=legacy.find(r=>r.id===id),unknownOld=n===null&&old&&!old.correct&&!old.unanswered&&!session.explicitlyOmitted?.includes(id);return {id,assessmentVersion:window.CachasteLearning.assessmentVersion(q),selected:n,subject:q.subject,concept:q.concept||q.area,correct:n!==null&&n===q.answer,assisted:false,confidence:'sin-declarar',area:q.area,module:q.module,unanswered:n===null&&!unknownOld,date:old?.date||new Date().toISOString()}});
+ const results=session.ids.map(id=>{const q=activeQuestion(id),n=session.answers?.[id]??null,old=legacy.find(r=>r.id===id),unknownOld=n===null&&old&&!old.correct&&!old.unanswered&&!session.explicitlyOmitted?.includes(id);return {id,assessmentVersion:window.CachasteLearning.assessmentVersion(q),selected:n,subject:q.subject,concept:q.concept||q.area,correct:n!==null&&n===q.answer,assisted:false,confidence:'sin-declarar',area:q.area,module:q.module,unanswered:n===null&&!unknownOld,date:old?.date||new Date().toISOString()}});
  history.push(...results);history=history.slice(-2000);
  for(const r of results)if(!r.correct&&!pending.includes(r.id))pending.push(r.id);
  remember('completo',results,session.track);session=null;screen='result';examConfirm=false;store();render(true);
@@ -246,7 +248,7 @@ function result(){
  const perSubject=subjects.map(sub=>{const items=results.filter(x=>x.subject===sub),correct=items.filter(x=>x.correct).length;return '<div class="science-subject-stat"><div class="row"><strong>'+esc(sub)+'</strong><span>'+correct+' de '+items.length+' aciertos</span></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+(items.length?Math.round(correct/items.length*100):0)+'" aria-label="Aciertos en '+esc(sub)+'"><div style="width:'+(items.length?correct/items.length*100:0)+'%"></div></div><p class="small">'+(items.length?Math.round(correct/items.length*100)+'% de esta práctica.':'Sin preguntas en esta ronda.')+'</p></div>'}).join('');
  return '<span class="eyebrow">Resultado de Ciencias · las tres materias</span><h1>'+good+' de '+results.length+' correctas</h1><p>¡Bien por practicar! Revisa cómo te fue en cada materia: tu mención importa, pero también las otras ciencias.</p><div class="card"><div class="stat"><div><strong>'+good+'</strong><small>Aciertos totales</small></div><div><strong>'+assisted+'</strong><small>Con pistas</small></div><div><strong>'+pending.length+'</strong><small>Por reforzar</small></div></div><h2>Resultados por asignatura</h2>'+perSubject+diagnosticReport(results)+reviewResults(results)+'<h3 style="margin-top:22px">¿Qué hacemos ahora?</h3><div class="actions"><button class="btn" onclick="setup(&quot;modulo&quot;)">Otra práctica de Ciencias mixtas</button><button class="btn secondary" onclick="setup(&quot;errores&quot;)" '+(pending.length?'':'disabled')+'>Reforzar mis errores</button><button class="btn secondary" onclick="backHome()">Elegir mención</button><button class="btn secondary" onclick="progress()">Ver progreso completo</button></div></div>';
 }
-function reviewResults(rows){return '<h2>Revisa tus respuestas</h2>'+rows.map(r=>{const q=BANK.find(x=>x.id===r.id);if(!q)return '';return '<details class="review-item"><summary>'+(r.correct?'✓ ':'↗ ')+esc(q.question)+'</summary><p><strong>Tu respuesta:</strong> '+esc(r.selected==null?(r.unanswered?'Sin responder':'No guardada en la versión anterior'):q.options[r.selected])+'</p><p><strong>Correcta:</strong> '+esc(q.options[q.answer])+'</p>'+(r.selected!=null&&!r.correct?'<p>'+esc(q.explanations[r.selected])+'</p>':'')+'<h3>Paso a paso</h3><ol>'+q.steps.map(s=>'<li>'+esc(s)+'</li>').join('')+'</ol><h3>Más fácil</h3><p>'+esc(q.easy)+'</p><h3>Con un ejemplo</h3><p>'+esc(q.example)+'</p></details>'}).join('')}
+function reviewResults(rows){return '<h2>Revisa tus respuestas</h2>'+rows.map(r=>{const bankQ=BANK.find(x=>x.id===r.id),q=window.CachasteLearning.verifiedAssessmentQuestion(null,r,bankQ);if(!q)return '';return '<details class="review-item"><summary>'+(r.correct?'✓ ':'↗ ')+esc(q.question)+'</summary><p><strong>Tu respuesta:</strong> '+esc(r.selected==null?(r.unanswered?'Sin responder':'No guardada en la versión anterior'):q.options[r.selected])+'</p><p><strong>Correcta:</strong> '+esc(q.options[q.answer])+'</p>'+(r.selected!=null&&!r.correct?'<p>'+esc(q.explanations[r.selected])+'</p>':'')+'<h3>Paso a paso</h3><ol>'+q.steps.map(s=>'<li>'+esc(s)+'</li>').join('')+'</ol><h3>Más fácil</h3><p>'+esc(q.easy)+'</p><h3>Con un ejemplo</h3><p>'+esc(q.example)+'</p></details>'}).join('')}
 function sciencePast(index){const a=assessments[index];if(a){lastResults=a.results;screen='result';render(true)}}
 function scienceHistory(){return '<h2>Historial de sesiones</h2>'+assessments.map((a,i)=>'<button class="history-item" onclick="sciencePast('+i+')">'+esc(a.mode)+' · '+a.correct+'/'+a.total+' · '+esc(new Date(a.at).toLocaleDateString('es-CL'))+'</button>').reverse().join('')}
 function progress(){screen='progress';render(true)}
@@ -257,4 +259,5 @@ window.cachasteNativeBack=function(){if(screen!=='home'){backHome();return true}
 if(typeof setInterval==='function')setInterval(()=>{if(screen==='quiz'&&session?.mode==='completo'){if(Date.now()>=session.deadline){finishScienceExam();return}const el=document.getElementById('science-timer');if(el)el.textContent='Tiempo restante: '+timeRemaining()}},1000);
 if(typeof window.addEventListener==='function')window.addEventListener('pagehide',store);
 render();
+if(typeof URLSearchParams!=='undefined'&&new URLSearchParams(window.location?.search||'').get('modo')==='ensayo'&&!session){const requested=new URLSearchParams(window.location.search).get('asignatura');if(['Biología','Física','Química','TP'].includes(requested))track=requested;setup('completo');}
 })();

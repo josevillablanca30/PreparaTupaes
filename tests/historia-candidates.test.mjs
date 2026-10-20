@@ -5,7 +5,7 @@ import {buildTransfers} from '../scripts/paes-transfer-2027.mjs';
 import {historiaCandidates} from '../scripts/paes-transfer-candidates-historia-2027.mjs';
 
 test('Candidatos de Historia: dos preguntas originales completas, sin alterar el banco aprobado',()=>{
- const {items}=dailyCatalog();
+ const {items}=dailyCatalog({includeReviewed:false});
  assert.equal(items.length,788,'Los ejercicios en evaluación editorial no deben modificar la versión estable');
  assert.equal(historiaCandidates.length,2);
  assert.deepEqual(historiaCandidates.map(q=>q.id),['TR-HIS-067','TR-HIS-068']);

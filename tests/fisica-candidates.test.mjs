@@ -5,7 +5,7 @@ import {buildTransfers} from '../scripts/paes-transfer-2027.mjs';
 import {scienceCandidates} from '../scripts/paes-transfer-candidates-fisica-2027.mjs';
 
 test('Física: dos transferencias independientes mantienen distractores trazables y banco estable',()=>{
- const {items}=dailyCatalog();
+ const {items}=dailyCatalog({includeReviewed:false});
  assert.equal(items.length,788);
  assert.deepEqual(scienceCandidates.map(row=>row.id),['TR-SCI-088','TR-SCI-089']);
  const next=buildTransfers(items,scienceCandidates);

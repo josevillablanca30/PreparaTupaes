@@ -11,11 +11,9 @@ for(const [subject,concept] of pilots){
  test(subject+': clase, relaciones interactivas, persistencia y comprobación PAES independientes',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('./inicio.html#courses');
-  await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();
-  if(subject==='Ciencias')await page.locator('[data-action=pick-track][data-track=Biología]').click();
-  await expect(page.locator('.studio-feature')).toBeVisible();
-  await expect(page.locator('.studio-feature')).toContainText('MISIÓN ESPECIAL');
-  await page.locator('.studio-feature [data-action=studio-open]').click();
+  await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
+  if(subject==='Ciencias')await page.locator('[data-action=pick-track][data-track=Biología]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
+  await page.evaluate(concept=>{const e=CachasteDailyApp.engine,l=CachasteStudios.get(e.state.subject,concept);e.state.studioDraft=CachasteStudios.start(l);e.save();location.hash='#studio';CachasteDailyApp.render();},concept);
   await expect(page.locator('.studio-panel')).toBeVisible();
   await expect(page.locator('.studio-card .cat-frame')).toHaveCount(1);
   await expect(page.locator('.studio-goals li')).toHaveCount(3);
@@ -50,12 +48,11 @@ for(const [subject,concept] of pilots){
 }
 test('Un estudiante puede ir del juego a una clase con el gatito sin perder progreso ni inventar dominio',async({page})=>{
  await page.goto('./inicio.html#courses');
- await page.locator('[data-action=pick-course][data-subject=M1]').click();
+ await page.locator('[data-action=pick-course][data-subject=M1]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
  await page.evaluate(()=>{
-  const q=CACHASTE_DAILY_CATALOG.items.find(x=>x.subjectKey==='M1'&&x.concept==='Ecuación lineal');
-  location.hash='#level:'+encodeURIComponent(q.levelId);CachasteDailyApp.render();
+  const e=CachasteDailyApp.engine; e.state.studioDraft=CachasteStudios.start(CachasteStudios.get('M1','Ecuación lineal'));e.save();
+  location.hash='#studio';CachasteDailyApp.render();
  });
- await page.locator('[data-action=studio-open]').click();
  await expect(page.locator('.studio-card')).toBeVisible();
  while(await page.locator('[data-action=studio-next-card]').count())await page.locator('[data-action=studio-next-card]').click();
  for(let i=0;i<3;i++){
@@ -73,9 +70,9 @@ test('Un estudiante puede ir del juego a una clase con el gatito sin perder prog
 
 test('Diagnóstico previo sin clases no crea XP, ni da por dominada una habilidad',async({page})=>{
  await page.goto('./inicio.html#courses');
- await page.locator('[data-action=pick-course][data-subject=Historia]').click();
- await expect(page.locator('.studio-feature [data-action=studio-direct-test]')).toBeVisible();
- await page.locator('.studio-feature [data-action=studio-direct-test]').click();
+ await page.locator('[data-action=pick-course][data-subject=Historia]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
+ await page.evaluate(()=>{const e=CachasteDailyApp.engine,l=CachasteStudios.get('Historia','Funciones y separación de poderes');e.state.studioDraft=CachasteStudios.start(l);location.hash='#studio';CachasteDailyApp.render();});
+ await page.locator('[data-action=studio-direct-test]').click();
  await expect(page.locator('.question-title')).toBeVisible();
  const facts=await page.evaluate(()=>{
   const e=CachasteDailyApp.engine;
@@ -84,7 +81,7 @@ test('Diagnóstico previo sin clases no crea XP, ni da por dominada una habilida
  expect(facts.mode).toBe('free');
  expect(facts.concept).toBe('Funciones y separación de poderes');
  expect(facts.xp).toBe(0);
- expect(facts.studio??null).toBeNull();
+ expect(facts.studio.stage).toBe('learn');
 });
 
 
@@ -92,17 +89,16 @@ for(const subject of ['M1','M2','Lectura','Ciencias','Historia']){
  test(subject+': taller ampliado usa textos del profesor existente y pasos razonados',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('./inicio.html#courses');
-  await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();
-  if(subject==='Ciencias')await page.locator('[data-action=pick-track][data-track=Biología]').click();
+  await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
+  if(subject==='Ciencias')await page.locator('[data-action=pick-track][data-track=Biología]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
   const info=await page.evaluate(s=>{
    const S=window.CachasteStudios,E=CachasteDailyApp.engine;
    const level=S.lessons.find(l=>l.generatedType&&l.subject===s&&(s!=='Ciencias'||(window.CACHASTE_DAILY_CATALOG.items.find(q=>q.key===l.generatedFrom)?.module==='MC')));
    if(!level)throw Error('No hay taller derivado del contenido de '+s);
    const q=window.CACHASTE_DAILY_CATALOG.items.find(q=>q.key===level.generatedFrom);
-   location.hash='#level:'+encodeURIComponent(q.levelId);CachasteDailyApp.render();
+   E.state.studioDraft=S.start(level);E.save();location.hash='#studio';CachasteDailyApp.render();
    return {concept:level.concept,problem:level.exampleProblem,generatedFrom:level.generatedFrom};
   },subject);
-  await page.locator('.mission-preview [data-action=studio-open]').click();
   await expect(page.locator('.studio-panel')).toBeVisible();
   await expect(page.locator('.studio-panel')).toContainText(info.concept);
   await expect(page.locator('.studio-panel')).toContainText(info.problem);

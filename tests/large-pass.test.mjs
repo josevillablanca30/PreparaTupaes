@@ -83,15 +83,15 @@ test('Elegibilidad heredada: una transferencia nunca promueve un contenido compl
   const base=byKey.get(q.sourceKey),eligible=base.examEligible!==false&&!base.supplementary;
   assert.equal(q.examEligible,eligible,q.id);assert.equal(q.supplementary,!eligible,q.id);
  }
- assert.equal(items.filter(q=>q.supplementary).length,33);
- assert.deepEqual(items.filter(q=>q.subjectKey==='Historia'&&q.supplementary).map(q=>q.id),['HIS-045','HIS-054']);
+ assert.equal(items.filter(q=>q.supplementary).length,47);
+ assert.deepEqual(items.filter(q=>q.subjectKey==='Historia'&&q.supplementary).map(q=>q.id),['HIS-045','HIS-054','TR-HIS-067','TR-HIS-068']);
 });
 
 test('Cada ruta de Ciencias puede seleccionar dos familias PAES por concepto sin cambiar de mención',()=>{
  const report=readinessAudit(items);
  assert.equal(report.scopes.paes.overall.questions,755);assert.equal(report.scopes.paes.overall.concepts,270);
  assert.equal(report.scopes.paes.overall.unverifiableConcepts,0);
- assert.equal(report.overall.unverifiableConcepts,7);
+ assert.equal(report.overall.unverifiableConcepts,0);
  for(const track of ['Biología','Física','Química','TP']){
   const e=engine(),pool=ctx.CachasteCurriculum.sciencePool(items,track).filter(q=>q.subjectKey==='Ciencias'&&q.examEligible!==false&&!q.supplementary);
   assert.equal(report.scienceTracks[track].overall.unverifiableConcepts,0,track);

@@ -3,8 +3,8 @@ for(const subject of ['M1','M2','Lectura','Ciencias','Historia']){
  test(subject+': retomar tutor después de actualizar el banco conserva evaluación, reparación y XP',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('./inicio.html#courses');
-  await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();
-  if(subject==='Ciencias')await page.locator('[data-track=Biología]').click();
+  await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
+  if(subject==='Ciencias')await page.locator('[data-track=Biología]').click();await page.waitForURL(/#(?:tracks|modes|home)$/);if(await page.evaluate(()=>location.hash==='#modes')){await page.locator('[data-action=game-mode]').click();await page.locator('.mode-picker').waitFor({state:'detached'});}
   await page.locator('.adventure-world [data-action=level]').first().click();
   await page.locator('[data-action=check-first]').click();
   const original=await page.evaluate(()=>{

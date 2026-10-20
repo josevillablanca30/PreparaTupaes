@@ -45,7 +45,7 @@ export function buildTransfers(originalItems,rows=transferCases){
    example:row.example||base.teaching?.example||{problem:base.question,steps:base.teaching?.application?.slice(0,3)||row.steps}
   };
   return {...base,id:row.id,sourceId:row.id,key,family:key,transferGroup:row.id,
-    module:row.targetModule||base.module,
+    module:row.targetModule||base.module,previousAssessments:undefined,legacyAssessmentVersion:undefined,editorialRevision:undefined,
     question:row.question,options:row.options.slice(),answer:row.answer,
     explanations:row.options.map((_,i)=>i===row.answer?"Correcto. "+row.steps.at(-1):"Elegiste «"+row.options[i]+"». "+row.errors[i]),
     why:row.steps.join(" "),hint:row.steps[0],steps:row.steps.slice(),easy:row.steps.join(" "),example:[teaching.example.problem,...teaching.example.steps,teaching.example.bridge].filter(Boolean).join("\n\n"),

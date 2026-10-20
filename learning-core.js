@@ -48,8 +48,31 @@
     }
     return recovered;
   }
+  function priorAssessment(q,version){
+    const requested=version||q?.legacyAssessmentVersion;
+    return (q?.previousAssessments||[]).find(old=>old.assessmentVersion===requested&&assessmentVersion(old)===requested)||null;
+  }
+  function freezeSession(s,bank){
+    if(!s||!Array.isArray(s.ids))return s;
+    const byId=new Map(bank.map(q=>[String(q.id),q]));
+    s.assessmentVersions=s.ids.map(id=>assessmentVersion(byId.get(String(id))));
+    s.questionSnapshots=s.ids.map(id=>{const q=byId.get(String(id));return JSON.parse(JSON.stringify({...q,...assessmentSnapshot(q),previousAssessments:undefined}));});return s;
+  }
+  function restoreSession(s,bank){
+    if(!s||!Array.isArray(s.ids)||s.questionSnapshots)return s;
+    const byId=new Map(bank.map(q=>[String(q.id),q])),questions=[];
+    if(!s.ids.some(id=>byId.get(String(id))?.previousAssessments?.length))return s;
+    for(let i=0;i<s.ids.length;i++){
+      const q=byId.get(String(s.ids[i]));if(!q)return s;
+      const version=s.assessmentVersions?.[i],old=priorAssessment(q,version);
+      const selected=version&&version===assessmentVersion(q)?q:old||q;
+      questions.push(selected);
+    }
+    const copy={...s};freezeSession(copy,questions);return copy;
+  }
   function verifiedAssessmentQuestion(assessment,row,bankQuestion){
-    if (!row || typeof row.assessmentVersion!=='string') return bankQuestion || null;
+    if (!row) return bankQuestion || null;
+    if(typeof row.assessmentVersion!=='string')return priorAssessment(bankQuestion)||bankQuestion||null;
     const snapshots=Array.isArray(assessment?.questionSnapshots)?assessment.questionSnapshots:[];
     const candidates=snapshots.filter(q=>q && String(q.id)===String(row.id) && q.assessmentVersion===row.assessmentVersion);
     if(candidates.length===1){
@@ -61,7 +84,7 @@
         return bankQuestion && assessmentVersion(bankQuestion)===row.assessmentVersion ? {...bankQuestion,...archived} : archived;
       }
     }
-    return bankQuestion && assessmentVersion(bankQuestion)===row.assessmentVersion ? bankQuestion : null;
+    return bankQuestion && assessmentVersion(bankQuestion)===row.assessmentVersion ? bankQuestion : priorAssessment(bankQuestion,row.assessmentVersion);
   }
   function sessionVersionStatus(session,bank) {
     if (!session || !Array.isArray(session.ids)) return 'invalid';
@@ -73,7 +96,7 @@
       return q && session.assessmentVersions[i]===assessmentVersion(q);
     }) ? 'compatible' : 'changed';
   }
-  function compatibleAttempt(q,row){return row.assessmentVersion==null||row.assessmentVersion===assessmentVersion(q);}
+  function compatibleAttempt(q,row){return row.assessmentVersion==null?!q.legacyAssessmentVersion:row.assessmentVersion===assessmentVersion(q);}
   function profile(bank, history) {
     const byId = new Map(bank.map(q => [q.id, q]));
     const groups = new Map();
@@ -184,5 +207,5 @@
     if(mode==='easy')return section('Imagínalo así',paragraphs(t.intuition))+section('Conectémoslo con tu ejercicio',steps(t.application))+section('Comprobemos el resultado',paragraphs([t.check]),'teaching-check');
     return section('Un problema distinto',paragraphs([t.example.problem]),'teaching-example')+section('Vamos a resolverlo',steps(t.example.steps))+section('Qué puedes llevar a tu pregunta',paragraphs([t.example.bridge]));
   }
-  global.CachasteLearning = { contentHash, assessmentVersion, assessmentSnapshot, archivedSessionQuestions, verifiedAssessmentQuestion, sessionVersionStatus, compatibleAttempt, bindPassages, lessonCards, lesson, concept, profile, skillStars, select, transfer, validSession, cleanRows, cleanAssessment, summary };
+  global.CachasteLearning = { contentHash, priorAssessment, freezeSession, restoreSession, assessmentVersion, assessmentSnapshot, archivedSessionQuestions, verifiedAssessmentQuestion, sessionVersionStatus, compatibleAttempt, bindPassages, lessonCards, lesson, concept, profile, skillStars, select, transfer, validSession, cleanRows, cleanAssessment, summary };
 })(typeof window !== 'undefined' ? window : globalThis);

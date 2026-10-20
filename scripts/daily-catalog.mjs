@@ -1,4 +1,5 @@
 import vm from 'node:vm';
+import {reviewedTransfers} from './editorial-transfers-20261020.mjs';
 import {readFileSync} from 'node:fs';
 import {loadBanks} from './load-banks.mjs';
 import {buildTransfers} from './paes-transfer-2027.mjs';
@@ -19,8 +20,9 @@ const batches=[undefined,transferCasesBatch2,transferCasesBatch3,transferCasesBa
  transferCasesBatch5,transferCasesBatch6,transferCasesBatch7,transferCasesBatch8,
  transferCasesBatch9,transferCasesBatch10,transferCasesBatch11,transferCasesBatch12,transferCasesBatch13];
 
-export function dailyCatalog(){
+export function dailyCatalog({includeReviewed=true}={}){
  const ctx=vm.createContext({});
+ for(const file of ['learning-core.js','editorial-revisions.js'])vm.runInContext(readFileSync(new URL('../'+file,import.meta.url),'utf8'),ctx);
  vm.runInContext(readFileSync(new URL('../daily-curriculum.js',import.meta.url),'utf8'),ctx);
  const all=loadBanks(),items=[];
  for(const subjectKey of Object.keys(ctx.CachasteCurriculum.subjects)){
@@ -33,5 +35,7 @@ export function dailyCatalog(){
   }
  }
  for(const batch of batches)items.push(...buildTransfers(items,batch));
+ if(includeReviewed)items.push(...buildTransfers(items,reviewedTransfers));
+ ctx.CachasteEditorial.apply(items);
  return {items,texts:all.texts};
 }

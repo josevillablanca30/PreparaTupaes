@@ -10,7 +10,7 @@ import {scienceRemainingCandidates} from '../scripts/paes-transfer-candidates-ci
 import {tpCandidates} from '../scripts/paes-transfer-candidates-tp-2027.mjs';
 
 test('Puerta editorial: verificar catorce candidatos sin liberar contenido no revisado, sin desbloqueos ficticios',()=>{
- const {items}=dailyCatalog();
+ const {items}=dailyCatalog({includeReviewed:false});
  const rows=[...historiaCandidates,...scienceCandidates,...biologyCandidates,...scienceExpansionCandidates,...scienceRemainingCandidates,...tpCandidates];
  const candidates=buildTransfers(items,rows);
  assert.equal(candidates.length,14);

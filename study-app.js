@@ -7,6 +7,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   let stored = {}; try { stored = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch {}
   let history = Array.isArray(stored.history) ? stored.history.filter(r => r && byId.has(r.id) && typeof r.correct === 'boolean').slice(-5000) : [];
+  stored.session=L.restoreSession(stored.session,BANK);
   let session = L.validSession(stored.session, BANK, ['diagnostic', 'express', 'reinforce', 'full']) ? stored.session : null;
   // The archive is self-validated. Use the original assessment, with current teaching only when available.
   const archived = () => session ? L.archivedSessionQuestions(session) : null;
@@ -37,7 +38,7 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   }
   const current = () => session && sessionQuestion(session.ids[session.index]);
   function begin(mode) {
-    if (!diagnosticDone && mode !== 'diagnostic') { notice = 'Completa primero el diagnóstico para orientar tu práctica.'; render(); return; }
+    if (!diagnosticDone && mode !== 'diagnostic' && mode !== 'full') { notice = 'Completa primero el diagnóstico para orientar tu práctica.'; render(); return; }
     if (session) { notice = 'Tienes una sesión guardada. Retómala o descártala antes de iniciar otra.'; render(); return; }
     const distinctFamilies = mode !== 'full' || new Set(ELIGIBLE.map(q => q.transferGroup || q.id)).size >= count;
     const pool = L.select(ELIGIBLE, history, mode === 'diagnostic' ? 30 : mode === 'full' ? count : 10, { balanced: true, distinctFamilies });
@@ -159,4 +160,5 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   document.addEventListener('visibilitychange', () => { if (document.hidden) save(); else if (screen === 'quiz') render(); });
   setInterval(() => { if (screen === 'quiz' && session?.mode === 'full' && !expired()) { const t = document.getElementById('exam-timer'); if (t) t.textContent = 'Tiempo restante: ' + timeLeft(); } }, 1000);
   render();
+  if(typeof URLSearchParams!=='undefined'&&new URLSearchParams(window.location?.search||'').get('modo')==='ensayo'&&!session)begin('full');
 };
