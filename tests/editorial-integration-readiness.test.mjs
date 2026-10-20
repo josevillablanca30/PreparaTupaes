@@ -9,12 +9,22 @@ import {scienceExpansionCandidates} from '../scripts/paes-transfer-candidates-ci
 import {scienceRemainingCandidates} from '../scripts/paes-transfer-candidates-ciencias-final-2027.mjs';
 import {tpCandidates} from '../scripts/paes-transfer-candidates-tp-2027.mjs';
 
-test('Puerta editorial: informar brechas reales tras simular once candidatos, sin desbloqueos ficticios',()=>{
+test('Puerta editorial: verificar catorce candidatos sin liberar contenido no revisado, sin desbloqueos ficticios',()=>{
  const {items}=dailyCatalog();
  const rows=[...historiaCandidates,...scienceCandidates,...biologyCandidates,...scienceExpansionCandidates,...scienceRemainingCandidates,...tpCandidates];
  const candidates=buildTransfers(items,rows);
  assert.equal(candidates.length,14);
  assert.equal(items.length,788,'No modificar el banco comercial sin una migración validada');
+ assert.equal(new Set(candidates.map(q=>q.key)).size,14,'Cada ejercicio candidato tiene ID único');
+ for(const candidate of candidates){
+  const original=items.find(q=>q.key===candidate.sourceKey);
+  assert.ok(original,'Debe existir el ítem original para '+candidate.key);
+  assert.equal(candidate.concept,original.concept,'Debe conservar el objetivo pedagógico');
+  assert.ok(candidate.sourceTrace?.reviewStatus?.includes('pendiente'),'El ejercicio todavía requiere cotejo curricular: '+candidate.key);
+  assert.ok(!items.some(q=>q.key===candidate.key),'No publicar por accidente un candidato: '+candidate.key);
+  if(candidate.sourceTrace.targetTrack==='TP')assert.equal(candidate.module,'MTP','La evidencia TP debe dirigirse exclusivamente a TP');
+ }
+
  const combined=[...items,...candidates];
  const missing=[];
  for(const subject of ['M1','M2','Lectura','Historia','Ciencias']){
