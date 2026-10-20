@@ -43,7 +43,7 @@ test('Tutor ofrece aprender antes de comprobar estrellas en una habilidad nueva'
  await choose(page,'M1');
  const target=page.locator('.trail-stop.current .trail-node').first();
  await target.click();
- await expect(page.locator('.skill-stars')).toHaveAttribute('aria-label',/0 de 5 estrellas/);
+ await expect(page.locator('.mission-preview .skill-stars')).toHaveAttribute('aria-label',/0 de 5 estrellas/);
  await expect(page.locator('.mission-actions [data-action=lesson]')).toHaveText('Comenzar lección');
  await expect(page.locator('.mission-actions [data-action=lesson]')).toHaveClass(/primary/);
  await page.locator('.mission-actions [data-action=lesson]').click();
