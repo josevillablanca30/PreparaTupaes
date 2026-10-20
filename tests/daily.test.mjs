@@ -136,3 +136,19 @@ test('Tutor: equivocarse, acertar con duda o estudiar no certifica cuatro estrel
   assert.equal(ctx.CachasteLearning.skillStars(e.profile('M1')[0])<4,true,'Un solo acierto independiente posterior al refuerzo no acredita dominio: '+mode);
  }
 });
+
+test('Tutor: quinta estrella requiere tercera familia independiente y sobrevive a la recarga',()=>{
+ const storage=memory(),bank=fixtures.slice(0,5),e=engine(bank,storage);
+ e.start('M1',3,'free','Porcentaje');
+ const families=[];
+ for(let i=0;i<3;i++){
+  const session=e.state.session,q=e.byKey.get(session.keys[session.index]);
+  families.push(q.family);
+  e.answer(0,'seguro');
+  assert.equal(ctx.CachasteLearning.skillStars(e.profile('M1')[0]),i===0?3:i===1?4:5);
+  e.next();
+ }
+ assert.equal(new Set(families).size,3);
+ const re=engine(bank,storage);
+ assert.equal(ctx.CachasteLearning.skillStars(re.profile('M1')[0]),5,'El dominio persistido no desaparece al reiniciar');
+});
