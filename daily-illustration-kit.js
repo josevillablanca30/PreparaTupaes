@@ -79,9 +79,26 @@
   const type=['flow','timeline','compare'].includes(d.type)?d.type:'compare',icons=nodeIcons[d.context]||['document','search','evidence'];
   return '<figure role="img" aria-label="'+esc(d.labels.join(' → '))+'" class="scenario-relationships illustrated-relationships '+type+'" data-illustration="'+esc(d.context||type)+'"><div>'+d.labels.map((label,i)=>'<span class="'+(selected===i?'chosen':'')+'">'+object(icons[i%icons.length])+'<strong>'+esc(label)+'</strong></span>').join(type==='compare'?'':'<b aria-hidden="true">→</b>')+'</div><figcaption>'+(type==='timeline'?'Orden de hitos; las distancias no representan duraciones.':type==='flow'?'Relaciones del caso; el esquema no representa todas las causas.':'Compara el papel y el alcance de cada elemento.')+'</figcaption></figure>';
  }
- function vessel({volume,max,amount='Soluto constante',scope='solution'}){
+ function vessel({volume,max,amount='Soluto constante',amountUnit='',scope='solution'}){
+  if(typeof amount==='number')amount=amount.toLocaleString('es-CL')+' '+amountUnit+' de soluto';
   const id='vessel-'+(++serial),level=158-90*Math.max(.12,Math.min(1,volume/max)),fill='url(#'+id+'-blue)';
   return '<figure class="illustrated-vessel" data-illustration="'+esc(scope)+'">'+paint('<ellipse cx="160" cy="177" rx="80" ry="10" fill="#cab8e0" opacity=".25"/><defs>'+defs(id).replace(/^<defs>|<\/defs>$/g,'')+'</defs><path d="M96 28H224V153Q224 170 209 170H111Q96 170 96 153Z" fill="#ffffffb0" stroke="#a3a2cb" stroke-width="3"/><path d="M101 '+level+'Q160 '+(level+9)+' 219 '+level+'V151Q219 165 208 165H112Q101 165 101 151Z" fill="'+fill+'" opacity=".8"/><path d="M103 29H225 M108 39V148" stroke="#fff" stroke-width="5" fill="none"/><path d="M99 30H87" stroke="#a3a2cb" stroke-width="3"/>'+[0,1,2,3].map(i=>'<path d="M200 '+(62+i*25)+'H216" stroke="#849ab3" stroke-width="2"/>').join('')+Array.from({length:12},(_,i)=>'<circle cx="'+(121+i%4*24)+'" cy="'+(level+5+Math.floor(i/4)*Math.max(3,(156-level)/3))+'" r="2.7" fill="#a16cc8" stroke="#d9c5f0" stroke-width="1.5"/>').join('')+'<text x="160" y="207" text-anchor="middle" fill="#5d417a" font-size="16">'+esc(amount)+'</text>','Solución en un recipiente: '+amount+'; puntos simbólicos, no conteo molecular','0 0 320 230')+'<figcaption>Puntos simbólicos: representan la misma cantidad de soluto, no moléculas a escala.</figcaption></figure>';
  }
- g.CachasteIllustrations={paint,object,stamp,cart,balance,relationship,vessel,nodeIcons};
+ function support(q,mode){
+  const exact={
+   'Respiración celular y ATP':['battery','membrane'],'Segunda ley de Newton':['balance','cart'],
+   'Molaridad':['flask','flask'],'Conservación de soluto al diluir':['flask','flask'],'Cálculo de una dilución':['flask','flask'],
+   'Descuento porcentual':['tiles','flask'],'Logaritmos':['tiles','document'],
+   'Cuestión social':['city','document'],'Industrialización y urbanización':['factory','city'],
+   'Tabla y relaciones entre datos':['chart','document'],'Dato explícito':['search','book'],
+   'Idea global y tesis':['book','evidence'],'Evaluar evidencia pertinente':['search','evidence'],
+   'Función de un fragmento':['book','document'],'Cambio de un personaje':['clock','book'],
+   'Ósmosis en medio hipertónico':['membrane','cell'],'Membrana selectiva':['membrane','cell'],
+   'Clasificación y empaquetado de proteínas':['factory','cell'],'Síntesis ribosomal de proteínas':['factory','dna'],
+   'Teorema de Pitágoras':['tiles','ruler'],'Ecuación lineal':['balance','balance'],'Ecuaciones lineales':['balance','balance']
+  };
+  const pair=exact[q?.concept];if(!pair)return '';
+  return '<div class="support-illustration" aria-hidden="true">'+object(pair[mode==='example'?1:0])+'</div>';
+ }
+ g.CachasteIllustrations={paint,object,stamp,cart,balance,relationship,vessel,support,nodeIcons};
 })(typeof window==='undefined'?globalThis:window);

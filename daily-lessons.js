@@ -106,8 +106,8 @@
  function repairSupport(q){
   const t=q?.teaching||{},example=t.example||{};
   const easy=(t.intuition||[]).filter(x=>typeof x==='string'&&x.trim());
-  const simpler=easy.length?'<section class="reference-easy-card"><h3>Más fácil</h3>'+easy.map(x=>'<p>'+esc(x)+'</p>').join('')+'</section>':'';
-  const worked=example.problem?'<section class="reference-example-card"><h3>Otro ejemplo</h3><p>'+esc(example.problem)+'</p><ol>'+(example.steps||[]).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>'+(example.bridge?'<p>'+esc(example.bridge)+'</p>':'')+'</section>':'';
+  const simpler=easy.length?'<section class="reference-easy-card"><h3>Más fácil</h3>'+(g.CachasteIllustrations?.support(q,'easy')||'')+easy.map(x=>'<p>'+esc(x)+'</p>').join('')+'</section>':'';
+  const worked=example.problem?'<section class="reference-example-card"><h3>Otro ejemplo</h3>'+(g.CachasteIllustrations?.support(q,'example')||'')+'<p>'+esc(example.problem)+'</p><ol>'+(example.steps||[]).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>'+(example.bridge?'<p>'+esc(example.bridge)+'</p>':'')+'</section>':'';
   return simpler+worked;
  }
  // Compose the existing teaching and working models; do not generate a second curriculum.
