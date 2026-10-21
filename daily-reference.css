@@ -72,8 +72,9 @@
 #daily-root .reference-lesson-hero .cat-frame{width:100%;height:auto;aspect-ratio:1;max-height:none;min-width:0;filter:drop-shadow(0 5px 6px #7b529619)}
 #daily-root .reference-teaching-card{padding:18px;background:linear-gradient(145deg,#fffdf6,#fcf8ff);border:1px solid #e9dcf4;border-radius:24px;margin:15px 0;box-shadow:0 6px 17px #66409307}
 #daily-root .reference-card-title,.model-heading{display:flex;gap:10px;align-items:center;margin-bottom:13px}
-#daily-root .reference-card-title h2{font-size:21px;margin:0;line-height:1.2;flex:1;min-width:0;overflow-wrap:anywhere}
-#daily-root .reference-card-title small{font-size:10px;color:#8b70a5;white-space:nowrap;background:#eee4fa;padding:5px 8px;border-radius:14px;align-self:flex-start}
+#daily-root .reference-card-title{display:grid;grid-template-columns:37px minmax(0,1fr)}
+#daily-root .reference-card-title h2{font-size:21px;margin:0;line-height:1.2;grid-column:1/-1;grid-row:2;min-width:0;overflow-wrap:anywhere}
+#daily-root .reference-card-title small{font-size:10px;color:#8b70a5;white-space:nowrap;background:#eee4fa;padding:5px 8px;border-radius:14px;align-self:flex-start;grid-column:2;grid-row:1;justify-self:end}
 #daily-root .reference-card-icon{width:37px;height:37px;flex:none;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#c9adff,#8754dc);color:#fff0ae;font-size:22px;box-shadow:inset 0 2px 3px #ffffff50}
 #daily-root .reference-teaching-card .teacher-step{padding:0;background:none;border:0;box-shadow:none}
 #daily-root .reference-teaching-card .lesson-text{background:transparent!important;padding:0!important;font-size:16px;line-height:1.7!important}
