@@ -3,9 +3,9 @@ package cl.preparatupaes.app;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.view.KeyEvent;
-import android.graphics.Bitmap;
-import java.io.File;
-import java.io.FileOutputStream;
+import android.os.ParcelFileDescriptor;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import androidx.test.core.app.ActivityScenario;
@@ -259,16 +259,15 @@ public class OfflineAppTest {
         js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();location.hash='#home';CachasteDailyApp.render();true");
     }
     private void captureDidacticScreen(String name) throws Exception {
-        File directory=InstrumentationRegistry.getInstrumentation().getTargetContext().getExternalFilesDir("didactic-screens");
-        assertNotNull(directory);
-        assertTrue(directory.exists() || directory.mkdirs());
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
         Thread.sleep(150);
-        Bitmap bitmap=InstrumentationRegistry.getInstrumentation().getUiAutomation().takeScreenshot();
-        assertNotNull("Native screenshot is unavailable",bitmap);
-        try(FileOutputStream output=new FileOutputStream(new File(directory,name+".png"))) {
-            assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG,100,output));
-        } finally {bitmap.recycle();}
+        // Keep native captures outside app data, which Gradle clears after testing.
+        String path="/data/local/tmp/cachaste-didactic-screens/"+name+".png";
+        String command="mkdir -p /data/local/tmp/cachaste-didactic-screens && screencap -p "+path+" && test -s "+path+" && echo captured";
+        try(BufferedReader output=new BufferedReader(new InputStreamReader(new ParcelFileDescriptor.AutoCloseInputStream(
+                InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommand(command))))) {
+            assertEquals("Native screenshot export failed","captured",output.readLine());
+        }
     }
     @Test public void illustratedFiveSubjectLessonsAndSelectedErrorsWorkInInstalledApk() throws Exception {
         open("inicio.html", "window.CachasteDailyApp && window.CachasteIllustrations");

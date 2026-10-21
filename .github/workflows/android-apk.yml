@@ -130,7 +130,7 @@ jobs:
           script: |
             gradle -p android --no-daemon :app:connectedDebugAndroidTest
             mkdir -p android/app/build/outputs/didactic-screens
-            adb pull /sdcard/Android/data/cl.preparatupaes.app.sciencebeta/files/didactic-screens/. android/app/build/outputs/didactic-screens/
+            adb pull /data/local/tmp/cachaste-didactic-screens/. android/app/build/outputs/didactic-screens/
       - name: Reintentar emulador Android 35 si el SDK 36 falla
         id: emulator_fallback
         if: steps.emulator_primary.outcome == 'failure'
@@ -144,7 +144,7 @@ jobs:
           script: |
             gradle -p android --no-daemon :app:connectedDebugAndroidTest
             mkdir -p android/app/build/outputs/didactic-screens
-            adb pull /sdcard/Android/data/cl.preparatupaes.app.sciencebeta/files/didactic-screens/. android/app/build/outputs/didactic-screens/
+            adb pull /data/local/tmp/cachaste-didactic-screens/. android/app/build/outputs/didactic-screens/
       - name: Confirmar pruebas nativas antes de publicar APK
         if: always() && steps.emulator_primary.outcome != 'success' && steps.emulator_fallback.outcome != 'success'
         run: |
