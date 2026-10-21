@@ -259,5 +259,5 @@ window.cachasteNativeBack=function(){if(screen!=='home'){backHome();return true}
 if(typeof setInterval==='function')setInterval(()=>{if(screen==='quiz'&&session?.mode==='completo'){if(Date.now()>=session.deadline){finishScienceExam();return}const el=document.getElementById('science-timer');if(el)el.textContent='Tiempo restante: '+timeRemaining()}},1000);
 if(typeof window.addEventListener==='function')window.addEventListener('pagehide',store);
 render();
-if(typeof URLSearchParams!=='undefined'&&new URLSearchParams(window.location?.search||'').get('modo')==='ensayo'&&!session){const requested=new URLSearchParams(window.location.search).get('asignatura');if(['Biología','Física','Química','TP'].includes(requested))track=requested;setup('completo');}
+if(typeof URLSearchParams!=='undefined'&&new URLSearchParams(window.location?.search||'').get('modo')&&['ensayo','diagnostico'].includes(new URLSearchParams(window.location.search).get('modo'))&&!session){const requested=new URLSearchParams(window.location.search).get('asignatura');if(['Biología','Física','Química','TP'].includes(requested))track=requested;setup(new URLSearchParams(window.location.search).get('modo')==='diagnostico'?'diagnostico':'completo');}
 })();

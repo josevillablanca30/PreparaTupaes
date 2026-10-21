@@ -898,3 +898,6 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 
 #daily-root .visual-explore button{overflow-wrap:normal;word-break:normal}
 @media(max-width:360px){#daily-root .visual-explore button{flex-basis:100%}}
+
+/* Recta: referencias visibles y recorrido que se puede reiniciar. */
+#daily-root .numberline-directions{display:flex;justify-content:space-between;gap:8px;font-size:11px;font-weight:700;color:#624b80}#daily-root .numberline .zero{border-bottom:3px solid #7650b6;font-weight:850}#daily-root .numberline .line-start{outline:2px dashed #9b76bd;outline-offset:1px}#daily-root .numberline-legend{font-size:12px;line-height:1.6}#daily-root .numberline-demo button{margin:6px}#daily-root .numberline-complete{color:#245d45;font-weight:700}#daily-root .session-switch{background:#fff7df!important;border:2px solid #d7ba77!important;border-radius:20px;padding:18px!important;margin:10px 0 24px!important}#daily-root .session-switch:focus{outline:3px solid #7650b6;outline-offset:3px}#daily-root .session-switch .daily-actions{display:grid;gap:12px}

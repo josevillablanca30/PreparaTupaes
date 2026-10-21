@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 public class OfflineAppTest {
     private ActivityScenario<MainActivity> scenario;
     private WebView web(MainActivity activity) {
-        return (WebView)((ViewGroup)activity.findViewById(android.R.id.content)).getChildAt(0);
+        return (WebView)activity.findViewById(android.R.id.content).findViewWithTag("cachaste-web");
     }
     private String js(String script) throws Exception {
         AtomicReference<String> answer = new AtomicReference<>();
@@ -44,6 +44,30 @@ public class OfflineAppTest {
     }
     @Before public void launch() {scenario=ActivityScenario.launch(MainActivity.class);}
     @After public void close() {if(scenario!=null)scenario.close();}
+
+    @Test public void scrolledLessonViewportStaysOutsideSystemBars() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp");
+        scenario.onActivity(activity -> {
+            android.graphics.Rect bounds=new android.graphics.Rect();
+            WebView view=web(activity);
+            assertTrue(view.getGlobalVisibleRect(bounds));
+            android.view.View decor=activity.getWindow().getDecorView();
+            android.graphics.Insets bars=decor.getRootWindowInsets().getInsets(android.view.WindowInsets.Type.systemBars() | android.view.WindowInsets.Type.displayCutout());
+            assertTrue("Content draws behind status bar",bounds.top>=bars.top);
+            assertTrue("Controls draw behind navigation bar",bounds.bottom<=decor.getHeight()-bars.bottom);
+        });
+    }
+
+    @Test public void pendingSessionOffersAWorkingWayToBeginTheChosenLesson() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp");
+        js("location.hash='#courses';CachasteDailyApp.render();document.querySelector('[data-action=pick-course][data-subject=M1]').click();var e=CachasteDailyApp.engine;e.close();e.state.foundationDraft=null;e.state.track=null;e.start('M1',2,'free','Enteros y cambios');var old=e.state.session.id;var q=CACHASTE_DAILY_CATALOG.items.find(q=>q.subjectKey==='M1'&&q.concept==='Descuento porcentual');location.hash='#level:'+encodeURIComponent(q.levelId);CachasteDailyApp.render();document.querySelector('[data-action=check-first]').click();true");
+        waitFor("document.querySelector('.session-switch')");
+        assertEquals("true",js("CachasteDailyApp.engine.state.session.id===old"));
+        js("document.querySelector('[data-action=switch-start]').click();true");
+        waitFor("document.querySelector('.question-title')");
+        assertEquals("true",js("CachasteDailyApp.engine.state.session.id!==old && CachasteDailyApp.engine.state.session.concept==='Descuento porcentual'"));
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();true");
+    }
 
     @Test public void allFiveSubjectsStartOffline() throws Exception {
         open("inicio.html", "document.querySelectorAll('a.subject').length>=5");
@@ -269,6 +293,7 @@ public class OfflineAppTest {
     }
     private void captureDidacticScreen(String name) throws Exception {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+        Thread.sleep(1200);
         CountDownLatch painted=new CountDownLatch(1);
         scenario.onActivity(activity -> {
             WebView view=web(activity);
@@ -289,7 +314,10 @@ public class OfflineAppTest {
     }
     @Test public void illustratedFiveSubjectLessonsAndSelectedErrorsWorkInInstalledApk() throws Exception {
         open("inicio.html", "window.CachasteDailyApp && window.CachasteIllustrations");
-        String[][] cases={{"M1","Descuento porcentual"},{"M2","Ecuaciones lineales"},{"Lectura","Función de un fragmento"},{"Historia","Cuestión social"},{"Ciencias","Respiración celular y ATP"},{"Ciencias","Molaridad"},{"Ciencias","Segunda ley de Newton"}};
+        js("location.hash='#courses';CachasteDailyApp.render();document.querySelector('[data-action=pick-course][data-subject=M1]').click();true");
+        waitFor("document.querySelector('.mode-picker')");
+        captureDidacticScreen("modes-cat");
+        String[][] cases={{"M1","Enteros y cambios"},{"M2","Ecuaciones lineales"},{"Lectura","Función de un fragmento"},{"Historia","Cuestión social"},{"Ciencias","Respiración celular y ATP"},{"Ciencias","Molaridad"},{"Ciencias","Segunda ley de Newton"}};
         for(int i=0;i<cases.length;i++) {
             js("var e=CachasteDailyApp.engine;var sample=CACHASTE_DAILY_CATALOG.items.find(q=>q.subjectKey==='"+cases[i][0]+"' && q.concept==='"+cases[i][1]+"');e.close();e.state.foundationDraft=null;e.state.track=sample.subjectKey==='Ciencias'?sample.subject:null;e.start(sample.subjectKey,2,'lesson',sample.concept);location.hash='#session';CachasteDailyApp.render();true");
             waitFor("document.querySelectorAll('.didactic-overview > section').length===3");

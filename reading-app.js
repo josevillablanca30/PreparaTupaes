@@ -187,4 +187,5 @@ if(typeof setInterval==='function')setInterval(()=>{if(screen==='quiz'&&session?
 if(window.addEventListener)window.addEventListener('pagehide',save);
 render();
 if(typeof URLSearchParams!=='undefined'&&new URLSearchParams(window.location?.search||'').get('modo')==='ensayo'&&!session)begin('completo');
+if(typeof URLSearchParams!=='undefined'&&new URLSearchParams(window.location?.search||'').get('modo')==='diagnostico'&&!session)begin('diagnostico');
 })();

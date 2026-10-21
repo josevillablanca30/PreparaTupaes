@@ -161,4 +161,5 @@ window.CachasteStudy = function ({ bank: BANK, key: KEY, title: TITLE, minutes, 
   setInterval(() => { if (screen === 'quiz' && session?.mode === 'full' && !expired()) { const t = document.getElementById('exam-timer'); if (t) t.textContent = 'Tiempo restante: ' + timeLeft(); } }, 1000);
   render();
   if(typeof URLSearchParams!=='undefined'&&new URLSearchParams(window.location?.search||'').get('modo')==='ensayo'&&!session)begin('full');
+  if(typeof URLSearchParams!=='undefined'&&new URLSearchParams(window.location?.search||'').get('modo')==='diagnostico'&&!session)begin('diagnostic');
 };

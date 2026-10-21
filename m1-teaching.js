@@ -148,7 +148,8 @@
   'El promedio sería (1 + 2 + 3 + 8 + 26)/5 = 40/5 = 8 minutos. No sustituye la mediana: el atraso de 26 afecta mucho esa suma.'
  ],'Ordena y busca la posición central; no confundas esa posición con su dato ni con el promedio del grupo.');
  define('Enteros y cambios',[
-  'Los números negativos representan posiciones bajo un punto de referencia, como una deuda o una temperatura bajo cero. Sumar un aumento desplaza hacia valores mayores; restar una disminución hacia menores.',
+  'La recta numérica es una línea que ordena los números, como una regla que se extiende en ambas direcciones. El 0 es la referencia: a su derecha están los positivos (1, 2, 3…) y a su izquierda los negativos (−1, −2, −3…). La distancia entre dos enteros vecinos siempre representa una unidad.',
+  'Primero ubica el número donde partes. Un cambio positivo indica avanzar hacia la derecha; un cambio negativo, hacia la izquierda. Desde −2, sumar +5 es dar cinco pasos: −1, 0, 1, 2 y 3. Por eso −2 + 5 = 3. Puedes cruzar el cero: el signo no es una pared.',
   'El signo de una cantidad no es su tamaño absoluto. En la recta numérica, lo que queda más a la izquierda es menor: −12 es menor que −3 aunque doce tenga mayor valor absoluto.'
  ],[
   'Piensa en un ascensor: el piso cero es la referencia, subir suma pisos y bajar los resta. Puedes cruzar el cero y seguir hacia un subterráneo sin cambiar la dirección del movimiento.',
