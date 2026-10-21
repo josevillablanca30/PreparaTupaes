@@ -63,3 +63,30 @@ test('Mapa: cuatro estrellas desbloquean la siguiente habilidad',async({page})=>
  await expect(page.locator('.skill-gate')).toContainText('4 estrellas');await expect(page.locator('.skill-gate [data-action=level]')).toBeVisible();
  await fit(page);
 });
+
+
+test('M2: Logaritmos y el banco completo conservan ancho móvil en 320 y 390 px', async ({page}) => {
+ test.setTimeout(120000);
+ await choose(page,'M2');
+ for (const width of [320,390]) {
+  await page.setViewportSize({width,height:740});
+  const failures=await page.evaluate(() => {
+   const e=CachasteDailyApp.engine;
+   const bank=CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey==='M2');
+   const problems=[];
+   for(const q of bank){
+    e.start('M2',1);
+    e.state.session.keys=[q.key];
+    e.state.session.questionSnapshots=[{...q,assessmentVersion:CachasteLearning.assessmentVersion(q)}];
+    e.save();
+    location.hash='#session';
+    CachasteDailyApp.render();
+    const actual=document.documentElement.scrollWidth;
+    const allowed=document.documentElement.clientWidth+1;
+    if(actual>allowed)problems.push({key:q.key,concept:q.concept,actual,allowed});
+   }
+   return problems;
+  });
+  expect(failures, 'Ancho '+width+'px: '+JSON.stringify(failures.slice(0,15))).toEqual([]);
+ }
+});
