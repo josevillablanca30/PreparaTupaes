@@ -258,16 +258,24 @@ public class OfflineAppTest {
         assertEquals("true",js("CachasteProgression.route(CACHASTE_DAILY_CATALOG.items,'M2',null,[]).units.every((u,i,a)=>!i||u.schoolYear>=a[i-1].schoolYear)"));
         js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();location.hash='#home';CachasteDailyApp.render();true");
     }
+    private String deviceCommand(String command) throws Exception {
+        try(BufferedReader output=new BufferedReader(new InputStreamReader(new ParcelFileDescriptor.AutoCloseInputStream(
+                InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommand(command))))) {
+            StringBuilder result=new StringBuilder();
+            String line;
+            while((line=output.readLine())!=null)result.append(line).append('\n');
+            return result.toString().trim();
+        }
+    }
     private void captureDidacticScreen(String name) throws Exception {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
         Thread.sleep(150);
         // Keep native captures outside app data, which Gradle clears after testing.
         String path="/data/local/tmp/cachaste-didactic-screens/"+name+".png";
-        String command="mkdir -p /data/local/tmp/cachaste-didactic-screens && screencap -p "+path+" && test -s "+path+" && echo captured";
-        try(BufferedReader output=new BufferedReader(new InputStreamReader(new ParcelFileDescriptor.AutoCloseInputStream(
-                InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommand(command))))) {
-            assertEquals("Native screenshot export failed","captured",output.readLine());
-        }
+        // UiAutomation starts one process per call; it does not interpret shell operators.
+        deviceCommand("mkdir -p /data/local/tmp/cachaste-didactic-screens");
+        deviceCommand("screencap -p "+path);
+        assertTrue("Native screenshot export failed",deviceCommand("stat -c %s "+path).matches("[1-9][0-9]*"));
     }
     @Test public void illustratedFiveSubjectLessonsAndSelectedErrorsWorkInInstalledApk() throws Exception {
         open("inicio.html", "window.CachasteDailyApp && window.CachasteIllustrations");
