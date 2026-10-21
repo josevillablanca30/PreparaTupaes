@@ -105,7 +105,7 @@
       if (!groups.has(key)) groups.set(key, { concept: key, area: q.area || q.axis || q.skill, attempts: 0, correct: 0, lastFailure: -1, evidence: new Set(), status: 'sin explorar' });
     }
     history.forEach((row, index) => {
-      const q = row && byId.get(row.id); if (!q || !compatibleAttempt(q,row)) return;
+      const q = row && byId.get(row.id); if (!q || row.diagnosticPending || !compatibleAttempt(q,row)) return;
       const item = groups.get(concept(q)); item.attempts++;
       if (row.correct) item.correct++;
       if(row.correct && row.repeatedReview)return;

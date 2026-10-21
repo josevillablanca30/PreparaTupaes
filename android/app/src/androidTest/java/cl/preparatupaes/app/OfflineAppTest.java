@@ -352,6 +352,34 @@ public class OfflineAppTest {
         assertEquals("true",js("CachasteDailyApp.engine.state.expressReports.at(-1).areas.length>=3"));
         captureDidacticScreen("express-report");
     }
+    @Test public void diagnosisAndUnlimitedAttemptsUnlockTheMapOffline() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp");
+        js("var e=CachasteDailyApp.engine;e.close();e.state.foundationDraft=null;e.state.attempts=e.state.attempts.filter(r=>r.subject!=='M1');e.state.unitExams={};e.state.stages={};e.state.seen={};localStorage.removeItem(CachasteCurriculum.subjects.M1.key);e.save();location.hash='#courses';CachasteDailyApp.render();document.querySelector('[data-action=pick-course][data-subject=M1]').click();true");
+        waitFor("document.querySelector('[data-action=diagnostic-mode]')");
+        js("document.querySelector('[data-action=diagnostic-mode]').click();true");
+        waitFor("document.querySelector('.question-title')");
+        for(int i=0;i<30;i++) {
+            js("var e=CachasteDailyApp.engine,s=e.state.session,q=e.byKey.get(s.keys[s.index]),n=s.index<2?q.answer:(q.answer+1)%q.options.length;document.querySelector('[data-action=choice][data-index=\"'+n+'\"]').click();document.querySelector('[data-action=check]').click();true");
+            if(i==4) {
+                assertEquals("0",js("CachasteDailyApp.engine.profile('M1').filter(p=>p.status==='comprobado').length"));
+                scenario.recreate();waitFor("window.CachasteDailyApp && document.querySelector('.answer-feedback')");
+            }
+            js("document.querySelector('[data-action=next]').click();true");
+        }
+        waitFor("document.querySelector('.diagnostic-placement')");
+        assertEquals("true",js("CachasteDailyApp.engine.state.celebration.demonstrated.length===1"));
+        captureDidacticScreen("diagnostic-placement");
+        js("document.querySelector('[data-action=diagnostic-path]').click();true");
+        waitFor("document.querySelector('.trail-stop.current')");
+        assertEquals("true",js("!document.querySelectorAll('.trail-node')[1].disabled && document.querySelectorAll('.trail-node')[2].disabled"));
+        js("var e=CachasteDailyApp.engine;e.state.attempts=e.state.attempts.filter(r=>r.subject!=='M1');e.state.seen={};localStorage.removeItem(CachasteCurriculum.subjects.M1.key);var concept=CachasteProgression.route(CACHASTE_DAILY_CATALOG.items,'M1',null,e.profile('M1')).current.objective;e.start('M1',2,'lesson',concept);while(e.state.session){var s=e.state.session,q=e.byKey.get(s.keys[s.index]);s.studied=true;e.answer(q.answer);e.next();}CachasteDailyApp.render();true");
+        assertEquals("true",js("document.querySelectorAll('.trail-node')[1].disabled"));
+        js("var e=CachasteDailyApp.engine,concept=CachasteProgression.route(CACHASTE_DAILY_CATALOG.items,'M1',null,e.profile('M1')).current.objective;e.start('M1',2,'free',concept);while(e.state.session){var s=e.state.session,q=e.byKey.get(s.keys[s.index]);e.answer(q.answer);e.next();}CachasteDailyApp.render();true");
+        assertEquals("true",js("!document.querySelectorAll('.trail-node')[1].disabled && document.querySelectorAll('.trail-node')[2].disabled"));
+        scenario.recreate();waitFor("window.CachasteDailyApp && document.querySelector('.trail-stop.current')");
+        assertEquals("true",js("!document.querySelectorAll('.trail-node')[1].disabled"));
+        captureDidacticScreen("earned-unlock");
+    }
     @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         PackageInfo info=context.getPackageManager().getPackageInfo(context.getPackageName(),PackageManager.GET_PERMISSIONS);

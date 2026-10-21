@@ -50,7 +50,7 @@ test('Tutor ofrece aprender antes de comprobar estrellas en una habilidad nueva'
  await fit(page);
 });
 
-test('Mapa: permite explorar la siguiente habilidad sin regalar cuatro estrellas',async({page})=>{
+test('Mapa: cuatro estrellas desbloquean la siguiente habilidad',async({page})=>{
  await choose(page,'M1');
  const skill=await page.evaluate(()=>{
   const app=CachasteDailyApp,e=app.engine,C=CachasteCurriculum;
@@ -60,7 +60,6 @@ test('Mapa: permite explorar la siguiente habilidad sin regalar cuatro estrellas
  });
  if(!skill)return;
  await page.goto('./inicio.html#level:'+encodeURIComponent(skill.id));
- await expect(page.locator('.skill-gate')).toHaveCount(0);
- await expect(page.locator('[data-action=lesson]')).toBeVisible();await expect(page.locator('.skill-stars')).toHaveAttribute('aria-label',/0 de 5 estrellas/);
+ await expect(page.locator('.skill-gate')).toContainText('4 estrellas');await expect(page.locator('.skill-gate [data-action=level]')).toBeVisible();
  await fit(page);
 });

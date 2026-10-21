@@ -34,8 +34,6 @@ test('Recta: explicación desde cero, cinco pasos, reinicio y práctica diferent
  await page.locator('.didactic-practice [data-action=visual-choose]').first().click();await expect(page.locator('.didactic-practice .visual-response.right')).toBeVisible();
 });
 
-for(const [subject,file,key,countField] of [['M1','index.html','cachaste-m1-diagnostic-draft-v1','queue'],['M2','m2.html','cachaste-m2-v1','ids'],['Historia','history.html','cachaste-history-v1','ids'],['Lectura','reading.html','cachaste-reading-v1','ids'],['Ciencias','science.html','cachaste-science-v1','ids']])test(subject+': entrar al diagnóstico real desde la selección de modo',async({page})=>{
- const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('./inicio.html');await page.locator('[data-action=pick-course][data-subject='+subject+']').click();if(subject==='Ciencias')await page.locator('[data-track=Biología]').click();
- await page.locator('[data-action=diagnostic-mode]').click();await expect(page).toHaveURL(new RegExp(file.replace('.','\\.')+'\\?modo=diagnostico'));
- await expect.poll(()=>page.evaluate(({key,countField,subject})=>{const data=JSON.parse(localStorage.getItem(key));return subject==='M1'?data?.ids?.length??data?.queue?.length:data?.session?.[countField]?.length;},{key,countField,subject})).toBe(30);expect(errors).toEqual([]);
+for(const subject of ['M1','M2','Historia','Lectura','Ciencias'])test(subject+': diagnóstico de 30 conectado al mapa desde la selección de modo',async({page})=>{
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('./inicio.html');await page.locator('[data-action=pick-course][data-subject='+subject+']').click();if(subject==='Ciencias')await page.locator('[data-track=Biología]').click();await page.locator('[data-action=diagnostic-mode]').click();await expect(page.locator('.question-title')).toBeVisible();expect(await page.evaluate(()=>CachasteDailyApp.engine.state.session.keys.length)).toBe(30);expect(await page.evaluate(()=>CachasteDailyApp.engine.state.session.mode)).toBe('diagnostic');expect(errors).toEqual([]);
 });
