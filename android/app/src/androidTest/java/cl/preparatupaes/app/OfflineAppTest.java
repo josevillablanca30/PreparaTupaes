@@ -60,12 +60,12 @@ public class OfflineAppTest {
 
     @Test public void pendingSessionOffersAWorkingWayToBeginTheChosenLesson() throws Exception {
         open("inicio.html", "window.CachasteDailyApp");
-        js("location.hash='#courses';CachasteDailyApp.render();document.querySelector('[data-action=pick-course][data-subject=M1]').click();var e=CachasteDailyApp.engine;e.close();e.state.foundationDraft=null;e.state.track=null;e.start('M1',2,'free','Enteros y cambios');var old=e.state.session.id;var q=CACHASTE_DAILY_CATALOG.items.find(q=>q.subjectKey==='M1'&&q.concept==='Descuento porcentual');location.hash='#level:'+encodeURIComponent(q.levelId);CachasteDailyApp.render();document.querySelector('[data-action=check-first]').click();true");
+        js("location.hash='#courses';CachasteDailyApp.render();document.querySelector('[data-action=pick-course][data-subject=M1]').click();var e=CachasteDailyApp.engine;e.close();e.state.foundationDraft=null;e.state.track=null;e.state.seen={};e.state.attempts=[];e.start('M1',2,'free','Descuento porcentual');var old=e.state.session.id;var q=CACHASTE_DAILY_CATALOG.items.find(q=>q.subjectKey==='M1'&&q.concept==='Enteros y cambios');location.hash='#level:'+encodeURIComponent(q.levelId);CachasteDailyApp.render();document.querySelector('[data-action=check-first]').click();true");
         waitFor("document.querySelector('.session-switch')");
         assertEquals("true",js("CachasteDailyApp.engine.state.session.id===old"));
         js("document.querySelector('[data-action=switch-start]').click();true");
         waitFor("document.querySelector('.question-title')");
-        assertEquals("true",js("CachasteDailyApp.engine.state.session.id!==old && CachasteDailyApp.engine.state.session.concept==='Descuento porcentual'"));
+        assertEquals("true",js("CachasteDailyApp.engine.state.session.id!==old && CachasteDailyApp.engine.state.session.concept==='Enteros y cambios'"));
         js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();true");
     }
 
