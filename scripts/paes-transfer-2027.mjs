@@ -48,7 +48,7 @@ export function buildTransfers(originalItems,rows=transferCases){
     module:row.targetModule||base.module,previousAssessments:undefined,legacyAssessmentVersion:undefined,editorialRevision:undefined,
     question:row.question,options:row.options.slice(),answer:row.answer,
     explanations:row.options.map((_,i)=>i===row.answer?"Correcto. "+row.steps.at(-1):"Elegiste «"+row.options[i]+"». "+row.errors[i]),
-    why:row.steps.join(" "),hint:row.steps[0],steps:row.steps.slice(),easy:row.steps.join(" "),example:[teaching.example.problem,...teaching.example.steps,teaching.example.bridge].filter(Boolean).join("\n\n"),
+    why:row.steps.join(" "),hint:row.steps[0],steps:row.steps.slice(),easy:[...(teaching.intuition||[]),...row.steps].join("\n\n"),example:[teaching.example.problem,...teaching.example.steps,teaching.example.bridge].filter(Boolean).join("\n\n"),
     teaching,sourceKey:row.base,sourceTrace:row.sourceTrace||null,transferDesign:row.transferDesign||null,
     origin:"original-transfer-2027",reviewStatus:"editorial-structure-validated",
     supplementary:!!base.supplementary||base.examEligible===false,

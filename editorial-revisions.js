@@ -140,7 +140,13 @@
    q.explanations=q.options.map((o,i)=>i===q.answer?r.steps.at(-1):'Elegiste «'+o+'». '+r.errors[i]);
    const t=q.teaching,application=r.steps.slice();if((subject||q.subjectKey)==='Lectura'&&t.evidence?.length)application[0]+=' Evidencia textual: «'+t.evidence[0].quote+'».';q.teaching={...t,revision:'editorial-2026-10-20',aim:'Resolver y justificar: '+q.question,application,check:r.steps.at(-1),selectedFeedback:q.options.map((_,i)=>i===q.answer?null:{diagnosis:q.explanations[i],repair:application.slice()})};
    q.steps=[q.teaching.aim,...q.teaching.foundation,...r.steps];q.why=(subject||q.subjectKey)==='Historia'?r.steps.at(-1):r.steps.join(' ');q.easy=[...q.teaching.intuition,...r.steps].join('\n\n');q.hint=r.steps[0];
-  }return enrichTeaching(bank,subject);
+  }
+  enrichTeaching(bank,subject);
+  // Los repasos anteriores leen q.easy; el tutor nuevo lee teaching.intuition.
+  // Conservar la misma explicación alternativa en ambas rutas, sin tocar la evaluación.
+  const normalize=text=>String(text||'').replace(/\s+/g,' ').trim();
+  for(const q of bank){const t=q.teaching;if(t?.intuition?.length&&(!normalize(q.easy)||normalize(q.easy)===normalize((q.steps||[]).join(' '))))q.easy=[...t.intuition,...(t.application||[])].join('\n\n');}
+  return bank;
  }
  g.CachasteEditorial={apply,keys:Object.keys(revisions),additionalSources:sources,additionalConcepts:additions};
  if(g.READING_QUESTIONS&&g.READING_PASSAGES)g.CachasteLearning.bindPassages(g.READING_QUESTIONS,g.READING_PASSAGES);
