@@ -33,7 +33,7 @@ for(const id of ['M2-001','M2-003','M2-007','M2-050']){
   await page.addInitScript(id=>{if(!localStorage.getItem('teacher-fixture')){localStorage.setItem('teacher-fixture','1');!JSON.parse(localStorage.getItem('cachaste-m2-v1')||'null')?.session?.assessmentVersions&&localStorage.setItem('cachaste-m2-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'teacher-check',mode:'express',ids:[id],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}}));}},id);
   await page.goto('./m2.html');await restoreVersionedDraft(page);await page.locator('#resume').click();
   const chosen=await page.evaluate(id=>{const q=window.CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey==='M2').find(q=>q.id===id),wrong=q.options[(q.answer+1)%q.options.length];[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.slice(3)===wrong).click();return wrong;},id);
-  await page.locator('[data-conf="duda"]').click();await page.locator('#check').click();
+  await page.locator('#check').click();
   const panel=page.locator('.tutor-panel');await expect(panel.getByText('Elegiste: '+chosen,{exact:true})).toBeVisible();await expect(panel.getByRole('heading',{name:'El concepto desde cero',exact:true})).toBeVisible();
   await panel.locator('.error-reason summary').click();await expect(panel.locator('.error-reason details')).toHaveAttribute('open','');
   const saved=await page.evaluate(()=>localStorage.getItem('cachaste-m2-v1'));
@@ -57,7 +57,7 @@ for(let start=1;start<=114;start+=10){
    for(const id of ids){
     const q=window.CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey==='M2').find(q=>q.id===id),wrong=(q.answer+1)%q.options.length;
     const button=[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.slice(3)===q.options[wrong]);if(!button)throw Error(id+' no ofrece la alternativa esperada');button.click();
-    document.querySelector('[data-conf="duda"]').click();document.getElementById('check').click();
+    document.getElementById('check').click();
     if(!document.querySelector('.error-reason').textContent.includes(q.explanations[wrong]))throw Error(id+' diagnóstico ajeno al distractor');
     const expectations={steps:q.teaching.check,easy:q.teaching.intuition[0],example:q.teaching.example.problem};
     for(const [mode,content]of Object.entries(expectations)){

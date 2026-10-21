@@ -36,7 +36,7 @@ for(const wrongIndex of [1,2,3])for(let start=0;start<reviewedIds.length;start+=
   const result=await page.evaluate(({ids,wrongIndex})=>{
    for(const id of ids){const q=window.CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey==='Historia').find(q=>q.id===id);
     [...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.slice(3)===q.options[wrongIndex]).click();
-    document.querySelector('[data-conf="duda"]').click();document.getElementById('check').click();
+    document.getElementById('check').click();
     const error=document.querySelector('.error-reason');
     if(!error.textContent.includes('Elegiste: '+q.options[wrongIndex])||!error.textContent.includes(q.explanations[wrongIndex]))throw Error(id+' error ajeno a la alternativa');
     error.querySelector('summary').click();if(!error.querySelector('details').open)throw Error(id+' reparación cerrada');
@@ -57,7 +57,7 @@ test('Historia: una decisión nueva comprueba costo de oportunidad después de r
  await page.addInitScript(()=>{if(localStorage.getItem('history-fixture'))return;localStorage.setItem('history-fixture','1');!JSON.parse(localStorage.getItem('cachaste-history-v1')||'null')?.session?.assessmentVersions&&localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history:[],session:{id:'history-transfer',mode:'express',ids:['HIS-009'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}}));});
  await page.goto('./history.html');await restoreVersionedDraft(page);await page.locator('#resume').click();
  const wrong='El precio escrito en la etiqueta de un cuaderno';await page.getByRole('button').filter({hasText:wrong}).click();
- await page.locator('[data-conf="duda"]').click();await page.locator('#check').click();
+ await page.locator('#check').click();
  await expect(page.locator('.error-reason')).toContainText(wrong);
  const saved=await page.evaluate(()=>localStorage.getItem('cachaste-history-v1'));
  await page.getByRole('button',{name:'Más fácil',exact:true}).click();await expect(page.locator('.tutor-panel')).toContainText('Tu sábado');
@@ -73,7 +73,7 @@ for(const exhausted of [false,true])test('Historia: '+(exhausted?'avisa cuando s
  await page.addInitScript(history=>!JSON.parse(localStorage.getItem('cachaste-history-v1')||'null')?.session?.assessmentVersions&&localStorage.setItem('cachaste-history-v1',JSON.stringify({diagnosticDone:true,history,session:{id:'no-unrelated-transfer',mode:'express',ids:['HIS-001'],index:0,selected:null,checked:false,confidence:null,results:[],started:Date.now(),answers:[null],flags:[]}})),exhausted?siblingIds.map(id=>({id,correct:true,confidence:'seguro'})):[]);
  await page.goto('./history.html');await restoreVersionedDraft(page);await page.locator('#resume').click();
  await page.getByRole('button').filter({hasText:'El reconocimiento del sufragio femenino'}).click();
- await page.locator('[data-conf="duda"]').click();await page.locator('#check').click();await page.locator('#next').click();
+ await page.locator('#check').click();await page.locator('#next').click();
  await page.locator('#reinforce').click();
  if(!exhausted){
   const session=await page.evaluate(()=>JSON.parse(localStorage.getItem('cachaste-history-v1')).session);

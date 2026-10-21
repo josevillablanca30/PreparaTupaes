@@ -1,4 +1,4 @@
-/* Progresión propia: acceso por aprendizaje demostrado, independiente de XP. */
+/* Progresión propia: ruta recomendada por aprendizaje demostrado; exploración libre, independiente de XP. */
 (function(g){'use strict';
  function route(items,subject,track,profile,unitExams={}){
   unitExams=unitExams&&typeof unitExams==='object'&&!Array.isArray(unitExams)?unitExams:{};
@@ -10,7 +10,7 @@
   const complete=level=>exempted.has(level.id)||g.CachasteLearning.skillStars(states.get(level.objective))>=4;
   const first=levels.findIndex(level=>!complete(level));
   const frontier=first<0?levels.length:first;
-  const access=id=>{const index=levels.findIndex(l=>l.id===id);return index>=0&&(index<=frontier||complete(levels[index]));};
+  const access=id=>{const index=levels.findIndex(l=>l.id===id);return index>=0;};
   return {units,levels,frontier,exempted,current:levels[frontier]||null,access,completed:levels.filter(complete).length};
  }
  g.CachasteProgression={route};

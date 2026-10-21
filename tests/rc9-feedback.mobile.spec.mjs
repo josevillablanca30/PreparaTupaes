@@ -6,7 +6,7 @@ test('Eximición: cambiar la sesión pendiente, rendir diez preguntas y aprobar 
  expect(await page.evaluate(()=>CachasteDailyApp.engine.state.session.keys.length)).toBe(10);
  for(let i=0;i<10;i++){
   const choice=await page.evaluate(i=>{const e=CachasteDailyApp.engine,s=e.state.session,q=e.byKey.get(s.keys[s.index]);return i<8?q.answer:(q.answer+1)%q.options.length;},i);
-  await page.locator('[data-action=choice][data-index="'+choice+'"]').click();await page.locator('[data-confidence=seguro]').click();await page.locator('[data-action=check]').click();await page.locator('[data-action=next]').click();
+  await page.locator('[data-action=choice][data-index="'+choice+'"]').click();await page.locator('[data-action=check]').click();await page.locator('[data-action=next]').click();
  }
  await expect(page.locator('.celebration-screen')).toContainText('¡Unidad eximida!');await expect(page.locator('.reward-card')).toContainText('8/10');
  await page.reload();await expect(page.locator('.reward-card')).toContainText('8/10');

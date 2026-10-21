@@ -325,11 +325,11 @@ test('errores de simulacro largo: 65 pendientes sobreviven al cierre',()=>{
  assert.equal(opened('round.length'),0);
  assert.equal(opened('pendingReview.length'),65);
 });
-test('refuerzo usa otros ítems y no declara dominio por acertar con dudas',()=>{
+test('refuerzo con pistas usa otros ítems sin acreditar dominio',()=>{
  const run=app();run("startExam('full');finishExam();reviewPending()");
  const first=run('queue.map(q=>q.id)');
  assert.equal(run('queue.every(q=>!pendingReview.includes(q.id))'),true);
- run("for(let j=0;j<10;j++){choice=queue[i].answer;confidence='duda';check();next()}");
+ run("for(let j=0;j<10;j++){requestHint();choice=queue[i].answer;check();next()}");
  assert.equal(run('pendingReview.length'),65);
  run('reviewPending()');
  assert.equal(run('queue.every(q=>!'+JSON.stringify(first)+'.includes(q.id))'),true);

@@ -10,10 +10,10 @@ test('Las 24 reformulaciones conservan versión anterior y 14 ejercicios revisad
  const report=readinessAudit(items);assert.equal(report.overall.unverifiableConcepts,0);assert.equal(report.scopes.paes.overall.questions,755);assert.equal(report.scopes.complementary.overall.questions,47);
  for(const key of reviewedTransferKeys){const q=items.find(q=>q.key===key);assert.ok(q);assert.equal(q.sourceTrace.reviewStatus,'revision-editorial-2026-10-20');assert.ok(q.sourceTrace.driveFileId);const base=items.find(x=>x.key===q.sourceKey);assert.equal(q.examEligible,base.examEligible!==false&&!base.supplementary);}
 });
-test('La ruta secuencial solo abre la primera habilidad y las completadas; XP no abre etapas',()=>{
+test('La ruta recomienda la primera habilidad pendiente y permite explorar sin regalar logros',()=>{
  const C=ctx.CachasteProgression;
  for(const subject of ['M1','M2','Lectura','Historia','Ciencias'])for(const track of subject==='Ciencias'?['Biología','Física','Química','TP']:[null]){
-  const initial=C.route(items,subject,track,[]);assert.ok(initial.levels.length>1);assert.equal(initial.access(initial.levels[0].id),true);assert.equal(initial.access(initial.levels[1].id),false);assert.equal(initial.access(initial.levels.at(-1).id),false);
-  const first=initial.levels[0];const state={concept:first.objective,status:'comprobado',attempts:2,correct:2,evidence:['a','b']};const advanced=C.route(items,subject,track,[state]);assert.equal(advanced.access(first.id),true);assert.equal(advanced.access(initial.levels[1].id),true);assert.equal(advanced.access(initial.levels[2]?.id),false);assert.equal(advanced.levels.some(l=>l.supplementary),false);
+  const initial=C.route(items,subject,track,[]);assert.ok(initial.levels.length>1);assert.equal(initial.access(initial.levels[0].id),true);assert.equal(initial.access(initial.levels[1].id),true);assert.equal(initial.access(initial.levels.at(-1).id),true);
+  const first=initial.levels[0];const state={concept:first.objective,status:'comprobado',attempts:2,correct:2,evidence:['a','b']};const advanced=C.route(items,subject,track,[state]);assert.equal(advanced.access(first.id),true);assert.equal(advanced.access(initial.levels[1].id),true);assert.equal(advanced.access(initial.levels[2]?.id),true);assert.equal(advanced.levels.some(l=>l.supplementary),false);
  }
 });

@@ -19,7 +19,7 @@ for(const subject of ['M1','M2','Lectura','Ciencias','Historia']){
   },subject);
   await expect(page.locator('.question-title')).toBeVisible();
   await page.locator('[data-action=choice][data-index="'+info.wrong+'"]').click();
-  await page.locator('[data-confidence=duda]').click();
+
   await page.locator('[data-action=check]').click();
   await expect(page.locator('.selected-repair ol li')).toHaveCount(info.steps.length);
   await expect(page.locator('.selected-repair ol li').first()).toHaveText(info.steps[0]);

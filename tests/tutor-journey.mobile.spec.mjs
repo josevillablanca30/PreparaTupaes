@@ -15,7 +15,7 @@ for(const subject of ['M1','M2','Lectura','Historia','Ciencias']){
    return(q.answer+1)%q.options.length;
   });
   await page.locator('[data-action=choice][data-index="'+wrong+'"]').click();
-  await page.locator('[data-action=confidence][data-confidence=seguro]').click();
+
   await page.locator('[data-action=check]').click();
   await expect(page.locator('.daily-card.tutor')).toBeVisible();
   await expect(page.locator('.selected-repair')).toContainText('Tu error');

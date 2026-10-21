@@ -28,7 +28,7 @@ function score(q){
  const seen=history.filter(h=>h.id===q.id).length;
  // Reforzar errores y respuestas inseguras recientes, sin saturar con la misma pregunta.
  const recent=history.slice(-120).filter(h=>h.id===q.id);
- const needsReview=recent.length&&(!recent[recent.length-1].correct||recent[recent.length-1].confidence!=='seguro');
+ const needsReview=recent.length&&(!recent[recent.length-1].correct||['duda','azar'].includes(recent[recent.length-1].confidence));
  return seen*8-weak*2-(needsReview?5:0);
 }
 function select(count, quotas){
@@ -80,11 +80,11 @@ function advance(skip=false){
  if(session.mode==='completo'&&session.selected===null&&!skip)return;
  // Omitir debe registrar una respuesta en blanco incluso si había una alternativa marcada.
  const answer=skip?null:session.selected;
- const record={id:q.id,assessmentVersion:window.CachasteLearning.assessmentVersion(q),passageId:q.passageId,skill:q.skill,concept:q.concept,selected:answer,correct:answer!==null&&answer===q.answer,confidence:answer===null?'sin-declarar':session.confidence,assisted:session.hint>0,unanswered:answer===null,at:new Date().toISOString()};
+ const record={id:q.id,assessmentVersion:window.CachasteLearning.assessmentVersion(q),passageId:q.passageId,skill:q.skill,concept:q.concept,selected:answer,correct:answer!==null&&answer===q.answer,confidence:'no-declarada',assisted:session.hint>0,unanswered:answer===null,at:new Date().toISOString()};
  session.results.push(record);
  history.push(record);history=history.slice(-3000);
  if(!record.correct&&!pending.includes(q.id))pending.push(q.id);
- if(record.correct&&!record.assisted&&record.confidence==='seguro')pending=pending.filter(x=>x!==q.id);
+ if(record.correct&&!record.assisted&&['seguro','no-declarada'].includes(record.confidence))pending=pending.filter(x=>x!==q.id);
  if(window.CachasteLearning){const proved=new Set(window.CachasteLearning.profile(BANK,history).filter(p=>p.status==='comprobado').map(p=>p.concept));pending=pending.filter(id=>!proved.has(qBy(id).concept));}
  if(session.index===session.ids.length-1){finish();return}
  session.index++;session.selected=null;session.checked=false;session.hint=0;session.confidence='duda';feedbackMode='steps';save();render(true);
@@ -152,7 +152,7 @@ function quiz(){
  const p=passageBy(q.passageId),exam=session.mode==='completo',count=session.ids.length;
  const passageMarkup='<details class="passage" open><summary><span>Texto '+esc(p.id)+' · '+esc(p.type)+'</span><b>'+esc(p.title)+'</b></summary><article aria-label="Texto de lectura: '+esc(p.title)+'">'+p.paragraphs.map((line,n)=>'<p><span class="paragraph-number" aria-hidden="true">'+(n+1)+'.</span> '+esc(line)+'</p>').join('')+'</article></details>';
  const opts=q.options.map((item,n)=>'<button class="option '+(session.selected===n?'chosen':'')+'" aria-pressed="'+(session.selected===n)+'" '+(session.checked?'disabled':'')+' onclick="readingChoose('+n+')">'+String.fromCharCode(65+n)+') '+esc(item)+'</button>').join('');
- const confidencePanel=!exam&&!session.checked?'<fieldset class="confidence"><legend>¿Qué tan seguro estás?</legend><div class="confchoices">'+[['seguro','Lo tengo claro'],['duda','Tengo dudas'],['azar','Fue al azar']].map(([key,label])=>'<button class="'+(session.confidence===key?'active':'')+'" aria-pressed="'+(session.confidence===key)+'" onclick="readingConfidence(&quot;'+key+'&quot;)">'+label+'</button>').join('')+'</div></fieldset>':'';
+ const confidencePanel='';
  const hints=!exam&&session.mode==='express'&&!session.checked?'<div class="hint-zone"><button class="btn soft" '+(session.hint===2?'disabled':'')+' onclick="readingHint()">'+(session.hint===0?'Necesito una pista':session.hint===1?'Dame otra pista':'Ya tienes dos pistas')+'</button>'+(session.hint?'<p class="hint"><strong>Pista '+session.hint+' de 2.</strong> '+esc(q.steps[0])+(session.hint===2?' '+esc(q.steps[1]):'')+'</p>':'')+'</div>':'';
  const review=session.checked&&!exam?feedback(q):'';
  const nextButton=exam?'<div class="actions"><button class="btn secondary" '+(session.index===0?'disabled':'')+' onclick="readingExamJump('+(session.index-1)+')">Anterior</button><button class="btn" onclick="readingAdvance()">'+(session.index===count-1?'Revisar entrega':'Guardar y continuar →')+'</button><button class="btn secondary" onclick="readingAdvance(true)">'+'Omitir pregunta →'+'</button></div>':session.checked?'<button class="btn" onclick="readingAdvance()">'+(session.index===count-1?'Ver mi resultado':'Siguiente pregunta →')+'</button>':'<button class="btn" '+(session.selected===null?'disabled':'')+' onclick="readingCheck()">Comprobar respuesta</button>';
@@ -164,7 +164,7 @@ function diagnosticReport(rows){
  if(!rows?.length)return '';
  const examResult=rows.every(r=>r.confidence==='sin-declarar');
  const explain={Localizar:'Busca datos explícitos y comprueba exactamente en qué parte del texto aparecen.',Interpretar:'Relaciona ideas, identifica causas y consecuencias y fundamenta inferencias con pistas del texto.',Evaluar:'Distingue hechos de opiniones, examina la intención del autor y contrasta la evidencia con la conclusión.'};
- const groups=skills.map(skill=>{const a=rows.filter(x=>x.skill===skill);return {skill,total:a.length,correct:a.filter(x=>x.correct).length,secure:a.filter(x=>x.correct&&(examResult||x.confidence==='seguro')&&!x.assisted).length,unsure:a.filter(x=>x.confidence==='duda'||x.confidence==='azar'||x.assisted).length}}).filter(x=>x.total).sort((a,b)=>a.secure/a.total-b.secure/b.total);
+ const groups=skills.map(skill=>{const a=rows.filter(x=>x.skill===skill);return {skill,total:a.length,correct:a.filter(x=>x.correct).length,secure:a.filter(x=>x.correct&&(examResult||['seguro','no-declarada'].includes(x.confidence))&&!x.assisted).length,unsure:a.filter(x=>x.confidence==='duda'||x.confidence==='azar'||x.assisted).length}}).filter(x=>x.total).sort((a,b)=>a.secure/a.total-b.secure/b.total);
  const card=g=>'<div class="skill-summary"><strong>'+esc(g.skill)+'</strong><p>'+g.correct+' de '+g.total+' correctas · '+g.secure+(examResult?' sin pistas · ':' seguras · ')+g.unsure+' con dudas o ayuda.</p><p>'+esc(explain[g.skill])+'</p><p>'+(g.secure/g.total>=.75?'Fortaleza: aumenta la dificultad y cambia de tipo de texto.':'Prioridad: practica esta habilidad con otros textos y preguntas nuevas; no memorices la alternativa anterior.')+'</p></div>';
  return '<div class="card">'+(examResult?'<p class="small">El ensayo no recoge autoconfianza. Un buen resultado orienta tu práctica; confirma el aprendizaje en otras preguntas.</p>':'')+'<span class="eyebrow">DIAGNÓSTICO LECTOR</span><h2>Lo que ya haces bien</h2>'+(groups.filter(x=>x.secure/x.total>=.75).map(card).join('')||'<p>Todavía no hay una habilidad suficientemente consolidada en esta muestra.</p>')+'<h2>Lo que necesitas mejorar</h2>'+(groups.filter(x=>x.secure/x.total<.75).map(card).join('')||'<p>No aparecen debilidades claras; continúa con textos nuevos.</p>')+'<h2>Plan recomendado</h2><p>1. Revisa la habilidad menos segura. 2. Aprende cómo se encuentra la evidencia. 3. Resuelve preguntas diferentes con textos nuevos. 4. Explica con tus palabras por qué descartas cada alternativa.</p><p class="small">Diagnóstico formativo: no representa un puntaje PAES ni certifica dominio definitivo.</p></div>';
 }

@@ -104,7 +104,7 @@ public class OfflineAppTest {
         open("m2.html", "document.getElementById('resume')");
         js("document.getElementById('resume').click();true");
         waitFor("document.querySelector('[data-choice]')");
-        js("[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.slice(3)==='x=4').click();document.querySelector('[data-conf=\"duda\"]').click();document.getElementById('check').click();true");
+        js("[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.slice(3)==='x=4').click();document.getElementById('check').click();true");
         waitFor("document.querySelector('.teaching-section')");
         assertEquals("true",js("document.querySelector('.error-reason').textContent.includes('Elegiste: x=4')"));
         assertEquals("true",js("document.querySelector('.tutor-panel').textContent.includes('El concepto desde cero')"));
@@ -127,7 +127,7 @@ public class OfflineAppTest {
         waitFor("window.CachasteLearning && window.CACHASTE_DAILY_CATALOG && window.CACHASTE_HISTORIA");
         js("var record=JSON.parse(localStorage.getItem('cachaste-history-v1'));record.session.assessmentVersions=record.session.ids.map(id=>CachasteLearning.assessmentVersion(CACHASTE_DAILY_CATALOG.items.find(q=>q.subjectKey==='Historia'&&q.id===id)));localStorage.setItem('cachaste-history-v1',JSON.stringify(record));true");
         open("history.html", "document.getElementById('resume')");
-        js("document.getElementById('resume').click();[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.includes('etiqueta de un cuaderno')).click();document.querySelector('[data-conf=\"duda\"]').click();document.getElementById('check').click();true");
+        js("document.getElementById('resume').click();[...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.includes('etiqueta de un cuaderno')).click();document.getElementById('check').click();true");
         waitFor("document.querySelector('.teaching-section')");
         assertEquals("true",js("document.querySelector('.error-reason').textContent.includes('etiqueta de un cuaderno')"));
         String draft=js("localStorage.getItem('cachaste-history-v1')");
@@ -153,7 +153,7 @@ public class OfflineAppTest {
         waitFor("document.querySelector('.question-title')");
         assertEquals("true",js("CACHASTE_DAILY_CATALOG.items.length>=641 && new Set(CACHASTE_DAILY_CATALOG.items.map(q=>q.key)).size===CACHASTE_DAILY_CATALOG.items.length"));
         waitFor("document.querySelector('.wise-cat img').naturalWidth>0");
-        js("document.querySelector('[data-action=choice]').click();document.querySelector('[data-confidence=duda]').click();true");
+        js("document.querySelector('[data-action=choice]').click();true");
         String draft=js("localStorage.getItem('cachaste-daily-v1')");
         scenario.recreate();
         waitFor("window.CachasteDailyApp && document.querySelector('.question-title')");
@@ -331,6 +331,26 @@ public class OfflineAppTest {
             js("document.querySelector('.selected-repair').scrollIntoView();true");captureDidacticScreen(i+"-repair");
         }
         js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();true");
+    }
+    @Test public void expressFifteenWorksOfflineWithoutConfidenceAndKeepsItsAreaReport() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp");
+        js("var e=CachasteDailyApp.engine;e.close();e.state.foundationDraft=null;e.state.subject='M1';e.save();location.hash='#courses';CachasteDailyApp.render();document.querySelector('[data-action=pick-course][data-subject=M1]').click();true");
+        waitFor("document.querySelector('[data-action=express-mode]')");
+        js("document.querySelector('[data-action=express-mode]').click();true");
+        waitFor("document.querySelector('.question-title')");
+        assertEquals("15",js("CachasteDailyApp.engine.state.session.keys.length"));
+        assertEquals("true",js("!document.querySelector('[data-action=confidence]') && !document.querySelector('[data-action=hint]')"));
+        scenario.recreate();waitFor("window.CachasteDailyApp && document.querySelector('.question-title')");
+        for(int i=0;i<15;i++) {
+            js("var e=CachasteDailyApp.engine,s=e.state.session,q=e.byKey.get(s.keys[s.index]);document.querySelector('[data-action=choice][data-index=\"'+q.answer+'\"]').click();document.querySelector('[data-action=check]').click();true");
+            assertEquals("true",js("!document.querySelector('.daily-options .correct') && !document.querySelector('.tutor')"));
+            js("document.querySelector('[data-action=next]').click();true");
+        }
+        waitFor("document.querySelector('.express-report')");
+        assertEquals("true",js("document.querySelector('.express-report').textContent.includes('15/15') && document.querySelectorAll('.express-review').length===15"));
+        scenario.recreate();waitFor("window.CachasteDailyApp && document.querySelector('.express-report')");
+        assertEquals("true",js("CachasteDailyApp.engine.state.expressReports.at(-1).areas.length>=3"));
+        captureDidacticScreen("express-report");
     }
     @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();

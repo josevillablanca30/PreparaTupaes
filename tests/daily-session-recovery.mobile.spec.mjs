@@ -12,7 +12,7 @@ for(const subject of ['M1','M2','Lectura','Ciencias','Historia']){
    return{key:q.key,question:q.question,wrong:(q.answer+1)%q.options.length,options:q.options};
   });
   await page.locator('[data-action=choice][data-index="'+original.wrong+'"]').click();
-  await page.locator('[data-confidence=seguro]').click();
+
   await page.locator('[data-action=check]').click();
   const before=await page.evaluate(()=>({xp:CachasteDailyApp.engine.stats().xp,rows:CachasteDailyApp.engine.state.attempts.length}));
   await page.route('**/daily-catalog.js',async route=>{

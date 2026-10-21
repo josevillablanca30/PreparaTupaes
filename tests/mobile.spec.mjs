@@ -49,7 +49,7 @@ test('diagnóstico completo: error, explicaciones, resultado y progreso persiste
   await page.getByRole('button', { name: 'Hacer diagnóstico · 5 preguntas', exact: true }).tap();
   await expect(page.getByRole('button', { name: 'Comprobar respuesta', exact: true })).toBeDisabled();
   await page.getByRole('button', { name: 'A) $10.000', exact: true }).tap();
-  await page.getByRole('button', { name: 'Tengo dudas', exact: true }).tap();
+
   await page.getByRole('button', { name: 'Comprobar respuesta', exact: true }).tap();
   await expect(page.getByText('Todavía no, pero cada intento enseña algo.', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Más fácil', exact: true }).tap();
@@ -128,14 +128,14 @@ test('nueva ronda sin alternativa ni confianza heredadas', async ({ page }) => {
   await page.goto('./');
   await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
   await page.getByRole('button', { name: 'Hacer diagnóstico · 5 preguntas', exact: true }).tap();
-  await page.getByRole('button', { name: 'Lo tengo claro', exact: true }).tap();
+
   await page.getByRole('button', { name: 'A) $10.000', exact: true }).tap();
   await page.getByRole('button', { name: '← Inicio', exact: true }).tap();
   await page.getByRole('button',{name:'Descartar práctica',exact:true}).click();
   await page.getByRole('button',{name:'Sí, descartar sesión',exact:true}).click();
   await page.locator('details.legacy-m1').evaluate(el=>el.open=true);
   await page.getByRole('button', { name: 'Práctica rápida · 3 preguntas', exact: true }).tap();
-  await expect(page.getByRole('button', { name: 'Tengo dudas', exact: true })).toHaveClass('active');
+  await expect(page.getByRole('button', { name: 'Tengo dudas', exact: true })).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Comprobar respuesta', exact: true })).toBeDisabled();
 });
 
@@ -197,7 +197,7 @@ test('tutor: progreso registra ayuda sin inflar el dominio',async({page})=>{
   await page.getByRole('button',{name:'Hacer diagnóstico · 5 preguntas',exact:true}).tap();
   await page.getByRole('button',{name:'Necesito una pista',exact:true}).tap();
   await page.getByRole('button',{name:'C) $30.000',exact:true}).tap();
-  await page.getByRole('button',{name:'Lo tengo claro',exact:true}).tap();
+
   await page.getByRole('button',{name:'Comprobar respuesta',exact:true}).tap();
   await expect(page.getByText('¡Bien! Lo lograste con una pista.',{exact:true})).toBeVisible();
   await page.getByRole('button',{name:'← Inicio',exact:true}).tap();

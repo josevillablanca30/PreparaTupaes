@@ -54,14 +54,14 @@ test('Lectura: ensayo directo y diagnóstico independiente de 30 distribuye 10/1
  assert.equal(q.filter(x=>x.skill==='Interpretar').length,12);
  assert.equal(q.filter(x=>x.skill==='Evaluar').length,8);
  assert.ok(a.elements.view.innerHTML.includes('Texto'));
- assert.ok(a.elements.view.innerHTML.includes('¿Qué tan seguro estás?'));
+ assert.ok(!a.elements.view.innerHTML.includes('¿Qué tan seguro estás?'));
 });
-test('Lectura: responde sin pistas en diagnóstico y guarda autoconfianza',()=>{
+test('Lectura: responde sin pistas ni declaración de seguridad',()=>{
  const a=reading();a.win.readingBegin('diagnostico');
  assert.ok(!a.elements.view.innerHTML.includes('Necesito una pista'));
  const ses=a.get().session,q=a.items.find(x=>x.id===ses.ids[0]);
  a.win.readingConfidence('azar');a.win.readingChoose(q.answer);a.win.readingCheck();a.win.readingAdvance();
- assert.equal(a.get().history[0].confidence,'azar');
+ assert.equal(a.get().history[0].confidence,'no-declarada');
  assert.equal(a.get().history[0].correct,true);
  assert.equal(a.get().history[0].assisted,false);
 });
@@ -112,7 +112,7 @@ test('Lectura: ensayo de 65 preguntas completas sin retroalimentación anticipad
 });
 test('Lectura: repaso persistente y progreso separados de M1 y Ciencias',()=>{
  const data=new Map(),a=reading(data);finishDiagnosis(a,12);
- const ids=a.get().pending;assert.ok(ids.length>=12);
+ const ids=a.get().pending;assert.ok(ids.length>0&&ids.length<=12);const proved=new Set(a.win.CachasteLearning.profile(a.items,a.get().history).filter(p=>p.status==='comprobado').map(p=>p.concept));assert.ok(ids.every(id=>!proved.has(a.items.find(q=>q.id===id).concept)));
  a.win.readingBegin('errores');
  assert.ok(a.get().session.ids.length<=10);
  const b=reading(data);

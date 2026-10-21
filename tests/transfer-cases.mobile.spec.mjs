@@ -40,7 +40,7 @@ for(const spec of cases){
   await expect(page.locator('.question-title')).toBeVisible();
   const first=await page.evaluate(()=>{const e=CachasteDailyApp.engine;return e.byKey.get(e.state.session.keys[0]);});
   await page.locator('[data-action=choice][data-index="'+((first.answer+1)%4)+'"]').click();
-  await page.locator('[data-confidence=duda]').click();
+
   await page.locator('[data-action=check]').click();
   await expect(page.locator('.selected-repair li')).toHaveCount(first.teaching.selectedFeedback[(first.answer+1)%4].repair.length);
   await page.locator('[data-action=next]').click();

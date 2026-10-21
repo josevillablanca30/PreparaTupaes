@@ -111,11 +111,11 @@ test('Ciencias: diagnóstico guardado desbloquea Express y produce un plan propi
  const reopened=science(data);
  assert.equal(reopened.saved().baseline.completed,true);
 });
-test('Ciencias: se registra seguridad y azar sin confundirlo con dominio autónomo',()=>{
+test('Ciencias: registra respuesta sin inventar seguridad declarada',()=>{
  const a=science(unlockedData());a.window.setup('express');
  const q=a.bank.find(x=>x.id===a.saved().session.ids[0]);
  a.window.confidence('azar');a.window.answer(q.answer);a.window.check();
- assert.equal(a.saved().history.at(-1).confidence,'azar');
+ assert.equal(a.saved().history.at(-1).confidence,'no-declarada');
  assert.equal(a.saved().history.at(-1).correct,true);
  assert.equal(a.saved().history.at(-1).assisted,false);
 });

@@ -8,7 +8,7 @@ async function diagnosis(page,subject,wrong=false){
    const q=window.CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey===bank).find(q=>q.id===state.ids[state.index]);
    const value=q.options[wrong?(q.answer+1)%q.options.length:q.answer];
    [...document.querySelectorAll('[data-choice]')].find(b=>b.textContent.slice(3)===value).click();
-   document.querySelector('[data-conf="seguro"]').click();document.getElementById('check').click();document.getElementById('next').click();
+   document.getElementById('check').click();document.getElementById('next').click();
   }
  },{...subject,wrong});
  await expect(page.getByRole('heading',{name:(wrong?'0':'30')+' de 30 correctas',exact:true})).toBeVisible();
@@ -43,7 +43,7 @@ for(const subject of subjects){
   await page.goto('./'+subject.page);await diagnosis(page,subject,true);const before=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).lastResult.results,subject.key);
   await page.locator('#reinforce').click();const after=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).session,subject.key);
   expect(after.mode).toBe('reinforce');expect(after.ids.length).toBeGreaterThan(0);expect(after.ids.every(id=>!before.some(r=>r.id===id))).toBe(true);
-  await page.locator('[data-choice]').first().click();await page.locator('[data-conf="duda"]').click();await page.locator('#check').click();
+  await page.locator('[data-choice]').first().click();await page.locator('#check').click();
   await expect(page.locator('.tutor-panel')).toBeVisible();const first=await page.locator('.tutor-panel').innerText();
   await page.getByRole('button',{name:'Más fácil',exact:true}).click();expect(await page.locator('.tutor-panel').innerText()).not.toBe(first);
   await page.getByRole('button',{name:'Con un ejemplo',exact:true}).click();await expect(page.locator('[data-explain="example"]')).toHaveAttribute('aria-pressed','true');

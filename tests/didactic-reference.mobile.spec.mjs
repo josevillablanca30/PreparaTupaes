@@ -12,7 +12,7 @@ for(const subject of ['M1','M2','Lectura','Historia','Ciencias']){
    return{wrong:(current.answer+1)%current.options.length,easy:current.teaching.intuition[0],example:current.teaching.example.problem};
   },subject);
   await page.locator('[data-action=choice][data-index="'+expected.wrong+'"]').click();
-  await page.locator('[data-action=confidence][data-confidence=seguro]').click();
+
   await page.locator('[data-action=check]').click();
   await expect(page.locator('.reference-easy-card')).toContainText(expected.easy);
   await expect(page.locator('.reference-example-card')).toContainText(expected.example);

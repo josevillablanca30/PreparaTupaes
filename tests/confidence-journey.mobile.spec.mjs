@@ -20,7 +20,7 @@ test('La clase conserva sus aciertos sin acreditar dominio después de recargar'
    return e.byKey.get(e.state.session.keys[e.state.session.index]).answer;
   });
   await page.locator('[data-action=choice][data-index="'+answer+'"]').click();
-  await page.locator('[data-confidence=seguro]').click();
+
   await page.locator('[data-action=check]').click();
   await expect(page.locator('.selected-repair')).toContainText('no equivale a dominio demostrado');
   await page.locator('[data-action=next]').click();
@@ -36,7 +36,7 @@ test('La clase conserva sus aciertos sin acreditar dominio después de recargar'
  expect(result.status).toBe('por reforzar');
 });
 
-test('Móvil: la certeza tiene consecuencia visible y genera un repaso real',async({page})=>{
+test('Móvil: pedir una pista genera un repaso real sin pedir declarar seguridad',async({page})=>{
  const errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  await page.goto('./inicio.html#courses');
@@ -50,9 +50,9 @@ test('Móvil: la certeza tiene consecuencia visible y genera un repaso real',asy
  await expect(page.locator('.challenge-meter[role=progressbar]')).toBeVisible();
  const answer=await page.evaluate(()=>{const e=CachasteDailyApp.engine;return e.byKey.get(e.state.session.keys[0]).answer;});
  await page.locator('[data-action=choice][data-index="'+answer+'"]').click();
- await page.locator('[data-confidence=duda]').click();
- await page.locator('[data-action=check]').click();
- await expect(page.locator('.confidence-guide')).toContainText('Acertaste, pero con dudas');
+
+ await page.locator('[data-action=hint]').click();await page.locator('[data-action=check]').click();
+ await expect(page.locator('.confidence-guide')).toContainText('Acertaste con apoyo');
  await expect(page.locator('.tutor')).toBeVisible();
  await page.evaluate(()=>{
   const e=CachasteDailyApp.engine,q=e.byKey.get(e.state.session.keys[e.state.session.index]);

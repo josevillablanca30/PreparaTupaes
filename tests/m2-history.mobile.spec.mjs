@@ -17,11 +17,11 @@ for(const subject of [
   expect(Object.keys(tally).length).toBeGreaterThanOrEqual(5);
   expect(Math.max(...Object.values(tally))-Math.min(...Object.values(tally))).toBeLessThanOrEqual(1);
   await page.locator('[data-choice="0"]').tap();
-  await page.getByRole('button',{name:'Fue al azar'}).tap();
+
   await page.reload();
   await page.getByRole('button',{name:'Retomar sesión guardada'}).tap();
   await expect(page.locator('[data-choice="0"]')).toHaveClass(/selected/);
-  await expect(page.getByRole('button',{name:'Fue al azar'})).toHaveClass(/selected/);
+  await expect(page.getByRole('button',{name:'Fue al azar'})).toHaveCount(0);
   await expect(page.getByRole('button',{name:'Revisar respuesta'})).toBeEnabled();
   const overflows=await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+1);
   expect(overflows).toBe(false);
@@ -34,7 +34,7 @@ for(const subject of [
   await page.getByRole('button',{name:'Diagnóstico · 30 preguntas'}).tap();
   for(let i=0;i<30;i++){
    await page.locator('[data-choice="0"]').click();
-   await page.getByRole('button',{name:'Tengo dudas'}).click();
+
    await page.getByRole('button',{name:'Revisar respuesta'}).click();
    await page.getByRole('button',{name:i===29?'Ver resultado':'Continuar'}).click();
   }

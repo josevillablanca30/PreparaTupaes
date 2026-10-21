@@ -44,7 +44,7 @@ test('Auditoría visual: tutor, opciones y retroalimentación sin desbordes',asy
  const q=await page.evaluate(()=>{const e=CachasteDailyApp.engine;return e.byKey.get(e.state.session.keys[0]);});
  await capture(page,'08-pregunta-paes');
  await page.locator('[data-action=choice][data-index="'+((q.answer+1)%4)+'"]').click();
- await page.locator('[data-confidence=duda]').click();
+
  await page.locator('[data-action=check]').click();
  await expect(page.locator('.wise-cat[data-cat-state=error]')).toBeVisible();
  await expect(page.locator('.tutor')).toBeVisible();

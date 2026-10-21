@@ -108,9 +108,10 @@
       const q = row && byId.get(row.id); if (!q || !compatibleAttempt(q,row)) return;
       const item = groups.get(concept(q)); item.attempts++;
       if (row.correct) item.correct++;
+      if(row.correct && row.repeatedReview)return;
       if (!row.correct || row.assisted || row.afterStudy || row.confidence === 'azar' || row.confidence === 'duda') {
         item.lastFailure = index; item.evidence.clear(); item.status = 'por reforzar';
-      } else if(row.confidence === 'seguro') {
+      } else if(row.confidence === 'seguro' || row.confidence === 'no-declarada') {
         item.evidence.add(q.transferGroup || row.id);
         item.status = item.evidence.size >= 2 ? 'comprobado' : 'por comprobar';
       } else if(item.status !== 'comprobado') item.status='por comprobar';
@@ -118,7 +119,7 @@
     return [...groups.values()].map(x => ({ ...x, evidence: [...x.evidence] }));
   }
   // Stars are derived exclusively from the existing compatible evidence.
-  // 4 stars = two distinct unassisted confident transfer families (mastery).
+  // 4 stars = two distinct unassisted transfer families (mastery).
   // 5 stars = three such families; limited banks cannot fabricate the fifth.
   function skillStars(state) {
     if(!state || !Number.isFinite(state.attempts) || state.attempts<=0)return 0;
