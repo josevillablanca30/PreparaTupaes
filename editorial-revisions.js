@@ -210,6 +210,7 @@
   // Conservar la misma explicación alternativa en ambas rutas, sin tocar la evaluación.
   const normalize=text=>String(text||'').replace(/\s+/g,' ').trim();
   for(const q of bank){const t=q.teaching;if(t?.intuition?.length&&(!normalize(q.easy)||normalize(q.easy)===normalize((q.steps||[]).join(' '))))q.easy=[...t.intuition,...(t.application||[])].join('\n\n');}
+  L.polishTeaching(bank);
   return bank;
  }
  g.CachasteEditorial={apply,keys:Object.keys(revisions),additionalSources:sources,additionalConcepts:additions};

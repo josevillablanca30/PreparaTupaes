@@ -380,6 +380,19 @@ public class OfflineAppTest {
         assertEquals("true",js("!document.querySelectorAll('.trail-node')[1].disabled"));
         captureDidacticScreen("earned-unlock");
     }
+    @Test public void friendlyFractionsExplainWordsBeforeLettersAndKeepTheFullLesson() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp");
+        js("var e=CachasteDailyApp.engine;e.close();e.state.foundationDraft=null;e.state.track=null;e.start('M1',2,'lesson','Fracciones y unidad común');location.hash='#session';CachasteDailyApp.render();true");
+        waitFor("document.querySelector('.didactic-key')");
+        assertEquals("true",js("var opening=[...document.querySelectorAll('.didactic-key > p')].map(p=>p.textContent).join(' ');opening.includes('pizza') && opening.includes('denominador') && opening.includes('numerador') && !opening.includes('a/b')"));
+        assertEquals("true",js("!document.querySelector('.didactic-depth').open && document.documentElement.scrollWidth<=innerWidth+1"));
+        js("document.querySelector('.didactic-key').scrollIntoView();true");captureDidacticScreen("fractions-friendly");
+        js("document.querySelector('.didactic-depth summary').click();document.querySelector('.didactic-depth').scrollIntoView();true");
+        assertEquals("true",js("var e=CachasteDailyApp.engine,q=e.byKey.get(e.state.session.keys[0]);q.teaching.foundation.every(p=>document.querySelector('.didactic-depth').textContent.replace(/\\s+/g,' ').includes(p.replace(/\\s+/g,' ')))"));
+        captureDidacticScreen("fractions-full");
+        scenario.recreate();waitFor("window.CachasteDailyApp && document.querySelector('.didactic-key')");
+        assertEquals("true",js("document.querySelector('.didactic-key').textContent.includes('pizza')"));
+    }
     @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         PackageInfo info=context.getPackageManager().getPackageInfo(context.getPackageName(),PackageManager.GET_PERMISSIONS);

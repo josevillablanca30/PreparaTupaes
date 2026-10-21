@@ -11,7 +11,7 @@ test('Las cinco asignaturas componen idea, modelo y práctica con el material in
  for(const q of items){
   const before=JSON.stringify(q),v=P.draft(q,{}),html=P.overview(q,v);
   for(const name of ['Idea clave','Modelo visual','Mini práctica'])assert.ok(html.includes('aria-label="'+name+'"'),q.key+' '+name);
-  for(const paragraph of [q.teaching.aim,...q.teaching.foundation])assert.ok(html.includes(esc(paragraph)),q.key+' fundamento omitido');
+  for(const paragraph of [q.teaching.aim,...q.teaching.foundation])assert.ok(html.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').includes(esc(paragraph).replace(/\s+/g,' ')),q.key+' fundamento omitido');
   assert.ok(P.modelSupport(q,v).includes('data-lesson-card='),q.key);
   assert.equal(JSON.stringify(q),before,q.key+' cambió contenido');
  }

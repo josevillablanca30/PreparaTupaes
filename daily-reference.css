@@ -221,3 +221,6 @@ body>main{--reference-gutter:20px}
 #daily-root .support-illustration .learning-object{width:100%;height:100%}
 #daily-root .reference-easy-card:after,#daily-root .reference-example-card:after{content:'';display:block;clear:both}
 @media(max-width:360px){#daily-root .support-illustration{width:85px;height:85px;margin-left:9px;padding:3px}}
+
+/* Short vocabulary support uses the existing lesson card, with no extra illustration. */
+.lesson-word-help{margin:1rem 0;font-size:.94em;line-height:1.6}.lesson-word-help>div{margin:.65rem 0}.lesson-word-help dt{font-weight:750;text-transform:capitalize}.lesson-word-help dd{margin:0;color:var(--text,#281e43)}

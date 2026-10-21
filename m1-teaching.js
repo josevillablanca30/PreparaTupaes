@@ -160,16 +160,18 @@
   'El movimiento neto fue subir cuatro pisos. Partir en −2 y subir cuatro también lleva al piso 2. Esto comprueba la dirección de ambos cambios.'
  ],'Marca el punto inicial y conserva el signo de cada cambio: depósito o subida suma, retiro o bajada resta.');
  define('Fracciones y unidad común',[
-  'Una fracción a/b representa a partes de un entero dividido en b partes iguales. Para sumar o comparar fracciones debemos expresar partes del mismo tamaño.',
-  'Multiplicar numerador y denominador por el mismo número no cambia la cantidad: 1/2 = 2/4. Al sumar fracciones con denominador común sumamos los numeradores y conservamos el denominador.'
+  'Imagina una pizza dividida en 4 trozos iguales. Si tomas 1 trozo, tienes 1/4 de la pizza. El 4 de abajo indica en cuántas partes iguales se dividió: es el denominador. El 1 de arriba cuenta las partes que tomaste: es el numerador.',
+  'Cuando escribimos a/b, usamos letras para representar esos dos números: a cuenta las partes que tomamos y b indica en cuántas partes iguales dividimos la unidad. La unidad puede ser una pizza, una barra o un metro.',
+  'Una misma cantidad puede escribirse de distintas formas. Media pizza es lo mismo que dos cuartos: 1/2 = 2/4. Para pasar de una escritura a la otra multiplicamos arriba y abajo por el mismo número.',
+  'Para sumar o comparar, necesitamos partes del mismo tamaño. Cuando las fracciones ya tienen el mismo denominador, sumamos los numeradores y dejamos igual el denominador: seguimos contando el mismo tipo de partes.'
  ],[
-  'No sumas media pizza y un cuarto contando dos trozos como si fueran iguales. Cortas la media pizza en dos cuartos y ahora tienes tres cuartos iguales.',
-  'Para comparar, imagina las barras de la misma longitud divididas en una cuadrícula común. Gana la que cubre más casillas, no la que tiene el número más grande escrito abajo.'
- ],'Una cinta tiene 2/3 de metro y se agrega otra de 1/6 de metro. ¿Cuánto miden juntas?',[
-  'Un tercio equivale a dos sextos, así que 2/3 = 4/6. Expresamos ambas longitudes en sextos.',
-  'Sumamos 4/6 + 1/6 = 5/6 de metro: contamos cinco partes de tamaño un sexto.',
-  'No sumamos los denominadores: 3 y 6 describen el tamaño de las partes. El resultado 5/6 es mayor que 2/3 y menor que un metro, lo que concuerda con agregar una parte pequeña.'
- ],'Construye fracciones equivalentes con la misma unidad de parte antes de sumar o comparar.');
+  'Piensa en media pizza y un cuarto de esa misma pizza. Corta la mitad en dos cuartos: ahora puedes contar tres cuartos del mismo tamaño.',
+  'Para comparar dos fracciones, dibuja barras del mismo largo y divídelas en partes iguales del mismo tamaño. La fracción mayor cubre más partes. Mirar solo el número de abajo puede confundirnos.'
+ ],'Una cinta tiene 2/3 de metro y agregamos otra de 1/6 de metro. ¿Cuánto miden juntas?',[
+  'Primero usamos partes del mismo tamaño: sextos. Cada tercio equivale a dos sextos; por eso 2/3 = 4/6.',
+  'Ahora sí sumamos: 4/6 + 1/6 = 5/6 de metro. Tenemos cinco partes de tamaño un sexto.',
+  'El 6 se mantiene porque seguimos contando sextos. El resultado es mayor que 2/3 y menor que un metro, como esperábamos al agregar una parte pequeña.'
+ ],'Antes de sumar o comparar, escribe las fracciones con el mismo denominador. Así las partes tienen igual tamaño y puedes contarlas.');
  define('Fracción de una cantidad',[
   'Tomar una fracción de una cantidad significa multiplicarla por esa fracción. La mitad de una cantidad se obtiene dividiéndola por dos, aunque esa cantidad ya sea una fracción.',
   'Al multiplicar a/b por c/d, multiplicamos numeradores entre sí y denominadores entre sí. Tomar la mitad de una cantidad positiva debe producir algo menor, no el doble.'

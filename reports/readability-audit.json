@@ -1,0 +1,37 @@
+{
+  "scope": "Presentación y lenguaje pedagógico; conserva enunciados, alternativas, claves y recursos evaluados. La claridad se comprueba con casos y criterios de lectura, sin atribuir una edad exacta a una fórmula automática.",
+  "assessmentDigest": "d8a9b8965c4a53d288758624b89b00759b435664e9c6854d7051975be5e0b5fa",
+  "subjects": {
+    "M1": {
+      "questions": 147,
+      "shortOpenings": 147,
+      "vocabularySupport": 29,
+      "maxOpeningWords": 54
+    },
+    "M2": {
+      "questions": 115,
+      "shortOpenings": 115,
+      "vocabularySupport": 20,
+      "maxOpeningWords": 49
+    },
+    "Lectura": {
+      "questions": 130,
+      "shortOpenings": 130,
+      "vocabularySupport": 12,
+      "maxOpeningWords": 43
+    },
+    "Ciencias": {
+      "questions": 305,
+      "shortOpenings": 305,
+      "vocabularySupport": 98,
+      "maxOpeningWords": 59
+    },
+    "Historia": {
+      "questions": 105,
+      "shortOpenings": 105,
+      "vocabularySupport": 6,
+      "maxOpeningWords": 51
+    }
+  },
+  "questions": 802
+}

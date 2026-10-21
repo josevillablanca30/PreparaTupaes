@@ -74,7 +74,7 @@
  }
  const labs={
   percent:{title:'El descuento y lo que queda',text:'Una compra de $200 tiene un descuento. Cambia el porcentaje: la zona dorada es lo que ahorras y la morada lo que pagas. Son dos partes del mismo precio inicial.',label:'Descuento',values:[10,25,50,75],unit:'%',compute:p=>({a:200*p/100,b:200*(1-p/100),ratio:p/100,formula:'$200 × '+p+'/100 = $'+200*p/100,explain:'Ahorras $'+200*p/100+' y pagas $'+200*(1-p/100)+'. Al sumarlos recuperas los $200 iniciales. El porcentaje siempre se calcula sobre esa base.',labels:['Ahorras','Pagas']})},
-  fraction:{title:'La misma unidad, otras particiones',text:'La barra representa una unidad completa. Cambia la cantidad de partes iguales: siempre pintaremos la mitad. El tamaño de la unidad se mantiene.',label:'Partes de la unidad',values:[2,4,6,8],unit:'',compute:n=>({a:n/2,b:n/2,ratio:.5,formula:n/2+'/'+n+' = 1/2',explain:'Pintamos '+n/2+' de '+n+' partes iguales. Cambian numerador y denominador por el mismo factor; la cantidad representada permanece igual.',labels:['Mitad pintada','Mitad restante']})},
+  fraction:{title:'La misma unidad, otras particiones',text:'Esta barra es el total. Prueba dividirla en 2, 4, 6 u 8 partes iguales. Siempre pintamos la mitad de la misma barra: cambia el número de trozos, pero no la cantidad pintada.',label:'Partes de la unidad',values:[2,4,6,8],unit:'',compute:n=>({a:n/2,b:n/2,ratio:.5,formula:n/2+'/'+n+' = 1/2',explain:'Pintamos '+n/2+' de '+n+' partes iguales. Es la misma mitad, escrita de otra manera: '+n/2+'/'+n+' = 1/2.',labels:['Mitad pintada','Mitad restante']})},
   mean:{title:'Repartir el total de manera equitativa',text:'Tres cajas contienen 2, 4 y una tercera cantidad de fichas. Cambia esa cantidad y observa cómo varía el promedio. El reparto conserva el total.',label:'Fichas de la tercera caja',values:[0,3,6,9],unit:'',compute:n=>({a:n,b:6,ratio:n/(n+6),formula:'(2 + 4 + '+n+') / 3 = '+(n+6)/3,explain:'Hay '+(n+6)+' fichas y tres cajas: repartirlas equitativamente da '+(n+6)/3+' por caja. El divisor es la cantidad de cajas, incluso cuando una está vacía.',labels:['Tercera caja','Otras dos cajas']})},
   probability:{title:'Cuenta resultados posibles',text:'Una bolsa tiene cuatro fichas equiprobables. Decide cuántas son moradas. Extraemos una al azar y preguntamos por ese color; cada ficha tiene la misma probabilidad de salir.',label:'Fichas moradas',values:[1,2,3,4],unit:'',compute:n=>({a:n,b:4-n,ratio:n/4,formula:'P(morada) = '+n+'/4 = '+n*25+'%',explain:'Hay '+n+' resultados favorables entre cuatro posibles. La probabilidad describe el modelo; no promete esa proporción exacta en unas pocas extracciones.',labels:['Moradas','Otros colores']})},
   area:{title:'Construye el área por filas',text:'El rectángulo mide 4 cm de base. Cambia su altura y cuenta las filas de cuadrados de 1 cm². El área cubre una superficie; el perímetro recorre su borde.',label:'Altura',values:[1,2,3,4],unit:'cm',compute:h=>({a:4*h,b:0,ratio:1,formula:'A = 4 cm × '+h+' cm = '+4*h+' cm²',explain:'Son '+h+' filas de cuatro cuadrados. El perímetro sería 2 × (4 + '+h+') = '+2*(4+h)+' cm: es otra magnitud.',grid:[4,h],labels:['Área','']})},
@@ -106,7 +106,7 @@
  function repairSupport(q){
   const t=q?.teaching||{},example=t.example||{};
   const easy=(t.intuition||[]).filter(x=>typeof x==='string'&&x.trim());
-  const simpler=easy.length?'<section class="reference-easy-card"><h3>Más fácil</h3>'+(g.CachasteIllustrations?.support(q,'easy')||'')+easy.map(x=>'<p>'+esc(x)+'</p>').join('')+'</section>':'';
+  const simpler=easy.length?'<section class="reference-easy-card"><h3>Más fácil</h3>'+(g.CachasteIllustrations?.support(q,'easy')||'')+easy.flatMap(x=>g.CachasteLearning.readingChunks(x)).map(x=>'<p>'+esc(x)+'</p>').join(' ')+'</section>':'';
   const worked=example.problem?'<section class="reference-example-card"><h3>Otro ejemplo</h3>'+(g.CachasteIllustrations?.support(q,'example')||'')+'<p>'+esc(example.problem)+'</p><ol>'+(example.steps||[]).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>'+(example.bridge?'<p>'+esc(example.bridge)+'</p>':'')+'</section>':'';
   return simpler+worked;
  }
@@ -118,12 +118,12 @@
   const task=model>=0&&cards[model].kind==='laboratory'&&labs[cards[model].lab]?.task;
   const practice=probe>=0?probe:task?model:cards.findIndex(c=>c.kind==='worked');
   const heading=(icon,title,n)=>'<div class="reference-card-title"><span class="reference-card-icon" aria-hidden="true">'+icon+'</span><h2>'+title+'</h2><small>Paso '+n+' de 3</small></div>';
-  const paragraphs=xs=>xs.filter(Boolean).map(x=>'<p>'+esc(x)+'</p>').join('');
+  const paragraphs=xs=>xs.filter(Boolean).flatMap(x=>g.CachasteLearning.readingChunks(x)).map(x=>'<p>'+esc(x)+'</p>').join(' ');
   const embedded=(i,isPractice=false)=>'<div data-lesson-card="'+i+'">'+(isPractice&&task&&i===model?numericTask(labs[cards[i].lab],v,i):paragraphs([cards[i].text])+widget(q,{...v,card:i},{task:false}))+'</div>';
   const foundation=[...(t.foundation||[])];
   return '<div class="didactic-overview">'+
-   '<section class="reference-teaching-card didactic-key" aria-label="Idea clave">'+heading('💡','Idea clave',1)+paragraphs(foundation.slice(0,2))+
-   (t.aim||foundation.length>2?'<details class="didactic-depth"><summary>Entender el concepto completo</summary>'+paragraphs([t.aim,...foundation.slice(2)])+'</details>':'')+'</section>'+
+   '<section class="reference-teaching-card didactic-key" aria-label="Idea clave">'+heading('💡','Idea clave',1)+paragraphs(g.CachasteLearning.lessonOpening(q))+
+   (g.CachasteLearning.wordsFor(q).length?'<dl class="lesson-word-help">'+g.CachasteLearning.wordsFor(q).map(w=>'<div><dt>'+esc(w.term)+'</dt><dd>'+esc(w.meaning)+'</dd></div>').join('')+'</dl>':'')+'<details class="didactic-depth"><summary>Entender el concepto completo</summary>'+paragraphs([t.aim,...foundation])+'</details>'+'</section>'+
    (model>=0?'<section class="reference-teaching-card didactic-model" aria-label="Modelo visual">'+heading('◈','Modelo visual',2)+embedded(model)+'</section>':'')+
    (practice>=0?'<section class="reference-teaching-card didactic-practice" aria-label="Mini práctica">'+heading('◎','Mini práctica',3)+'<p class="didactic-guided-label">Un caso distinto para practicar con ayuda.</p>'+embedded(practice,true)+'</section>':'')+
    '</div>';
