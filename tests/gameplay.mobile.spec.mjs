@@ -9,6 +9,9 @@ test('El clon MIT inspira un minijuego funcional: ordenar, equivocarse, corregir
   e.start('M1',2,'lesson','Descuento porcentual');
   location.hash='#session';CachasteDailyApp.render();
  });
+ await expect(page.locator('.didactic-overview')).toBeVisible();
+ await expect(page.locator('.didactic-key')).toContainText('Idea clave');
+ await page.locator('[data-action=intro-next]').click();
  await expect(page.locator('.teacher-step')).toBeVisible();
  while(await page.locator('[data-action=intro-next]').count())await page.locator('[data-action=intro-next]').click();
  await expect(page.locator('[data-action=start-arcade]')).toBeVisible();

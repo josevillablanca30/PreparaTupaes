@@ -61,6 +61,10 @@ test('Un estudiante puede ir del juego a una clase con el gatito sin perder prog
   await page.locator('[data-action=studio-advance]').click();
  }
  await page.locator('[data-action=studio-lesson]').click();
+ await expect(page.locator('.didactic-overview')).toBeVisible();
+ const foundation=await page.evaluate(()=>{const e=CachasteDailyApp.engine,s=e.state.session;return e.byKey.get(s.keys[s.index]).teaching.foundation[0];});
+ await expect(page.locator('.didactic-key')).toContainText(foundation);
+ await page.locator('[data-action=intro-next]').click();
  await expect(page.locator('.teacher-step')).toBeVisible();
  await expect(page.locator('.lesson-text')).toBeVisible();
  const session=await page.evaluate(()=>CachasteDailyApp.engine.state.session);
