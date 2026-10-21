@@ -17,6 +17,8 @@ jobs:
       CACHASTE_DEBUG_KEYSTORE: ${{ github.workspace }}/android/cachaste-debug.keystore
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -35,9 +37,19 @@ jobs:
           retention-days: 14
       - name: Construir aplicación web empaquetada
         run: npm run build
+      - name: Determinar si cambió el recorrido web
+        id: scope
+        run: |
+          if git rev-parse --verify HEAD^ >/dev/null 2>&1 && ! git diff --name-only HEAD^ HEAD | grep -Ev '^(android/app/src/androidTest/|\.github/workflows/android-apk\.yml$)' | grep -q .; then
+            echo 'browser_required=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'browser_required=true' >> "$GITHUB_OUTPUT"
+          fi
       - name: Instalar navegador de pruebas
+        if: steps.scope.outputs.browser_required != 'false'
         run: npx playwright install --with-deps chromium
       - name: Validar recorrido jugable, profesor y materias antes de empaquetar
+        if: steps.scope.outputs.browser_required != 'false'
         run: npx playwright test tests/reference-ui.mobile.spec.mjs tests/didactic-overview.mobile.spec.mjs tests/didactic-reference.mobile.spec.mjs tests/topic-visuals.mobile.spec.mjs tests/demonstrations.mobile.spec.mjs tests/visual-lessons.mobile.spec.mjs tests/simple-entry.mobile.spec.mjs tests/assessment-flows.mobile.spec.mjs tests/adventure-map.mobile.spec.mjs tests/visual-journey.mobile.spec.mjs tests/gameplay.mobile.spec.mjs tests/studios.mobile.spec.mjs tests/answer-repair.mobile.spec.mjs tests/transfer-cases.mobile.spec.mjs tests/confidence-journey.mobile.spec.mjs tests/five-subjects.mobile.spec.mjs tests/tutor-journey.mobile.spec.mjs tests/daily.mobile.spec.mjs tests/daily-session-recovery.mobile.spec.mjs --project=Android-Chrome --project=mobile-320px
       - name: Guardar capturas de errores móviles
         if: failure()

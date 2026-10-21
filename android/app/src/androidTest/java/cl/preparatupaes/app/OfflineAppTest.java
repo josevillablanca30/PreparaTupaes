@@ -269,7 +269,17 @@ public class OfflineAppTest {
     }
     private void captureDidacticScreen(String name) throws Exception {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-        Thread.sleep(150);
+        CountDownLatch painted=new CountDownLatch(1);
+        scenario.onActivity(activity -> {
+            WebView view=web(activity);
+            view.postVisualStateCallback(System.nanoTime(),new WebView.VisualStateCallback() {
+                @Override public void onComplete(long requestId) {
+                    view.postOnAnimation(() -> view.postOnAnimation(painted::countDown));
+                }
+            });
+        });
+        assertTrue("WebView did not paint the current lesson",painted.await(10,TimeUnit.SECONDS));
+        Thread.sleep(300);
         // Keep native captures outside app data, which Gradle clears after testing.
         String path="/data/local/tmp/cachaste-didactic-screens/"+name+".png";
         // UiAutomation starts one process per call; it does not interpret shell operators.
