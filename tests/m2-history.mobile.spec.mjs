@@ -27,6 +27,9 @@ for(const subject of [
   expect(overflows).toBe(false);
  });
  test(subject.file+': completar diagnóstico habilita Express y banco completo',async({page})=>{
+  // 30 respuestas y más de 120 interacciones reales: el presupuesto total no
+  // mide latencia de una sola acción. Conservamos todos los pasos y aserciones.
+  test.setTimeout(90000);
   await page.goto('./'+subject.file);
   await page.getByRole('button',{name:'Diagnóstico · 30 preguntas'}).tap();
   for(let i=0;i<30;i++){
