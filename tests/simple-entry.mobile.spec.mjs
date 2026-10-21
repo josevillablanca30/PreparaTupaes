@@ -1,9 +1,9 @@
 import {test,expect} from '@playwright/test';
 async function choose(page,subject){await page.goto('./inicio.html#courses');await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();if(subject==='Ciencias')await page.locator('[data-track=Biología]').click();}
 for(const subject of ['M1','M2','Lectura','Ciencias','Historia']){
- test(subject+': materia, dos modos claros y camino bloqueado en orden',async({page})=>{
+ test(subject+': materia, diagnóstico y dos modos claros y camino bloqueado en orden',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await choose(page,subject);
-  await expect(page.locator('.mode-choices button')).toHaveCount(2);await expect(page.locator('[data-action=game-mode]')).toContainText('Aprender jugando');await expect(page.locator('[data-action=exam-mode]')).toContainText('Ensayo PAES completo');
+  await expect(page.locator('.mode-choices button')).toHaveCount(3);await expect(page.locator('[data-action=diagnostic-mode]')).toContainText('Diagnóstico inicial');await expect(page.locator('[data-action=game-mode]')).toContainText('Aprender jugando');await expect(page.locator('[data-action=exam-mode]')).toContainText('Ensayo PAES completo');
   await page.locator('[data-action=game-mode]').click();await expect(page.locator('.adventure-world')).toBeVisible();await expect(page.locator('.trail-stop.current')).toHaveCount(1);
   expect(await page.locator('[data-action=practice]').count()).toBe(0);expect(await page.locator('.studio-feature').count()).toBe(0);
   const last=await page.evaluate(()=>{const e=CachasteDailyApp.engine,p=CachasteProgression.route(CACHASTE_DAILY_CATALOG.items,e.state.subject,e.state.track,e.profile(e.state.subject));return p.levels.at(-1).id;});
