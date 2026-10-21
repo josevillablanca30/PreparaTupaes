@@ -258,4 +258,24 @@ public class OfflineAppTest {
         PackageInfo info=context.getPackageManager().getPackageInfo(context.getPackageName(),PackageManager.GET_PERMISSIONS);
         assertTrue(info.requestedPermissions==null || info.requestedPermissions.length==0);
     }
+
+    @Test public void additionalIllustrationsAndScientificComparisonWorkOffline() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp && window.CachasteTopicVisuals");
+        assertEquals("11",js("CachasteTopicVisuals.themes.length"));
+        js("window.nativeAssetsReady=false;window.nativeAssetsOk=false;Promise.all(['osmosis','meiosis','electricity','waves','geometry','probability','industry','argument'].map(k=>new Promise(resolve=>{var im=new Image();im.onload=()=>resolve(im.naturalWidth>900);im.onerror=()=>resolve(false);im.src='assets/lesson-cat-'+k+'-v3.webp'}))).then(results=>{window.nativeAssetsOk=results.every(Boolean);window.nativeAssetsReady=true});true");
+        waitFor("window.nativeAssetsReady");
+        assertEquals("true",js("window.nativeAssetsOk"));
+        js("var e=CachasteDailyApp.engine;e.close();e.state.foundationDraft=null;e.start('M2',2,'lesson','Dispersión');location.hash='#session';CachasteDailyApp.render();true");
+        waitFor("document.querySelector('[data-topic-model=dispersion]')");
+        String xp=js("CachasteDailyApp.engine.stats().xp");
+        String attempts=js("CachasteDailyApp.engine.state.attempts.length");
+        js("document.querySelectorAll('[data-action=visual-topic]')[2].click();true");
+        waitFor("document.querySelector('.topic-equation').textContent.includes('32/3')");
+        scenario.recreate();
+        waitFor("window.CachasteDailyApp && document.querySelector('.topic-equation')");
+        assertEquals("true",js("document.querySelector('.topic-equation').textContent.includes('32/3')"));
+        assertEquals(xp,js("CachasteDailyApp.engine.stats().xp"));
+        assertEquals(attempts,js("CachasteDailyApp.engine.state.attempts.length"));
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();location.hash='#home';CachasteDailyApp.render();true");
+    }
 }

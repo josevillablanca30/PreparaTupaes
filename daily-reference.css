@@ -137,3 +137,15 @@
 body>main{--reference-gutter:20px}
 @media(max-width:390px){body>main{--reference-gutter:14px}}
 #daily-root .adventure-world:not(.support-world){margin-inline:calc(-1 * var(--reference-gutter));padding-inline:var(--reference-gutter)}
+
+/* Show complete teaching scenes, including the objects the cat uses. */
+#daily-root .reference-lesson-hero.illustrated-lesson{grid-template-columns:minmax(0,1fr);gap:16px}
+#daily-root .illustrated-lesson .lesson-scene>img{height:auto;max-height:none;aspect-ratio:auto;object-fit:contain;width:100%}
+#daily-root .topic-model-controls{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+#daily-root .topic-model-controls button{flex:1 1 110px;min-height:44px;white-space:normal;font-size:.9rem;padding:10px;border:1px solid #d9c7ee;border-radius:14px;background:#faf7ff;color:#513775}
+#daily-root .topic-model-controls button[aria-pressed=true]{background:#e8dbfa;border-color:#8a53ce;box-shadow:inset 0 -3px 0 #c9acec}
+#daily-root .topic-model figcaption{font-size:1rem;line-height:1.65;text-align:left;color:#48335f}
+#daily-root .topic-model svg{display:block;width:100%;height:auto;max-width:540px;margin:auto}
+#daily-root .topic-model small{display:block;margin-top:12px;line-height:1.5}
+
+#daily-root .topic-equation{font-size:1.05rem;font-weight:800;color:#513775;text-align:center;overflow-wrap:anywhere;line-height:1.5}
