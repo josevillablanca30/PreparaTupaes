@@ -150,3 +150,32 @@ body>main{--reference-gutter:20px}
 #daily-root .topic-model small{display:block;margin-top:12px;line-height:1.5}
 
 #daily-root .topic-equation{font-size:1.05rem;font-weight:800;color:#513775;text-align:center;overflow-wrap:anywhere;line-height:1.5}
+
+/* One composition for the existing teaching in every subject. */
+#daily-root .didactic-overview{display:grid;gap:14px;min-width:0}
+#daily-root .didactic-overview .reference-teaching-card{margin:0;min-width:0}
+#daily-root .didactic-key{background:linear-gradient(135deg,#fcfaff,#f4edff)}
+#daily-root .didactic-model{background:linear-gradient(135deg,#f1fbff,#f8f5ff);border-color:#d5e9f2}
+#daily-root .didactic-practice{background:linear-gradient(135deg,#fffbef,#fff8ee);border-color:#f1dfbc}
+#daily-root .didactic-overview p,#daily-root .didactic-support p,#daily-root .reference-repair-visual p{line-height:1.65;overflow-wrap:anywhere}
+#daily-root .didactic-overview .reference-card-title{grid-template-columns:40px minmax(0,1fr) auto;gap:10px}
+#daily-root .didactic-overview .reference-card-title h2{grid-column:2;grid-row:1;font-size:24px;overflow-wrap:normal}
+#daily-root .didactic-overview .reference-card-title small{grid-column:3;grid-row:1;align-self:center}
+#daily-root .didactic-depth{border:0;background:#ffffff70;border-radius:14px;padding:10px 13px;margin-top:12px}
+#daily-root .didactic-depth summary{color:#6634a5;font-weight:750;cursor:pointer;min-height:32px;align-content:center}
+#daily-root .didactic-overview .concept-laboratory,#daily-root .didactic-overview .visual-probe,#daily-root .didactic-overview .worked-board{margin:0;padding:0;border:0;box-shadow:none;background:transparent}
+#daily-root .didactic-guided-label{font-size:13px;color:#7d673f;margin-top:0}
+#daily-root .didactic-lesson-actions{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+#daily-root .didactic-lesson-actions button{flex:1 1 145px;min-height:50px;border-radius:22px;white-space:normal}
+#daily-root .didactic-lesson-actions .primary{flex:1 1 100%}
+#daily-root .didactic-support{display:grid;gap:14px}
+#daily-root .didactic-support>section{margin:0;scroll-margin-top:18px}
+#daily-root .didactic-selected{background:#ffe8ef;padding:10px 12px;border-radius:13px}
+#daily-root .daily-options button.incorrect{background:#fff0f1;border:2px solid #df6476;color:#8e2037;box-shadow:none}
+#daily-root .daily-options button.incorrect:after{content:' ✕';font-weight:850}
+#daily-root .reference-repair-visual [data-lesson-card]{min-width:0;overflow-wrap:anywhere}
+@media(max-width:390px){
+ #daily-root .didactic-overview .reference-card-title{grid-template-columns:34px minmax(0,1fr)}
+ #daily-root .didactic-overview .reference-card-title h2{font-size:22px}
+ #daily-root .didactic-overview .reference-card-title small{grid-column:2;grid-row:2;justify-self:start;padding:3px 8px}
+}

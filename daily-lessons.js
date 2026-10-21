@@ -110,6 +110,32 @@
   const worked=example.problem?'<section class="reference-example-card"><h3>Otro ejemplo</h3><p>'+esc(example.problem)+'</p><ol>'+(example.steps||[]).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>'+(example.bridge?'<p>'+esc(example.bridge)+'</p>':'')+'</section>':'';
   return simpler+worked;
  }
+ // Compose the existing teaching and working models; do not generate a second curriculum.
+ function overview(q,v){
+  const t=q.teaching||{},cards=deck(q).cards;
+  const model=cards.findIndex(c=>!['idea','worked','probe','ready'].includes(c.kind));
+  const probe=cards.findIndex(c=>c.kind==='probe');
+  const practice=probe>=0?probe:cards.findIndex(c=>c.kind==='worked');
+  const heading=(icon,title,n)=>'<div class="reference-card-title"><span class="reference-card-icon" aria-hidden="true">'+icon+'</span><h2>'+title+'</h2><small>Paso '+n+' de 3</small></div>';
+  const paragraphs=xs=>xs.filter(Boolean).map(x=>'<p>'+esc(x)+'</p>').join('');
+  const embedded=i=>'<div data-lesson-card="'+i+'">'+paragraphs([cards[i].text])+widget(q,{...v,card:i})+'</div>';
+  const foundation=[...(t.foundation||[])];
+  return '<div class="didactic-overview">'+
+   '<section class="reference-teaching-card didactic-key" aria-label="Idea clave">'+heading('💡','Idea clave',1)+paragraphs([t.aim,foundation[0]])+
+   (foundation.length>1?'<details class="didactic-depth"><summary>Entender el concepto completo</summary>'+paragraphs(foundation.slice(1))+'</details>':'')+'</section>'+
+   (model>=0?'<section class="reference-teaching-card didactic-model" aria-label="Modelo visual">'+heading('◈','Modelo visual',2)+embedded(model)+'</section>':'')+
+   (practice>=0?'<section class="reference-teaching-card didactic-practice" aria-label="Mini práctica">'+heading('◎','Mini práctica',3)+'<p class="didactic-guided-label">Un caso distinto para practicar con ayuda.</p>'+embedded(practice)+'</section>':'')+
+   '</div>';
+ }
+ function modelSupport(q,v){
+  const cards=deck(q).cards,i=cards.findIndex(c=>!['idea','worked','probe','ready'].includes(c.kind));
+  if(i<0)return '';
+  return '<section class="reference-teaching-card didactic-model" aria-label="Modelo visual de apoyo"><h3>Modelo visual</h3><div data-lesson-card="'+i+'"><p>'+esc(cards[i].text)+'</p>'+widget(q,{...v,card:i})+'</div></section>';
+ }
+ function actAt(q,v,index,action,value){
+  if(!Number.isInteger(index)||index<0||index>=deck(q).cards.length)return v;
+  const prior=v.card;try{v.card=index;act(q,v,action,value);}finally{v.card=prior;}return v;
+ }
  function coverage(q){const d=deck(q),t=q.teaching||{};return{instruction:d.cards.flatMap(c=>[c.text,...(c.steps||[]),c.bridge||'']).join('\n'),correction:[...(t.application||[]),t.check||''].join('\n')};}
  function draft(q,holder){const key=q.key+'|'+g.CachasteLearning.assessmentVersion(q);if(!holder.visualLesson||holder.visualLesson.key!==key||holder.visualLesson.revision!==revision)holder.visualLesson={key,revision,card:0,selected:{},opened:{},values:{},responses:{},checked:{}};const v=holder.visualLesson;v.card=Math.min(Math.max(0,Math.floor(Number(v.card)||0)),deck(q).cards.length-1);for(const key of ['selected','opened','values','responses','checked'])if(!v[key]||typeof v[key]!=='object'||Array.isArray(v[key]))v[key]={};for(const key of Object.keys(v.values))if(!Number.isFinite(v.values[key]))delete v.values[key];return v;}
  function current(q,v){return deck(q).cards[v.card];}
@@ -139,5 +165,5 @@
   if(c.kind==='parabola'){const x=Number.isFinite(v.values[i])?v.values[i]:0,y=(x-2)**2+1;const points=Array.from({length:61},(_,j)=>{const a=-1+j/10;return(30+(a+1)*40)+','+(135-((a-2)**2+1)*10)}).join(' ');return'<section class="parabola-demo"><svg viewBox="0 0 310 160" role="img" aria-label="Gráfico de f(x) igual a (x menos 2) al cuadrado más 1"><path d="M 30 135 H 285 M 70 145 V 15" stroke="#aaa" fill="none"/><polyline points="'+points+'" fill="none" stroke="#7652b1" stroke-width="4"/><circle cx="'+(30+(x+1)*40)+'" cy="'+(135-y*10)+'" r="7" fill="#e2a827"/></svg><label>Mueve x: <input data-visual-value type="range" min="-1" max="5" step="1" value="'+x+'"></label><p aria-live="polite">x = '+x+' · f(x) = '+y+(x===2?' · ¡Encontraste el mínimo!':'')+'</p></section>';}
   return'';
  }
- g.CachasteLessons={revision,art,illustration,deck,draft,current,act,widget,correction,repairSupport,coverage,laboratory,labs,exploration,narration,parseResponse,taskResult};
+ g.CachasteLessons={revision,art,illustration,deck,draft,current,act,actAt,overview,modelSupport,widget,correction,repairSupport,coverage,laboratory,labs,exploration,narration,parseResponse,taskResult};
 })(typeof window==='undefined'?globalThis:window);
