@@ -177,5 +177,14 @@
       "globalApproval": false
     }
   ],
-  "remaining": "279 objetivos no pertenecen a esta revisión textual; no se certifica revisión integral de los 526 documentos inventariados."
+  "remaining": "279 objetivos no pertenecen a esta revisión textual; no se certifica revisión integral de los 526 documentos inventariados.",
+  "visualSpotChecks": {
+    "revision": "742e0577cfd2f30afb1f04f60b85184008ca3dd8",
+    "width": 320,
+    "screens": [
+      "ATP: primera tarjeta, personaje único, título completo y modelo de transferencia",
+      "Ósmosis: primera tarjeta, selector de medios y modelo hipotónico"
+    ],
+    "result": "Inspección visual sin recortes horizontales en estas dos capturas. No certifica todas las pantallas, estados ni los ocho objetivos."
+  }
 }
