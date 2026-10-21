@@ -3,6 +3,9 @@ package cl.preparatupaes.app;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.view.KeyEvent;
+import android.graphics.Bitmap;
+import java.io.File;
+import java.io.FileOutputStream;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import androidx.test.core.app.ActivityScenario;
@@ -192,6 +195,8 @@ public class OfflineAppTest {
         waitFor("document.querySelector('[data-action=lesson]')");
         js("document.querySelector('[data-action=lesson]').click();true");
         waitFor("document.querySelector('.lesson-scene img') && document.querySelector('.lesson-scene img').naturalWidth>0");
+        assertEquals("3",js("document.querySelectorAll('.didactic-overview > section').length"));
+        js("document.querySelector('[data-action=intro-next]').click();true");
         assertEquals("0",js("document.querySelectorAll('.visual-lesson details').length"));
         String xp=js("CachasteDailyApp.engine.stats().xp");
         js("document.querySelector('[data-action=intro-next]').click();document.querySelectorAll('[data-action=visual-tap]')[2].click();true");
@@ -252,6 +257,35 @@ public class OfflineAppTest {
         assertEquals("true",js("document.querySelector('.visual-discovery').textContent.includes('80%')"));
         assertEquals("true",js("CachasteProgression.route(CACHASTE_DAILY_CATALOG.items,'M2',null,[]).units.every((u,i,a)=>!i||u.schoolYear>=a[i-1].schoolYear)"));
         js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();location.hash='#home';CachasteDailyApp.render();true");
+    }
+    private void captureDidacticScreen(String name) throws Exception {
+        File directory=InstrumentationRegistry.getInstrumentation().getTargetContext().getExternalFilesDir("didactic-screens");
+        assertNotNull(directory);
+        assertTrue(directory.exists() || directory.mkdirs());
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+        Thread.sleep(150);
+        Bitmap bitmap=InstrumentationRegistry.getInstrumentation().getUiAutomation().takeScreenshot();
+        assertNotNull("Native screenshot is unavailable",bitmap);
+        try(FileOutputStream output=new FileOutputStream(new File(directory,name+".png"))) {
+            assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG,100,output));
+        } finally {bitmap.recycle();}
+    }
+    @Test public void illustratedFiveSubjectLessonsAndSelectedErrorsWorkInInstalledApk() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp && window.CachasteIllustrations");
+        String[][] cases={{"M1","Descuento porcentual"},{"M2","Ecuaciones lineales"},{"Lectura","Función de un fragmento"},{"Historia","Cuestión social"},{"Ciencias","Respiración celular y ATP"},{"Ciencias","Molaridad"},{"Ciencias","Segunda ley de Newton"}};
+        for(int i=0;i<cases.length;i++) {
+            js("var e=CachasteDailyApp.engine;var sample=CACHASTE_DAILY_CATALOG.items.find(q=>q.subjectKey==='"+cases[i][0]+"' && q.concept==='"+cases[i][1]+"');e.close();e.state.foundationDraft=null;e.state.track=sample.subjectKey==='Ciencias'?sample.subject:null;e.start(sample.subjectKey,2,'lesson',sample.concept);location.hash='#session';CachasteDailyApp.render();true");
+            waitFor("document.querySelectorAll('.didactic-overview > section').length===3");
+            waitFor("Array.from(document.querySelectorAll('.reference-lesson-hero img')).every(im=>im.complete && im.naturalWidth>0)");
+            assertEquals("true",js("document.documentElement.scrollWidth<=innerWidth+1"));
+            js("scrollTo(0,0);true");captureDidacticScreen(i+"-overview");
+            js("document.querySelector('.didactic-model').scrollIntoView();true");captureDidacticScreen(i+"-model");
+            js("document.querySelector('[data-action=begin-question]').click();var e=CachasteDailyApp.engine,s=e.state.session,q=e.byKey.get(s.keys[s.index]);s.selected=(q.answer+1)%q.options.length;s.confidence='seguro';CachasteDailyApp.render();document.querySelector('[data-action=check]').click();true");
+            waitFor("document.querySelector('.reference-easy-card') && document.querySelector('.reference-example-card')");
+            assertEquals("true",js("document.documentElement.scrollWidth<=innerWidth+1"));
+            js("document.querySelector('.selected-repair').scrollIntoView();true");captureDidacticScreen(i+"-repair");
+        }
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();true");
     }
     @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();

@@ -1,7 +1,7 @@
 /* Original guided cases, supplementing the complete editorial teaching. */
 (function(g){'use strict';
  const entries=[],index={};
- function add(id,subject,concepts,title,text,nodes,diagram,quiz){const row={id,subject,concepts,title,text,nodes,diagram,quiz};entries.push(row);for(const c of concepts)index[subject+':'+c]=row;}
+ function add(id,subject,concepts,title,text,nodes,diagram,quiz){const row={id,subject,concepts,title,text,nodes,diagram:{...diagram,context:id},quiz};entries.push(row);for(const c of concepts)index[subject+':'+c]=row;}
  const quiz=(prompt,options,answer,feedback)=>({prompt,options,answer,feedback});
  const flow=(labels)=>({type:'flow',labels});
  const timeline=(labels)=>({type:'timeline',labels});
@@ -313,7 +313,7 @@
  ],compare(['Fuente única','Varias fuentes','Factor común'])) ;
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const label=(x,y,t)=>'<text x="'+x+'" y="'+y+'" text-anchor="middle" font-size="14" fill="#493457">'+esc(t)+'</text>';
- const picture=(body,name)=>'<figure class="scenario-picture"><svg viewBox="0 0 320 200" role="img" aria-label="'+esc(name)+'">'+body+'</svg></figure>';
+ const picture=(body,name)=>g.CachasteIllustrations?'<figure class="scenario-picture">'+g.CachasteIllustrations.paint(body,name,'0 0 320 200')+'</figure>':'<figure class="scenario-picture"><svg viewBox="0 0 320 200" role="img" aria-label="'+esc(name)+'">'+body+'</svg></figure>';
  function render(d,selected){
   if(d.type==='table')return '<div class="scenario-table-wrap"><table><caption>Datos del caso de práctica</caption><thead><tr>'+d.headers.map(x=>'<th scope="col">'+esc(x)+'</th>').join('')+'</tr></thead><tbody>'+d.rows.map(row=>'<tr>'+row.map((x,i)=>'<'+(i?'td':'th scope="row"')+'>'+esc(x)+'</'+(i?'td':'th')+'>').join('')+'</tr>').join('')+'</tbody></table></div>';
   if(d.type==='punnett')return '<div class="scenario-punnett" aria-label="Cruce Aa por Aa"><span></span><strong>A</strong><strong>a</strong><strong>A</strong><span class="'+(selected===1?'chosen':'')+'">AA</span><span class="'+(selected===1?'chosen':'')+'">Aa</span><strong>a</strong><span class="'+(selected===1?'chosen':'')+'">Aa</span><span class="'+(selected===2?'chosen':'')+'">aa</span></div>';
@@ -321,6 +321,7 @@
   if(d.type==='tree')return picture('<path d="M45 100 H110 L200 45 H275 M110 100 L200 145 H275" stroke="#9170b9" stroke-width="4" fill="none"/><circle cx="110" cy="100" r="7" fill="'+(selected===0?'#d1a03d':'#7854ae')+'"/>'+label(65,130,'Ancestro')+label(245,30,'Linaje 1')+label(245,175,'Linaje 2')+(selected===1?'<path d="M245 50 V140" stroke="#bd913c" stroke-width="3" stroke-dasharray="5 4"/>':'')+label(160,195,'Relación esquemática; sin escala temporal'),'Dos linajes y su ancestro común');
   if(d.type==='scattering')return picture('<circle cx="180" cy="90" r="8" fill="#d5a849"/><path d="M20 30 H290 M20 145 H290 M20 85 H125 Q158 85 170 55 L200 18" stroke="#8f6abb" stroke-width="3" fill="none"/>'+label(185,115,'Centro pequeño y denso')+label(160,185,'Trayectorias esquemáticas'),'Trayectorias que atraviesan y una desviación grande; no representa proporciones reales');
   if(d.type==='orbit'){const circle=selected===1,rx=circle?65:105,ry=circle?65:55,focus=circle?160:160-Math.sqrt(rx*rx-ry*ry);return picture('<ellipse cx="160" cy="90" rx="'+rx+'" ry="'+ry+'" stroke="#9170b9" fill="#eee6f7" stroke-width="3"/><circle cx="160" cy="90" r="3" fill="#7854ae"/><circle cx="'+focus+'" cy="90" r="9" fill="#dcad42"/>'+label(focus,120,circle?'Focos coinciden':'Sol en un foco')+label(160,185,circle?'Caso de excentricidad cero':'Elipse: foco distinto del centro'),'Comparación de una elipse con el caso circular');}
+  if(g.CachasteIllustrations)return g.CachasteIllustrations.relationship(d,selected);
   const type=['flow','timeline','compare'].includes(d.type)?d.type:'compare';return '<figure class="scenario-relationships '+type+'"><div>'+d.labels.map((x,i)=>'<span class="'+(selected===i?'chosen':'')+'">'+esc(x)+'</span>').join(type==='compare'?'':'<b aria-hidden="true">→</b>')+'</div><figcaption>'+(type==='timeline'?'Orden de hitos; las distancias no representan duraciones.':type==='flow'?'Relaciones del caso; el esquema no representa todas las causas.':'Compara el papel y el alcance de cada elemento.')+'</figcaption></figure>';
  }
  for(const c of entries)if(['territory','readingEvidence','readingUnsupported'].includes(c.id))c.art='sources';

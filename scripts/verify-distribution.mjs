@@ -4,7 +4,7 @@ import {join} from 'node:path';
 export const distributionFiles=Object.freeze([
  'index.html','inicio.html','science.html','reading.html','m2.html','history.html',
  'daily-foundation-visuals.js','daily-basics.js','daily-visuals.js','daily-curriculum.js',
- 'daily-school.js','daily-progression.js','daily-scenarios.js','daily-demonstrations.js','daily-lessons.js','daily-core.js','daily-gameplay.js','daily-studios.js','daily-app.js','daily-lesson-visuals.js','daily-topic-visuals.js','daily-reference.css','daily-ui.css',
+ 'daily-school.js','daily-progression.js','daily-illustration-kit.js','daily-scenarios.js','daily-demonstrations.js','daily-lessons.js','daily-core.js','daily-gameplay.js','daily-studios.js','daily-app.js','daily-lesson-visuals.js','daily-topic-visuals.js','daily-reference.css','daily-ui.css',
  'learning-core.js','editorial-revisions.js','m1-teaching.js','study-app.js','study-ui.css','history-bank.js',
  'history-app.js','science-bank.js','science-app.js','reading-bank.js','reading-app.js',
  'm2-bank.js','m2-app.js','daily-catalog.js','.nojekyll','version.json',
