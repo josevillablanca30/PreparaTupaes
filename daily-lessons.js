@@ -1,6 +1,6 @@
 /* Full editorial teaching with manipulable demonstrations. Guided work never certifies mastery. */
 (function(g){'use strict';
- const revision='editorial-visuals-2026-10-20-rc7',cache=new WeakMap();
+ const revision='editorial-visuals-2026-10-21',cache=new WeakMap();
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const art={...Object.fromEntries(['osmosis','meiosis','electricity','waves','geometry','probability','industry','argument'].map(k=>[k,'lesson-cat-'+k+'-v3.webp'])),algebra:'lesson-cat-algebra-v2.webp',mechanics:'lesson-cat-mechanics-v2.webp',solutions:'lesson-cat-solutions-v2.webp',sources:'lesson-cat-sources-v2.webp',atp:'lesson-cat-atp-v1.webp',numbers:'lesson-cat-numbers-v1.webp',balance:'lesson-cat-balance-v1.webp',functions:'lesson-cat-functions-v1.webp',reading:'lesson-cat-reading-v1.webp',history:'lesson-cat-history-v1.webp'};
  function illustration(q){const topic=g.CachasteTopicVisuals?.get(q);if(topic)return topic.art;const custom=g.CachasteDemonstrations?.get(q)?.art||g.CachasteScenarios?.get(q)?.art;if(custom)return custom;if(q.subjectKey==='Ciencias'&&q.concept==='Segunda ley de Newton')return'mechanics';if(q.subjectKey==='Ciencias'&&/Conservación de soluto al diluir|Cálculo de una dilución/.test(q.concept))return'solutions';if(q.subjectKey==='Historia'&&/Crítica y contraste de fuentes|Procedencia y alcance de testimonios/.test(q.concept))return'sources';const c=q.concept||'';if(/Respiración celular|ATP/.test(c))return'atp';if(/Vértice|cuadrática/.test(c))return'functions';if(/Ecuación lineal|igualdad|Despeje/.test(c))return'balance';if(['M1','M2'].includes(q.subjectKey)&&/Entero|Racional|Logarit|Potencia|Porcent|Raíz|Número/.test(c))return'numbers';if(q.subjectKey==='Lectura')return'reading';if(q.subjectKey==='Historia'&&(q.axis==='Historia'||/Ilustr|Junta|Constitución|poderes|sufragio/.test(c)))return'history';return null;}
@@ -103,6 +103,13 @@
  }
  // Application/check solve the assessed item: present them after answering, never as an independent test.
  function correction(q){const t=q.teaching||{};return{aim:t.aim||'',steps:[...(t.application||[])],check:t.check||'',feedback:t.selectedFeedback||[],evidence:t.evidence||[]};}
+ function repairSupport(q){
+  const t=q?.teaching||{},example=t.example||{};
+  const easy=(t.intuition||[]).filter(x=>typeof x==='string'&&x.trim());
+  const simpler=easy.length?'<section class="reference-easy-card"><h3>Más fácil</h3>'+easy.map(x=>'<p>'+esc(x)+'</p>').join('')+'</section>':'';
+  const worked=example.problem?'<section class="reference-example-card"><h3>Otro ejemplo</h3><p>'+esc(example.problem)+'</p><ol>'+(example.steps||[]).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>'+(example.bridge?'<p>'+esc(example.bridge)+'</p>':'')+'</section>':'';
+  return simpler+worked;
+ }
  function coverage(q){const d=deck(q),t=q.teaching||{};return{instruction:d.cards.flatMap(c=>[c.text,...(c.steps||[]),c.bridge||'']).join('\n'),correction:[...(t.application||[]),t.check||''].join('\n')};}
  function draft(q,holder){const key=q.key+'|'+g.CachasteLearning.assessmentVersion(q);if(!holder.visualLesson||holder.visualLesson.key!==key||holder.visualLesson.revision!==revision)holder.visualLesson={key,revision,card:0,selected:{},opened:{},values:{},responses:{},checked:{}};const v=holder.visualLesson;v.card=Math.min(Math.max(0,Math.floor(Number(v.card)||0)),deck(q).cards.length-1);for(const key of ['selected','opened','values','responses','checked'])if(!v[key]||typeof v[key]!=='object'||Array.isArray(v[key]))v[key]={};for(const key of Object.keys(v.values))if(!Number.isFinite(v.values[key]))delete v.values[key];return v;}
  function current(q,v){return deck(q).cards[v.card];}
@@ -132,5 +139,5 @@
   if(c.kind==='parabola'){const x=Number.isFinite(v.values[i])?v.values[i]:0,y=(x-2)**2+1;const points=Array.from({length:61},(_,j)=>{const a=-1+j/10;return(30+(a+1)*40)+','+(135-((a-2)**2+1)*10)}).join(' ');return'<section class="parabola-demo"><svg viewBox="0 0 310 160" role="img" aria-label="Gráfico de f(x) igual a (x menos 2) al cuadrado más 1"><path d="M 30 135 H 285 M 70 145 V 15" stroke="#aaa" fill="none"/><polyline points="'+points+'" fill="none" stroke="#7652b1" stroke-width="4"/><circle cx="'+(30+(x+1)*40)+'" cy="'+(135-y*10)+'" r="7" fill="#e2a827"/></svg><label>Mueve x: <input data-visual-value type="range" min="-1" max="5" step="1" value="'+x+'"></label><p aria-live="polite">x = '+x+' · f(x) = '+y+(x===2?' · ¡Encontraste el mínimo!':'')+'</p></section>';}
   return'';
  }
- g.CachasteLessons={revision,art,illustration,deck,draft,current,act,widget,correction,coverage,laboratory,labs,exploration,narration,parseResponse,taskResult};
+ g.CachasteLessons={revision,art,illustration,deck,draft,current,act,widget,correction,repairSupport,coverage,laboratory,labs,exploration,narration,parseResponse,taskResult};
 })(typeof window==='undefined'?globalThis:window);

@@ -1,5 +1,6 @@
 import {dailyCatalog} from './daily-catalog.mjs';
-import {writeFileSync} from 'node:fs';
+import {readFileSync,writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 
 const normalized=value=>String(value||'').replace(/\s+/g,' ').trim();
@@ -8,6 +9,7 @@ const texts=value=>Array.isArray(value)&&value.length>0&&value.every(x=>normaliz
 // Checks presence and consistency only. None of these checks certify pedagogy,
 // scientific correctness, correspondence with a PDF page or commercial readiness.
 export function auditDidacticCoverage(items=dailyCatalog().items){
+ const reviews=JSON.parse(readFileSync(new URL('../reports/didactic-cellular-2026-10-21.json',import.meta.url),'utf8')).items;
  const subjects={},objectives=new Map();
  for(const q of items){
   const t=q.teaching||{},example=t.example||{};
@@ -25,6 +27,9 @@ export function auditDidacticCoverage(items=dailyCatalog().items){
   const key=q.subjectKey+':'+q.concept;
   if(!objectives.has(key)){objectives.set(key,{subject:q.subjectKey,concept:q.concept,questionKeys:[],structuralGaps:[],consultedSources:[],editorialApproval:'pending-individual-review'});s.objectives++;}
   const objective=objectives.get(key);objective.questionKeys.push(q.key);
+  const fingerprint=createHash('sha256').update(JSON.stringify([q.question,q.options,q.answer,t.foundation,t.application,t.intuition,t.example,t.selectedFeedback])).digest('hex');
+  const review=reviews.find(r=>r.key===q.key&&r.contentFingerprint===fingerprint);
+  if(review){objective.editorialApproval='partial-text-and-question-review';(objective.reviewedQuestions||=[]).push({key:q.key,decision:review.decision,visualApproval:review.visualApproval});}
   for(const [check,passed]of Object.entries(checks))if(!passed)objective.structuralGaps.push({question:q.key,check});
   for(const source of t.editorialSources||[])if(!objective.consultedSources.some(x=>x.id===source.id))objective.consultedSources.push(source);
  }

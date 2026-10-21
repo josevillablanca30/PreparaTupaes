@@ -52,7 +52,7 @@ test('Validar resultados de Física/Química y sentido de los casos de Ciencias'
  const get=id=>{const q=items.find(q=>q.id===id);return q.options[q.answer]};
  assert.equal(get('TR-SCI-007'),'El cultivo con respiración aeróbica puede obtener mayor rendimiento de ATP');
  assert.equal(get('TR-SCI-008'),'El oxígeno es pequeño y no polar, mientras la glucosa requiere proteínas transportadoras');
- assert.equal(get('TR-SCI-009'),'El aparato de Golgi, que modifica y dirige proteínas hacia su destino');
+ assert.equal(get('TR-SCI-009'),'El tratamiento alteró la clasificación o dirección de proteínas después de su síntesis');
  assert.equal(get('TR-SCI-010'),'La mutación de la línea germinal si un gameto portador participa en la fecundación');
  assert.equal(get('TR-SCI-011'),'16 m/s');
  assert.equal(get('TR-SCI-012'),'4 % m/v');

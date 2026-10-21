@@ -43,3 +43,27 @@ aprueba sus figuras, no cierra el documento y no respalda conclusiones sobre
 las hipótesis experimentales que allí se proponen.
 
 Estos cambios son posteriores a RC7 y no están dentro de la APK entregada.
+
+## Segunda pasada: enseñanza celular y corrección en las cinco materias
+
+Se reescribieron introducciones, analogías con límites y ejemplos resueltos de
+ocho objetivos celulares (16 preguntas). El registro individual de decisiones,
+secciones fuente y huellas del contenido está en
+`reports/didactic-cellular-2026-10-21.json`. Se precisaron además cinco
+aplicaciones, incluida la diferencia entre glucólisis y fermentación. El ejemplo
+de microvellosidades distingue densidad y número total de transportadores.
+
+TR-SCI-009 deja de repetir una identificación de Golgi: ahora requiere
+interpretar un experimento con control y limitar la conclusión a la etapa
+afectada. Su versión anterior queda archivada para recuperar sesiones y no
+acreditar automáticamente resultados antiguos en la evaluación nueva.
+
+La corrección visible tras un error incorpora la explicación sencilla y el
+ejemplo resuelto en las cinco materias, usando el contenido propio de cada
+pregunta. Ya no depende de que el ejercicio tenga la ilustración especial de
+ATP. No se añade otro gato ni se otorga dominio por consultar ayuda.
+
+Esto sigue siendo un lote parcial. Los otros 279 objetivos no quedan aprobados
+por esta revisión, y el cotejo visual móvil y del material restante continúa
+abierto. La existencia de un ejemplo distinto no certifica por sí sola
+independencia de todas las familias de evaluación.

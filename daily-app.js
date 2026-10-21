@@ -284,7 +284,9 @@
   return '<aside class="selected-repair" aria-label="Corrección personalizada de la alternativa elegida"><h3>Tu error, explicado paso a paso</h3>'+
    '<p>'+esc(feedback.diagnosis||'Revisa la relación entre los datos y el objetivo.')+'</p>'+
    '<ol>'+feedback.repair.map(step=>'<li>'+esc(step)+'</li>').join('')+'</ol>'+
-   '<small>La siguiente comprobación utiliza un caso distinto; repetir esta misma alternativa no demostraría aprendizaje.</small></aside>'+(window.CachasteLessonVisuals?.supports(q)?'<div class="reference-repair-visual">'+window.CachasteLessonVisuals.model(q,2,'repair')+'<section class="reference-easy-card"><h3>Más fácil</h3>'+q.teaching.intuition.map(x=>'<p>'+esc(x)+'</p>').join('')+'</section><section class="reference-example-card"><h3>Otro ejemplo</h3><p>'+esc(q.teaching.example.problem)+'</p><ol>'+q.teaching.example.steps.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol><p>'+esc(q.teaching.example.bridge)+'</p></section></div>':window.CachasteTopicVisuals?.get(q)?'<section class="reference-repair-visual"><h3>'+esc(window.CachasteTopicVisuals.get(q).title)+'</h3>'+window.CachasteTopicVisuals.render(q,0,{controls:false})+'</section>':'');
+   '<small>La siguiente comprobación utiliza un caso distinto; repetir esta misma alternativa no demostraría aprendizaje.</small></aside><div class="reference-repair-visual">'+
+   (window.CachasteLessonVisuals?.supports(q)?window.CachasteLessonVisuals.model(q,2,'repair'):window.CachasteTopicVisuals?.get(q)?'<section><h3>'+esc(window.CachasteTopicVisuals.get(q).title)+'</h3>'+window.CachasteTopicVisuals.render(q,0,{controls:false})+'</section>':'')+
+   window.CachasteLessons.repairSupport(q)+'</div>';
  }
 
  function confidenceGuide(s,q){if(!s.checked||s.mode==='unit-exam')return '';const r=E.reviewFor(s.subject,s.track,q.concept);if(!r)return '';return '<aside class="confidence-guide" role="status"><strong>¿Qué cambia con tu respuesta?</strong><p>'+esc(r.feedback)+'</p><small>'+(r.days===1?'Revisión sugerida: mañana':'Revisión sugerida: en '+r.days+' días')+' · El próximo refuerzo priorizará este concepto cuando corresponda.</small></aside>';}

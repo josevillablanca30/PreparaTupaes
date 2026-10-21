@@ -1737,8 +1737,28 @@
         "Ciencias:TR-SCI-007"
       ],
       "structuralGaps": [],
-      "consultedSources": [],
-      "editorialApproval": "pending-individual-review"
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 148",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-001",
+          "decision": "La demanda de ATP distingue mitocondrias de ribosomas, retículo y Golgi; se conserva la salvedad de producción extramitocondrial.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:TR-SCI-007",
+          "decision": "Compara rendimiento por glucosa; diferencia glucólisis, fermentación y respiración aeróbica sin concluir ATP cero en ausencia de oxígeno.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
     },
     {
       "subject": "Ciencias",
@@ -1748,8 +1768,28 @@
         "Ciencias:TR-SCI-008"
       ],
       "structuralGaps": [],
-      "consultedSources": [],
-      "editorialApproval": "pending-individual-review"
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 131–134",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-002",
+          "decision": "Ubicación y permeabilidad selectiva permiten distinguir membrana, pared, envoltura nuclear y citoesqueleto.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:TR-SCI-008",
+          "decision": "Las propiedades del oxígeno y de la glucosa explican vías de paso diferentes; no se infiere uso obligatorio de ATP para oxígeno.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
     },
     {
       "subject": "Ciencias",
@@ -1759,8 +1799,28 @@
         "Ciencias:TR-SCI-009"
       ],
       "structuralGaps": [],
-      "consultedSources": [],
-      "editorialApproval": "pending-individual-review"
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 145–146",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-003",
+          "decision": "El procesamiento posterior al retículo dirige a Golgi; se distinguen síntesis, distribución y degradación.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:TR-SCI-009",
+          "decision": "Se sustituye una segunda identificación casi literal por comparación experimental con control. Se conserva la evaluación anterior y se limita la conclusión a la etapa, no a una molécula exacta.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
     },
     {
       "subject": "Ciencias",
@@ -2235,8 +2295,28 @@
         "Ciencias:SCI-073"
       ],
       "structuralGaps": [],
-      "consultedSources": [],
-      "editorialApproval": "pending-individual-review"
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 143–145",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-044",
+          "decision": "El bloqueo de traducción limita cadenas nuevas; disponer de ATP o ARNm no sustituye a los ribosomas. No se afirma desaparición inmediata del producto previo.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:SCI-073",
+          "decision": "Se distingue ensamblaje ribosomal de transporte vesicular y procesamiento en Golgi.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
     },
     {
       "subject": "Ciencias",
@@ -2298,8 +2378,28 @@
         "Ciencias:SCI-139"
       ],
       "structuralGaps": [],
-      "consultedSources": [],
-      "editorialApproval": "pending-individual-review"
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 149–150",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-055",
+          "decision": "La posición externa y resistencia corresponden a pared vegetal, sin atribuirle selectividad fina ni síntesis de ATP.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:SCI-139",
+          "decision": "La combinación de pared, cloroplastos y vacuola sustenta la clasificación. El ejemplo aclara que la ausencia de cloroplastos no excluye toda célula vegetal.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
     },
     {
       "subject": "Ciencias",
@@ -2342,8 +2442,28 @@
         "Ciencias:TR-SCI-004"
       ],
       "structuralGaps": [],
-      "consultedSources": [],
-      "editorialApproval": "pending-individual-review"
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 133–134",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-064",
+          "decision": "Con solutos no permeantes externos más concentrados, sale agua neta inicialmente; no es bombeo activo ni ausencia de movimiento bidireccional.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:TR-SCI-004",
+          "decision": "La retracción del protoplasto respecto de la pared apoya plasmólisis. Se conserva el contexto hipertónico y la distinción pared/membrana.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
     },
     {
       "subject": "Ciencias",
@@ -2907,8 +3027,28 @@
         "Ciencias:TR-SCI-071"
       ],
       "structuralGaps": [],
-      "consultedSources": [],
-      "editorialApproval": "pending-individual-review"
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 137",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-169",
+          "decision": "Área funcional mayor puede favorecer absorción, sin sustituir ribosomas ni almacenar todo el ADN. No se promete absorción ilimitada.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:TR-SCI-071",
+          "decision": "Igual densidad y menor área implica menor número total de transportadores. Se distingue capacidad de un flujo exacto no medido.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
     },
     {
       "subject": "Ciencias",
@@ -3128,8 +3268,28 @@
         "Ciencias:TR-SCI-038"
       ],
       "structuralGaps": [],
-      "consultedSources": [],
-      "editorialApproval": "pending-individual-review"
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 147",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-200",
+          "decision": "Degradación vesicular se relaciona con lisosomas, enzimas y condiciones internas; se diferencia de síntesis proteica y fotosíntesis.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:TR-SCI-038",
+          "decision": "La acumulación por fallo de enzima digestiva afecta degradación y reciclaje, sin atribuir el efecto a duplicación de ADN o captura de luz.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
     },
     {
       "subject": "Ciencias",
