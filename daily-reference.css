@@ -179,3 +179,8 @@ body>main{--reference-gutter:20px}
  #daily-root .didactic-overview .reference-card-title h2{font-size:22px}
  #daily-root .didactic-overview .reference-card-title small{grid-column:2;grid-row:2;justify-self:start;padding:3px 8px}
 }
+/* The enclosing card already names the model and the mini practice. */
+#daily-root .didactic-model .model-heading{display:none}
+#daily-root .didactic-model .biology-model{margin:0;padding:12px;box-shadow:none}
+#daily-root .didactic-practice .lab-task{border:0;margin:0;padding:0;background:transparent}
+#daily-root .didactic-practice .lab-task h3{display:none}
