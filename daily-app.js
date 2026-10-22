@@ -1,5 +1,6 @@
 (function(){'use strict';
- const root=document.getElementById('daily-root'),traditional=document.getElementById('traditional-section'),C=window.CachasteCurriculum,{items,texts}=window.CACHASTE_DAILY_CATALOG,E=window.CachasteDaily.create(localStorage,items,C.subjects,undefined,undefined,texts),B=window.CachasteBasics.attach(E),esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ // The original concept name is a persisted identifier; its visible label covers maps and testimonies.
+ const root=document.getElementById('daily-root'),traditional=document.getElementById('traditional-section'),C=window.CachasteCurriculum,{items,texts}=window.CACHASTE_DAILY_CATALOG,E=window.CachasteDaily.create(localStorage,items,C.subjects,undefined,undefined,texts),B=window.CachasteBasics.attach(E),esc=x=>String((x==='Evidencias de cambios territoriales'?'Selección de evidencias históricas':x)??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const workshopCoverage=window.CachasteStudios.hydrate(items,C);
  let subject=Object.hasOwn(C.subjects,E.state.subject)?E.state.subject:'M1',notice='',pendingStart=null,profileCache=new Map(),progressionCache=null;
  const profile=s=>{if(!profileCache.has(s))profileCache.set(s,E.profile(s));return profileCache.get(s);};

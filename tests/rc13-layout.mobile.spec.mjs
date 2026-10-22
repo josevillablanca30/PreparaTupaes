@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 
-const cases=[['M2','M2-006'],['M2','M2-113'],['Historia','HIS-002'],['Ciencias','SCI-001']];
+const cases=[['M2','M2-006'],['M2','M2-113'],['Historia','HIS-002'],['Historia','TR-HIS-018'],['Ciencias','SCI-001']];
 for(const [subject,id] of cases)test(subject+' '+id+': título, fórmulas, controles y tutor conservan su espacio',async({page},info)=>{
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.goto('./inicio.html');

@@ -206,6 +206,17 @@
   }
   enrichTeaching(bank,subject);
   enrichCellLessons(bank,subject);
+  // This transfer tests the same source-selection skill in a strike, not a border map.
+  // Keep its stable concept ID and progress; reuse the already authored source lesson.
+  const sourceLesson=bank.find(q=>(subject||q.subjectKey)==='Historia'&&String(q.id)==='HIS-048')?.teaching;
+  for(const q of bank){
+   if((subject||q.subjectKey)!=='Historia'||String(q.id)!=='TR-HIS-018'||!sourceLesson)continue;
+   const t=q.teaching;
+   q.teaching={...t,aim:'Comparar testimonios de una huelga y elegir cómo contrastar su información.',foundation:sourceLesson.foundation.slice(),intuition:sourceLesson.intuition.slice(),example:JSON.parse(JSON.stringify(sourceLesson.example))};
+   q.steps=[q.teaching.aim,...q.teaching.foundation,...t.application];
+   q.easy=[...q.teaching.intuition,...t.application].join('\n\n');
+   q.example=[q.teaching.example.problem,...q.teaching.example.steps,q.teaching.example.bridge].join('\n\n');
+  }
   // Los repasos anteriores leen q.easy; el tutor nuevo lee teaching.intuition.
   // Conservar la misma explicación alternativa en ambas rutas, sin tocar la evaluación.
   const normalize=text=>String(text||'').replace(/\s+/g,' ').trim();

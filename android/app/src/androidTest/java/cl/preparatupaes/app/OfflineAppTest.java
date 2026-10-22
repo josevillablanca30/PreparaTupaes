@@ -460,6 +460,16 @@ public class OfflineAppTest {
         js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();true");
     }
 
+    @Test public void strikeTransferTeachesSourceComparisonWithoutChangingProgressIdentifiers() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp");
+        js("var e=CachasteDailyApp.engine;e.close();e.state.foundationDraft=null;e.state.track=null;e.start('Historia',2,'lesson','Evidencias de cambios territoriales');e.state.session.keys[0]='Historia:TR-HIS-018';location.hash='#session';CachasteDailyApp.render();scrollTo(0,0);true");
+        waitFor("document.querySelector('.didactic-overview')");
+        assertEquals("true",js("document.querySelector('.reference-lesson-hero h1').textContent==='Selección de evidencias históricas'"));
+        assertEquals("true",js("var q=CachasteDailyApp.engine.byKey.get('Historia:TR-HIS-018');q.concept==='Evidencias de cambios territoriales' && !JSON.stringify([q.teaching.foundation,q.teaching.example]).includes('tu pregunta fronteriza')"));
+        captureDidacticScreen("release-history-source-transfer");
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();true");
+    }
+
     @Test public void additionalIllustrationsAndScientificComparisonWorkOffline() throws Exception {
         open("inicio.html", "window.CachasteDailyApp && window.CachasteTopicVisuals");
         assertEquals("11",js("CachasteTopicVisuals.themes.length"));
