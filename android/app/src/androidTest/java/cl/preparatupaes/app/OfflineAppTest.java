@@ -174,6 +174,7 @@ public class OfflineAppTest {
         waitFor("document.querySelector('.adventure-world.world-foundation .trail-node')");
         assertEquals("true", js("document.querySelector('.road-track').getAttribute('d').startsWith('M ')"));
         assertEquals("true", js("document.querySelector('.world-hud').textContent.includes('0 de 5 misiones dominadas')"));
+        captureDidacticScreen("release-foundation-map");
         js("document.querySelector('.world-quest-banner [data-action=basic-level]').click();true");
         waitFor("document.querySelector('[data-action=basic-start]')");
         js("document.querySelector('[data-action=basic-start]').click();true");
@@ -454,7 +455,9 @@ public class OfflineAppTest {
             assertEquals("true",js("[...document.querySelectorAll('.reference-lesson-hero h1,.lesson-chapters button,.lesson-reading-control button')].every(n=>n.scrollWidth<=n.clientWidth+2)"));
             assertEquals("true",js("[...document.querySelectorAll('.lesson-chapters button,.lesson-reading-control button,.lesson-top button')].every(n=>n.getBoundingClientRect().height>=48)"));
             captureDidacticScreen("release-long-"+i);
-            js("document.querySelector('[data-action=begin-question]').click();var e=CachasteDailyApp.engine,s=e.state.session,q=e.byKey.get(s.keys[s.index]);document.querySelector('[data-action=choice][data-index=\"'+((q.answer+1)%q.options.length)+'\"]').click();document.querySelector('[data-action=check]').click();scrollTo(0,0);true");
+            js("document.querySelector('[data-action=begin-question]').click();scrollTo(0,0);true");
+            captureDidacticScreen("release-question-"+i);
+            js("var e=CachasteDailyApp.engine,s=e.state.session,q=e.byKey.get(s.keys[s.index]);document.querySelector('[data-action=choice][data-index=\"'+((q.answer+1)%q.options.length)+'\"]').click();document.querySelector('[data-action=check]').click();scrollTo(0,0);true");
             captureDidacticScreen("release-error-"+i);
             js("document.querySelector('[data-mode=example]').click();document.querySelector('.reference-example-card').scrollIntoView();true");
             assertEquals("true",js("[...document.querySelectorAll('.tutor li,.reference-example-card li')].every(n=>n.scrollWidth<=n.clientWidth+2)"));
