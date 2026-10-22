@@ -90,3 +90,48 @@ test('M2: Logaritmos y el banco completo conservan ancho móvil en 320 y 390 px'
   expect(failures, 'Ancho '+width+'px: '+JSON.stringify(failures.slice(0,15))).toEqual([]);
  }
 });
+
+
+test('QA de 20 alertas editoriales: lectura completa, opciones e imágenes móviles',async({page})=>{
+ test.setTimeout(120000);
+ await choose(page,'M2');
+ const flagged={
+  M1:['210','224','291','292','294'],
+  Ciencias:['SCI-043','SCI-124','SCI-185','TR-SCI-039','TR-SCI-055','TR-SCI-080','TR-SCI-084'],
+  Lectura:['LEC-017','LEC-053','LEC-087','LEC-088'],
+  M2:['M2-011','M2-072','M2-083'],
+  Historia:['HIS-041']
+ };
+ const failures=await page.evaluate(async flagged=>{
+  const app=CachasteDailyApp,e=app.engine,bank=CACHASTE_DAILY_CATALOG.items;
+  const issues=[];
+  for(const [subject,ids] of Object.entries(flagged)){
+   for(const id of ids){
+    const q=bank.find(q=>q.subjectKey===subject&&String(q.id)===id);
+    if(!q){issues.push(subject+':'+id+' sin pregunta');continue;}
+    e.start(subject,1);e.state.session.keys=[q.key];
+    e.state.session.questionSnapshots=[{...q,assessmentVersion:CachasteLearning.assessmentVersion(q)}];
+    e.save();location.hash='#session';app.render();
+    const title=document.querySelector('.question-title');
+    const options=document.querySelectorAll('.daily-options button');
+    if(!title||!title.textContent.trim())issues.push(q.key+': enunciado ausente');
+    if(options.length!==(q.options||[]).length)issues.push(q.key+': alternativas incompletas');
+    for(const [i,el] of [...options].entries()){
+      if(!el.textContent.trim())issues.push(q.key+': opción '+i+' vacía');
+    }
+    if(document.documentElement.scrollWidth>document.documentElement.clientWidth+1)issues.push(q.key+': desborde de pantalla');
+    for(const el of document.querySelectorAll('.question-title,.daily-options button,.question-visual svg,.question-visual img')){
+      const css=getComputedStyle(el),r=el.getBoundingClientRect();
+      if(r.width===0||r.right>innerWidth+2||r.left< -2)issues.push(q.key+': elemento fuera de pantalla '+el.tagName);
+      if(css.overflowX==='hidden'&&el.scrollWidth>el.clientWidth+2)issues.push(q.key+': posible texto recortado '+el.tagName);
+      if(el.tagName==='IMG'){
+       await new Promise(resolve=>{if(el.complete)return resolve();el.addEventListener('load',resolve,{once:true});el.addEventListener('error',resolve,{once:true});});
+       if(!el.naturalWidth)issues.push(q.key+': imagen fallida');
+      }
+    }
+   }
+  }
+  return issues;
+ },flagged);
+ expect(failures).toEqual([]);
+});
