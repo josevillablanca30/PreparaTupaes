@@ -2,7 +2,7 @@ import {readdir,lstat} from 'node:fs/promises';
 import {join} from 'node:path';
 // Contrato explícito de salida pública. Añadir archivos requiere revisar su destino.
 export const distributionFiles=Object.freeze([
- 'index.html','inicio.html','science.html','reading.html','m2.html','history.html',
+ 'index.html','inicio.html','suscripcion.html','science.html','reading.html','m2.html','history.html',
  'daily-foundation-visuals.js','daily-basics.js','daily-visuals.js','daily-curriculum.js',
  'daily-school.js','daily-progression.js','daily-illustration-kit.js','daily-scenarios.js','daily-demonstrations.js','daily-lessons.js','daily-core.js','daily-gameplay.js','daily-studios.js','daily-app.js','daily-lesson-visuals.js','daily-topic-visuals.js','daily-reference.css','daily-ui.css',
  'learning-core.js','editorial-revisions.js','m1-teaching.js','study-app.js','study-ui.css','history-bank.js',
