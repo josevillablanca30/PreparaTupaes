@@ -17,3 +17,18 @@ test('La notación ceil se explica antes de evaluar el cálculo de percentiles',
  assert.ok(q.teaching.foundation.some(s=>s.includes('ceil(4,2) = 5')&&s.includes('ceil(4) = 4')));
  assert.equal(q.options[q.answer],'28 min');
 });
+
+test('Los puentes de transferencia usan el caso actual, sin arrastrar fechas, actores o aportes de la pregunta base',()=>{
+ const {items}=dailyCatalog();
+ const bridge=id=>items.find(q=>q.key==='Historia:'+id).teaching.example.bridge;
+ assert.match(bridge('TR-HIS-018'),/testimonios de la huelga/);
+ assert.doesNotMatch(bridge('TR-HIS-018'),/fronteriza|versiones periodísticas|cada diario/);
+ assert.doesNotMatch(bridge('TR-HIS-068'),/seis aportes|10\.000/);
+ assert.match(bridge('TR-HIS-068'),/cada persona/);
+ assert.match(bridge('TR-HIS-007'),/siglo XIX/);
+ assert.match(bridge('TR-HIS-010'),/voto municipal/);
+ assert.match(bridge('TR-HIS-016'),/1949.*1952/);
+ assert.match(bridge('TR-HIS-029'),/condiciones previas y detonante/);
+ assert.match(bridge('TR-HIS-032'),/infraestructura ferroviaria/);
+ assert.match(bridge('TR-HIS-035'),/grado de propiedad y control estatal/);
+});

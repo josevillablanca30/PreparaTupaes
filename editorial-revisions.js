@@ -217,6 +217,23 @@
    q.easy=[...q.teaching.intuition,...t.application].join('\n\n');
    q.example=[q.teaching.example.problem,...q.teaching.example.steps,q.teaching.example.bridge].join('\n\n');
   }
+  // A different practice case must not send the learner back to the base question's dates or numbers.
+  const transferBridges={
+   'TR-HIS-002':'Relaciona la solicitud de negociar y coordinar ayuda con la cooperación y la solución pacífica de conflictos. La ONU no sustituye automáticamente a los gobiernos nacionales.',
+   'TR-HIS-007':'En este caso se transfieren funciones de matrimonio y registro de personas a instituciones civiles durante el siglo XIX. Reconoce esa separación gradual de funciones; no la confundas con la reforma constitucional posterior de 1925.',
+   'TR-HIS-008':'Relaciona la disolución del Congreso y las restricciones a derechos políticos con la ruptura democrática y la concentración del poder. Distingue ese cambio de los hitos electorales de otros años.',
+   'TR-HIS-009':'Compara la Junta de 1810 con la declaración de 1818 como etapas distintas de un proceso. No atribuyas a la primera Junta la independencia consolidada de inmediato.',
+   'TR-HIS-010':'Compara el voto municipal de la década de 1930 con su extensión a elecciones nacionales. Los dos hitos muestran una ampliación gradual; ninguno demuestra que desaparecieran todas las desigualdades.',
+   'TR-HIS-015':'Compara el ingreso fijo con el cambio del precio de cada canasta. Para recalcular la cantidad comprable, divide la cantidad anterior por el factor de aumento del precio.',
+   'TR-HIS-016':'Distingue el sufragio municipal de la década de 1930, el reconocimiento legal nacional de 1949 y su primer ejercicio presidencial en 1952. La secuencia muestra una ampliación gradual de derechos.',
+   'TR-HIS-018':'Aplica el método a los testimonios de la huelga: compara autoría, contexto y posibles intereses, y contrasta con otras fuentes. Una diferencia entre relatos exige investigar antes de decidir cuál explica mejor el hecho.',
+   'TR-HIS-022':'Relaciona el reportaje contrastado sobre gastos municipales con el control ciudadano del poder. La incomodidad de una autoridad no reemplaza una justificación legal para restringir información.',
+   'TR-HIS-029':'Ordena las tensiones anteriores a 1914 y el atentado que precipitó la crisis. Distinguir condiciones previas y detonante permite relacionar ambos sin convertir uno en la única causa.',
+   'TR-HIS-032':'Relaciona la infraestructura ferroviaria con su uso: una obra material puede facilitar el transporte y servir a relaciones de extracción y dominio colonial al mismo tiempo.',
+   'TR-HIS-035':'Compara el grado de propiedad y control estatal en cada hito: participación accionaria durante la chilenización y transferencia de la gran minería al Estado mediante la nacionalización.',
+   'TR-HIS-068':'Calcula por separado el aporte mensual de cada persona por su propia cantidad de meses y luego compara los totales. No combines el aporte de una persona con el plazo de la otra ni agregues intereses ausentes.'
+  };
+  for(const q of bank){const bridge=(subject||q.subjectKey)==='Historia'&&transferBridges[String(q.id)];if(!bridge||!q.teaching?.example)continue;q.teaching.example={...q.teaching.example,bridge};q.example=[q.teaching.example.problem,...q.teaching.example.steps,bridge].join('\n\n');}
   // Los repasos anteriores leen q.easy; el tutor nuevo lee teaching.intuition.
   // Conservar la misma explicación alternativa en ambas rutas, sin tocar la evaluación.
   const normalize=text=>String(text||'').replace(/\s+/g,' ').trim();
