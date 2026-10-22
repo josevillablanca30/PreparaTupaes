@@ -3,7 +3,7 @@
   "app": "¿Cachaste?",
   "market": "CL",
   "currency": "CLP",
-  "accessGroup": "cachaste_premium",
+  "accessGroup": "cachaste_full_access",
   "billing": {
     "android": "google_play_billing",
     "ios": "app_store_storekit",
@@ -18,7 +18,9 @@
       "priceCLP": 2490,
       "googlePlayProductId": "cachaste_premium",
       "googlePlayBasePlanId": "semanal",
-      "appleProductId": "cl.cachaste.premium.semanal"
+      "appleProductId": "cl.cachaste.premium.semanal",
+      "access": "full_app",
+      "automaticRenewal": true
     },
     {
       "id": "monthly",
@@ -26,7 +28,9 @@
       "priceCLP": 7990,
       "googlePlayProductId": "cachaste_premium",
       "googlePlayBasePlanId": "mensual",
-      "appleProductId": "cl.cachaste.premium.mensual"
+      "appleProductId": "cl.cachaste.premium.mensual",
+      "access": "full_app",
+      "automaticRenewal": true
     },
     {
       "id": "yearly",
@@ -34,8 +38,37 @@
       "priceCLP": 64990,
       "googlePlayProductId": "cachaste_premium",
       "googlePlayBasePlanId": "anual",
-      "appleProductId": "cl.cachaste.premium.anual"
+      "appleProductId": "cl.cachaste.premium.anual",
+      "access": "full_app",
+      "automaticRenewal": true
     }
   ],
-  "publicationState": "configuration_only_not_for_live_purchase"
+  "publicationState": "configuration_only_not_for_live_purchase",
+  "productModel": "subscription_required_full_app",
+  "defaultOffer": {
+    "id": "monthly_7_day_free_trial",
+    "planId": "monthly",
+    "duration": "P7D",
+    "priceCLP": 0,
+    "afterTrial": {
+      "planId": "monthly",
+      "priceCLP": 7990,
+      "renewal": "P1M"
+    },
+    "eligibleUsers": "new_subscribers_per_store",
+    "requiresExplicitConsent": true,
+    "showFirstChargeDate": true,
+    "showCancellationInstructions": true,
+    "showStorePricing": true
+  },
+  "trialReminder": {
+    "enabled": true,
+    "requiresNotificationPermission": true,
+    "sendDaysBeforeFirstCharge": 2,
+    "onlyIfStillRenewing": true
+  },
+  "freeTier": {
+    "enabled": false,
+    "allowLoginForRestoreAndSubscriptionManagement": true
+  }
 }
