@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "app": "¿Cachaste?",
+  "market": "CL",
+  "currency": "CLP",
+  "accessGroup": "cachaste_premium",
+  "billing": {
+    "android": "google_play_billing",
+    "ios": "app_store_storekit",
+    "allowOfflineSelfActivation": false,
+    "requireVerifiedStoreEntitlement": true,
+    "gracePeriodRequiresStoreConfirmation": true
+  },
+  "plans": [
+    {
+      "id": "weekly",
+      "duration": "P1W",
+      "priceCLP": 2490,
+      "googlePlayProductId": "cachaste_premium",
+      "googlePlayBasePlanId": "semanal",
+      "appleProductId": "cl.cachaste.premium.semanal"
+    },
+    {
+      "id": "monthly",
+      "duration": "P1M",
+      "priceCLP": 7990,
+      "googlePlayProductId": "cachaste_premium",
+      "googlePlayBasePlanId": "mensual",
+      "appleProductId": "cl.cachaste.premium.mensual"
+    },
+    {
+      "id": "yearly",
+      "duration": "P1Y",
+      "priceCLP": 64990,
+      "googlePlayProductId": "cachaste_premium",
+      "googlePlayBasePlanId": "anual",
+      "appleProductId": "cl.cachaste.premium.anual"
+    }
+  ],
+  "publicationState": "configuration_only_not_for_live_purchase"
+}
