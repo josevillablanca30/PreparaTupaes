@@ -135,3 +135,36 @@ test('QA de 20 alertas editoriales: lectura completa, opciones e imágenes móvi
  },flagged);
  expect(failures).toEqual([]);
 });
+
+
+test('Integridad visual: imagen del gatito y áreas gráficas en recorridos de las cinco materias',async({page})=>{
+ test.setTimeout(120000);
+ for(const subject of ['M1','M2','Lectura','Ciencias','Historia']){
+  await choose(page,subject,'Biología');
+  const problems=await page.evaluate(async subject=>{
+    const bank=CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey===subject);
+    const selected=[bank[0],bank[Math.floor(bank.length/2)],bank[bank.length-1]].filter(Boolean);
+    const errors=[];
+    for(const q of selected){
+      const e=CachasteDailyApp.engine;
+      e.start(subject,1);e.state.session.keys=[q.key];
+      e.state.session.questionSnapshots=[{...q,assessmentVersion:CachasteLearning.assessmentVersion(q)}];
+      e.save();location.hash='#session';CachasteDailyApp.render();
+      const nodes=document.querySelectorAll('.cat-frame img,.question-visual img,.question-visual svg');
+      for(const el of nodes){
+        const rect=el.getBoundingClientRect();
+        const holder=el.closest('.cat-frame,.question-visual');
+        const h=holder?.getBoundingClientRect();
+        if(h&&h.width&&rect.width===0)errors.push(q.key+': gráfico sin tamaño');
+        if(el.tagName==='IMG'){
+          await Promise.race([el.decode().catch(()=>{}),Promise.resolve()]);
+          if(el.complete&&!el.naturalWidth)errors.push(q.key+': recurso visual no disponible');
+        }
+      }
+      if(document.documentElement.scrollWidth>document.documentElement.clientWidth+1)errors.push(q.key+': ancho excedido');
+    }
+    return errors;
+  },subject);
+  expect(problems,subject+': '+JSON.stringify(problems)).toEqual([]);
+ }
+});
