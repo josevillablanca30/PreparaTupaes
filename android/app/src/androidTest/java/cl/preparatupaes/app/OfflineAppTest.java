@@ -205,6 +205,7 @@ public class OfflineAppTest {
         }
         waitFor("document.querySelector('.celebration-screen')");
         assertEquals("true",js("CachasteDailyApp.basics.status('cantidad').complete"));
+        captureDidacticScreen("release-celebration");
         assertEquals("true",js("CACHASTE_DAILY_CATALOG.items.length>=641 && new Set(CACHASTE_DAILY_CATALOG.items.map(q=>q.key)).size===CACHASTE_DAILY_CATALOG.items.length"));
     }
     @Test public void visualBiologyLessonTeachesInteractsAndResumesOffline() throws Exception {
@@ -397,6 +398,66 @@ public class OfflineAppTest {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         PackageInfo info=context.getPackageManager().getPackageInfo(context.getPackageName(),PackageManager.GET_PERMISSIONS);
         assertTrue(info.requestedPermissions==null || info.requestedPermissions.length==0);
+    }
+
+    @Test public void entireShippedCatalogueRendersLessonsAndAllTutorModesOffline() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp && window.CachasteLessons");
+        assertEquals("802",js("CACHASTE_DAILY_CATALOG.items.length"));
+        assertEquals("318",js("new Set(CACHASTE_DAILY_CATALOG.items.map(q=>q.levelId)).size"));
+        js("window.releaseAuditBackup=JSON.stringify(Object.entries(localStorage));window.releaseAuditIssues=[];window.releaseAuditCount=0;true");
+        try {
+            // Small batches keep the WebView responsive and the instrumentation callback bounded.
+            for(int start=0;start<802;start+=10) {
+                String issues=js("(function(){var e=CachasteDailyApp.engine;for(var i="+start+";i<Math.min("+(start+10)+",CACHASTE_DAILY_CATALOG.items.length);i++){var q=CACHASTE_DAILY_CATALOG.items[i];e.close();e.state.foundationDraft=null;e.state.subject=q.subjectKey;e.state.track=q.subjectKey==='Ciencias'?q.subject:null;var s=e.state.session={id:'native-catalogue-'+i,subject:q.subjectKey,track:e.state.track,concept:q.concept,mode:'lesson',keys:[q.key],index:0,selected:null,checked:false,results:[],stage:'intro'};location.hash='#session';CachasteDailyApp.render();if(document.querySelectorAll('.didactic-overview > section').length!==3)releaseAuditIssues.push(q.key+':lesson');s.stage='question';s.selected=(q.answer+1)%q.options.length;s.checked=true;s.results=[{correct:false}];for(var mode of ['steps','easy','example']){s.tutor=mode;s.card=0;CachasteDailyApp.render();if(!document.querySelector('.tutor .lesson-text')?.textContent.trim())releaseAuditIssues.push(q.key+':'+mode);if(document.documentElement.scrollWidth>innerWidth+1)releaseAuditIssues.push(q.key+':overflow');}releaseAuditCount++;}return releaseAuditIssues.slice(0,12).join(';')})()");
+                assertEquals("Installed catalogue contains broken lessons or tutor modes", "\"\"", issues);
+            }
+            assertEquals("802",js("releaseAuditCount"));
+        } finally {
+            js("CachasteDailyApp.engine.close();localStorage.clear();JSON.parse(releaseAuditBackup).forEach(([k,v])=>localStorage.setItem(k,v));true");
+        }
+    }
+
+    @Test public void releaseScreensCoverFiveSubjectsAndEveryScienceMention() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp");
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.state.foundationDraft=null;location.hash='#courses';CachasteDailyApp.render();scrollTo(0,0);true");
+        captureDidacticScreen("release-home");
+        for(String subject:new String[]{"M1","M2","Lectura","Historia"}) {
+            js("location.hash='#courses';CachasteDailyApp.render();document.querySelector('[data-action=pick-course][data-subject="+subject+"]').click();true");
+            waitFor("document.querySelector('[data-action=game-mode]')");
+            js("document.querySelector('[data-action=game-mode]').click();true");
+            waitFor("document.querySelector('.trail-node')");
+            js("scrollTo(0,0);true");
+            captureDidacticScreen("release-map-"+subject);
+        }
+        js("location.hash='#courses';CachasteDailyApp.render();document.querySelector('[data-action=pick-course][data-subject=Ciencias]').click();scrollTo(0,0);true");
+        waitFor("document.querySelector('[data-track=Biología]')");
+        captureDidacticScreen("release-science-mentions");
+        for(String track:new String[]{"Biología","Química","Física","TP"}) {
+            js("location.hash='#tracks';CachasteDailyApp.render();document.querySelector('[data-track=\""+track+"\"]').click();true");
+            waitFor("document.querySelector('[data-action=game-mode]')");
+            assertEquals("\""+track+"\"",js("CachasteDailyApp.engine.state.track"));
+            js("document.querySelector('[data-action=game-mode]').click();scrollTo(0,0);true");
+            waitFor("document.querySelector('.trail-node')");
+            captureDidacticScreen("release-science-"+track);
+        }
+    }
+
+    @Test public void longFormulaAndTitleStayReadableInInstalledWebView() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp");
+        String[][] cases={{"M2","Logaritmos"},{"M2","Distancia en el plano"},{"Historia","Industrialización y fomento estatal"},{"Ciencias","Frecuencia al cambiar de medio"}};
+        for(int i=0;i<cases.length;i++) {
+            js("var e=CachasteDailyApp.engine;e.close();e.state.foundationDraft=null;var q=CACHASTE_DAILY_CATALOG.items.find(q=>q.subjectKey==='"+cases[i][0]+"'&&q.concept==='"+cases[i][1]+"');e.state.track=q.subjectKey==='Ciencias'?q.subject:null;e.start(q.subjectKey,2,'lesson',q.concept);location.hash='#session';CachasteDailyApp.render();scrollTo(0,0);true");
+            waitFor("document.querySelector('.didactic-overview')");
+            assertEquals("true",js("[...document.querySelectorAll('.reference-lesson-hero h1,.lesson-chapters button,.lesson-reading-control button')].every(n=>n.scrollWidth<=n.clientWidth+2)"));
+            assertEquals("true",js("[...document.querySelectorAll('.lesson-chapters button,.lesson-reading-control button,.lesson-top button')].every(n=>n.getBoundingClientRect().height>=48)"));
+            captureDidacticScreen("release-long-"+i);
+            js("document.querySelector('[data-action=begin-question]').click();var e=CachasteDailyApp.engine,s=e.state.session,q=e.byKey.get(s.keys[s.index]);document.querySelector('[data-action=choice][data-index=\"'+((q.answer+1)%q.options.length)+'\"]').click();document.querySelector('[data-action=check]').click();scrollTo(0,0);true");
+            captureDidacticScreen("release-error-"+i);
+            js("document.querySelector('[data-mode=example]').click();document.querySelector('.reference-example-card').scrollIntoView();true");
+            assertEquals("true",js("[...document.querySelectorAll('.tutor li,.reference-example-card li')].every(n=>n.scrollWidth<=n.clientWidth+2)"));
+            captureDidacticScreen("release-example-"+i);
+        }
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.save();true");
     }
 
     @Test public void additionalIllustrationsAndScientificComparisonWorkOffline() throws Exception {

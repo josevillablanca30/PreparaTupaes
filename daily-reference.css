@@ -224,3 +224,12 @@ body>main{--reference-gutter:20px}
 
 /* Short vocabulary support uses the existing lesson card, with no extra illustration. */
 .lesson-word-help{margin:1rem 0;font-size:.94em;line-height:1.6}.lesson-word-help>div{margin:.65rem 0}.lesson-word-help dt{font-weight:750;text-transform:capitalize}.lesson-word-help dd{margin:0;color:var(--text,#281e43)}
+
+/* Keep the approved cards; give secondary lesson controls a comfortable touch area. */
+#daily-root .lesson-chapters button{min-height:48px!important;min-width:48px;font-size:14px!important;white-space:normal}
+#daily-root .lesson-reading-control button{min-height:48px!important;font-size:14px!important;white-space:normal}
+#daily-root .lesson-top button,#daily-root .daily-session-head button{min-height:48px!important;font-size:14px!important}
+#daily-root .didactic-depth summary{min-height:48px}
+/* Long concept names and unspaced equations must wrap inside their own card. */
+#daily-root .reference-lesson-hero h1{overflow-wrap:anywhere;hyphens:auto}
+#daily-root .selected-repair li,#daily-root .reference-repair-visual li,#daily-root .reference-example-card li,#daily-root .complete-correction li,#daily-root .visual-lesson-content li,#daily-root .tutor li{min-width:0;overflow-wrap:anywhere;word-break:normal}

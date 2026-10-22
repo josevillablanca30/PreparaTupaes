@@ -18,6 +18,7 @@ const files = new Map([
   ['/PreparaTupaes/', ['index.html', 'text/html; charset=utf-8']],
   ['/PreparaTupaes/index.html', ['index.html', 'text/html; charset=utf-8']],
   ['/PreparaTupaes/inicio.html', ['inicio.html', 'text/html; charset=utf-8']],
+ ['/PreparaTupaes/suscripcion.html', ['suscripcion.html', 'text/html; charset=utf-8']],
   ['/PreparaTupaes/science.html', ['science.html', 'text/html; charset=utf-8']],
   ['/PreparaTupaes/reading.html', ['reading.html', 'text/html; charset=utf-8']],
   ['/PreparaTupaes/reading-bank.js', ['reading-bank.js', 'text/javascript; charset=utf-8']],
