@@ -18,3 +18,19 @@ test('No se activan cobros desde esta configuración',()=>{
  assert.equal(config.billing.allowOfflineSelfActivation,false);
  assert.equal(config.billing.requireVerifiedStoreEntitlement,true);
 });
+
+test('La aplicación completa requiere suscripción; la prueba gratuita se convierte al mensual',()=>{
+ assert.equal(config.productModel,'subscription_required_full_app');
+ assert.equal(config.freeTier.enabled,false);
+ assert.ok(config.plans.every(p=>p.access==='full_app'&&p.automaticRenewal===true));
+ assert.deepEqual(
+  [config.defaultOffer.planId,config.defaultOffer.duration,config.defaultOffer.priceCLP,
+   config.defaultOffer.afterTrial.planId,config.defaultOffer.afterTrial.priceCLP,config.defaultOffer.afterTrial.renewal],
+  ['monthly','P7D',0,'monthly',7990,'P1M']
+ );
+ assert.equal(config.defaultOffer.requiresExplicitConsent,true);
+ assert.equal(config.defaultOffer.showFirstChargeDate,true);
+ assert.equal(config.defaultOffer.showCancellationInstructions,true);
+ assert.equal(config.defaultOffer.showStorePricing,true);
+ assert.equal(config.trialReminder.requiresNotificationPermission,true);
+});
