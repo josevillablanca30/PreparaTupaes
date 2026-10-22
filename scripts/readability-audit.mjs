@@ -36,4 +36,5 @@ report.flagCount=report.flags.length;
 mkdirSync(new URL('../reports/',import.meta.url),{recursive:true});
 writeFileSync(new URL('../reports/readability-audit.json',import.meta.url),JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({questions:report.questions,subjects:report.subjects,flags:report.flagCount,critical:report.critical,digest}));
+if(report.flags.length)console.log('OBSERVACIONES_EDITORIALES '+JSON.stringify(report.flags));
 if(report.critical)throw Error(report.critical+' problemas estructurales críticos de presentación/explicación; revisar reports/readability-audit.json');
