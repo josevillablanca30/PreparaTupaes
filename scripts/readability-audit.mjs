@@ -20,6 +20,7 @@ for(const q of items){
  s.vocabularySupport+=L.wordsFor(q).length?1:0;
  if(count>80)flag(q,'long_opening','critical','Apertura supera 80 palabras: '+count);
  if(!opening.length||!opening.some(p=>String(p).trim().length>=15))flag(q,'missing_opening','critical','No existe apertura educativa útil');
+ if(opening.some(p=>/undefined|null|\[object Object\]/.test(String(p))))flag(q,'broken_opening','critical','Se muestra un valor técnico en la explicación');
  const explanation=String(q.why||q.explanations?.[q.answer]||'').trim();
  if(explanation.length<30)flag(q,'brief_reasoning','review','Justificación principal de menos de 30 caracteres');
  const hint=String(q.hint||'').trim();
