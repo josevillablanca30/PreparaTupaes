@@ -157,7 +157,7 @@ test('Integridad visual: imagen del gatito y áreas gráficas en recorridos de l
         const h=holder?.getBoundingClientRect();
         if(h&&h.width&&rect.width===0)errors.push(q.key+': gráfico sin tamaño');
         if(el.tagName==='IMG'){
-          await Promise.race([el.decode().catch(()=>{}),Promise.resolve()]);
+          await el.decode().catch(()=>{});
           if(el.complete&&!el.naturalWidth)errors.push(q.key+': recurso visual no disponible');
         }
       }
