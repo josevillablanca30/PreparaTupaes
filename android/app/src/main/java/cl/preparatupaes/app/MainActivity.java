@@ -28,7 +28,8 @@ public class MainActivity extends Activity {
             || path.equals("file:///android_asset/science.html")
             || path.equals("file:///android_asset/reading.html")
             || path.equals("file:///android_asset/m2.html")
-            || path.equals("file:///android_asset/history.html");
+            || path.equals("file:///android_asset/history.html")
+            || path.equals("file:///android_asset/suscripcion.html");
     }
 
     @Override public void onCreate(Bundle state) {
