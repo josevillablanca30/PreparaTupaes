@@ -12,8 +12,8 @@ test('pantalla de suscripción: legible, accesible y sin desbordamiento móvil',
  for(const price of ['$2.490 CLP','$7.990 CLP','$64.990 CLP']){
   await expect(page.getByText(price,{exact:false}).first()).toBeVisible();
  }
- await expect(page.getByRole('button',{name:/Contratar desde Google Play/})).toBeDisabled();
- await expect(page.getByRole('button',{name:/Restaurar compras/})).toBeDisabled();
+ await expect(page.getByRole('button',{name:/Contratación deshabilitada/})).toBeDisabled();
+ await expect(page.getByRole('button',{name:/Restauración deshabilitada/})).toBeDisabled();
  await expect(page.getByText(/fecha exacta del primer cobro/i)).toBeVisible();
  await expect(page.getByText(/Eliminar la aplicación no cancela la suscripción/i)).toBeVisible();
  const geometry=await page.evaluate(()=>{
