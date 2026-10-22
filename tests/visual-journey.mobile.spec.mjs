@@ -29,6 +29,12 @@ test('Auditoría visual: materias, mapa, fundamentos, respuesta y celebración',
    await page.locator('[data-action=basic-next]').click();
  }
  await expect(page.locator('.celebration-screen')).toBeVisible();
+ // The official sprite has an off-center cell: both paws must fit in the actual viewport.
+ await page.emulateMedia({reducedMotion:'reduce'});
+ expect(await page.locator('.celebration-screen .cat-frame img').evaluate(im=>{
+  const style=getComputedStyle(im),width=parseFloat(style.width),left=parseFloat(style.left);
+  return -left/width*im.naturalWidth<=38.5 && (im.parentElement.clientWidth-left)/width*im.naturalWidth>=545.5;
+ })).toBe(true);
  await capture(page,'07-celebracion');
  await page.reload();
  await expect(page.locator('.celebration-screen')).toBeVisible();

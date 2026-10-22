@@ -4,7 +4,8 @@
  const workshopCoverage=window.CachasteStudios.hydrate(items,C);
  let subject=Object.hasOwn(C.subjects,E.state.subject)?E.state.subject:'M1',notice='',pendingStart=null,profileCache=new Map(),progressionCache=null;
  const profile=s=>{if(!profileCache.has(s))profileCache.set(s,E.profile(s));return profileCache.get(s);};
- const poses={neutral:[0,0],explaining:[1,0],thinking:[2,0],celebrating:[0,1],error:[1.09375,1],encouraging:[1.09375,1],walking:[2,1]};
+ // Original art bounds: pointer x=560..1071, raised paws x=38..546. Center the whole pose in 512 px.
+ const poses={neutral:[0,0],explaining:[1.09375,0],thinking:[2,0],celebrating:[0.0703125,1],error:[1.09375,1],encouraging:[1.09375,1],walking:[2,1]};
  const poseNames={neutral:'acompañando',explaining:'explicando',thinking:'pensando',celebrating:'celebrando',error:'ayudando con un error',encouraging:'animando',walking:'avanzando'};
  const avatar=(state,size='')=>{const[c,r]=poses[state]||poses.neutral;return'<span class="cat-frame '+size+'" role="img" aria-label="Gatito sabio '+esc(poseNames[state]||'acompañando')+'"><img src="assets/gatito-sabio-poses-v2.webp" alt="" style="left:'+(-c*100)+'%;top:'+(-r*100)+'%" width="1536" height="1024"></span>';};
  const cat=(state,text)=>'<aside class="wise-cat" data-cat-state="'+state+'" aria-live="polite">'+avatar(state)+'<p>'+esc(text)+'</p></aside>';

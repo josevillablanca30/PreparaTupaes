@@ -192,6 +192,8 @@ public class OfflineAppTest {
         open("inicio.html", "window.CachasteDailyApp");
         js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.state.foundationDraft=null;CachasteDailyApp.basics.start('cantidad');location.hash='#basic';CachasteDailyApp.render();true");
         waitFor("document.querySelector('.learning-picture')");
+        waitFor("document.querySelector('.wise-cat[data-cat-state=explaining] .cat-frame img')?.naturalWidth===1536");
+        assertEquals("Pointer fits in the original explaining pose", "true",js("(function(){var im=document.querySelector('.wise-cat[data-cat-state=explaining] .cat-frame img'),s=getComputedStyle(im),w=parseFloat(s.width),x=parseFloat(s.left);return -x/w*im.naturalWidth<=560.5 && (im.parentElement.clientWidth-x)/w*im.naturalWidth>=1070.5})()"));
         assertEquals("true",js("document.getElementById('traditional-section').hidden"));
         assertEquals("0",js("document.querySelectorAll('.daily-nav').length"));
         js("document.querySelector('[data-action=basic-forward]').click();true");
@@ -205,6 +207,7 @@ public class OfflineAppTest {
         }
         waitFor("document.querySelector('.celebration-screen')");
         assertEquals("true",js("CachasteDailyApp.basics.status('cantidad').complete"));
+        assertEquals("Both paws fit in the original celebration pose", "true",js("(function(){var im=document.querySelector('.celebration-screen .cat-frame img'),s=getComputedStyle(im),w=parseFloat(s.width),x=parseFloat(s.left);return -x/w*im.naturalWidth<=38.5 && (im.parentElement.clientWidth-x)/w*im.naturalWidth>=545.5})()"));
         captureDidacticScreen("release-celebration");
         assertEquals("true",js("CACHASTE_DAILY_CATALOG.items.length>=641 && new Set(CACHASTE_DAILY_CATALOG.items.map(q=>q.key)).size===CACHASTE_DAILY_CATALOG.items.length"));
     }
