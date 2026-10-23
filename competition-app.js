@@ -23,6 +23,7 @@
   if(!api.serviceReady)return'<section class="access-note"><div><strong>Estamos preparando la competencia</strong><p>La activación del servicio está pendiente. Por ahora no se crearán partidas ni se mostrarán resultados de prueba. Tu aprendizaje guardado sigue disponible.</p><a href="inicio.html#courses" class="soft">Continuar aprendiendo</a></div></section>';
   if(!api.user)return'<section class="access-note"><div><strong>Tu lugar en la competencia comienza con tu cuenta</strong><p>Inicia sesión y elige qué información quieres compartir. La participación competitiva requiere suscripción.</p>'+btn('login','Iniciar sesión','soft')+'</div></section>';
   if(!api.profile)return'<section class="access-note"><div><strong>Elige cómo te verán</strong><p>Usa un nickname. Tu correo de acceso nunca se muestra.</p><a href="#perfil" class="soft">Completar mi perfil</a></div></section>';
+  if(api.billingUnavailable)return'<section class="access-note" role="status"><div><strong>No pudimos verificar tu suscripción</strong><p>Puedes seguir administrando tu perfil. Reintenta la verificación antes de competir.</p><a class="soft" href="suscripcion.html">Restaurar compras</a></div></section>';
   if(!api.premium)return'<section class="access-note"><div><strong>Competencia con suscripción</strong><p>Tu acceso todavía no tiene una suscripción validada. Los cobros y la prueba de siete días se habilitarán con Google Play.</p><a class="soft" href="suscripcion.html">Ver planes y restauración</a></div></section>';
   return'';
  }

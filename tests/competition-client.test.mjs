@@ -19,3 +19,35 @@ test('A disconnected signed-out client has no pending private answer',()=>{
  const client=new CompetitionClient({},{getItem:()=>{throw new Error('Must not read another identity');}});
  assert.equal(client.pending(),null);
 });
+
+function signedInClient(invoke){
+ const client=new CompetitionClient({billingReady:true},{});
+ client.sdk={
+  rpc:()=>({abortSignal:async()=>({data:{catalogueReady:true}})}),
+  auth:{getSession:async()=>({data:{session:{}}}),getUser:async()=>({data:{user:{id:'account'}}})},
+  functions:{invoke}
+ };
+ client.call=async()=>({profile:{nickname:'Estudiante'},premium:true,season:'2026-10-19'});
+ return client;
+}
+test('A verifier outage preserves account administration without granting competitive access',async()=>{
+ for(const invoke of [async()=>({error:Error('503')}),async()=>{throw Error('Network unavailable');},async()=>({data:{error:'VERIFICATION_UNAVAILABLE'}}),async()=>({data:{}})]){
+  const client=signedInClient(invoke);
+  const state=await client.connect();
+  assert.equal(client.user.id,'account');assert.equal(client.profile.nickname,'Estudiante');
+  assert.equal(client.billingUnavailable,true);assert.equal(client.premium,false);assert.equal(state.premium,false);
+ }
+});
+test('Reconnecting after the verifier recovers clears the outage and reads the server entitlement again',async()=>{
+ let unavailable=true;
+ const client=signedInClient(async()=>unavailable?{error:Error('503')}:{data:{premium:true}});
+ await client.connect();unavailable=false;await client.connect();
+ assert.equal(client.billingUnavailable,false);assert.equal(client.premium,true);
+});
+test('An invalid Auth session clears the previous identity and its public profile',async()=>{
+ const client=signedInClient(async()=>({data:{}}));
+ client.user={id:'previous-account'};client.profile={nickname:'Previous'};client.premium=true;
+ client.sdk.auth.getUser=async()=>({data:{user:null},error:Error('Invalid session')});
+ await assert.rejects(client.connect(),/Invalid session/);
+ assert.equal(client.user,null);assert.equal(client.profile,null);assert.equal(client.premium,false);
+});
