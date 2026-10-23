@@ -29,7 +29,8 @@ export class CompetitionClient{
   }
   // A payment outage must not prevent profile changes, recovery or account deletion.
   // Competitive access stays closed until verification succeeds again.
-  const state=await this.call('profile');this.profile=state.profile;this.premium=state.premium===true&&!this.billingUnavailable;this.season=state.season;
+  let state;try{state=await this.call('profile');}catch(error){if(error?.code==='28000'||String(error?.message).includes('AUTH_REQUIRED')){this.clearNativeAccess();this.user=null;this.profile=null;}throw error;}
+  this.profile=state.profile;this.premium=state.premium===true&&!this.billingUnavailable;this.season=state.season;
   if(this.premium){try{const access=await this.nativeAccess('verify',session.access_token);this.nativeAccessUnavailable=access?.required===true&&access.active!==true;}catch{this.nativeAccessUnavailable=true;}}
   else if(!this.billingUnavailable)this.clearNativeAccess();
   return{...state,premium:this.premium};

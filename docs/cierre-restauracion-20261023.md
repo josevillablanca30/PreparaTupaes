@@ -16,7 +16,7 @@ Se quitó la etiqueta comercial «Premium» de esta pantalla para respetar el mo
 ## Verificación local
 
 - Base original: 375 pruebas de lógica aprobadas. Las regresiones nuevas fallaron antes del arreglo: tres de cliente y cinco escenarios de interfaz Android.
-- Después del arreglo: 380 pruebas de lógica aprobadas y 54 pruebas de interfaz aprobadas entre Android Chrome y pantalla de 320 px. Incluyen compras pendientes, cancelación, pérdida de respuesta, compra previa al reinicio, restauración sin ofertas, reconexión, duelos, rankings, recuperación de contraseña y navegación educativa.
+- Después del arreglo: 381 pruebas de lógica aprobadas y 54 pruebas de interfaz aprobadas entre Android Chrome y pantalla de 320 px. Incluyen compras pendientes, cancelación, pérdida de respuesta, compra previa al reinicio, restauración sin ofertas, reconexión, duelos, rankings, recuperación de contraseña y navegación educativa.
 - Compilación estática aprobada: 95 archivos de distribución verificados; sin semillas privadas ni fixtures en el paquete público.
 - Proyecto alojado consultado mediante lectura: 802 preguntas, 20 tablas con RLS, cero identidades, perfiles y suscripciones. El asesor de seguridad solo informa las 20 tablas privadas con RLS sin políticas, que deniegan deliberadamente el acceso directo; no se abrieron tablas.
 

@@ -29,8 +29,8 @@ public class CommercialAccessTest {
         for(int n=0;n<100;n++){if("true".equals(js("Boolean("+expression+")")))return;Thread.sleep(100);}
         fail("Expected commercial access state: "+expression);
     }
-    private void open(String page){scenario.onActivity(activity->web(activity).loadUrl(page));}
-    private void locked()throws Exception{waitFor("location.pathname.endsWith('/suscripcion.html')&&document.getElementById('billing-status')");}
+    private void open(String page)throws Exception{js("window.commercialNavigationMarker=true;true");scenario.onActivity(activity->web(activity).loadUrl(page));}
+    private void locked()throws Exception{waitFor("!window.commercialNavigationMarker&&document.readyState==='complete'&&location.pathname.endsWith('/suscripcion.html')&&document.getElementById('billing-status')");}
     @Before public void start()throws Exception{
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("cl.preparatupaes.app",context.getPackageName());

@@ -73,20 +73,23 @@ final class SubscriptionAccessController {
             connection.setRequestMethod("POST");connection.setConnectTimeout(8000);connection.setReadTimeout(8000);connection.setInstanceFollowRedirects(false);connection.setDoOutput(true);
             connection.setRequestProperty("Authorization","Bearer "+token);connection.setRequestProperty("apikey",PUBLIC_KEY);connection.setRequestProperty("Content-Type","application/json");connection.setRequestProperty("Accept","application/json");
             try(java.io.OutputStream out=connection.getOutputStream()){out.write("{}".getBytes(StandardCharsets.UTF_8));}
-            if(connection.getResponseCode()!=200)throw new Exception("ACCESS_UNAVAILABLE");
+            int status=connection.getResponseCode();
+            if(status==401||status==403){error="AUTH_REQUIRED";throw new Exception("AUTH_REQUIRED");}
+            if(status!=200)throw new Exception("ACCESS_UNAVAILABLE");
             try(java.io.InputStream in=connection.getInputStream();ByteArrayOutputStream out=new ByteArrayOutputStream()){
                 byte[] buffer=new byte[1024];int read;
                 while((read=in.read(buffer))!=-1){if(out.size()+read>8192)throw new Exception("ACCESS_UNAVAILABLE");out.write(buffer,0,read);}
                 result=new JSONObject(out.toString("UTF-8"));
             }
-        }catch(Exception ignored){error="ACCESS_UNAVAILABLE";}
+        }catch(Exception ignored){if(error==null)error="ACCESS_UNAVAILABLE";}
         finally{if(connection!=null)connection.disconnect();}
         final JSONObject data=result;final String failure=error;final long received=SystemClock.elapsedRealtime();
         activity.runOnUiThread(()->{
             if(closed||epoch!=generation)return;
             boolean active=false;String outcome=failure;
+            if("AUTH_REQUIRED".equals(failure))clear();
             try{
-                if(data!=null&&!expectedUser.equals(data.getString("userId")))throw new Exception("AUTH_REQUIRED");
+                if(data!=null&&!expectedUser.equals(data.getString("userId"))){clear();throw new Exception("AUTH_REQUIRED");}
                 if(data!=null&&data.getBoolean("active")){
                     SubscriptionLease lease=SubscriptionLease.fromServer(data.getString("userId"),data.getLong("serverTimeMs"),data.getLong("validUntilMs"),started,received,boot());
                     if(lease.valid(SystemClock.elapsedRealtime(),boot())){

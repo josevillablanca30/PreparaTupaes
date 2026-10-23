@@ -63,3 +63,10 @@ test('The native educational bridge receives the Auth token only after a verifie
   client.call=async()=>({profile:null,premium:false});await client.connect();assert.equal(requests.at(-1).action,'clear');
  }finally{if(previous===undefined)delete globalThis.CachasteAccess;else globalThis.CachasteAccess=previous;}
 });
+test('A server-revoked session clears native offline access even when Auth still recognizes its JWT',async()=>{
+ const client=signedInClient(async()=>({data:{premium:true}})),actions=[];
+ client.nativeAccess=async action=>{actions.push(action);return null;};
+ client.call=async()=>{throw Object.assign(Error('AUTH_REQUIRED'),{code:'28000'});};
+ await assert.rejects(client.connect(),/AUTH_REQUIRED/);
+ assert.equal(client.user,null);assert.equal(client.premium,false);assert.deepEqual(actions,['clear']);
+});
