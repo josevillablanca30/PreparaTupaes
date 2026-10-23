@@ -1,9 +1,9 @@
 {
-  "sourceSha": "677f73c676b2c3654915e83e3794303d5f51443b",
-  "androidRun": 39958857921,
+  "sourceSha": "037b863f1a21b5055392fcfd9ae32e291542da10",
+  "androidRun": 39960691720,
   "integrationRun": 39958858061,
   "version": "1.5.0-rc2",
   "versionCode": 29,
-  "request": 3,
-  "notes": "Candidata con Google Play Billing integrado y cerrado, Supabase desplegado, respaldo restaurable y prueba obligatoria Android 16. No habilita compras ni Premium sin verificación oficial."
+  "request": 4,
+  "notes": "APK rc2 y recorrido Android 16 completo; captura sincronizada con fotogramas realmente comprometidos. Billing permanece cerrado hasta validación oficial."
 }
