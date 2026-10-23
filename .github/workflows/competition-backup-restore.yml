@@ -65,8 +65,11 @@ jobs:
             const plain=decryptBackup(await readFile(path),secret);assert.equal(plain.subarray(0,5).toString(),'PGDMP');
             assert.match(target,/^cachaste_restore_[a-f0-9]{32}$/);
             await source.query('create database '+target);created=true;
-            await run('docker',['exec','-i','-e','PGPASSWORD','supabase_db_cachaste-local','pg_restore','--host=127.0.0.1','--port=5432','--username=postgres','--dbname='+target,'--no-owner','--exit-on-error','--clean','--if-exists'],{PGPASSWORD:new URL(status.DB_URL).password},plain);
             const url=new URL(status.DB_URL);url.pathname='/'+target;restored=new pg.Client({connectionString:url.href});await restored.connect();
+            const toc=await run('docker',['exec','-i','supabase_db_cachaste-local','pg_restore','--list'],{},plain);
+            if(/\bSCHEMA - public\b/.test(toc))await restored.query('drop schema public');
+            // The destination is new. --clean would try dropping policies on managed schemas that do not exist yet.
+            await run('docker',['exec','-i','-e','PGPASSWORD','supabase_db_cachaste-local','pg_restore','--host=127.0.0.1','--port=5432','--username=postgres','--dbname='+target,'--no-owner','--exit-on-error'],{PGPASSWORD:new URL(status.DB_URL).password},plain);
             const counts=(await restored.query("select (select count(*)::int from cachaste.questions) questions,(select count(*)::int from cachaste.locations) communes,(select count(*)::int from auth.sessions) sessions,(select count(*)::int from auth.refresh_tokens) refresh_tokens")).rows[0];assert.deepEqual(counts,{questions:802,communes:346,sessions:0,refresh_tokens:0});
             assert.equal((await restored.query('select encrypted_password from auth.users where id=$1',[userId])).rows[0].encrypted_password,auth.encrypted_password);
             const stats=(await restored.query('select stars,wins,losses,draws,streak from cachaste.stats where user_id=$1',[userId])).rows[0];assert.deepEqual(stats,{stars:8,wins:12,losses:4,draws:1,streak:3});
