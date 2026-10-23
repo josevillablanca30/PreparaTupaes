@@ -34,8 +34,10 @@ try{
   const owner=line.trim().split(/\s+/).at(-1);
   return !managed.has(owner);
  }).join('\n'),{mode:0o600});
- await run(['--no-owner','--exit-on-error','--single-transaction','--data-only'],snapshot.authData);
- await run(['--no-owner','--exit-on-error','--single-transaction','--use-list='+list],snapshot.application);
+ // pg_restore needs an explicit database option to enter restore mode; PGDATABASE alone is insufficient.
+ const destination=['--dbname='+env.PGDATABASE,'--no-owner','--exit-on-error','--single-transaction'];
+ await run([...destination,'--data-only'],snapshot.authData);
+ await run([...destination,'--use-list='+list],snapshot.application);
  // Sessions and refresh/one-time tables are excluded. Clear legacy recovery/change tokens stored on users too.
  await db.query(`do $$declare c text;begin
  foreach c in array array['confirmation_token','recovery_token','email_change_token_new','email_change_token_current','reauthentication_token','phone_change_token','email_change','phone_change']loop
