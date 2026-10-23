@@ -35,3 +35,13 @@ Permanecen pendientes los productos y credenciales oficiales de Google Play, SMT
 No se activó ningún cobro, suscripción ficticia ni prueba de pago en el proyecto alojado.
 
 El verificador de compras no consume el límite de comprobaciones de Google al navegar con recibos ya verificados hace menos de cinco minutos; solo lo consume al verificar una compra o actualizar un lote desactualizado. Se reprodujeron 25 consultas de estado sin agotar esa cuota y un lote de dos recibos con un único cargo a la cuota, usando respuestas controladas. La función alojada `cachaste-play` está en versión 3; salud real `ready:false`, petición sin Auth 401 y configuración pendiente 503. No se activaron cobros.
+
+## Entrega Android verificada
+
+La candidata `Cachaste-v1.5.0-rc3.apk` corresponde al código `71dcb5c0510a5c1c0a7ce7d7528690f5a832b040`, versión 1.5.0-rc3 / código 30. SHA-256 `d8f67387487fb896d6e7139fffcbe5ba21b285e7476c7f2ee03801ae74e1d4c0`; 13691373 bytes. Conserva el certificado beta `06fea3ef23af90358868d6c7edf877a871404027e1f7104036ed25ff7b05df22` de las versiones anteriores.
+
+Aprobadas: 382 pruebas de lógica, 387 Android Chrome y 387 de 320 px; 29 pruebas de APK instalada en Android 16 y 5 del control comercial instalado, sin fallos ni omisiones. Integración de dos cuentas Auth/PostgREST reales locales: 16 comprobaciones aprobadas. Revisadas 65 capturas nativas mediante seis contactos. El APK no incluye fixtures, semillas SQL ni claves privadas. La prueba WebKit seguía preparando el entorno al cerrar esta entrega; no se afirma aprobada para rc3.
+
+Evidencia: [Android y control comercial](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/39992131027), [navegadores](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/39992131079), [Auth real local](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/39992131048), [firma y revisión](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/39992243059). El estado detallado queda en `reports/cachaste-rc3-verification.json`.
+
+El repositorio se comprobó público al cerrar. Cambiarlo a privado sigue pendiente y no se simula como realizado. La candidata permite revisar la beta; aún no es una publicación comercial con cobros reales.

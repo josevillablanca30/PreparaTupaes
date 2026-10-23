@@ -1,0 +1,106 @@
+{
+  "sourceSha": "71dcb5c0510a5c1c0a7ce7d7528690f5a832b040",
+  "androidRun": 39992131027,
+  "integrationRun": 39992131048,
+  "version": "1.5.0-rc3",
+  "versionCode": 30,
+  "request": 6,
+  "notes": "Acceso comercial nativo, restauración resiliente y cuota de verificación conservada. Los cobros oficiales permanecen cerrados.",
+  "androidConclusion": "success",
+  "nativeScreenshots": 65,
+  "realAuthChecks": 16,
+  "apkSha256": "d8f67387487fb896d6e7139fffcbe5ba21b285e7476c7f2ee03801ae74e1d4c0",
+  "apkBytes": 13691373,
+  "apkRevision": "71dcb5c0510a5c1c0a7ce7d7528690f5a832b040",
+  "testFixturesInCandidate": false,
+  "package": "package: name='cl.preparatupaes.app.sciencebeta' versionCode='30' versionName='1.5.0-rc3' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'",
+  "certificate": [
+    "V2 Signer: certificate DN: CN=Android Debug, O=Cachaste Beta, C=CL",
+    "V2 Signer: certificate SHA-256 digest: 06fea3ef23af90358868d6c7edf877a871404027e1f7104036ed25ff7b05df22",
+    "V2 Signer: certificate SHA-1 digest: 1559aaa8ead296e19f4742cd25f4fa4c490ae748",
+    "V2 Signer: certificate MD5 digest: 14587330f186a49bfa503aec215a2b5c"
+  ],
+  "nativeTestSuites": [
+    {
+      "name": "cl.preparatupaes.app.OfflineAppTest",
+      "tests": "29",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "302.257",
+      "timestamp": "2026-10-23T17:24:18",
+      "hostname": "localhost"
+    },
+    {
+      "name": "cl.preparatupaes.app.CommercialAccessTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "22.681",
+      "timestamp": "2026-10-23T17:09:11",
+      "hostname": "localhost"
+    }
+  ],
+  "nativeFailures": [],
+  "branch": "work/cachaste-motor-duolingo-20261016",
+  "verifiedDate": "2026-10-23",
+  "reviewRun": 39992243059,
+  "logic": {
+    "passed": 382,
+    "failed": 0
+  },
+  "browserChecks": {
+    "run": 39992131079,
+    "AndroidChrome": {
+      "passed": 387,
+      "failed": 0
+    },
+    "mobile320": {
+      "passed": 387,
+      "failed": 0
+    },
+    "WebKit": {
+      "status": "environment installation pending at delivery; no rc3 pass claimed"
+    }
+  },
+  "native": {
+    "androidApi": 36,
+    "betaTests": 29,
+    "commercialPolicyTests": 5,
+    "failed": 0,
+    "skipped": 0,
+    "commercialBuild": "Isolated debug build with the production application ID; no real purchase or hosted entitlement fabricated"
+  },
+  "visualReview": {
+    "screenshots": 65,
+    "contactSheets": 6,
+    "scope": "Native representative states, with competitive fixture data only in instrumentation; no new imagery or educational-content edits"
+  },
+  "hosted": {
+    "project": "jmobinmdwrmdqrxtcruj",
+    "questions": 802,
+    "rlsTables": 20,
+    "authUsers": 0,
+    "entitlements": 0,
+    "migrations": [
+      "20261023003939",
+      "20261023113148",
+      "20261023164550"
+    ],
+    "playVerifierVersion": 3,
+    "billingReady": false,
+    "anonymousAccessRpcStatus": 401,
+    "anonymousBillingStatus": 401,
+    "unconfiguredBillingStatus": 503
+  },
+  "repositoryVisibility": "public at verification; requested private setup remains pending",
+  "pending": [
+    "Official Google Play account/products/service-account secrets, RTDN and real purchase/restore/renewal/cancellation tests",
+    "SMTP, authorized HTTPS confirmation/recovery URL and minimum password configuration",
+    "Definitive privacy/account-deletion URLs",
+    "Commercial signing and owner approval on a physical phone",
+    "Private repository configuration through an administrative surface"
+  ],
+  "apkLibraryFileId": "libfile_30701c6907d48191ae4a944ff8268de1"
+}
