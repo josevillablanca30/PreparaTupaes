@@ -1,0 +1,94 @@
+name: Competencia · respaldo y restauración real
+on:
+  workflow_dispatch:
+  push:
+    branches: [work/cachaste-motor-duolingo-20261016]
+    paths: ['supabase/migrations/**','scripts/competition-backup.mjs','.github/workflows/competition-backup-restore.yml','package*.json']
+permissions:
+  contents: read
+concurrency:
+  group: competition-backup-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Preparar Supabase PostgreSQL 17 aislado
+        run: |
+          node scripts/competition-catalog.mjs supabase/seed.sql
+          npx --yes supabase@2.121.0 start --exclude realtime,storage-api,imgproxy,postgres-meta,studio,edge-runtime,logflare,vector,supavisor > /tmp/cachaste-backup-start.log 2>&1
+          npx --yes supabase@2.121.0 status -o json > /tmp/cachaste-backup-status.json
+          chmod 600 /tmp/cachaste-backup-status.json
+      - name: Cifrar pg_dump y restaurar datos, identidad y permisos en otra base
+        run: |
+          node --input-type=module <<'JS'
+          import {readFile,writeFile,mkdtemp,rm,stat} from 'node:fs/promises';
+          import {tmpdir} from 'node:os';
+          import {join,delimiter} from 'node:path';
+          import {spawn} from 'node:child_process';
+          import {randomBytes,randomUUID} from 'node:crypto';
+          import assert from 'node:assert/strict';
+          import pg from 'pg';
+          import {createClient} from '@supabase/supabase-js';
+          import {decryptBackup} from './scripts/competition-backup.mjs';
+          const status=JSON.parse(await readFile('/tmp/cachaste-backup-status.json','utf8'));
+          for(const field of ['API_URL','DB_URL'])assert.ok(['127.0.0.1','localhost'].includes(new URL(status[field]).hostname),'Never use a hosted project for restore testing');
+          const source=new pg.Client({connectionString:status.DB_URL});await source.connect();
+          const admin=createClient(status.API_URL,status.SERVICE_ROLE_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
+          const temp=await mkdtemp(join(tmpdir(),'cachaste-pg-restore-')),secret=randomBytes(48).toString('hex');
+          const target='cachaste_restore_'+randomUUID().replaceAll('-','');let userId=null,created=false,restored;
+          const run=(command,args,env={},input=null)=>new Promise((resolve,reject)=>{
+            const p=spawn(command,args,{env:{...process.env,...env},stdio:['pipe','pipe','pipe']});let out='';p.stdout.on('data',b=>out+=b);p.stderr.resume();p.on('error',()=>reject(Error('Backup subprocess unavailable')));p.on('close',n=>n===0?resolve(out):reject(Error('Backup/restore subprocess failed')));p.stdin.end(input);
+          });
+          try{
+            const email='backup-'+randomUUID()+'@example.invalid',password=randomUUID()+randomUUID();
+            const createdUser=await admin.auth.admin.createUser({email,password,email_confirm:true});if(createdUser.error)throw createdUser.error;userId=createdUser.data.user.id;
+            const login=await createClient(status.API_URL,status.ANON_KEY,{auth:{persistSession:false,autoRefreshToken:false}}).auth.signInWithPassword({email,password});assert.ok(!login.error);
+            await source.query("insert into cachaste.profiles(user_id,nickname,commune_code)values($1,$2,'05701')",[userId,'Backup'+randomUUID().slice(0,8)]);
+            await source.query("insert into cachaste.stats(user_id,subject,track,season,stars,wins,losses,draws,streak)values($1,'M1','','all',8,12,4,1,3)",[userId]);
+            const auth=(await source.query('select encrypted_password from auth.users where id=$1',[userId])).rows[0];
+            const sessions=(await source.query('select count(*)::int n from auth.sessions')).rows[0].n;assert.ok(sessions>0);
+            // This wrapper uses the exact PostgreSQL version bundled with the disposable source.
+            // It contains no credentials; pg_dump receives private environment variables from the backup script.
+            await writeFile(join(temp,'pg_dump'),'#!/usr/bin/env bash\nexec docker exec -i -e PGUSER -e PGPASSWORD supabase_db_cachaste-local pg_dump --host=127.0.0.1 --port=5432 --dbname=postgres "$@"\n',{mode:0o700});
+            const path=join(temp,'snapshot.dump.enc'),env={PATH:temp+delimiter+process.env.PATH,CACHASTE_DATABASE_URL:status.DB_URL,CACHASTE_BACKUP_SECRET:secret};
+            await run(process.execPath,['scripts/competition-backup.mjs',path],env);
+            assert.equal((await stat(path)).mode&0o777,0o600);
+            const verified=JSON.parse(await run(process.execPath,['scripts/competition-backup.mjs','--verify',path],env));assert.equal(verified.verified,true);
+            const plain=decryptBackup(await readFile(path),secret);assert.equal(plain.subarray(0,5).toString(),'PGDMP');
+            assert.match(target,/^cachaste_restore_[a-f0-9]{32}$/);
+            await source.query('create database '+target);created=true;
+            await run('docker',['exec','-i','-e','PGPASSWORD','supabase_db_cachaste-local','pg_restore','--host=127.0.0.1','--port=5432','--username=postgres','--dbname='+target,'--no-owner','--exit-on-error','--clean','--if-exists'],{PGPASSWORD:new URL(status.DB_URL).password},plain);
+            const url=new URL(status.DB_URL);url.pathname='/'+target;restored=new pg.Client({connectionString:url.href});await restored.connect();
+            const counts=(await restored.query("select (select count(*)::int from cachaste.questions) questions,(select count(*)::int from cachaste.locations) communes,(select count(*)::int from auth.sessions) sessions,(select count(*)::int from auth.refresh_tokens) refresh_tokens")).rows[0];assert.deepEqual(counts,{questions:802,communes:346,sessions:0,refresh_tokens:0});
+            assert.equal((await restored.query('select encrypted_password from auth.users where id=$1',[userId])).rows[0].encrypted_password,auth.encrypted_password);
+            const stats=(await restored.query('select stars,wins,losses,draws,streak from cachaste.stats where user_id=$1',[userId])).rows[0];assert.deepEqual(stats,{stars:8,wins:12,losses:4,draws:1,streak:3});
+            const rows=(await restored.query("select tablename,rowsecurity from pg_tables where schemaname='cachaste'")).rows;assert.ok(rows.length>=20&&rows.every(r=>r.rowsecurity));
+            for(const role of ['anon','authenticated']){
+              const permission=(await restored.query("select has_function_privilege($1,'public.cachaste_play_admin(text,jsonb)','execute') as can_grant,has_table_privilege($1,'cachaste.entitlements','insert') as can_write",[role])).rows[0];assert.deepEqual(permission,{can_grant:false,can_write:false});
+            }
+            const report={scope:'Disposable PostgreSQL 17 only; not a hosted production restore',encryptedPgDump:true,restored:true,questions:counts.questions,communes:counts.communes,authPasswordHashPreserved:true,sessionsExcluded:true,refreshTokensExcluded:true,historicalStatsPreserved:true,rlsAndAclsPreserved:true};
+            await writeFile('reports/competition-backup-restore.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));
+          }finally{
+            if(restored)await restored.end();if(created)await source.query('drop database '+target);if(userId)await admin.auth.admin.deleteUser(userId);await source.end();await rm(temp,{recursive:true,force:true});
+          }
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cachaste-backup-restore-${{ github.run_id }}
+          path: reports/competition-backup-restore.json
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Destruir todas las identidades, claves y bases del ensayo
+        if: always()
+        run: |
+          npx --yes supabase@2.121.0 stop --no-backup
+          rm -f /tmp/cachaste-backup-status.json /tmp/cachaste-backup-start.log
