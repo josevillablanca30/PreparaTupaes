@@ -1,9 +1,9 @@
 {
-  "sourceSha": "393293cec6ece1330c43c60c954ef3a83d7934ce",
-  "androidRun": 39990328787,
-  "integrationRun": 39990328742,
+  "sourceSha": "71dcb5c0510a5c1c0a7ce7d7528690f5a832b040",
+  "androidRun": 39992131027,
+  "integrationRun": 39992131048,
   "version": "1.5.0-rc3",
   "versionCode": 30,
-  "request": 5,
-  "notes": "Restauración resiliente, control nativo de acceso a las cinco materias y prueba instalada del identificador comercial. Compras oficiales permanecen cerradas."
+  "request": 6,
+  "notes": "Acceso comercial nativo, restauración resiliente y cuota de verificación conservada. Los cobros oficiales permanecen cerrados."
 }
