@@ -1,9 +1,9 @@
 {
-  "sourceSha": "71dcb5c0510a5c1c0a7ce7d7528690f5a832b040",
-  "androidRun": 39992131027,
+  "sourceSha": "45e81e9633d51660646b3ecdbaba8b57f62c464f",
+  "androidRun": 40001667988,
   "integrationRun": 39992131048,
-  "version": "1.5.0-rc3",
-  "versionCode": 30,
-  "request": 6,
-  "notes": "Acceso comercial nativo, restauración resiliente y cuota de verificación conservada. Los cobros oficiales permanecen cerrados."
+  "version": "1.5.0-rc4",
+  "versionCode": 31,
+  "request": 7,
+  "notes": "VS local exclusivo de beta: dos jugadores en un teléfono, preguntas reales, sin cuenta ni pago. Validación online de backend referenciada desde rc3 sin cambios de servidor. Cobros oficiales cerrados."
 }
