@@ -71,7 +71,7 @@
     "initialConnectionErrorsResolved": true
   },
   "releaseBlockers": [
-    "Verificar en Play Console identidad y tipo de cuenta del titular, inscripción y ficha",
+    "Google debe aprobar la identidad enviada; después verificar el teléfono y crear la primera ficha",
     "Productos, credenciales oficiales de Google y RTDN/PubSub configurados y verificados",
     "SMTP y retorno HTTPS de confirmación/recuperación comprobados",
     "Responsable legal, dominio, privacidad y eliminación publicados y enlazados en la app; soporte ya confirmado",
@@ -90,9 +90,15 @@
   "playConsoleAccount": {
     "createdReportedByOwner": true,
     "loginEmail": "jose.villablanca.horta@gmail.com",
-    "accountType": null,
-    "identityVerification": "NOT_VERIFIED_IN_CONSOLE",
-    "applicationCreated": "NOT_VERIFIED_IN_CONSOLE"
+    "accountType": "PERSONAL",
+    "identityVerification": "PENDING_GOOGLE_REVIEW",
+    "identityDocumentsUploaded": true,
+    "phoneVerification": "WAITING_FOR_IDENTITY_APPROVAL",
+    "applicationCreated": false,
+    "canCreateApps": false,
+    "verifiedInConsole": true,
+    "observedDate": "2026-10-23",
+    "createAppBlock": "Completa las verificaciones de cuenta para crear apps"
   },
   "supportEmail": "jose.villablanca.horta@gmail.com"
 }

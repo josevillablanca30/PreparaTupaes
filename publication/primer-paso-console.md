@@ -1,6 +1,6 @@
 # Primer paso en Play Console
 
-La cuenta ya fue creada por el titular con `jose.villablanca.horta@gmail.com`. El mismo correo se usará como soporte público. Falta comprobar dentro de Console el estado de identidad, inscripción y tipo de cuenta.
+La cuenta ya fue creada por el titular con `jose.villablanca.horta@gmail.com`. El mismo correo se usará como soporte público. Se comprobó directamente que la cuenta es personal. Google está revisando los documentos de identidad enviados y todavía impide crear la primera app. La verificación del teléfono de contacto queda pendiente hasta que Google apruebe la identidad. El siguiente paso depende de esa revisión; no se creó ninguna ficha.
 
 Entra a https://play.google.com/console/ con esa cuenta. Si ya existe la ficha de ¿Cachaste?, ábrela en lugar de crear otra. Si no existe, selecciona **Crear app / Crear aplicación** y completa:
 
