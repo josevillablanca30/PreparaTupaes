@@ -28,3 +28,5 @@
 .stadium-lights{inset:16px -12px 0;background:url(assets/competition-stadium.svg) center top/100% 100% no-repeat;clip-path:none}
 .stadium-lights:before,.stadium-lights:after,.stadium-banners{display:none}
 .versus-page .comp-nav{backdrop-filter:none;background:#fffdfb}
+
+.community-rules{margin:16px 0;padding:12px;border:1px solid var(--line,#ded9e8);border-radius:16px;background:#faf8ff}.community-rules summary{min-height:48px;display:flex;align-items:center;cursor:pointer;font-weight:800}.community-rules li{margin:10px 0}.community-rules p{line-height:1.5}.safety-button{width:48px;min-width:48px;min-height:48px;font-size:28px;flex-shrink:0}.blocked-users{list-style:none;padding:0}.blocked-users li{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0;min-height:48px}.blocked-users span{overflow-wrap:anywhere}

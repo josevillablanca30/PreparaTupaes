@@ -25,5 +25,5 @@ export async function rpc(db,index,operation,payload={}){
  try{return(await db.query('select public.cachaste_competition($1,$2::jsonb) result',[operation,JSON.stringify(payload)])).rows[0].result;}
  finally{await db.exec('reset role');}
 }
-export async function profile(db,index,overrides={}){return rpc(db,index,'save_profile',{nickname:'TestAlumno'+index,communeCode:index===2?'13101':'05701',publicRanking:true,allowChallenges:true,showCommune:true,...overrides});}
+export async function profile(db,index,overrides={}){return rpc(db,index,'save_profile',{nickname:'TestAlumno'+index,communeCode:index===2?'13101':'05701',publicRanking:true,allowChallenges:true,showCommune:true,communityVersion:'2026-10-23',...overrides});}
 export async function grantTest(db,index){await db.query("insert into cachaste.entitlements(user_id,valid_until,source,status,receipt_hash)values($1,now()+interval '1 day','test_harness','active',$2)on conflict(user_id)do update set status='active'",[users[index],'test-receipt-'+index]);}

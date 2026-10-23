@@ -24,7 +24,7 @@ try{
  for(let i=0;i<2;i++){
   const email='cachaste-ci-'+randomUUID()+'@example.invalid',password=randomUUID()+randomUUID();const{data,error}=await admin.auth.admin.createUser({email,password,email_confirm:true});if(error)throw error;users.push(data.user.id);credentials.push({email,password});
   const client=createClient(url.href,status.ANON_KEY,{auth:{persistSession:false,autoRefreshToken:false}});const login=await client.auth.signInWithPassword({email,password});if(login.error)throw login.error;clients.push(client);
-  await call(i,'save_profile',{nickname:'TestCachaste'+i,communeCode:i?'05109':'05701',publicRanking:true,allowChallenges:true,showCommune:true,avatar:i});
+  await call(i,'save_profile',{nickname:'TestCachaste'+i,communeCode:i?'05109':'05701',publicRanking:true,allowChallenges:true,showCommune:true,avatar:i,communityVersion:'2026-10-23'});
  }
  record('Two independent accounts authenticate through real GoTrue over HTTP');
  const denied=await clients[0].rpc('cachaste_competition',{operation:'dashboard',payload:{}});assert.equal(denied.error?.code,'42501');
@@ -76,6 +76,10 @@ try{
  const password=randomUUID()+randomUUID(),updated=await recoveryClient.auth.updateUser({password});if(updated.error)throw updated.error;await recoveryClient.auth.signOut();
  const former=await clients[1].auth.signInWithPassword(credentials[1]);assert.ok(former.error);credentials[1].password=password;const renewed=await clients[1].auth.signInWithPassword(credentials[1]);if(renewed.error)throw renewed.error;record('A real Auth recovery token changes the password and the former password is rejected; no email is sent by fixtures');
  await db.query("update cachaste.settings set environment='production'");const locked=await clients[0].rpc('cachaste_competition',{operation:'rankings',payload:{mode:'duel',subject:'M1',scope:'Chile'}});assert.equal(locked.error?.code,'42501');assert.equal((await clients[0].rpc('cachaste_access')).data.active,false);record('Restoring production environment rejects the same test entitlement for competition and education');
+ const consent=(await call(0,'profile')).profile;assert.equal(consent.community_version,'2026-10-23');assert.ok(consent.community_accepted_at);
+ await call(0,'report',{userId:users[1],reason:'nickname',reporter_id:users[1]});
+ const report=(await db.query('select reporter_id,target_id,status from cachaste.reports where reporter_id=$1',[users[0]])).rows[0];assert.equal(report.reporter_id,users[0]);assert.equal(report.target_id,users[1]);assert.equal(report.status,'pending');
+ await call(0,'block',{userId:users[1]});assert.equal((await call(0,'blocked_users')).users[0].id,users[1]);await call(0,'unblock',{userId:users[1]});assert.equal((await call(0,'blocked_users')).users.length,0);record('Explicit community consent and private report/block actions survive real HTTP Auth without a subscription');
  await call(0,'delete_account',{confirmation:'ELIMINAR'});assert.equal((await db.query('select count(*)::int n from auth.users where id=$1',[users[0]])).rows[0].n,0);const erased=await clients[0].rpc('cachaste_competition',{operation:'profile',payload:{}});assert.ok(erased.error);users.shift();record('A recently authenticated account can erase its identity without a subscription; its old session stops working');
  await writeFile('reports/competition-online-integration.json',JSON.stringify({scope:'disposable local Supabase; real HTTP Auth/PostgREST, not hosted production',events,passed:events.length,failed:0},null,2)+'\n');
 }finally{
