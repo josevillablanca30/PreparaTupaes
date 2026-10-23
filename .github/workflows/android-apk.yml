@@ -148,11 +148,7 @@ jobs:
           profile: pixel_2
           disable-animations: true
           emulator-options: -no-window -gpu software -memory 3072 -no-snapshot -noaudio -no-boot-anim -feature -Vulkan
-          script: |
-            "$ANDROID_HOME/emulator/emulator" -version
-            adb shell getprop ro.build.version.sdk
-            adb shell getprop ro.build.version.release
-            bash scripts/run-android-installed-qa.sh
+          script: bash scripts/run-android-installed-qa.sh
       - name: Conservar resultados Android
         if: always()
         uses: actions/upload-artifact@v4
