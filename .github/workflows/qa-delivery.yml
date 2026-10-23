@@ -95,9 +95,9 @@ jobs:
               for index,path in enumerate(group):
                   tile=ImageOps.contain(Image.open(path).convert('RGB'),(width-8,height));x=index%cols*width;y=index//cols*(height+38)+48;sheet.paste(tile,(x+(width-tile.width)//2,y+32));draw.text((x+5,y+3),path.stem[:34],font=font,fill='#210c42')
               dest=out/(title+'.jpg');sheet.save(dest,quality=78,optimize=True)
-              print('CACHASTE_REVIEW_IMAGE '+dest.name+' '+base64.b64encode(dest.read_bytes()).decode())
+              print('CACHASTE_REVIEW_IMAGE '+dest.name)
           closure=Path('reports/cachaste-rc2-verification.json')
-          if closure.exists():
+          if closure.exists() and spec.get('version')=='1.5.0-rc2':
               expected=json.loads(closure.read_text())
               assert summary.get('apkSha256')==expected['apkSha256'] and summary.get('apkRevision')==expected['sourceSha']
               assert summary.get('nativeScreenshots')==65 and not summary.get('nativeFailures')

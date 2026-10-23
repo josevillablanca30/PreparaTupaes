@@ -1,9 +1,9 @@
 {
-  "sourceSha": "037b863f1a21b5055392fcfd9ae32e291542da10",
-  "androidRun": 39960691720,
-  "integrationRun": 39958858061,
-  "version": "1.5.0-rc2",
-  "versionCode": 29,
-  "request": 4,
-  "notes": "APK rc2 y recorrido Android 16 completo; captura sincronizada con fotogramas realmente comprometidos. Billing permanece cerrado hasta validación oficial."
+  "sourceSha": "393293cec6ece1330c43c60c954ef3a83d7934ce",
+  "androidRun": 39990328787,
+  "integrationRun": 39990328742,
+  "version": "1.5.0-rc3",
+  "versionCode": 30,
+  "request": 5,
+  "notes": "Restauración resiliente, control nativo de acceso a las cinco materias y prueba instalada del identificador comercial. Compras oficiales permanecen cerradas."
 }
