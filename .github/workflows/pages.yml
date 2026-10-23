@@ -3,10 +3,10 @@ name: Pages · pruebas móviles y despliegue
 on:
   push:
     branches: [main, work/cachaste-motor-duolingo-20261016]
-    paths-ignore: ['README.md', 'docs/**', 'reports/**']
+    paths-ignore: ['README.md', 'docs/**', 'reports/**', '.github/workflows/qa-delivery.yml', 'qa-delivery-request.json']
   pull_request:
     branches: [main, work/quests-progress-ui-20261015]
-    paths-ignore: ['README.md', 'docs/**', 'reports/**']
+    paths-ignore: ['README.md', 'docs/**', 'reports/**', '.github/workflows/qa-delivery.yml', 'qa-delivery-request.json']
   workflow_dispatch:
 
 permissions:

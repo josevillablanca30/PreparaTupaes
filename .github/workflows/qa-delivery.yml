@@ -1,0 +1,99 @@
+name: Android · paquete de revisión verificable
+on:
+  push:
+    branches: [work/cachaste-motor-duolingo-20261016]
+    paths: ['.github/workflows/qa-delivery.yml','qa-delivery-request.json']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cachaste-qa-delivery
+  cancel-in-progress: true
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Esperar la ejecución Android indicada sin recompilar ni publicar
+        id: source
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs=require('fs'),spec=JSON.parse(fs.readFileSync('qa-delivery-request.json','utf8'));
+            core.setOutput('run',String(spec.androidRun));
+            core.setOutput('integration',String(spec.integrationRun));
+            for(let i=0;i<150;i++){
+              const {data:r}=await github.rest.actions.getWorkflowRun({...context.repo,run_id:spec.androidRun});
+              if(r.head_sha!==spec.sourceSha)throw new Error('El artefacto pertenece a otro commit');
+              if(r.status==='completed'){spec.androidConclusion=r.conclusion;fs.writeFileSync('qa-source.json',JSON.stringify(spec,null,2));core.info('Android terminó: '+r.conclusion);return;}
+              await new Promise(resolve=>setTimeout(resolve,15000));
+            }
+            throw new Error('La ejecución Android todavía no terminó');
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ steps.source.outputs.run }}
+          github-token: ${{ github.token }}
+          path: qa-input/android
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ steps.source.outputs.integration }}
+          github-token: ${{ github.token }}
+          path: qa-input/integration
+      - name: Preparar revisión de capturas, firma y contenido del APK
+        run: |
+          python3 -m pip install --quiet Pillow==11.3.0
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64,hashlib,json,re,shutil,zipfile,subprocess,os,xml.etree.ElementTree as ET
+          from PIL import Image,ImageOps,ImageDraw,ImageFont
+          root=Path('qa-input');out=Path('qa-delivery');out.mkdir(exist_ok=True)
+          spec=json.loads(Path('qa-source.json').read_text());summary=dict(spec)
+          images=sorted(root.rglob('*.png'));summary['nativeScreenshots']=len(images)
+          reportfiles=list(root.rglob('competition-online-integration.json'))
+          if reportfiles:
+              online=json.loads(reportfiles[0].read_text());summary['realAuthChecks']=online.get('passed');shutil.copy(reportfiles[0],out/'competition-online-integration.json')
+          apks=list(root.rglob('app-debug.apk'))
+          if apks:
+              apk=apks[0];target=out/'Cachaste-v1.5.0-rc1.apk';shutil.copy(apk,target);summary['apkSha256']=hashlib.sha256(target.read_bytes()).hexdigest();summary['apkBytes']=target.stat().st_size
+              with zipfile.ZipFile(target) as z:
+                  names=z.namelist();html=z.read('assets/competencia.html').decode();assert 'content="'+spec['sourceSha']+'"' in html
+                  assert not any('fixture' in n or n.endswith('.sql') or 'service_role' in n for n in names)
+                  assert b'service_role' not in z.read('assets/competition-config.js')
+                  summary['apkRevision']=spec['sourceSha'];summary['testFixturesInCandidate']=False
+              sdk=Path(os.environ['ANDROID_HOME']);aapt=sorted(sdk.glob('build-tools/*/aapt'))[-1]
+              badging=subprocess.check_output([str(aapt),'dump','badging',str(target)],text=True);first=badging.splitlines()[0];summary['package']=first
+              assert "versionCode='28'" in first and "versionName='1.5.0-rc1'" in first
+              signer=sorted(sdk.glob('build-tools/*/apksigner'))[-1]
+              cert=subprocess.check_output([str(signer),'verify','--print-certs',str(target)],text=True);(out/'APK-CERTIFICATE.txt').write_text(cert);summary['certificate']=cert.splitlines()[:5]
+          xml=[]
+          for path in root.rglob('TEST-*.xml'):
+              try:
+                  suite=ET.parse(path).getroot();xml.append(dict(suite.attrib))
+              except ET.ParseError:pass
+          summary['nativeTestSuites']=xml
+          native=out/'Capturas-Android';native.mkdir(exist_ok=True)
+          for im in images:shutil.copy(im,native/im.name)
+          fontpath='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+          font=ImageFont.truetype(fontpath,17)
+          comp=[p for p in images if 'competition-' in p.name];edu=[p for p in images if p not in comp]
+          groups=[('Competencia-Android',comp)]+[('Educacion-Android-'+str(i//12+1),edu[i:i+12]) for i in range(0,len(edu),12)]
+          for title,group in groups:
+              if not group:continue
+              cols=4;width=360 if title.startswith('Competencia') else 260;height=640 if width==360 else 462;rows=(len(group)+cols-1)//cols
+              sheet=Image.new('RGB',(cols*width,rows*(height+38)+48),'#f8f5ff');draw=ImageDraw.Draw(sheet);draw.text((12,12),title+' · capturas del emulador; competition-fixture = datos aislados',font=font,fill='#210c42')
+              for index,path in enumerate(group):
+                  tile=ImageOps.contain(Image.open(path).convert('RGB'),(width-8,height));x=index%cols*width;y=index//cols*(height+38)+48;sheet.paste(tile,(x+(width-tile.width)//2,y+32));draw.text((x+5,y+3),path.stem[:34],font=font,fill='#210c42')
+              dest=out/(title+'.jpg');sheet.save(dest,quality=78,optimize=True)
+              print('CACHASTE_REVIEW_IMAGE '+dest.name+' '+base64.b64encode(dest.read_bytes()).decode())
+          (out/'Verificacion-APK.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')
+          print('CACHASTE_QA_SUMMARY '+json.dumps(summary,ensure_ascii=False))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Cachaste-Revision-Android-${{ github.run_id }}
+          path: qa-delivery/
+          if-no-files-found: error
+          retention-days: 30
