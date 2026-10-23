@@ -2,6 +2,6 @@
   "sourceSha": "7c507cd01f4a3cddf8ffdd4ac44a1201ced41d7e",
   "androidRun": 39891307782,
   "integrationRun": 39891307745,
-  "request": 0,
+  "request": 1,
   "notes": "Candidata beta; competencia remota y cobros todavía no activados. Las capturas competition-fixture usan identidades aisladas del APK de pruebas."
 }
