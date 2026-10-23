@@ -25,9 +25,9 @@
   const purchases=data?.purchases;if(!Array.isArray(purchases)||purchases.length>10||typeof data?.pending!=='boolean')throw Error('VERIFICATION_UNAVAILABLE');
   for(const purchase of purchases)await server({action:'verify',purchaseToken:purchase.purchaseToken});
   await server({action:'refresh'});await client.connect();
-  if(client.billingUnavailable||client.serviceReady===false||!client.user)throw Error('VERIFICATION_UNAVAILABLE');
+  if(client.billingUnavailable||client.nativeAccessUnavailable||client.serviceReady===false||!client.user)throw Error('VERIFICATION_UNAVAILABLE');
   purchaseBlocked=data.pending;
-  say(client.premium?'Tu suscripción está validada. Ya tienes acceso competitivo.':data?.pending?'Google Play está procesando el pago. El acceso se activará cuando lo confirme.':'No encontramos una suscripción vigente para esta cuenta. Puedes revisar tus suscripciones en Google Play.');
+  say(client.premium?'Tu suscripción está validada. Ya tienes acceso completo.':data?.pending?'Google Play está procesando el pago. El acceso se activará cuando lo confirme.':'No encontramos una suscripción vigente para esta cuenta. Puedes revisar tus suscripciones en Google Play.');
  }
  const errors={USER_CANCELED:'Cancelaste la compra. No se activó una suscripción desde esta pantalla.',ACCOUNT_MISMATCH:'La compra está vinculada a otra cuenta de ¿Cachaste?. Ingresa con la cuenta original.',RECEIPT_ALREADY_LINKED:'Esta compra ya está vinculada a otra cuenta. Ingresa con la cuenta original.',OFFER_UNAVAILABLE:'La oferta cambió o ya no está disponible. Actualiza los planes antes de continuar.',BILLING_NOT_CONFIGURED:'La contratación aún está pendiente de configuración. No se iniciará ningún cobro.',NATIVE_REQUIRED:'Las compras y la restauración se realizan desde la versión de Google Play.'};
  async function perform(action){

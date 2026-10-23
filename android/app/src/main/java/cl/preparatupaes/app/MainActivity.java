@@ -26,7 +26,13 @@ public class MainActivity extends Activity {
     private static final String PREFS = "cachaste-navigation";
     private WebView webView;
     private PlayBillingController playBilling;
+    private SubscriptionAccessController subscriptionAccess;
+    private final android.os.Handler accessClock=new android.os.Handler(android.os.Looper.getMainLooper());
+    private final Runnable checkAccess=new Runnable(){public void run(){enforceEducationalAccess();if(!destroying)accessClock.postDelayed(this,30000);}};
     private boolean destroying;
+
+    private boolean mayOpen(String url){return !SubscriptionLease.requiresSubscription(getPackageName(),url)||(subscriptionAccess!=null&&subscriptionAccess.hasAccess());}
+    private void enforceEducationalAccess(){if(webView!=null&&!mayOpen(webView.getUrl())){webView.stopLoading();webView.loadUrl(SUBSCRIPTION);}}
 
     private boolean isApplicationPage(String url) {
         if (url == null) return false;
@@ -45,6 +51,7 @@ public class MainActivity extends Activity {
         webView = new WebView(this);
         webView.setTag("cachaste-web");
         playBilling = new PlayBillingController(this,webView);
+        subscriptionAccess = new SubscriptionAccessController(this,webView);
         webView.setBackgroundColor(0xfffaf9fe);
         WebView.setWebContentsDebuggingEnabled((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
         WebSettings settings = webView.getSettings();
@@ -60,6 +67,7 @@ public class MainActivity extends Activity {
         final WebViewAssetLoader loader = new WebViewAssetLoader.Builder()
             .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this)).build();
         webView.setWebViewClient(new WebViewClient() {
+            @Override public void onPageStarted(WebView view,String url,android.graphics.Bitmap icon){if(!mayOpen(url)){view.stopLoading();view.loadUrl(SUBSCRIPTION);}}
             @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 return loader.shouldInterceptRequest(request.getUrl());
             }
@@ -72,10 +80,10 @@ public class MainActivity extends Activity {
                 if (url.startsWith("file:///android_asset/suscripcion.html")) { view.loadUrl(SUBSCRIPTION); return true; }
                 if (url.startsWith(ASSETS) && !isApplicationPage(url)) {
                     String local = "file:///android_asset/" + url.substring(ASSETS.length());
-                    if (isApplicationPage(local)) view.loadUrl(local);
+                    if (isApplicationPage(local)) view.loadUrl(mayOpen(local)?local:SUBSCRIPTION);
                     return true;
                 }
-                if (isApplicationPage(url)) return false;
+                if (isApplicationPage(url)){if(!mayOpen(url)){view.loadUrl(SUBSCRIPTION);return true;}return false;}
                 if ("https".equals(request.getUrl().getScheme())) {
                     try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); }
                     catch (android.content.ActivityNotFoundException ignored) { }
@@ -95,6 +103,7 @@ public class MainActivity extends Activity {
                     now - previous > 10000 && isApplicationPage(recovery) ? recovery : HOME).putLong("render-recovery-at", now).apply();
                 webView = null;
                 if (playBilling != null) { playBilling.close(); playBilling = null; }
+                if (subscriptionAccess != null) { subscriptionAccess.close(); subscriptionAccess = null; }
                 view.destroy();
                 recreate();
                 return true;
@@ -118,8 +127,8 @@ public class MainActivity extends Activity {
         setContentView(viewport);
         viewport.requestApplyInsets();
         String last = state != null ? state.getString("last-page") : getSharedPreferences(PREFS, MODE_PRIVATE).getString("last-page", HOME);
-        if (isApplicationPage(last)) webView.loadUrl(last);
-        else webView.loadUrl("file:///android_asset/inicio.html");
+        if (isApplicationPage(last)) webView.loadUrl(mayOpen(last)?last:SUBSCRIPTION);
+        else webView.loadUrl(mayOpen(HOME)?HOME:SUBSCRIPTION);
     }
 
     @Override protected void onSaveInstanceState(Bundle state) {
@@ -127,11 +136,13 @@ public class MainActivity extends Activity {
         super.onSaveInstanceState(state);
     }
     @Override protected void onPause() {
+        accessClock.removeCallbacks(checkAccess);
         if (webView != null) webView.onPause();
         super.onPause();
     }
     @Override protected void onResume() {
         super.onResume();
+        accessClock.removeCallbacks(checkAccess);accessClock.post(checkAccess);
         if (webView != null) {
             webView.onResume();
             // Every answer is saved synchronously; rendering checks the absolute exam deadline.
@@ -140,6 +151,9 @@ public class MainActivity extends Activity {
     }
     @Override public void onBackPressed() {
         if (webView == null) { super.onBackPressed(); return; }
+        // A locked home must not bounce the Android Back button forever between home and billing.
+        String current=webView.getUrl();
+        if(current!=null&&SUBSCRIPTION.equals(current.split("[?#]",2)[0])&&!mayOpen(HOME)){super.onBackPressed();return;}
         webView.evaluateJavascript(
             "(function(){try{return typeof window.cachasteNativeBack==='function' ? window.cachasteNativeBack() : false}catch(e){return false}})()",
             handled -> {
@@ -153,6 +167,8 @@ public class MainActivity extends Activity {
     }
     @Override protected void onDestroy() {
         destroying = true;
+        accessClock.removeCallbacks(checkAccess);
+        if (subscriptionAccess != null) { subscriptionAccess.close(); subscriptionAccess = null; }
         if (playBilling != null) { playBilling.close(); playBilling = null; }
         if (webView != null) { webView.stopLoading(); webView.destroy(); webView = null; }
         super.onDestroy();

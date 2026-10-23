@@ -4,32 +4,41 @@ export const errors={AUTH_RECOVERY_NOT_READY:'La recuperación se habilitará al
 export function errorMessage(e){const s=String(e?.message||e||'');return Object.entries(errors).find(([key])=>s.includes(key))?.[1]||(/duplicate key/i.test(s)?'Ese nickname ya está en uso. Elige otro.':/fetch|network|timeout|abort/i.test(s)?'No logramos conectarnos. Tu respuesta pendiente se conserva para reintentar.':'No pudimos completar la operación. Vuelve a intentarlo.');}
 export class CompetitionClient{
  constructor(config,storage=globalThis.localStorage){
-  this.config=config;this.storage=storage;this.user=null;this.profile=null;this.premium=false;this.serviceReady=false;this.recovering=false;this.billingUnavailable=false;
+  this.config=config;this.storage=storage;this.user=null;this.profile=null;this.premium=false;this.serviceReady=false;this.recovering=false;this.billingUnavailable=false;this.nativeAccessUnavailable=false;this.nativeRequests=new Map();
+  if(globalThis.CachasteAccess)globalThis.CachasteAccess.onmessage=event=>{try{const data=JSON.parse(event.data),pending=this.nativeRequests.get(data.id);if(!pending)return;this.nativeRequests.delete(data.id);clearTimeout(pending.timer);data.error?pending.reject(Error(data.error)):pending.resolve(data);}catch{}};
   this.configured=!!config?.supabaseUrl&&/^https:\/\/[a-z0-9]+\.supabase\.co$/.test(config.supabaseUrl)&&/^sb_publishable_/.test(config.publishableKey||'');
   this.sdk=this.configured?createClient(config.supabaseUrl,config.publishableKey,{auth:{storage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:typeof window!=='undefined',storageKey:'cachaste-auth-v1'}}):null;
-  this.sdk?.auth.onAuthStateChange(event=>{if(event==='PASSWORD_RECOVERY'){this.recovering=true;setTimeout(()=>globalThis.dispatchEvent?.(new Event('cachaste-auth-recovery')),0);}});
+  this.sdk?.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT')this.clearNativeAccess();if(event==='PASSWORD_RECOVERY'){this.recovering=true;setTimeout(()=>globalThis.dispatchEvent?.(new Event('cachaste-auth-recovery')),0);}});
  }
  async connect(){
   if(!this.sdk)return null;
-  this.premium=false;this.billingUnavailable=false;
+  this.premium=false;this.billingUnavailable=false;this.nativeAccessUnavailable=false;
   if(globalThis.navigator?.onLine===false){this.serviceReady=false;this.premium=false;return null;}
   const control=new AbortController(),timeout=setTimeout(()=>control.abort(),5000);
   let health;try{health=await this.sdk.rpc('cachaste_competition_health').abortSignal(control.signal);}finally{clearTimeout(timeout);}
   this.serviceReady=!health.error&&health.data?.catalogueReady===true;
   if(!this.serviceReady){this.premium=false;return null;}
   const{data:{session}}=await this.sdk.auth.getSession();
-  if(!session){this.user=null;this.profile=null;this.premium=false;return null;}
+  if(!session){this.user=null;this.profile=null;this.premium=false;this.clearNativeAccess();return null;}
   // getUser verifies the session at Auth; a cached JWT or editable metadata never grants Premium.
   this.user=null;this.profile=null;
-  const{data,error}=await this.sdk.auth.getUser();if(error)throw error;this.user=data.user;
+  const{data,error}=await this.sdk.auth.getUser();if(error){this.clearNativeAccess();throw error;}this.user=data.user;
   if(this.config.billingReady===true){
    try{const verified=await this.sdk.functions.invoke('cachaste-play',{body:{action:'refresh'}});this.billingUnavailable=!!verified.error||!!verified.data?.error||typeof verified.data?.premium!=='boolean';}
    catch{this.billingUnavailable=true;}
   }
   // A payment outage must not prevent profile changes, recovery or account deletion.
   // Competitive access stays closed until verification succeeds again.
-  const state=await this.call('profile');this.profile=state.profile;this.premium=state.premium===true&&!this.billingUnavailable;this.season=state.season;return{...state,premium:this.premium};
+  const state=await this.call('profile');this.profile=state.profile;this.premium=state.premium===true&&!this.billingUnavailable;this.season=state.season;
+  if(this.premium){try{const access=await this.nativeAccess('verify',session.access_token);this.nativeAccessUnavailable=access?.required===true&&access.active!==true;}catch{this.nativeAccessUnavailable=true;}}
+  else if(!this.billingUnavailable)this.clearNativeAccess();
+  return{...state,premium:this.premium};
  }
+ nativeAccess(action,token){
+  if(!globalThis.CachasteAccess?.postMessage)return Promise.resolve(null);
+  return new Promise((resolve,reject)=>{const id=crypto.randomUUID(),timer=setTimeout(()=>{this.nativeRequests.delete(id);reject(Error('ACCESS_UNAVAILABLE'));},20000);this.nativeRequests.set(id,{resolve,reject,timer});try{globalThis.CachasteAccess.postMessage(JSON.stringify({id,action,token,userId:this.user?.id}));}catch(error){this.nativeRequests.delete(id);clearTimeout(timer);reject(error);}});
+ }
+ clearNativeAccess(){this.nativeAccess('clear').catch(()=>{});}
  async call(operation,payload={}){
   if(!this.sdk)throw new Error('NETWORK_UNCONFIGURED');
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
@@ -40,7 +49,7 @@ export class CompetitionClient{
  async signUp(email,password){if(!this.sdk||!this.serviceReady)throw new Error('SERVICE_NOT_READY');const{data,error}=await this.sdk.auth.signUp({email,password});if(error)throw error;if(data.session)await this.connect();return!!data.session;}
  async resetPassword(email){if(!this.sdk||!this.serviceReady)throw new Error('SERVICE_NOT_READY');if(!this.config.authReturnUrl||!this.config.authReturnUrl.startsWith('https://'))throw new Error('AUTH_RECOVERY_NOT_READY');const{error}=await this.sdk.auth.resetPasswordForEmail(email,{redirectTo:this.config.authReturnUrl});if(error)throw error;}
  async updatePassword(password){if(!this.sdk||!this.user||!this.recovering)throw new Error('AUTH_REQUIRED');const{error}=await this.sdk.auth.updateUser({password});if(error)throw error;await this.signOut();}
- async signOut(){if(this.sdk){const{error}=await this.sdk.auth.signOut({scope:'local'});if(error)throw error;}this.user=null;this.profile=null;this.premium=false;this.recovering=false;this.billingUnavailable=false;}
+ async signOut(){this.clearNativeAccess();if(this.sdk){const{error}=await this.sdk.auth.signOut({scope:'local'});if(error)throw error;}this.user=null;this.profile=null;this.premium=false;this.recovering=false;this.billingUnavailable=false;this.nativeAccessUnavailable=false;}
  key(k){return'cachaste-competition-v1:'+this.user.id+':'+k;}
  request(scope){const key=this.key('request:'+scope);let id=this.storage.getItem(key);if(!id){id=crypto.randomUUID();this.storage.setItem(key,id);}return id;}
  clearRequest(scope){this.storage.removeItem(this.key('request:'+scope));}

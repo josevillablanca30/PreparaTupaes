@@ -28,8 +28,11 @@ try{
  }
  record('Two independent accounts authenticate through real GoTrue over HTTP');
  const denied=await clients[0].rpc('cachaste_competition',{operation:'dashboard',payload:{}});assert.equal(denied.error?.code,'42501');
+ const noAccess=await clients[0].rpc('cachaste_access');assert.ifError(noAccess.error);assert.equal(noAccess.data.active,false);assert.equal(noAccess.data.validUntilMs,null);
  await db.query("update cachaste.settings set environment='test'");
  for(const id of users)await db.query("insert into cachaste.entitlements(user_id,valid_until,source,status,receipt_hash)values($1,now()+interval '1 hour','test_harness','active',$2)",[id,'isolated-ci-'+id]);
+ for(let i=0;i<2;i++){const access=await clients[i].rpc('cachaste_access');assert.ifError(access.error);assert.equal(access.data.userId,users[i]);assert.equal(access.data.active,true);assert.ok(access.data.validUntilMs-access.data.serverTimeMs<=3600000);}
+ record('Educational access reads only each live Auth account and never exceeds its server entitlement');
  record('No subscription means server denial; isolated test entitlement never enables production access');
  const original=await call(0,'create_duel',{subject:'M1',nickname:'TestCachaste1',requestId:randomUUID()});await call(1,'accept',{duelId:original.id});
  let turns=[];for(let i=0;i<2;i++){const d=await call(i,'duel',{duelId:original.id});turns.push(await call(i,'start',{attemptId:d.attemptId}));}
@@ -72,7 +75,7 @@ try{
  const recoveryClient=createClient(url.href,status.ANON_KEY,{auth:{persistSession:false,autoRefreshToken:false}}),verified=await recoveryClient.auth.verifyOtp({type:'recovery',token_hash:link.data.properties.hashed_token});if(verified.error)throw verified.error;
  const password=randomUUID()+randomUUID(),updated=await recoveryClient.auth.updateUser({password});if(updated.error)throw updated.error;await recoveryClient.auth.signOut();
  const former=await clients[1].auth.signInWithPassword(credentials[1]);assert.ok(former.error);credentials[1].password=password;const renewed=await clients[1].auth.signInWithPassword(credentials[1]);if(renewed.error)throw renewed.error;record('A real Auth recovery token changes the password and the former password is rejected; no email is sent by fixtures');
- await db.query("update cachaste.settings set environment='production'");const locked=await clients[0].rpc('cachaste_competition',{operation:'rankings',payload:{mode:'duel',subject:'M1',scope:'Chile'}});assert.equal(locked.error?.code,'42501');record('Restoring production environment rejects the same test entitlement');
+ await db.query("update cachaste.settings set environment='production'");const locked=await clients[0].rpc('cachaste_competition',{operation:'rankings',payload:{mode:'duel',subject:'M1',scope:'Chile'}});assert.equal(locked.error?.code,'42501');assert.equal((await clients[0].rpc('cachaste_access')).data.active,false);record('Restoring production environment rejects the same test entitlement for competition and education');
  await call(0,'delete_account',{confirmation:'ELIMINAR'});assert.equal((await db.query('select count(*)::int n from auth.users where id=$1',[users[0]])).rows[0].n,0);const erased=await clients[0].rpc('cachaste_competition',{operation:'profile',payload:{}});assert.ok(erased.error);users.shift();record('A recently authenticated account can erase its identity without a subscription; its old session stops working');
  await writeFile('reports/competition-online-integration.json',JSON.stringify({scope:'disposable local Supabase; real HTTP Auth/PostgREST, not hosted production',events,passed:events.length,failed:0},null,2)+'\n');
 }finally{

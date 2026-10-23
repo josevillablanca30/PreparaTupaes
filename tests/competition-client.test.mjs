@@ -51,3 +51,15 @@ test('An invalid Auth session clears the previous identity and its public profil
  await assert.rejects(client.connect(),/Invalid session/);
  assert.equal(client.user,null);assert.equal(client.profile,null);assert.equal(client.premium,false);
 });
+test('The native educational bridge receives the Auth token only after a verified entitlement; denied native access stays visible',async()=>{
+ const previous=globalThis.CachasteAccess,requests=[];
+ const bridge={postMessage(raw){const request=JSON.parse(raw);requests.push(request);queueMicrotask(()=>bridge.onmessage({data:JSON.stringify({id:request.id,required:true,active:false})}));}};
+ globalThis.CachasteAccess=bridge;
+ try{
+  const client=signedInClient(async()=>({data:{premium:true}}));
+  client.sdk.auth.getSession=async()=>({data:{session:{access_token:'auth-session-token'}}});
+  await client.connect();assert.equal(client.nativeAccessUnavailable,true);
+  assert.equal(requests[0].action,'verify');assert.equal(requests[0].token,'auth-session-token');
+  client.call=async()=>({profile:null,premium:false});await client.connect();assert.equal(requests.at(-1).action,'clear');
+ }finally{if(previous===undefined)delete globalThis.CachasteAccess;else globalThis.CachasteAccess=previous;}
+});

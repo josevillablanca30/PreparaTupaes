@@ -176,3 +176,52 @@ jobs:
             android/app/build/outputs/apk/debug/APK-CERTIFICATE.txt
           if-no-files-found: error
           retention-days: 30
+
+  commercial-access:
+    name: Acceso comercial · cinco materias
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Empaquetar solo la distribución pública auditada
+        run: |
+          mkdir -p android/app/src/main/assets
+          cp -R dist/. android/app/src/main/assets/
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - name: Preparar SDK y emulador aislado
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0"
+          echo "sdk.dir=$ANDROID_HOME" > android/local.properties
+          sudo chmod a+rw /dev/kvm
+      - name: Verificar el paquete comercial instalado sin habilitar compras
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          arch: x86_64
+          target: google_apis
+          profile: pixel_2
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -feature -Vulkan
+          script: gradle -p android --no-daemon --max-workers=2 -PcachasteCommercialAccessQa=true -Pandroid.testInstrumentationRunnerArguments.class=cl.preparatupaes.app.CommercialAccessTest :app:connectedDebugAndroidTest
+      - name: Conservar evidencia del control comercial
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cachaste-commercial-access-${{ github.run_id }}
+          path: |
+            android/app/build/reports/androidTests/connected/
+            android/app/build/outputs/androidTest-results/connected/
+          if-no-files-found: ignore
+          retention-days: 14
