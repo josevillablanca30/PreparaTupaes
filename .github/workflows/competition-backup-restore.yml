@@ -45,7 +45,7 @@ jobs:
           const temp=await mkdtemp(join(tmpdir(),'cachaste-pg-restore-')),secret=randomBytes(48).toString('hex');
           const target='cachaste_restore_'+randomUUID().replaceAll('-','');let userId=null,created=false,restored;
           const run=(command,args,env={},input=null)=>new Promise((resolve,reject)=>{
-            const p=spawn(command,args,{env:{...process.env,...env},stdio:['pipe','pipe','pipe']});let out='';p.stdout.on('data',b=>out+=b);p.stderr.resume();p.on('error',()=>reject(Error('Backup subprocess unavailable')));p.on('close',n=>n===0?resolve(out):reject(Error('Backup/restore subprocess failed')));p.stdin.end(input);
+            const p=spawn(command,args,{env:{...process.env,...env},stdio:['pipe','pipe','pipe']});let out='',err='';p.stdout.on('data',b=>out+=b);p.stderr.on('data',b=>{if(err.length<4000)err+=b;});p.stdin.on('error',()=>{});p.on('error',()=>reject(Error('Backup subprocess unavailable')));p.on('close',n=>n===0?resolve(out):reject(Error('Backup/restore subprocess failed: '+err.split('\n').filter(x=>/error:|ERROR|FATAL|OCI|Error response/.test(x)).slice(0,2).join(' ').slice(0,500))));p.stdin.end(input);
           });
           try{
             const email='backup-'+randomUUID()+'@example.invalid',password=randomUUID()+randomUUID();
