@@ -148,10 +148,8 @@ jobs:
           target: google_apis
           profile: pixel_2
           disable-animations: true
-          script: |
-            gradle -p android --no-daemon :app:connectedDebugAndroidTest
-            mkdir -p android/app/build/outputs/didactic-screens
-            adb pull /data/local/tmp/cachaste-didactic-screens/. android/app/build/outputs/didactic-screens/
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -feature -Vulkan
+          script: bash scripts/run-android-installed-qa.sh
       - name: Reintentar emulador Android 35 si el SDK 36 falla
         id: emulator_fallback
         if: steps.emulator_primary.outcome == 'failure'
@@ -162,10 +160,8 @@ jobs:
           target: google_apis
           profile: pixel_2
           disable-animations: true
-          script: |
-            gradle -p android --no-daemon :app:connectedDebugAndroidTest
-            mkdir -p android/app/build/outputs/didactic-screens
-            adb pull /data/local/tmp/cachaste-didactic-screens/. android/app/build/outputs/didactic-screens/
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -feature -Vulkan
+          script: bash scripts/run-android-installed-qa.sh
       - name: Confirmar pruebas nativas antes de publicar APK
         if: always() && steps.emulator_primary.outcome != 'success' && steps.emulator_fallback.outcome != 'success'
         run: |
@@ -178,6 +174,7 @@ jobs:
           name: cachaste-qa-android-${{ github.run_id }}
           path: |
             android/app/build/reports/androidTests/connected/
+            android/app/build/outputs/androidTest-results/connected/
             android/app/build/outputs/didactic-screens/
           if-no-files-found: ignore
           retention-days: 3

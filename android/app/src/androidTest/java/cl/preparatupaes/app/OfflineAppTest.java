@@ -412,6 +412,7 @@ public class OfflineAppTest {
     }
 
     @Test public void competitiveVisualReferenceJourneyUsesTestApkFixturesOnly() throws Exception {
+        android.util.Log.i("CachasteQa","Competition visual fixture: starting");
         StringBuilder fixture=new StringBuilder();
         try(BufferedReader reader=new BufferedReader(new InputStreamReader(InstrumentationRegistry.getInstrumentation().getContext().getAssets().open("competition-fixture.js")))) {
             String line;while((line=reader.readLine())!=null)fixture.append(line).append('\n');
@@ -422,18 +423,25 @@ public class OfflineAppTest {
             web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#rankings");
         });
         waitFor("window.CachasteCompetition && document.querySelectorAll('.ranking-row').length===6");
+        android.util.Log.i("CachasteQa","Competition rankings ready");
         assertEquals("true",js("document.documentElement.scrollWidth<=innerWidth+1"));
         captureDidacticScreen("competition-fixture-rankings");
+        android.util.Log.i("CachasteQa","Competition rankings captured");
         js("location.hash='#duelos';true");
         waitFor("document.querySelectorAll('.duel-row').length===2");
         captureDidacticScreen("competition-fixture-duelos");
+        android.util.Log.i("CachasteQa","Competition home captured");
         js("document.querySelector('[data-action=challenge]').click();true");
         waitFor("document.querySelector('#invite-form input[name=value]')");
         js("document.querySelector('#invite-form input[name=value]').value='CataPAES';document.querySelector('#invite-form button[type=submit]').click();true");
         waitFor("document.querySelector('.versus-player') && document.querySelector('[data-action=start-duel]')");
         assertEquals("true",js("[...document.querySelectorAll('#competition-root button')].filter(n=>n.offsetWidth>0).every(n=>n.getBoundingClientRect().height>=48)"));
         captureDidacticScreen("competition-fixture-vs");
+        android.util.Log.i("CachasteQa","Competition VS captured");
         js("document.querySelector('[data-action=start-duel]').click();true");
+        waitFor("document.querySelector('.question-visual svg')");
+        assertEquals("true",js("document.querySelector('.question-visual figcaption').textContent.includes('Asistencia a talleres')"));
+        captureDidacticScreen("competition-fixture-question");
         for(int i=0;i<10;i++) {
             waitFor("document.querySelector('.question-meta strong')?.textContent.includes('"+(i+1)+"/10')");
             assertEquals("0",js("document.querySelectorAll('.selected-feedback,.tutor-review-card').length"));
@@ -441,6 +449,7 @@ public class OfflineAppTest {
         }
         waitFor("document.querySelector('.result-score')");
         captureDidacticScreen("competition-fixture-result");
+        android.util.Log.i("CachasteQa","Competition result captured");
         js("document.querySelector('[data-action=review]').click();true");
         waitFor("document.querySelector('.tutor-review-card')");
         captureDidacticScreen("competition-fixture-tutor");

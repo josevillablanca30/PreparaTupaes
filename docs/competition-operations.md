@@ -35,6 +35,8 @@ La comprobación pública de salud devuelve únicamente versión y disponibilida
 
 Antes del lanzamiento configurar confirmación de correo y proveedor SMTP adecuado, URL HTTPS de retorno/recuperación y política de contraseñas de al menos doce caracteres en Supabase Auth. La configuración local de pruebas no es la configuración de producción. Para Google OAuth se necesitan las credenciales oficiales; no se inventan.
 
+El retorno de recuperación utiliza el evento verificado `PASSWORD_RECOVERY` del SDK y exige volver a iniciar sesión después de actualizar la contraseña. `authReturnUrl` permanece en `null` hasta disponer de una página HTTPS publicada y autorizada en Auth; mientras tanto la interfaz explica que el envío de recuperación está pendiente, sin simular correos ni cambios de contraseña. Probar el enlace desde el correo y desde Android antes de abrir el servicio.
+
 Los precios ya definidos son $2.490 semanal, $7.990 mensual y $64.990 anual, con siete días de prueba sujetos a elegibilidad y posterior renovación mensual. No hay productos oficiales conectados ni cobros habilitados. Antes de conceder acceso comercial, un verificador de Google Play en servidor debe validar compra/renovación/cancelación, vincularla al UUID de Auth, guardar un hash único de recibo y actualizar `cachaste.entitlements`. El teléfono y sus metadatos no pueden modificar esa tabla.
 
 La APK candidata sigue siendo beta. No se debe publicar como versión comercial ni habilitar acceso ficticio para sortear los pendientes. La eliminación desde Perfil exige contraseña reciente y borra la identidad competitiva en servidor; conserva el aprendizaje local. Falta configurar la URL pública de solicitud de eliminación y los enlaces definitivos de privacidad para la ficha de Play.

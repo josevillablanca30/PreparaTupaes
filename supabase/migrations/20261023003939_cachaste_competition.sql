@@ -221,7 +221,7 @@ declare a cachaste.attempts;q cachaste.questions; safe jsonb; begin
  if not found then raise exception 'NOT_FOUND';end if;
  if a.status='active' and a.position<cardinality(a.question_keys)then
   select * into q from cachaste.questions where key=a.question_keys[a.position+1];
-  safe:=jsonb_build_object('key',q.key,'question',q.body->'question','options',q.body->'options','passage',q.body->'passage','concept',q.concept);
+  safe:=jsonb_build_object('key',q.key,'question',q.body->'question','options',q.body->'options','visual',q.body->'visual','passage',q.body->'passage','concept',q.concept);
  end if;
  return jsonb_build_object('id',a.id,'duelId',a.duel_id,'kind',a.kind,'subject',a.subject,'track',a.track,'status',a.status,'position',a.position,'total',cardinality(a.question_keys),'deadline',a.deadline,'questionDeadline',least(a.deadline,a.presented_at+make_interval(secs=>a.per_question_seconds)),'serverNow',clock_timestamp(),'category',a.category,'question',safe,'correct',case when a.kind<>'duel' and a.status='complete'then a.correct else null end);
 end$$;

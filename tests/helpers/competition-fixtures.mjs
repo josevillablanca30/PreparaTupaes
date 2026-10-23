@@ -9,7 +9,7 @@ export function finished(outcome='win'){const winner=outcome==='draw'?null:outco
 export const ranking={season:'2026-10-19',scope:'Región',participating:true,category:'express-M1--2026-10-19-v1',top:['CataPAES','LectorPro','MatiMaster','BioCrack','HistoriaTop'].map((nickname,i)=>({nickname,avatar:i+1,position:i+1,commune:['Viña del Mar','Quilpué','Valparaíso','Villa Alemana','Quilpué'][i],region:'Valparaíso',value:15-i,total:15,user_id:'fixture-'+i,wins:12,losses:4,draws:0,streak:3})),me:{nickname:actor.nickname,avatar:0,position:12,commune:'San Felipe',region:'Valparaíso',value:8,total:15,user_id:actor.id,wins:12,losses:4,draws:0,streak:3},nearby:[]};
 export function attempt(position=0,status='active'){return{id:'40000000-0000-4000-8000-000000000001',duelId:duel().id,kind:'duel',subject:'M1',track:'',position,status,total:10,deadline:new Date(Date.now()+900000).toISOString(),questionDeadline:new Date(Date.now()+90000).toISOString(),serverNow:new Date().toISOString(),question:status==='active'?{key:'fixture-math',question:'¿Cuánto es 2 + 3?',options:['4','5','6','7'],concept:'Números y cantidades'}:null};}
 export function dashboard(done=false,outcome='win'){return{season:'2026-10-19',stats:{stars:8,wins:12,losses:4,draws:0,streak:3},history:{wins:done?13:12,losses:4,draws:0,streak:done?4:3},duels:[done?finished(outcome):duel('invited'),{...duel('invited'),id:'30000000-0000-4000-8000-000000000002',creator:opponent,opponent:actor}]};}
-export async function fixturePage(page,{signed=true,premium=true,outcome='win',failAnswerOnce=false,metadata={}}={}){
+export async function fixturePage(page,{signed=true,premium=true,outcome='win',failAnswerOnce=false,metadata={},visual=null}={}){
  let pos=0,done=false,lost=false;const requests=[];
  if(signed)await page.addInitScript(value=>localStorage.setItem('cachaste-auth-v1',JSON.stringify(value)),session());
  await page.route('https://jmobinmdwrmdqrxtcruj.supabase.co/**',async route=>{
@@ -25,7 +25,7 @@ export async function fixturePage(page,{signed=true,premium=true,outcome='win',f
    else if(op==='dashboard')data=dashboard(done,outcome);
    else if(['create_duel','join_code','accept','random'].includes(op))data=duel();
    else if(op==='duel')data=done?finished(outcome):duel();
-   else if(op==='start'||op==='attempt')data=attempt(pos,done?'complete':'active');
+   else if(op==='start'||op==='attempt'){data=attempt(pos,done?'complete':'active');if(data.question&&visual)data.question.visual=visual;}
    else if(op==='answer'){pos=Math.max(pos,p.position+1);done=pos===10;data=attempt(pos,done?'complete':'active');if(failAnswerOnce&&!lost){lost=true;await route.abort('failed');return;}}
    else if(op==='review')data={errors:[{question:{concept:'Números y cantidades',question:'¿Cuánto es 2 + 3?',options:['4','5','6','7'],steps:['Partimos con dos.','Agregamos tres unidades.','Llegamos a cinco.'],easy:'Imagina dos lápices y luego agrega tres.',example:'Con cuatro lápices y uno más también tienes cinco.',explanations:['Faltó sumar una unidad.']},choice:0,correct:false,answer:1}]};
    else if(op==='objectives')data={objectives:['Números y cantidades']};

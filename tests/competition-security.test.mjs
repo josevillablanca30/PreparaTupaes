@@ -7,6 +7,7 @@ test('Competition database: migration, access control, authoritative scores, geo
  const db=await database();t.after(()=>db.close());
  await t.test('802 questions, 346 communes, 16 regions; all private tables have RLS',async()=>{
   assert.equal((await db.query('select count(*)::int n from cachaste.questions')).rows[0].n,802);
+  assert.equal((await db.query("select count(*)::int n from cachaste.questions where body->'visual' is not null and body->'visual'<>'null'::jsonb")).rows[0].n,18);
   assert.equal((await db.query('select count(*)::int n,count(distinct region_code)::int r from cachaste.locations')).rows[0].n,346);
   assert.equal((await db.query("select count(*)::int n from pg_tables where schemaname='cachaste' and not rowsecurity")).rows[0].n,0);
  });
@@ -33,7 +34,10 @@ test('Competition database: migration, access control, authoritative scores, geo
   assert.equal(attempts.length,2);assert.deepEqual(attempts[0].question_keys,attempts[1].question_keys);assert.equal(new Set(attempts[0].question_keys).size,10);
  });
  await t.test('same set, server deadlines, solutions hidden, anti-IDOR and replay-safe answers',async()=>{
+  const stimulus=(await db.query("select key,body->'visual' visual from cachaste.questions where body->'visual'<>'null'::jsonb and not(key=any($1::text[]))limit 1",[attempts[0].question_keys])).rows[0];
+  await db.query('update cachaste.attempts set question_keys[1]=$1 where duel_id=$2',[stimulus.key,duel.id]);
   const a=await rpc(db,0,'start',{attemptId:attempts[0].id});assert.equal(a.total,10);assert.ok(a.deadline);assert.ok(a.question.question);assert.equal(a.question.answer,undefined);assert.equal(a.question.steps,undefined);
+  assert.deepEqual(a.question.visual,stimulus.visual);
   await assert.rejects(rpc(db,1,'attempt',{attemptId:attempts[0].id}),/NOT_FOUND/);await assert.rejects(rpc(db,0,'review',{attemptId:attempts[0].id}),/SOLUTIONS_HIDDEN/);
   const answer=(await db.query('select answer from cachaste.questions where key=$1',[a.question.key])).rows[0].answer;
   const p={attemptId:a.id,position:0,choice:answer,requestId:randomUUID(),elapsedMs:0,score:1000};

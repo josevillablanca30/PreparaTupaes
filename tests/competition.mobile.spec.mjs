@@ -1,10 +1,12 @@
 import{test,expect}from'@playwright/test';
-import{fixturePage}from'./helpers/competition-fixtures.mjs';
+import{fixturePage,session}from'./helpers/competition-fixtures.mjs';
+import{dailyCatalog}from'../scripts/daily-catalog.mjs';
 
 async function layout(page){
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
- expect(await page.locator('#competition-root button:visible').evaluateAll(nodes=>nodes.every(n=>n.getBoundingClientRect().height>=47.5))).toBe(true);
- expect(await page.locator('img').evaluateAll(nodes=>nodes.every(n=>n.complete&&n.naturalWidth>0))).toBe(true);
+ await expect(page.locator('#competition-root')).toHaveAttribute('aria-busy','false');
+ expect(await page.locator('#competition-root button:visible').evaluateAll(nodes=>nodes.map(n=>({label:n.getAttribute('aria-label')||n.textContent,height:n.getBoundingClientRect().height})).filter(n=>n.height<47.5))).toEqual([]);
+ await expect.poll(()=>page.locator('img').evaluateAll(nodes=>nodes.every(n=>n.complete&&n.naturalWidth>0))).toBe(true);
  const nav=await page.locator('.comp-nav').boundingBox();expect(nav.y+nav.height).toBeLessThanOrEqual(await page.evaluate(()=>innerHeight)+1);
 }
 test('Rankings: four modalities, three locations, five subjects and real empty state without authentication',async({page})=>{
@@ -49,4 +51,17 @@ test('Reload after a saved but unconfirmed response never sends the previous cho
 });
 test('Privacy deletion remains available when a subscription is no longer valid',async({page})=>{
  const requests=await fixturePage(page,{premium:false});await page.goto('./competencia.html#perfil');await page.getByRole('button',{name:'Borrar mi perfil público',exact:true}).click();await page.getByRole('button',{name:'Borrar perfil',exact:true}).click();await expect.poll(()=>requests.some(r=>r.operation==='delete_profile')).toBe(true);
+});
+test('A verified SDK recovery event opens password renewal, then clears the session after saving',async({page})=>{
+ await fixturePage(page,{signed:false,premium:false});const s=session(),hash=new URLSearchParams({access_token:s.access_token,refresh_token:s.refresh_token,type:'recovery',expires_in:'3600',token_type:'bearer'});
+ await page.goto('./competencia.html#'+hash);await expect(page.getByRole('heading',{name:'Crea tu nueva contraseña',exact:true})).toBeVisible();await expect(page.locator('.auth-panel')).toContainText('ui-fixture@example.invalid');
+ await page.getByLabel('Nueva contraseña',{exact:true}).fill('Nueva-clave-segura-2026');await page.getByLabel('Repite la nueva contraseña',{exact:true}).fill('Nueva-clave-segura-2026');await page.getByRole('button',{name:'Guardar nueva contraseña',exact:true}).click();await expect(page.getByText('Contraseña actualizada.',{exact:false})).toBeVisible();await expect(page.getByRole('heading',{name:'Entra a tu cuenta',exact:true})).toBeVisible();expect(await page.evaluate(()=>localStorage.getItem('cachaste-auth-v1'))).toBe(null);expect(page.url()).not.toContain('access_token');
+});
+test('Recovery never pretends to send mail while its secure return URL is not configured',async({page})=>{
+ await fixturePage(page,{signed:false});await page.goto('./competencia.html#perfil');await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByRole('button',{name:'Recuperar contraseña',exact:true}).click();await expect(page.locator('#competition-root').getByText('La recuperación se habilitará al configurar el enlace seguro de correo.',{exact:false})).toBeVisible();await expect(page.getByRole('heading',{name:'Revisa tu correo',exact:true})).toHaveCount(0);
+});
+test('Competitive questions retain all five original types of required graph and geometry stimulus',async({page},info)=>{
+ const examples=[...new Map(dailyCatalog().items.filter(q=>q.visual).map(q=>[q.visual.type,q.visual])).values()],visual={};await fixturePage(page,{visual});
+ for(const v of examples){for(const key of Object.keys(visual))delete visual[key];Object.assign(visual,v);await page.goto('./competencia.html#duelos');await expect(page.locator('.duel-row')).toHaveCount(2);await page.getByRole('button',{name:'Desafiar',exact:true}).click();await page.getByRole('textbox',{name:'Nickname',exact:true}).fill('CataPAES');await page.getByRole('button',{name:'Enviar desafío',exact:true}).click();await page.getByRole('button',{name:'Comenzar duelo',exact:true}).click();await expect(page.locator('.question-visual svg')).toBeVisible();await expect(page.locator('.question-visual figcaption')).toHaveText(v.caption);await layout(page);await page.screenshot({path:info.outputPath('competition-stimulus-'+v.type+'.png'),fullPage:true});}
+ expect(examples).toHaveLength(5);
 });

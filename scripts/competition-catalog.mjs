@@ -8,9 +8,9 @@ export function competitionRows(){
  const {items,texts}=dailyCatalog();
  return items.map(q=>{
   const passage=q.passageId?texts.find(t=>t.id===q.passageId):null;
-  const hash=createHash('sha256').update(JSON.stringify([q.question,q.options,q.answer])).digest('hex');
+  const hash=createHash('sha256').update(JSON.stringify([q.question,q.options,q.answer,q.visual||null,passage||null])).digest('hex');
   return {key:q.key,subject:q.subjectKey,track:q.subject||null,module:q.module||null,family:q.family,concept:q.concept,axis:q.axis,difficulty:String(q.difficulty||'orientativa'),eligible:!q.supplementary&&q.examEligible!==false,hash,answer:q.answer,
-   body:{key:q.key,question:q.question,options:q.options,passage:passage||null,concept:q.concept,steps:q.steps,easy:q.easy,example:q.example,explanations:q.explanations,teaching:q.teaching}};
+   body:{key:q.key,question:q.question,options:q.options,visual:q.visual||null,passage:passage||null,concept:q.concept,steps:q.steps,easy:q.easy,example:q.example,explanations:q.explanations,teaching:q.teaching}};
  });
 }
 const quote=v=>v===null?'null':typeof v==='boolean'?String(v):typeof v==='number'?String(v):"'"+String(v).replaceAll("'","''")+"'";

@@ -15,7 +15,7 @@ window.fetch=async(input,init)=>{
   else if(op==='dashboard')data=dashboard(done);
   else if(['create_duel','join_code','accept','random'].includes(op))data=duel();
   else if(op==='duel')data=done?finished():duel();
-  else if(op==='start'||op==='attempt')data=attempt(position,done?'complete':'active');
+  else if(op==='start'||op==='attempt'){data=attempt(position,done?'complete':'active');if(position===0&&data.question)data.question=__CACHASTE_QA_STIMULUS__;}
   else if(op==='answer'){position=Math.max(position,p.position+1);done=position===10;data=attempt(position,done?'complete':'active');}
   else if(op==='review')data={errors:[{question:{concept:'Números y cantidades',question:'¿Cuánto es 2 + 3?',options:['4','5','6','7'],steps:['Partimos con dos unidades.','Agregamos tres unidades.','Dos más tres es cinco.'],easy:'Imagina dos lápices y agrega otros tres.',example:'Cuatro lápices y uno más también forman cinco.',explanations:['Faltó sumar una unidad.']},choice:0,answer:1,correct:false}]};
  }
