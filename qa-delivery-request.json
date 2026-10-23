@@ -1,9 +1,9 @@
 {
-  "sourceSha": "45e81e9633d51660646b3ecdbaba8b57f62c464f",
-  "androidRun": 40001667988,
-  "integrationRun": 39992131048,
-  "version": "1.5.0-rc4",
-  "versionCode": 31,
-  "request": 7,
-  "notes": "VS local exclusivo de beta: dos jugadores en un teléfono, preguntas reales, sin cuenta ni pago. Validación online de backend referenciada desde rc3 sin cambios de servidor. Cobros oficiales cerrados."
+  "sourceSha": "aecc7f60b08622e442ed69b86fb5ccaf77e25bcd",
+  "androidRun": 40012100792,
+  "integrationRun": 40012100739,
+  "version": "1.5.0-rc5",
+  "versionCode": 32,
+  "request": 8,
+  "notes": "Preparación de Play: consentimiento, denuncias privadas y bloqueo. Integración Auth/PostgREST en servidor temporal verificada; migración de comunidad pendiente de aplicar al proyecto alojado por error de conexión. Cobros oficiales y publicación pública siguen cerrados."
 }
