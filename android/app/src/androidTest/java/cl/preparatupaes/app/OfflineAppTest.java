@@ -411,6 +411,23 @@ public class OfflineAppTest {
         assertEquals("5",js("document.querySelectorAll('[data-action=pick-course]').length"));
     }
 
+    @Test public void betaBillingCannotBeEnabledByThePageAndNeverExposesTheBridgeToOfflineEducation() throws Exception {
+        waitFor("window.CachasteDailyApp");
+        assertEquals("\"undefined\"",js("typeof window.CachastePlay"));
+        scenario.onActivity(activity -> web(activity).loadUrl("https://appassets.androidplatform.net/assets/suscripcion.html"));
+        waitFor("window.CachastePlay && document.querySelector('#subscribe') && window.CACHASTE_COMPETITION_CONFIG");
+        assertEquals("true",js("document.querySelector('#subscribe').disabled && document.querySelector('#restore').disabled"));
+        js("window.betaReply=null;CachastePlay.onmessage=e=>window.betaReply=JSON.parse(e.data);CachastePlay.postMessage(JSON.stringify({id:'beta-gate',action:'purchase',userId:'10000000-0000-4000-8000-000000000001',offer:'mensual:'}));true");
+        waitFor("window.betaReply");
+        assertEquals("\"BILLING_NOT_CONFIGURED\"",js("betaReply.error"));
+        captureDidacticScreen("subscription-beta-locked");
+        scenario.onActivity(activity -> web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#duelos"));
+        waitFor("window.CachasteCompetition && window.CachastePlay");
+        js("window.crossPageReply=null;CachastePlay.onmessage=e=>window.crossPageReply=e.data;CachastePlay.postMessage(JSON.stringify({id:'wrong-page',action:'offers'}));true");
+        Thread.sleep(400);
+        assertEquals("null",js("crossPageReply"));
+    }
+
     @Test public void competitiveVisualReferenceJourneyUsesTestApkFixturesOnly() throws Exception {
         android.util.Log.i("CachasteQa","Competition visual fixture: starting");
         StringBuilder fixture=new StringBuilder();

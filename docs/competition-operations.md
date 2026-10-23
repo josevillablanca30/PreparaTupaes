@@ -22,6 +22,8 @@ Aplicar migraciones y esta semilla desde una conexión administrativa revisada. 
 
 La comprobación pública de salud devuelve únicamente versión y disponibilidad del catálogo. Mientras falte el esquema, la interfaz muestra competencia en preparación y no presenta cuentas o resultados demostrativos.
 
+Estado comprobado el 23 de octubre: las dos migraciones están aplicadas en el proyecto alojado. La salud HTTP devuelve `catalogueReady: true`, con 802 preguntas y 346 comunas. No hay perfiles, suscripciones ni resultados precargados. Las versiones del historial remoto se alinearon con los nombres de migración del repositorio. Los avisos informativos de RLS sin políticas corresponden al esquema privado y a su denegación deliberada de acceso directo; no se deben resolver abriendo tablas al cliente.
+
 ## Reglas comprobables
 
 - Cuatro rankings: ensayo, Express, estrellas educativas verificadas y liga de duelos. No hay ponderación.
@@ -40,6 +42,29 @@ El retorno de recuperación utiliza el evento verificado `PASSWORD_RECOVERY` del
 Los precios ya definidos son $2.490 semanal, $7.990 mensual y $64.990 anual, con siete días de prueba sujetos a elegibilidad y posterior renovación mensual. No hay productos oficiales conectados ni cobros habilitados. Antes de conceder acceso comercial, un verificador de Google Play en servidor debe validar compra/renovación/cancelación, vincularla al UUID de Auth, guardar un hash único de recibo y actualizar `cachaste.entitlements`. El teléfono y sus metadatos no pueden modificar esa tabla.
 
 La APK candidata sigue siendo beta. No se debe publicar como versión comercial ni habilitar acceso ficticio para sortear los pendientes. La eliminación desde Perfil exige contraseña reciente y borra la identidad competitiva en servidor; conserva el aprendizaje local. Falta configurar la URL pública de solicitud de eliminación y los enlaces definitivos de privacidad para la ficha de Play.
+
+### Integración Google Play preparada, cobros cerrados
+
+La biblioteca Android está fijada en 9.1.0. El puente de mensajes solo acepta el documento principal `https://appassets.androidplatform.net/assets/suscripcion.html`; nunca páginas educativas `file:`, otros orígenes ni iframes. La beta `cl.preparatupaes.app.sciencebeta` no puede iniciar compras. En el paquete comercial se requiere además compilar con `CACHASTE_PLAY_ENABLED=true`; por defecto permanece apagado.
+
+El cliente consulta las ofertas elegibles de Google Play y usa sus precios. Solo ofrece los tres planes CLP acordados y, cuando Google lo permite, la prueba mensual de siete días. Un recibo o una compra pendiente no otorgan acceso en el teléfono. Restaurar consulta las compras y vuelve a validarlas en servidor.
+
+Las funciones alojadas `cachaste-play` y `cachaste-play-events` están desplegadas con su propia autenticación: Auth y sesión viva para compras; firma OIDC de Google, audiencia y correo de servicio exactos para Pub/Sub. La comprobación HTTP real devuelve `ready:false` y rechaza verificaciones mientras falte configuración. `verify_jwt=false` únicamente desactiva el filtro JWT heredado de la pasarela; no omite esas verificaciones internas.
+
+Antes de habilitar, configurar en **secretos de Edge Functions**, nunca Git ni JavaScript:
+
+- `CACHASTE_PLAY_ENABLED=true`, solo después de configurar y probar los productos oficiales.
+- `GOOGLE_PLAY_SERVICE_ACCOUNT`: JSON de una cuenta de servicio con acceso mínimo de verificación y reconocimiento de compras para `cl.preparatupaes.app` en Google Play Developer API.
+- `PLAY_RECEIPT_ENCRYPTION_KEY`: 32 bytes aleatorios codificados en base64; conservar copia privada separada para recuperar los recibos cifrados. No rotar sin recifrar los recibos anteriores con la clave antigua.
+- `GOOGLE_PLAY_PUBSUB_EMAIL`: correo exacto de la cuenta de servicio usada por la suscripción push autenticada de Pub/Sub. Su audiencia debe ser `https://jmobinmdwrmdqrxtcruj.supabase.co/functions/v1/cachaste-play-events`.
+
+Crear producto `cachaste_premium`, planes `semanal` (P1W, $2.490), `mensual` (P1M, $7.990) y `anual` (P1Y, $64.990), con una oferta mensual P7D gratis cuando corresponda. Configurar notificaciones de desarrollador en tiempo real hacia Pub/Sub. Las pruebas de licencia se rechazan salvo habilitación administrativa explícita `CACHASTE_PLAY_ALLOW_LICENSE_TESTS=true`; aun así requieren una compra de prueba auténtica validada por Google, nunca un permiso inventado.
+
+El servidor contrasta el identificador ofuscado con el UUID de Auth, consulta `subscriptionsv2.get`, reconoce la compra, cifra el token y actualiza el registro en una transacción. Un recibo queda ligado a una sola cuenta. Cancelación conserva acceso hasta vencer; retención, pausa, vencimiento y pago pendiente lo deniegan. Varias compras verificadas de la misma cuenta no se revocan entre sí. Las respuestas antiguas no pueden reactivar un recibo revocado.
+
+La vigencia concedida se limita a doce horas desde la última verificación y al vencimiento de Google, lo que ocurra primero. Al reconectar una versión comercial se revisan recibos de más de cinco minutos; los eventos firmados vuelven a consultar Google. Si estos mecanismos no están disponibles, el acceso no se prolonga indefinidamente.
+
+Antes del lanzamiento faltan las credenciales y los productos oficiales, una compra de licencia real, su restauración y una renovación/cancelación notificada desde Google. Las pruebas automáticas del verificador usan respuestas Google controladas y no sustituyen ese ensayo financiero. No se ha activado ninguna compra ni suscripción comercial.
 
 ## Respaldo y recuperación
 

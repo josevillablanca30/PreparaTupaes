@@ -21,6 +21,7 @@ export class CompetitionClient{
   if(!session){this.user=null;this.profile=null;this.premium=false;return null;}
   // getUser verifies the session at Auth; a cached JWT or editable metadata never grants Premium.
   const{data,error}=await this.sdk.auth.getUser();if(error)throw error;this.user=data.user;
+  if(this.config.billingReady===true){const verified=await this.sdk.functions.invoke('cachaste-play',{body:{action:'refresh'}});if(verified.error)throw new Error('VERIFICATION_UNAVAILABLE');}
   const state=await this.call('profile');this.profile=state.profile;this.premium=state.premium===true;this.season=state.season;return state;
  }
  async call(operation,payload={}){

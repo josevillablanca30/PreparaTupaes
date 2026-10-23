@@ -4,6 +4,15 @@
 # working directory name when running `supabase init`.
 project_id = "cachaste-local"
 
+# Authentication is performed in the handler via Auth.getUser and the live-session RPC.
+# This also supports current publishable keys without trusting an unsigned phone claim.
+[functions.cachaste-play]
+verify_jwt = false
+
+# Google Pub/Sub OIDC signature, audience and service-account email are checked in the handler.
+[functions.cachaste-play-events]
+verify_jwt = false
+
 [api]
 enabled = true
 # Port to use for the API URL.

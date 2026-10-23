@@ -22,13 +22,15 @@ public class MainActivity extends Activity {
     private static final String HOME = "file:///android_asset/inicio.html";
     private static final String ASSETS = "https://appassets.androidplatform.net/assets/";
     private static final String COMPETITION = ASSETS + "competencia.html";
+    private static final String SUBSCRIPTION = ASSETS + "suscripcion.html";
     private static final String PREFS = "cachaste-navigation";
     private WebView webView;
+    private PlayBillingController playBilling;
 
     private boolean isApplicationPage(String url) {
         if (url == null) return false;
         String path = url.split("[?#]", 2)[0];
-        return path.equals(COMPETITION) || path.equals(HOME) || path.equals("file:///android_asset/index.html")
+        return path.equals(COMPETITION) || path.equals(SUBSCRIPTION) || path.equals(HOME) || path.equals("file:///android_asset/index.html")
             || path.equals("file:///android_asset/science.html")
             || path.equals("file:///android_asset/reading.html")
             || path.equals("file:///android_asset/m2.html")
@@ -41,6 +43,7 @@ public class MainActivity extends Activity {
         getWindow().getDecorView().setSystemUiVisibility(android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
         webView = new WebView(this);
         webView.setTag("cachaste-web");
+        playBilling = new PlayBillingController(this,webView);
         webView.setBackgroundColor(0xfffaf9fe);
         WebView.setWebContentsDebuggingEnabled((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
         WebSettings settings = webView.getSettings();
@@ -65,7 +68,8 @@ public class MainActivity extends Activity {
                     view.loadUrl(COMPETITION + (request.getUrl().getFragment() == null ? "" : "#" + request.getUrl().getFragment()));
                     return true;
                 }
-                if (url.startsWith(ASSETS) && !url.split("[?#]",2)[0].equals(COMPETITION)) {
+                if (url.startsWith("file:///android_asset/suscripcion.html")) { view.loadUrl(SUBSCRIPTION); return true; }
+                if (url.startsWith(ASSETS) && !isApplicationPage(url)) {
                     String local = "file:///android_asset/" + url.substring(ASSETS.length());
                     if (isApplicationPage(local)) view.loadUrl(local);
                     return true;
@@ -139,6 +143,7 @@ public class MainActivity extends Activity {
         );
     }
     @Override protected void onDestroy() {
+        if (playBilling != null) { playBilling.close(); playBilling = null; }
         if (webView != null) { webView.stopLoading(); webView.destroy(); webView = null; }
         super.onDestroy();
     }

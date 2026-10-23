@@ -19,7 +19,8 @@ test('Oferta comercial: tres precios CLP y prueba gratuita sin ambigüedad',()=>
 test('Seguridad: no se habilitan compras ni se concede Premium desde la página',()=>{
  assert.equal((html.match(/<button\b/g)||[]).length,2);
  assert.equal((html.match(/<button\b[^>]*\bdisabled\b/g)||[]).length,2);
- assert.doesNotMatch(html,/<script\b/i);
+ assert.deepEqual([...html.matchAll(/<script src="([^"]+)"/g)].map(x=>x[1]),['competition-config.js','competition-client.js','competition-billing.js']);
+ assert.doesNotMatch(html,/<script(?! src=)/i);
  assert.doesNotMatch(html,/localStorage|sessionStorage|purchaseToken|setPremium|grantAccess/i);
 });
 test('Distribución: navegación, compilación y allowlist contemplan suscripción',()=>{
