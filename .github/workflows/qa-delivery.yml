@@ -96,6 +96,14 @@ jobs:
                   tile=ImageOps.contain(Image.open(path).convert('RGB'),(width-8,height));x=index%cols*width;y=index//cols*(height+38)+48;sheet.paste(tile,(x+(width-tile.width)//2,y+32));draw.text((x+5,y+3),path.stem[:34],font=font,fill='#210c42')
               dest=out/(title+'.jpg');sheet.save(dest,quality=78,optimize=True)
               print('CACHASTE_REVIEW_IMAGE '+dest.name+' '+base64.b64encode(dest.read_bytes()).decode())
+          closure=Path('reports/cachaste-rc2-verification.json')
+          if closure.exists():
+              expected=json.loads(closure.read_text())
+              assert summary.get('apkSha256')==expected['apkSha256'] and summary.get('apkRevision')==expected['sourceSha']
+              assert summary.get('nativeScreenshots')==65 and not summary.get('nativeFailures')
+              shutil.copy(closure,out/closure.name)
+              shutil.copy('reports/cachaste-backup-restore-20261023.json',out/'competition-backup-restore.json')
+              shutil.copy('docs/cierre-pendientes-20261023.md',out/'Informe-Cachaste-1.5.0-rc2.md')
           (out/'Verificacion-APK.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')
           print('CACHASTE_QA_SUMMARY '+json.dumps(summary,ensure_ascii=False))
           PY

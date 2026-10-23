@@ -1,0 +1,14 @@
+{
+  "scope": "Disposable PostgreSQL 17 only; not a hosted production restore",
+  "encryptedPgDump": true,
+  "restored": true,
+  "questions": 802,
+  "communes": 346,
+  "authPasswordHashPreserved": true,
+  "sessionsExcluded": true,
+  "refreshTokensExcluded": true,
+  "recoveryTokensCleared": true,
+  "historicalStatsPreserved": true,
+  "migrationHistoryPreserved": true,
+  "rlsAndAclsPreserved": true
+}
