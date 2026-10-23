@@ -26,7 +26,14 @@ try{
  if(history&&(await db.query('select count(*)::int n from supabase_migrations.schema_migrations')).rows[0].n!==0)throw Error('Refusing to restore over an existing migration history');
  if(history)await db.query('drop schema supabase_migrations cascade');
  const toc=await run(['--list'],snapshot.application);
- const list=join(temp,'application.list');await writeFile(list,toc.split('\n').filter(line=>!/^\d+;.*\bSCHEMA - public\b/.test(line)).join('\n'),{mode:0o600});
+ // Fresh Supabase keeps its managed public-schema/default privileges. Every application object ACL remains in the restore.
+ const managed=new Set(['supabase_admin','supabase_auth_admin','supabase_storage_admin','supabase_functions_admin','supabase_realtime_admin','authenticator','pgbouncer']);
+ const list=join(temp,'application.list');await writeFile(list,toc.split('\n').filter(line=>{
+  if(!/^\d+;/.test(line))return true;
+  if(/\bSCHEMA - public\b/.test(line))return false;
+  const owner=line.trim().split(/\s+/).at(-1);
+  return !managed.has(owner);
+ }).join('\n'),{mode:0o600});
  await run(['--no-owner','--exit-on-error','--single-transaction','--data-only'],snapshot.authData);
  await run(['--no-owner','--exit-on-error','--single-transaction','--use-list='+list],snapshot.application);
  // Sessions and refresh/one-time tables are excluded. Clear legacy recovery/change tokens stored on users too.
