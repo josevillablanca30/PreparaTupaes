@@ -3,10 +3,10 @@ name: Pages · pruebas móviles y despliegue
 on:
   push:
     branches: [main, work/cachaste-motor-duolingo-20261016]
-    paths-ignore: ['README.md', 'docs/**', 'reports/**', '.github/workflows/qa-delivery.yml', 'qa-delivery-request.json']
+    paths-ignore: ['README.md', 'docs/**', 'reports/**', '.github/workflows/qa-delivery.yml', 'qa-delivery-request.json', 'scripts/competition-backup.mjs', 'scripts/competition-restore.mjs', '.github/workflows/competition-backup-restore.yml', '.github/workflows/android-apk.yml', '.github/workflows/pages.yml']
   pull_request:
     branches: [main, work/quests-progress-ui-20261015]
-    paths-ignore: ['README.md', 'docs/**', 'reports/**', '.github/workflows/qa-delivery.yml', 'qa-delivery-request.json']
+    paths-ignore: ['README.md', 'docs/**', 'reports/**', '.github/workflows/qa-delivery.yml', 'qa-delivery-request.json', 'scripts/competition-backup.mjs', 'scripts/competition-restore.mjs', '.github/workflows/competition-backup-restore.yml', '.github/workflows/android-apk.yml', '.github/workflows/pages.yml']
   workflow_dispatch:
 
 permissions:

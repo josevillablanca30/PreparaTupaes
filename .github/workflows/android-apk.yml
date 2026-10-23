@@ -2,7 +2,7 @@ name: Android APK · compilación de prueba
 on:
   push:
     branches: [main, work/cachaste-respaldo-2026-10-15, work/cachaste-motor-duolingo-20261016]
-    paths: ['competition-*','competencia.html','supabase/**','daily-*','assets/**','learning-core.js', 'editorial-revisions.js', 'm1-teaching.js', 'study-app.js', 'study-ui.css', 'index.html', 'inicio.html', 'science.html', 'science-bank.js', 'science-app.js', 'reading.html', 'reading-bank.js', 'reading-app.js', 'm2.html', 'm2-bank.js', 'm2-app.js', 'history.html', 'history-bank.js', 'history-app.js', 'android/**', 'tests/**', 'scripts/**', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
+    paths: ['competition-*','competencia.html','supabase/**','daily-*','assets/**','learning-core.js', 'editorial-revisions.js', 'm1-teaching.js', 'study-app.js', 'study-ui.css', 'index.html', 'inicio.html', 'science.html', 'science-bank.js', 'science-app.js', 'reading.html', 'reading-bank.js', 'reading-app.js', 'm2.html', 'm2-bank.js', 'm2-app.js', 'history.html', 'history-bank.js', 'history-app.js', 'android/**', 'tests/**', 'scripts/**', '!scripts/competition-backup.mjs', '!scripts/competition-restore.mjs', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
   workflow_dispatch:
 concurrency:
   group: cachaste-android-${{ github.ref }}
@@ -44,7 +44,7 @@ jobs:
       - name: Determinar si cambió el recorrido web
         id: scope
         run: |
-          if git rev-parse --verify HEAD^ >/dev/null 2>&1 && ! git diff --name-only HEAD^ HEAD | grep -Ev '^(android/app/src/androidTest/|android/app/src/main/java/|android/app/build\.gradle$|\.github/workflows/android-apk\.yml$|scripts/run-android-installed-qa\.sh$)' | grep -q .; then
+          if git rev-parse --verify HEAD^ >/dev/null 2>&1 && ! git diff --name-only HEAD^ HEAD | grep -Ev '^(android/app/src/androidTest/|android/app/src/main/java/|android/app/build\.gradle$|\.github/workflows/(android-apk|pages|competition-backup-restore)\.yml$|scripts/run-android-installed-qa\.sh$|scripts/competition-(backup|restore)\.mjs$)' | grep -q .; then
             echo 'browser_required=false' >> "$GITHUB_OUTPUT"
           else
             echo 'browser_required=true' >> "$GITHUB_OUTPUT"

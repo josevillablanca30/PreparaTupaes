@@ -43,7 +43,7 @@ async function main(){
   await control.connect();await control.query('begin isolation level repeatable read read only');
   const id=(await control.query('select pg_export_snapshot() id')).rows[0].id;
   const application=await dump(['--schema=cachaste','--schema=public','--schema=supabase_migrations'],id);
-  const transient=['sessions','refresh_tokens','flow_state','one_time_tokens','mfa_challenges','oauth_authorizations','schema_migrations','instances'];
+  const transient=['sessions','refresh_tokens','flow_state','one_time_tokens','mfa_challenges','mfa_amr_claims','oauth_authorizations','schema_migrations','instances'];
   const authData=await dump(['--data-only','--schema=auth',...transient.map(t=>'--exclude-table-data=auth.'+t)],id);
   const version=(await control.query("select current_setting('server_version') version")).rows[0].version;
   snapshot=packSnapshot(application,authData,{format:2,createdAt:new Date().toISOString(),postgres:version,schemas:['cachaste','public','supabase_migrations'],auth:'data-only; initialized compatible Supabase Auth required',transientAuthTablesExcluded:transient});
