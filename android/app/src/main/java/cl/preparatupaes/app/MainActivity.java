@@ -26,6 +26,7 @@ public class MainActivity extends Activity {
     private static final String PREFS = "cachaste-navigation";
     private WebView webView;
     private PlayBillingController playBilling;
+    private boolean destroying;
 
     private boolean isApplicationPage(String url) {
         if (url == null) return false;
@@ -82,11 +83,19 @@ public class MainActivity extends Activity {
                 return true;
             }
             @Override public void onPageFinished(WebView view, String url) {
-                if (isApplicationPage(url)) getSharedPreferences(PREFS, MODE_PRIVATE).edit().putString("last-page", url).apply();
+                if (!destroying && view == webView && isApplicationPage(url)) getSharedPreferences(PREFS, MODE_PRIVATE).edit().putString("last-page", url).apply();
             }
             @Override public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
-                getSharedPreferences(PREFS, MODE_PRIVATE).edit().putString("last-page", HOME).apply();
-                if (webView != null) { webView.destroy(); webView = null; }
+                // A renderer belonging to a closed Activity must never recreate it or destroy its replacement.
+                if (destroying || isFinishing() || isDestroyed() || view != webView) return true;
+                String recovery = view.getUrl();
+                long previous = getSharedPreferences(PREFS, MODE_PRIVATE).getLong("render-recovery-at", 0);
+                long now = System.currentTimeMillis();
+                getSharedPreferences(PREFS, MODE_PRIVATE).edit().putString("last-page",
+                    now - previous > 10000 && isApplicationPage(recovery) ? recovery : HOME).putLong("render-recovery-at", now).apply();
+                webView = null;
+                if (playBilling != null) { playBilling.close(); playBilling = null; }
+                view.destroy();
                 recreate();
                 return true;
             }
@@ -143,6 +152,7 @@ public class MainActivity extends Activity {
         );
     }
     @Override protected void onDestroy() {
+        destroying = true;
         if (playBilling != null) { playBilling.close(); playBilling = null; }
         if (webView != null) { webView.stopLoading(); webView.destroy(); webView = null; }
         super.onDestroy();
