@@ -431,10 +431,15 @@ public class OfflineAppTest {
         waitFor("document.querySelectorAll('.duel-row').length===2");
         captureDidacticScreen("competition-fixture-duelos");
         android.util.Log.i("CachasteQa","Competition home captured");
-        js("document.querySelector('[data-action=challenge]').click();true");
+        android.util.Log.i("CachasteQa","Opening nickname dialog");
+        js("document.querySelector('[data-action=challenge]').click();document.activeElement?.blur();true");
+        android.util.Log.i("CachasteQa","Nickname dialog requested");
         waitFor("document.querySelector('#invite-form input[name=value]')");
+        android.util.Log.i("CachasteQa","Nickname dialog ready");
         js("document.querySelector('#invite-form input[name=value]').value='CataPAES';document.querySelector('#invite-form button[type=submit]').click();true");
+        android.util.Log.i("CachasteQa","Challenge submitted");
         waitFor("document.querySelector('.versus-player') && document.querySelector('[data-action=start-duel]')");
+        android.util.Log.i("CachasteQa","VS ready");
         assertEquals("true",js("[...document.querySelectorAll('#competition-root button')].filter(n=>n.offsetWidth>0).every(n=>n.getBoundingClientRect().height>=48)"));
         captureDidacticScreen("competition-fixture-vs");
         android.util.Log.i("CachasteQa","Competition VS captured");
