@@ -68,7 +68,7 @@ Antes del lanzamiento faltan las credenciales y los productos oficiales, una com
 
 ## Respaldo y recuperación
 
-El plan Free requiere un respaldo propio. `scripts/competition-backup.mjs` prepara un archivo de `pg_dump` cifrado con AES-256-GCM y una clave derivada con scrypt. Conserva ACLs; omitirlas puede reabrir funciones privilegiadas al restaurar. Los tokens y sesiones de Auth se excluyen: después de recuperar, los usuarios deben iniciar sesión de nuevo.
+El plan Free requiere un respaldo propio. `scripts/competition-backup.mjs` prepara un archivo cifrado con AES-256-GCM y una clave derivada con scrypt. El formato 2 reúne dos archivos `pg_dump` obtenidos desde una misma instantánea consistente: esquema/datos/ACLs de `cachaste` y `public`, y datos de Auth. No incluye las definiciones administradas de Auth/Storage ni roles globales: restaurarlas con permisos normales provoca errores de privilegios. Conserva las ACLs de aplicación; omitirlas puede reabrir funciones privilegiadas. Se excluyen sesiones, renovación, flujos de acceso y tablas de tokens temporales; después de recuperar los usuarios deben iniciar sesión de nuevo.
 
 Requisitos: `pg_dump` 17 o posterior, conexión privada administrativa, certificado TLS válido, y un secreto de respaldo de al menos 32 caracteres guardado fuera del repositorio. Inyectar `CACHASTE_DATABASE_URL` y `CACHASTE_BACKUP_SECRET` como secretos del operador. Ejecutar:
 
@@ -79,7 +79,9 @@ node scripts/competition-backup.mjs --verify /ruta-privada/cachaste.dump.enc
 
 Conservar la clave por separado del archivo y guardar copias en un destino privado. No adjuntar un respaldo descifrado a un issue, APK o artefacto público.
 
-Para recuperar, preparar primero un **proyecto aislado** con versiones compatibles. Descifrar por una tubería privada hacia `pg_restore`, revisar errores y comprobar conteos, autenticación, RLS, suscripciones y dos cuentas antes de cambiar la configuración de la aplicación. El descifrado puede realizarse con `node scripts/competition-backup.mjs --decrypt archivo.dump.enc`. Nunca restaurar directamente sobre producción para probar el mecanismo. La restauración de producción requiere un ensayo administrativo con sus credenciales reales; las pruebas de este repositorio verifican cifrado, integridad y recuperación exacta de bytes.
+Para recuperar, preparar primero un **proyecto Supabase nuevo y aislado** con Auth inicializado y versiones compatibles. El operador configura `CACHASTE_RESTORE_DATABASE_URL`, `CACHASTE_BACKUP_SECRET` y `CACHASTE_RESTORE_CONFIRMATION=RESTORE_TO_EMPTY_ISOLATED_DATABASE`, y ejecuta `node scripts/competition-restore.mjs archivo.dump.enc`. El programa rechaza destinos con identidades o tablas de aplicación existentes. Restaura datos de Auth y aplicación conservando ACLs, y limpia los antiguos tokens de recuperación/cambio de correo guardados en usuarios. Usa memoria y una lista de objetos privada temporal; no escribe un volcado de datos descifrado al disco.
+
+Revisar conteos, contraseñas, RLS, suscripciones y dos cuentas antes de cambiar la configuración de la aplicación. Nunca restaurar directamente sobre producción para ensayar. La prueba de CI restaura realmente en PostgreSQL 17 aislado, con una identidad de Auth y estadísticas históricas de prueba; no usa el proyecto alojado. Los respaldos con recibos cifrados requieren conservar también la clave `PLAY_RECEIPT_ENCRYPTION_KEY`, separada del respaldo. La configuración de Auth/SMTP, secretos de funciones y productos de Google se configura por separado del volcado de base de datos.
 
 ## Monitoreo
 

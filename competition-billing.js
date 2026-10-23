@@ -6,7 +6,7 @@
  if(!buy||!restore||!notice||!selector||!Client)return;
  const client=new Client(config),requests=new Map();let available=false,busy=false;
  const say=text=>{notice.textContent=text;};
- const lock=()=>{buy.disabled=!available||busy;restore.disabled=!available||busy;selector.disabled=!available||busy;buy.setAttribute('aria-label',available?'Contratar desde Google Play':'Contratación deshabilitada hasta configurar Google Play Billing');restore.setAttribute('aria-label',available?'Restaurar compras':'Restauración deshabilitada hasta conectar verificación de compras');};
+ const lock=()=>{buy.disabled=!available||busy||client.premium===true;restore.disabled=!available||busy;selector.disabled=!available||busy||client.premium===true;buy.setAttribute('aria-label',available?'Contratar desde Google Play':'Contratación deshabilitada hasta configurar Google Play Billing');restore.setAttribute('aria-label',available?'Restaurar compras':'Restauración deshabilitada hasta conectar verificación de compras');};
  function native(action,payload={}){
   if(!window.CachastePlay?.postMessage)return Promise.reject(Error('NATIVE_REQUIRED'));
   return new Promise((resolve,reject)=>{const id=crypto.randomUUID(),timer=setTimeout(()=>{requests.delete(id);reject(Error('STORE_TIMEOUT'));},action==='purchase'?900000:20000);requests.set(id,{resolve,reject,timer});window.CachastePlay.postMessage(JSON.stringify({id,action,...payload}));});
@@ -48,10 +48,15 @@
     if(trial)selector.value=offer.id;
    }
    if(!selector.options.length)throw Error('OFFER_UNAVAILABLE');
-   selector.closest('label').hidden=false;available=true;buy.textContent='Continuar en Google Play';restore.textContent='Restaurar compras';
-   say('Precios y ofertas consultados en Google Play. Revisa la renovación y la fecha del primer cobro antes de confirmar.');lock();
+   selector.closest('label').hidden=false;buy.textContent='Continuar en Google Play';restore.textContent='Restaurar compras';
+   // Recover purchases whose Play dialog completed while Android recreated or closed the Activity.
+   const owned=await native('restore');
+   if(owned?.purchases?.length||owned?.pending)await verify(owned);
+   else say(client.premium?'Tu suscripción está validada. Puedes administrarla desde Google Play.':'Precios y ofertas consultados en Google Play. Revisa la renovación y la fecha del primer cobro antes de confirmar.');
+   available=true;lock();
   }catch(e){say(errors[e.message]||'No se pudo conectar con Google Play. La contratación sigue deshabilitada.');}
  }
  window.addEventListener('offline',()=>{available=false;lock();say('Sin conexión: no se puede contratar ni acreditar una compra.');});
  window.addEventListener('online',initialize);initialize();
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&available&&!busy)perform('restore');});
 })();

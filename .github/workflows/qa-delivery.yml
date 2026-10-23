@@ -56,7 +56,8 @@ jobs:
               online=json.loads(reportfiles[0].read_text());summary['realAuthChecks']=online.get('passed');shutil.copy(reportfiles[0],out/'competition-online-integration.json')
           apks=list(root.rglob('app-debug.apk'))
           if apks:
-              apk=apks[0];target=out/'Cachaste-v1.5.0-rc1.apk';shutil.copy(apk,target);summary['apkSha256']=hashlib.sha256(target.read_bytes()).hexdigest();summary['apkBytes']=target.stat().st_size
+              version=spec.get('version','1.5.0-rc1');assert re.fullmatch(r'\d+\.\d+\.\d+(?:-rc\d+)?',version)
+              apk=apks[0];target=out/('Cachaste-v'+version+'.apk');shutil.copy(apk,target);summary['apkSha256']=hashlib.sha256(target.read_bytes()).hexdigest();summary['apkBytes']=target.stat().st_size
               with zipfile.ZipFile(target) as z:
                   names=z.namelist();html=z.read('assets/competencia.html').decode();assert 'content="'+spec['sourceSha']+'"' in html
                   assert not any('fixture' in n or n.endswith('.sql') or 'service_role' in n for n in names)
@@ -64,7 +65,7 @@ jobs:
                   summary['apkRevision']=spec['sourceSha'];summary['testFixturesInCandidate']=False
               sdk=Path(os.environ['ANDROID_HOME']);aapt=sorted(sdk.glob('build-tools/*/aapt'))[-1]
               badging=subprocess.check_output([str(aapt),'dump','badging',str(target)],text=True);first=badging.splitlines()[0];summary['package']=first
-              assert "versionCode='28'" in first and "versionName='1.5.0-rc1'" in first
+              assert "versionCode='"+str(spec.get('versionCode',28))+"'" in first and "versionName='"+version+"'" in first
               signer=sorted(sdk.glob('build-tools/*/apksigner'))[-1]
               cert=subprocess.check_output([str(signer),'verify','--print-certs',str(target)],text=True);(out/'APK-CERTIFICATE.txt').write_text(cert);summary['certificate']=cert.splitlines()[:5]
           xml=[];failures=[]

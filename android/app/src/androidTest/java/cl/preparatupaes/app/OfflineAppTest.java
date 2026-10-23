@@ -483,11 +483,12 @@ public class OfflineAppTest {
         // These fixtures test composition/navigation only. Actual scoring/Auth runs in the separate Supabase job.
     }
 
-    @Test public void onlyInternetPermissionIsRequestedForCompetition() throws Exception {
+    @Test public void onlyNetworkAndGooglePlayPermissionsAreRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         PackageInfo info=context.getPackageManager().getPackageInfo(context.getPackageName(),PackageManager.GET_PERMISSIONS);
         assertTrue(java.util.Arrays.asList(info.requestedPermissions).contains("android.permission.INTERNET"));
-        for (String permission : info.requestedPermissions) if (permission.startsWith("android.permission.")) assertEquals("android.permission.INTERNET",permission);
+        java.util.Set<String> allowed=new java.util.HashSet<>(java.util.Arrays.asList("android.permission.INTERNET","android.permission.ACCESS_NETWORK_STATE","com.android.vending.BILLING",context.getPackageName()+".DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"));
+        for (String permission : info.requestedPermissions) assertTrue("Unnecessary permission: "+permission,allowed.contains(permission));
     }
 
     @Test public void entireShippedCatalogueRendersLessonsAndAllTutorModesOffline() throws Exception {
