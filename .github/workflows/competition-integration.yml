@@ -1,0 +1,45 @@
+name: Competencia · Auth real y transacciones
+on:
+  workflow_dispatch:
+  push:
+    branches: [work/cachaste-motor-duolingo-20261016]
+    paths: ['supabase/**','competition-*','scripts/competition-*','scripts/test-competition-online.mjs','tests/competition*','tests/helpers/competition*','.github/workflows/competition-integration.yml','package*.json']
+permissions:
+  contents: read
+concurrency:
+  group: competition-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  supabase:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Probar RLS, resultados, empates, tiempos y estrellas en Postgres
+        run: node --test tests/competition-security.test.mjs
+      - name: Regenerar catálogo privado sin identidades ni suscripciones
+        run: node scripts/competition-catalog.mjs supabase/seed.sql
+      - name: Arrancar Supabase efímero local
+        run: npx --yes supabase@2.121.0 start --exclude realtime,storage-api,imgproxy,postgres-meta,studio,edge-runtime,logflare,vector,supavisor > /tmp/cachaste-supabase-start.log 2>&1
+      - name: Probar dos cuentas por Auth y PostgREST reales
+        run: |
+          npx --yes supabase@2.121.0 status -o json > /tmp/cachaste-supabase-status.json
+          chmod 600 /tmp/cachaste-supabase-status.json
+          node scripts/test-competition-online.mjs /tmp/cachaste-supabase-status.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cachaste-competition-integration-${{ github.run_id }}
+          path: reports/competition-online-integration.json
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Destruir identidades y contenedores de prueba
+        if: always()
+        run: |
+          npx --yes supabase@2.121.0 stop --no-backup
+          rm -f /tmp/cachaste-supabase-status.json /tmp/cachaste-supabase-start.log

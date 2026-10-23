@@ -12,3 +12,8 @@ android/*.keystore
 *.pfx
 keystore.properties
 .signing/
+
+# Regenerable private server seed and local operator credentials
+supabase/seed.sql
+.supabase/
+competition-test-credentials*
