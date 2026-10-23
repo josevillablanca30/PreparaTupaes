@@ -1,0 +1,51 @@
+[
+  {
+    "branch": "origin/experiment/open-source-game-path-20261016",
+    "sha": "64ba13fdda52040819cbd24e9382571f01f522ec",
+    "onlyInBranch": 7,
+    "onlyInWork": 210,
+    "ancestor": false
+  },
+  {
+    "branch": "origin/main",
+    "sha": "560e48cb937cdced1556d86a866c10d5c8012fc7",
+    "onlyInBranch": 103,
+    "onlyInWork": 248,
+    "ancestor": false
+  },
+  {
+    "branch": "origin/work/cachaste-diario-2026-10-15",
+    "sha": "b3fe5cadf6184d3b04826a20787e0bc4f4405906",
+    "onlyInBranch": 0,
+    "onlyInWork": 249,
+    "ancestor": true
+  },
+  {
+    "branch": "origin/work/cachaste-motor-duolingo-20261016",
+    "sha": "69ad25a2535e7dfb3e2ef49b9aa1fc50f8983c6a",
+    "onlyInBranch": 0,
+    "onlyInWork": 0,
+    "ancestor": true
+  },
+  {
+    "branch": "origin/work/cachaste-progress-safety-exam-20261016",
+    "sha": "2735c60be4e48c29389c0a893fcf07a85c5eadb1",
+    "onlyInBranch": 4,
+    "onlyInWork": 210,
+    "ancestor": false
+  },
+  {
+    "branch": "origin/work/cachaste-respaldo-2026-10-15",
+    "sha": "177f915e884e8cb62073b3b79ac0b68e5f0310eb",
+    "onlyInBranch": 0,
+    "onlyInWork": 268,
+    "ancestor": true
+  },
+  {
+    "branch": "origin/work/quests-progress-ui-20261015",
+    "sha": "b307021d94c66ecf589a77ae21d2026da8440ef0",
+    "onlyInBranch": 0,
+    "onlyInWork": 210,
+    "ancestor": true
+  }
+]

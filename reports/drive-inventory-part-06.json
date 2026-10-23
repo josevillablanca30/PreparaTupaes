@@ -1,0 +1,336 @@
+{
+ "scanned": "2026-10-16",
+ "root": "Material PAES",
+ "contents": [
+  {
+   "path": "TESLA/Física/Ensayos ",
+   "id": "1RzsqP-3ZpY8qQzSRBAd_VCbs1qlWAOWw",
+   "items": [
+    {
+     "id": "1yQB4nuBGZT36tO4yTtkBRME_BTntIsn8",
+     "name": "solucionario ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "10VcKIQdqUnvBVAqYQQ7ZghxJnt6_PuXQ",
+     "name": "FE 13 Mini ensayo 3 Parte 2.pdf",
+     "type": "application/pdf",
+     "bytes": 2397071
+    },
+    {
+     "id": "1p3t2zQDL7TKgnIGGgkoUcaEBgSClqMcY",
+     "name": "FE 13 Mini ensayo 3 Parte 3.pdf",
+     "type": "application/pdf",
+     "bytes": 2266829
+    },
+    {
+     "id": "1Rf18HJyLPOZE8emgmfSoLZ1uup0qrN_H",
+     "name": "FE 13 Mini ensayo 3 Parte 1.pdf",
+     "type": "application/pdf",
+     "bytes": 1752223
+    }
+   ]
+  },
+  {
+   "path": "TESLA/M1/Ensayos ",
+   "id": "1OGj9B_wRZUtvzQbXIRxGXNbf_n8GmIYT",
+   "items": [
+    {
+     "id": "1X3RxxLZTqJC_BYBti9YrG6GkG8tKo3eN",
+     "name": "Copia de Copia de M1-Ensayo-2-Intensivo-I.pdf",
+     "type": "application/pdf",
+     "bytes": 711297
+    },
+    {
+     "id": "1-TdF9wOPeEb9X6fAZku_QRnFWgQOxQhp",
+     "name": "Copia de Copia de M1-Ensayo-3-Intensivo-I-1.pdf",
+     "type": "application/pdf",
+     "bytes": 2057317
+    },
+    {
+     "id": "1s5SGtbs7YSk1ZbfHz-s7Fj3rXY5auHyi",
+     "name": "Copia de Copia de M1-Ensayo-OP1-Intensivo-I-Solucionario.pdf",
+     "type": "application/pdf",
+     "bytes": 967295
+    },
+    {
+     "id": "1bO2GJYj0VHEwQqmWXwlVEGpf83Tsfj5s",
+     "name": "Copia de Diagnostico-Intensivo-I-M1-Solucionario.pdf",
+     "type": "application/pdf",
+     "bytes": 674927
+    },
+    {
+     "id": "1w4QhuGn9ccYVoe2Ma18IOltUK2ZiMDj8",
+     "name": "Copia de Copia de M1-Ensayo-1-Intensivo-I-Diagnostico-Anual.pdf",
+     "type": "application/pdf",
+     "bytes": 546199
+    },
+    {
+     "id": "1W7EQYD5Y9t6UJNlxFOB_WgpynZNqj2mD",
+     "name": "Ensayo Tesla 0 - Matemáticas (2020) (S).pdf",
+     "type": "application/pdf",
+     "bytes": 417934
+    }
+   ]
+  },
+  {
+   "path": "TESLA/Química/Ensayos",
+   "id": "1zvslZfE_vHgtZD9L8EhF93CXbirF7sI5",
+   "items": [
+    {
+     "id": "1Y-3-m_if10VIaPFnpohER727PrES4Jfd",
+     "name": "Copia de Ensayo 0.pdf",
+     "type": "application/pdf",
+     "bytes": 5552423
+    },
+    {
+     "id": "1Ix74dyuEo0rF0i2WqbaF8XvdHksvm169",
+     "name": "Copia de Ensayo 4.pdf",
+     "type": "application/pdf",
+     "bytes": 12823100
+    },
+    {
+     "id": "1MgWEjl1TE3QfCedtrPjQscMEoFtjkM8P",
+     "name": "Copia de Ensayo 3.pdf",
+     "type": "application/pdf",
+     "bytes": 14340678
+    },
+    {
+     "id": "1jBBW-gdvDs3eZVi3UpJbU33niRvButAb",
+     "name": "Copia de Ensayo 2.pdf",
+     "type": "application/pdf",
+     "bytes": 2361707
+    },
+    {
+     "id": "1ZmlKOy_JjAfv-AYAl1xUqHL4oBzg2Eyp",
+     "name": "Copia de Ensayo 1.pdf",
+     "type": "application/pdf",
+     "bytes": 3164905
+    }
+   ]
+  },
+  {
+   "path": "Cumbres/Historia/Ensayos",
+   "id": "1U6XcJDzgqrf1ANJxSbuRk-KJT-0BfEV8",
+   "items": [
+    {
+     "id": "1GZqY4VDD5PGwAednezZZvQevUVCj_Oia",
+     "name": "Ensayo PAES Historia y Ciencias Sociales - Preuniversitario Cumbre.pdf",
+     "type": "application/pdf",
+     "bytes": 15036061
+    }
+   ]
+  },
+  {
+   "path": "Cumbres/Física/Ensayo",
+   "id": "12dnILkqNt5-TGh9jrhUpFZWtZOjZqhUy",
+   "items": [
+    {
+     "id": "1c15SzNM2VrVMAyFxkhp5ZgrqKxX6fQXz",
+     "name": "Ensayo PAES Ciencias Mención Física - Preuniversitario Cumbre.pdf",
+     "type": "application/pdf",
+     "bytes": 7057100
+    }
+   ]
+  },
+  {
+   "path": "Cumbres/Biología/Ensayo",
+   "id": "1GBmqcx-gy5oqyt5JJ5GICReaE2eL26WW",
+   "items": [
+    {
+     "id": "1PXq-7emJdcbmq7t4uZteC2PjaHVnAOEA",
+     "name": "Ensayo PAES Ciencias Mención Biología - Preuniversitario Cumbre.pdf",
+     "type": "application/pdf",
+     "bytes": 7927386
+    }
+   ]
+  },
+  {
+   "path": "Cumbres/Lectura/Ensayo",
+   "id": "1FzZsJ-6O5DwZjCyc4yPvu1JvPA2NL_b1",
+   "items": [
+    {
+     "id": "1KMEIJVJTtGSfSE3EWHnU5v_A5u6YphR1",
+     "name": "Ensayo PAES Competencia Lectora - Preuniversitario Cumbre.pdf",
+     "type": "application/pdf",
+     "bytes": 7103816
+    }
+   ]
+  },
+  {
+   "path": "Cumbres/M2/Ensayos",
+   "id": "1PTIsuAivRDWock8EH6FfgN0fdoDL2_0L",
+   "items": [
+    {
+     "id": "1IQEixbs0N27CUstQM7LXCxzTFsZWZLOM",
+     "name": "Ensayo PAES Competencia Matemática M2 - Preuniversitario Cumbre.pdf",
+     "type": "application/pdf",
+     "bytes": 4428259
+    }
+   ]
+  },
+  {
+   "path": "Cumbres/M1/Ensayos ",
+   "id": "1GOsFf5sZFDcqaGFyqInc3AUsVZf5-kTd",
+   "items": [
+    {
+     "id": "1Zfz4NtuDtKUleNZEkE1ZBvnFltRdNF38",
+     "name": "Ensayo PAES Competencia Matemática M1 - Preuniversitario Cumbre.pdf",
+     "type": "application/pdf",
+     "bytes": 4481820
+    }
+   ]
+  },
+  {
+   "path": "PDV/Biología/Ensayos ",
+   "id": "1dxJ52_-zqf0tMh7HYIR9sCH4f8jxsPpn",
+   "items": [
+    {
+     "id": "13KHa7rmHMer6MKhL4DaQxVA7sTxya7L4",
+     "name": "Ensayo 3 (BIO)..pdf",
+     "type": "application/pdf",
+     "bytes": 1192749
+    },
+    {
+     "id": "1tGzKgQnk2Q9SkSvDQTooip8q0Z0lHEpc",
+     "name": "2954-Ensayo_6ta._J.E.G._PAES_Anual_Online-Biología_2024-5_.pdf",
+     "type": "application/pdf",
+     "bytes": 1249498
+    },
+    {
+     "id": "1xXJcyRfwUr5AqVYCM-0UgoJ_-FjQc1wT",
+     "name": "5306-Ensayo_5ta._J.E.G._PAES_Anual-Biología_2024-5_.pdf",
+     "type": "application/pdf",
+     "bytes": 1332130
+    },
+    {
+     "id": "1fGRK_vdb9cOTkoZbwqEdg1T0pn6iGrJk",
+     "name": "7111-Ensayo_8va._J.E.G._PAES_Anual_Online-Biología_2024-5_.pdf",
+     "type": "application/pdf",
+     "bytes": 1252639
+    },
+    {
+     "id": "1TNCSMisolWGcBjxnz6P2BlMO9GN7gYfB",
+     "name": "Ensayo 1 (BIO).pdf",
+     "type": "application/pdf",
+     "bytes": 1561594
+    },
+    {
+     "id": "13Yv6ucZiq2ulhrYIwRF4SvKgFcJlQqh3",
+     "name": "1074-Ensayo_3era._J.E.G._PAES_Anual-Biología_2024-5_.pdf",
+     "type": "application/pdf",
+     "bytes": 1457498
+    },
+    {
+     "id": "1RHDcj5E7aIpbSbTB_GPf3h9zn0LuN3w8",
+     "name": "Ensayo 6 (BIO).pdf",
+     "type": "application/pdf",
+     "bytes": 1402501
+    },
+    {
+     "id": "1-L-kZyJq48FRsdp6IFdaMtmw0eLWaQkb",
+     "name": "7863-Ensayo_1era._J.E.G._PAES_Anual-Biología_2024-5_.pdf",
+     "type": "application/pdf",
+     "bytes": 1751058
+    },
+    {
+     "id": "1D53Yt8dkCMTgr1jAFM7D2Jval2vXcmPS",
+     "name": "Ensayo 5 (BIO).pdf",
+     "type": "application/pdf",
+     "bytes": 1182989
+    },
+    {
+     "id": "1qe0V2CvewcTZ8I1QgZymip2bn95VzglX",
+     "name": "6699-Ensayo_2da._J.E.G._PAES_Anual_Online-Biología_2024-5_.pdf",
+     "type": "application/pdf",
+     "bytes": 1599978
+    },
+    {
+     "id": "1qgEQsu83T6trQkAUvBsQZvuMBOQ2KarE",
+     "name": "Ensayo 7 (BIO).pdf",
+     "type": "application/pdf",
+     "bytes": 1439091
+    }
+   ]
+  },
+  {
+   "path": "PDV/Lectura/Libros",
+   "id": "1TJYatIeqbp7EVtrGTVmrpHzOfTd4RPda",
+   "items": [
+    {
+     "id": "1Yy73vK4x-NnrEP2APBOnMxFUUFMfv3zu",
+     "name": "Copia de COMPETENCIA LECTORA PDV 2023.pdf",
+     "type": "application/pdf",
+     "bytes": 51632682
+    }
+   ]
+  },
+  {
+   "path": "PDV/Lectura/Ensayos",
+   "id": "1wxzrJ1rOhEqLYd0m0SK8vse5tihV5yRg",
+   "items": [
+    {
+     "id": "1R2k5pAqYQ7Llg1v85l0wxLFTb1rYJ9Zb",
+     "name": "2284-6ª_JEG_Competencia_Lectora_version_final.pdf",
+     "type": "application/pdf",
+     "bytes": 608914
+    },
+    {
+     "id": "1GafBK12O1P7OWwfZSZ2rn-49nhdgEfHE",
+     "name": "1°JEG Competencia Lectora 5- (1).pdf",
+     "type": "application/pdf",
+     "bytes": 672361
+    },
+    {
+     "id": "1Mt6Mkw1KOxbeiqxvcgP1GNPjeNHCgQPJ",
+     "name": "Ensayo Experiencia PAES-CL-MARZO-2025.pdf",
+     "type": "application/pdf",
+     "bytes": 750893
+    },
+    {
+     "id": "1kBEukoIZ7jqLTfMdXCcY-R6mUWehTseS",
+     "name": "5726-2°_JEG_Competencia_Lectora (2).pdf",
+     "type": "application/pdf",
+     "bytes": 637331
+    },
+    {
+     "id": "1j9VeRlVDwr7s2jYoFAJflJdN0g0sRq7N",
+     "name": "7°JEG Competencia Lectora.pdf",
+     "type": "application/pdf",
+     "bytes": 695542
+    },
+    {
+     "id": "1C28qJgn8XWI72LUvyLEUPixe6x44BD7G",
+     "name": "6°JEG Competencia Lectora.pdf",
+     "type": "application/pdf",
+     "bytes": 627515
+    },
+    {
+     "id": "1UykzaCkh1Hh9vUM0gIyn2OxTEeVi7Y2M",
+     "name": "4°JEG Competencia Lectora.pdf",
+     "type": "application/pdf",
+     "bytes": 685661
+    },
+    {
+     "id": "1byie1VOl3qjuWrSBkcmGozI48UIPFfLw",
+     "name": "5°_JEG_Competencia_Lectora_Versión_Final_5_.pdf",
+     "type": "application/pdf",
+     "bytes": 645948
+    },
+    {
+     "id": "1pOtEbuGtUAGw9Kxqhnwcs6xseVy-CAYu",
+     "name": "3°_JEG_Competencia_Lectora_VF_5_.pdf",
+     "type": "application/pdf",
+     "bytes": 1187333
+    },
+    {
+     "id": "1MS9EbgrXaKDIjeroUf7x5BOoLM5xFMWY",
+     "name": "4° JEG Competencia Lectora Versión final 5_.pdf",
+     "type": "application/pdf",
+     "bytes": 616556
+    }
+   ]
+  }
+ ]
+}

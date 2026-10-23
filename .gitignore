@@ -5,3 +5,20 @@ test-results/
 
 qa-runtime/
 android/*.keystore
+
+# Private production upload keys and local credentials
+*.jks
+*.p12
+*.pfx
+keystore.properties
+.signing/
+
+# Regenerable private server seed and local operator credentials
+supabase/seed.sql
+.supabase/
+competition-test-credentials*
+android/app/src/androidTest/assets/competition-fixture.js
+.cachaste-backups/
+
+# Regenerable assets packaged only in the debug beta
+android/app/src/beta/assets/

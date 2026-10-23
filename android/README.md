@@ -1,9 +1,19 @@
-# Prueba Android nativa — v0.3
+# Prueba Android — ¿Cachaste?
 
-La versión Android contiene la aplicación web local dentro de una WebView. Funciona sin internet, no exige permisos peligrosos y guarda el progreso localmente en el dispositivo.
+La app se empaqueta dentro de una WebView y funciona sin internet. El progreso queda guardado localmente en el dispositivo; no se sincroniza entre equipos.
 
-GitHub Actions compila `app-debug.apk` en cada cambio relevante. Desde la pestaña **Actions**, abre **Android APK · compilación de prueba**, selecciona una ejecución verde y descarga **PreparaTuPAES-Android-v0.3-debug** en la sección Artifacts. Descomprime el ZIP y abre `app-debug.apk` desde Android. Es un APK de depuración para pruebas, no una versión firmada de producción ni una publicación en Play Store.
+## APK beta
 
-**Aviso:** Android puede advertir que el APK no viene de Play Store y requerir autorizar la instalación desde ese origen. Instálalo únicamente si reconoces el repositorio y la compilación. No contiene contenido PAES oficial; son preguntas originales de demostración.
+GitHub Actions compila una APK de depuración, la instala en un emulador y verifica WebView sin red, persistencia y navegación Atrás. Para descargarla, abre la ejecución Android exitosa en **Actions** y descarga el artefacto `Cachaste-v1.3.1-rc1-<commit>`. El APK es para revisión funcional, no es una versión firmada para distribución comercial.
 
-Para instalar actualizaciones, descarga una nueva compilación. El progreso se almacena localmente y no se sincroniza entre equipos.
+Android podría advertir que el APK viene de fuera de Play Store. Instálala solo si reconoces el repositorio y la ejecución. Los artefactos de prueba se eliminan a los treinta días.
+
+## AAB de verificación
+
+El flujo también compila `app-release.aab` y comprueba que el paquete se genere. El artefacto se llama `Cachaste-AAB-UNSIGNED-NOT-FOR-PLAY-<commit>`: está **sin firma de producción y no se puede subir a Play Store**. La firma de distribución debe quedar bajo custodia del propietario; las claves privadas no se guardan en GitHub.
+
+## Contenido
+
+El contenido es una combinación de preguntas originales del banco y ejercicios originales de transferencia alineados con temarios DEMRE y material de estudio del Drive. La app no es un producto oficial de DEMRE ni representa preguntas oficiales.
+
+Para actualizar, descarga e instala un APK beta nuevo. El progreso local del APK existente no se sincroniza a otros equipos ni se transfiere automáticamente a otros canales.

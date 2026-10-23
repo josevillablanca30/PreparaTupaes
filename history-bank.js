@@ -1314,4 +1314,11 @@ for(const [number,lesson] of Object.entries(HISTORIA_TEACHING)) {
  if(assigned.size!==window.CACHASTE_HISTORIA.length)throw Error('Faltan conceptos de Historia');
  // Ambos ítems evalúan la misma relación minería-exportación-crecimiento urbano.
  for(const n of [12,21])window.CACHASTE_HISTORIA.find(q=>q.id==='HIS-'+String(n).padStart(3,'0')).transferGroup='his-mineria-exportacion-urbanizacion';
+ // Apoyo financiero: estos objetivos no están explicitados en el temario de Historia 2027.
+ // Se conservan las preguntas y sus IDs para no borrar el historial de aprendizaje.
+ for(const n of [45,54]){
+  const q=window.CACHASTE_HISTORIA.find(q=>q.id==='HIS-'+String(n).padStart(3,'0'));
+  q.examEligible=false;
+  q.scopeReason='Apoyo de educación financiera; objetivo no explicitado en el temario de Historia Admisión 2027.';
+ }
 }

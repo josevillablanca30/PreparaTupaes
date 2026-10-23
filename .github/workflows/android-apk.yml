@@ -1,8 +1,8 @@
 name: Android APK · compilación de prueba
 on:
   push:
-    branches: [main, work/cachaste-respaldo-2026-10-15]
-    paths: ['daily-*','assets/**','learning-core.js', 'm1-teaching.js', 'study-app.js', 'study-ui.css', 'index.html', 'inicio.html', 'science.html', 'science-bank.js', 'science-app.js', 'reading.html', 'reading-bank.js', 'reading-app.js', 'm2.html', 'm2-bank.js', 'm2-app.js', 'history.html', 'history-bank.js', 'history-app.js', 'android/**', 'tests/**', 'scripts/**', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
+    branches: [main, work/cachaste-respaldo-2026-10-15, work/cachaste-motor-duolingo-20261016]
+    paths: ['beta/**','competition-*','competencia.html','supabase/**','daily-*','assets/**','learning-core.js', 'editorial-revisions.js', 'm1-teaching.js', 'study-app.js', 'study-ui.css', 'index.html', 'inicio.html', 'science.html', 'science-bank.js', 'science-app.js', 'reading.html', 'reading-bank.js', 'reading-app.js', 'm2.html', 'm2-bank.js', 'm2-app.js', 'history.html', 'history-bank.js', 'history-app.js', 'android/**', 'tests/**', 'scripts/**', '!scripts/competition-backup.mjs', '!scripts/competition-restore.mjs', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
   workflow_dispatch:
 concurrency:
   group: cachaste-android-${{ github.ref }}
@@ -17,6 +17,8 @@ jobs:
       CACHASTE_DEBUG_KEYSTORE: ${{ github.workspace }}/android/cachaste-debug.keystore
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -27,18 +29,39 @@ jobs:
         run: npm run test:logic
       - name: Validar integridad de los cinco bancos y generar informe
         run: npm run audit:pedagogy
+      - name: Verificar claridad inicial sin alterar evaluaciones
+        run: node scripts/readability-audit.mjs
       - name: Adjuntar informe editorial de auditoría
         uses: actions/upload-artifact@v4
         with:
           name: cachaste-auditoria-pedagogica
-          path: reports/pedagogical-audit.json
+          path: |
+            reports/pedagogical-audit.json
+            reports/readability-audit.json
           retention-days: 14
       - name: Construir aplicación web empaquetada
         run: npm run build
+      - name: Preparar VS local exclusivo de beta
+        run: node scripts/build-beta-vs.mjs
+      - name: Determinar si cambió el recorrido web
+        id: scope
+        run: |
+          if git rev-parse --verify HEAD^ >/dev/null 2>&1 && ! git diff --name-only HEAD^ HEAD | grep -Ev '^(android/app/src/androidTest/|android/app/src/main/java/|android/app/build\.gradle$|\.github/workflows/(android-apk|pages|competition-backup-restore)\.yml$|scripts/run-android-installed-qa\.sh$|scripts/competition-(backup|restore)\.mjs$)' | grep -q .; then
+            echo 'browser_required=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'browser_required=true' >> "$GITHUB_OUTPUT"
+          fi
       - name: Instalar navegador de pruebas
-        run: npx playwright install --with-deps chromium
-      - name: Validar uso táctil Android y pantalla de 320 px
-        run: npm test -- --project=Android-Chrome --project=mobile-320px
+        if: steps.scope.outputs.browser_required != 'false'
+        run: bash scripts/install-chromium-qa.sh
+      - name: Probar VS local exclusivo de beta en ambos tamaños
+        if: steps.scope.outputs.browser_required != 'false'
+        env:
+          CACHASTE_BETA_PREVIEW: '1'
+        run: npx playwright test tests/beta-vs.mobile.spec.mjs --project=Android-Chrome --project=mobile-320px
+      - name: Validar recorrido jugable, profesor y materias antes de empaquetar
+        if: steps.scope.outputs.browser_required != 'false'
+        run: npx playwright test tests/billing-flow.mobile.spec.mjs tests/subscription-mobile.spec.mjs tests/competition.mobile.spec.mjs tests/competition-community.mobile.spec.mjs tests/catalogue-layout.mobile.spec.mjs tests/rc13-layout.mobile.spec.mjs tests/rc12-readability.mobile.spec.mjs tests/rc11-unlocking.mobile.spec.mjs tests/rc10-continuity.mobile.spec.mjs tests/rc9-feedback.mobile.spec.mjs tests/reference-ui.mobile.spec.mjs tests/didactic-overview.mobile.spec.mjs tests/didactic-reference.mobile.spec.mjs tests/topic-visuals.mobile.spec.mjs tests/demonstrations.mobile.spec.mjs tests/visual-lessons.mobile.spec.mjs tests/simple-entry.mobile.spec.mjs tests/assessment-flows.mobile.spec.mjs tests/adventure-map.mobile.spec.mjs tests/visual-journey.mobile.spec.mjs tests/gameplay.mobile.spec.mjs tests/studios.mobile.spec.mjs tests/answer-repair.mobile.spec.mjs tests/transfer-cases.mobile.spec.mjs tests/confidence-journey.mobile.spec.mjs tests/five-subjects.mobile.spec.mjs tests/tutor-journey.mobile.spec.mjs tests/daily.mobile.spec.mjs tests/daily-session-recovery.mobile.spec.mjs --project=Android-Chrome --project=mobile-320px
       - name: Guardar capturas de errores móviles
         if: failure()
         uses: actions/upload-artifact@v4
@@ -82,9 +105,12 @@ jobs:
         run: |
           mkdir -p android/app/src/main/assets
           cp dist/index.html android/app/src/main/assets/index.html
+          cp dist/suscripcion.html android/app/src/main/assets/suscripcion.html
+          cp dist/competition-* dist/competencia.html android/app/src/main/assets/
           mkdir -p android/app/src/main/assets/assets
-          cp dist/assets/gatito-sabio-poses-v1.png dist/assets/gatito-sabio-oficial.png dist/assets/cachaste-icon.svg dist/assets/cachaste-logo.svg android/app/src/main/assets/assets/
-          cp dist/daily-*.js dist/daily-ui.css dist/m1-teaching.js dist/learning-core.js dist/study-app.js dist/study-ui.css dist/inicio.html dist/science.html dist/science-bank.js dist/science-app.js dist/reading.html dist/reading-bank.js dist/reading-app.js dist/m2.html dist/m2-bank.js dist/m2-app.js dist/history.html dist/history-bank.js dist/history-app.js android/app/src/main/assets/
+          cp dist/assets/competition-*.svg android/app/src/main/assets/assets/
+          cp dist/assets/gatito-sabio-poses-v1.png dist/assets/gatito-sabio-oficial.png dist/assets/cachaste-icon.svg dist/assets/cachaste-logo.svg dist/assets/lesson-cat-*.webp dist/assets/subject-*.webp dist/assets/map-valley-v1.webp dist/assets/gatito-sabio-poses-v2.webp android/app/src/main/assets/assets/
+          cp dist/daily-*.js dist/daily-ui.css dist/daily-reference.css dist/m1-teaching.js dist/learning-core.js dist/editorial-revisions.js dist/study-app.js dist/study-ui.css dist/inicio.html dist/science.html dist/science-bank.js dist/science-app.js dist/reading.html dist/reading-bank.js dist/reading-app.js dist/m2.html dist/m2-bank.js dist/m2-app.js dist/history.html dist/history-bank.js dist/history-app.js android/app/src/main/assets/
       - name: Auditar las cinco materias dentro del paquete Android
         run: |
           set -euo pipefail
@@ -92,7 +118,7 @@ jobs:
             test -s "android/app/src/main/assets/$page"
             grep -qi '<title>' "android/app/src/main/assets/$page"
           done
-          for script in daily-catalog.js daily-core.js daily-curriculum.js daily-app.js m1-teaching.js learning-core.js study-app.js science-bank.js science-app.js reading-bank.js reading-app.js m2-bank.js m2-app.js history-bank.js history-app.js; do
+          for script in daily-school.js daily-illustration-kit.js daily-scenarios.js daily-demonstrations.js daily-lessons.js daily-catalog.js daily-core.js daily-gameplay.js daily-studios.js daily-curriculum.js daily-app.js m1-teaching.js learning-core.js study-app.js science-bank.js science-app.js reading-bank.js reading-app.js m2-bank.js m2-app.js history-bank.js history-app.js; do
             test -s "android/app/src/main/assets/$script"
           done
           for subject in index.html science.html reading.html m2.html history.html; do
@@ -101,19 +127,32 @@ jobs:
           test -s android/app/src/main/assets/assets/cachaste-icon.svg
           test -s android/app/src/main/assets/assets/cachaste-logo.svg
           echo "Cinco materias, ocho scripts y marca Cachaste presentes en assets Android"
-      - name: Compilar APK de prueba
+      - name: Compilar APK beta y verificar paquete AAB release sin firma
         working-directory: android
-        run: gradle --no-daemon :app:assembleDebug
+        run: gradle --no-daemon :app:assembleDebug :app:bundleRelease
+      - name: Preparar datos visuales exclusivos del APK de pruebas
+        run: node scripts/build-native-competition-fixtures.mjs
       - name: Verificar firma del APK y conservar solo su certificado público
         run: |
           test -s "$CACHASTE_DEBUG_KEYSTORE"
           "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs \
             android/app/build/outputs/apk/debug/app-debug.apk \
             > android/app/build/outputs/apk/debug/APK-CERTIFICATE.txt
+      - name: Comprobar que se generó el AAB de verificación
+        run: |
+          test -s android/app/build/outputs/bundle/release/app-release.aab
+          if unzip -Z1 android/app/build/outputs/bundle/release/app-release.aab | grep -E '(^|/)(beta-vs\.|local-duel)'; then
+            echo "Error: el VS local de beta se incluyó en release."
+            exit 1
+          fi
+          unzip -p android/app/build/outputs/bundle/release/app-release.aab base/assets/competencia.html > /tmp/cachaste-release-competition.html
+          if grep -q 'beta-entry\|beta-vs.html' /tmp/cachaste-release-competition.html; then exit 1; fi
+          echo "AAB sin VS de prueba; está sin firma de Play y no es publicable."
       - name: Permitir aceleración del emulador
         run: |
           sudo chmod a+rw /dev/kvm
-      - name: Probar APK instalado, WebView sin red, persistencia y botón Atrás
+      - name: Probar APK instalado, WebView sin red, persistencia y botón Atrás (Android 36)
+        id: emulator_primary
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 36
@@ -121,21 +160,81 @@ jobs:
           target: google_apis
           profile: pixel_2
           disable-animations: true
-          script: cd android && gradle --no-daemon :app:connectedDebugAndroidTest
+          emulator-options: -no-window -gpu software -memory 3072 -no-snapshot -noaudio -no-boot-anim -feature -Vulkan
+          script: bash scripts/run-android-installed-qa.sh
       - name: Conservar resultados Android
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: cachaste-qa-android-${{ github.run_id }}
-          path: android/app/build/reports/androidTests/connected/
+          path: |
+            android/app/build/reports/androidTests/connected/
+            android/app/build/outputs/androidTest-results/connected/
+            android/app/build/outputs/didactic-screens/
           if-no-files-found: ignore
+          retention-days: 3
+      - name: Conservar AAB release de verificación (sin firma)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cachaste-AAB-UNSIGNED-NOT-FOR-PLAY-${{ github.sha }}
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
           retention-days: 3
       - name: Publicar APK descargable
         uses: actions/upload-artifact@v4
         with:
-          name: Cachaste-v1.3.0-beta-camino-${{ github.sha }}
+          name: Cachaste-v1.5.0-rc5-${{ github.sha }}
           path: |
             android/app/build/outputs/apk/debug/app-debug.apk
             android/app/build/outputs/apk/debug/APK-CERTIFICATE.txt
           if-no-files-found: error
-          retention-days: 3
+          retention-days: 30
+
+  commercial-access:
+    name: Acceso comercial · cinco materias
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Empaquetar solo la distribución pública auditada
+        run: |
+          mkdir -p android/app/src/main/assets
+          cp -R dist/. android/app/src/main/assets/
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - name: Preparar SDK y emulador aislado
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0"
+          echo "sdk.dir=$ANDROID_HOME" > android/local.properties
+          sudo chmod a+rw /dev/kvm
+      - name: Verificar el paquete comercial instalado sin habilitar compras
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          arch: x86_64
+          target: google_apis
+          profile: pixel_2
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -feature -Vulkan
+          script: gradle -p android --no-daemon --max-workers=2 -PcachasteCommercialAccessQa=true -Pandroid.testInstrumentationRunnerArguments.class=cl.preparatupaes.app.CommercialAccessTest :app:connectedDebugAndroidTest
+      - name: Conservar evidencia del control comercial
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cachaste-commercial-access-${{ github.run_id }}
+          path: |
+            android/app/build/reports/androidTests/connected/
+            android/app/build/outputs/androidTest-results/connected/
+          if-no-files-found: ignore
+          retention-days: 14

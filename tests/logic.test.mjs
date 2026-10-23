@@ -325,11 +325,11 @@ test('errores de simulacro largo: 65 pendientes sobreviven al cierre',()=>{
  assert.equal(opened('round.length'),0);
  assert.equal(opened('pendingReview.length'),65);
 });
-test('refuerzo usa otros ítems y no declara dominio por acertar con dudas',()=>{
+test('refuerzo con pistas usa otros ítems sin acreditar dominio',()=>{
  const run=app();run("startExam('full');finishExam();reviewPending()");
  const first=run('queue.map(q=>q.id)');
  assert.equal(run('queue.every(q=>!pendingReview.includes(q.id))'),true);
- run("for(let j=0;j<10;j++){choice=queue[i].answer;confidence='duda';check();next()}");
+ run("for(let j=0;j<10;j++){requestHint();choice=queue[i].answer;check();next()}");
  assert.equal(run('pendingReview.length'),65);
  run('reviewPending()');
  assert.equal(run('queue.every(q=>!'+JSON.stringify(first)+'.includes(q.id))'),true);
@@ -456,4 +456,12 @@ test('M1 protege la sesión guardada al intentar iniciar otra desde inicio',()=>
  const before=run('localStorage.getItem(mathDraftKey)');
  run("startExam('full')");assert.equal(run('localStorage.getItem(mathDraftKey)'),before);assert.equal(run('exam'),false);
  run('requestDiscardMath()');assert.equal(run('page'),'discard');run("navigate('home');resumeMathDiagnosis()");assert.equal(run('choice'),1);assert.equal(run('confidence'),'azar');
+});
+
+test('M1 guarda versión en práctica y ensayo sin cambiar el índice elegido',()=>{
+ const run=app();run("start('rapida');choice=0;check()");
+ assert.equal(run('history.at(-1).assessmentVersion'),run('window.CachasteLearning.assessmentVersion(queue[i])'));
+ assert.equal(run('history.at(-1).selected'),0);
+ const exam=app();exam("startExam('express');finishExam()");
+ assert.equal(exam('history.every(r=>r.assessmentVersion===window.CachasteLearning.assessmentVersion(catalog.find(q=>q.id===r.id)))'),true);
 });

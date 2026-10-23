@@ -1,0 +1,229 @@
+{
+  "reviewedAt": "2026-10-20",
+  "reconstructedAndContinuedAt": "2026-10-21",
+  "baseRevision": "405ba05dcd0b4c0f4575152aa6af214df10ba018",
+  "scope": "Cotejo del lote especificado. No lectura integral de los 526 documentos.",
+  "sources": [
+    {
+      "driveFileId": "1-WfLICwtrKyEp9Pyv8QkHNeJA_lk6OPQ",
+      "title": "TESLA Geometría 250",
+      "scope": "Ejercicios seleccionados; no se aprueban las 250 figuras ni la clave completa."
+    },
+    {
+      "driveFileId": "1J7bDVSy_wrEWZtESP3xy7VA4fo_6rl1W",
+      "title": "TESLA M2 MM05",
+      "scope": "Texto completo y veinte problemas propuestos; gráfico p. 8 y enunciado p. 10 inspeccionados en PDF; excepciones registradas."
+    },
+    {
+      "driveFileId": "1oXFeyfS3ekJoHZ03UmM2XVPvT4GGFBfv",
+      "title": "PDV LE25",
+      "scope": "Introducción y estrategia de síntesis; el nombre externo dice Inferir."
+    },
+    {
+      "driveFileId": "1kdO-qCqBF6XTAca0I9LQqpmxrd_oN8bl",
+      "title": "PDV LE16",
+      "scope": "Tesis, argumentos, conclusión; no se reproducen columnas de opinión."
+    },
+    {
+      "driveFileId": "1BYAEhP-jVMlVBjM3HL9KNPUSJbyOJ6EC",
+      "title": "CPECH Bitácora Ondas",
+      "scope": "Magnitudes y relaciones, pp. 6–8; no se adopta la errata del siglo de Hertz."
+    },
+    {
+      "driveFileId": "1aEvrg-ablJRcopKcsz3xpYf3bM5jkPhG",
+      "title": "TESLA FE06",
+      "scope": "Trabajo, potencial y voltaje; la guía no promueve contenido complementario al ensayo."
+    },
+    {
+      "driveFileId": "1Fe1C0SDVo6ESLGolbTC7dja8r4JZ5Ew2",
+      "title": "FILADD Estructuras y función celular 2",
+      "scope": "Texto recuperado insuficiente para aprobar gráficos; no integrado como validación."
+    },
+    {
+      "driveFileId": "1IA0jkUbQIQMRorLzGOj84t5dpM45oPPL",
+      "title": "FILADD Meiosis",
+      "scope": "Guía corta, divisiones y gametogénesis; límites explícitos."
+    },
+    {
+      "driveFileId": "17UO2f5pYX-6ZUH1TkBAKjssWQCtWykSr",
+      "title": "TESLA Progreso indefinido y contradicciones",
+      "scope": "Secciones de industrialización, urbanización y cuestión social."
+    },
+    {
+      "driveFileId": "1LWJdfY6YsWCNTy3EDTpEgwBGdZb1e8W0",
+      "title": "CPECH Solucionario Sistema económico",
+      "scope": "No se adoptan absolutos sobre Estado/salarios; no se cita como fuente de costo de oportunidad."
+    },
+    {
+      "driveFileId": "1CpI2iTh-0hTR_kWfeJEQGzlnU-SnamJ-",
+      "title": "TESLA M19 Probabilidades II",
+      "scope": "Reposición e independencia; se corrige generalización entre etapas."
+    },
+    {
+      "driveFileId": "10ygMNihVqm8kr2HpajJxCkF8rD2kEzdV",
+      "title": "PDV Taller inferir e interpretar",
+      "scope": "Apartados I–II: inferencia y sobreinferencia."
+    },
+    {
+      "driveFileId": "1Br-fqf2HsB1oeUK2RfiunAmsQrNrLD19",
+      "title": "PDV Cuaderno 5 Electricidad",
+      "scope": "Ley de Ohm, serie/paralelo, potencia y energía, pp. 5–7."
+    },
+    {
+      "driveFileId": "1bFruW8e2qlIYkve9LYwWeGuprEfKP-ka",
+      "title": "CPECH Bitácora Sistema económico",
+      "scope": "Escasez, asignación y relaciones de mercado, pp. 6–9 y 20–24; modelación propia."
+    }
+  ],
+  "mm05": {
+    "pages": 14,
+    "theoryCorrections": [
+      "Desviación estándar escala por |k|.",
+      "La varianza puede ser irracional para datos reales."
+    ],
+    "proposedProblems": [
+      {
+        "number": 1,
+        "publishedKey": "B",
+        "reviewedKey": "B",
+        "decision": "verified"
+      },
+      {
+        "number": 2,
+        "publishedKey": "C",
+        "reviewedKey": "C",
+        "decision": "verified"
+      },
+      {
+        "number": 3,
+        "publishedKey": "B",
+        "reviewedKey": "B",
+        "decision": "verified"
+      },
+      {
+        "number": 4,
+        "publishedKey": "B",
+        "reviewedKey": "B",
+        "decision": "verified"
+      },
+      {
+        "number": 5,
+        "publishedKey": "A",
+        "reviewedKey": "A",
+        "decision": "verified"
+      },
+      {
+        "number": 6,
+        "publishedKey": "A",
+        "reviewedKey": "A",
+        "decision": "verified"
+      },
+      {
+        "number": 7,
+        "publishedKey": "E",
+        "reviewedKey": "E",
+        "decision": "verified"
+      },
+      {
+        "number": 8,
+        "publishedKey": "A",
+        "reviewedKey": "A",
+        "decision": "verified"
+      },
+      {
+        "number": 9,
+        "publishedKey": "D",
+        "reviewedKey": "D",
+        "decision": "verified"
+      },
+      {
+        "number": 10,
+        "publishedKey": "B",
+        "reviewedKey": null,
+        "decision": "reject-ambiguous-stem"
+      },
+      {
+        "number": 11,
+        "publishedKey": "B",
+        "reviewedKey": "B",
+        "decision": "verified"
+      },
+      {
+        "number": 12,
+        "publishedKey": "A",
+        "reviewedKey": "A",
+        "decision": "verified"
+      },
+      {
+        "number": 13,
+        "publishedKey": "D",
+        "reviewedKey": "D",
+        "decision": "verified"
+      },
+      {
+        "number": 14,
+        "publishedKey": "D",
+        "reviewedKey": "D",
+        "decision": "verified"
+      },
+      {
+        "number": 15,
+        "publishedKey": "A",
+        "reviewedKey": "A",
+        "decision": "verified"
+      },
+      {
+        "number": 16,
+        "publishedKey": "B",
+        "reviewedKey": "B",
+        "decision": "require-positive-conditioning-event"
+      },
+      {
+        "number": 17,
+        "publishedKey": "A",
+        "reviewedKey": "A",
+        "decision": "require-positive-conditioning-event"
+      },
+      {
+        "number": 18,
+        "publishedKey": "E",
+        "reviewedKey": "C",
+        "decision": "corrected-key"
+      },
+      {
+        "number": 19,
+        "publishedKey": "A",
+        "reviewedKey": "A",
+        "decision": "verified"
+      },
+      {
+        "number": 20,
+        "publishedKey": "D",
+        "reviewedKey": "D",
+        "decision": "verified"
+      }
+    ]
+  },
+  "assessment": {
+    "questions": 802,
+    "assessmentAndFamilyDigest": "3835d63e1faeed64b89431b92869ca7331578d39d35af27d981e80cc875da596",
+    "unchangedFromBase": true
+  },
+  "teaching": {
+    "revisedQuestions": 151,
+    "revisedObjectives": 38
+  },
+  "visuals": {
+    "themes": 11,
+    "states": 33,
+    "guidedChecks": 11,
+    "illustrations": 8,
+    "linkedQuestions": 153
+  },
+  "remaining": [
+    "Resto del inventario por página y ejercicio",
+    "Más arte temático",
+    "Validación con estudiantes",
+    "Ficha y publicación Play Console"
+  ]
+}

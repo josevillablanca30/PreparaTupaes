@@ -41,11 +41,12 @@ test('Lectura: 20 textos originales y 130 preguntas únicas con tres habilidades
  assert.equal(distribution.Interpretar,53);
  assert.equal(distribution.Evaluar,32);
 });
-test('Lectura: diagnóstico obligatorio de 30 distribuye 10/12/8',()=>{
+test('Lectura: ensayo directo y diagnóstico independiente de 30 distribuye 10/12/8',()=>{
  const a=reading();a.win.readingBegin('express');
  assert.equal(a.get().session??null,null);
  a.win.readingBegin('completo');
- assert.equal(a.get().session??null,null);
+ assert.equal(a.get().session.ids.length,65);
+ a.win.readingDiscard();a.win.readingDiscard();
  a.win.readingBegin('diagnostico');
  const q=a.get().session.ids.map(id=>a.items.find(x=>x.id===id));
  assert.equal(q.length,30);assert.equal(new Set(q.map(x=>x.id)).size,30);
@@ -53,14 +54,14 @@ test('Lectura: diagnóstico obligatorio de 30 distribuye 10/12/8',()=>{
  assert.equal(q.filter(x=>x.skill==='Interpretar').length,12);
  assert.equal(q.filter(x=>x.skill==='Evaluar').length,8);
  assert.ok(a.elements.view.innerHTML.includes('Texto'));
- assert.ok(a.elements.view.innerHTML.includes('¿Qué tan seguro estás?'));
+ assert.ok(!a.elements.view.innerHTML.includes('¿Qué tan seguro estás?'));
 });
-test('Lectura: responde sin pistas en diagnóstico y guarda autoconfianza',()=>{
+test('Lectura: responde sin pistas ni declaración de seguridad',()=>{
  const a=reading();a.win.readingBegin('diagnostico');
  assert.ok(!a.elements.view.innerHTML.includes('Necesito una pista'));
  const ses=a.get().session,q=a.items.find(x=>x.id===ses.ids[0]);
  a.win.readingConfidence('azar');a.win.readingChoose(q.answer);a.win.readingCheck();a.win.readingAdvance();
- assert.equal(a.get().history[0].confidence,'azar');
+ assert.equal(a.get().history[0].confidence,'no-declarada');
  assert.equal(a.get().history[0].correct,true);
  assert.equal(a.get().history[0].assisted,false);
 });
@@ -111,7 +112,7 @@ test('Lectura: ensayo de 65 preguntas completas sin retroalimentación anticipad
 });
 test('Lectura: repaso persistente y progreso separados de M1 y Ciencias',()=>{
  const data=new Map(),a=reading(data);finishDiagnosis(a,12);
- const ids=a.get().pending;assert.ok(ids.length>=12);
+ const ids=a.get().pending;assert.ok(ids.length<=12); // Puede quedar vacío si el diagnóstico acredita los conceptos con respuestas independientes.const proved=new Set(a.win.CachasteLearning.profile(a.items,a.get().history).filter(p=>p.status==='comprobado').map(p=>p.concept));assert.ok(ids.every(id=>!proved.has(a.items.find(q=>q.id===id).concept)));
  a.win.readingBegin('errores');
  assert.ok(a.get().session.ids.length<=10);
  const b=reading(data);
@@ -162,4 +163,11 @@ test('Lectura migra respuestas anteriores sin duplicar historial y conserva los 
  delete session.answers;session.results=rows;session.index=2;state.history.push(...rows);
  const b=reading(new Map([['cachaste-reading-v1',JSON.stringify(state)]]));b.win.readingResume();b.win.readingExamAction('submit');const done=b.get();
  assert.equal(done.history.length,95);assert.equal(done.recent[0].correct,true);assert.equal(done.recent[1].unanswered,false);
+});
+
+test('Lectura conserva versión y pasaje en diagnóstico y ensayo',()=>{
+ const a=reading();finishDiagnosis(a);
+ assert.ok(a.get().history.every(r=>r.assessmentVersion===a.win.CachasteLearning.assessmentVersion(a.items.find(q=>q.id===r.id))));
+ a.win.readingBegin('completo');a.win.readingExamAction('submit');
+ assert.ok(a.get().recent.every(r=>r.assessmentVersion===a.win.CachasteLearning.assessmentVersion(a.items.find(q=>q.id===r.id))));
 });

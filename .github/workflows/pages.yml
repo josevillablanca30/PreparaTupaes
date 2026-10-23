@@ -2,11 +2,11 @@ name: Pages · pruebas móviles y despliegue
 
 on:
   push:
-    branches: [main]
-    paths-ignore: ['README.md', 'docs/**']
+    branches: [main, work/cachaste-motor-duolingo-20261016]
+    paths-ignore: ['README.md', 'docs/**', 'reports/**', '.github/workflows/qa-delivery.yml', 'qa-delivery-request.json', 'scripts/competition-backup.mjs', 'scripts/competition-restore.mjs', '.github/workflows/competition-backup-restore.yml', '.github/workflows/android-apk.yml', '.github/workflows/pages.yml']
   pull_request:
-    branches: [main]
-    paths-ignore: ['README.md', 'docs/**']
+    branches: [main, work/quests-progress-ui-20261015]
+    paths-ignore: ['README.md', 'docs/**', 'reports/**', '.github/workflows/qa-delivery.yml', 'qa-delivery-request.json', 'scripts/competition-backup.mjs', 'scripts/competition-restore.mjs', '.github/workflows/competition-backup-restore.yml', '.github/workflows/android-apk.yml', '.github/workflows/pages.yml']
   workflow_dispatch:
 
 permissions:
@@ -14,13 +14,24 @@ permissions:
 
 concurrency:
   group: pages-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   validate:
-    name: Pruebas Android, iPhone y 320 px
+    name: Pruebas · ${{ matrix.project }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: Android-Chrome
+            browser: chromium
+          - project: iPhone-WebKit
+            browser: webkit
+          - project: mobile-320px
+            browser: chromium
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Independent device jobs preserve all checks while shortening feedback.
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -31,20 +42,25 @@ jobs:
       - run: npm run test:logic
       - run: npm run audit:pedagogy
       - run: npm run build
-      - run: npx playwright install --with-deps chromium webkit
-      - run: npm test
+      - name: Preparar Chromium con descarga acotada
+        if: matrix.browser == 'chromium'
+        run: bash scripts/install-chromium-qa.sh
+      - name: Preparar WebKit
+        if: matrix.browser == 'webkit'
+        run: npx playwright install --with-deps webkit
+      - run: npm test -- --project="${{ matrix.project }}"
       - name: Conservar reporte móvil un día
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: mobile-tests-${{ github.run_id }}
+          name: mobile-tests-${{ matrix.project }}-${{ github.run_id }}
           path: |
             playwright-report/
             test-results/
           retention-days: 1
           if-no-files-found: ignore
       - name: Preparar publicación
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && matrix.project == 'Android-Chrome'
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
@@ -52,7 +68,7 @@ jobs:
 
   deploy:
     name: Publicar en GitHub Pages
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 10

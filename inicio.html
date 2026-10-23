@@ -45,7 +45,7 @@ h2{font-size:21px;letter-spacing:-.6px;margin:0}.section-title p{font-size:13px;
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 
 .subject{transition:transform .15s ease,border-color .15s ease}.subject:active{transform:scale(.99)}.progress{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}.continue-card{margin:24px 0;padding:20px;border:1px solid #d8c9f2;background:#f0eafd;border-radius:20px}.continue-card a{display:inline-flex;align-items:center;min-height:46px;padding:10px 16px;background:#6846bb;color:white;border-radius:12px;text-decoration:none;font-weight:750}.continue-card p{margin:8px 0 12px}@media(max-width:500px){header{margin-bottom:28px}.gridsci{gap:10px}.gridsci .subject{padding:17px}.gridsci .subject p{font-size:14px}.section-title{align-items:flex-start;gap:8px;flex-wrap:wrap}}@media(prefers-reduced-motion:reduce){.subject{transition:none}}
-</style><link rel="stylesheet" href="daily-ui.css">
+</style><link rel="stylesheet" href="daily-ui.css"><link rel="stylesheet" href="daily-reference.css">
 </head>
 <body><main>
 <section id="daily-root" aria-label="Aprendizaje diario"></section><section id="traditional-section" hidden><header class="exam-header"><a href="#home">← Volver a aprender</a><h1>Diagnósticos, prácticas y ensayos PAES</h1></header><h2>Diagnósticos, prácticas y ensayos PAES</h2><p>Conserva tus sesiones tradicionales y elige tu mención en Ciencias.</p>
@@ -68,7 +68,7 @@ h2{font-size:21px;letter-spacing:-.6px;margin:0}.section-title p{font-size:13px;
 <article><span>Ciencias</span><strong id="science-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article>
 <article><span>Competencia Lectora</span><strong id="reading-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article>
 <article><span>Matemática M2</span><strong id="m2-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article><article><span>Historia</span><strong id="history-progress">Aún sin practicar</strong><span>Respuestas registradas</span></article></section><p class="bottom-note">Tu progreso se guarda en este dispositivo y se mantiene separado por área. Cachaste es una aplicación independiente de preparación PAES; no contiene preguntas oficiales.</p>
-</section></main>
+<p class="bottom-note"><a href="suscripcion.html">Ver planes de suscripción previstos</a> · La contratación aún no está habilitada.</p></section></main>
 <script>
 (function(){
 function safeRead(key){try{const value=JSON.parse(localStorage.getItem(key)||'null');return value&&typeof value==='object'?value:null}catch{return null}}
@@ -88,4 +88,5 @@ const next=pending.sort((a,b)=>(b[2].started||0)-(a[2].started||0))[0],container
 if(next&&container){const [href,title,ses]=next;container.innerHTML='<section class="continue-card"><span class="kicker">SIGAMOS DESDE DONDE QUEDASTE</span><h2>'+title+'</h2><p>Pregunta '+(ses.index+1)+' de '+ses.ids.length+'. Tu sesión está guardada en este dispositivo.</p><a href="'+href+'">Retomar mi preparación →</a></section>';}
 })();
 </script>
-<script src="learning-core.js"></script><script src="daily-curriculum.js"></script><script src="daily-catalog.js"></script><script src="daily-foundation-visuals.js"></script><script src="daily-basics.js"></script><script src="daily-core.js"></script><script src="daily-visuals.js"></script><script src="daily-app.js"></script></body></html>
+<script src="learning-core.js"></script><script src="editorial-revisions.js"></script><script src="daily-curriculum.js"></script><script src="daily-catalog.js"></script><script src="daily-foundation-visuals.js"></script><script src="daily-basics.js"></script><script src="daily-school.js"></script><script src="daily-progression.js"></script><script src="daily-core.js"></script><script src="daily-visuals.js"></script><script src="daily-gameplay.js"></script><script src="daily-studios.js"></script><script src="daily-illustration-kit.js"></script><script src="daily-scenarios.js"></script><script src="daily-demonstrations.js"></script><script src="daily-lesson-visuals.js"></script><script src="daily-topic-visuals.js"></script><script src="daily-lessons.js"></script>
+<script src="daily-app.js"></script></body></html>
