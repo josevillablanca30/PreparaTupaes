@@ -1,6 +1,9 @@
 package cl.preparatupaes.app;
 
 import android.webkit.WebView;
+import android.os.ParcelFileDescriptor;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.platform.app.InstrumentationRegistry;
 import org.junit.Test;
@@ -22,10 +25,46 @@ public class LocalVsBetaTest {
         for(int n=0;n<150;n++){if("true".equals(js("Boolean("+script+")")))return;Thread.sleep(100);}
         fail("Beta WebView did not reach: "+script);
     }
+    private String deviceCommand(String command) throws Exception {
+        try(BufferedReader output=new BufferedReader(new InputStreamReader(new ParcelFileDescriptor.AutoCloseInputStream(
+                InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommand(command))))) {
+            StringBuilder result=new StringBuilder();
+            String line;
+            while((line=output.readLine())!=null)result.append(line).append('\n');
+            return result.toString().trim();
+        }
+    }
     private void capture(String name) throws Exception {
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();Thread.sleep(1200);
-        android.os.ParcelFileDescriptor fd=InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommand("mkdir -p /data/local/tmp/cachaste-didactic-screens; screencap -p /data/local/tmp/cachaste-didactic-screens/"+name+".png");
-        try(java.io.InputStream in=new android.os.ParcelFileDescriptor.AutoCloseInputStream(fd)){while(in.read()!=-1){}}
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+        Thread.sleep(1200);
+        // VisualStateCallback makes the DOM available for the NEXT draw, not the frame already on screen.
+        // Wait for actual render commits: animation callbacks alone allowed screencap to export the previous route.
+        for(int frame=0;frame<2;frame++) {
+            CountDownLatch painted=new CountDownLatch(1);
+            scenario.onActivity(activity -> {
+                WebView view=web(activity);
+                view.postVisualStateCallback(System.nanoTime(),new WebView.VisualStateCallback() {
+                    @Override public void onComplete(long requestId) {
+                        if(android.os.Build.VERSION.SDK_INT>=29 && view.isHardwareAccelerated()) {
+                            view.getViewTreeObserver().registerFrameCommitCallback(painted::countDown);
+                            view.invalidate();
+                            ((android.view.View)view.getParent()).invalidate();
+                        } else {
+                            view.invalidate();
+                            view.postOnAnimation(() -> view.postOnAnimation(painted::countDown));
+                        }
+                    }
+                });
+            });
+            assertTrue("WebView did not commit the current screen",painted.await(10,TimeUnit.SECONDS));
+        }
+        Thread.sleep(300);
+        // Keep native captures outside app data, which Gradle clears after testing.
+        String path="/data/local/tmp/cachaste-didactic-screens/"+name+".png";
+        // UiAutomation starts one process per call; it does not interpret shell operators.
+        deviceCommand("mkdir -p /data/local/tmp/cachaste-didactic-screens");
+        deviceCommand("screencap -p "+path);
+        assertTrue("Native screenshot export failed",deviceCommand("stat -c %s "+path).matches("[1-9][0-9]*"));
     }
     @Test public void localVsEntryPlaysBothTurnsOfflineAndRestoresHandoff() throws Exception {
         scenario=ActivityScenario.launch(MainActivity.class);

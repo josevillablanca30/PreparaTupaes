@@ -22,6 +22,9 @@ Esta prueba permite revisar la experiencia en un teléfono. No valida la comunic
 - 387 pruebas de lógica aprobadas, incluidas cinco del nuevo duelo local.
 - 12 recorridos móviles aprobados: cinco materias y recuperación/caducidad, en Android Chrome y 320 px.
 - Capturas del VS y resultado revisadas; se conserva el arte oficial.
-- La instrumentación `LocalVsBetaTest` jugará ambos turnos en el WebView instalado y revisará la reanudación tras recrear la Activity. Sus resultados y la identidad del APK se registran tras el build de CI.
+- CI: 12 recorridos del VS local y 402 recorridos existentes aprobados.
+- Android 16/API 36: 30 pruebas instaladas aprobadas, incluido el duelo local completo y la reanudación tras recrear la Activity; cinco comprobaciones comerciales adicionales, sin fallos ni omisiones.
+- Firma idéntica a la beta anterior y versión/código de paquete verificados. La identidad se registra en `reports/cachaste-rc4-verification.json`.
+- Se conservaron 65 capturas nativas existentes. Las tres capturas opcionales nuevas no se exportaron por un comando compuesto en el helper de instrumentación; el recorrido funcional pasó. Se corrigió ese helper reutilizando la implementación de captura ya existente, sin modificar el código de la app ni el APK entregado. El VS y resultado se revisaron visualmente en Chrome Android y 320 px con assets idénticos al APK.
 
 Versión Android: 1.5.0-rc4, código 31, actualización del mismo paquete beta.
