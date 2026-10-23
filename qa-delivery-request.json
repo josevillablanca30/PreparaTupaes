@@ -1,7 +1,7 @@
 {
-  "sourceSha": "7c507cd01f4a3cddf8ffdd4ac44a1201ced41d7e",
-  "androidRun": 39891307782,
+  "sourceSha": "da479cc3c6ded5bd8693c65c4e2ffe8ea41a086e",
+  "androidRun": 39894280241,
   "integrationRun": 39891307745,
-  "request": 1,
-  "notes": "Candidata beta; competencia remota y cobros todavía no activados. Las capturas competition-fixture usan identidades aisladas del APK de pruebas."
+  "request": 2,
+  "notes": "APK beta: misma implementación 7c507cd; esta revisión añade diagnóstico Android. Competencia remota y cobros siguen pendientes de activación."
 }

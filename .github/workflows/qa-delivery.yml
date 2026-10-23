@@ -67,12 +67,16 @@ jobs:
               assert "versionCode='28'" in first and "versionName='1.5.0-rc1'" in first
               signer=sorted(sdk.glob('build-tools/*/apksigner'))[-1]
               cert=subprocess.check_output([str(signer),'verify','--print-certs',str(target)],text=True);(out/'APK-CERTIFICATE.txt').write_text(cert);summary['certificate']=cert.splitlines()[:5]
-          xml=[]
+          xml=[];failures=[]
           for path in root.rglob('TEST-*.xml'):
               try:
                   suite=ET.parse(path).getroot();xml.append(dict(suite.attrib))
+                  for case in suite.findall('testcase'):
+                      for failure in case.findall('failure')+case.findall('error'):failures.append({'test':case.get('name'),'message':failure.get('message'),'details':failure.text})
               except ET.ParseError:pass
-          summary['nativeTestSuites']=xml
+          summary['nativeTestSuites']=xml;summary['nativeFailures']=failures
+          for path in root.rglob('*diagnostics.log'):shutil.copy(path,out/path.name)
+          for path in root.rglob('host-memory.log'):shutil.copy(path,out/path.name)
           native=out/'Capturas-Android';native.mkdir(exist_ok=True)
           for im in images:shutil.copy(im,native/im.name)
           fontpath='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
