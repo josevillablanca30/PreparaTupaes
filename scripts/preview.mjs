@@ -38,6 +38,9 @@ const files = new Map([
   ['/PreparaTupaes/assets/cachaste-logo.svg', ['assets/cachaste-logo.svg', 'image/svg+xml']],
   ['/PreparaTupaes/version.json', ['version.json', 'application/json']]
 ]);
+// Local opt-in preview of the debug-only Android overlay; never served by public builds.
+const betaPreview=process.env.CACHASTE_BETA_PREVIEW==='1';
+if(betaPreview)for(const file of ['beta-vs.html','beta-vs.js','beta-vs.css'])files.set('/PreparaTupaes/'+file,[file,file.endsWith('.html')?'text/html; charset=utf-8':file.endsWith('.css')?'text/css':'text/javascript']);
 createServer(async (request, response) => {
   const route = new URL(request.url, 'http://localhost').pathname;
   if (route === '/PreparaTupaes') {
@@ -47,7 +50,8 @@ createServer(async (request, response) => {
   const file = files.get(route);
   if (!file) { response.writeHead(404).end('Not found'); return; }
   try {
-    const content = await readFile(new URL('../dist/' + file[0], import.meta.url));
+    const betaFile=betaPreview&&['competencia.html','beta-vs.html','beta-vs.js','beta-vs.css'].includes(file[0]);
+    const content = await readFile(new URL((betaFile?'../android/app/src/beta/assets/':'../dist/') + file[0], import.meta.url));
     response.writeHead(200, { 'Content-Type': file[1], 'Cache-Control': 'no-store' });
     response.end(content);
   } catch {

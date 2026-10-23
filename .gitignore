@@ -19,3 +19,6 @@ supabase/seed.sql
 competition-test-credentials*
 android/app/src/androidTest/assets/competition-fixture.js
 .cachaste-backups/
+
+# Regenerable assets packaged only in the debug beta
+android/app/src/beta/assets/

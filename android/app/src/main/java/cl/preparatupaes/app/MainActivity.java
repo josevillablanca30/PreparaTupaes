@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
     private boolean isApplicationPage(String url) {
         if (url == null) return false;
         String path = url.split("[?#]", 2)[0];
-        return path.equals(COMPETITION) || path.equals(SUBSCRIPTION) || path.equals(HOME) || path.equals("file:///android_asset/index.html")
+        return (getPackageName().equals("cl.preparatupaes.app.sciencebeta") && path.equals(ASSETS + "beta-vs.html")) || path.equals(COMPETITION) || path.equals(SUBSCRIPTION) || path.equals(HOME) || path.equals("file:///android_asset/index.html")
             || path.equals("file:///android_asset/science.html")
             || path.equals("file:///android_asset/reading.html")
             || path.equals("file:///android_asset/m2.html")
