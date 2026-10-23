@@ -299,16 +299,27 @@ public class OfflineAppTest {
     private void captureDidacticScreen(String name) throws Exception {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
         Thread.sleep(1200);
-        CountDownLatch painted=new CountDownLatch(1);
-        scenario.onActivity(activity -> {
-            WebView view=web(activity);
-            view.postVisualStateCallback(System.nanoTime(),new WebView.VisualStateCallback() {
-                @Override public void onComplete(long requestId) {
-                    view.postOnAnimation(() -> view.postOnAnimation(painted::countDown));
-                }
+        // VisualStateCallback makes the DOM available for the NEXT draw, not the frame already on screen.
+        // Wait for actual render commits: animation callbacks alone allowed screencap to export the previous route.
+        for(int frame=0;frame<2;frame++) {
+            CountDownLatch painted=new CountDownLatch(1);
+            scenario.onActivity(activity -> {
+                WebView view=web(activity);
+                view.postVisualStateCallback(System.nanoTime(),new WebView.VisualStateCallback() {
+                    @Override public void onComplete(long requestId) {
+                        if(android.os.Build.VERSION.SDK_INT>=29 && view.isHardwareAccelerated()) {
+                            view.getViewTreeObserver().registerFrameCommitCallback(painted::countDown);
+                            view.invalidate();
+                            ((android.view.View)view.getParent()).invalidate();
+                        } else {
+                            view.invalidate();
+                            view.postOnAnimation(() -> view.postOnAnimation(painted::countDown));
+                        }
+                    }
+                });
             });
-        });
-        assertTrue("WebView did not paint the current lesson",painted.await(10,TimeUnit.SECONDS));
+            assertTrue("WebView did not commit the current screen",painted.await(10,TimeUnit.SECONDS));
+        }
         Thread.sleep(300);
         // Keep native captures outside app data, which Gradle clears after testing.
         String path="/data/local/tmp/cachaste-didactic-screens/"+name+".png";
