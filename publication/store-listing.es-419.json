@@ -10,9 +10,16 @@
   "initialCountryProposal": "CL",
   "targetAudienceProposal": "15 años en adelante; revisar los grupos de edad disponibles en Play Console",
   "publisherName": null,
-  "supportEmail": null,
+  "supportEmail": "jose.villablanca.horta@gmail.com",
   "websiteUrl": null,
   "privacyPolicyUrl": null,
   "accountDeletionUrl": null,
-  "publicationStatus": "PREPARATION_ONLY_NOT_APPROVED_FOR_PRODUCTION"
+  "publicationStatus": "PREPARATION_ONLY_NOT_APPROVED_FOR_PRODUCTION",
+  "playConsoleAccount": {
+    "createdReportedByOwner": true,
+    "loginEmail": "jose.villablanca.horta@gmail.com",
+    "accountType": null,
+    "identityVerification": "NOT_VERIFIED_IN_CONSOLE",
+    "applicationCreated": "NOT_VERIFIED_IN_CONSOLE"
+  }
 }

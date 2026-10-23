@@ -52,16 +52,30 @@
     "selectedStoreCaptures": 8
   },
   "hostedCommunityMigration": {
-    "file": "20261023191747_cachaste_community.sql",
-    "applied": false,
-    "reason": "El conector falló dos veces con Invalid or expired requestState. No están las tablas nuevas en el servidor alojado."
+    "file": "20261023200921_cachaste_community.sql",
+    "applied": true,
+    "version": "20261023200921",
+    "verification": {
+      "privateTables": 22,
+      "tablesWithoutRls": 0,
+      "clientReportsRead": false,
+      "clientRestrictionsWrite": false,
+      "clientOldDispatcher": false,
+      "publicOldDispatcher": false,
+      "newDispatcher": true,
+      "users": 0,
+      "profiles": 0,
+      "reports": 0,
+      "environment": "production"
+    },
+    "initialConnectionErrorsResolved": true
   },
   "releaseBlockers": [
-    "Cuenta/identidad del titular en Play Console y estado de inscripción",
+    "Verificar en Play Console identidad y tipo de cuenta del titular, inscripción y ficha",
     "Productos, credenciales oficiales de Google y RTDN/PubSub configurados y verificados",
     "SMTP y retorno HTTPS de confirmación/recuperación comprobados",
-    "Titular, soporte, dominio, privacidad y eliminación publicados y enlazados en la app",
-    "Migración de comunidad aplicada y moderación operativa",
+    "Responsable legal, dominio, privacidad y eliminación publicados y enlazados en la app; soporte ya confirmado",
+    "Responsable y proceso de revisión de denuncias operativos",
     "Siguiente compilación habilitada y firmada con la misma clave",
     "Compra auténtica de licencia, restauración/ciclo de suscripción y duelo entre dos celulares físicos",
     "Seguridad de los datos, público, acceso de revisión, IARC y pruebas/cierre de revisión exigidos por la cuenta"
@@ -72,5 +86,13 @@
     "unsignedAabZip": "2ebbb3ab45913fc5bc14e82c92f0576dece4e2845edfcb5b650394bcadb0723b",
     "qaZip": "fd568f349af60195e42f2d7c2e631642c7844dc9be03669517570186922c9a69"
   },
-  "storeGraphics": "Activos de marca existentes; capturas nativas sin datos de rivales ni resultados de fixtures. Falta captura competitiva con cuentas reales."
+  "storeGraphics": "Activos de marca existentes; capturas nativas sin datos de rivales ni resultados de fixtures. Falta captura competitiva con cuentas reales.",
+  "playConsoleAccount": {
+    "createdReportedByOwner": true,
+    "loginEmail": "jose.villablanca.horta@gmail.com",
+    "accountType": null,
+    "identityVerification": "NOT_VERIFIED_IN_CONSOLE",
+    "applicationCreated": "NOT_VERIFIED_IN_CONSOLE"
+  },
+  "supportEmail": "jose.villablanca.horta@gmail.com"
 }

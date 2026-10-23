@@ -13,11 +13,13 @@ El AAB firmado de esta entrega sirve para la **carga inicial de configuración e
 - Configuración de producto y planes, guía para los dos celulares, borradores legales y propuesta de Seguridad de los datos.
 - Lista concreta de datos y verificaciones pendientes. No se asigna una clasificación IARC ni se afirma que Play haya aprobado nada.
 
-La actualización de comunidad está validada en el servidor temporal de CI, pero **pendiente de aplicar al servidor alojado** por un error del conector. El detalle de despliegue y operación está en `moderacion.md`.
+La actualización de comunidad ya está aplicada al servidor alojado y comprobada: las tablas nuevas permanecen privadas y el despachador anterior no admite llamadas de clientes. El detalle de operación está en `moderacion.md`.
+
+El titular confirmó la creación de su cuenta Play Console con `jose.villablanca.horta@gmail.com`; se usará el mismo correo como soporte público. El tipo de cuenta, verificación de identidad y existencia de la ficha todavía deben comprobarse dentro de Console.
 
 ## Orden de trabajo
 
-1. **Cuenta del titular.** Acceder o registrarse en Play Console, completar identidad y pagar la inscripción si corresponde. Confirmar si la cuenta es personal o de organización. No crear cuentas ficticias para cumplir pruebas.
+1. **Cuenta del titular creada.** Entrar a Play Console con `jose.villablanca.horta@gmail.com` y comprobar el estado de identidad, inscripción y tipo de cuenta. La creación fue informada por el titular; no se afirma haber inspeccionado Console. No crear cuentas ficticias para cumplir pruebas.
 2. **Crear o seleccionar la app.** Comprobar primero que no exista una ficha para `cl.preparatupaes.app`. Usar el nombre preparado, español y categoría Educación. La descarga se configura como gratis con suscripción dentro de la app; no es un plan gratuito de acceso al contenido.
 3. **Primera carga interna.** Activar Play App Signing y cargar el AAB firmado. Registrar el certificado de carga correcto; Play App Signing usa además su propia clave de distribución. Esta carga permite continuar la configuración de la app, no acredita la validación comercial.
 4. **Productos y servidor.** Configurar los planes de `productos.csv`, cuenta de servicio de Google Play Developer API y notificaciones RTDN/Pub/Sub. Colocar los secretos solo en el servidor siguiendo `docs/competition-operations.md`. Comprobar que el verificador deje de responder `ready:false`.
@@ -32,7 +34,7 @@ La actualización de comunidad está validada en el servidor temporal de CI, per
 | --- | --- |
 | Estado y tipo de cuenta Play Console | Identidad, pista y requisitos de acceso a producción |
 | Nombre público y responsable legal | Ficha y documentos legales |
-| Correo de soporte que se hará público | Ficha, privacidad y solicitudes de eliminación |
+| Correo de soporte confirmado: `jose.villablanca.horta@gmail.com` | Ficha, privacidad y solicitudes de eliminación |
 | Dominio o sitio autorizado | Publicar privacidad, eliminación y recuperación HTTPS |
 | Dos correos Google de quienes probarán | Pista interna y verificadores de licencia |
 

@@ -6,11 +6,13 @@ La denuncia guarda el identificador del denunciante autenticado, el del denuncia
 
 ## Estado de despliegue
 
-La migración `supabase/migrations/20261023191747_cachaste_community.sql` pasó las pruebas en Postgres y la integración Auth/PostgREST del servidor temporal de CI. **No se aplicó al proyecto alojado**: dos intentos del conector devolvieron `Invalid or expired requestState`; la consulta posterior no encontró las tablas nuevas. Aplicarla mediante una conexión administrativa autorizada y comprobar los permisos antes de habilitar competencia. No usar la ejecución SQL general para esquivar el fallo del flujo de migraciones.
+La migración `supabase/migrations/20261023200921_cachaste_community.sql` está aplicada al proyecto alojado desde el 23 de octubre de 2026, a las 20:09 UTC. Pasó las pruebas en Postgres y la integración Auth/PostgREST del servidor temporal de CI. La verificación alojada confirmó 22 tablas privadas con RLS, sin lectura directa de denuncias ni escritura de restricciones desde el cliente, y sin ejecución del despachador anterior para clientes. No se crearon usuarios, perfiles, denuncias ni suscripciones de prueba en producción.
+
+Los dos fallos iniciales de conexión quedaron resueltos. El nombre local de la migración se alineó con la versión registrada por el servidor; su SQL conserva exactamente el contenido validado. El responsable todavía debe establecer y operar el proceso de revisión antes de abrir la comunidad al público.
 
 ## Trabajo del responsable
 
-Antes del lanzamiento, el titular debe asumir la revisión periódica de denuncias, elegir un contacto público de soporte, atender solicitudes y documentar las decisiones con acceso administrativo restringido. La aplicación no incorpora un equipo externo de moderación ni promete plazos de atención que no existen.
+Antes del lanzamiento, el titular debe asumir la revisión periódica de denuncias, mantener operativo el contacto público de soporte `jose.villablanca.horta@gmail.com`, atender solicitudes y documentar las decisiones con acceso administrativo restringido. La aplicación no incorpora un equipo externo de moderación ni promete plazos de atención que no existen.
 
 Desde el SQL Editor administrativo del proyecto, consultar únicamente la cola necesaria:
 
