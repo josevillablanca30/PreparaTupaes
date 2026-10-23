@@ -24,6 +24,8 @@ La comprobación pública de salud devuelve únicamente versión y disponibilida
 
 Estado comprobado el 23 de octubre: las tres migraciones están aplicadas en el proyecto alojado. La salud HTTP devuelve `catalogueReady: true`, con 802 preguntas y 346 comunas. No hay perfiles, suscripciones ni resultados precargados. Las versiones del historial remoto se alinearon con los nombres de migración del repositorio. Los avisos informativos de RLS sin políticas corresponden al esquema privado y a su denegación deliberada de acceso directo; no se deben resolver abriendo tablas al cliente.
 
+La rc5 añade una cuarta migración de comunidad, `20261023191747_cachaste_community.sql`. Está validada por CI y pendiente de aplicar al proyecto alojado: el conector devolvió `Invalid or expired requestState` y se comprobó que las tablas nuevas no existen. No habilitar competencia pública antes de aplicar y comprobar esa migración; ver [`publication/moderacion.md`](../publication/moderacion.md).
+
 ## Reglas comprobables
 
 - Cuatro rankings: ensayo, Express, estrellas educativas verificadas y liga de duelos. No hay ponderación.
