@@ -140,7 +140,6 @@ jobs:
           sudo chmod a+rw /dev/kvm
       - name: Probar APK instalado, WebView sin red, persistencia y botón Atrás (Android 36)
         id: emulator_primary
-        continue-on-error: true
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 36
@@ -148,25 +147,12 @@ jobs:
           target: google_apis
           profile: pixel_2
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -feature -Vulkan
-          script: bash scripts/run-android-installed-qa.sh
-      - name: Reintentar emulador Android 35 si el SDK 36 falla
-        id: emulator_fallback
-        if: steps.emulator_primary.outcome == 'failure'
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 35
-          arch: x86_64
-          target: google_apis
-          profile: pixel_2
-          disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -feature -Vulkan
-          script: bash scripts/run-android-installed-qa.sh
-      - name: Confirmar pruebas nativas antes de publicar APK
-        if: always() && steps.emulator_primary.outcome != 'success' && steps.emulator_fallback.outcome != 'success'
-        run: |
-          echo 'Ninguno de los emuladores Android completó la batería de pruebas.'
-          exit 1
+          emulator-options: -no-window -gpu software -memory 3072 -no-snapshot -noaudio -no-boot-anim -feature -Vulkan
+          script: |
+            emulator -version
+            adb shell getprop ro.build.version.sdk
+            adb shell getprop ro.build.version.release
+            bash scripts/run-android-installed-qa.sh
       - name: Conservar resultados Android
         if: always()
         uses: actions/upload-artifact@v4

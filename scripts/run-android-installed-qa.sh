@@ -2,6 +2,8 @@
 set -u
 task_output=android/app/build/outputs/didactic-screens
 mkdir -p "$task_output"
+adb shell getprop > "$task_output/device-properties.txt"
+emulator -version > "$task_output/emulator-version.txt" 2>&1
 adb logcat -c
 adb logcat -v threadtime -s CachasteQa:I AndroidRuntime:E chromium:E > "$task_output/native-diagnostics.log" 2>&1 &
 task_log_pid=$!
