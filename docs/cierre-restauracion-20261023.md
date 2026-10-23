@@ -16,7 +16,7 @@ Se quitó la etiqueta comercial «Premium» de esta pantalla para respetar el mo
 ## Verificación local
 
 - Base original: 375 pruebas de lógica aprobadas. Las regresiones nuevas fallaron antes del arreglo: tres de cliente y cinco escenarios de interfaz Android.
-- Después del arreglo: 381 pruebas de lógica aprobadas y 54 pruebas de interfaz aprobadas entre Android Chrome y pantalla de 320 px. Incluyen compras pendientes, cancelación, pérdida de respuesta, compra previa al reinicio, restauración sin ofertas, reconexión, duelos, rankings, recuperación de contraseña y navegación educativa.
+- Después del arreglo: 382 pruebas de lógica aprobadas y 54 pruebas de interfaz aprobadas entre Android Chrome y pantalla de 320 px. Incluyen compras pendientes, cancelación, pérdida de respuesta, compra previa al reinicio, restauración sin ofertas, reconexión, duelos, rankings, recuperación de contraseña y navegación educativa.
 - Compilación estática aprobada: 95 archivos de distribución verificados; sin semillas privadas ni fixtures en el paquete público.
 - Proyecto alojado consultado mediante lectura: 802 preguntas, 20 tablas con RLS, cero identidades, perfiles y suscripciones. El asesor de seguridad solo informa las 20 tablas privadas con RLS sin políticas, que deniegan deliberadamente el acceso directo; no se abrieron tablas.
 
@@ -33,3 +33,5 @@ La tercera migración, `20261023164550_cachaste_education_access.sql`, está apl
 Permanecen pendientes los productos y credenciales oficiales de Google Play, SMTP y retorno HTTPS, enlaces legales definitivos, firma comercial y validación con dos suscripciones auténticas. La aprobación instalada del control comercial y el flujo completo con compras oficiales deben verificarse antes de distribuir. No se declara esta candidata lista para venta.
 
 No se activó ningún cobro, suscripción ficticia ni prueba de pago en el proyecto alojado.
+
+El verificador de compras no consume el límite de comprobaciones de Google al navegar con recibos ya verificados hace menos de cinco minutos; solo lo consume al verificar una compra o actualizar un lote desactualizado. Se reprodujeron 25 consultas de estado sin agotar esa cuota y un lote de dos recibos con un único cargo a la cuota, usando respuestas controladas. La función alojada `cachaste-play` está en versión 3; salud real `ready:false`, petición sin Auth 401 y configuración pendiente 503. No se activaron cobros.

@@ -42,7 +42,12 @@ jobs:
       - run: npm run test:logic
       - run: npm run audit:pedagogy
       - run: npm run build
-      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Preparar Chromium con descarga acotada
+        if: matrix.browser == 'chromium'
+        run: bash scripts/install-chromium-qa.sh
+      - name: Preparar WebKit
+        if: matrix.browser == 'webkit'
+        run: npx playwright install --with-deps webkit
       - run: npm test -- --project="${{ matrix.project }}"
       - name: Conservar reporte móvil un día
         if: always()

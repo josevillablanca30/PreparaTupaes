@@ -27,7 +27,6 @@ export function createPlayHandler({env,createClient,fetcher=fetch,now=()=>Date.n
    if(profile.error)return reply(401,{error:'AUTH_REQUIRED'}); // Also checks the live Auth session, including deletion/revocation.
    const admin=createClient(env('SUPABASE_URL'),env('SUPABASE_SERVICE_ROLE_KEY'),{auth:{persistSession:false,autoRefreshToken:false}});
    const call=async(operation,values)=>{const r=await admin.rpc('cachaste_play_admin',{operation,payload:values});if(r.error)throw Error(r.error.message==='RECEIPT_ALREADY_LINKED'?'RECEIPT_ALREADY_LINKED':'SERVER_UNAVAILABLE');return r.data;};
-   await call('rate',{userId});
    const key=unbase64(env('PLAY_RECEIPT_ENCRYPTION_KEY'));if(key.length!==32)throw Error('BILLING_NOT_CONFIGURED');
    const verify=async(token,existing=null)=>{
     if(!validToken(token))throw Error('INVALID_RECEIPT');
@@ -44,8 +43,11 @@ export function createPlayHandler({env,createClient,fetcher=fetch,now=()=>Date.n
    let result;
    if(payload.action==='refresh'){
     const receipts=await call('receipts',{userId});result={premium:profile.data?.premium===true};
-    for(const receipt of receipts)if(Date.parse(receipt.checked_at)<now()-5*60000)result=await verify(await decryptToken(receipt,key),receipt);
-   }else if(payload.action==='verify'&&validToken(payload.purchaseToken))result=await verify(payload.purchaseToken);
+    const stale=receipts.filter(receipt=>Date.parse(receipt.checked_at)<now()-5*60000);
+    // Opening a screen with recently verified receipts must not consume the purchase-verification quota.
+    if(stale.length)await call('rate',{userId});
+    for(const receipt of stale)result=await verify(await decryptToken(receipt,key),receipt);
+   }else if(payload.action==='verify'&&validToken(payload.purchaseToken)){await call('rate',{userId});result=await verify(payload.purchaseToken);}
    else return reply(400,{error:'INVALID_REQUEST'});
    return reply(200,result);
   }catch(e){

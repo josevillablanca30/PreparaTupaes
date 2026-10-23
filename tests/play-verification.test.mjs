@@ -78,3 +78,15 @@ test('Verified Google receipt is acknowledged before the server transaction; cli
  store=sample();store.externalAccountIdentifiers.obfuscatedExternalAccountId='forged';
  const rejected=await handler(new Request('https://example.invalid',{method:'POST',headers:{Authorization:'Bearer signed-session','Content-Type':'application/json'},body:JSON.stringify({action:'verify',purchaseToken:'another-private-token'})}));assert.equal(rejected.status,400);assert.equal((await rejected.json()).error,'ACCOUNT_MISMATCH');assert.equal(events.length,2);
 });
+test('Refreshing fresh receipts never spends the verification quota; a stale batch spends it once',async()=>{
+ const key=crypto.getRandomValues(new Uint8Array(32)),env={CACHASTE_PLAY_ENABLED:'true',GOOGLE_PLAY_SERVICE_ACCOUNT:JSON.stringify(credentials),PLAY_RECEIPT_ENCRYPTION_KEY:base64(key),SUPABASE_URL:'https://example.invalid',SUPABASE_ANON_KEY:'public',SUPABASE_SERVICE_ROLE_KEY:'server'};
+ const calls=[];let receipts=[{checked_at:new Date(now).toISOString()}],google=0;
+ const handler=createPlayHandler({env:k=>env[k],now:()=>now,createClient:(_url,k)=>k==='server'?{rpc:async(_name,{operation})=>{calls.push(operation);return{data:operation==='receipts'?receipts:{premium:true}};}}:{auth:{getUser:async()=>({data:{user:{id:uuid}}})},rpc:async()=>({data:{premium:true}})},fetcher:async url=>{google++;return Response.json(url==='https://oauth2.googleapis.com/token'?{access_token:'google-access'}:sample());}});
+ const request=()=>new Request('https://example.invalid',{method:'POST',headers:{Authorization:'Bearer signed-session','Content-Type':'application/json'},body:JSON.stringify({action:'refresh'})});
+ for(let i=0;i<25;i++)assert.equal((await handler(request())).status,200);
+ assert.equal(calls.filter(x=>x==='rate').length,0);assert.equal(google,0);
+ receipts=[];
+ for(let i=0;i<2;i++){const encoded=await encryptToken('a-private-fixture-token-'+i,key);receipts.push({user_id:uuid,token_ciphertext:encoded.ciphertext,token_iv:encoded.iv,checked_at:new Date(now-6*60000).toISOString()});}
+ assert.equal((await handler(request())).status,200);
+ assert.equal(calls.filter(x=>x==='rate').length,1);assert.equal(calls.filter(x=>x==='apply').length,2);assert.equal(google,3);
+});
