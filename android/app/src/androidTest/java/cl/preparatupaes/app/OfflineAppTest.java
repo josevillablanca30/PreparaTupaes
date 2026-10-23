@@ -398,10 +398,65 @@ public class OfflineAppTest {
         scenario.recreate();waitFor("window.CachasteDailyApp && document.querySelector('.didactic-key')");
         assertEquals("true",js("document.querySelector('.didactic-key').textContent.includes('pizza')"));
     }
-    @Test public void noInternetOrStoragePermissionIsRequested() throws Exception {
+    @Test public void competitionNavigationKeepsTheExistingOfflineProgressOrigin() throws Exception {
+        open("inicio.html", "window.CachasteDailyApp");
+        js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.state.foundationDraft=null;localStorage.setItem('competition-progress-sentinel','existing-educational-progress');location.hash='#courses';CachasteDailyApp.render();true");
+        js("document.querySelector('.competition-entry-nav a[href=\"competencia.html#duelos\"]').click();true");
+        waitFor("location.origin==='https://appassets.androidplatform.net' && window.CachasteCompetition && document.querySelector('.duel-actions')");
+        assertEquals("false",js("CachasteCompetition.api.premium"));
+        captureDidacticScreen("competition-live-locked");
+        js("document.querySelector('.comp-nav a[href=\"inicio.html#courses\"]').click();true");
+        waitFor("location.protocol==='file:' && window.CachasteDailyApp");
+        assertEquals("\"existing-educational-progress\"",js("localStorage.getItem('competition-progress-sentinel')"));
+        assertEquals("5",js("document.querySelectorAll('[data-action=pick-course]').length"));
+    }
+
+    @Test public void competitiveVisualReferenceJourneyUsesTestApkFixturesOnly() throws Exception {
+        StringBuilder fixture=new StringBuilder();
+        try(BufferedReader reader=new BufferedReader(new InputStreamReader(InstrumentationRegistry.getInstrumentation().getContext().getAssets().open("competition-fixture.js")))) {
+            String line;while((line=reader.readLine())!=null)fixture.append(line).append('\n');
+        }
+        assertTrue(androidx.webkit.WebViewFeature.isFeatureSupported(androidx.webkit.WebViewFeature.DOCUMENT_START_SCRIPT));
+        scenario.onActivity(activity -> {
+            androidx.webkit.WebViewCompat.addDocumentStartJavaScript(web(activity),fixture.toString(),java.util.Collections.singleton("https://appassets.androidplatform.net"));
+            web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#rankings");
+        });
+        waitFor("window.CachasteCompetition && document.querySelectorAll('.ranking-row').length===6");
+        assertEquals("true",js("document.documentElement.scrollWidth<=innerWidth+1"));
+        captureDidacticScreen("competition-fixture-rankings");
+        js("location.hash='#duelos';true");
+        waitFor("document.querySelectorAll('.duel-row').length===2");
+        captureDidacticScreen("competition-fixture-duelos");
+        js("document.querySelector('[data-action=challenge]').click();true");
+        waitFor("document.querySelector('#invite-form input[name=value]')");
+        js("document.querySelector('#invite-form input[name=value]').value='CataPAES';document.querySelector('#invite-form button[type=submit]').click();true");
+        waitFor("document.querySelector('.versus-player') && document.querySelector('[data-action=start-duel]')");
+        assertEquals("true",js("[...document.querySelectorAll('#competition-root button')].filter(n=>n.offsetWidth>0).every(n=>n.getBoundingClientRect().height>=48)"));
+        captureDidacticScreen("competition-fixture-vs");
+        js("document.querySelector('[data-action=start-duel]').click();true");
+        for(int i=0;i<10;i++) {
+            waitFor("document.querySelector('.question-meta strong')?.textContent.includes('"+(i+1)+"/10')");
+            assertEquals("0",js("document.querySelectorAll('.selected-feedback,.tutor-review-card').length"));
+            js("document.querySelectorAll('input[name=choice]')[1].click();document.querySelector('#competitive-answer button[type=submit]').click();true");
+        }
+        waitFor("document.querySelector('.result-score')");
+        captureDidacticScreen("competition-fixture-result");
+        js("document.querySelector('[data-action=review]').click();true");
+        waitFor("document.querySelector('.tutor-review-card')");
+        captureDidacticScreen("competition-fixture-tutor");
+        js("document.querySelector('[data-action=tutor][data-mode=easy]').click();true");
+        assertEquals("true",js("document.querySelector('.tutor-review-card').textContent.includes('dos lápices')"));
+        js("location.hash='#perfil';true");
+        waitFor("document.querySelector('#profile-form')");
+        captureDidacticScreen("competition-fixture-profile");
+        // These fixtures test composition/navigation only. Actual scoring/Auth runs in the separate Supabase job.
+    }
+
+    @Test public void onlyInternetPermissionIsRequestedForCompetition() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         PackageInfo info=context.getPackageManager().getPackageInfo(context.getPackageName(),PackageManager.GET_PERMISSIONS);
-        assertTrue(info.requestedPermissions==null || info.requestedPermissions.length==0);
+        assertTrue(java.util.Arrays.asList(info.requestedPermissions).contains("android.permission.INTERNET"));
+        for (String permission : info.requestedPermissions) if (permission.startsWith("android.permission.")) assertEquals("android.permission.INTERNET",permission);
     }
 
     @Test public void entireShippedCatalogueRendersLessonsAndAllTutorModesOffline() throws Exception {

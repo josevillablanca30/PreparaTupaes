@@ -233,3 +233,6 @@ body>main{--reference-gutter:20px}
 /* Long concept names and unspaced equations must wrap inside their own card. */
 #daily-root .reference-lesson-hero h1{overflow-wrap:anywhere;hyphens:auto}
 #daily-root .selected-repair li,#daily-root .reference-repair-visual li,#daily-root .reference-example-card li,#daily-root .complete-correction li,#daily-root .visual-lesson-content li,#daily-root .tutor li{min-width:0;overflow-wrap:anywhere;word-break:normal}
+
+/* Competition entry keeps the existing learning navigation and storage intact. */
+.competition-entry-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,950px);display:flex;background:#fffefefa;backdrop-filter:blur(12px);padding:6px 9px calc(8px + env(safe-area-inset-bottom));border-radius:20px 20px 0 0;z-index:50;box-shadow:0 -4px 20px #7150950a}.competition-entry-nav a{display:flex;flex:1;align-items:center;justify-content:center;flex-direction:column;min-height:56px;gap:3px;font-size:13px;line-height:1.2;color:#9a8ba9;text-decoration:none;border-radius:17px}.competition-entry-nav a>span{font-size:24px;line-height:1}.competition-entry-nav a[aria-current=page]{background:#efe7ff;color:#6923ca;font-weight:750}.competition-entry-nav a:focus-visible{outline:3px solid #9e6bd9;outline-offset:2px}

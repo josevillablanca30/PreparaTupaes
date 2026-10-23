@@ -1,4 +1,6 @@
 import {dailyCatalog} from './daily-catalog.mjs';
+import {build as bundle} from 'esbuild';
+import {competitionFiles,competitionArt} from './competition-public-files.mjs';
 import {verifyDistribution} from './verify-distribution.mjs';
 import {fileURLToPath} from 'node:url';
 import { mkdir, readFile, writeFile, copyFile, rm } from 'node:fs/promises';
@@ -33,6 +35,13 @@ await writeFile(new URL('../dist/version.json', import.meta.url), JSON.stringify
 
 
 await writeFile(new URL('../dist/daily-catalog.js',import.meta.url),'window.CACHASTE_DAILY_CATALOG='+JSON.stringify(dailyCatalog())+';\n');
+
+for(const file of competitionFiles.filter(f=>f!=='competition-client.js')){
+ const body=await readFile(new URL('../'+file,import.meta.url),'utf8');
+ await writeFile(new URL('../dist/'+file,import.meta.url),file.endsWith('.html')?body.replace('</head>',`<meta name="build-revision" content="${revision}"></head>`):body);
+}
+await bundle({entryPoints:[fileURLToPath(new URL('../competition-client.mjs',import.meta.url))],outfile:fileURLToPath(new URL('../dist/competition-client.js',import.meta.url)),bundle:true,minify:true,platform:'browser',target:['chrome100','safari15'],format:'iife',legalComments:'eof'});
+for(const asset of competitionArt)await copyFile(new URL('../'+asset,import.meta.url),new URL('../dist/'+asset,import.meta.url));
 
 const verified=await verifyDistribution(fileURLToPath(new URL('../dist/',import.meta.url)));
 console.log(`Static build ready (${revision}); ${verified.files} distribution files verified.`);

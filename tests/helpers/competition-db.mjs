@@ -7,7 +7,7 @@ export async function database(){
  const db=new PGlite();
  await db.exec(`create role anon;create role authenticated;create role service_role;create schema auth;
  create table auth.users(id uuid primary key,is_anonymous boolean default false,deleted_at timestamptz);
- create table auth.sessions(id uuid primary key,user_id uuid,not_after timestamptz);
+ create table auth.sessions(id uuid primary key,user_id uuid,not_after timestamptz,created_at timestamptz default now());
  create function auth.jwt()returns jsonb language sql stable as $$select nullif(current_setting('request.jwt.claims',true),'')::jsonb$$;
  create function auth.uid()returns uuid language sql stable as $$select (auth.jwt()->>'sub')::uuid$$;
  grant usage on schema auth to authenticated;grant execute on all functions in schema auth to authenticated;`);
@@ -15,7 +15,7 @@ export async function database(){
  await db.exec(competitionSeed());
  for(let i=0;i<users.length;i++){
   await db.query('insert into auth.users(id)values($1)',[users[i]]);
-  await db.query('insert into auth.sessions values($1,$2,null)',[sessions[i],users[i]]);
+  await db.query('insert into auth.sessions(id,user_id,not_after)values($1,$2,null)',[sessions[i],users[i]]);
  }
  return db;
 }

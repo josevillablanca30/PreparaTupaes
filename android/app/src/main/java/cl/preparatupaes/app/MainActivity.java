@@ -10,6 +10,8 @@ import android.view.WindowInsets;
 import android.widget.FrameLayout;
 import android.webkit.RenderProcessGoneDetail;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import androidx.webkit.WebViewAssetLoader;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebSettings;
@@ -18,13 +20,15 @@ import android.webkit.WebChromeClient;
 /** Offline application. Student data stays in WebView DOM storage on this device. */
 public class MainActivity extends Activity {
     private static final String HOME = "file:///android_asset/inicio.html";
+    private static final String ASSETS = "https://appassets.androidplatform.net/assets/";
+    private static final String COMPETITION = ASSETS + "competencia.html";
     private static final String PREFS = "cachaste-navigation";
     private WebView webView;
 
     private boolean isApplicationPage(String url) {
         if (url == null) return false;
         String path = url.split("[?#]", 2)[0];
-        return path.equals(HOME) || path.equals("file:///android_asset/index.html")
+        return path.equals(COMPETITION) || path.equals(HOME) || path.equals("file:///android_asset/index.html")
             || path.equals("file:///android_asset/science.html")
             || path.equals("file:///android_asset/reading.html")
             || path.equals("file:///android_asset/m2.html")
@@ -48,9 +52,24 @@ public class MainActivity extends Activity {
         settings.setAllowUniversalAccessFromFileURLs(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         settings.setTextZoom(Math.max(100, Math.min(200, Math.round(getResources().getConfiguration().fontScale * 100))));
+        // Online competition gets a secure origin; offline pages keep their original origin and saved progress.
+        final WebViewAssetLoader loader = new WebViewAssetLoader.Builder()
+            .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this)).build();
         webView.setWebViewClient(new WebViewClient() {
+            @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                return loader.shouldInterceptRequest(request.getUrl());
+            }
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
+                if (url.startsWith("file:///android_asset/competencia.html")) {
+                    view.loadUrl(COMPETITION + (request.getUrl().getFragment() == null ? "" : "#" + request.getUrl().getFragment()));
+                    return true;
+                }
+                if (url.startsWith(ASSETS) && !url.split("[?#]",2)[0].equals(COMPETITION)) {
+                    String local = "file:///android_asset/" + url.substring(ASSETS.length());
+                    if (isApplicationPage(local)) view.loadUrl(local);
+                    return true;
+                }
                 if (isApplicationPage(url)) return false;
                 if ("https".equals(request.getUrl().getScheme())) {
                     try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); }

@@ -270,6 +270,12 @@ declare u uuid:=cachaste.require_user();p jsonb:=coalesce(payload,'{}');s text:=
  elsif operation='delete_profile'then
   delete from cachaste.profiles where user_id=u;delete from cachaste.match_queue where user_id=u;
   return jsonb_build_object('deleted',true);
+ elsif operation='delete_account'then
+  if p->>'confirmation' is distinct from 'ELIMINAR' then raise exception 'CONFIRMATION_REQUIRED';end if;
+  if not exists(select 1 from auth.sessions where id::text=auth.jwt()->>'session_id' and user_id=u and created_at>now()-interval '10 minutes')then raise exception 'REAUTHENTICATION_REQUIRED';end if;
+  delete from auth.sessions where user_id=u;
+  delete from auth.users where id=u;
+  return jsonb_build_object('deleted',true);
  end if;
  if not exists(select 1 from cachaste.profiles where user_id=u)then raise exception 'PROFILE_REQUIRED';end if;
  if not cachaste.premium(u)then raise exception 'SUBSCRIPTION_REQUIRED'using errcode='42501';end if;

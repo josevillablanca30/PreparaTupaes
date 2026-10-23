@@ -17,3 +17,5 @@ keystore.properties
 supabase/seed.sql
 .supabase/
 competition-test-credentials*
+android/app/src/androidTest/assets/competition-fixture.js
+.cachaste-backups/

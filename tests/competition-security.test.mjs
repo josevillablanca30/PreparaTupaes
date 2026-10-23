@@ -96,4 +96,11 @@ test('Competition database: migration, access control, authoritative scores, geo
   const pair=await newDuel('M2');let a=await rpc(db,0,'start',{attemptId:pair[0].id});await db.query("update cachaste.attempts set presented_at=clock_timestamp()-interval '91 seconds'where id=$1",[a.id]);const answer=(await db.query('select answer from cachaste.questions where key=$1',[a.question.key])).rows[0].answer;await rpc(db,0,'answer',{attemptId:a.id,position:0,choice:answer,requestId:randomUUID(),elapsedMs:1});const stored=(await db.query('select * from cachaste.answers where attempt_id=$1',[a.id])).rows[0];assert.equal(stored.choice,null);assert.equal(stored.correct,false);assert.equal(Number(stored.elapsed_ms),90000);
   await rpc(db,0,'forfeit',{attemptId:a.id});assert.equal((await db.query('select count(*)::int n from cachaste.settlements where duel_id=(select duel_id from cachaste.attempts where id=$1)',[a.id])).rows[0].n,0);await complete(1,pair[1]);const d=(await db.query('select result from cachaste.settlements where duel_id=(select duel_id from cachaste.attempts where id=$1)',[a.id])).rows[0].result;assert.equal(d.reason,'abandonment');assert.equal(d.winner,users[1]);assert.equal((await rpc(db,0,'education')).stars,4);
  });
+ await t.test('account deletion requires recent authentication, revokes sessions and does not delete another student',async()=>{
+  await assert.rejects(rpc(db,2,'delete_account',{confirmation:'no'}),/CONFIRMATION_REQUIRED/);
+  await db.query("update auth.sessions set created_at=now()-interval '1 hour'where user_id=$1",[users[2]]);await assert.rejects(rpc(db,2,'delete_account',{confirmation:'ELIMINAR'}),/REAUTHENTICATION_REQUIRED/);
+  await db.query("update auth.sessions set created_at=now()where user_id=$1",[users[2]]);assert.equal((await rpc(db,2,'delete_account',{confirmation:'ELIMINAR'})).deleted,true);
+  await assert.rejects(rpc(db,2,'profile'),/AUTH_REQUIRED/);assert.equal((await rpc(db,0,'profile')).profile.nickname,'TestAlumno0');
+ });
+
 });

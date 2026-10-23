@@ -1,8 +1,11 @@
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
+import {competitionFiles,competitionArt} from './competition-public-files.mjs';
 
 // A repository subpath catches the same relative-path mistakes as GitHub Pages.
 const files = new Map([
+ ...competitionFiles.map(f=>['/PreparaTupaes/'+f,[f,f.endsWith('.html')?'text/html; charset=utf-8':f.endsWith('.json')?'application/json':f.endsWith('.css')?'text/css':'text/javascript']]),
+ ...competitionArt.map(f=>['/PreparaTupaes/'+f,[f,'image/svg+xml']]),
  ['/PreparaTupaes/assets/gatito-sabio-poses-v2.webp',['assets/gatito-sabio-poses-v2.webp','image/webp']],['/PreparaTupaes/assets/map-valley-v1.webp',['assets/map-valley-v1.webp','image/webp']],['/PreparaTupaes/assets/subject-m1-v1.webp',['assets/subject-m1-v1.webp','image/webp']],['/PreparaTupaes/assets/subject-m2-v1.webp',['assets/subject-m2-v1.webp','image/webp']],['/PreparaTupaes/assets/subject-reading-v1.webp',['assets/subject-reading-v1.webp','image/webp']],['/PreparaTupaes/assets/subject-history-v1.webp',['assets/subject-history-v1.webp','image/webp']],['/PreparaTupaes/assets/subject-science-v1.webp',['assets/subject-science-v1.webp','image/webp']],
  ...['osmosis','meiosis','electricity','waves','geometry','probability','industry','argument'].map(key=>['/PreparaTupaes/assets/lesson-cat-'+key+'-v3.webp',['assets/lesson-cat-'+key+'-v3.webp','image/webp']]),
  ...['algebra','mechanics','solutions','sources'].map(key=>['/PreparaTupaes/assets/lesson-cat-'+key+'-v2.webp',['assets/lesson-cat-'+key+'-v2.webp','image/webp']]),

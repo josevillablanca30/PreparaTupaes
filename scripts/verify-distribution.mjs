@@ -1,7 +1,9 @@
 import {readdir,lstat} from 'node:fs/promises';
 import {join} from 'node:path';
+import {competitionFiles,competitionArt} from './competition-public-files.mjs';
 // Contrato explícito de salida pública. Añadir archivos requiere revisar su destino.
 export const distributionFiles=Object.freeze([
+ ...competitionFiles,...competitionArt,
  'index.html','inicio.html','suscripcion.html','science.html','reading.html','m2.html','history.html',
  'daily-foundation-visuals.js','daily-basics.js','daily-visuals.js','daily-curriculum.js',
  'daily-school.js','daily-progression.js','daily-illustration-kit.js','daily-scenarios.js','daily-demonstrations.js','daily-lessons.js','daily-core.js','daily-gameplay.js','daily-studios.js','daily-app.js','daily-lesson-visuals.js','daily-topic-visuals.js','daily-reference.css','daily-ui.css',
