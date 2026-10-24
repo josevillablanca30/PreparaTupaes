@@ -3,7 +3,7 @@ export{serviceWorkerMessage};
 export async function initPwa(license=null){
  if(!('serviceWorker'in navigator))return;
  try{const registration=await navigator.serviceWorker.register('/sw.js',{scope:'/'});await navigator.serviceWorker.ready;
- if(license){if(navigator.serviceWorker.controller)await serviceWorkerMessage({type:'LICENSE',token:license});else navigator.serviceWorker.addEventListener('controllerchange',()=>serviceWorkerMessage({type:'LICENSE',token:license}),{once:true});}
+ if(license){const warm=async()=>{const result=await serviceWorkerMessage({type:'LICENSE',token:license});if(result?.ok&&location.pathname.startsWith('/app/')){const urls=[location.href.split('#')[0],...Array.from(document.querySelectorAll('script[src],link[rel=stylesheet],img[src]'),node=>node.src||node.href)].filter(Boolean);serviceWorkerMessage({type:'CACHE_URLS',urls});}};if(navigator.serviceWorker.controller)await warm();else navigator.serviceWorker.addEventListener('controllerchange',warm,{once:true});}
  registration.addEventListener('updatefound',()=>{const worker=registration.installing;worker?.addEventListener('statechange',()=>{if(worker.state==='installed'&&navigator.serviceWorker.controller)dispatchEvent(new Event('cachaste-update'));});});
  }catch{document.querySelector('[data-pwa-status]')?.replaceChildren(document.createTextNode('La instalación estará disponible al conectar el sitio por HTTPS.'));}
 }

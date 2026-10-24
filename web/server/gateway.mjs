@@ -6,8 +6,8 @@ const json=(data,status=200,headers={})=>new Response(JSON.stringify(data),{stat
 const jwtExpires=token=>{try{const s=token.split('.')[1];return JSON.parse(atob(s.replaceAll('-','+').replaceAll('_','/'))).exp*1000;}catch{return 0;}};
 const bearer=req=>req.headers.get('authorization')?.match(/^Bearer ([A-Za-z0-9_.-]+)$/)?.[1];
 const cookie=req=>req.headers.get('cookie')?.split(';').map(x=>x.trim()).find(x=>x.startsWith(COOKIE+'='))?.slice(COOKIE.length+1);
-export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local',pagePolicies={},protectedFiles=[]}={}){
- const allowed=new Set(protectedFiles),grants=new Map();
+export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local',pagePolicies={},protectedFiles=[],accountFiles=[],allowDevelopmentHttp=false}={}){
+ const allowed=new Set(protectedFiles),accountAllowed=new Set(accountFiles),grants=new Map();
  async function backend(env,path,token,{body,method='GET'}={}){
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
   try{const res=await fetcher((env.SUPABASE_URL||PROJECT_URL)+path,{method,signal:controller.signal,headers:{apikey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,...(token?{authorization:'Bearer '+token}:{}),...(body!==undefined?{'content-type':'application/json'}:{})},...(body!==undefined?{body:JSON.stringify(body)}:{})});const value=await res.json().catch(()=>({}));if(!res.ok){const e=Error(value.message||value.error||'BACKEND_UNAVAILABLE');e.status=res.status;throw e;}return value;}finally{clearTimeout(timer);}
@@ -27,7 +27,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
  const sameOrigin=req=>{const origin=req.headers.get('origin');return origin===new URL(req.url).origin&&req.headers.get('x-cachaste-request')==='1';};
  async function handler(req,env,ctx={}){
   const url=new URL(req.url);let path;try{path=decodeURIComponent(url.pathname);}catch{return json({error:'BAD_PATH'},400);}
-  if(url.protocol!=='https:'&&!['127.0.0.1','localhost','[::1]'].includes(url.hostname)){url.protocol='https:';return Response.redirect(url.href,308);}
+  if(!allowDevelopmentHttp&&url.protocol!=='https:'&&!['127.0.0.1','localhost','[::1]'].includes(url.hostname)){url.protocol='https:';return Response.redirect(url.href,308);}
   if(path.includes('..')||path.includes('\\')||path.includes('\0')||/%[a-f\d]{2}/i.test(path))return json({error:'BAD_PATH'},400);
   try{
    if(path==='/api/config')return json({supabaseUrl:env.SUPABASE_URL||PROJECT_URL,publishableKey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,signupEnabled:env.WEB_SIGNUP_ENABLED==='true',authReturnReady:env.WEB_AUTH_RETURN_READY==='true',revision});
@@ -71,7 +71,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
    if(path==='/app/suscripcion.html')return Response.redirect(url.origin+'/cuenta.html#planes',302);
    if(path.startsWith('/app/')){
     if(!allowed.has(path))return json({error:'NOT_FOUND'},404);
-    let auth;try{auth=await identity(req,env);}catch(e){
+    let auth;try{auth=await identity(req,env,{active:!accountAllowed.has(path)});}catch(e){
      if(path.endsWith('.html')&&req.headers.get('accept')?.includes('text/html'))return Response.redirect(url.origin+'/cuenta.html?next='+encodeURIComponent(path),302);
      throw e;
     }
@@ -79,8 +79,8 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     const headers=new Headers(response.headers);for(const[k,v]of Object.entries(ACCESS_HEADERS))headers.set(k,v);
     headers.set('x-cachaste-user',auth.user.id);headers.set('content-security-policy',policy(path,pagePolicies));
     if(path.endsWith('.html')){
-     const snapshot=await backend(env,'/rest/v1/rpc/cachaste_web_progress',auth.token,{method:'POST',body:{operation:'snapshot',payload:{}}});
-     const lease=await offlineLicense(env,auth.user.id,auth.access.validUntilMs,url.origin,revision,now());
+     const snapshot=auth.access.active?await backend(env,'/rest/v1/rpc/cachaste_web_progress',auth.token,{method:'POST',body:{operation:'snapshot',payload:{}}}):{documents:[]};
+     const lease=auth.access.active?await offlineLicense(env,auth.user.id,auth.access.validUntilMs,url.origin,revision,now()):null;
      const bootstrap={userId:auth.user.id,documents:snapshot.documents,offlineLicense:lease,revision,accessUntil:auth.access.validUntilMs};
      return new Response((await response.text()).replace('<!--CACHASTE_WEB_BOOTSTRAP-->','<script id="cachaste-web-bootstrap" type="application/json">'+safeJson(bootstrap)+'</script>'),{status:response.status,headers});
     }

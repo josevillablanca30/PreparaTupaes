@@ -1,0 +1,52 @@
+name: ¿Cachaste? Web · seguridad, cinco materias y navegadores
+on:
+  push:
+    branches: [work/cachaste-web-comercial-20261024]
+    paths: ['web/**','supabase/functions/_shared/mercadopago-*','supabase/functions/cachaste-mercadopago/**','supabase/functions/cachaste-mp-events/**','.github/workflows/web-commercial.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cachaste-web-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  web:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Proteger candidata Android y regresión educativa original
+        run: |
+          node web/scripts/verify-android.mjs
+          npm run test:logic
+      - name: Verificar backend web, pagos simulados y compatibilidad competitiva
+        run: node --test web/tests/*.test.mjs
+      - name: Construir las cinco materias y la puerta de acceso Pages
+        run: node web/scripts/build.mjs
+      - name: Preparar Chrome
+        run: bash scripts/install-chromium-qa.sh
+      - name: Preparar WebKit de iPhone
+        run: npx playwright install --with-deps webkit
+      - name: Chrome Android, WebKit iPhone, escritorio y 320 px
+        run: npx playwright test --config=web/playwright.config.mjs
+      - name: Conservar evidencia de QA web
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cachaste-Web-QA-${{ github.run_id }}
+          path: web/artifacts/
+          retention-days: 14
+      - name: Conservar paquete Pages sin publicarlo
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cachaste-Web-Pages-${{ github.sha }}
+          path: web/dist/
+          retention-days: 14
