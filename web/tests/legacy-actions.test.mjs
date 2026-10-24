@@ -1,0 +1,6 @@
+import test from'node:test';import assert from'node:assert/strict';import{parseLegacyAction,adaptLegacyActions}from'../shared/legacy-actions.mjs';
+test('legacy education handlers accept only known functions and literal arguments without unsafe eval or inline CSP permissions',()=>{
+ assert.deepEqual(parseLegacyAction('choice=2;examAnswers[i]=2;persistExam();draw()'),{type:'math-exam-choice',choice:2});assert.deepEqual(parseLegacyAction('setup("Biología")'),{type:'call',name:'setup',args:['Biología']});assert.deepEqual(parseLegacyAction("start('diagnostico30')"),{type:'call',name:'start',args:['diagnostico30']});assert.deepEqual(parseLegacyAction('readingAdvance(true)'),{type:'call',name:'readingAdvance',args:[true]});assert.deepEqual(parseLegacyAction('examMove(-1)'),{type:'call',name:'examMove',args:[-1]});
+ for(const value of['fetch("https://evil.example")','constructor("alert(1)")','start(window.token)','check();fetch("evil")','choice=2;examAnswers[i]=3;persistExam();draw()','answer((()=>1)())'])assert.throws(()=>parseLegacyAction(value),/UNSUPPORTED/);
+ assert.equal(adaptLegacyActions('<button onclick="check()">Aprender</button>'),'<button data-web-legacy="check()">Aprender</button>');
+});

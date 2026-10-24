@@ -3,6 +3,7 @@ import{createHash,randomBytes,createCipheriv}from'node:crypto';
 import{execFileSync}from'node:child_process';
 import{build}from'esbuild';
 import{adaptCompetitionUi}from'../shared/competition-ui.mjs';
+import{adaptLegacyActions}from'../shared/legacy-actions.mjs';
 import path from'node:path';
 import{fileURLToPath}from'node:url';
 const root=fileURLToPath(new URL('../../',import.meta.url)),out=path.join(root,'web/dist');
@@ -15,7 +16,8 @@ const revision=process.env.GITHUB_SHA||execFileSync('git',['rev-parse','HEAD'],{
 const pages=['index.html','inicio.html','science.html','reading.html','m2.html','history.html','competencia.html'];const pagePolicies={};
 for(const name of pages){
  const file=path.join(out,'app',name);let text=await readFile(file,'utf8');
- text=text.replace('</head>','<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"><link rel="stylesheet" href="/web-shell.css"><!--CACHASTE_WEB_BOOTSTRAP--><script src="/web-init.js"></script></head>');
+ if(name==='index.html')text=adaptLegacyActions(text);
+ text=text.replace('</head>','<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"><link rel="stylesheet" href="/web-shell.css"><!--CACHASTE_WEB_BOOTSTRAP--><script src="/web-init.js"></script><script src="/web-legacy.js" defer></script></head>');
  if(name==='competencia.html')text=text.replace('<script src="competition-app.js"></script>','<script src="/web-competition.js"></script><script src="competition-app.js"></script>');
  text=text.replace('</body>','<script src="/web-shell.js" defer></script></body>');
  pagePolicies['/app/'+name]=[...text.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)].filter(x=>x[1].trim()).map(x=>"'sha256-"+createHash('sha256').update(x[1]).digest('base64')+"'");
@@ -24,8 +26,9 @@ for(const name of pages){
 // Web competition uses the existing server dispatcher. Google Play is not invoked on the web.
 await writeFile(path.join(out,'app/competition-config.js'),`window.CACHASTE_COMPETITION_CONFIG=Object.freeze({supabaseUrl:'https://jmobinmdwrmdqrxtcruj.supabase.co',publishableKey:'sb_publishable_wf2Ji381IwRo2exQKJQ7ew_SRYCl_q1',billingReady:false,authReturnUrl:location.origin+'/cuenta.html?recovery=1'});\n`);
 await rm(path.join(out,'app/suscripcion.html'));
+for(const name of['science-app.js','reading-app.js']){const file=path.join(out,'app',name);await writeFile(file,adaptLegacyActions(await readFile(file,'utf8')));}
 await writeFile(path.join(out,'app/competition-app.js'),adaptCompetitionUi(await readFile(path.join(root,'competition-app.js'),'utf8')));
-for(const[entry,file]of[['competition-platform.mjs','web-competition.js'],['account.mjs','account.js'],['landing.mjs','landing.js'],['progress-runtime.mjs','web-init.js'],['shell.mjs','web-shell.js']])await build({entryPoints:[path.join(root,'web/client',entry)],outfile:path.join(out,file),bundle:true,minify:true,target:['safari15','chrome100'],format:'iife',legalComments:'eof'});
+for(const[entry,file]of[['legacy-actions.mjs','web-legacy.js'],['competition-platform.mjs','web-competition.js'],['account.mjs','account.js'],['landing.mjs','landing.js'],['progress-runtime.mjs','web-init.js'],['shell.mjs','web-shell.js']])await build({entryPoints:[path.join(root,'web/client',entry)],outfile:path.join(out,file),bundle:true,minify:true,target:['safari15','chrome100'],format:'iife',legalComments:'eof'});
 const protectedFiles=[];async function walk(dir,rel=''){for(const name of await readdir(dir)){const p=path.join(dir,name),r=rel+'/'+name;if((await stat(p)).isDirectory())await walk(p,r);else protectedFiles.push('/app'+r);}}await walk(path.join(out,'app'));
 // Account administration must remain accessible after a subscription expires.
 const accountFiles=protectedFiles.filter(p=>['/app/competencia.html','/app/competition-client.js','/app/competition-config.js','/app/competition-app.js','/app/competition-ui.css','/app/daily-visuals.js','/app/competition-geography.json'].includes(p)||p.startsWith('/app/assets/competition-')||p==='/app/assets/gatito-sabio-poses-v2.webp');

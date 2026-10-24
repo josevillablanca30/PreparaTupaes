@@ -10,9 +10,9 @@ concurrency:
   group: cachaste-web-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  web:
+  core:
     runs-on: ubuntu-24.04
-    timeout-minutes: 40
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,31 +26,50 @@ jobs:
         run: |
           node web/scripts/verify-android.mjs
           npm run test:logic
-      - name: Verificar backend web, pagos simulados y compatibilidad competitiva
+      - name: Backend web, pagos simulados y compatibilidad competitiva
         run: node --test web/tests/*.test.mjs
-      - name: Construir las cinco materias y la puerta de acceso Pages
+      - name: Construir las cinco materias y cifrar contenido Pages
         run: node web/scripts/build.mjs
-      - name: Preparar Chrome
-        run: bash scripts/install-chromium-qa.sh
-      - name: Preparar WebKit de iPhone
-        run: npx playwright install --with-deps webkit
-      - name: Chrome Android, WebKit iPhone, escritorio y 320 px
-        run: npx playwright test --config=web/playwright.config.mjs
-      - name: Conservar evidencia de QA web
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Cachaste-Web-QA-${{ github.run_id }}
-          path: web/artifacts/
-          retention-days: 14
-      - name: Conservar paquete Pages sin publicarlo
-        if: success()
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: Cachaste-Web-Pages-${{ github.sha }}
           path: web/dist/
           retention-days: 14
-
+  browsers:
+    needs: core
+    name: Navegador · ${{ matrix.browser }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        browser: [Android-Chrome, iPhone-WebKit, Desktop-Chrome, mobile-320px]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node web/scripts/build.mjs
+      - name: Preparar Chrome
+        if: matrix.browser != 'iPhone-WebKit'
+        run: bash scripts/install-chromium-qa.sh
+      - name: Preparar WebKit de iPhone
+        if: matrix.browser == 'iPhone-WebKit'
+        run: npx playwright install --with-deps webkit
+      - name: Navegación, cinco materias, persistencia, PWA y comparación visual
+        run: npx playwright test --config=web/playwright.config.mjs --project="${{ matrix.browser }}"
+      - name: Conservar evidencia real de navegador
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cachaste-Web-QA-${{ matrix.browser }}-${{ github.run_id }}
+          path: web/artifacts/
+          retention-days: 14
   http-auth-and-duels:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
