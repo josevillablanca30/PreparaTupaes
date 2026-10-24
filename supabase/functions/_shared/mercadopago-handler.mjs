@@ -27,7 +27,7 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   if(req.method!=='POST')return json(req,{error:'METHOD_NOT_ALLOWED'},405);
   if(Number(req.headers.get('content-length')||0)>8192)return json(req,{error:'PAYLOAD_TOO_LARGE'},413);
   const text=await req.text();if(text.length>8192)return json(req,{error:'PAYLOAD_TOO_LARGE'},413);const body=JSON.parse(text||'{}');
-  if(body.action==='status'){const enabled=ready()&&(await call('policy')).enabled===true;return json(req,{ready:enabled,trialAvailable:enabled&&env('CACHASTE_MP_TRIAL_ENABLED')==='true'&&!!env('MP_PLAN_MONTHLY_TRIAL')});}
+  if(body.action==='status'){const enabled=ready()&&(await call('policy')).enabled===true;let trialAvailable=false;if(enabled&&env('CACHASTE_MP_TRIAL_ENABLED')==='true'&&env('MP_PLAN_MONTHLY_TRIAL')){try{const planId=env('MP_PLAN_MONTHLY_TRIAL');validatePlan(await mp('/preapproval_plan/'+encodeURIComponent(planId)),'mensual',planId,{trial:true,collectorId:env('MP_COLLECTOR_ID')});trialAvailable=true;}catch{}}return json(req,{ready:enabled,trialAvailable});}
   const{user,state}=await auth(req);
   if(!ready())return json(req,{error:'BILLING_NOT_READY',ready:false},503);
   if(!live()&&env('CACHASTE_MP_ALLOW_TEST_PURCHASES')!=='true')throw Error('TEST_PURCHASES_DISABLED');
