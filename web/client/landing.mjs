@@ -1,0 +1,3 @@
+import{initPwa}from'./shell.mjs';
+initPwa();
+(async()=>{try{const response=await fetch('/api/billing',{method:'POST',headers:{'content-type':'application/json','x-cachaste-request':'1'},body:JSON.stringify({action:'status'})});if(!response.ok)return;const state=await response.json();if(state.ready){document.querySelector('[data-opening]')?.remove();const note=document.querySelector('[data-plan-note]');if(note)note.textContent='Precios en pesos chilenos. La suscripción se renueva hasta que la canceles. Revisa las condiciones en el checkout oficial de Mercado Pago.';}if(state.trialAvailable){const trial=document.querySelector('[data-trial]');if(trial)trial.textContent='7 días gratis y luego $7.990 mensuales. Sujeto a elegibilidad.';}}catch{}})();

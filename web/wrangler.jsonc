@@ -1,0 +1,12 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "cachaste-web",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-10-24",
+  "vars": {
+    "SUPABASE_URL": "https://jmobinmdwrmdqrxtcruj.supabase.co",
+    "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_wf2Ji381IwRo2exQKJQ7ew_SRYCl_q1",
+    "WEB_SIGNUP_ENABLED": "false",
+    "WEB_AUTH_RETURN_READY": "false"
+  }
+}

@@ -1,0 +1,7 @@
+dist/
+.dev.vars
+.env
+node_modules/
+artifacts/
+playwright-report/
+test-results/
