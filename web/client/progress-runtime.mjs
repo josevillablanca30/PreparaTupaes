@@ -5,8 +5,8 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
  const uid=bootstrap.userId,prefix='cachaste-web:'+uid+':',keys=new Set(STORAGE_KEYS),original={get:Storage.prototype.getItem,set:Storage.prototype.setItem,remove:Storage.prototype.removeItem};
  const get=k=>original.get.call(storage,k),set=(k,v)=>original.set.call(storage,k,v),remove=k=>original.remove.call(storage,k);
  const parse=(raw,fallback=null)=>{try{return JSON.parse(raw)||fallback;}catch{return fallback;}};
- let meta=parse(get(prefix+'sync'),{}),timer=null,running=false,stopped=false,conflicts=parse(get(prefix+'conflicts'),{});
- const persist=()=>set(prefix+'sync',JSON.stringify(meta));
+ let meta=parse(get(prefix+'sync'),{}),timer=null,running=false,stopped=false,erased=false,conflicts=parse(get(prefix+'conflicts'),{});
+ const persist=()=>{if(!erased)set(prefix+'sync',JSON.stringify(meta));};
  const pending=()=>Object.entries(meta).filter(([,v])=>v.dirty).length;
  const status=()=>onStatus(stopped?'expired':Object.keys(conflicts).length?'conflict':pending()?'pending':'saved');
  for(const document of bootstrap.documents||[]){
@@ -49,7 +49,7 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
  }
  addEventListener('online',flush);addEventListener('pagehide',()=>{clearTimeout(timer);persist();});document.addEventListener('visibilitychange',()=>{if(document.hidden)flush();});
  status();if(pending())setTimeout(flush,50);
- return{flush,resolve,pending,conflicts,userId:uid,restore(){Storage.prototype.getItem=original.get;Storage.prototype.setItem=original.set;Storage.prototype.removeItem=original.remove;clearTimeout(timer);}};
+ return{flush,resolve,pending,conflicts,userId:uid,erase(){erased=true;stopped=true;clearTimeout(timer);for(const key of Object.keys(storage))if(key.startsWith(prefix))remove(key);},restore(){Storage.prototype.getItem=original.get;Storage.prototype.setItem=original.set;Storage.prototype.removeItem=original.remove;clearTimeout(timer);}};
 }
 if(typeof window!=='undefined'){
  const node=document.getElementById('cachaste-web-bootstrap');

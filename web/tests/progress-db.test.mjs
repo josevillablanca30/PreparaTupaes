@@ -47,8 +47,9 @@ test('Web schema: caller-scoped sync, conflict versions and payment isolation',a
   await billing(db,'apply',{userId:users[2],checkoutId:checkout,providerId:'qa-subscription',plan:'mensual',status:'authorized',paidUntil:new Date(Date.now()+86400000).toISOString(),observedAt:new Date(Date.now()-1000).toISOString(),liveMode:true,renews:true,payments:[]});assert.equal((await rpc(db,2,'profile')).premium,false);
   assert.equal((await rpc(db,0,'profile')).premium,true);
  });
- await t.test('deleting an account cascades web progress and billing data without touching a different user',async()=>{
+ await t.test('deleting an account erases progress and personal billing links, retaining only the private accounting ledger',async()=>{
+  await db.query("insert into cachaste_web.payments(provider_id,subscription_id,user_id,plan,status,amount_clp,fee_clp,net_clp,paid_at,observed_at,live_mode)values('qa-payment','qa-subscription',$1,'mensual','approved',7990,199,7791,now(),now(),true)",[users[2]]);
   await rpc(db,0,'delete_account',{confirmation:'ELIMINAR'});assert.equal((await db.query('select count(*)::int n from cachaste_web.learning_documents where user_id=$1',[users[0]])).rows[0].n,0);assert.equal((await rpc(db,1,'profile')).profile.nickname,'TestAlumno1');
-  await rpc(db,2,'delete_account',{confirmation:'ELIMINAR'});assert.equal((await db.query('select count(*)::int n from cachaste_web.subscriptions')).rows[0].n,0);
+  await rpc(db,2,'delete_account',{confirmation:'ELIMINAR'});assert.equal((await db.query('select count(*)::int n from cachaste_web.subscriptions')).rows[0].n,0);const ledger=(await db.query("select user_id,subscription_id,amount_clp from cachaste_web.payments where provider_id='qa-payment'")).rows[0];assert.equal(ledger.user_id,null);assert.equal(ledger.subscription_id,null);assert.equal(Number(ledger.amount_clp),7990);
  });
 });

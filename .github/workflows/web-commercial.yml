@@ -50,3 +50,40 @@ jobs:
           name: Cachaste-Web-Pages-${{ github.sha }}
           path: web/dist/
           retention-days: 14
+
+  http-auth-and-duels:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Preparar catálogo privado original
+        run: node scripts/competition-catalog.mjs supabase/seed.sql
+      - name: Arrancar Auth y PostgREST efímeros
+        run: npx --yes supabase@2.121.0 start --exclude realtime,storage-api,imgproxy,postgres-meta,studio,edge-runtime,logflare,vector,supavisor > /tmp/cachaste-web-supabase.log 2>&1
+      - name: Aplicar integración web sin cambiar las migraciones Android
+        run: |
+          npx --yes supabase@2.121.0 status -o json > /tmp/cachaste-web-supabase.json
+          chmod 600 /tmp/cachaste-web-supabase.json
+          node web/scripts/apply-local-migrations.mjs /tmp/cachaste-web-supabase.json
+      - name: Regresión de duelos, estrellas y Auth originales con el esquema ampliado
+        run: node scripts/test-competition-online.mjs /tmp/cachaste-web-supabase.json
+      - name: Dos sesiones web, conflictos, RLS y persistencia HTTP reales
+        run: node web/scripts/test-online.mjs /tmp/cachaste-web-supabase.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Cachaste-Web-HTTP-QA-${{ github.run_id }}
+          path: |
+            web/artifacts/real-http-integration.json
+            reports/competition-online-integration.json
+          retention-days: 14
+      - name: Eliminar cuentas y contenedores de prueba
+        if: always()
+        run: |
+          npx --yes supabase@2.121.0 stop --no-backup
+          rm -f /tmp/cachaste-web-supabase.json /tmp/cachaste-web-supabase.log

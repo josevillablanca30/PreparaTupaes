@@ -18,7 +18,7 @@ create table cachaste_web.checkouts(
 );
 create index web_checkouts_user on cachaste_web.checkouts(user_id,created_at desc);
 create table cachaste_web.subscriptions(
- provider_id text primary key,checkout_id uuid not null unique references cachaste_web.checkouts(id),
+ provider_id text primary key,checkout_id uuid not null unique references cachaste_web.checkouts(id)on delete cascade,
  user_id uuid not null references auth.users(id)on delete cascade,plan text not null check(plan in('semanal','mensual','anual')),
  provider_status text not null,paid_until timestamptz,trial_until timestamptz,
  checked_at timestamptz not null default now(),observed_at timestamptz not null,
@@ -27,8 +27,8 @@ create table cachaste_web.subscriptions(
 create index web_subscriptions_user on cachaste_web.subscriptions(user_id,checked_at desc);
 create table cachaste_web.trials(user_id uuid primary key references auth.users(id)on delete cascade,provider_id text not null,ends_at timestamptz not null,created_at timestamptz not null default now());
 create table cachaste_web.payments(
- provider_id text primary key,subscription_id text not null references cachaste_web.subscriptions(provider_id),
- user_id uuid not null references auth.users(id)on delete cascade,plan text not null,
+ provider_id text primary key,subscription_id text references cachaste_web.subscriptions(provider_id)on delete set null,
+ user_id uuid references auth.users(id)on delete set null,plan text not null,
  status text not null,amount_clp numeric(14,2)not null check(amount_clp>=0),fee_clp numeric(14,2)not null check(fee_clp>=0),net_clp numeric(14,2)not null,
  paid_at timestamptz,observed_at timestamptz not null,live_mode boolean not null
 );

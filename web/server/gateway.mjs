@@ -1,4 +1,5 @@
 import{PROJECT_URL,PUBLISHABLE_KEY}from'../shared/config.mjs';
+import{privateAsset}from'./content.mjs';
 import{publicOfflineKey,offlineLicense,safeJson}from'./offline.mjs';
 const COOKIE='cachaste_web_session';
 const ACCESS_HEADERS={'cache-control':'private, no-store','vary':'Cookie','x-content-type-options':'nosniff','referrer-policy':'no-referrer','x-frame-options':'DENY','permissions-policy':'camera=(), microphone=(), geolocation=(), payment=()'};
@@ -6,7 +7,7 @@ const json=(data,status=200,headers={})=>new Response(JSON.stringify(data),{stat
 const jwtExpires=token=>{try{const s=token.split('.')[1];return JSON.parse(atob(s.replaceAll('-','+').replaceAll('_','/'))).exp*1000;}catch{return 0;}};
 const bearer=req=>req.headers.get('authorization')?.match(/^Bearer ([A-Za-z0-9_.-]+)$/)?.[1];
 const cookie=req=>req.headers.get('cookie')?.split(';').map(x=>x.trim()).find(x=>x.startsWith(COOKIE+'='))?.slice(COOKIE.length+1);
-export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local',pagePolicies={},protectedFiles=[],accountFiles=[],allowDevelopmentHttp=false}={}){
+export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local',pagePolicies={},protectedFiles=[],accountFiles=[],encryptedFiles={},allowDevelopmentHttp=false}={}){
  const allowed=new Set(protectedFiles),accountAllowed=new Set(accountFiles),grants=new Map();
  async function backend(env,path,token,{body,method='GET'}={}){
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
@@ -66,7 +67,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     const asset=await env.ASSETS.fetch(new Request(new URL('/sw-template.js',url.origin),req));
     return new Response((await asset.text()).replace('__OFFLINE_PUBLIC_JWK__',safeJson(publicOfflineKey(env))).replaceAll('__BUILD_REVISION__',revision),{headers:{'content-type':'text/javascript','cache-control':'no-cache','service-worker-allowed':'/','x-content-type-options':'nosniff'}});
    }
-   if(path==='/sw-template.js'||path==='/_worker.js'||path.endsWith('.map'))return new Response('Not found',{status:404});
+   if(path.startsWith('/__encrypted/')||path==='/sw-template.js'||path==='/_worker.js'||path.endsWith('.map'))return new Response('Not found',{status:404});
    if(path==='/app'||path==='/app/')return Response.redirect(url.origin+'/app/inicio.html',302);
    if(path==='/app/suscripcion.html')return Response.redirect(url.origin+'/cuenta.html#planes',302);
    if(path.startsWith('/app/')){
@@ -75,7 +76,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
      if(path.endsWith('.html')&&req.headers.get('accept')?.includes('text/html'))return Response.redirect(url.origin+'/cuenta.html?next='+encodeURIComponent(path),302);
      throw e;
     }
-    const response=await env.ASSETS.fetch(req);if(!response.ok)return response;
+    const response=await privateAsset(req,env,encryptedFiles);if(!response.ok)return response;
     const headers=new Headers(response.headers);for(const[k,v]of Object.entries(ACCESS_HEADERS))headers.set(k,v);
     headers.set('x-cachaste-user',auth.user.id);headers.set('content-security-policy',policy(path,pagePolicies));
     if(path.endsWith('.html')){

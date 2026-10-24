@@ -46,7 +46,8 @@ const manifest=JSON.parse(await readFile(new URL('../artifacts/build-manifest.js
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.webmanifest':'application/manifest+json','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.txt':'text/plain'};
 async function asset(url,base=root){let p=decodeURIComponent(new URL(url).pathname);if(base===androidRoot)p=p.replace('/__android_reference','');if(p==='/')p='/index.html';const full=path.resolve(base,'.'+p);if(!full.startsWith(base+path.sep))return new Response('Forbidden',{status:403});try{if(!(await stat(full)).isFile())throw Error();return new Response(await readFile(full),{headers:{'content-type':mime[path.extname(full)]||'application/octet-stream'}});}catch{return new Response('Not found',{status:404});}}
 const gateway=createGateway({...manifest,fetcher:backend});
-const env={ASSETS:{fetch:req=>asset(req.url)},OFFLINE_SIGNING_JWK:JSON.stringify(offlineKey),WEB_SIGNUP_ENABLED:'false',WEB_AUTH_RETURN_READY:'false'};
+let local={};try{local=JSON.parse(await readFile(new URL('../.local-bindings.json',import.meta.url),'utf8'));}catch{}
+const env={...local,BANK_CONTENT_KEY:process.env.BANK_CONTENT_KEY||local.BANK_CONTENT_KEY,ASSETS:{fetch:req=>asset(req.url)},OFFLINE_SIGNING_JWK:JSON.stringify(offlineKey),WEB_SIGNUP_ENABLED:'false',WEB_AUTH_RETURN_READY:'false'};
 createServer(async(req,res)=>{try{
  const chunks=[];for await(const chunk of req)chunks.push(chunk);const body=Buffer.concat(chunks),url=new URL(req.url,'http://'+req.headers.host);let response;
  if(url.pathname==='/__qa/session')response=Response.json({users:users.map(id=>({user:accountUser(id),access_token:tokens.get(id),refresh_token:'qa-refresh-'+id,token_type:'bearer',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600}))});
