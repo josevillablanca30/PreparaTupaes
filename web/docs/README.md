@@ -8,4 +8,6 @@ Los datos de progreso se sincronizan por UUID y clave, separados de las puntuaci
 
 Mercado Pago se integra con funciones independientes de las de Google Play. Todos los cobros quedan desactivados hasta configurar credenciales, planes, receptor, impuestos y documentos tributarios. No se compran dominios ni servicios.
 
+Dominio confirmado y comprado por el titular: **sitecacho.cl**. Hosting preparado para el proyecto independiente **cachaste-sitecacho** en Cloudflare Pages Free, dentro de su cuenta existente. La automatización rechaza cualquier otro proyecto y no tiene permisos DNS. La zona y conexión Lovable de **somosvillablanca.cl** quedan fuera del alcance de los cambios. Configuración y pasos exactos en [OPERACION.md](OPERACION.md).
+
 Implementación y verificación se registrarán con sus límites reales en el informe de entrega.

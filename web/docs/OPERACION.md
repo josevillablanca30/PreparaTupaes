@@ -19,7 +19,9 @@ node web/scripts/build.mjs
 
 Salida: `web/dist`. Contiene el Worker avanzado, landing, cuenta, PWA y archivos privados cifrados. **No desplegar el `dist` original de la raíz**: corresponde al empaquetado educativo Android y contiene bancos sin la puerta de acceso web.
 
-Crear un proyecto Pages Free vacío. Para usar el workflow preparado, elegir una rama de producción de reserva, por ejemplo `production-requires-owner-approval`, distinta de la rama web. Ningún workflow entregado publica producción. El workflow `web-pages-preview.yml` exige QA exitosa del mismo SHA y rechaza cualquier rama distinta de la web. Se solicita manualmente; mientras el workflow no exista en la rama predeterminada de GitHub, se activa guardando una fecha de solicitud en `web/deploy-preview.request` dentro de la rama web. Ese commit inicia QA y espera su resultado antes de subir. No requiere fusionar a main.
+Usar la cuenta Cloudflare existente del titular y crear un proyecto Pages Free independiente llamado **`cachaste-sitecacho`**, exclusivamente para `sitecacho.cl`. No editar la zona, registros, nameservers, proyecto ni conexión Lovable de **`somosvillablanca.cl`**. El verificador rechaza cualquier otro nombre de proyecto, incluso dentro de la misma cuenta.
+
+Para usar el workflow preparado, elegir una rama de producción de reserva, por ejemplo `production-requires-owner-approval`, distinta de la rama web. Ningún workflow entregado publica producción. El workflow `web-pages-preview.yml` exige QA exitosa del mismo SHA y rechaza cualquier rama distinta de la web. Se solicita manualmente; mientras el workflow no exista en la rama predeterminada de GitHub, se activa guardando una fecha de solicitud en `web/deploy-preview.request` dentro de la rama web. Ese commit inicia QA y espera su resultado antes de subir. No requiere fusionar a main.
 
 Puede usarse Git integration con producción automática deshabilitada, build `node web/scripts/build.mjs`, salida `web/dist`, raíz `/`, y previews restringidas a la rama web. Alternativamente, un proyecto Direct Upload recibe despliegues desde el workflow de GitHub con Wrangler. Cloudflare no permite convertir un proyecto Direct Upload a Git integration: elegir antes de crearlo.
 
@@ -39,7 +41,7 @@ Antes de subir, configurar **Settings > Runtime > Fail open / closed > Fail clos
 
 No registrar claves en logs, commits ni capturas. La compilación local sin clave genera un secreto efímero en `web/.local-bindings.json`, ignorado por Git. Ese archivo no se entrega ni se sube a Pages. En Cloudflare Build, una clave ausente detiene la compilación. Cambiar `BANK_CONTENT_KEY` exige reconstruir todo el contenido con la nueva clave; cambiar la clave offline revoca las licencias offline anteriores al siguiente arranque.
 
-GitHub environment `cachaste-pages-preview`: secretos `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` limitado a Pages Edit de esa cuenta y `BANK_CONTENT_KEY`; variable `CLOUDFLARE_PAGES_PROJECT`. El workflow no crea cuentas, no compra servicios y no cambia plan. La cuenta Cloudflare y estos valores todavía deben conectarse.
+GitHub environment `cachaste-pages-preview`: secretos `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` limitado a Pages Edit de esa cuenta y `BANK_CONTENT_KEY`; variable `CLOUDFLARE_PAGES_PROJECT=cachaste-sitecacho`. No dar al workflow permisos DNS ni de administración de zonas. El workflow no crea cuentas, no compra servicios y no cambia plan. La cuenta Cloudflare existe según confirmación del titular; falta acceso a su sesión o conectar estos valores. Los permisos de instalación de GitHub, si se usa Git integration, deben limitarse al repositorio `PreparaTupaes`.
 
 ### Cuotas y 200 estudiantes
 
@@ -51,15 +53,15 @@ Con 200 estudiantes, el límite máximo lógico de progreso sería unos 400 MiB 
 
 ## Dominio .cl y NIC Chile
 
-`cachaste.cl` fue consultado en el WHOIS oficial de NIC Chile el 24/10/2026 y está registrado por un tercero (vencimiento publicado: 19/12/2026). No está disponible para una inscripción nueva. La búsqueda exacta de `cachastepaes.cl` no arrojó resultados y ofreció inscribirlo; es una alternativa disponible al momento de la consulta, sin reserva ni compra. La propuesta posterior del titular, `cachastelapaes.cl`, también fue consultada y la búsqueda exacta ofreció inscribirla. También se consultó `cacháste.cl`: la búsqueda exacta ofreció inscribirlo. NIC admite la á, pero sería un dominio diferente de `cachaste.cl`; su representación DNS es `xn--cachste-kwa.cl`. Aún no se elige ni registra el dominio definitivo. Consultar de nuevo y obtener autorización antes de registrar. Para el lanzamiento comercial se exige un .cl confirmado por el titular; `pages.dev` se reserva a pruebas.
+Dominio definitivo: **`sitecacho.cl`**, comprado en NIC Chile por el titular, según su actualización del 24/10/2026. La aplicación y la marca siguen llamándose **¿Cachaste?**. No realizar otra compra, transferencia de registrador ni renovación. `pages.dev` se reserva a pruebas.
 
-1. Tras elegir y autorizar la compra del .cl, agregar la zona a Cloudflare **Free**, conservando cualquier registro de correo existente.
+1. Dentro de la cuenta Cloudflare existente, agregar únicamente la zona **`sitecacho.cl`** en plan **Free**, conservando cualquier registro de correo existente de ese dominio. Comprobar el nombre de la zona antes de cada cambio.
 2. Copiar los dos nameservers que Cloudflare asigne a esa zona. No inventar nombres ni copiar los de otro dominio.
-3. En NIC Chile, administrar el dominio y actualizar sus servidores DNS con esos dos nombres. No usar «Redirección web» como sustituto de DNS.
+3. En NIC Chile, administrar **`sitecacho.cl`** y actualizar únicamente sus servidores DNS con esos dos nombres. Entregar al titular los nombres reales asignados antes de pedir el cambio manual. No usar «Redirección web» como sustituto de DNS. No modificar `somosvillablanca.cl`.
 4. Esperar que Cloudflare confirme la zona activa.
-5. En Pages > Custom domains, asociar primero el dominio raíz y `www`; seguir la creación de CNAME indicada por Pages. Crear solo un CNAME sin asociar el dominio al proyecto no completa la vinculación.
+5. En **`cachaste-sitecacho` > Custom domains**, asociar primero `sitecacho.cl` y `www.sitecacho.cl`; seguir la creación de CNAME indicada por Pages. Crear solo un CNAME sin asociar el dominio al proyecto no completa la vinculación. Para apuntar temporalmente a la rama web, después de un despliegue preview exitoso usar el alias exacto que devuelva Pages y un CNAME **proxied** de la zona `sitecacho.cl`: Cloudflare permite asociar dominios a una rama de esa forma. No adivinar cómo transforma las barras del nombre de rama en el alias.
 6. Confirmar HTTPS y certificados, dominio canónico y redirección `www` según lo aprobado. Mantener deshabilitada la publicación comercial hasta esa autorización.
-7. Registrar la URL .cl exacta en los retornos Auth de Supabase y en `CACHASTE_WEB_ORIGIN`, los back URLs de los planes y los ajustes de Mercado Pago. No dejar comodines de producción.
+7. Registrar `https://sitecacho.cl/cuenta.html` con los parámetros de confirmación/recuperación usados por la web en los retornos Auth de Supabase. Mantener todos los retornos Android existentes. Preparar `CACHASTE_WEB_ORIGIN=https://sitecacho.cl`, los back URLs de los planes y los ajustes de Mercado Pago, conservando los gates de cobro en `false`. No dejar comodines de producción.
 8. Repetir Auth, restauración, checkout sandbox, cancelación, PWA y pruebas de acceso directamente sobre el dominio antes de activar ventas.
 
 ## Mercado Pago Chile
@@ -69,6 +71,8 @@ Planes de servidor: semanal $2.490/7 días; mensual $7.990/1 mes; anual $64.990/
 Secretos **solo Supabase Edge**: `MP_ACCESS_TOKEN`, `MP_COLLECTOR_ID`, `MP_WEBHOOK_SECRET`, `MP_PLAN_WEEKLY`, `MP_PLAN_MONTHLY`, `MP_PLAN_YEARLY`. Opcionales: `MP_PLAN_MONTHLY_TRIAL`, `CACHASTE_MP_TRIAL_ENABLED=true` únicamente si el plan oficial tiene `free_trial` de siete días exactos. `CACHASTE_WEB_ORIGIN` es el origen HTTPS definitivo; `CACHASTE_WEB_ADMIN_IDS` contiene UUID autorizados a reportes. Las claves built-in de Supabase se leen en el servidor.
 
 Gates: `CACHASTE_MP_ENABLED=false`, `CACHASTE_MP_TAX_READY=false` por defecto. La base exige además `payments_enabled` y `tax_ready`; ningún cliente puede escribirlos. `CACHASTE_MP_MODE=production` exige token `APP_USR-`; `test` exige `TEST-`, permiso explícito de compras de prueba y entorno de base `test`. **Nunca poner la base compartida con Android en test**: usar localhost o un entorno de ensayo independiente para credenciales sandbox.
+
+Los nuevos checkouts de producción exigen además un origen HTTPS `.cl`. Pausar nuevas ventas no debe impedir cancelar renovaciones, reconciliar pagos existentes o recibir webhooks firmados: esas operaciones continúan si las credenciales ya están configuradas. Los reportes administrativos siguen disponibles aunque no existan credenciales del proveedor. Actualmente no hay credenciales MP configuradas ni suscripciones reales.
 
 El acceso pagado deriva de pagos reales aprobados consultados a la API: importe, CLP, receptor, modo, referencia, suscripción y período deben coincidir. Una URL de retorno, un estado `authorized` sin pago, un campo Premium, un pago pendiente o reembolsado no bastan. La prueba de siete días se enlaza una sola vez por identidad y solo se ofrece cuando su plan está verificado. El acceso se revisa al entrar a la cuenta y por webhooks; una validación con más de 12 horas requiere renovarse contra el proveedor.
 
@@ -82,11 +86,11 @@ El titular venderá como persona natural; no se usa una empresa ajena. No se han
 
 Antes de cambiar los gates: verificar Inicio de Actividades y giro con SII/contador; determinar si esta prestación concreta está afecta o exenta de IVA; definir documentación de ventas y notas de crédito que correspondan; configurar el emisor y conciliación. Que el contenido sea educativo no prueba por sí solo que esta suscripción califique para una exención. Los precios previstos no autorizan agregar IVA sorpresivamente en el checkout.
 
-El administrador puede exportar CSV de pagos, montos brutos, comisiones y netos desde Mi cuenta. La exportación está limitada por UUID del servidor y neutraliza fórmulas de hojas de cálculo. No reemplaza boletas, facturas, notas de crédito ni declaraciones tributarias. No se ha conectado un emisor de documentos. Completar revisión de responsable, domicilio comercial, condiciones de contratación, conservación y tratamiento de menores antes de habilitar registro/ventas.
+El administrador puede exportar CSV de pagos, montos brutos, comisiones y netos desde Mi cuenta. El rango se interpreta como días completos de Chile (`America/Santiago`), incluido el horario de invierno/verano y el último día seleccionado. La exportación está limitada por UUID del servidor y neutraliza fórmulas de hojas de cálculo. No reemplaza boletas, facturas, notas de crédito ni declaraciones tributarias. No se ha conectado un emisor de documentos. Completar revisión de responsable, domicilio comercial, condiciones de contratación, conservación y tratamiento de menores antes de habilitar registro/ventas.
 
 ## Fuentes oficiales consultadas
 
-- [Pages Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/), [GitHub CI](https://developers.cloudflare.com/pages/how-to/use-direct-upload-with-continuous-integration/), [Fail closed](https://developers.cloudflare.com/pages/functions/routing/), [dominios Pages](https://developers.cloudflare.com/pages/configuration/custom-domains/), [límites](https://developers.cloudflare.com/pages/platform/limits/).
+- [Pages Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/), [GitHub CI](https://developers.cloudflare.com/pages/how-to/use-direct-upload-with-continuous-integration/), [Fail closed](https://developers.cloudflare.com/pages/functions/routing/), [dominios Pages](https://developers.cloudflare.com/pages/configuration/custom-domains/), [dominio para una rama](https://developers.cloudflare.com/pages/how-to/custom-branch-aliases/), [límites](https://developers.cloudflare.com/pages/platform/limits/).
 - [Supabase Free y cuotas](https://supabase.com/docs/guides/platform/billing-on-supabase).
 - [NIC Chile: servidores DNS](https://www.nic.cl/ayuda/faq/ins-05.html), [WHOIS](https://www.nic.cl/whois/).
 - [Mercado Pago: suscripciones](https://www.mercadopago.cl/developers/es/docs/subscriptions/overview), [planes](https://www.mercadopago.cl/developers/es/reference/subscriptions/_preapproval_plan/post), [webhooks](https://www.mercadopago.cl/developers/es/docs/your-integrations/notifications/webhooks).

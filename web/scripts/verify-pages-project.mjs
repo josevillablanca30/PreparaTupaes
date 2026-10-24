@@ -2,6 +2,7 @@
 import{fileURLToPath}from'node:url';import path from'node:path';
 export function verifyProject(project,{branch,contentKey}={}){
  if(!project?.name||!project.production_branch)throw Error('PAGES_PROJECT_MISSING');
+ if(project.name!=='cachaste-sitecacho')throw Error('UNRELATED_PROJECT_DENIED');
  if(branch!=='work/cachaste-web-comercial-20261024'||project.production_branch===branch)throw Error('PRODUCTION_DEPLOYMENT_DENIED');
  if(Buffer.from(contentKey||'','base64').length!==32)throw Error('BANK_CONTENT_KEY_REQUIRED');
  for(const environment of['preview','production'])if(project.deployment_configs?.[environment]?.fail_open!==false)throw Error('PAGES_FAIL_CLOSED_REQUIRED');

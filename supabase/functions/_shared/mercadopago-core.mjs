@@ -49,3 +49,14 @@ export async function verifyMpSignature(request,secret,now=Date.now()){
  throw Error('INVALID_SIGNATURE');
 }
 export function csvReport(rows){if(rows.length>10000)throw Error('REPORT_TOO_LARGE');const keys=['provider_id','subscription_id','user_id','plan','status','amount_clp','fee_clp','net_clp','paid_at','live_mode'];const cell=x=>'"'+(typeof x==='string'&&/^[\s\uFEFF]*[=+@-]/.test(x)?"'"+x:String(x??'')).replaceAll('"','""')+'"';return '\uFEFF'+[keys.join(','),...rows.map(r=>keys.map(k=>cell(r[k])).join(','))].join('\r\n')+'\r\n';}
+
+// Calendar dates are Chilean dates, including winter time and the midnight DST transition.
+export function chileDateRange(fromDate,toDate){
+ const valid=s=>/^\d{4}-\d{2}-\d{2}$/.test(s||'')&&Number.isFinite(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
+ if(!valid(fromDate)||!valid(toDate)||toDate<fromDate)throw Error('INVALID_REPORT_RANGE');
+ const formatter=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago',year:'numeric',month:'2-digit',day:'2-digit'});
+ const dayAt=seconds=>{const p=Object.fromEntries(formatter.formatToParts(new Date(seconds*1000)).map(x=>[x.type,x.value]));return p.year+'-'+p.month+'-'+p.day;};
+ const firstInstant=date=>{const anchor=Date.parse(date)/1000;let low=anchor-36*3600,high=anchor+36*3600;while(low<high){const mid=Math.floor((low+high)/2);if(dayAt(mid)<date)low=mid+1;else high=mid;}return low*1000;};
+ const after=new Date(Date.parse(toDate)+86400000).toISOString().slice(0,10),from=firstInstant(fromDate),to=firstInstant(after);
+ if(to<=from||to-from>367*86400000)throw Error('INVALID_REPORT_RANGE');return{from:new Date(from).toISOString(),to:new Date(to).toISOString()};
+}
