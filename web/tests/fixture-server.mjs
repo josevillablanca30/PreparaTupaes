@@ -56,8 +56,5 @@ createServer(async(req,res)=>{try{
  else if(url.pathname.startsWith('/__qa/supabase/'))response=await backend('https://jmobinmdwrmdqrxtcruj.supabase.co/'+url.pathname.slice('/__qa/supabase/'.length)+url.search,{method:req.method,headers:req.headers,body:body.toString()});
  else if(url.pathname.startsWith('/__android_reference/'))response=await asset(url,androidRoot);
  else response=await gateway.fetch(new Request(url,{method:req.method,headers:req.headers,...(body.length?{body}:{}),duplex:'half'}),env,{});
- // Browser SDKs use a local test origin, so service workers can never bypass interception into the hosted project.
- if(url.pathname==='/api/config'){const config=await response.json();response=Response.json({...config,supabaseUrl:url.origin+'/__qa/supabase'});}
- if(url.pathname==='/app/competition-config.js'){response=new Response((await response.text()).replaceAll('https://jmobinmdwrmdqrxtcruj.supabase.co',url.origin+'/__qa/supabase'),{status:response.status,headers:response.headers});}
  res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()));
  }catch(e){res.writeHead(500,{'content-type':'text/plain'}).end(String(e.message));}}).listen(4175,'127.0.0.1',()=>console.log('Isolated web QA server listening on loopback 4175'));

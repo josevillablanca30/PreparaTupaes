@@ -19,7 +19,7 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
  const wrappedSet=function(key,value){original.set.call(this,this===storage&&keys.has(key)?prefix+key:key,String(value));if(this===storage&&keys.has(key))enqueue(key);};
  const wrappedRemove=function(key){original.remove.call(this,this===storage&&keys.has(key)?prefix+key:key);if(this===storage&&keys.has(key))enqueue(key);};
  Storage.prototype.getItem=wrappedGet;Storage.prototype.setItem=wrappedSet;Storage.prototype.removeItem=wrappedRemove;
- async function rpc(operation,payload){const res=await fetcher('/api/progress',{method:'POST',headers:{'content-type':'application/json','x-cachaste-request':'1'},body:JSON.stringify({operation,payload})});if(res.status===401||res.status===402){stopped=true;status();throw Error('ACCESS_EXPIRED');}if(!res.ok)throw Error('SYNC_UNAVAILABLE');return res.json();}
+ async function rpc(operation,payload){const body=JSON.stringify({operation,payload}),keepalive=new TextEncoder().encode(body).length<60000;const res=await fetcher('/api/progress',{method:'POST',headers:{'content-type':'application/json','x-cachaste-request':'1'},body,keepalive});if(res.status===401||res.status===402){stopped=true;status();throw Error('ACCESS_EXPIRED');}if(!res.ok)throw Error('SYNC_UNAVAILABLE');return res.json();}
  async function flush(){
   if(running||stopped||navigator.onLine===false)return;running=true;
   try{for(const[key,record]of Object.entries(meta)){
@@ -47,8 +47,9 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
   else meta[key]={version:conflict.remote.version,base:value,dirty:false};
   value===null?remove(prefix+key):set(prefix+key,JSON.stringify(value));delete conflicts[key];set(prefix+'conflicts',JSON.stringify(conflicts));persist();status();return true;
  }
- addEventListener('online',flush);addEventListener('pagehide',()=>{clearTimeout(timer);persist();});document.addEventListener('visibilitychange',()=>{if(document.hidden)flush();});
- status();if(pending())setTimeout(flush,50);
+ addEventListener('online',flush);addEventListener('pagehide',()=>{clearTimeout(timer);persist();});// Safari may abort new network work during navigation. Persist the queue; foreground debounce/online/reopen performs the sync.
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)persist();});
+ status();if(pending())timer=setTimeout(flush,50);
  return{flush,resolve,pending,conflicts,userId:uid,erase(){erased=true;stopped=true;clearTimeout(timer);for(const key of Object.keys(storage))if(key.startsWith(prefix))remove(key);},restore(){Storage.prototype.getItem=original.get;Storage.prototype.setItem=original.set;Storage.prototype.removeItem=original.remove;clearTimeout(timer);}};
 }
 if(typeof window!=='undefined'){
