@@ -16,7 +16,7 @@ self.addEventListener('message',event=>{event.waitUntil((async()=>{
 self.addEventListener('fetch',event=>{const req=event.request,url=new URL(req.url);if(url.origin!==self.location.origin||req.method!=='GET'||url.pathname.startsWith('/api/')||url.pathname==='/sw.js')return;
  event.respondWith((async()=>{
   if(url.pathname.startsWith('/app/')){
-   try{const response=await fetch(req);if([401,402,403].includes(response.status)){await purge();return response;}const grant=await lease();if(response.ok&&grant&&response.headers.get('x-cachaste-user')===grant.sub)await(await caches.open('cachaste-private-'+grant.sub+'-'+REV)).put(req,response.clone());return response;}
+   try{const response=await fetch(req);if([401,402,403].includes(response.status)||(response.redirected&&!new URL(response.url).pathname.startsWith('/app/'))){await purge();return response;}const grant=await lease();if(response.ok&&grant&&response.headers.get('x-cachaste-user')===grant.sub)await(await caches.open('cachaste-private-'+grant.sub+'-'+REV)).put(req,response.clone());return response;}
    catch{const grant=await lease();if(grant){const cached=await(await caches.open('cachaste-private-'+grant.sub+'-'+REV)).match(req);if(cached)return cached;}return(await caches.open(PUBLIC_CACHE)).match('/offline.html');}
   }
   try{const response=await fetch(req);if(PUBLIC_FILES.includes(url.pathname)&&response.ok)await(await caches.open(PUBLIC_CACHE)).put(req,response.clone());return response;}
