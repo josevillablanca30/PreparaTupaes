@@ -61,10 +61,13 @@ for(const state of['rankings','duelos','duelo','resultado'])test('approved '+sta
 });
 test('four independent rankings send the correct subject and geography filters to the shared server',async({page,request})=>{
  await identity(page);await page.goto('/cuenta.html');await expect(page.getByRole('link',{name:'Continuar mi preparación',exact:false})).toBeVisible();await page.goto('/app/competencia.html#rankings');await expect(page.locator('.ranking-row')).toHaveCount(6);
- const latest=async()=>{const data=await(await request.get('/__qa/state')).json();return data.calls.filter(x=>x.operation==='rankings').at(-1)?.payload;};
- for(const[name,mode]of[['Ensayo PAES','exam'],['PAES Express','express'],['Modo juego','game'],['Liga de duelos','duel']]){await page.getByRole('button',{name,exact:true}).click();await expect.poll(async()=>(await latest())?.mode).toBe(mode);}
- for(const scope of['Comuna','Región','Chile']){await page.getByRole('button',{name:scope,exact:true}).click();await expect.poll(async()=>(await latest())?.scope).toBe(scope);}
- await page.getByRole('button',{name:'Ciencias',exact:true}).click();await page.locator('#science-track').selectOption('Química');await expect.poll(async()=>(await latest())?.track).toBe('Química');expect((await latest()).subject).toBe('Ciencias');
+ const query=async filters=>{const data=await(await request.get('/__qa/state')).json();return data.calls.filter(x=>x.operation==='rankings').map(x=>x.payload).findLast(p=>Object.entries(filters).every(([key,value])=>p[key]===value));};
+ // Returning to a category within 60 seconds reuses its verified server result.
+ // Check the selected UI and that category's request, rather than requiring a
+ // duplicate request to become the latest entry in the transport log.
+ for(const[name,mode]of[['Ensayo PAES','exam'],['PAES Express','express'],['Modo juego','game'],['Liga de duelos','duel']]){const button=page.getByRole('button',{name,exact:true});await button.click();await expect(button).toHaveAttribute('aria-pressed','true');await expect(page.locator('.ranking-row')).toHaveCount(6);await expect.poll(()=>query({subject:'M1',mode,scope:'Región',track:''})).toBeTruthy();}
+ for(const scope of['Comuna','Región','Chile']){const button=page.getByRole('button',{name:scope,exact:true});await button.click();await expect(button).toHaveAttribute('aria-pressed','true');await expect(page.locator('.ranking-row')).toHaveCount(6);await expect.poll(()=>query({subject:'M1',mode:'duel',scope,track:''})).toBeTruthy();}
+ await page.getByRole('button',{name:'Ciencias',exact:true}).click();await page.locator('#science-track').selectOption('Química');await expect(page.locator('#science-track')).toHaveValue('Química');await expect(page.locator('.ranking-row')).toHaveCount(6);await expect.poll(()=>query({subject:'Ciencias',mode:'duel',scope:'Chile',track:'Química'})).toBeTruthy();
 });
 test('PWA manifest, original icons, signed private cache and logout purge work',async({page,request,context})=>{
  const manifest=await(await request.get('/manifest.webmanifest')).json();expect(manifest.display).toBe('standalone');expect(manifest.icons).toHaveLength(3);for(const icon of manifest.icons)expect((await request.get(icon.src)).status()).toBe(200);

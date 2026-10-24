@@ -5,7 +5,7 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
  const uid=bootstrap.userId,prefix='cachaste-web:'+uid+':',keys=new Set(STORAGE_KEYS),original={get:Storage.prototype.getItem,set:Storage.prototype.setItem,remove:Storage.prototype.removeItem};
  const get=k=>original.get.call(storage,k),set=(k,v)=>original.set.call(storage,k,v),remove=k=>original.remove.call(storage,k);
  const parse=(raw,fallback=null)=>{try{return JSON.parse(raw)||fallback;}catch{return fallback;}};
- let meta=parse(get(prefix+'sync'),{}),timer=null,running=false,stopped=false,erased=false,conflicts=parse(get(prefix+'conflicts'),{});
+ let meta=parse(get(prefix+'sync'),{}),timer=null,running=false,stopped=false,erased=false,unloading=false,conflicts=parse(get(prefix+'conflicts'),{});
  const persist=()=>{if(!erased)set(prefix+'sync',JSON.stringify(meta));};
  const pending=()=>Object.entries(meta).filter(([,v])=>v.dirty).length;
  const status=()=>onStatus(stopped?'expired':Object.keys(conflicts).length?'conflict':pending()?'pending':'saved');
@@ -21,8 +21,9 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
  Storage.prototype.getItem=wrappedGet;Storage.prototype.setItem=wrappedSet;Storage.prototype.removeItem=wrappedRemove;
  async function rpc(operation,payload){const body=JSON.stringify({operation,payload}),keepalive=new TextEncoder().encode(body).length<60000;const res=await fetcher('/api/progress',{method:'POST',headers:{'content-type':'application/json','x-cachaste-request':'1'},body,keepalive});if(res.status===401||res.status===402){stopped=true;status();throw Error('ACCESS_EXPIRED');}if(!res.ok)throw Error('SYNC_UNAVAILABLE');return res.json();}
  async function flush(){
-  if(running||stopped||navigator.onLine===false)return;running=true;
+  if(running||stopped||unloading||navigator.onLine===false)return;running=true;
   try{for(const[key,record]of Object.entries(meta)){
+   if(unloading)break;
    if(!record.dirty||conflicts[key])continue;
    const local=parse(get(prefix+key));validateDocument(key,local);
    let reply=await rpc('put',{key,value:local,baseVersion:record.version||0});
@@ -47,10 +48,14 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
   else meta[key]={version:conflict.remote.version,base:value,dirty:false};
   value===null?remove(prefix+key):set(prefix+key,JSON.stringify(value));delete conflicts[key];set(prefix+'conflicts',JSON.stringify(conflicts));persist();status();return true;
  }
- addEventListener('online',flush);addEventListener('pagehide',()=>{clearTimeout(timer);persist();});// Safari may abort new network work during navigation. Persist the queue; foreground debounce/online/reopen performs the sync.
- document.addEventListener('visibilitychange',()=>{if(document.hidden)persist();});
+ // Local edits are durable before any network request. Safari can discard a
+ // document during navigation; its next page resumes pending writes by user ID.
+ const hide=()=>{unloading=true;clearTimeout(timer);persist();};
+ const show=()=>{unloading=false;if(pending())flush();};
+ const visibility=()=>{if(document.hidden){clearTimeout(timer);persist();}else show();};
+ addEventListener('online',flush);addEventListener('pagehide',hide);addEventListener('pageshow',show);document.addEventListener('visibilitychange',visibility);
  status();if(pending())timer=setTimeout(flush,50);
- return{flush,resolve,pending,conflicts,userId:uid,erase(){erased=true;stopped=true;clearTimeout(timer);for(const key of Object.keys(storage))if(key.startsWith(prefix))remove(key);},restore(){Storage.prototype.getItem=original.get;Storage.prototype.setItem=original.set;Storage.prototype.removeItem=original.remove;clearTimeout(timer);}};
+ return{flush,resolve,pending,conflicts,userId:uid,erase(){erased=true;stopped=true;clearTimeout(timer);for(const key of Object.keys(storage))if(key.startsWith(prefix))remove(key);},restore(){Storage.prototype.getItem=original.get;Storage.prototype.setItem=original.set;Storage.prototype.removeItem=original.remove;clearTimeout(timer);removeEventListener('online',flush);removeEventListener('pagehide',hide);removeEventListener('pageshow',show);document.removeEventListener('visibilitychange',visibility);}};
 }
 if(typeof window!=='undefined'){
  const node=document.getElementById('cachaste-web-bootstrap');
