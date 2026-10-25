@@ -39,6 +39,11 @@ test('unconfigured Google and cancelled callback stay clear, accessible and do n
  await page.goto('/cuenta.html?error=access_denied&error_description=DO_NOT_RENDER_PROVIDER_TEXT');await expect(page.getByRole('heading',{name:'Tu preparación comienza aquí.'})).toBeVisible();await expect(page.locator('#account-status')).toContainText('cancelado');expect(page.url()).not.toContain('error');await expect(page.locator('body')).not.toContainText('DO_NOT_RENDER_PROVIDER_TEXT');
  await page.getByRole('button',{name:'Continuar con Google',exact:false}).click();await expect(page.locator('#account-status')).toContainText('aún falta autorizar');expect(await page.evaluate(()=>localStorage.getItem('cachaste-auth-v1'))).toBe(null);await layout(page);await page.screenshot({path:info.outputPath('google-closed-no-account.png'),fullPage:true});
 });
+test('the PWA never stores an OAuth authorization code in a public cache request URL',async({page,request})=>{
+ await enter(page);await page.evaluate(()=>navigator.serviceWorker.ready);await page.goto('/cuenta.html?code=do-not-cache-authorization-code');await expect(page).not.toHaveURL(/code=/);
+ const cached=await page.evaluate(async()=>{const urls=[];for(const name of await caches.keys())if(name.startsWith('cachaste-public-'))for(const req of await(await caches.open(name)).keys())urls.push(req.url);return urls;});expect(cached.some(url=>url.includes('do-not-cache-authorization-code'))).toBe(false);
+ const response=await request.get('/cuenta.html?code=header-check-only');expect(response.headers()['referrer-policy']).toBe('no-referrer');expect(response.headers()['cache-control']).toContain('no-store');
+});
 test('long practice renews a missing cookie from the refreshable session without losing the draft',async({page,context})=>{
  await enter(page);await page.locator('[data-action=pick-course][data-subject=M2]').click();await page.evaluate(()=>CachasteWebProgress.flush());await expect.poll(()=>page.evaluate(()=>CachasteWebProgress.pending())).toBe(0);
  await context.clearCookies();await page.evaluate(()=>CachasteWebSession.reconnect());await expect.poll(async()=>(await context.cookies()).some(c=>c.name==='cachaste_web_session'&&c.httpOnly)).toBe(true);await page.reload();await expect.poll(()=>page.evaluate(()=>window.CachasteDailyApp?.engine.state.subject)).toBe('M2');

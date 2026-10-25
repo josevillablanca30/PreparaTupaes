@@ -1,6 +1,6 @@
 /* The public key is injected by the authenticated gateway from server-owned configuration. */
 const PUBLIC_KEY=__OFFLINE_PUBLIC_JWK__,REV='__BUILD_REVISION__',PUBLIC_CACHE='cachaste-public-'+REV,LEASE_CACHE='cachaste-license-'+REV;
-const PUBLIC_FILES=['/','/web.css','/landing.js','/offline.html','/assets/cachaste-icon.svg','/icons/icon-192.png','/icons/icon-512.png','/manifest.webmanifest','/web-legacy.js','/web-competition.js','/web-init.js','/web-shell.js','/web-shell.css','/account.js','/cuenta.html'];
+const PUBLIC_FILES=['/','/web.css','/landing.js','/offline.html','/assets/cachaste-icon.svg','/assets/competition-logo.svg','/icons/google-g.png','/icons/apple-touch-icon.png','/icons/icon-192.png','/icons/icon-512.png','/manifest.webmanifest','/web-legacy.js','/web-competition.js','/web-init.js','/web-shell.js','/web-shell.css','/account.js','/cuenta.html'];
 const enc=new TextEncoder();let currentLease=null;
 function decode(part){const s=part.replaceAll('-','+').replaceAll('_','/');return Uint8Array.from(atob(s),c=>c.charCodeAt(0));}
 async function verify(token){try{if(!PUBLIC_KEY||typeof token!=='string')return null;const parts=token.split('.');if(parts.length!==3)return null;const head=JSON.parse(new TextDecoder().decode(decode(parts[0]))),body=JSON.parse(new TextDecoder().decode(decode(parts[1])));if(head.alg!=='ES256'||body.aud!==self.location.origin||body.rev!==REV||!body.sub||body.exp*1000<=Date.now()||body.iat*1000>Date.now()+30000||body.exp-body.iat>43200)return null;const key=await crypto.subtle.importKey('jwk',PUBLIC_KEY,{name:'ECDSA',namedCurve:'P-256'},false,['verify']);if(!await crypto.subtle.verify({name:'ECDSA',hash:'SHA-256'},key,decode(parts[2]),enc.encode(parts[0]+'.'+parts[1])))return null;return body;}catch{return null;}}
@@ -19,6 +19,7 @@ self.addEventListener('fetch',event=>{const req=event.request,url=new URL(req.ur
    try{const response=await fetch(req);if([401,402,403].includes(response.status)||(response.redirected&&!new URL(response.url).pathname.startsWith('/app/'))){await purge();return response;}const grant=await lease();if(response.ok&&grant&&response.headers.get('x-cachaste-user')===grant.sub)await(await caches.open('cachaste-private-'+grant.sub+'-'+REV)).put(req,response.clone());return response;}
    catch{const grant=await lease();if(grant){const cached=await(await caches.open('cachaste-private-'+grant.sub+'-'+REV)).match(req);if(cached)return cached;}return(await caches.open(PUBLIC_CACHE)).match('/offline.html');}
   }
-  try{const response=await fetch(req);if(PUBLIC_FILES.includes(url.pathname)&&response.ok)await(await caches.open(PUBLIC_CACHE)).put(req,response.clone());return response;}
+  // Authorization codes and email-return parameters must never become cache keys.
+  try{const response=await fetch(req);if(PUBLIC_FILES.includes(url.pathname)&&!url.search&&response.ok)await(await caches.open(PUBLIC_CACHE)).put(req,response.clone());return response;}
   catch{return await(await caches.open(PUBLIC_CACHE)).match(req)||await(await caches.open(PUBLIC_CACHE)).match('/offline.html');}
  })());});

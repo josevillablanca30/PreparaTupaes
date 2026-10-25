@@ -30,6 +30,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
  async function handler(req,env,ctx={}){
   const url=new URL(req.url);let path;try{path=decodeURIComponent(url.pathname);}catch{return json({error:'BAD_PATH'},400);}
   if(!allowDevelopmentHttp&&url.protocol!=='https:'&&!['127.0.0.1','localhost','[::1]'].includes(url.hostname)){url.protocol='https:';return Response.redirect(url.href,308);}
+  if(url.hostname==='www.sitecacho.cl'){url.hostname='sitecacho.cl';return new Response(null,{status:308,headers:{location:url.href,'referrer-policy':'no-referrer'}});}
   if(path.includes('..')||path.includes('\\')||path.includes('\0')||/%[a-f\d]{2}/i.test(path))return json({error:'BAD_PATH'},400);
   try{
    if(path==='/api/config')return json({supabaseUrl:env.SUPABASE_URL||PROJECT_URL,publishableKey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,signupEnabled:env.WEB_SIGNUP_ENABLED==='true',authReturnReady:env.WEB_AUTH_RETURN_READY==='true',googleAuthEnabled:env.WEB_GOOGLE_AUTH_ENABLED==='true',revision});
@@ -102,7 +103,8 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
      target.search=url.search;response=await env.ASSETS.fetch(new Request(target,req));
     }
    }
-   const headers=new Headers(response.headers);headers.set('content-security-policy',policy(path,pagePolicies));headers.set('x-content-type-options','nosniff');headers.set('referrer-policy','strict-origin-when-cross-origin');headers.set('x-frame-options','DENY');headers.set('permissions-policy','camera=(), microphone=(), geolocation=()');
+   const authPage=['/cuenta.html','/cuenta'].includes(path);
+   const headers=new Headers(response.headers);headers.set('content-security-policy',policy(path,pagePolicies));headers.set('x-content-type-options','nosniff');headers.set('referrer-policy',authPage?'no-referrer':'strict-origin-when-cross-origin');if(authPage)headers.set('cache-control','private, no-store');headers.set('x-frame-options','DENY');headers.set('permissions-policy','camera=(), microphone=(), geolocation=()');
    return new Response(response.body,{status:response.status,headers});
   }catch(e){const raw=String(e?.message||''),status=e.status||(/AUTH_REQUIRED/.test(raw)?401:/SUBSCRIPTION_REQUIRED/.test(raw)?402:/INVALID|JSON|Unexpected/.test(raw)?400:503);return json({error:/^[A-Z_]+$/.test(raw)?raw:'SERVICE_UNAVAILABLE'},status);}
  }

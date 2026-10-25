@@ -47,6 +47,13 @@ test('opening a learning page rechecks current access even while a static-file g
  const page=await h.gateway.fetch(h.req('/app/index.html',{headers:{authorization:'Bearer '+h.token,accept:'text/html'}}),h.env);assert.equal(page.status,302);assert.match(page.headers.get('location'),/\/cuenta.html\?next=/);
 });
 test('production gateway always redirects HTTP; the managed local preview is the only opt-in exception',async()=>{const h=harness();const response=await h.gateway.fetch(new Request('http://web.example/'),h.env);assert.equal(response.status,308);assert.equal(response.headers.get('location'),'https://web.example/');});
+test('only www.sitecacho.cl redirects to the canonical account origin and preserves the safe destination',async()=>{
+ const h=harness();const r=await h.gateway.fetch(new Request('https://www.sitecacho.cl/cuenta.html?next=%2Fapp%2Fcompetencia.html'),h.env);assert.equal(r.status,308);assert.equal(r.headers.get('location'),'https://sitecacho.cl/cuenta.html?next=%2Fapp%2Fcompetencia.html');assert.equal(r.headers.get('referrer-policy'),'no-referrer');assert.equal(h.calls.length,0);
+ for(const host of['qa.example','work-cachaste-web-comercial.cachaste-sitecacho.pages.dev'])assert.equal((await h.gateway.fetch(new Request('https://'+host+'/'),h.env)).status,200);
+});
+test('account callback pages cannot send authorization codes in referrers or be stored by the HTTP cache',async()=>{
+ const h=harness();for(const path of['/cuenta.html?code=disposable-code','/cuenta?code=disposable-code']){const r=await h.gateway.fetch(h.req(path),h.env);assert.equal(r.headers.get('referrer-policy'),'no-referrer');assert.equal(r.headers.get('cache-control'),'private, no-store');}
+});
 test('Pages HTML canonicalization serves account and public documents at their stable return URLs, preserving queries and security headers',async()=>{
  const gateway=createGateway();
  for(const [original,canonical]of[['/cuenta.html','/cuenta'],['/privacidad.html','/privacidad'],['/condiciones.html','/condiciones'],['/eliminar-cuenta.html','/eliminar-cuenta'],['/offline.html','/offline'],['/index.html','/']]){
