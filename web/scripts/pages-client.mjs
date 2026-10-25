@@ -1,5 +1,7 @@
 // Official Pages API only. No zone, DNS, billing, account-plan or other-project endpoints.
 export const PAGES_PROJECT = 'cachaste-sitecacho';
+// Public resource identifier confirmed in the owner's Cloudflare screenshot; not an API credential.
+export const PAGES_ACCOUNT_ID = 'cfe4b77c0c39bb056306d16133a93642';
 export const PREVIEW_BRANCH = 'work/cachaste-web-comercial-20261024';
 export const RESERVED_PRODUCTION_BRANCH = 'production-requires-owner-approval';
 export const REPOSITORY = 'josevillablanca30/PreparaTupaes';
@@ -7,7 +9,7 @@ export const REPOSITORY = 'josevillablanca30/PreparaTupaes';
 export function credentials(env) {
   if (env.GITHUB_REF_NAME !== PREVIEW_BRANCH) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
   if (env.CLOUDFLARE_PAGES_PROJECT && env.CLOUDFLARE_PAGES_PROJECT !== PAGES_PROJECT) throw Error('UNRELATED_PROJECT_DENIED');
-  if (!/^[a-f\d]{32}$/i.test(env.CLOUDFLARE_ACCOUNT_ID || '')) throw Error('CLOUDFLARE_ACCOUNT_ID_REQUIRED_IN_GITHUB_SECRETS');
+  if (env.CLOUDFLARE_ACCOUNT_ID !== PAGES_ACCOUNT_ID) throw Error('UNRELATED_ACCOUNT_DENIED');
   if (!/^[A-Za-z0-9_-]{20,256}$/.test(env.CLOUDFLARE_API_TOKEN || '')) throw Error('CLOUDFLARE_API_TOKEN_REQUIRED_IN_GITHUB_SECRETS');
   return {account: env.CLOUDFLARE_ACCOUNT_ID, token: env.CLOUDFLARE_API_TOKEN};
 }

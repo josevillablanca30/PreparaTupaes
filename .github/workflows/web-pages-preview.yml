@@ -17,13 +17,14 @@ jobs:
     timeout-minutes: 35
     env:
       CLOUDFLARE_PAGES_PROJECT: cachaste-sitecacho
+      # Account IDs are public identifiers, not credentials. This is the owner's confirmed account.
+      CLOUDFLARE_ACCOUNT_ID: cfe4b77c0c39bb056306d16133a93642
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Comprobar los dos secretos sin conectarse al panel
+      - name: Comprobar el token y la cuenta fija sin conectarse al panel
         env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: node web/scripts/prepare-pages-project.mjs --check-credentials
       - uses: actions/setup-node@v4
@@ -41,12 +42,10 @@ jobs:
         run: node web/scripts/verify-preview-qa.mjs
       - name: Crear o preparar únicamente cachaste-sitecacho y generar claves privadas
         env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: node web/scripts/prepare-pages-project.mjs
       - name: Verificar Fail closed, secretos y reserva de producción por API
         env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: node web/scripts/verify-pages-project.mjs
       - name: Construir distribución privada cifrada
@@ -55,13 +54,11 @@ jobs:
         run: node web/scripts/verify-private-distribution.mjs
       - name: Subir únicamente preview pages.dev
         env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         # Run from the repository root: the API settings prepared above are authoritative.
         run: npx --yes wrangler@4.45.0 pages deploy web/dist --project-name="$CLOUDFLARE_PAGES_PROJECT" --branch=work/cachaste-web-comercial-20261024 --commit-hash="$GITHUB_SHA" --commit-dirty=false
       - name: Comprobar HTTPS, versión, bloqueo Premium y cobros cerrados en la URL real
         env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: node web/scripts/verify-pages-preview.mjs
       - name: Conservar URL y evidencia sin secretos ni bancos

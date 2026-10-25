@@ -4,7 +4,7 @@ import {mkdtemp, mkdir, readFile, writeFile, rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {randomBytes, createCipheriv, createHash} from 'node:crypto';
-import {pagesClient, credentials, previewUrl, PAGES_PROJECT, PREVIEW_BRANCH, RESERVED_PRODUCTION_BRANCH, REPOSITORY} from '../scripts/pages-client.mjs';
+import {pagesClient, credentials, previewUrl, PAGES_PROJECT, PAGES_ACCOUNT_ID, PREVIEW_BRANCH, RESERVED_PRODUCTION_BRANCH, REPOSITORY} from '../scripts/pages-client.mjs';
 import {prepareProject, runtimeSecrets} from '../scripts/prepare-pages-project.mjs';
 import {verifyProject} from '../scripts/verify-pages-project.mjs';
 import {matchingQaRun, requireQa} from '../scripts/verify-preview-qa.mjs';
@@ -13,11 +13,11 @@ import {createGateway} from '../server/gateway.mjs';
 import {verifyPrivateDistribution} from '../scripts/verify-private-distribution.mjs';
 
 const revision = 'a'.repeat(40);
-const env = () => ({GITHUB_REF_NAME: PREVIEW_BRANCH, CLOUDFLARE_ACCOUNT_ID: 'a'.repeat(32), CLOUDFLARE_API_TOKEN: 'fixture-no-real-token-1234567890'});
+const env = () => ({GITHUB_REF_NAME: PREVIEW_BRANCH, CLOUDFLARE_ACCOUNT_ID: PAGES_ACCOUNT_ID, CLOUDFLARE_API_TOKEN: 'fixture-no-real-token-1234567890'});
 const initialProject = () => ({name: PAGES_PROJECT, production_branch: RESERVED_PRODUCTION_BRANCH, source: null, canonical_deployment: null, domains: []});
 function cloudflare(initial = null) {
   let project = initial;
-  const calls = [], base = 'https://api.cloudflare.com/client/v4/accounts/' + 'a'.repeat(32) + '/pages/projects';
+  const calls = [], base = 'https://api.cloudflare.com/client/v4/accounts/' + PAGES_ACCOUNT_ID + '/pages/projects';
   const client = pagesClient(env(), {fetcher: async (url, options) => {
     assert.equal(options.redirect, 'error');
     assert.equal(options.headers.authorization, 'Bearer ' + env().CLOUDFLARE_API_TOKEN);
@@ -89,8 +89,8 @@ test('an unrelated project, existing production, Git integration or unrelated do
   }
 });
 
-test('missing credentials, another project or branch cause zero Cloudflare calls and do not accept a global API key', () => {
-  for (const change of [{CLOUDFLARE_ACCOUNT_ID: ''}, {CLOUDFLARE_API_TOKEN: ''}, {GITHUB_REF_NAME: 'main'}, {CLOUDFLARE_PAGES_PROJECT: 'somosvillablanca'}]) {
+test('missing token or a different account, project or branch cause zero Cloudflare calls and do not accept a global API key', () => {
+  for (const change of [{CLOUDFLARE_ACCOUNT_ID: ''}, {CLOUDFLARE_ACCOUNT_ID: 'f'.repeat(32)}, {CLOUDFLARE_API_TOKEN: ''}, {GITHUB_REF_NAME: 'main'}, {CLOUDFLARE_PAGES_PROJECT: 'somosvillablanca'}]) {
     let called = false;
     assert.throws(() => pagesClient({...env(), ...change}, {fetcher: () => {called = true;}}));
     assert.equal(called, false);

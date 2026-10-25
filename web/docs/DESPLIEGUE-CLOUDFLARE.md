@@ -14,15 +14,14 @@ Rama autorizada: `work/cachaste-web-comercial-20261024`. Producción reservada: 
 
 1. En [Cloudflare > API Tokens](https://dash.cloudflare.com/profile/api-tokens), crear un **Custom Token**, nombre sugerido `Cachaste-Pages-Preview`.
 2. Permiso único: **Account > Cloudflare Pages > Edit**. En Account Resources elegir **Include > Specific account**, la cuenta existente del titular. No seleccionar todas las cuentas ni permisos de DNS, zonas, facturación o Workers Scripts. No usar Global API Key.
-3. Copiar el **Account ID** de esa misma cuenta, disponible en el panel de Cloudflare. Es el identificador de 32 caracteres de la cuenta; no es el Zone ID ni el correo.
-4. Abrir [GitHub > PreparaTupaes > Settings > Secrets and variables > Actions](https://github.com/josevillablanca30/PreparaTupaes/settings/secrets/actions). Con **New repository secret**, guardar estos dos valores:
+3. El **Account ID** ya está configurado a partir de la captura del titular. Es un identificador público, no una credencial; el workflow y la guarda rechazan cualquier cuenta diferente. No hace falta guardarlo como secreto ni volver a copiarlo.
+4. Abrir [GitHub > PreparaTupaes > Settings > Secrets and variables > Actions](https://github.com/josevillablanca30/PreparaTupaes/settings/secrets/actions). Con **New repository secret**, guardar un solo valor:
 
 | Nombre exacto | Valor que introduce el titular directamente en GitHub |
 | --- | --- |
-| `CLOUDFLARE_ACCOUNT_ID` | Account ID de la cuenta Cloudflare existente. |
 | `CLOUDFLARE_API_TOKEN` | El token limitado recién creado. |
 
-**No enviar contraseñas, tokens, claves privadas ni capturas de sus valores al chat.** Al terminar basta avisar que los dos secretos están guardados. No hacen falta un token personal de GitHub, una service role de Supabase, una tercera clave de banco ni un proyecto Pages creado manualmente.
+**No enviar contraseñas, tokens, claves privadas ni capturas de sus valores al chat.** Al terminar basta avisar que el secreto está guardado. No hacen falta un token personal de GitHub, una service role de Supabase, claves manuales del banco ni un proyecto Pages creado manualmente.
 
 El permiso de Cloudflare Pages es de cuenta, no de un proyecto individual; por eso el código fija el nombre y los endpoints y comprueba el proyecto antes de escribir. El token no autoriza cambios DNS ni de la zona de Somos Villablanca. Si existieran otros proyectos Pages en la cuenta, el workflow tampoco los enumera ni modifica.
 
@@ -32,7 +31,7 @@ Se usan **repository secrets** para conservar compatibilidad con GitHub Free si 
 
 El responsable del código activa `web-pages-preview.yml` guardando una nueva solicitud en **`web/deploy-preview.request`**, dentro de la rama web. Esto funciona sin fusionar a `main`, aunque el botón Run workflow no aparezca mientras el workflow no exista en la rama predeterminada.
 
-1. Comprueba ambos secretos y el destino fijo, sin escribir en Cloudflare.
+1. Comprueba el único secreto requerido, la cuenta confirmada y el destino fijo, sin escribir en Cloudflare.
 2. Verifica que Android permanezca idéntico y ejecuta las pruebas de backend/pagos simulados.
 3. Espera el resultado exitoso de `web-commercial.yml` para **el mismo SHA y rama**: motor original, banco completo, HTTP real con Auth/PostgREST y los cuatro perfiles de navegador.
 4. Consulta el proyecto exacto. Si no existe, lo crea mediante la API oficial con producción reservada. Si existe y es compatible, prepara sus variables. No compra servicios ni cambia el plan de la cuenta.
@@ -67,7 +66,7 @@ El token inicial no tiene permisos DNS. La asociación del dominio y esos regist
 
 - **Implementado y comprobable en código:** bootstrap por API, aislamiento, claves automáticas, cifrado antes de subir, puerta Premium y comprobación posterior del sitio real.
 - **Probado sin credenciales Cloudflare:** contrato simulado de la API, guardas, generación/firma de claves y la comprobación HTTP sobre el Worker real en una fixture aislada. Los resultados de GitHub Actions identifican cada prueba y commit.
-- **Pendiente de los dos secretos:** creación real de Pages, subida, comprobación HTTPS y entrega de una URL `pages.dev`. No declarar estos puntos completados antes de ejecutarlos.
+- **Pendiente del token en GitHub:** creación real de Pages, subida, comprobación HTTPS y entrega de una URL `pages.dev`. No declarar estos puntos completados antes de ejecutarlos.
 - **Pendiente después:** DNS confirmado, dominio/certificado, retornos y correo Auth, prueba de acceso con una identidad autorizada y suscripción verificada, dispositivos físicos y flujo de compra sandbox aislado. Los cobros reales continúan cerrados.
 - **Repositorio actualmente público:** el contenido histórico está en el código original. Cifrar Pages protege la distribución web, pero no vuelve privado el historial de GitHub. Antes de vender exclusividad del banco, el titular debe cambiar la visibilidad o definir una fuente privada. No reescribir historia, borrar bancos ni tocar la candidata Android para ocultarlo.
 

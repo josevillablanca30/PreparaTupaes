@@ -1,5 +1,5 @@
 {
-  "request": "first-guarded-pages-api-preview",
+  "request": "guarded-pages-preview-with-confirmed-account-and-one-secret",
   "project": "cachaste-sitecacho",
   "branch": "work/cachaste-web-comercial-20261024",
   "scope": "preview-only",
