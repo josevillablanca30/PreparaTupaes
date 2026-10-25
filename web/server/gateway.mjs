@@ -2,6 +2,7 @@ import{PROJECT_URL,PUBLISHABLE_KEY}from'../shared/config.mjs';
 import{privateAsset}from'./content.mjs';
 import{publicOfflineKey,offlineLicense,safeJson}from'./offline.mjs';
 const COOKIE='cachaste_web_session';
+const PUBLIC_HTML_ALIASES=new Map([['/index.html','/'],...['cuenta','privacidad','condiciones','eliminar-cuenta','offline'].map(name=>['/'+name+'.html','/'+name])]);
 const ACCESS_HEADERS={'cache-control':'private, no-store','vary':'Cookie','x-content-type-options':'nosniff','referrer-policy':'no-referrer','x-frame-options':'DENY','permissions-policy':'camera=(), microphone=(), geolocation=(), payment=()'};
 const json=(data,status=200,headers={})=>new Response(JSON.stringify(data),{status,headers:{...ACCESS_HEADERS,'content-type':'application/json; charset=utf-8',...headers}});
 const jwtExpires=token=>{try{const s=token.split('.')[1];return JSON.parse(atob(s.replaceAll('-','+').replaceAll('_','/'))).exp*1000;}catch{return 0;}};
@@ -17,7 +18,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
   const token=bearer(req)||cookie(req);if(!token||token.length>10000||jwtExpires(token)<=now())throw Object.assign(Error('AUTH_REQUIRED'),{status:401});
   const key=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(token)),hash=Array.from(new Uint8Array(key),x=>x.toString(16).padStart(2,'0')).join('');
   const cached=grants.get(hash);if(!fresh&&cached&&cached.until>now()&&(!active||cached.access.active))return{...cached,token};
-  const user=await backend(env,'/auth/v1/user',token);if(!user.id)throw Object.assign(Error('AUTH_REQUIRED'),{status:401});
+  let user;try{user=await backend(env,'/auth/v1/user',token);}catch(error){if([400,401,403].includes(error.status))throw Object.assign(Error('AUTH_REQUIRED'),{status:401});throw error;}if(!user.id)throw Object.assign(Error('AUTH_REQUIRED'),{status:401});
   const access=await backend(env,'/rest/v1/rpc/cachaste_access',token,{method:'POST',body:{}});
   if(access.userId!==user.id||!Number.isFinite(access.serverTimeMs))throw Error('INVALID_ACCESS_RESPONSE');
   const value={user,access,until:Math.min(now()+30000,jwtExpires(token),access.active?access.validUntilMs:now()+30000)};
@@ -87,7 +88,16 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     }
     return new Response(response.body,{status:response.status,headers});
    }
-   const response=await env.ASSETS.fetch(req);const headers=new Headers(response.headers);headers.set('content-security-policy',policy(path,pagePolicies));headers.set('x-content-type-options','nosniff');headers.set('referrer-policy','strict-origin-when-cross-origin');headers.set('x-frame-options','DENY');headers.set('permissions-policy','camera=(), microphone=(), geolocation=()');
+   let response=await env.ASSETS.fetch(req);
+   // Pages canonicalizes public *.html assets. Follow only the known internal alias so Auth
+   // return URLs and PWA caches retain their original address without a browser redirect.
+   if(PUBLIC_HTML_ALIASES.has(path)&&[301,308].includes(response.status)&&response.headers.has('location')){
+    const target=new URL(response.headers.get('location'),url);
+    if(target.origin===url.origin&&target.pathname===PUBLIC_HTML_ALIASES.get(path)){
+     target.search=url.search;response=await env.ASSETS.fetch(new Request(target,req));
+    }
+   }
+   const headers=new Headers(response.headers);headers.set('content-security-policy',policy(path,pagePolicies));headers.set('x-content-type-options','nosniff');headers.set('referrer-policy','strict-origin-when-cross-origin');headers.set('x-frame-options','DENY');headers.set('permissions-policy','camera=(), microphone=(), geolocation=()');
    return new Response(response.body,{status:response.status,headers});
   }catch(e){const raw=String(e?.message||''),status=e.status||(/AUTH_REQUIRED/.test(raw)?401:/SUBSCRIPTION_REQUIRED/.test(raw)?402:/INVALID|JSON|Unexpected/.test(raw)?400:503);return json({error:/^[A-Z_]+$/.test(raw)?raw:'SERVICE_UNAVAILABLE'},status);}
  }

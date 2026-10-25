@@ -1,5 +1,5 @@
 {
-  "request": "guarded-pages-preview-with-confirmed-account-and-one-secret",
+  "request": "verify-cloudflare-html-aliases-and-hosted-auth-errors",
   "project": "cachaste-sitecacho",
   "branch": "work/cachaste-web-comercial-20261024",
   "scope": "preview-only",
