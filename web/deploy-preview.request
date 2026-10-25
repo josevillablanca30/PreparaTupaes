@@ -1,0 +1,8 @@
+{
+  "request": "first-guarded-pages-api-preview",
+  "project": "cachaste-sitecacho",
+  "branch": "work/cachaste-web-comercial-20261024",
+  "scope": "preview-only",
+  "production": false,
+  "realPayments": false
+}
