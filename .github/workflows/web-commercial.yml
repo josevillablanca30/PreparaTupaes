@@ -28,6 +28,8 @@ jobs:
           npm run test:logic
       - name: Backend web, pagos simulados y compatibilidad competitiva
         run: node --test web/tests/*.test.mjs
+      - name: Validar sintaxis y descubrir recorridos antes de instalar navegadores
+        run: npx playwright test --config=web/playwright.config.mjs --list
       - name: Construir las cinco materias y cifrar contenido Pages
         run: node web/scripts/build.mjs
       - name: Verificar integridad del cifrado y ausencia de bancos públicos
