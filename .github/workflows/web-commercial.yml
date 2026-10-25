@@ -2,7 +2,7 @@ name: ¿Cachaste? Web · seguridad, cinco materias y navegadores
 on:
   push:
     branches: [work/cachaste-web-comercial-20261024]
-    paths: ['web/**','supabase/functions/_shared/mercadopago-*','supabase/functions/cachaste-mercadopago/**','supabase/functions/cachaste-mp-events/**','.github/workflows/web-commercial.yml']
+    paths: ['web/**','supabase/functions/_shared/mercadopago-*','supabase/functions/cachaste-mercadopago/**','supabase/functions/cachaste-mp-events/**','.github/workflows/web-commercial.yml','.github/workflows/web-pages-preview.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -30,6 +30,8 @@ jobs:
         run: node --test web/tests/*.test.mjs
       - name: Construir las cinco materias y cifrar contenido Pages
         run: node web/scripts/build.mjs
+      - name: Verificar integridad del cifrado y ausencia de bancos públicos
+        run: node web/scripts/verify-private-distribution.mjs --local
       - uses: actions/upload-artifact@v4
         with:
           name: Cachaste-Web-Pages-${{ github.sha }}

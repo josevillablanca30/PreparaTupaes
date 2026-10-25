@@ -1,4 +1,4 @@
-name: ¿Cachaste? · Preview Pages Free (manual)
+name: ¿Cachaste? · Preview Pages Free por API
 on:
   workflow_dispatch:
   push:
@@ -13,25 +13,24 @@ concurrency:
 jobs:
   preview:
     if: github.ref_name == 'work/cachaste-web-comercial-20261024'
-    environment: cachaste-pages-preview
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 35
     env:
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT }}
-      BANK_CONTENT_KEY: ${{ secrets.BANK_CONTENT_KEY }}
+      CLOUDFLARE_PAGES_PROJECT: cachaste-sitecacho
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Comprobar los dos secretos sin conectarse al panel
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node web/scripts/prepare-pages-project.mjs --check-credentials
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
       - run: npm ci
-      - name: Verificar proyecto existente y bloquear producción
-        run: node web/scripts/verify-pages-project.mjs
       - name: Verificar protección de Android, backend y pagos simulados
         run: |
           node web/scripts/verify-android.mjs
@@ -39,12 +38,37 @@ jobs:
       - name: Exigir QA completa del mismo commit antes de subir
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          node --input-type=module - <<'JS'
-          const url='https://api.github.com/repos/'+process.env.GITHUB_REPOSITORY+'/actions/runs?head_sha='+process.env.GITHUB_SHA+'&per_page=30';
-          let success=false;for(let n=0;n<180;n++){const r=await fetch(url,{headers:{authorization:'Bearer '+process.env.GH_TOKEN,'X-GitHub-Api-Version':'2022-11-28'}});if(!r.ok)throw Error('QA_STATUS_UNAVAILABLE');const data=await r.json(),run=data.workflow_runs.find(x=>x.path==='.github/workflows/web-commercial.yml');if(run?.conclusion==='success'){console.log('Verified successful full QA:',run.html_url);success=true;break;}if(run?.status==='completed')throw Error('Full QA did not pass');await new Promise(resolve=>setTimeout(resolve,5000));}if(!success)throw Error('Full QA did not complete within 15 minutes');
-          JS
+        run: node web/scripts/verify-preview-qa.mjs
+      - name: Crear o preparar únicamente cachaste-sitecacho y generar claves privadas
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node web/scripts/prepare-pages-project.mjs
+      - name: Verificar Fail closed, secretos y reserva de producción por API
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node web/scripts/verify-pages-project.mjs
       - name: Construir distribución privada cifrada
         run: node web/scripts/build.mjs
+      - name: Verificar cifrado de todas las materias antes de subir
+        run: node web/scripts/verify-private-distribution.mjs
       - name: Subir únicamente preview pages.dev
-        run: npx --yes wrangler@4.45.0 pages deploy web/dist --project-name="$CLOUDFLARE_PAGES_PROJECT" --branch=work/cachaste-web-comercial-20261024 --commit-dirty=false
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        # Run from the repository root: the API settings prepared above are authoritative.
+        run: npx --yes wrangler@4.45.0 pages deploy web/dist --project-name="$CLOUDFLARE_PAGES_PROJECT" --branch=work/cachaste-web-comercial-20261024 --commit-hash="$GITHUB_SHA" --commit-dirty=false
+      - name: Comprobar HTTPS, versión, bloqueo Premium y cobros cerrados en la URL real
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node web/scripts/verify-pages-preview.mjs
+      - name: Conservar URL y evidencia sin secretos ni bancos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cachaste-Pages-Preview
+          path: web/artifacts/pages-preview.json
+          if-no-files-found: ignore
+          retention-days: 14

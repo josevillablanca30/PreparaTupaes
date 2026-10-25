@@ -23,7 +23,7 @@ Usar la cuenta Cloudflare existente del titular y crear un proyecto Pages Free i
 
 Para usar el workflow preparado, elegir una rama de producción de reserva, por ejemplo `production-requires-owner-approval`, distinta de la rama web. Ningún workflow entregado publica producción. El workflow `web-pages-preview.yml` exige QA exitosa del mismo SHA y rechaza cualquier rama distinta de la web. Se solicita manualmente; mientras el workflow no exista en la rama predeterminada de GitHub, se activa guardando una fecha de solicitud en `web/deploy-preview.request` dentro de la rama web. Ese commit inicia QA y espera su resultado antes de subir. No requiere fusionar a main.
 
-Puede usarse Git integration con producción automática deshabilitada, build `node web/scripts/build.mjs`, salida `web/dist`, raíz `/`, y previews restringidas a la rama web. Alternativamente, un proyecto Direct Upload recibe despliegues desde el workflow de GitHub con Wrangler. Cloudflare no permite convertir un proyecto Direct Upload a Git integration: elegir antes de crearlo.
+El método elegido es **Direct Upload desde GitHub Actions y Wrangler**. La API oficial crea/configura únicamente `cachaste-sitecacho`, sin iniciar sesión desde Work, sin instalar Git integration y sin tocar otra zona o proyecto. Cloudflare no permite convertir después ese proyecto a Git integration; la automatización queda en Actions. Instrucciones completas y acciones manuales mínimas en [DESPLIEGUE-CLOUDFLARE.md](DESPLIEGUE-CLOUDFLARE.md).
 
 Antes de subir, configurar **Settings > Runtime > Fail open / closed > Fail closed**, tanto para preview como para producción. El script de despliegue lo verifica por API. Aunque la plataforma llegara a servir estáticos, los bancos solo existen como AES-256-GCM; la clave es un secreto de ejecución, nunca parte del Worker generado ni de los archivos.
 
@@ -33,15 +33,15 @@ Antes de subir, configurar **Settings > Runtime > Fail open / closed > Fail clos
 | --- | --- |
 | `SUPABASE_URL` | Público; ya definido en `web/wrangler.jsonc`. |
 | `SUPABASE_PUBLISHABLE_KEY` | Público; ya definido. No es una service role. |
-| `BANK_CONTENT_KEY` | Secreto: 32 bytes aleatorios en base64. Mismo valor en compilación y ejecución del entorno. |
-| `OFFLINE_SIGNING_JWK` | Secreto: JWK privado EC P-256, generado por el titular; solo su parte pública llega al service worker. |
+| `BANK_CONTENT_KEY` | Secreto: 32 bytes aleatorios en base64. Actions genera uno por despliegue preview y usa el mismo valor en compilación y ejecución. |
+| `OFFLINE_SIGNING_JWK` | Secreto: JWK privado EC P-256, generado por Actions; solo su parte pública llega al service worker. |
 | `WEB_SIGNUP_ENABLED` | `false` hasta configurar correo, URLs de retorno y documentos definitivos. |
 | `WEB_AUTH_RETURN_READY` | `false` hasta comprobar recuperación y confirmación de correo por HTTPS. |
 | `WEB_ADMIN_IDS` | UUID de administradores, separados por coma; nunca correos ni user_metadata. |
 
 No registrar claves en logs, commits ni capturas. La compilación local sin clave genera un secreto efímero en `web/.local-bindings.json`, ignorado por Git. Ese archivo no se entrega ni se sube a Pages. En Cloudflare Build, una clave ausente detiene la compilación. Cambiar `BANK_CONTENT_KEY` exige reconstruir todo el contenido con la nueva clave; cambiar la clave offline revoca las licencias offline anteriores al siguiente arranque.
 
-GitHub environment `cachaste-pages-preview`: secretos `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` limitado a Pages Edit de esa cuenta y `BANK_CONTENT_KEY`; variable `CLOUDFLARE_PAGES_PROJECT=cachaste-sitecacho`. No dar al workflow permisos DNS ni de administración de zonas. El workflow no crea cuentas, no compra servicios y no cambia plan. La cuenta Cloudflare existe según confirmación del titular; falta acceso a su sesión o conectar estos valores. Los permisos de instalación de GitHub, si se usa Git integration, deben limitarse al repositorio `PreparaTupaes`.
+En GitHub, **Settings > Secrets and variables > Actions > Repository secrets**, guardar únicamente `CLOUDFLARE_ACCOUNT_ID` y `CLOUDFLARE_API_TOKEN`, limitado a Cloudflare Pages Edit de esa cuenta. No dar permisos DNS, zonas, facturación ni Workers Scripts. El proyecto está fijado en el workflow y las claves del banco/firma se generan internamente. No usar environment secrets, para conservar compatibilidad con GitHub Free si el repositorio se vuelve privado. El flujo no crea cuentas, no compra servicios y no cambia el plan. La cuenta existe según confirmación del titular; falta conectar ambos secretos directamente en GitHub, sin enviarlos al chat.
 
 ### Cuotas y 200 estudiantes
 
