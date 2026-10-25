@@ -13,7 +13,7 @@ Acciones exclusivas del titular, sin pegar secretos en el chat:
 1. En un proyecto Google Cloud propio, configurar marca y pantalla de consentimiento de ¿Cachaste?, con los únicos scopes `openid`, email y perfil. Agregar usuarios de prueba mientras Google lo mantenga en Testing. No activar servicios facturables.
 2. Crear el cliente OAuth **Web application**. Orígenes: `https://sitecacho.cl` y el alias HTTPS de preview, si se ensayará allí. URI autorizada de Google: `https://jmobinmdwrmdqrxtcruj.supabase.co/auth/v1/callback`.
 3. Guardar Client ID y Client Secret directamente en **Supabase > Authentication > Sign In / Providers > Google** del proyecto indicado. No incluir el secreto en Pages, GitHub, la PWA ni Android.
-4. Agregar retornos web de Supabase **sin quitar los Android existentes**: `https://sitecacho.cl/cuenta.html`, sus variantes de query para `next`, recuperación y `sb_flow_id`, y el retorno equivalente del alias de prueba. Validar la coincidencia con la versión actual de Auth. En producción limitar los patrones al origen y ruta exactos; no usar `https://**` ni dominios ajenos.
+4. Agregar retornos web de Supabase **sin quitar los Android existentes**: `https://sitecacho.cl/cuenta.html` y `https://sitecacho.cl/cuenta.html\?**`, más los dos retornos equivalentes del alias HTTPS de prueba. En el segundo patrón, `\?` significa el signo de query literal y `**` permite sus parámetros `next`/recuperación/`sb_flow_id`; el origen y la ruta permanecen fijos. Auth compara también la query. Validar los dos patrones antes de habilitar el proveedor; no usar comodines de host ni de rutas de producción, como `https://**` o `https://sitecacho.cl/**`.
 5. Solo después de comprobar el retorno HTTPS y las condiciones del registro, habilitar los flags web en un despliegue de ensayo autorizado. El bootstrap automático de previews los mantiene cerrados deliberadamente; no saltarse esa guarda para declarar listo un acceso que no se ha probado con Google.
 6. Completar un acceso real con una cuenta de prueba autorizada y comprobar UUID, perfil privado por defecto, cierre de sesión, cancelación del consentimiento, código vencido, Safari y Chrome. Esta validación requiere al titular; la suite automatizada usa un proveedor aislado y lo identifica como tal.
 
@@ -25,7 +25,7 @@ Las pantallas educativas y competitivas de la web comparten una sola instancia d
 
 Un cambio de UUID pausa la sincronización, conserva el borrador bajo su dueño original, elimina la autorización/caché privado de la PWA y vuelve a Mi cuenta. Cada escritura de progreso lleva el UUID del documento; el gateway rechaza una cookie de otro estudiante antes de invocar el RPC. Esto cubre la carrera entre dos pestañas durante un cambio de cuenta. Pausar no pierde las respuestas posteriores: se siguen marcando como pendientes en el almacenamiento del mismo estudiante.
 
-Una pérdida de red conserva los borradores y permite el contenido offline previamente autorizado. Una revocación verificada cierra el acceso. Un Premium vencido sigue permitiendo administrar el perfil, privacidad y eliminación desde la página competitiva autenticada; no abre los bancos educativos.
+Una pérdida de red conserva los borradores y permite el contenido offline previamente autorizado. Una revocación verificada cierra el acceso. La apertura de cada HTML vuelve a consultar el permiso vigente para que el caché breve de archivos no intente cargar progreso educativo después del vencimiento. Un Premium vencido sigue permitiendo administrar el perfil, privacidad y eliminación desde la página competitiva autenticada; no abre los bancos educativos.
 
 ## Pendientes independientes de los trámites SII
 
@@ -35,3 +35,5 @@ Una pérdida de red conserva los borradores y permite el contenido offline previ
 - La candidata Android actual no importa todavía su progreso local en la nube. La web conserva el motor original y sincroniza sus propios documentos; la migración de Android sigue siendo una actualización futura separada.
 
 Fuentes: [Google en Supabase](https://supabase.com/docs/guides/auth/social-sign-in/auth-google), [PKCE](https://supabase.com/docs/guides/auth/sessions/pkce-flow), [retornos](https://supabase.com/docs/guides/auth/redirect-urls), [exchangeCodeForSession](https://supabase.com/docs/reference/javascript/auth-exchangecodeforsession). Se consultó también el changelog y el código del SDK instalado, que soporta slots de verificador por `sb_flow_id`.
+
+El botón usa la imagen Google G original descargada de `https://developers.google.com/static/identity/images/g-logo.png`, servida localmente y sin alterarla, sobre fondo blanco. Referencia: [guía oficial de marca](https://developers.google.com/identity/branding-guidelines).

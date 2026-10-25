@@ -38,6 +38,14 @@ test('offline license is signed with server-owned EC key, audience and bounded e
 test('student-controlled progress cannot close the bootstrap script tag',()=>{assert.ok(!safeJson({session:'</script><script>alert(1)</script>'}).includes('<'));});
 
 test('account administration works after expiry while the educational bank remains locked',async()=>{const h=harness({accountFiles:['/app/index.html']});h.setActive(false);const account=await h.gateway.fetch(h.req('/app/index.html',{headers:{authorization:'Bearer '+h.token}}),h.env);assert.equal(account.status,200);assert.ok(!(await account.text()).includes('PRIVATE_BANK_ANSWERS'));assert.equal((await h.gateway.fetch(h.req('/app/daily-catalog.js',{headers:{authorization:'Bearer '+h.token}}),h.env)).status,402);});
+test('an access grant cached before expiry cannot prevent profile administration or request an expired learning snapshot',async()=>{
+ const h=harness({accountFiles:['/app/index.html']});await h.gateway.fetch(h.req('/api/session',{method:'POST',headers:{origin:'https://qa.example','x-cachaste-request':'1',authorization:'Bearer '+h.token}}),h.env);h.setActive(false);const start=h.calls.length;
+ const page=await h.gateway.fetch(h.req('/app/index.html',{headers:{authorization:'Bearer '+h.token,accept:'text/html'}}),h.env);assert.equal(page.status,200);const html=await page.text();assert.match(html,/"documents":\[\]/);assert.match(html,/"offlineLicense":null/);assert.equal(h.calls.slice(start).some(c=>c.url.endsWith('/rpc/cachaste_web_progress')),false);assert.ok(h.calls.slice(start).some(c=>c.url.endsWith('/rpc/cachaste_access')));
+});
+test('opening a learning page rechecks current access even while a static-file grant is cached',async()=>{
+ const h=harness();await h.gateway.fetch(h.req('/app/daily-catalog.js',{headers:{authorization:'Bearer '+h.token}}),h.env);h.setActive(false);
+ const page=await h.gateway.fetch(h.req('/app/index.html',{headers:{authorization:'Bearer '+h.token,accept:'text/html'}}),h.env);assert.equal(page.status,302);assert.match(page.headers.get('location'),/\/cuenta.html\?next=/);
+});
 test('production gateway always redirects HTTP; the managed local preview is the only opt-in exception',async()=>{const h=harness();const response=await h.gateway.fetch(new Request('http://web.example/'),h.env);assert.equal(response.status,308);assert.equal(response.headers.get('location'),'https://web.example/');});
 test('Pages HTML canonicalization serves account and public documents at their stable return URLs, preserving queries and security headers',async()=>{
  const gateway=createGateway();

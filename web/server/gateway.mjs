@@ -78,7 +78,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
    if(path==='/app/suscripcion.html')return Response.redirect(url.origin+'/cuenta.html#planes',302);
    if(path.startsWith('/app/')){
     if(!allowed.has(path))return json({error:'NOT_FOUND'},404);
-    let auth;try{auth=await identity(req,env,{active:!accountAllowed.has(path)});}catch(e){
+    let auth;try{auth=await identity(req,env,{active:!accountAllowed.has(path),fresh:path.endsWith('.html')});}catch(e){
      if(path.endsWith('.html')&&req.headers.get('accept')?.includes('text/html'))return Response.redirect(url.origin+'/cuenta.html?next='+encodeURIComponent(path),302);
      throw e;
     }
