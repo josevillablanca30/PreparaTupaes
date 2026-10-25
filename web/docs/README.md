@@ -10,4 +10,4 @@ Mercado Pago se integra con funciones independientes de las de Google Play. Todo
 
 Dominio confirmado y comprado por el titular: **sitecacho.cl**. Hosting preparado para el proyecto independiente **cachaste-sitecacho** en Cloudflare Pages Free, dentro de su cuenta existente. La automatización rechaza cualquier otro proyecto y no tiene permisos DNS. La zona y conexión Lovable de **somosvillablanca.cl** quedan fuera del alcance de los cambios. Configuración y pasos exactos en [OPERACION.md](OPERACION.md).
 
-Implementación y verificación se registrarán con sus límites reales en el informe de entrega.
+Estado actualizado: [informe de implementación, pruebas, capturas y conexiones pendientes del 25/10](../reports/lanzamiento-20261025/README.md). La revisión de código `3889274` pasó la matriz completa y 202 comprobaciones HTTPS sobre una preview real. Google, el dominio .cl y el sandbox oficial de pagos conservan verificaciones externas pendientes; los cobros están cerrados.

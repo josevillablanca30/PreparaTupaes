@@ -10,7 +10,7 @@ No hay pruebas ni usuarios artificiales en el proyecto alojado. Las pruebas con 
 
 ## Cloudflare Pages Free
 
-Primera preview desplegada y verificada: [estado real, URL, capturas y DNS pendiente](../reports/cloudflare-20261025/README.md). Se usó Wrangler/API desde Work tras la QA de Actions del mismo commit; la automatización continua todavía requiere el único secreto en GitHub.
+Última preview desplegada y verificada (`3889274`): [estado real, URL, pruebas completas, capturas y DNS pendiente](../reports/lanzamiento-20261025/README.md). Se usó Wrangler/API desde Work tras la QA de Actions del mismo commit; la automatización continua todavía requiere el único secreto en GitHub. La [primera entrega](../reports/cloudflare-20261025/README.md) se conserva como evidencia histórica.
 
 La compilación se ejecuta desde la raíz del repositorio, con Node 22 o posterior:
 

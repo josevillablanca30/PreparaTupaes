@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-25",
+  "catalogueCount": 802,
+  "scope": "Original engine: four consecutive five-question free-practice sessions per subject/science track. Does not certify all possible future selections or a pedagogical reading age.",
+  "rows": [
+    {
+      "subject": "M1",
+      "track": null,
+      "sessions": 4,
+      "answers": 20,
+      "distinctQuestions": 20,
+      "distinctFamilies": 20,
+      "repeatedQuestions": 0,
+      "persistedAnswers": 20
+    },
+    {
+      "subject": "M2",
+      "track": null,
+      "sessions": 4,
+      "answers": 20,
+      "distinctQuestions": 20,
+      "distinctFamilies": 20,
+      "repeatedQuestions": 0,
+      "persistedAnswers": 20
+    },
+    {
+      "subject": "Lectura",
+      "track": null,
+      "sessions": 4,
+      "answers": 20,
+      "distinctQuestions": 20,
+      "distinctFamilies": 20,
+      "repeatedQuestions": 0,
+      "persistedAnswers": 20
+    },
+    {
+      "subject": "Historia",
+      "track": null,
+      "sessions": 4,
+      "answers": 20,
+      "distinctQuestions": 20,
+      "distinctFamilies": 20,
+      "repeatedQuestions": 0,
+      "persistedAnswers": 20
+    },
+    {
+      "subject": "Ciencias",
+      "track": "Biología",
+      "sessions": 4,
+      "answers": 20,
+      "distinctQuestions": 20,
+      "distinctFamilies": 20,
+      "repeatedQuestions": 0,
+      "persistedAnswers": 20
+    },
+    {
+      "subject": "Ciencias",
+      "track": "Química",
+      "sessions": 4,
+      "answers": 20,
+      "distinctQuestions": 20,
+      "distinctFamilies": 20,
+      "repeatedQuestions": 0,
+      "persistedAnswers": 20
+    },
+    {
+      "subject": "Ciencias",
+      "track": "Física",
+      "sessions": 4,
+      "answers": 20,
+      "distinctQuestions": 20,
+      "distinctFamilies": 20,
+      "repeatedQuestions": 0,
+      "persistedAnswers": 20
+    },
+    {
+      "subject": "Ciencias",
+      "track": "TP",
+      "sessions": 4,
+      "answers": 20,
+      "distinctQuestions": 20,
+      "distinctFamilies": 20,
+      "repeatedQuestions": 0,
+      "persistedAnswers": 20
+    }
+  ],
+  "totalAnswers": 160
+}

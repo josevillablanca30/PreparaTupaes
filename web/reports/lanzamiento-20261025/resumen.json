@@ -1,0 +1,95 @@
+{
+  "date": "2026-10-25",
+  "sourceRevision": "38892741771432f56e49fc875e4384de3e0de144",
+  "branch": "work/cachaste-web-comercial-20261024",
+  "baseline": "56eada2b65cf119b1efe2a5d02d8dfec08ecb139",
+  "androidBaseline": "add8a5979d28cb1f7598767bb4bf1ad7b8328937",
+  "androidUnchanged": true,
+  "qaRun": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/40240767535",
+  "qaConclusion": "success",
+  "tests": {
+    "originalLogic": {
+      "passed": 394,
+      "failed": 0
+    },
+    "webBackend": {
+      "passed": 105,
+      "failed": 0
+    },
+    "browsers": {
+      "Android-Chrome": 35,
+      "iPhone-WebKit": 35,
+      "Desktop-Chrome": 35,
+      "mobile-320px": 35,
+      "failed": 0
+    },
+    "realAuthHttp": {
+      "webPassed": 9,
+      "competitionPassed": 17,
+      "failed": 0
+    },
+    "liveHttps": {
+      "passed": 202,
+      "failed": 0
+    }
+  },
+  "content": {
+    "questions": 802,
+    "criticalHeuristicFlags": 0,
+    "editorialHeuristicFlags": 20,
+    "selectionExerciseAnswers": 160,
+    "selectionExerciseRepeatedQuestions": 0,
+    "humanReadingAgeCertification": false
+  },
+  "deployment": {
+    "project": "cachaste-sitecacho",
+    "environment": "preview",
+    "immutableUrl": "https://69cfd5f2.cachaste-sitecacho.pages.dev",
+    "aliases": [
+      "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev"
+    ],
+    "checkedAt": "2026-10-25T22:45:53.572Z",
+    "method": "GitHub Actions QA followed by official Wrangler/API deployment from the Work session",
+    "productionDeployed": false,
+    "privateFilesEncrypted": 94,
+    "privateFilesPlaintext": 0
+  },
+  "customDomains": [
+    {
+      "name": "sitecacho.cl",
+      "status": "pending"
+    },
+    {
+      "name": "www.sitecacho.cl",
+      "status": "pending"
+    }
+  ],
+  "dnsRequired": [
+    {
+      "type": "CNAME",
+      "name": "@",
+      "target": "work-cachaste-web-comercial.cachaste-sitecacho.pages.dev",
+      "proxied": true,
+      "zone": "sitecacho.cl"
+    },
+    {
+      "type": "CNAME",
+      "name": "www",
+      "target": "work-cachaste-web-comercial.cachaste-sitecacho.pages.dev",
+      "proxied": true,
+      "zone": "sitecacho.cl"
+    }
+  ],
+  "hostedGoogleProviderEnabled": false,
+  "hostedPaymentsEnabled": false,
+  "hostedTaxReady": false,
+  "hostedTestPurchasesAllowed": false,
+  "limits": [
+    "Google OAuth real pendiente de credenciales y prueba final",
+    "Sandbox oficial Mercado Pago sin credenciales: solo proveedor simulado y controles HTTP reales",
+    "Dominio .cl todavía sin la aplicación y certificado verificados",
+    "Sin prueba en dos teléfonos físicos ni carga de 200 usuarios",
+    "La candidata Android conserva progreso local: importación en actualización futura",
+    "Repositorio e historial originales públicos; cifrado web no retira copias públicas anteriores"
+  ]
+}

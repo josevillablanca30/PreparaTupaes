@@ -1,0 +1,43 @@
+{
+  "scope": "Disposable local Supabase: real GoTrue and PostgREST; no hosted user or real payment",
+  "passed": 9,
+  "failed": 0,
+  "events": [
+    {
+      "name": "Two independent students authenticate through real HTTP GoTrue",
+      "passed": true
+    },
+    {
+      "name": "Authenticated users cannot learn or enable Premium before server verification",
+      "passed": true
+    },
+    {
+      "name": "A second HTTP session resumes the exact saved lesson and history of the same identity",
+      "passed": true
+    },
+    {
+      "name": "Simultaneous sessions receive version conflicts instead of silently losing the first device draft",
+      "passed": true
+    },
+    {
+      "name": "Forged owner fields do not copy or overwrite another student progress",
+      "passed": true
+    },
+    {
+      "name": "Private schemas, service billing commands and unapproved storage keys stay denied over PostgREST",
+      "passed": true
+    },
+    {
+      "name": "A service-side checkout is also closed until merchant and tax readiness are enabled",
+      "passed": true
+    },
+    {
+      "name": "Restoring production mode rejects the same isolated test grants for Android and web",
+      "passed": true
+    },
+    {
+      "name": "Account deletion without Premium removes synchronized progress and revokes the other live session",
+      "passed": true
+    }
+  ]
+}

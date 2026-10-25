@@ -1,5 +1,7 @@
 # ¿Cachaste? — despliegue real de prueba
 
+Evidencia histórica de la primera preview. Para la revisión actual, Google, las 140 pruebas de navegador y el nuevo despliegue, consultar el [cierre técnico actualizado](../lanzamiento-20261025/README.md).
+
 La primera vista de prueba está desplegada y verificada en Cloudflare Pages. La contratación y el registro comercial continúan cerrados. No es una autorización de lanzamiento comercial.
 
 - [Abrir la web publicada](https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/).

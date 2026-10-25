@@ -1,0 +1,50 @@
+{
+  "observedAt": "2026-10-25T22:41:45.117Z",
+  "checks": [
+    {
+      "url": "https://sitecacho.cl/api/config",
+      "status": 503,
+      "revision": null
+    },
+    {
+      "url": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/api/auth/status",
+      "status": 200,
+      "data": {
+        "googleReady": false
+      }
+    },
+    {
+      "url": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/api/config",
+      "status": 200,
+      "data": {
+        "supabaseUrl": "https://jmobinmdwrmdqrxtcruj.supabase.co",
+        "signupEnabled": false,
+        "authReturnReady": false,
+        "googleAuthEnabled": false,
+        "revision": "38892741771432f56e49fc875e4384de3e0de144"
+      }
+    },
+    {
+      "url": "https://www.sitecacho.cl/api/config",
+      "status": 503,
+      "revision": null
+    },
+    {
+      "url": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/cuenta.html",
+      "status": 200,
+      "referrerPolicy": "no-referrer",
+      "cacheControl": "private, no-store"
+    }
+  ],
+  "nameservers": {
+    "status": 0,
+    "records": [
+      "johnny.ns.cloudflare.com.",
+      "maxine.ns.cloudflare.com."
+    ]
+  },
+  "googleProvider": {
+    "status": 200,
+    "enabled": false
+  }
+}
