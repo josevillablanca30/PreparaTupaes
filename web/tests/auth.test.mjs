@@ -4,6 +4,8 @@ import {createHash} from 'node:crypto';
 import {getWebClient, nextLearningPage, startGoogleSignIn, finishAuthReturn} from '../client/auth.mjs';
 import {adaptCompetitionClient} from '../shared/competition-client.mjs';
 import {readFile} from 'node:fs/promises';
+import vm from 'node:vm';
+import {adaptCompetitionUi} from '../shared/competition-ui.mjs';
 
 const config = {supabaseUrl:'https://jmobinmdwrmdqrxtcruj.supabase.co',publishableKey:'sb_publishable_isolated_qa',googleAuthEnabled:true,authReturnReady:true};
 const ready = async () => Response.json({googleReady:true});
@@ -51,4 +53,8 @@ test('the web competition adapter reuses the PKCE session without changing Andro
   const original=await readFile(new URL('../../competition-client.mjs',import.meta.url),'utf8'),adapted=adaptCompetitionClient(original);
   assert.ok(adapted.includes('getWebClient(config,storage)'));assert.ok(original.includes("detectSessionInUrl:typeof window!=="));
   assert.throws(()=>adaptCompetitionClient('changed upstream'),/REVIEW_COMPETITION_AUTH_ADAPTER/);
+});
+test('Google-only account deletion has no local password requirement, retains server confirmation, and remains valid JavaScript',async()=>{
+ const original=await readFile(new URL('../../competition-app.js',import.meta.url),'utf8'),adapted=adaptCompetitionUi(original);new vm.Script(adapted);
+ assert.ok(adapted.includes("api.user?.app_metadata?.provider==='google'"));assert.ok(adapted.includes('confirma con Google'));assert.ok(adapted.includes("await api.call('delete_account',{confirmation:values.get('confirmation')})"));assert.ok(original.includes("await api.signIn(email,String(values.get('password')));"));
 });

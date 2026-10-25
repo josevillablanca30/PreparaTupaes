@@ -31,7 +31,7 @@ Una pérdida de red conserva los borradores y permite el contenido offline previ
 
 - Configurar Google, retornos HTTPS y correo SMTP real para confirmación/recuperación antes de abrir registro público.
 - Probar inicio y recuperación reales, sesión larga y dos teléfonos físicos. Los perfiles WebKit/Chrome de CI son navegadores automatizados, no dispositivos físicos.
-- Comprobar que la eliminación de cuentas Google no dependa de una contraseña local; el servidor exige una sesión creada hace menos de diez minutos y confirmación explícita.
+- Probar la eliminación real con una cuenta Google del titular: la web ya omite la contraseña local para ese proveedor, ofrece confirmar de nuevo con Google y el servidor exige una sesión creada hace menos de diez minutos y confirmación explícita.
 - La candidata Android actual no importa todavía su progreso local en la nube. La web conserva el motor original y sincroniza sus propios documentos; la migración de Android sigue siendo una actualización futura separada.
 
 Fuentes: [Google en Supabase](https://supabase.com/docs/guides/auth/social-sign-in/auth-google), [PKCE](https://supabase.com/docs/guides/auth/sessions/pkce-flow), [retornos](https://supabase.com/docs/guides/auth/redirect-urls), [exchangeCodeForSession](https://supabase.com/docs/reference/javascript/auth-exchangecodeforsession). Se consultó también el changelog y el código del SDK instalado, que soporta slots de verificador por `sb_flow_id`.
