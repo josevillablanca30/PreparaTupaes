@@ -39,6 +39,7 @@ Antes de subir, configurar **Settings > Runtime > Fail open / closed > Fail clos
 | `OFFLINE_SIGNING_JWK` | Secreto: JWK privado EC P-256, generado por Actions; solo su parte pública llega al service worker. |
 | `WEB_SIGNUP_ENABLED` | `false` hasta configurar correo, URLs de retorno y documentos definitivos. |
 | `WEB_AUTH_RETURN_READY` | `false` hasta comprobar recuperación y confirmación de correo por HTTPS. |
+| `WEB_GOOGLE_AUTH_ENABLED` | `false` hasta configurar y verificar el proveedor Google real; [guía exacta](AUTENTICACION.md). |
 | `WEB_ADMIN_IDS` | UUID de administradores, separados por coma; nunca correos ni user_metadata. |
 
 No registrar claves en logs, commits ni capturas. La compilación local sin clave genera un secreto efímero en `web/.local-bindings.json`, ignorado por Git. Ese archivo no se entrega ni se sube a Pages. En Cloudflare Build, una clave ausente detiene la compilación. Cambiar `BANK_CONTENT_KEY` exige reconstruir todo el contenido con la nueva clave; cambiar la clave offline revoca las licencias offline anteriores al siguiente arranque.

@@ -14,12 +14,12 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
   if(!saved?.dirty){document.value===null?remove(prefix+document.key):set(prefix+document.key,JSON.stringify(document.value));meta[document.key]={version:document.version,base:document.value,dirty:false};}
  }
  persist();
- const enqueue=key=>{if(!keys.has(key)||stopped)return;meta[key]={...(meta[key]||{version:0,base:null}),dirty:true};persist();status();clearTimeout(timer);timer=setTimeout(flush,1800);};
+ const enqueue=key=>{if(!keys.has(key)||erased)return;meta[key]={...(meta[key]||{version:0,base:null}),dirty:true};persist();status();clearTimeout(timer);if(!stopped)timer=setTimeout(flush,1800);};
  const wrappedGet=function(key){return original.get.call(this,this===storage&&keys.has(key)?prefix+key:key);};
  const wrappedSet=function(key,value){original.set.call(this,this===storage&&keys.has(key)?prefix+key:key,String(value));if(this===storage&&keys.has(key))enqueue(key);};
  const wrappedRemove=function(key){original.remove.call(this,this===storage&&keys.has(key)?prefix+key:key);if(this===storage&&keys.has(key))enqueue(key);};
  Storage.prototype.getItem=wrappedGet;Storage.prototype.setItem=wrappedSet;Storage.prototype.removeItem=wrappedRemove;
- async function rpc(operation,payload){const body=JSON.stringify({operation,payload}),keepalive=new TextEncoder().encode(body).length<60000;const res=await fetcher('/api/progress',{method:'POST',headers:{'content-type':'application/json','x-cachaste-request':'1'},body,keepalive});if(res.status===401||res.status===402){stopped=true;status();throw Error('ACCESS_EXPIRED');}if(!res.ok)throw Error('SYNC_UNAVAILABLE');return res.json();}
+ async function rpc(operation,payload){if(stopped)throw Error('ACCESS_EXPIRED');const body=JSON.stringify({operation,payload,userId:uid}),keepalive=new TextEncoder().encode(body).length<60000;const res=await fetcher('/api/progress',{method:'POST',headers:{'content-type':'application/json','x-cachaste-request':'1'},body,keepalive});if([401,402,409].includes(res.status)){stopped=true;status();throw Error('ACCESS_EXPIRED');}if(!res.ok)throw Error('SYNC_UNAVAILABLE');return res.json();}
  async function flush(){
   if(running||stopped||unloading||navigator.onLine===false)return;running=true;
   try{for(const[key,record]of Object.entries(meta)){
@@ -55,7 +55,7 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
  const visibility=()=>{if(document.hidden){clearTimeout(timer);persist();}else show();};
  addEventListener('online',flush);addEventListener('pagehide',hide);addEventListener('pageshow',show);document.addEventListener('visibilitychange',visibility);
  status();if(pending())timer=setTimeout(flush,50);
- return{flush,resolve,pending,conflicts,userId:uid,erase(){erased=true;stopped=true;clearTimeout(timer);for(const key of Object.keys(storage))if(key.startsWith(prefix))remove(key);},restore(){Storage.prototype.getItem=original.get;Storage.prototype.setItem=original.set;Storage.prototype.removeItem=original.remove;clearTimeout(timer);removeEventListener('online',flush);removeEventListener('pagehide',hide);removeEventListener('pageshow',show);document.removeEventListener('visibilitychange',visibility);}};
+ return{flush,resolve,pending,conflicts,userId:uid,pause(){stopped=true;clearTimeout(timer);persist();status();},resume(){if(erased)return;stopped=false;status();if(pending())flush();},erase(){erased=true;stopped=true;clearTimeout(timer);for(const key of Object.keys(storage))if(key.startsWith(prefix))remove(key);},restore(){Storage.prototype.getItem=original.get;Storage.prototype.setItem=original.set;Storage.prototype.removeItem=original.remove;clearTimeout(timer);removeEventListener('online',flush);removeEventListener('pagehide',hide);removeEventListener('pageshow',show);document.removeEventListener('visibilitychange',visibility);}};
 }
 if(typeof window!=='undefined'){
  const node=document.getElementById('cachaste-web-bootstrap');

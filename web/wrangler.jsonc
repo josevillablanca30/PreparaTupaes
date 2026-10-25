@@ -7,6 +7,7 @@
     "SUPABASE_URL": "https://jmobinmdwrmdqrxtcruj.supabase.co",
     "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_wf2Ji381IwRo2exQKJQ7ew_SRYCl_q1",
     "WEB_SIGNUP_ENABLED": "false",
-    "WEB_AUTH_RETURN_READY": "false"
+    "WEB_AUTH_RETURN_READY": "false",
+    "WEB_GOOGLE_AUTH_ENABLED": "false"
   }
 }

@@ -8,6 +8,7 @@ export function verifyProject(project,{branch,contentKey}={}){
  const vars=project.deployment_configs.preview.env_vars||{};
  for(const key of['BANK_CONTENT_KEY','OFFLINE_SIGNING_JWK'])if(vars[key]?.type!=='secret_text')throw Error('PAGES_SECRET_BINDING_REQUIRED: '+key);
  if(vars.WEB_SIGNUP_ENABLED?.value!=='false'||vars.WEB_AUTH_RETURN_READY?.value!=='false')throw Error('PREVIEW_MUST_KEEP_REGISTRATION_CLOSED');
+ if(vars.WEB_GOOGLE_AUTH_ENABLED&&vars.WEB_GOOGLE_AUTH_ENABLED.value!=='false')throw Error('PREVIEW_MUST_KEEP_GOOGLE_CLOSED');
  return{name:project.name,branch,environment:'preview',failClosed:true};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){

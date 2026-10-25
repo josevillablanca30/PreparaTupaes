@@ -21,6 +21,31 @@ test('anonymous bank request, forged JWT and Premium URL flags all fail closed',
 test('login crosses real browser UI and cookie gate; disabled registration and billing stay honest',async({page})=>{
  await identity(page);await page.goto('/cuenta.html');await page.getByRole('button',{name:'Cerrar sesión',exact:true}).click();await expect(page.getByRole('heading',{name:'Tu preparación comienza aquí.'})).toBeVisible();await page.getByLabel('Correo electrónico',{exact:true}).fill('student-a@example.invalid');await page.getByLabel('Contraseña',{exact:true}).fill('Isolated-qa-password-2026');await page.getByRole('button',{name:'Crear mi cuenta',exact:true}).click();await expect(page.locator('#account-status')).toContainText('El registro se habilitará');await page.getByRole('button',{name:'Entrar a mi cuenta',exact:false}).click();await expect(page.locator('[data-action=pick-course]')).toHaveCount(5);
 });
+test('Google opens only a configured S256 flow and the real SDK exchanges its one-time callback before entering the five subjects',async({page,request,baseURL},info)=>{
+ await request.post('/__qa/control',{data:{googleReady:true}});
+ // Isolated provider transport: no Google account, consent or production grant
+ // is created. The installed SDK and Pages/session handlers are the real code.
+ await page.addInitScript(()=>{const transport=window.fetch.bind(window);window.fetch=(input,options)=>{const target=new URL(typeof input==='string'||input instanceof URL?input:input.url,location.href);if(target.origin==='https://jmobinmdwrmdqrxtcruj.supabase.co')return transport(location.origin+'/__qa/supabase'+target.pathname+target.search,options);return transport(input,options);};});
+ let challenged=false;await page.route('https://jmobinmdwrmdqrxtcruj.supabase.co/auth/v1/authorize**',async route=>{
+  const url=new URL(route.request().url());expect(url.searchParams.get('code_challenge_method')).toBe('s256');const challenge=url.searchParams.get('code_challenge');expect(challenge).toMatch(/^[A-Za-z0-9_-]{43}$/);await request.post('/__qa/control',{data:{oauthChallenge:challenge}});challenged=true;
+  const redirect=new URL(url.searchParams.get('redirect_to'));expect(redirect.origin).toBe(baseURL);redirect.searchParams.set('code','qa-google-single-use');await route.fulfill({status:302,headers:{location:redirect.href},body:''});
+ });
+ await page.goto('/cuenta.html?next=%2Fapp%2Finicio.html');await page.getByRole('button',{name:'Continuar con Google',exact:false}).click();await expect(page.getByRole('link',{name:'Continuar mi preparación',exact:false})).toBeVisible();expect(challenged).toBe(true);expect(page.url()).not.toContain('code=');await layout(page);await page.screenshot({path:info.outputPath('google-pkce-verified-account.png'),fullPage:true});
+ await page.getByRole('link',{name:'Continuar mi preparación',exact:false}).click();await expect(page.locator('[data-action=pick-course]')).toHaveCount(5);
+});
+test('unconfigured Google and cancelled callback stay clear, accessible and do not create a student session',async({page},info)=>{
+ await page.goto('/cuenta.html?error=access_denied&error_description=DO_NOT_RENDER_PROVIDER_TEXT');await expect(page.getByRole('heading',{name:'Tu preparación comienza aquí.'})).toBeVisible();await expect(page.locator('#account-status')).toContainText('cancelado');expect(page.url()).not.toContain('error');await expect(page.locator('body')).not.toContainText('DO_NOT_RENDER_PROVIDER_TEXT');
+ await page.getByRole('button',{name:'Continuar con Google',exact:false}).click();await expect(page.locator('#account-status')).toContainText('aún falta autorizar');expect(await page.evaluate(()=>localStorage.getItem('cachaste-auth-v1'))).toBe(null);await layout(page);await page.screenshot({path:info.outputPath('google-closed-no-account.png'),fullPage:true});
+});
+test('long practice renews a missing cookie from the refreshable session without losing the draft',async({page,context})=>{
+ await enter(page);await page.locator('[data-action=pick-course][data-subject=M2]').click();await page.evaluate(()=>CachasteWebProgress.flush());await expect.poll(()=>page.evaluate(()=>CachasteWebProgress.pending())).toBe(0);
+ await context.clearCookies();await page.evaluate(()=>CachasteWebSession.reconnect());await expect.poll(async()=>(await context.cookies()).some(c=>c.name==='cachaste_web_session'&&c.httpOnly)).toBe(true);await page.reload();await expect.poll(()=>page.evaluate(()=>window.CachasteDailyApp?.engine.state.subject)).toBe('M2');
+});
+test('switching students in the SDK preserves the old local draft and never uploads it for the new account',async({page,request})=>{
+ const sessions=await(await request.get('/__qa/session')).json();await enter(page);await page.evaluate(()=>CachasteWebProgress.pause());await page.locator('[data-action=pick-course][data-subject=Historia]').click();const old=await page.evaluate(()=>({id:CachasteWebBootstrap.userId,draft:localStorage.getItem('cachaste-daily-v1')}));
+ await page.evaluate(async other=>{const sdk=globalThis[Symbol.for('cachaste.web.auth')].client;await sdk.auth.setSession({access_token:other.access_token,refresh_token:other.refresh_token});},sessions.users[1]);await expect(page).toHaveURL(/cuenta.html/);await expect(page.locator('.account-email')).toContainText('student-b@example.invalid');expect(await page.evaluate(id=>localStorage.getItem('cachaste-web:'+id+':cachaste-daily-v1'),old.id)).toBe(old.draft);
+ const state=await(await request.get('/__qa/state')).json();expect(state.documents.find(r=>r.userId===sessions.users[1].user.id)?.documents||[]).toEqual([]);
+});
 test('five subjects and all science tracks retain the full educational engine',async({page},info)=>{
  await enter(page);for(const subject of['M1','M2','Lectura','Historia','Ciencias']){
   await page.goto('/app/inicio.html#courses');await page.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();if(subject==='Ciencias'){await expect(page.locator('[data-action=pick-track]')).toHaveCount(4);await page.locator('[data-action=pick-track]').first().click();}

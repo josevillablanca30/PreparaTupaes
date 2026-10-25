@@ -23,6 +23,7 @@ export async function prepareProject(env, {client = pagesClient(env), generate =
     SUPABASE_PUBLISHABLE_KEY: {type: 'plain_text', value: PUBLISHABLE_KEY},
     WEB_SIGNUP_ENABLED: {type: 'plain_text', value: 'false'},
     WEB_AUTH_RETURN_READY: {type: 'plain_text', value: 'false'},
+    WEB_GOOGLE_AUTH_ENABLED: {type: 'plain_text', value: 'false'},
   };
   const deployment_configs = {
     preview: {

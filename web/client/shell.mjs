@@ -1,3 +1,6 @@
+import{getWebClient}from'./auth.mjs';
+import{installSessionLifecycle}from'./session-lifecycle.mjs';
+import{PROJECT_URL,PUBLISHABLE_KEY}from'../shared/config.mjs';
 function serviceWorkerMessage(message){return new Promise(resolve=>{if(!navigator.serviceWorker?.controller){resolve(false);return;}const channel=new MessageChannel(),timer=setTimeout(()=>resolve(false),4000);channel.port1.onmessage=e=>{clearTimeout(timer);resolve(e.data);};navigator.serviceWorker.controller.postMessage(message,[channel.port2]);});}
 export{serviceWorkerMessage};
 export async function initPwa(license=null){
@@ -25,4 +28,16 @@ if(typeof window!=='undefined'&&location.pathname.startsWith('/app/')&&!window.C
   dialog.showModal();
  };
  initPwa(window.CachasteWebBootstrap?.offlineLicense);
+}
+if(typeof window!=='undefined'&&location.pathname.startsWith('/app/')&&window.CachasteWebBootstrap&&!window.CachasteWebSession){
+ const sdk=getWebClient({supabaseUrl:PROJECT_URL,publishableKey:PUBLISHABLE_KEY});
+ const lifecycle=installSessionLifecycle({sdk,userId:window.CachasteWebBootstrap.userId,progress:window.CachasteWebProgress,requireAccess:location.pathname!=='/app/competencia.html',onLicense:license=>initPwa(license),onState:state=>{if(['offline','reconnecting'].includes(state)){window.CachasteWebSyncStatus='pending';dispatchEvent(new Event('cachaste-sync'));}},onEnd:async()=>{
+  await serviceWorkerMessage({type:'PURGE_PRIVATE'});
+  try{await fetch('/api/session',{method:'DELETE',headers:{'x-cachaste-request':'1'},signal:AbortSignal.timeout(8000)});}catch{}
+  location.replace('/cuenta.html?next='+encodeURIComponent(location.pathname));
+ }});
+ window.CachasteWebSession=lifecycle;
+ addEventListener('online',()=>lifecycle.reconnect());
+ addEventListener('pageshow',event=>{if(event.persisted)lifecycle.reconnect();});
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)lifecycle.reconnect();});
 }

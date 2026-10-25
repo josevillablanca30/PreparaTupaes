@@ -1,17 +1,24 @@
 // Disposable loopback-only HTTP QA. Never imported by a deployment or production build.
 import{createServer}from'node:http';import{readFile,stat}from'node:fs/promises';import path from'node:path';import{fileURLToPath}from'node:url';
 import{createGateway}from'../server/gateway.mjs';import{actor,opponent,profile,ranking,duel,finished,attempt,dashboard,user as actorUser}from'../../tests/helpers/competition-fixtures.mjs';
+import{createHash}from'node:crypto';
 const root=fileURLToPath(new URL('../dist',import.meta.url)),androidRoot=fileURLToPath(new URL('../../dist',import.meta.url));
 const users=[actor.id,opponent.id,'10000000-0000-4000-8000-000000000003'];
 const tokenFor=id=>'eyJhbGciOiJIUzI1NiJ9.'+Buffer.from(JSON.stringify({sub:id,exp:Math.floor(Date.now()/1000)+3600,role:'authenticated',session_id:'20000000-0000-4000-8000-000000000001'})).toString('base64url')+'.qa-signature';
 const tokens=new Map(users.map(id=>[id,tokenFor(id)]));
-let active=true,revoked=false,documents=new Map(),position=0,done=false,calls=[];
+let active=true,revoked=false,documents=new Map(),position=0,done=false,calls=[],googleReady=false,oauthChallenge=null,oauthUsed=false;
 const keyPair=await crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign','verify']),offlineKey=await crypto.subtle.exportKey('jwk',keyPair.privateKey);
 const accountUser=id=>({...actorUser,id,email:id===users[0]?'student-a@example.invalid':'student-b@example.invalid'});
 const auth=header=>[...tokens].find(([,token])=>header==='Bearer '+token)?.[0];
 async function backend(url,options={}){
  const parsed=new URL(url),op=parsed.pathname.split('/').at(-1),headers=new Headers(options.headers),id=auth(headers.get('authorization'));
  if(parsed.pathname.includes('/functions/v1/'))return Response.json({ready:false,trialAvailable:false});
+ if(parsed.pathname.endsWith('/auth/v1/settings'))return Response.json({external:{google:googleReady}});
+ if(parsed.pathname.endsWith('/auth/v1/token')&&parsed.searchParams.get('grant_type')==='pkce'){
+  const body=JSON.parse(options.body||'{}');
+  if(oauthUsed||body.auth_code!=='qa-google-single-use'||!oauthChallenge||createHash('sha256').update(body.code_verifier||'').digest('base64url')!==oauthChallenge)return Response.json({error:'invalid_grant',error_description:'Invalid or consumed code'},{status:400});
+  oauthUsed=true;return Response.json({access_token:tokens.get(users[0]),refresh_token:'qa-refresh-'+users[0],token_type:'bearer',expires_in:3600,user:accountUser(users[0])});
+ }
  if(parsed.pathname.endsWith('/auth/v1/token')){const body=JSON.parse(options.body||'{}'),u=body.email==='student-b@example.invalid'?users[1]:users[0];return Response.json({access_token:tokens.get(u),refresh_token:'qa-refresh-'+u,token_type:'bearer',expires_in:3600,user:accountUser(u)});}
  if(!id||revoked)return Response.json({message:'AUTH_REQUIRED'},{status:401});
  if(parsed.pathname.endsWith('/auth/v1/user'))return Response.json(accountUser(id));
@@ -51,7 +58,7 @@ const env={...local,BANK_CONTENT_KEY:process.env.BANK_CONTENT_KEY||local.BANK_CO
 createServer(async(req,res)=>{try{
  const chunks=[];for await(const chunk of req)chunks.push(chunk);const body=Buffer.concat(chunks),url=new URL(req.url,'http://'+req.headers.host);let response;
  if(url.pathname==='/__qa/session')response=Response.json({users:users.map(id=>({user:accountUser(id),access_token:tokens.get(id),refresh_token:'qa-refresh-'+id,token_type:'bearer',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600}))});
- else if(url.pathname==='/__qa/control'&&req.method==='POST'){const control=JSON.parse(body.toString()||'{}');if(control.reset){active=true;revoked=false;documents=new Map();position=0;done=false;calls=[];}if('active'in control)active=control.active;if('revoked'in control)revoked=control.revoked;response=Response.json({ok:true});}
+ else if(url.pathname==='/__qa/control'&&req.method==='POST'){const control=JSON.parse(body.toString()||'{}');if(control.reset){active=true;revoked=false;documents=new Map();position=0;done=false;calls=[];googleReady=false;oauthChallenge=null;oauthUsed=false;env.WEB_GOOGLE_AUTH_ENABLED='false';env.WEB_AUTH_RETURN_READY='false';}if('active'in control)active=control.active;if('revoked'in control)revoked=control.revoked;if('googleReady'in control){googleReady=control.googleReady;env.WEB_GOOGLE_AUTH_ENABLED=String(googleReady);env.WEB_AUTH_RETURN_READY=String(googleReady);}if(control.oauthChallenge)oauthChallenge=control.oauthChallenge;response=Response.json({ok:true});}
  else if(url.pathname==='/__qa/state')response=Response.json({calls,documents:[...documents].map(([id,map])=>({userId:id,documents:[...map.values()]}))});
  else if(url.pathname.startsWith('/__qa/supabase/'))response=await backend('https://jmobinmdwrmdqrxtcruj.supabase.co/'+url.pathname.slice('/__qa/supabase/'.length)+url.search,{method:req.method,headers:req.headers,body:body.toString()});
  else if(url.pathname.startsWith('/__android_reference/'))response=await asset(url,androidRoot);

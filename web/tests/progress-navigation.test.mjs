@@ -54,3 +54,8 @@ test('failed writes survive a back-forward navigation and retry without duplicat
  env.events.dispatchEvent(new Event('pagehide'));env.events.dispatchEvent(new Event('pageshow'));await new Promise(resolve=>setImmediate(resolve));
  assert.equal(runtime.pending(),0);assert.deepEqual(calls[0],calls[1]);
 });
+test('an interrupted session pauses transmission while later answers remain durable under the original identity',async t=>{
+ const calls=[],env=environment(t,async(_,init)=>{const body=JSON.parse(init.body);calls.push(body);return saved(body);}),runtime=env.open();
+ runtime.pause();env.storage.setItem(key,JSON.stringify({session:{index:7}}));await runtime.flush();assert.equal(calls.length,0);assert.equal(runtime.pending(),1);
+ runtime.resume();await new Promise(resolve=>setImmediate(resolve));assert.equal(calls.length,1);assert.equal(calls[0].userId,userId);assert.equal(calls[0].payload.value.session.index,7);assert.equal(runtime.pending(),0);
+});

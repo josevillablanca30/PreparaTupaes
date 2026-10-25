@@ -32,7 +32,12 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
   if(!allowDevelopmentHttp&&url.protocol!=='https:'&&!['127.0.0.1','localhost','[::1]'].includes(url.hostname)){url.protocol='https:';return Response.redirect(url.href,308);}
   if(path.includes('..')||path.includes('\\')||path.includes('\0')||/%[a-f\d]{2}/i.test(path))return json({error:'BAD_PATH'},400);
   try{
-   if(path==='/api/config')return json({supabaseUrl:env.SUPABASE_URL||PROJECT_URL,publishableKey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,signupEnabled:env.WEB_SIGNUP_ENABLED==='true',authReturnReady:env.WEB_AUTH_RETURN_READY==='true',revision});
+   if(path==='/api/config')return json({supabaseUrl:env.SUPABASE_URL||PROJECT_URL,publishableKey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,signupEnabled:env.WEB_SIGNUP_ENABLED==='true',authReturnReady:env.WEB_AUTH_RETURN_READY==='true',googleAuthEnabled:env.WEB_GOOGLE_AUTH_ENABLED==='true',revision});
+   if(path==='/api/auth/status'&&req.method==='GET'){
+    if(env.WEB_GOOGLE_AUTH_ENABLED!=='true'||env.WEB_AUTH_RETURN_READY!=='true')return json({googleReady:false});
+    const settings=await backend(env,'/auth/v1/settings');
+    return json({googleReady:settings.external?.google===true});
+   }
    if(path==='/api/session'&&req.method==='GET'){
     const auth=await identity(req,env,{active:false,fresh:true});let account;
     try{account=await backend(env,'/rest/v1/rpc/cachaste_web_account',auth.token,{method:'POST',body:{}});}catch(e){if(e.status===404)account={access:auth.access,subscriptions:[],trialUsed:false};else throw e;}
@@ -52,7 +57,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
    if(path==='/api/progress'&&req.method==='POST'){
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
     const auth=await identity(req,env,{fresh:true});const text=await req.text();if(new TextEncoder().encode(text).length>1050000)return json({error:'PROGRESS_TOO_LARGE'},413);
-    const body=JSON.parse(text);if(!['snapshot','put'].includes(body.operation))return json({error:'INVALID_OPERATION'},400);
+    const body=JSON.parse(text);if(body.userId!==undefined&&body.userId!==auth.user.id)return json({error:'SESSION_CHANGED'},409);if(!['snapshot','put'].includes(body.operation))return json({error:'INVALID_OPERATION'},400);
     return json(await backend(env,'/rest/v1/rpc/cachaste_web_progress',auth.token,{method:'POST',body}));
    }
    if(path==='/api/billing'&&req.method==='POST'){
