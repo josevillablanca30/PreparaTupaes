@@ -1,5 +1,9 @@
 # Despliegue de prueba por API: sitecacho.cl
 
+## Estado real
+
+La primera preview ya está publicada y verificada. [Enlace, capturas, pruebas y DNS pendiente](../reports/cloudflare-20261025/README.md). Se usó QA de GitHub Actions y después Wrangler/API desde Work; la publicación automática sigue pendiente de guardar el único secreto en GitHub.
+
 ## Método elegido y alcance
 
 Cloudflare Pages **Direct Upload** desde GitHub Actions y Wrangler, proyecto **`cachaste-sitecacho`**, en la cuenta Cloudflare que ya usa el titular. No requiere iniciar sesión desde Work ni instalar la integración GitHub de Cloudflare. La compilación y las pruebas ocurren en GitHub; la API oficial crea/configura el proyecto y Wrangler sube únicamente `web/dist`.
@@ -66,8 +70,8 @@ El token inicial no tiene permisos DNS. La asociación del dominio y esos regist
 
 - **Implementado y comprobable en código:** bootstrap por API, aislamiento, claves automáticas, cifrado antes de subir, puerta Premium y comprobación posterior del sitio real.
 - **Probado sin credenciales Cloudflare:** contrato simulado de la API, guardas, generación/firma de claves y la comprobación HTTP sobre el Worker real en una fixture aislada. Los resultados de GitHub Actions identifican cada prueba y commit.
-- **Pendiente del token en GitHub:** creación real de Pages, subida, comprobación HTTPS y entrega de una URL `pages.dev`. No declarar estos puntos completados antes de ejecutarlos.
-- **Pendiente después:** DNS confirmado, dominio/certificado, retornos y correo Auth, prueba de acceso con una identidad autorizada y suscripción verificada, dispositivos físicos y flujo de compra sandbox aislado. Los cobros reales continúan cerrados.
+- **Despliegue real completado:** proyecto creado, preview subida y 202 comprobaciones HTTPS aprobadas. Para futuras publicaciones automáticas falta guardar un token nuevo directamente en GitHub.
+- **Pendiente después:** ajustar CNAME/certificado del dominio asociado, retornos y correo Auth, prueba de acceso con una identidad autorizada y suscripción verificada, dispositivos físicos y flujo de compra sandbox aislado. Los nameservers de NIC ya están verificados. Los cobros reales continúan cerrados.
 - **Repositorio actualmente público:** el contenido histórico está en el código original. Cifrar Pages protege la distribución web, pero no vuelve privado el historial de GitHub. Antes de vender exclusividad del banco, el titular debe cambiar la visibilidad o definir una fuente privada. No reescribir historia, borrar bancos ni tocar la candidata Android para ocultarlo.
 
 ## Fuentes oficiales
