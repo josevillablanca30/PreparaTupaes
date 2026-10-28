@@ -36,7 +36,7 @@ try{
  record('No subscription means server denial; isolated test entitlement never enables production access');
  // Owner-approved free closed test: real HTTP duel in production policy, without payments.
  await db.query("update cachaste.settings set environment='production'");
- for(const id of users)await db.query("insert into cachaste.closed_test_access(user_id,valid_until,reason)values($1,now()+interval '1 hour','isolated HTTP closed-test verification')",[id]);
+ for(const credential of credentials)await db.query("insert into cachaste.closed_test_emails(email_hash,valid_until,reason)values(sha256(convert_to(lower($1),'UTF8')),now()+interval '1 hour','isolated HTTP closed-test verification')",[credential.email]);
  for(let i=0;i<2;i++){const access=await clients[i].rpc('cachaste_access');assert.ifError(access.error);assert.equal(access.data.active,true);assert.equal(access.data.accessSource,'closed_test');}
  const noSelfGrant=await clients[0].from('closed_test_access').insert({user_id:users[0],valid_until:'2099-01-01',reason:'client claim'});assert.ok(noSelfGrant.error);
  record('Owner allowlist grants both authenticated students free access under production policy; HTTP clients cannot self-authorize');
@@ -53,7 +53,7 @@ try{
  for(let i=0;i<3;i++)await call(0,'duel',{duelId:original.id});assert.equal((await db.query('select count(*)::int n from cachaste.settlements')).rows[0].n,1);
  const ranks=await call(0,'rankings',{mode:'duel',subject:'M1',scope:'Chile'});assert.equal(Number(ranks.me.value),1);assert.equal((await call(1,'rankings',{mode:'duel',subject:'M1',scope:'Chile'})).me.value,0);record('Persistent rankings update once; winner +1 and loser floored at zero');
  assert.equal((await call(1,'review',{attemptId:turns[1].id})).errors.length,10);record('Educational tutor unlocks only after verified final settlement');
- await db.query('update cachaste.closed_test_access set revoked_at=now()');
+ await db.query('update cachaste.closed_test_emails set revoked_at=now()');
  const revoked=await clients[0].rpc('cachaste_competition',{operation:'dashboard',payload:{}});assert.equal(revoked.error?.code,'42501');assert.equal((await clients[0].rpc('cachaste_access')).data.active,false);
  record('A complete free closed-test network duel settles its ranking; administrative revocation removes competition and native access');
  await db.query("update cachaste.settings set environment='test'");

@@ -53,3 +53,12 @@ El 28 de octubre el titular autorizó expresamente acceso sin pago para probar �
 - El titular identifica los correos. Se pueden preautorizar sus hashes privados antes de crear cuentas: el permiso solo funciona con el correo verificado por Auth. También se puede conceder acceso a un UUID existente. No basta con pertenecer al grupo de Google Play, ni con un valor Premium en el teléfono.
 
 La integración aislada completa el primer duelo y su ranking en entorno production con estos permisos gratuitos, valida que los clientes no puedan autoconcedérselos, revoca los permisos y verifica de nuevo la denegación de competencia y acceso nativo.
+
+
+### Despliegue verificado del acceso gratuito
+
+Migración aplicada al servidor alojado el 28 de octubre y alineada con la versión `20261028103117` del repositorio. Se preautorizaron únicamente los dos correos identificados por el titular, guardando sus hashes en la tabla privada y sin incluirlos en Git. Vencimiento inicial: 27 de noviembre de 2026. En la comprobación inicial aún no existían sus cuentas Auth; el permiso se activará cuando cada persona registre y confirme su correo.
+
+Verificación remota: dos preautorizaciones, cero concesiones UUID, cero tablas del esquema competitivo sin RLS; los clientes no pueden leer ni modificar las listas y un usuario desconocido no obtiene acceso. Las funciones comerciales conservadas coinciden exactamente con los cuerpos previos de la política web alojada y el acceso educativo. El asesor de seguridad solo informa tablas privadas con RLS sin políticas, que deliberadamente deniegan acceso directo.
+
+Pruebas locales: 396 aprobadas. La integración `40673105899` aprobó 19 comprobaciones HTTP, incluyendo el primer duelo gratuito completo y su revocación; las pruebas posteriores ejercen también la preautorización de correos verificados. No se crearon usuarios ni resultados de prueba en el proyecto alojado.
