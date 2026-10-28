@@ -32,6 +32,14 @@ jobs:
           npx --yes supabase@2.121.0 status -o json > /tmp/cachaste-supabase-status.json
           chmod 600 /tmp/cachaste-supabase-status.json
           node scripts/test-competition-online.mjs /tmp/cachaste-supabase-status.json
+      - name: Resumir resultado de integración sin exponer credenciales
+        if: always()
+        run: |
+          if [ -s reports/competition-online-integration.json ]; then
+            node -e "const r=require('./reports/competition-online-integration.json'); const lines=['## Integración de duelos (Supabase local)','- Pruebas aprobadas: '+r.passed,'- Pruebas fallidas: '+r.failed,'- Alcance: '+r.scope]; require('fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY,lines.join('\\n')+'\\n')"
+          else
+            printf '%s\n' '## Integración de duelos' 'La prueba HTTP no generó su informe. Revisar el primer paso fallido (instalación, arranque local o ejecución). No se certifica multijugador.' >> "$GITHUB_STEP_SUMMARY"
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
