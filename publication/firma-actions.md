@@ -4,18 +4,18 @@ Workflow: `.github/workflows/android-play.yml`. Candidato: `cl.preparatupaes.app
 
 Configurar en Settings → Secrets and variables → Actions estos **repository secrets**, nunca variables públicas:
 
-- `CACHASTE_RELEASE_KEYSTORE_BASE64`: contenido base64 del keystore original.
+- `CACHASTE_RELEASE_KEYSTORE_BASE64`: contenido base64 del keystore permanente custodiado por el titular.
 - `CACHASTE_RELEASE_STORE_PASSWORD`: contraseña del almacén.
-- `CACHASTE_RELEASE_KEY_ALIAS`: alias original.
+- `CACHASTE_RELEASE_KEY_ALIAS`: alias del keystore permanente.
 - `CACHASTE_RELEASE_KEY_PASSWORD`: contraseña de la clave.
 
-El certificado esperado está fijado en el workflow: SHA-256 `779713ca68023f881d4d8d807fcdda32182bcda3aba3c802a95cb0344838c562`. No sustituir esta huella para eludir una discrepancia. Custodiar el keystore y las contraseñas fuera de GitHub en un respaldo privado del titular: los secretos de Actions no permiten recuperar su valor después.
+El certificado esperado está fijado en el workflow: SHA-256 `a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575` (clave creada y respaldada por el titular en su teléfono el 28 de octubre). No sustituir esta huella para eludir una discrepancia. Custodiar el keystore y las contraseñas fuera de GitHub en un respaldo privado del titular: los secretos de Actions no permiten recuperar su valor después.
 
 La clave solo se decodifica en el directorio temporal del runner, con permisos privados; se elimina incluso tras error. No se guarda en caché ni artefactos. Se comprueba el certificado antes de compilar y cada entrada del AAB después de firmar. La tarea Gradle release falla sin las cuatro variables; el workflow beta ya no genera AAB sin firma.
 
 La ejecución entrega únicamente AAB firmado, certificado público, revisión Git y hashes. No despliega en Play Console. La huella de carga no debe confundirse con el certificado de distribución que administra Play App Signing.
 
-## Estado comprobado el 28 de octubre de 2026
+## Estado inicial del 28 de octubre de 2026 (histórico; actualizaciones al final)
 
 El titular informa que la aplicación y los testers ya están creados y Console está en Crear una nueva versión. Sustituye los bloqueos de creación registrados el 23 de octubre.
 
@@ -33,7 +33,7 @@ HEAD revisado antes de continuar: `173662e00365ed0569327ceed0fb802e4ffc4a64`.
 - El nuevo preflight enumera solo los **nombres** de secretos ausentes, nunca valores. La verificación posterior del AAB usa bundletool oficial 1.18.2 con SHA-256 fijado y exige manifest real con paquete comercial, rc6/código 33/API 36, sin debuggable ni testOnly.
 - Se corrigió el salto de línea literal del resumen de integración; se conserva `cancel-in-progress: false`.
 
-### Testers sin pago: pendiente autorización comercial
+### Estado inicial de testers (autorizado y desplegado posteriormente)
 
 No se aplicó ningún cambio de acceso. La alternativa controlada a evaluar es una lista privada de UUID Auth autorizados por el titular, con fecha de vencimiento y revocación administrativa. El cliente no podría conceder ni renovar ese permiso. Habría que integrar el permiso tanto en la RPC competitiva como en el acceso educativo nativo, manteniendo RLS y sin aceptarlo desde user_metadata. Su implementación y despliegue necesitan autorización del titular porque cambian quién puede acceder sin una compra.
 
@@ -81,3 +81,14 @@ python setup-upload-signing.py --backup --configure-github
 ```
 
 Prueba técnica con una clave temporal destruida al terminar: respaldo cifrado y recuperación idéntica, archivos privados con permisos 0600, ausencia de contraseñas en salida y conservación de la clave al repetir la ejecución. La prueba no creó una nueva clave de carga permanente.
+
+
+## Clave permanente creada y custodiada por el titular
+
+El titular ejecutó el asistente en su propio Android, creó la clave y un respaldo cifrado y confirmó la carga de los cuatro secretos en GitHub Actions. Solo compartió la huella pública. Se fija esa huella explícita como certificado esperado; no se elimina ni se relaja ninguna comprobación de firma.
+
+SHA-256 de la clave nueva: `a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575`.
+
+La clave histórica `779713ca68023f881d4d8d807fcdda32182bcda3aba3c802a95cb0344838c562` corresponde al AAB rc5 conservado. No se recuperó su clave privada y ya no se usa para generar rc6. El titular no recuerda cargas anteriores y no se encontró un mecanismo de publicación a Play en los workflows/scripts revisados. La aceptación de la nueva clave en Play Console se comprobará con la carga del AAB. Si Play indica que ya hay otro certificado de carga registrado, se detendrá la carga y se tramitará el restablecimiento oficial; no se modificará la clave de firma de distribución administrada por Google.
+
+La clave y contraseñas no se importan en el entorno de ChatGPT. La compilación solo recibe los secretos cifrados de Actions; el certificado público, la identidad exacta del bundle y todas sus entradas firmadas se verifican antes de ofrecer el artefacto.

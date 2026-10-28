@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
-      EXPECTED_UPLOAD_SHA256: 779713ca68023f881d4d8d807fcdda32182bcda3aba3c802a95cb0344838c562
+      EXPECTED_UPLOAD_SHA256: a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -106,7 +106,7 @@ jobs:
           mkdir -p play-delivery
           keytool -exportcert -rfc -keystore "$CACHASTE_RELEASE_KEYSTORE" -storepass:env CACHASTE_RELEASE_STORE_PASSWORD -alias "$CACHASTE_RELEASE_KEY_ALIAS" > play-delivery/upload-certificate.pem
           actual=$(openssl x509 -in play-delivery/upload-certificate.pem -noout -fingerprint -sha256 | cut -d= -f2 | tr -d ':' | tr 'A-F' 'a-f')
-          test "$actual" = "$EXPECTED_UPLOAD_SHA256" || { echo '::error::La clave no coincide con el certificado de carga original.'; exit 1; }
+          test "$actual" = "$EXPECTED_UPLOAD_SHA256" || { echo '::error::La clave no coincide con el certificado de carga fijado y confirmado por el titular.'; exit 1; }
           gradle -p android --no-daemon :app:lintRelease :app:bundleRelease
           cp android/app/build/outputs/bundle/release/app-release.aab play-delivery/Cachaste-1.5.0-rc6-33.aab
           java scripts/VerifyPlayBundle.java play-delivery/Cachaste-1.5.0-rc6-33.aab "$EXPECTED_UPLOAD_SHA256" > play-delivery/verification.json
