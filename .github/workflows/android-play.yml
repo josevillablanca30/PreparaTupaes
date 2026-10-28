@@ -1,0 +1,113 @@
+name: Android Play · AAB firmado permanente
+on:
+  workflow_dispatch:
+  push:
+    branches: [work/cachaste-motor-duolingo-20261016]
+    paths: ['.github/workflows/android-play.yml', 'scripts/VerifyPlayBundle.java']
+permissions:
+  contents: read
+concurrency:
+  group: cachaste-play-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  integration:
+    uses: ./.github/workflows/competition-integration.yml
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run test:logic
+      - run: npm run audit:pedagogy
+      - run: npm run build
+      - run: bash scripts/install-chromium-qa.sh
+      - name: Probar competencia y comunidad en dos tamaños Android
+        run: npx playwright test tests/competition.mobile.spec.mjs tests/competition-community.mobile.spec.mjs --project=Android-Chrome --project=mobile-320px
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Cachaste-Play-tests-${{ github.sha }}
+          path: |
+            playwright-report/
+            reports/pedagogical-audit.json
+          retention-days: 14
+  signed-bundle:
+    needs: [verify, integration]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      EXPECTED_UPLOAD_SHA256: 779713ca68023f881d4d8d807fcdda32182bcda3aba3c802a95cb0344838c562
+    steps:
+      - name: Comprobar secretos sin imprimir valores
+        env:
+          KEYSTORE: ${{ secrets.CACHASTE_RELEASE_KEYSTORE_BASE64 }}
+          STORE_PASS: ${{ secrets.CACHASTE_RELEASE_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.CACHASTE_RELEASE_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.CACHASTE_RELEASE_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          for name in KEYSTORE STORE_PASS KEY_ALIAS KEY_PASS; do
+            if [ -z "${!name}" ]; then
+              echo '::error::Faltan secretos de firma permanente. No se generará ningún AAB.'
+              exit 1
+            fi
+          done
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Empaquetar distribución pública sin VS local ni fixtures
+        run: |
+          mkdir -p android/app/src/main/assets
+          cp -R dist/. android/app/src/main/assets/
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+          cache-disabled: true
+      - name: Preparar SDK
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0"
+          echo "sdk.dir=$ANDROID_HOME" > android/local.properties
+      - name: Compilar release con clave permanente y verificar todas las entradas firmadas
+        env:
+          CACHASTE_RELEASE_KEYSTORE_BASE64: ${{ secrets.CACHASTE_RELEASE_KEYSTORE_BASE64 }}
+          CACHASTE_RELEASE_KEYSTORE: ${{ runner.temp }}/cachaste-upload.jks
+          CACHASTE_RELEASE_STORE_PASSWORD: ${{ secrets.CACHASTE_RELEASE_STORE_PASSWORD }}
+          CACHASTE_RELEASE_KEY_ALIAS: ${{ secrets.CACHASTE_RELEASE_KEY_ALIAS }}
+          CACHASTE_RELEASE_KEY_PASSWORD: ${{ secrets.CACHASTE_RELEASE_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          umask 077
+          trap 'rm -f "$CACHASTE_RELEASE_KEYSTORE"' EXIT
+          printf '%s' "$CACHASTE_RELEASE_KEYSTORE_BASE64" | base64 --decode > "$CACHASTE_RELEASE_KEYSTORE"
+          unset CACHASTE_RELEASE_KEYSTORE_BASE64
+          mkdir -p play-delivery
+          keytool -exportcert -rfc -keystore "$CACHASTE_RELEASE_KEYSTORE" -storepass:env CACHASTE_RELEASE_STORE_PASSWORD -alias "$CACHASTE_RELEASE_KEY_ALIAS" > play-delivery/upload-certificate.pem
+          actual=$(openssl x509 -in play-delivery/upload-certificate.pem -noout -fingerprint -sha256 | cut -d= -f2 | tr -d ':' | tr 'A-F' 'a-f')
+          test "$actual" = "$EXPECTED_UPLOAD_SHA256" || { echo '::error::La clave no coincide con el certificado de carga original.'; exit 1; }
+          gradle -p android --no-daemon :app:lintRelease :app:bundleRelease
+          cp android/app/build/outputs/bundle/release/app-release.aab play-delivery/Cachaste-1.5.0-rc6-33.aab
+          java scripts/VerifyPlayBundle.java play-delivery/Cachaste-1.5.0-rc6-33.aab "$EXPECTED_UPLOAD_SHA256" > play-delivery/verification.json
+          printf '%s\n' "$GITHUB_SHA" > play-delivery/source-commit.txt
+          sha256sum play-delivery/*.aab > play-delivery/SHA256SUMS.txt
+      - name: Eliminar clave temporal incluso tras errores
+        if: always()
+        run: rm -f "$RUNNER_TEMP/cachaste-upload.jks"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Cachaste-Play-SIGNED-33-${{ github.sha }}
+          path: play-delivery/
+          if-no-files-found: error
+          retention-days: 30

@@ -1,9 +1,10 @@
 name: Competencia · Auth real y transacciones
 on:
   workflow_dispatch:
+  workflow_call:
   push:
     branches: [work/cachaste-motor-duolingo-20261016]
-    paths: ['supabase/**','competition-*','scripts/competition-*','scripts/test-competition-online.mjs','tests/competition*','tests/helpers/competition*','.github/workflows/competition-integration.yml','package*.json']
+    paths: ['supabase/**','competition-*','scripts/competition-*','scripts/test-competition-online.mjs','tests/competition*','tests/helpers/competition*','.github/workflows/competition-integration.yml','package*.json','.github/workflows/android-play.yml']
 permissions:
   contents: read
 concurrency:

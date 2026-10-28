@@ -1,5 +1,5 @@
 import{test,expect}from'@playwright/test';
-import{fixturePage,session}from'./helpers/competition-fixtures.mjs';
+import{fixturePage,session,duel,finished}from'./helpers/competition-fixtures.mjs';
 import{dailyCatalog}from'../scripts/daily-catalog.mjs';
 
 async function layout(page){
@@ -64,4 +64,41 @@ test('Competitive questions retain all five original types of required graph and
  const examples=[...new Map(dailyCatalog().items.filter(q=>q.visual).map(q=>[q.visual.type,q.visual])).values()],visual={};await fixturePage(page,{visual});
  for(const v of examples){for(const key of Object.keys(visual))delete visual[key];Object.assign(visual,v);await page.goto('./competencia.html#duelos');await expect(page.locator('.duel-row')).toHaveCount(2);await page.getByRole('button',{name:'Desafiar',exact:true}).click();await page.getByRole('textbox',{name:'Nickname',exact:true}).fill('CataPAES');await page.getByRole('button',{name:'Enviar desafío',exact:true}).click();await page.getByRole('button',{name:'Comenzar duelo',exact:true}).click();await expect(page.locator('.question-visual svg')).toBeVisible();await expect(page.locator('.question-visual figcaption')).toHaveText(v.caption);await layout(page);await page.screenshot({path:info.outputPath('competition-stimulus-'+v.type+'.png'),fullPage:true});}
  expect(examples).toHaveLength(5);
+});
+
+test('Settled duel invalidates the league cache immediately',async({page})=>{
+ const requests=await fixturePage(page);
+ await page.goto('./competencia.html#rankings');
+ await page.getByRole('button',{name:'Liga de duelos',exact:true}).click();
+ await expect.poll(()=>requests.filter(r=>r.operation==='rankings'&&r.payload.mode==='duel').length).toBe(1);
+ await page.locator('.comp-nav').getByRole('link',{name:'Duelos',exact:true}).click();
+ await page.getByRole('button',{name:'Desafiar',exact:true}).click();
+ await page.getByRole('textbox',{name:'Nickname',exact:true}).fill('CataPAES');
+ await page.getByRole('button',{name:'Enviar desafío',exact:true}).click();
+ await page.getByRole('button',{name:'Comenzar duelo',exact:true}).click();
+ for(let i=0;i<10;i++){
+  await expect(page.locator('.question-meta strong')).toContainText((i+1)+'/10');
+  await page.getByRole('radio').nth(1).check();
+  await page.getByRole('button',{name:'Enviar respuesta',exact:true}).click();
+ }
+ await expect(page.getByRole('heading',{name:'Resultado del duelo',exact:false})).toBeVisible();
+ await page.evaluate(()=>{location.hash='rankings';});
+ await expect.poll(()=>requests.filter(r=>r.operation==='rankings'&&r.payload.mode==='duel').length).toBe(2);
+});
+
+test('Returning to a waiting duel retrieves the rival result from the server',async({page})=>{
+ await fixturePage(page);
+ let rivalFinished=false;
+ await page.route('**/rest/v1/rpc/cachaste_competition',async route=>{
+  if(route.request().postDataJSON()?.operation!=='duel')return route.fallback();
+  await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(rivalFinished?finished():duel())});
+ });
+ await page.goto('./competencia.html#duelos');
+ await page.getByRole('button',{name:'Desafiar',exact:true}).click();
+ await page.getByRole('textbox',{name:'Nickname',exact:true}).fill('CataPAES');
+ await page.getByRole('button',{name:'Enviar desafío',exact:true}).click();
+ await expect(page.getByRole('heading',{name:'Duelo PAES',exact:true})).toBeVisible();
+ rivalFinished=true;
+ await page.evaluate(()=>document.dispatchEvent(new Event('visibilitychange')));
+ await expect(page.getByRole('heading',{name:'Resultado del duelo',exact:false})).toBeVisible();
 });
