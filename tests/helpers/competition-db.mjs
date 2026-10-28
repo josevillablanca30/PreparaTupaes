@@ -6,7 +6,7 @@ export const sessions=['20000000-0000-4000-8000-000000000001','20000000-0000-400
 export async function database(){
  const db=new PGlite();
  await db.exec(`create role anon;create role authenticated;create role service_role;create schema auth;
- create table auth.users(id uuid primary key,is_anonymous boolean default false,deleted_at timestamptz);
+ create table auth.users(id uuid primary key,is_anonymous boolean default false,deleted_at timestamptz,email text,email_confirmed_at timestamptz);
  create table auth.sessions(id uuid primary key,user_id uuid,not_after timestamptz,created_at timestamptz default now());
  create function auth.jwt()returns jsonb language sql stable as $$select nullif(current_setting('request.jwt.claims',true),'')::jsonb$$;
  create function auth.uid()returns uuid language sql stable as $$select (auth.jwt()->>'sub')::uuid$$;

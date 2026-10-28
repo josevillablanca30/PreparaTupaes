@@ -50,6 +50,6 @@ El 28 de octubre el titular autorizó expresamente acceso sin pago para probar �
 - Se conserva la política comercial instalada en funciones privadas separadas, incluida la de la rama web alojada. Se añade el permiso de prueba tanto a competencia como al acceso educativo nativo.
 - Las compras y sus verificaciones no se modifican. Un permiso de prueba no genera recibos, cargos ni suscripciones ficticias.
 - La revocación afecta inmediatamente a nuevas solicitudes online. Una licencia educativa offline ya emitida conserva el límite anterior de hasta doce horas; no existe revocación instantánea sin red.
-- Para activar a una persona, primero debe existir su cuenta Auth real. El titular identifica los correos; la administración resuelve sus UUID y agrega la concesión. No basta con pertenecer al grupo de Google Play, ni con un valor Premium en el teléfono.
+- El titular identifica los correos. Se pueden preautorizar sus hashes privados antes de crear cuentas: el permiso solo funciona con el correo verificado por Auth. También se puede conceder acceso a un UUID existente. No basta con pertenecer al grupo de Google Play, ni con un valor Premium en el teléfono.
 
 La integración aislada completa el primer duelo y su ranking en entorno production con estos permisos gratuitos, valida que los clientes no puedan autoconcedérselos, revoca los permisos y verifica de nuevo la denegación de competencia y acceso nativo.

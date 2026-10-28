@@ -11,6 +11,18 @@ create table cachaste.closed_test_access (
 alter table cachaste.closed_test_access enable row level security;
 revoke all on cachaste.closed_test_access from public,anon,authenticated,service_role;
 comment on table cachaste.closed_test_access is 'Owner-managed UUID allowlist. No client grants. Maximum 30 days per explicit administrative grant.';
+-- Preauthorization for verified emails whose Auth accounts do not exist yet.
+-- Store only SHA-256 of the normalized email; never publish real tester identities in Git.
+create table cachaste.closed_test_emails (
+ email_hash bytea primary key check(octet_length(email_hash)=32),
+ granted_at timestamptz not null default now(),
+ valid_until timestamptz not null,
+ revoked_at timestamptz,
+ reason text not null check(length(reason) between 1 and 240),
+ check(valid_until>granted_at and valid_until<=granted_at+interval '30 days')
+);
+alter table cachaste.closed_test_emails enable row level security;
+revoke all on cachaste.closed_test_emails from public,anon,authenticated,service_role;
 -- Preserve whichever commercial policy is installed (Android-only or shared web).
 do $$begin
  execute replace(pg_get_functiondef('cachaste.premium(uuid)'::regprocedure),'FUNCTION cachaste.premium(', 'FUNCTION cachaste.commercial_premium(');
@@ -19,8 +31,15 @@ end$$;
 revoke all on function cachaste.commercial_premium(uuid),cachaste.commercial_access_state() from public,anon,authenticated,service_role;
 create function cachaste.closed_test_until(u uuid) returns timestamptz
 language sql stable security definer set search_path='' as $$
- select valid_until from cachaste.closed_test_access
- where user_id=u and revoked_at is null and valid_until>now() and granted_at<=now()
+ select max(valid_until) from (
+  select a.valid_until from cachaste.closed_test_access a
+  where a.user_id=u and a.revoked_at is null and a.valid_until>now() and a.granted_at<=now()
+  union all
+  select e.valid_until from cachaste.closed_test_emails e join auth.users au on au.id=u
+  where au.email_confirmed_at is not null and au.deleted_at is null and not coalesce(au.is_anonymous,false)
+  and e.email_hash=sha256(convert_to(lower(btrim(au.email)),'UTF8'))
+  and e.revoked_at is null and e.valid_until>now() and e.granted_at<=now()
+ ) grants
 $$;
 revoke all on function cachaste.closed_test_until(uuid) from public,anon,authenticated,service_role;
 create or replace function cachaste.premium(u uuid) returns boolean
