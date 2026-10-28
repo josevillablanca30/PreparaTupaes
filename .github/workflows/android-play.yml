@@ -3,13 +3,33 @@ on:
   workflow_dispatch:
   push:
     branches: [work/cachaste-motor-duolingo-20261016]
-    paths: ['.github/workflows/android-play.yml', 'scripts/VerifyPlayBundle.java']
+    paths: ['.github/workflows/android-play.yml', 'scripts/VerifyPlayBundle.java', 'scripts/verify-play-manifest.py']
 permissions:
   contents: read
 concurrency:
   group: cachaste-play-${{ github.ref }}
   cancel-in-progress: false
 jobs:
+  signing-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Comprobar secretos sin imprimir valores
+        env:
+          CACHASTE_RELEASE_KEYSTORE_BASE64: ${{ secrets.CACHASTE_RELEASE_KEYSTORE_BASE64 }}
+          CACHASTE_RELEASE_STORE_PASSWORD: ${{ secrets.CACHASTE_RELEASE_STORE_PASSWORD }}
+          CACHASTE_RELEASE_KEY_ALIAS: ${{ secrets.CACHASTE_RELEASE_KEY_ALIAS }}
+          CACHASTE_RELEASE_KEY_PASSWORD: ${{ secrets.CACHASTE_RELEASE_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          missing=0
+          for name in CACHASTE_RELEASE_KEYSTORE_BASE64 CACHASTE_RELEASE_STORE_PASSWORD CACHASTE_RELEASE_KEY_ALIAS CACHASTE_RELEASE_KEY_PASSWORD; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Falta el secreto $name. No se generará ningún AAB."
+              missing=1
+            fi
+          done
+          test "$missing" = 0
   integration:
     uses: ./.github/workflows/competition-integration.yml
   verify:
@@ -37,26 +57,12 @@ jobs:
             reports/pedagogical-audit.json
           retention-days: 14
   signed-bundle:
-    needs: [verify, integration]
+    needs: [signing-preflight, verify, integration]
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
       EXPECTED_UPLOAD_SHA256: 779713ca68023f881d4d8d807fcdda32182bcda3aba3c802a95cb0344838c562
     steps:
-      - name: Comprobar secretos sin imprimir valores
-        env:
-          KEYSTORE: ${{ secrets.CACHASTE_RELEASE_KEYSTORE_BASE64 }}
-          STORE_PASS: ${{ secrets.CACHASTE_RELEASE_STORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.CACHASTE_RELEASE_KEY_ALIAS }}
-          KEY_PASS: ${{ secrets.CACHASTE_RELEASE_KEY_PASSWORD }}
-        run: |
-          set -euo pipefail
-          for name in KEYSTORE STORE_PASS KEY_ALIAS KEY_PASS; do
-            if [ -z "${!name}" ]; then
-              echo '::error::Faltan secretos de firma permanente. No se generará ningún AAB.'
-              exit 1
-            fi
-          done
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
@@ -80,6 +86,10 @@ jobs:
         run: |
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0"
           echo "sdk.dir=$ANDROID_HOME" > android/local.properties
+      - name: Preparar bundletool oficial con hash fijo
+        run: |
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/bundletool.jar" https://github.com/google/bundletool/releases/download/1.18.2/bundletool-all-1.18.2.jar
+          echo "378b5434cd1378bef6b2bc527b8c7f0ff2584b273830335bce54d6d0813c8584  $RUNNER_TEMP/bundletool.jar" | sha256sum --check
       - name: Compilar release con clave permanente y verificar todas las entradas firmadas
         env:
           CACHASTE_RELEASE_KEYSTORE_BASE64: ${{ secrets.CACHASTE_RELEASE_KEYSTORE_BASE64 }}
@@ -100,6 +110,9 @@ jobs:
           gradle -p android --no-daemon :app:lintRelease :app:bundleRelease
           cp android/app/build/outputs/bundle/release/app-release.aab play-delivery/Cachaste-1.5.0-rc6-33.aab
           java scripts/VerifyPlayBundle.java play-delivery/Cachaste-1.5.0-rc6-33.aab "$EXPECTED_UPLOAD_SHA256" > play-delivery/verification.json
+          java -jar "$RUNNER_TEMP/bundletool.jar" validate --bundle=play-delivery/Cachaste-1.5.0-rc6-33.aab
+          java -jar "$RUNNER_TEMP/bundletool.jar" dump manifest --bundle=play-delivery/Cachaste-1.5.0-rc6-33.aab --module=base > play-delivery/AndroidManifest.xml
+          python3 scripts/verify-play-manifest.py play-delivery/AndroidManifest.xml > play-delivery/manifest-verification.json
           printf '%s\n' "$GITHUB_SHA" > play-delivery/source-commit.txt
           sha256sum play-delivery/*.aab > play-delivery/SHA256SUMS.txt
       - name: Eliminar clave temporal incluso tras errores

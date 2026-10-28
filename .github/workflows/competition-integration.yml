@@ -36,7 +36,7 @@ jobs:
         if: always()
         run: |
           if [ -s reports/competition-online-integration.json ]; then
-            node -e "const r=require('./reports/competition-online-integration.json'); const lines=['## Integración de duelos (Supabase local)','- Pruebas aprobadas: '+r.passed,'- Pruebas fallidas: '+r.failed,'- Alcance: '+r.scope]; require('fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY,lines.join('\\n')+'\\n')"
+            node -e "const r=require('./reports/competition-online-integration.json'); const lines=['## Integración de duelos (Supabase local)','- Pruebas aprobadas: '+r.passed,'- Pruebas fallidas: '+r.failed,'- Alcance: '+r.scope]; require('fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY,lines.join('\n')+'\n')"
           else
             printf '%s\n' '## Integración de duelos' 'La prueba HTTP no generó su informe. Revisar el primer paso fallido (instalación, arranque local o ejecución). No se certifica multijugador.' >> "$GITHUB_STEP_SUMMARY"
           fi
