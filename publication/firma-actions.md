@@ -62,3 +62,22 @@ Migración aplicada al servidor alojado el 28 de octubre y alineada con la versi
 Verificación remota: dos preautorizaciones, cero concesiones UUID, cero tablas del esquema competitivo sin RLS; los clientes no pueden leer ni modificar las listas y un usuario desconocido no obtiene acceso. Las funciones comerciales conservadas coinciden exactamente con los cuerpos previos de la política web alojada y el acceso educativo. El asesor de seguridad solo informa tablas privadas con RLS sin políticas, que deliberadamente deniegan acceso directo.
 
 Pruebas locales: 396 aprobadas. La integración `40673105899` aprobó 19 comprobaciones HTTP, incluyendo el primer duelo gratuito completo y su revocación; las pruebas posteriores ejercen también la preautorización de correos verificados. No se crearon usuarios ni resultados de prueba en el proyecto alojado.
+
+## Custodia de una nueva clave por el titular desde Android
+
+No se encontró un mecanismo de carga a Play Console en los workflows ni scripts revisados. El titular no recuerda haber subido un AAB/APK. Las claves de firma generadas por Google que aparecen en Console no acreditan por sí solas el registro de una clave de carga. Si Play muestra una clave de carga ya registrada, debe seguirse el procedimiento de restablecimiento antes de usar otra.
+
+Se preparó `scripts/setup-upload-signing.py` para ejecutarlo **en el teléfono del titular**, con Termux y las herramientas oficiales Python, Java/keytool, GitHub CLI y python-cryptography. No genera una clave permanente en el entorno de ChatGPT ni en GitHub Actions.
+
+El asistente crea un keystore RSA de 3072 bits y validez de 10000 días, y guarda las contraseñas aleatorias solo en un archivo privado del teléfono. Conserva la misma clave al volver a ejecutarlo. `--backup` crea un respaldo cifrado con AES-256-GCM y una clave derivada con scrypt, solicita localmente una contraseña independiente y comprueba su descifrado sin guardar un archivo tar en claro. Se debe conservar una copia del respaldo cifrado fuera del teléfono y su contraseña por separado.
+
+Después de autenticar el GitHub CLI como el propietario, `--configure-github` carga los cuatro secretos mediante stdin. La clave privada y las contraseñas nunca aparecen en comandos, capturas, logs ni artefactos de CI. Solo se imprime la huella pública SHA-256 para revisarla y fijarla en el workflow cuando proceda. El asistente no modifica la huella fijada ni publica en Google Play.
+
+Uso desde el dispositivo del titular:
+
+```sh
+gh auth login --hostname github.com --git-protocol https --web
+python setup-upload-signing.py --backup --configure-github
+```
+
+Prueba técnica con una clave temporal destruida al terminar: respaldo cifrado y recuperación idéntica, archivos privados con permisos 0600, ausencia de contraseñas en salida y conservación de la clave al repetir la ejecución. La prueba no creó una nueva clave de carga permanente.
