@@ -22,7 +22,7 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Probar RLS, resultados, empates, tiempos y estrellas en Postgres
-        run: node --test tests/competition-security.test.mjs tests/competition-community.test.mjs
+        run: node --test tests/competition-security.test.mjs tests/competition-community.test.mjs tests/competition-closed-test.test.mjs
       - name: Regenerar catálogo privado sin identidades ni suscripciones
         run: node scripts/competition-catalog.mjs supabase/seed.sql
       - name: Arrancar Supabase efímero local

@@ -40,3 +40,16 @@ No se aplicó ningún cambio de acceso. La alternativa controlada a evaluar es u
 ### Si no se recupera la clave original
 
 Primero comprobar en Play Console si ya existe un certificado de carga registrado. Si Play App Signing ya está configurado con la clave anterior, el titular debe solicitar el restablecimiento de la clave de carga y aportar el nuevo certificado público por el procedimiento oficial. Si nunca se registró una clave, corresponde acordar la clave inicial y custodiar su respaldo antes de usarla. No cambiar la huella esperada en CI hasta completar y verificar ese procedimiento. Referencia oficial: https://support.google.com/googleplay/android-developer/answer/9842756
+
+## Acceso gratuito autorizado por el titular
+
+El 28 de octubre el titular autorizó expresamente acceso sin pago para probar él mismo y los testers. Migración `20261028103117_cachaste_closed_test_access.sql`:
+
+- Lista privada de UUID Auth, sin cuentas precargadas, con motivo administrativo, vencimiento de hasta 30 días por concesión y revocación.
+- Ningún cliente ni `service_role` tiene permisos directos sobre esta lista; solo administración de base de datos.
+- Se conserva la política comercial instalada en funciones privadas separadas, incluida la de la rama web alojada. Se añade el permiso de prueba tanto a competencia como al acceso educativo nativo.
+- Las compras y sus verificaciones no se modifican. Un permiso de prueba no genera recibos, cargos ni suscripciones ficticias.
+- La revocación afecta inmediatamente a nuevas solicitudes online. Una licencia educativa offline ya emitida conserva el límite anterior de hasta doce horas; no existe revocación instantánea sin red.
+- Para activar a una persona, primero debe existir su cuenta Auth real. El titular identifica los correos; la administración resuelve sus UUID y agrega la concesión. No basta con pertenecer al grupo de Google Play, ni con un valor Premium en el teléfono.
+
+La integración aislada completa el primer duelo y su ranking en entorno production con estos permisos gratuitos, valida que los clientes no puedan autoconcedérselos, revoca los permisos y verifica de nuevo la denegación de competencia y acceso nativo.
