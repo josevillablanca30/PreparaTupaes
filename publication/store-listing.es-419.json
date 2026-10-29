@@ -12,8 +12,8 @@
   "publisherName": null,
   "supportEmail": "jose.villablanca.horta@gmail.com",
   "websiteUrl": null,
-  "privacyPolicyUrl": null,
-  "accountDeletionUrl": null,
+  "privacyPolicyUrl": "https://cachaste-privacidad.jose-villablanca-hor.chatgpt.site/privacidad.html",
+  "accountDeletionUrl": "https://cachaste-privacidad.jose-villablanca-hor.chatgpt.site/eliminar-cuenta.html",
   "publicationStatus": "PREPARATION_ONLY_NOT_APPROVED_FOR_PRODUCTION",
   "playConsoleAccount": {
     "createdReportedByOwner": true,
