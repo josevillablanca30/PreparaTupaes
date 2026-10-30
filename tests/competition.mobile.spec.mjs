@@ -77,7 +77,7 @@ test('Signup submits only its own fields, confirms mail and persists the new ses
  await page.getByRole('button',{name:'Cerrar sesión',exact:true}).click();await expect(page.locator('#auth-form')).toBeVisible();expect(await page.evaluate(()=>localStorage.getItem('cachaste-auth-v1'))).toBe(null);
 });
 test('Auth failures explain unconfirmed mail and incorrect passwords; dialog errors remain visible',async({page})=>{
- await fixturePage(page,{signed:false});await page.route('**/auth/v1/token**',route=>route.fulfill({status:400,json:{code:'email_not_confirmed',msg:'Email not confirmed'}}));
+ await fixturePage(page,{signed:false});await page.route('**/auth/v1/token**',route=>route.fulfill({status:400,headers:{'x-supabase-api-version':'2024-01-01'},json:{code:'email_not_confirmed',msg:'Email not confirmed'}}));
  await page.goto('./competencia.html#perfil');await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByLabel('Contraseña',{exact:true}).fill('an-old-pass');await page.getByRole('button',{name:'Iniciar sesión',exact:true}).click();await expect(page.getByText('Confirma tu correo antes de iniciar sesión.',{exact:true})).toBeVisible();
  await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByRole('button',{name:'Confirmar mi correo',exact:true}).click();await page.getByLabel('Enlace o código del correo').fill('https://evil.invalid/?token=secret');await page.getByRole('button',{name:'Verificar correo',exact:true}).click();await expect(page.locator('dialog [role=alert]')).toContainText('Pega el enlace');
 });

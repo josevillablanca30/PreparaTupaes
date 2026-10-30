@@ -439,6 +439,19 @@ public class OfflineAppTest {
         assertEquals("null",js("crossPageReply"));
     }
 
+    @Test public void registrationNavigationNeverValidatesTheOtherForm() throws Exception {
+        scenario.onActivity(activity -> web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#perfil"));
+        waitFor("window.CachasteCompetition && document.querySelector('#auth-form')");
+        js("window.authInvalid=0;document.addEventListener('invalid',()=>window.authInvalid++,true);document.querySelector('[data-action=show-signup]').click();true");
+        waitFor("document.querySelector('#signup-form') && !document.querySelector('#auth-form')");
+        assertEquals("0",js("window.authInvalid"));
+        assertEquals("false",js("document.querySelector('#signup-form').checkValidity()"));
+        js("window.authInvalid=0;document.querySelector('[data-action=show-login]').click();true");
+        waitFor("document.querySelector('#auth-form') && !document.querySelector('#signup-form')");
+        assertEquals("0",js("window.authInvalid"));
+        captureDidacticScreen("auth-registration-navigation");
+    }
+
     @Test public void competitiveVisualReferenceJourneyUsesTestApkFixturesOnly() throws Exception {
         android.util.Log.i("CachasteQa","Competition visual fixture: starting");
         StringBuilder fixture=new StringBuilder();

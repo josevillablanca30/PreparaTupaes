@@ -166,7 +166,7 @@ jobs:
       - name: Publicar APK descargable
         uses: actions/upload-artifact@v4
         with:
-          name: Cachaste-v1.5.0-rc6-${{ github.sha }}
+          name: Cachaste-v1.5.0-rc7-${{ github.sha }}
           path: |
             android/app/build/outputs/apk/debug/app-debug.apk
             android/app/build/outputs/apk/debug/APK-CERTIFICATE.txt
