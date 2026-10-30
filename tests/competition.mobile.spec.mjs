@@ -102,3 +102,15 @@ test('Returning to a waiting duel retrieves the rival result from the server',as
  await page.evaluate(()=>document.dispatchEvent(new Event('visibilitychange')));
  await expect(page.getByRole('heading',{name:'Resultado del duelo',exact:false})).toBeVisible();
 });
+
+test('Registration opens its own form without validating empty login fields',async({page})=>{
+ await page.goto('./competencia.html#perfil');
+ await expect(page.getByRole('heading',{name:'Entra a tu cuenta'})).toBeVisible();
+ await page.getByRole('button',{name:'Crear cuenta'}).click();
+ await expect(page.locator('#signup-form')).toBeVisible();
+ await expect(page.locator('#auth-form')).toHaveCount(0);
+ await expect(page.getByRole('button',{name:'Ya tengo cuenta'})).toBeVisible();
+ await expect(page.locator('#signup-form input[name="email"]')).toHaveAttribute('required','');
+ await page.getByRole('button',{name:'Ya tengo cuenta'}).click();
+ await expect(page.locator('#auth-form')).toBeVisible();
+});
