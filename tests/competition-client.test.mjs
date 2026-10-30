@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {CompetitionClient} from '../competition-client.mjs';
+import {CompetitionClient,errorMessage} from '../competition-client.mjs';
 
 test('A pending answer keeps its original receipt and choice even after a refreshed server position',async()=>{
  const values=new Map(),storage={getItem:k=>values.get(k)||null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)},client=new CompetitionClient({},storage);
@@ -69,4 +69,18 @@ test('A server-revoked session clears native offline access even when Auth still
  client.call=async()=>{throw Object.assign(Error('AUTH_REQUIRED'),{code:'28000'});};
  await assert.rejects(client.connect(),/AUTH_REQUIRED/);
  assert.equal(client.user,null);assert.equal(client.premium,false);assert.deepEqual(actions,['clear']);
+});
+
+test('Email verification accepts only this project and the requested action, never passwords or another origin',async()=>{
+ const client=new CompetitionClient({supabaseUrl:'https://test.supabase.co'},{}),seen=[];
+ client.serviceReady=true;client.sdk={auth:{verifyOtp:async p=>{seen.push(p);return{};},resetPasswordForEmail:async(...p)=>{seen.push(p);return{};}}};client.connect=async()=>({});
+ await client.verifyEmail(' student@example.invalid ','123456','signup');assert.deepEqual(seen.pop(),{email:'student@example.invalid',token:'123456',type:'email'});
+ const token='a'.repeat(64);
+ await client.verifyEmail('student@example.invalid','https://test.supabase.co/auth/v1/verify?type=email&token='+token,'signup');assert.deepEqual(seen.pop(),{token_hash:token,type:'email'});
+ await client.verifyEmail('student@example.invalid','https://test.supabase.co/auth/v1/verify?type=recovery&token='+token,'recovery');assert.equal(client.recovering,true);seen.pop();
+ for(const url of ['https://evil.invalid/auth/v1/verify?type=recovery&token='+token,'https://test.supabase.co/auth/v1/verify?type=signup&token='+token,'https://test.supabase.co/other?type=recovery&token='+token,'not a code'])await assert.rejects(client.verifyEmail('student@example.invalid',url,'recovery'),/INVALID_EMAIL_LINK/);
+ assert.equal(seen.length,0);await client.resetPassword(' student@example.invalid ');assert.deepEqual(seen.pop(),['student@example.invalid',{}]);
+});
+test('Expected Auth errors have actionable messages without echoing credentials',()=>{
+ for(const code of ['invalid_credentials','email_not_confirmed','weak_password','over_email_send_rate_limit','otp_expired']){const message=errorMessage({code,message:'secret-password'});assert.ok(message.length>10);assert.ok(!message.includes('secret-password'));}
 });

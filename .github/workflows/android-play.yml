@@ -42,12 +42,13 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
+      - run: node scripts/check-release-secrets.mjs
       - run: npm run test:logic
       - run: npm run audit:pedagogy
       - run: npm run build
       - run: bash scripts/install-chromium-qa.sh
       - name: Probar competencia y comunidad en dos tamaños Android
-        run: npx playwright test tests/competition.mobile.spec.mjs tests/competition-community.mobile.spec.mjs --project=Android-Chrome --project=mobile-320px
+        run: npx playwright test tests/competition.mobile.spec.mjs tests/competition-community.mobile.spec.mjs tests/five-subjects.mobile.spec.mjs tests/daily-session-recovery.mobile.spec.mjs tests/subscription-mobile.spec.mjs --project=Android-Chrome --project=mobile-320px
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -108,10 +109,10 @@ jobs:
           actual=$(openssl x509 -in play-delivery/upload-certificate.pem -noout -fingerprint -sha256 | cut -d= -f2 | tr -d ':' | tr 'A-F' 'a-f')
           test "$actual" = "$EXPECTED_UPLOAD_SHA256" || { echo '::error::La clave no coincide con el certificado de carga fijado y confirmado por el titular.'; exit 1; }
           gradle -p android --no-daemon :app:lintRelease :app:bundleRelease
-          cp android/app/build/outputs/bundle/release/app-release.aab play-delivery/Cachaste-1.5.0-rc6-33.aab
-          java scripts/VerifyPlayBundle.java play-delivery/Cachaste-1.5.0-rc6-33.aab "$EXPECTED_UPLOAD_SHA256" > play-delivery/verification.json
-          java -jar "$RUNNER_TEMP/bundletool.jar" validate --bundle=play-delivery/Cachaste-1.5.0-rc6-33.aab
-          java -jar "$RUNNER_TEMP/bundletool.jar" dump manifest --bundle=play-delivery/Cachaste-1.5.0-rc6-33.aab --module=base > play-delivery/AndroidManifest.xml
+          cp android/app/build/outputs/bundle/release/app-release.aab play-delivery/Cachaste-1.5.0-rc7-34.aab
+          java scripts/VerifyPlayBundle.java play-delivery/Cachaste-1.5.0-rc7-34.aab "$EXPECTED_UPLOAD_SHA256" > play-delivery/verification.json
+          java -jar "$RUNNER_TEMP/bundletool.jar" validate --bundle=play-delivery/Cachaste-1.5.0-rc7-34.aab
+          java -jar "$RUNNER_TEMP/bundletool.jar" dump manifest --bundle=play-delivery/Cachaste-1.5.0-rc7-34.aab --module=base > play-delivery/AndroidManifest.xml
           python3 scripts/verify-play-manifest.py play-delivery/AndroidManifest.xml > play-delivery/manifest-verification.json
           printf '%s\n' "$GITHUB_SHA" > play-delivery/source-commit.txt
           sha256sum play-delivery/*.aab > play-delivery/SHA256SUMS.txt
@@ -120,7 +121,7 @@ jobs:
         run: rm -f "$RUNNER_TEMP/cachaste-upload.jks"
       - uses: actions/upload-artifact@v4
         with:
-          name: Cachaste-Play-SIGNED-33-${{ github.sha }}
+          name: Cachaste-Play-SIGNED-34-${{ github.sha }}
           path: play-delivery/
           if-no-files-found: error
           retention-days: 30

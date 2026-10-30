@@ -57,8 +57,29 @@ test('A verified SDK recovery event opens password renewal, then clears the sess
  await page.goto('./competencia.html#'+hash);await expect(page.getByRole('heading',{name:'Crea tu nueva contraseña',exact:true})).toBeVisible();await expect(page.locator('.auth-panel')).toContainText('ui-fixture@example.invalid');
  await page.getByLabel('Nueva contraseña',{exact:true}).fill('Nueva-clave-segura-2026');await page.getByLabel('Repite la nueva contraseña',{exact:true}).fill('Nueva-clave-segura-2026');await page.getByRole('button',{name:'Guardar nueva contraseña',exact:true}).click();await expect(page.getByText('Contraseña actualizada.',{exact:false})).toBeVisible();await expect(page.getByRole('heading',{name:'Entra a tu cuenta',exact:true})).toBeVisible();expect(await page.evaluate(()=>localStorage.getItem('cachaste-auth-v1'))).toBe(null);expect(page.url()).not.toContain('access_token');
 });
-test('Recovery never pretends to send mail while its secure return URL is not configured',async({page})=>{
- await fixturePage(page,{signed:false});await page.goto('./competencia.html#perfil');await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByRole('button',{name:'Recuperar contraseña',exact:true}).click();await expect(page.locator('#competition-root').getByText('La recuperación se habilitará al configurar el enlace seguro de correo.',{exact:false})).toBeVisible();await expect(page.getByRole('heading',{name:'Revisa tu correo',exact:true})).toHaveCount(0);
+test('Recovery requests mail without validating the login password and verifies it inside Android',async({page})=>{
+ await fixturePage(page,{signed:false});let reset=0,verified=0;
+ await page.route('**/auth/v1/recover',async route=>{reset++;expect(route.request().postDataJSON().email).toBe('ui-fixture@example.invalid');await route.fulfill({json:{}});});
+ await page.route('**/auth/v1/verify',async route=>{verified++;expect(route.request().postDataJSON().type).toBe('recovery');await route.fulfill({json:session()});});
+ await page.goto('./competencia.html#perfil');await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByRole('button',{name:'Recuperar contraseña',exact:true}).click();
+ await expect(page.getByRole('heading',{name:'Recupera tu contraseña',exact:true})).toBeVisible();expect(reset).toBe(1);
+ await page.getByLabel('Enlace o código del correo').fill('123456');await page.getByRole('button',{name:'Verificar correo',exact:true}).click();
+ await expect(page.getByRole('heading',{name:'Crea tu nueva contraseña',exact:true})).toBeVisible();expect(verified).toBe(1);
+});
+test('Signup submits only its own fields, confirms mail and persists the new session after reload',async({page})=>{
+ await fixturePage(page,{signed:false});let registrations=0,verifications=0;
+ await page.route('**/auth/v1/signup',async route=>{registrations++;const body=route.request().postDataJSON();expect(body.email).toBe('ui-fixture@example.invalid');expect(body.password).toBe('Nueva-clave-segura-2026');await route.fulfill({json:session().user});});
+ await page.route('**/auth/v1/verify',async route=>{verifications++;await route.fulfill({json:session()});});
+ await page.goto('./competencia.html#perfil');await page.getByRole('button',{name:'Crear cuenta',exact:true}).click();await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByLabel('Contraseña nueva',{exact:true}).fill('Nueva-clave-segura-2026');await page.getByRole('button',{name:'Crear cuenta',exact:true}).click();
+ await expect(page.getByRole('heading',{name:'Confirma tu correo',exact:true})).toBeVisible();expect(registrations).toBe(1);
+ await page.getByLabel('Enlace o código del correo').fill('https://jmobinmdwrmdqrxtcruj.supabase.co/auth/v1/verify?type=signup&token='+ 'a'.repeat(64));await page.getByRole('button',{name:'Verificar correo',exact:true}).click();
+ await expect(page.locator('#profile-form')).toBeVisible();expect(verifications).toBe(1);await page.reload();await expect(page.locator('#profile-form')).toBeVisible();
+ await page.getByRole('button',{name:'Cerrar sesión',exact:true}).click();await expect(page.locator('#auth-form')).toBeVisible();expect(await page.evaluate(()=>localStorage.getItem('cachaste-auth-v1'))).toBe(null);
+});
+test('Auth failures explain unconfirmed mail and incorrect passwords; dialog errors remain visible',async({page})=>{
+ await fixturePage(page,{signed:false});await page.route('**/auth/v1/token**',route=>route.fulfill({status:400,json:{code:'email_not_confirmed',msg:'Email not confirmed'}}));
+ await page.goto('./competencia.html#perfil');await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByLabel('Contraseña',{exact:true}).fill('an-old-pass');await page.getByRole('button',{name:'Iniciar sesión',exact:true}).click();await expect(page.getByText('Confirma tu correo antes de iniciar sesión.',{exact:true})).toBeVisible();
+ await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByRole('button',{name:'Confirmar mi correo',exact:true}).click();await page.getByLabel('Enlace o código del correo').fill('https://evil.invalid/?token=secret');await page.getByRole('button',{name:'Verificar correo',exact:true}).click();await expect(page.locator('dialog [role=alert]')).toContainText('Pega el enlace');
 });
 test('Competitive questions retain all five original types of required graph and geometry stimulus',async({page},info)=>{
  const examples=[...new Map(dailyCatalog().items.filter(q=>q.visual).map(q=>[q.visual.type,q.visual])).values()],visual={};await fixturePage(page,{visual});

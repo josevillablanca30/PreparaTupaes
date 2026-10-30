@@ -16,7 +16,7 @@ def verify(path):
         'versionCode': root.get(ANDROID + 'versionCode'),
         'targetSdk': None if sdk is None else sdk.get(ANDROID + 'targetSdkVersion'),
     }
-    expected = {'package': 'cl.preparatupaes.app', 'versionName': '1.5.0-rc6', 'versionCode': '33', 'targetSdk': '36'}
+    expected = {'package': 'cl.preparatupaes.app', 'versionName': '1.5.0-rc7', 'versionCode': '34', 'targetSdk': '36'}
     if result != expected:
         raise ValueError('Identidad del AAB incorrecta: ' + json.dumps(result))
     if app is None or app.get(ANDROID + 'debuggable', 'false') != 'false':

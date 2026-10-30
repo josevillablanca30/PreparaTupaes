@@ -22,11 +22,21 @@ async function finishTurn(i,turn,{correct=true,seconds=1}={}){while(turn.status=
 try{
  assert.equal((await db.query('select count(*)::int n from auth.users')).rows[0].n,0,'test stack must start without users');
  for(let i=0;i<2;i++){
-  const email='cachaste-ci-'+randomUUID()+'@example.invalid',password=randomUUID()+randomUUID();const{data,error}=await admin.auth.admin.createUser({email,password,email_confirm:true});if(error)throw error;users.push(data.user.id);credentials.push({email,password});
-  const client=createClient(url.href,status.ANON_KEY,{auth:{persistSession:false,autoRefreshToken:false}});const login=await client.auth.signInWithPassword({email,password});if(login.error)throw login.error;clients.push(client);
+  const email='cachaste-ci-'+randomUUID()+'@example.invalid',password=randomUUID()+randomUUID();credentials.push({email,password});
+  const client=createClient(url.href,status.ANON_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
+  const signup=await client.auth.signUp({email,password});if(signup.error)throw signup.error;assert.equal(signup.data.session,null,'CI must require email confirmation');users.push(signup.data.user.id);
+  const premature=await client.auth.signInWithPassword({email,password});assert.equal(premature.error?.code,'email_not_confirmed');
+  // Read the test mailbox token from this disposable GoTrue database; no hosted identity or email inbox is accessed.
+  const token=(await db.query('select confirmation_token from auth.users where id=$1',[signup.data.user.id])).rows[0].confirmation_token;
+  assert.ok(token);const confirmation=await client.auth.verifyOtp({token_hash:token,type:'signup'});if(confirmation.error)throw confirmation.error;
+  await client.auth.signOut();const login=await client.auth.signInWithPassword({email,password});if(login.error)throw login.error;clients.push(client);
   await call(i,'save_profile',{nickname:'TestCachaste'+i,communeCode:i?'05109':'05701',publicRanking:true,allowChallenges:true,showCommune:true,avatar:i,communityVersion:'2026-10-23'});
  }
- record('Two independent accounts authenticate through real GoTrue over HTTP');
+ record('Two public signups require email verification, confirm through real GoTrue and then sign in independently');
+ const duplicate=await clients[1].rpc('cachaste_competition',{operation:'save_profile',payload:{nickname:'testcachaste0',communeCode:'05109',communityVersion:'2026-10-23'}});assert.equal(duplicate.error?.code,'23505');
+ await call(0,'save_profile',{nickname:'ChangedNickname',communeCode:'05701',publicRanking:true,allowChallenges:true,showCommune:true,avatar:0,communityVersion:'2026-10-23'});assert.equal((await call(0,'profile')).profile.nickname,'ChangedNickname');
+ await call(0,'save_profile',{nickname:'TestCachaste0',communeCode:'05701',publicRanking:true,allowChallenges:true,showCommune:true,avatar:0,communityVersion:'2026-10-23'});
+ record('Case-insensitive duplicate nicknames are rejected and profile edits persist on the server');
  const denied=await clients[0].rpc('cachaste_competition',{operation:'dashboard',payload:{}});assert.equal(denied.error?.code,'42501');
  const noAccess=await clients[0].rpc('cachaste_access');assert.ifError(noAccess.error);assert.equal(noAccess.data.active,false);assert.equal(noAccess.data.validUntilMs,null);
  await db.query("update cachaste.settings set environment='test'");
@@ -40,7 +50,11 @@ try{
  for(let i=0;i<2;i++){const access=await clients[i].rpc('cachaste_access');assert.ifError(access.error);assert.equal(access.data.active,true);assert.equal(access.data.accessSource,'closed_test');}
  const noSelfGrant=await clients[0].from('closed_test_access').insert({user_id:users[0],valid_until:'2099-01-01',reason:'client claim'});assert.ok(noSelfGrant.error);
  record('Owner allowlist grants both authenticated students free access under production policy; HTTP clients cannot self-authorize');
- const original=await call(0,'create_duel',{subject:'M1',nickname:'TestCachaste1',requestId:randomUUID()});await call(1,'accept',{duelId:original.id});
+ const invitation={subject:'M1',nickname:'TestCachaste1',requestId:randomUUID()},original=await call(0,'create_duel',invitation);
+ assert.equal((await call(0,'create_duel',invitation)).id,original.id);
+ const duplicateChallenge=await clients[0].rpc('cachaste_competition',{operation:'create_duel',payload:{...invitation,requestId:randomUUID()}});assert.equal(duplicateChallenge.error?.message,'PAIR_LIMIT');
+ assert.ok((await call(1,'dashboard',{subject:'M1'})).duels.some(d=>d.id===original.id&&d.status==='invited'));
+ await call(1,'accept',{duelId:original.id});record('A challenge reaches the independent rival dashboard; creation retries are idempotent and duplicates are denied');
  let turns=[];for(let i=0;i<2;i++){const d=await call(i,'duel',{duelId:original.id});turns.push(await call(i,'start',{attemptId:d.attemptId}));}
  assert.equal(turns[0].question.key,turns[1].question.key);assert.equal(turns[0].question.answer,undefined);assert.equal(turns[0].question.explanations,undefined);
  const hidden=await clients[0].rpc('cachaste_competition',{operation:'review',payload:{attemptId:turns[0].id}});assert.equal(hidden.error?.message,'SOLUTIONS_HIDDEN');record('Both players get the same question, without answers or tutor leakage');
@@ -81,10 +95,11 @@ try{
  turns[1]=await finishTurn(1,turns[1]);const forfeit=await call(1,'duel',{duelId:abandoned.id});assert.equal(forfeit.result.winner,users[1]);assert.equal(forfeit.result.reason,'abandonment');record('Server question timeout ignores a forged phone time; abandonment settles only after the rival finishes');
  const finalRank=await call(1,'rankings',{mode:'duel',subject:'M1',scope:'Chile'});assert.equal(Number(finalRank.me.value),2);assert.equal(finalRank.me.wins,2);assert.equal(finalRank.me.losses,1);assert.equal(finalRank.me.draws,1);assert.equal((await db.query('select count(*)::int n from cachaste.settlements')).rows[0].n,4);record('Four complete scenarios retain historical wins, losses, draws and four unique settlements');
  const exposed=await clients[0].from('entitlements').select('*');assert.ok(exposed.error);record('Client cannot access or modify subscription tables');
- const link=await admin.auth.admin.generateLink({type:'recovery',email:credentials[1].email});if(link.error)throw link.error;
- const recoveryClient=createClient(url.href,status.ANON_KEY,{auth:{persistSession:false,autoRefreshToken:false}}),verified=await recoveryClient.auth.verifyOtp({type:'recovery',token_hash:link.data.properties.hashed_token});if(verified.error)throw verified.error;
+ const reset=await clients[1].auth.resetPasswordForEmail(credentials[1].email);if(reset.error)throw reset.error;
+ const recoveryToken=(await db.query('select recovery_token from auth.users where id=$1',[users[1]])).rows[0].recovery_token;assert.ok(recoveryToken);
+ const recoveryClient=createClient(url.href,status.ANON_KEY,{auth:{persistSession:false,autoRefreshToken:false}}),verified=await recoveryClient.auth.verifyOtp({type:'recovery',token_hash:recoveryToken});if(verified.error)throw verified.error;
  const password=randomUUID()+randomUUID(),updated=await recoveryClient.auth.updateUser({password});if(updated.error)throw updated.error;await recoveryClient.auth.signOut();
- const former=await clients[1].auth.signInWithPassword(credentials[1]);assert.ok(former.error);credentials[1].password=password;const renewed=await clients[1].auth.signInWithPassword(credentials[1]);if(renewed.error)throw renewed.error;record('A real Auth recovery token changes the password and the former password is rejected; no email is sent by fixtures');
+ const former=await clients[1].auth.signInWithPassword(credentials[1]);assert.ok(former.error);credentials[1].password=password;const renewed=await clients[1].auth.signInWithPassword(credentials[1]);if(renewed.error)throw renewed.error;record('A real Auth recovery token changes the password and the former password is rejected; recovery requested through public Auth; local SMTP only');
  await db.query("update cachaste.settings set environment='production'");const locked=await clients[0].rpc('cachaste_competition',{operation:'rankings',payload:{mode:'duel',subject:'M1',scope:'Chile'}});assert.equal(locked.error?.code,'42501');assert.equal((await clients[0].rpc('cachaste_access')).data.active,false);record('Restoring production environment rejects the same test entitlement for competition and education');
  const consent=(await call(0,'profile')).profile;assert.equal(consent.community_version,'2026-10-23');assert.ok(consent.community_accepted_at);
  await call(0,'report',{userId:users[1],reason:'nickname',reporter_id:users[1]});
