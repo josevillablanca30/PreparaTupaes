@@ -47,7 +47,7 @@ jobs:
       - run: npm run audit:pedagogy
       - run: npm run build
       - run: bash scripts/install-chromium-qa.sh
-      - name: Probar autenticación, competencia y aprendizaje en dos tamaños Android
+      - name: Probar autenticación, errores de sesión y aprendizaje en dos tamaños Android
         run: npx playwright test tests/competition.mobile.spec.mjs tests/competition-community.mobile.spec.mjs tests/five-subjects.mobile.spec.mjs tests/daily-session-recovery.mobile.spec.mjs tests/subscription-mobile.spec.mjs --project=Android-Chrome --project=mobile-320px
       - uses: actions/upload-artifact@v4
         if: always()

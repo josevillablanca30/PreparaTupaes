@@ -84,3 +84,5 @@ test('Email verification accepts only this project and the requested action, nev
 test('Expected Auth errors have actionable messages without echoing credentials',()=>{
  for(const code of ['invalid_credentials','email_not_confirmed','weak_password','over_email_send_rate_limit','otp_expired']){const message=errorMessage({code,message:'secret-password'});assert.ok(message.length>10);assert.ok(!message.includes('secret-password'));}
 });
+
+test('Legacy Auth error responses without a machine code remain actionable',()=>{assert.equal(errorMessage(Error('Email not confirmed')),errorMessage({code:'email_not_confirmed'}));assert.equal(errorMessage(Error('Invalid login credentials')),errorMessage({code:'invalid_credentials'}));});
