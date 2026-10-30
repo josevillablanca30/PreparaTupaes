@@ -66,8 +66,8 @@ export class CompetitionClient{
   return this.connect();
  }
  async resendConfirmation(email){if(!this.sdk||!this.serviceReady)throw new Error('SERVICE_NOT_READY');const{error}=await this.sdk.auth.resend({type:'signup',email:email.trim()});if(error)throw error;}
- async updatePassword(password){if(!this.sdk||!this.user||!this.recovering)throw new Error('AUTH_REQUIRED');const{error}=await this.sdk.auth.updateUser({password});if(error)throw error;await this.signOut();}
- async signOut(){this.clearNativeAccess();if(this.sdk){const{error}=await this.sdk.auth.signOut({scope:'local'});if(error)throw error;}this.user=null;this.profile=null;this.premium=false;this.recovering=false;this.billingUnavailable=false;this.nativeAccessUnavailable=false;}
+ async updatePassword(password){if(!this.sdk||!this.user||!this.recovering)throw new Error('AUTH_REQUIRED');const{error}=await this.sdk.auth.updateUser({password});if(error)throw error;await this.signOut('global');}
+ async signOut(scope='local'){this.clearNativeAccess();if(this.sdk){const{error}=await this.sdk.auth.signOut({scope});if(error)throw error;}this.user=null;this.profile=null;this.premium=false;this.recovering=false;this.billingUnavailable=false;this.nativeAccessUnavailable=false;}
  key(k){return'cachaste-competition-v1:'+this.user.id+':'+k;}
  request(scope){const key=this.key('request:'+scope);let id=this.storage.getItem(key);if(!id){id=crypto.randomUUID();this.storage.setItem(key,id);}return id;}
  clearRequest(scope){this.storage.removeItem(this.key('request:'+scope));}
