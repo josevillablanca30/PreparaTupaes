@@ -49,8 +49,9 @@ No se implementó apertura automática de enlaces Android ni se afirma que exist
 | Integración PostgreSQL de seguridad/comunidad/acceso | **23 aprobadas**, incluidas RLS, aislamiento, sesiones expiradas/revocadas, permisos y puntuación autoritativa. Se solapan con las pruebas de lógica; no se suman como casos independientes. |
 | Auth y PostgREST reales por HTTP | **21 escenarios aprobados** en Supabase local desechable. |
 | Suite pública completa | **396 aprobadas por plataforma** en Android-Chrome, 320 px e iPhone-WebKit. Seis casos de VS local se omiten por una condición preexistente en la distribución pública y se ejecutan aparte en la beta. No se desactivó ninguna prueba para obtener verde. |
+| Beta VS local / recorrido ampliado antes del APK | **12 / 420 pruebas aprobadas**, respectivamente. |
 | Paquete comercial instalado en emulador Android 16 | **5 pruebas aprobadas**, 0 fallidas y 0 omitidas. |
-| APK beta instalado: navegación, progreso y nueva regresión de registro | **En ejecución al guardar este informe.** |
+| APK beta instalado: navegación, progreso y nueva regresión de registro | **31 pruebas aprobadas, 0 fallidas y 0 omitidas**, incluida la regresión de navegación del registro en el WebView real. |
 | Dos teléfonos físicos conectados al backend alojado | **Pendiente; no comprobado en esta sesión.** |
 
 Evidencia:
@@ -117,3 +118,5 @@ La misión **no se considera comprobada en dispositivos reales** por compilar o 
 6. Repetir con una desconexión y actualización de pantalla, comprobando que no duplique respuestas ni estrellas.
 
 No hay integración de Google Play Publisher disponible ni acceso a los teléfonos personales en esta sesión. No se necesitan contraseñas personales en el chat. La actualización no se ha enviado a Play desde aquí. Antes de invitar al resto de testers falta completar ese recorrido real.
+
+Cierre automático: todas las ejecuciones requeridas del código `8f5904cd69fca4b1de7d6a223752aa4368646195` finalizaron correctamente. Las pruebas en teléfonos físicos y la subida a la prueba cerrada siguen pendientes. Este informe posterior no modifica el código del AAB.
