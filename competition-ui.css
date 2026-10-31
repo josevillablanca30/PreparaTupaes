@@ -46,3 +46,5 @@ dialog{max-height:calc(100dvh - 32px);overflow:auto}dialog .email-help{font-size
 
 .comp-hero aside{display:flex;flex-direction:column;align-items:center;gap:8px}.comp-hero .speech,.comp-hero.rankings .speech,.comp-hero.resultado .speech,.comp-hero.acompanar .speech{position:relative;margin:0}.comp-hero .hero-cat.subject-mentor{position:relative;height:160px;margin-top:auto}.versus-cat>img{width:100%;left:0;mix-blend-mode:normal;object-fit:contain}
 @media(min-width:600px){.comp-hero .hero-cat.subject-mentor{height:205px}}
+
+@media(max-width:420px){.avatar-choice{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.avatar-choice span{font-size:11px}.avatar-choice label{padding:5px;min-height:82px}}
