@@ -1,0 +1,360 @@
+{
+  "generatedAt": "runtime",
+  "overall": {
+    "questions": 788,
+    "originals": 631,
+    "transfers": 157,
+    "concepts": 287,
+    "unverifiableConcepts": 7
+  },
+  "subjects": {
+    "M1": {
+      "questions": 147,
+      "originals": 116,
+      "transfers": 31,
+      "concepts": 65,
+      "verifiableConcepts": 65,
+      "unverifiableConcepts": 0,
+      "verifiedCases": 146
+    },
+    "M2": {
+      "questions": 115,
+      "originals": 114,
+      "transfers": 1,
+      "concepts": 48,
+      "verifiableConcepts": 48,
+      "unverifiableConcepts": 0,
+      "verifiedCases": 114
+    },
+    "Lectura": {
+      "questions": 130,
+      "originals": 130,
+      "transfers": 0,
+      "concepts": 10,
+      "verifiableConcepts": 10,
+      "unverifiableConcepts": 0,
+      "verifiedCases": 81
+    },
+    "Ciencias": {
+      "questions": 293,
+      "originals": 206,
+      "transfers": 87,
+      "concepts": 114,
+      "verifiableConcepts": 109,
+      "unverifiableConcepts": 5,
+      "verifiedCases": 275
+    },
+    "Historia": {
+      "questions": 103,
+      "originals": 65,
+      "transfers": 38,
+      "concepts": 50,
+      "verifiableConcepts": 48,
+      "unverifiableConcepts": 2,
+      "verifiedCases": 100
+    }
+  },
+  "gaps": [
+    {
+      "subject": "Ciencias",
+      "concept": "Inflamación local",
+      "questions": 1,
+      "families": 1,
+      "reason": "Se requieren al menos dos familias independientes de evaluación"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Reflexión y eco",
+      "questions": 1,
+      "families": 1,
+      "reason": "Se requieren al menos dos familias independientes de evaluación"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Tabla periódica y valencia",
+      "questions": 1,
+      "families": 1,
+      "reason": "Se requieren al menos dos familias independientes de evaluación"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Trabajo de una fuerza constante",
+      "questions": 1,
+      "families": 1,
+      "reason": "Se requieren al menos dos familias independientes de evaluación"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Transformaciones en generadores",
+      "questions": 1,
+      "families": 1,
+      "reason": "Se requieren al menos dos familias independientes de evaluación"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Ahorro por aportes periódicos",
+      "questions": 1,
+      "families": 1,
+      "reason": "Se requieren al menos dos familias independientes de evaluación"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Diversificación y riesgo",
+      "questions": 1,
+      "families": 1,
+      "reason": "Se requieren al menos dos familias independientes de evaluación"
+    }
+  ],
+  "scopes": {
+    "paes": {
+      "generatedAt": "runtime",
+      "overall": {
+        "questions": 755,
+        "originals": 604,
+        "transfers": 151,
+        "concepts": 270,
+        "unverifiableConcepts": 0
+      },
+      "subjects": {
+        "M1": {
+          "questions": 147,
+          "originals": 116,
+          "transfers": 31,
+          "concepts": 65,
+          "verifiableConcepts": 65,
+          "unverifiableConcepts": 0,
+          "verifiedCases": 146
+        },
+        "M2": {
+          "questions": 115,
+          "originals": 114,
+          "transfers": 1,
+          "concepts": 48,
+          "verifiableConcepts": 48,
+          "unverifiableConcepts": 0,
+          "verifiedCases": 114
+        },
+        "Lectura": {
+          "questions": 130,
+          "originals": 130,
+          "transfers": 0,
+          "concepts": 10,
+          "verifiableConcepts": 10,
+          "unverifiableConcepts": 0,
+          "verifiedCases": 81
+        },
+        "Ciencias": {
+          "questions": 262,
+          "originals": 181,
+          "transfers": 81,
+          "concepts": 99,
+          "verifiableConcepts": 99,
+          "unverifiableConcepts": 0,
+          "verifiedCases": 249
+        },
+        "Historia": {
+          "questions": 101,
+          "originals": 63,
+          "transfers": 38,
+          "concepts": 48,
+          "verifiableConcepts": 48,
+          "unverifiableConcepts": 0,
+          "verifiedCases": 100
+        }
+      },
+      "gaps": []
+    },
+    "complementary": {
+      "generatedAt": "runtime",
+      "overall": {
+        "questions": 33,
+        "originals": 27,
+        "transfers": 6,
+        "concepts": 21,
+        "unverifiableConcepts": 10
+      },
+      "subjects": {
+        "Ciencias": {
+          "questions": 31,
+          "originals": 25,
+          "transfers": 6,
+          "concepts": 19,
+          "verifiableConcepts": 11,
+          "unverifiableConcepts": 8,
+          "verifiedCases": 23
+        },
+        "Historia": {
+          "questions": 2,
+          "originals": 2,
+          "transfers": 0,
+          "concepts": 2,
+          "verifiableConcepts": 0,
+          "unverifiableConcepts": 2,
+          "verifiedCases": 0
+        }
+      },
+      "gaps": [
+        {
+          "subject": "Ciencias",
+          "concept": "Efecto Doppler",
+          "questions": 1,
+          "families": 1,
+          "reason": "Se requieren al menos dos familias independientes de evaluación"
+        },
+        {
+          "subject": "Ciencias",
+          "concept": "Inflamación local",
+          "questions": 1,
+          "families": 1,
+          "reason": "Se requieren al menos dos familias independientes de evaluación"
+        },
+        {
+          "subject": "Ciencias",
+          "concept": "Reflexión y eco",
+          "questions": 1,
+          "families": 1,
+          "reason": "Se requieren al menos dos familias independientes de evaluación"
+        },
+        {
+          "subject": "Ciencias",
+          "concept": "Separación de mezclas",
+          "questions": 1,
+          "families": 1,
+          "reason": "Se requieren al menos dos familias independientes de evaluación"
+        },
+        {
+          "subject": "Ciencias",
+          "concept": "Tabla periódica y valencia",
+          "questions": 1,
+          "families": 1,
+          "reason": "Se requieren al menos dos familias independientes de evaluación"
+        },
+        {
+          "subject": "Ciencias",
+          "concept": "Trabajo de una fuerza constante",
+          "questions": 1,
+          "families": 1,
+          "reason": "Se requieren al menos dos familias independientes de evaluación"
+        },
+        {
+          "subject": "Ciencias",
+          "concept": "Transformaciones en generadores",
+          "questions": 1,
+          "families": 1,
+          "reason": "Se requieren al menos dos familias independientes de evaluación"
+        },
+        {
+          "subject": "Ciencias",
+          "concept": "Variable dependiente",
+          "questions": 1,
+          "families": 1,
+          "reason": "Se requieren al menos dos familias independientes de evaluación"
+        },
+        {
+          "subject": "Historia",
+          "concept": "Ahorro por aportes periódicos",
+          "questions": 1,
+          "families": 1,
+          "reason": "Se requieren al menos dos familias independientes de evaluación"
+        },
+        {
+          "subject": "Historia",
+          "concept": "Diversificación y riesgo",
+          "questions": 1,
+          "families": 1,
+          "reason": "Se requieren al menos dos familias independientes de evaluación"
+        }
+      ]
+    }
+  },
+  "scienceTracks": {
+    "Biología": {
+      "generatedAt": "runtime",
+      "overall": {
+        "questions": 137,
+        "originals": 95,
+        "transfers": 42,
+        "concepts": 57,
+        "unverifiableConcepts": 0
+      },
+      "subjects": {
+        "Ciencias": {
+          "questions": 137,
+          "originals": 95,
+          "transfers": 42,
+          "concepts": 57,
+          "verifiableConcepts": 57,
+          "unverifiableConcepts": 0,
+          "verifiedCases": 133
+        }
+      },
+      "gaps": []
+    },
+    "Física": {
+      "generatedAt": "runtime",
+      "overall": {
+        "questions": 143,
+        "originals": 94,
+        "transfers": 49,
+        "concepts": 61,
+        "unverifiableConcepts": 0
+      },
+      "subjects": {
+        "Ciencias": {
+          "questions": 143,
+          "originals": 94,
+          "transfers": 49,
+          "concepts": 61,
+          "verifiableConcepts": 61,
+          "unverifiableConcepts": 0,
+          "verifiedCases": 137
+        }
+      },
+      "gaps": []
+    },
+    "Química": {
+      "generatedAt": "runtime",
+      "overall": {
+        "questions": 147,
+        "originals": 98,
+        "transfers": 49,
+        "concepts": 63,
+        "unverifiableConcepts": 0
+      },
+      "subjects": {
+        "Ciencias": {
+          "questions": 147,
+          "originals": 98,
+          "transfers": 49,
+          "concepts": 63,
+          "verifiableConcepts": 63,
+          "unverifiableConcepts": 0,
+          "verifiedCases": 141
+        }
+      },
+      "gaps": []
+    },
+    "TP": {
+      "generatedAt": "runtime",
+      "overall": {
+        "questions": 141,
+        "originals": 92,
+        "transfers": 49,
+        "concepts": 62,
+        "unverifiableConcepts": 0
+      },
+      "subjects": {
+        "Ciencias": {
+          "questions": 141,
+          "originals": 92,
+          "transfers": 49,
+          "concepts": 62,
+          "verifiableConcepts": 62,
+          "unverifiableConcepts": 0,
+          "verifiedCases": 138
+        }
+      },
+      "gaps": []
+    }
+  }
+}

@@ -1,0 +1,19 @@
+/* Candidatos originales de Biología: pendientes de cotejo con DEMRE y material Drive. */
+export const biologyCandidates=[
+ {base:'Ciencias:SCI-085',id:'TR-SCI-090',
+  question:'Dos grupos de estudiantes realizan la misma actividad física, pero uno incrementa la intensidad del ejercicio. Se mide un aumento simultáneo de consumo de oxígeno, producción de dióxido de carbono y frecuencia respiratoria. ¿Qué interpretación integra mejor estos datos?',
+  options:['La ventilación produce directamente ATP dentro de los pulmones','El metabolismo muscular demanda más ATP y la ventilación contribuye a sostener el intercambio de gases','La circulación deja de transportar gases porque los pulmones compensan todo','El aumento de CO₂ demuestra que las células dejaron de realizar respiración celular'],answer:1,
+  steps:['La contracción muscular requiere ATP, de modo que al aumentar el esfuerzo suele aumentar también la demanda metabólica de energía.','La respiración celular participa en la producción de ATP y puede aumentar el consumo de oxígeno y la generación de dióxido de carbono en los tejidos.','El aumento de la ventilación ayuda a renovar el aire alveolar para el intercambio gaseoso, mientras la circulación transporta gases entre pulmones y músculos.'],
+  errors:['Ventilar es mover aire hacia y desde los pulmones; la producción principal de ATP vinculada al ejercicio ocurre por procesos metabólicos celulares.','','Los gases deben transportarse mediante la circulación entre los pulmones y los tejidos activos, incluso cuando aumenta la ventilación.','Producir más CO₂ durante el esfuerzo es compatible con una mayor actividad metabólica y no demuestra ausencia de respiración celular.'],
+  transferDesign:{baseTask:'Reconocer relación entre ventilación y demanda muscular',newTask:'Integrar tres observaciones simultáneas y distinguir ventilación, circulación y metabolismo'},
+  sourceTrace:{subject:'Biología',officialEje:'Organismo y ambiente · intercambio gaseoso y actividad metabólica',reviewStatus:'pendiente-cotejo-demre-y-drive'}
+ },
+ {base:'Ciencias:SCI-086',id:'TR-SCI-091',
+  question:'Después de una primera vacunación, se observa una respuesta específica que demora varios días. Tras una dosis de refuerzo, la respuesta contra el mismo antígeno aparece más rápidamente y alcanza mayor magnitud. ¿Cuál explicación es la más consistente?',
+  options:['El organismo ya no necesita reconocer antígenos porque la piel cambia de función','La respuesta innata guarda una copia exacta de cada anticuerpo durante toda la vida','La exposición inicial favoreció células de memoria adaptativa que responden al nuevo contacto','Una respuesta más rápida demuestra que ninguna persona vacunada puede infectarse'],answer:2,
+  steps:['La inmunidad innata actúa con mecanismos generales y rápidos, mientras la adaptativa involucra reconocimiento específico de antígenos.','Una primera exposición puede generar linfocitos de memoria, cuya presencia permite responder con mayor rapidez y magnitud frente al mismo antígeno.','La observación apoya memoria inmunológica adaptativa, pero no implica protección absoluta ni asegura ausencia de infecciones futuras.'],
+  errors:['La barrera cutánea no sustituye el reconocimiento específico que explica la respuesta mayor frente al mismo antígeno.','La memoria específica persistente se atribuye a componentes de la respuesta adaptativa y no a una copia idéntica de anticuerpos almacenada por la inmunidad innata.','','La vacunación puede disminuir riesgos y gravedad de ciertas enfermedades sin garantizar que jamás ocurra infección.'],
+  transferDesign:{baseTask:'Reconocer que la vacunación favorece memoria',newTask:'Interpretar evidencia temporal de respuestas primaria y secundaria'},
+  sourceTrace:{subject:'Biología',officialEje:'Organismo y ambiente · defensa inmunológica',reviewStatus:'pendiente-cotejo-demre-y-drive'}
+ }
+];

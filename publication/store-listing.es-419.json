@@ -1,0 +1,31 @@
+{
+  "language": "es-419",
+  "appName": "¿Cachaste? Prepara tu PAES",
+  "shortDescription": "Lecciones claras, práctica y duelos para preparar tu PAES paso a paso.",
+  "fullDescription": "Primero cachémoslo fácil, después te ponemos a prueba.\n\n¿Cachaste? te acompaña a preparar la PAES con explicaciones cercanas, práctica y un camino de aprendizaje que puedes recorrer en sesiones cortas.\n\nCINCO ASIGNATURAS\nEstudia Matemática M1, Matemática M2, Competencia Lectora, Ciencias e Historia y Ciencias Sociales. En Ciencias puedes elegir tu área y trabajar contenidos comunes y de especialidad.\n\nAPRENDE CON EL GATITO SABIO\nComienza con una idea clara, mira un modelo visual y practica. Revisa las soluciones paso a paso, pide una explicación más fácil o trabaja con otro ejemplo. Las explicaciones de las alternativas te ayudan a entender por qué una respuesta funciona y otra no.\n\nTU CAMINO DE ESTUDIO\nUsa el diagnóstico para reconocer qué reforzar. Avanza por niveles, comprueba lo aprendido y retoma tu sesión guardada. Las misiones, las rachas y las estrellas acompañan tu práctica, sin vidas limitadas.\n\nEXPRESS Y ENSAYOS\nAprovecha los ratos cortos con Express o dedica más tiempo a una evaluación. Revisa tus errores y vuelve al concepto que necesitas practicar.\n\nDUELOS Y RANKINGS\nDesafía a otro estudiante por apodo o código, o busca un rival disponible. Ambos responden las mismas diez preguntas: los aciertos deciden y el tiempo desempata. Las soluciones se muestran al terminar ambos turnos. La participación en rankings de Chile, región y comuna es voluntaria.\n\nACCESO POR SUSCRIPCIÓN\nLa descarga de la app no activa una suscripción. El contenido y la competencia requieren una cuenta y una suscripción vigente. Google Play muestra los planes, precios y condiciones antes de confirmar. La disponibilidad de una prueba gratuita depende de tu elegibilidad. Puedes administrar o cancelar la renovación desde Google Play.\n\nLas funciones de estudio admiten uso sin conexión después de validar el acceso, con validación periódica de la suscripción. Los duelos y rankings requieren internet.\n\nLos resultados de práctica no son puntajes oficiales del DEMRE ni garantizan un resultado en la PAES.",
+  "releaseNotes": "Primera versión de prueba en Google Play. Cinco asignaturas, lecciones guiadas, diagnóstico, Express, ensayos y sistema de duelos. Las pruebas de acceso y suscripción se completan antes del lanzamiento público.",
+  "category": "EDUCATION",
+  "applicationType": "APP",
+  "downloadPricing": "FREE_WITH_SUBSCRIPTIONS",
+  "initialCountryProposal": "CL",
+  "targetAudienceProposal": "15 años en adelante; revisar los grupos de edad disponibles en Play Console",
+  "publisherName": null,
+  "supportEmail": "jose.villablanca.horta@gmail.com",
+  "websiteUrl": null,
+  "privacyPolicyUrl": "https://cachaste-privacidad.jose-villablanca-hor.chatgpt.site/privacidad.html",
+  "accountDeletionUrl": "https://cachaste-privacidad.jose-villablanca-hor.chatgpt.site/eliminar-cuenta.html",
+  "publicationStatus": "PREPARATION_ONLY_NOT_APPROVED_FOR_PRODUCTION",
+  "playConsoleAccount": {
+    "createdReportedByOwner": true,
+    "loginEmail": "jose.villablanca.horta@gmail.com",
+    "accountType": "PERSONAL",
+    "identityVerification": "PENDING_GOOGLE_REVIEW",
+    "identityDocumentsUploaded": true,
+    "phoneVerification": "WAITING_FOR_IDENTITY_APPROVAL",
+    "applicationCreated": false,
+    "canCreateApps": false,
+    "verifiedInConsole": true,
+    "observedDate": "2026-10-23",
+    "createAppBlock": "Completa las verificaciones de cuenta para crear apps"
+  }
+}

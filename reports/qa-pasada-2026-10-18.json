@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-18",
+  "applicationCommit": "2dbdd7a7565f1f3ddac369929b952726bea74b39",
+  "regressionFixCommit": "c59a80e34c495f02f9447aa0ae3028de37742f7b",
+  "logic": {
+    "passed": 214,
+    "failed": 0
+  },
+  "initialBrowserRun": {
+    "id": 39108073077,
+    "passed": 735,
+    "failed": 3,
+    "cause": "La prueba de agotamiento de Historia suponía que HIS-001 no tenía otra familia. TR-HIS-007 ya aporta una alternativa válida."
+  },
+  "regressionFix": {
+    "cases": [
+      "Refuerzo disponible del mismo concepto",
+      "Agotamiento de todas las variantes recientes sin cambiar de concepto"
+    ],
+    "registeredBrowserTests": 741,
+    "applicationFilesChanged": false
+  },
+  "androidApplicationRun": {
+    "id": 39108072965,
+    "conclusion": "success",
+    "browserSmokePassed": 88,
+    "nativePassed": 8,
+    "nativeFailed": 0,
+    "apkSha256": "cc6eb8254712253f0c16a4854279c6a3557a2c0961691981f58e907132606325",
+    "packagedAssetsCompared": 32
+  },
+  "browserRerun": {
+    "id": 39128171811,
+    "conclusion": "success",
+    "passed": 741,
+    "failed": 0,
+    "jobId": 117677599165,
+    "duration": "10.1m"
+  },
+  "visualSample": {
+    "artifactId": 12129815686,
+    "screens": [
+      "Android: materias, fundamentos, pregunta",
+      "iPhone: mapa de misiones",
+      "320 px: error específico y tutor",
+      "Historia: refuerzo TR-HIS-007 en captura del fallo"
+    ],
+    "finding": "Sin recortes horizontales de texto ni controles superpuestos entre sí en las muestras inspeccionadas. El menú fijo aparece dentro de la captura larga del mapa; no se interpreta como fallo de navegación sin evidencia adicional.",
+    "scope": "Muestra visual, no certificación exhaustiva ni pilotaje estudiantil."
+  },
+  "remaining": [
+    "134 observaciones heurísticas por revisar",
+    "Cobertura completa del temario e independencia semántica por certificar",
+    "Pilotaje estudiantil y criterios comerciales pendientes"
+  ],
+  "androidRerun": {
+    "id": 39128171791,
+    "commit": "c59a80e34c495f02f9447aa0ae3028de37742f7b",
+    "conclusion": "success",
+    "browserSmokePassed": 88,
+    "nativePassed": 8,
+    "nativeFailed": 0
+  }
+}

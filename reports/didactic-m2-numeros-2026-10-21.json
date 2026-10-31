@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-21",
+  "scope": "Revisión textual y cálculo independiente de un objetivo existente de M2. No modifica el banco.",
+  "source": {
+    "driveFileId": "1DJxy58C-57LRdkM4L8NOMbC7OG7XGtuT",
+    "title": "M2-MM01-Numeros-Irracionales-y-Reales.pdf",
+    "sections": "2.1 Raíces; 3.1 Operatoria en R; ejemplos de simplificación",
+    "limitations": "El texto extraído desordena algunos índices y barras de raíz: no se aprueban todos los ejercicios ni su clave. Se rechaza la implicación no condicionada a^n=b → a=raíz n de b para índice par. Una división por cero no se trata como un número de otro conjunto."
+  },
+  "decision": "Mantener las explicaciones actuales: definen raíz principal no negativa, usan valor absoluto al extraer m², distinguen igualdad exacta de aproximación, presentan una analogía de unidades radicales iguales y un ejemplo de perímetro con sus unidades.",
+  "items": [
+    {
+      "key": "M2:M2-078",
+      "concept": "Números reales",
+      "answer": "3√2",
+      "calculation": "√50−√8=5√2−2√2=3√2",
+      "status": "text-and-calculation-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false,
+      "contentFingerprint": "93796ccc5aaa68e13aae21d2b32a74d3b9f0a4c6549dff220bb530da767244b4"
+    },
+    {
+      "key": "M2:M2-106",
+      "concept": "Números reales",
+      "answer": "7√3",
+      "calculation": "√75+√12=5√3+2√3=7√3",
+      "status": "text-and-calculation-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false,
+      "contentFingerprint": "5136aa2079f051150220579a3429ee5cd284d82a482b66acee6ac2b0d2962384"
+    }
+  ],
+  "remaining": "Este objetivo no cierra el resto de Matemática M2 ni el inventario de fuentes."
+}

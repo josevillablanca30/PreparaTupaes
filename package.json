@@ -1,0 +1,22 @@
+{
+  "name": "prepara-tu-paes",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "playwright test",
+    "test:logic": "node --test tests/*.test.mjs",
+    "audit:pedagogy": "node scripts/pedagogical-audit.mjs",
+    "preview": "node scripts/preview.mjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.11",
+    "@playwright/test": "1.64.0",
+    "esbuild": "0.28.2",
+    "pg": "8.23.1"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.118.0"
+  }
+}
