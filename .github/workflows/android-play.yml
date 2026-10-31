@@ -30,6 +30,7 @@ jobs:
             fi
           done
           test "$missing" = 0
+  # Keep the release gate independent of standalone integration runs.
   integration:
     uses: ./.github/workflows/competition-integration.yml
   verify:

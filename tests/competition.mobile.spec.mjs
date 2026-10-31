@@ -153,3 +153,7 @@ test('Duel invitations refresh without a manual reload; question inputs are neve
  await page.clock.install();const requests=await fixturePage(page);await page.goto('./competencia.html#duelos');await expect(page.locator('.duel-row')).toHaveCount(2);const initial=requests.filter(r=>r.operation==='dashboard').length;await page.clock.fastForward(21000);await expect.poll(()=>requests.filter(r=>r.operation==='dashboard').length).toBeGreaterThan(initial);
  await page.getByRole('button',{name:'Desafiar',exact:true}).click();await page.getByRole('textbox',{name:'Nickname',exact:true}).fill('CataPAES');await page.getByRole('button',{name:'Enviar desafío',exact:true}).click();await page.getByRole('button',{name:'Comenzar duelo',exact:true}).click();await page.getByRole('radio').nth(1).check();const before=requests.length;await page.clock.fastForward(21000);await expect(page.getByRole('radio').nth(1)).toBeChecked();expect(requests.length).toBe(before);
 });
+
+test('Returning from another app preserves an unsaved nickname and avatar selection',async({page})=>{
+ await fixturePage(page);await page.goto('./competencia.html#perfil');await page.getByLabel('Nickname público',{exact:true}).fill('MiGatoNuevo');await page.getByRole('radio',{name:'Gatita emo',exact:true}).check();await page.evaluate(()=>document.dispatchEvent(new Event('visibilitychange')));await expect(page.getByLabel('Nickname público',{exact:true})).toHaveValue('MiGatoNuevo');await expect(page.getByRole('radio',{name:'Gatita emo',exact:true})).toBeChecked();
+});

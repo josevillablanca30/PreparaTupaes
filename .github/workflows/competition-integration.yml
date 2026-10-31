@@ -8,7 +8,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: competition-${{ github.ref }}
+  group: competition-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   supabase:
