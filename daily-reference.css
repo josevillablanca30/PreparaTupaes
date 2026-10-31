@@ -240,3 +240,6 @@ body>main{--reference-gutter:20px}
 #daily-root .reference-guide .mentor-welcome{position:absolute;bottom:0;right:-6px;width:195px;height:185px;object-fit:contain;object-position:bottom}
 #daily-root .reference-map-guide .mentor-stage{width:180px;height:180px;object-fit:contain;object-position:bottom}
 @media(max-width:350px){#daily-root .reference-guide .mentor-welcome{width:158px;height:158px;right:0}}
+
+#daily-root .reference-map-guide .mentor-stage{position:absolute;bottom:0;right:0}
+@media(max-width:350px){#daily-root .reference-map-guide .mentor-stage{width:155px;height:150px}}

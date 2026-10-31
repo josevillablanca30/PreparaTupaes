@@ -55,6 +55,7 @@ jobs:
           name: Cachaste-Play-tests-${{ github.sha }}
           path: |
             playwright-report/
+            test-results/
             reports/pedagogical-audit.json
           retention-days: 14
   signed-bundle:
