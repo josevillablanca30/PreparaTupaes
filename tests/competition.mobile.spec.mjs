@@ -63,7 +63,7 @@ test('Recovery requests mail without validating the login password and verifies 
  await page.route('**/auth/v1/verify',async route=>{verified++;expect(route.request().postDataJSON().type).toBe('recovery');await route.fulfill({json:session()});});
  await page.goto('./competencia.html#perfil');await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByRole('button',{name:'Recuperar contraseña',exact:true}).click();
  await expect(page.getByRole('heading',{name:'Recupera tu contraseña',exact:true})).toBeVisible();expect(reset).toBe(1);
- await page.getByLabel('Enlace o código del correo').fill('123456');await page.getByRole('button',{name:'Verificar correo',exact:true}).click();
+ await page.getByLabel('Código del correo').fill('123456');await page.getByRole('button',{name:'Verificar correo',exact:true}).click();
  await expect(page.getByRole('heading',{name:'Crea tu nueva contraseña',exact:true})).toBeVisible();expect(verified).toBe(1);
 });
 test('Signup submits only its own fields, confirms mail and persists the new session after reload',async({page})=>{
@@ -72,14 +72,14 @@ test('Signup submits only its own fields, confirms mail and persists the new ses
  await page.route('**/auth/v1/verify',async route=>{verifications++;await route.fulfill({json:session()});});
  await page.goto('./competencia.html#perfil');await page.getByRole('button',{name:'Crear cuenta',exact:true}).click();await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByLabel('Contraseña nueva',{exact:true}).fill('Nueva-clave-segura-2026');await page.getByRole('button',{name:'Crear cuenta',exact:true}).click();
  await expect(page.getByRole('heading',{name:'Confirma tu correo',exact:true})).toBeVisible();expect(registrations).toBe(1);
- await page.getByLabel('Enlace o código del correo').fill('https://jmobinmdwrmdqrxtcruj.supabase.co/auth/v1/verify?type=signup&token='+ 'a'.repeat(64));await page.getByRole('button',{name:'Verificar correo',exact:true}).click();
+ await page.getByLabel('Código del correo').fill('123456');await page.getByRole('button',{name:'Verificar correo',exact:true}).click();
  await expect(page.locator('#profile-form')).toBeVisible();expect(verifications).toBe(1);await page.reload();await expect(page.locator('#profile-form')).toBeVisible();
  await page.getByRole('button',{name:'Cerrar sesión',exact:true}).click();await expect(page.locator('#auth-form')).toBeVisible();expect(await page.evaluate(()=>localStorage.getItem('cachaste-auth-v1'))).toBe(null);
 });
 test('Auth failures explain unconfirmed mail and incorrect passwords; dialog errors remain visible',async({page})=>{
  await fixturePage(page,{signed:false});await page.route('**/auth/v1/token**',route=>route.fulfill({status:400,headers:{'x-supabase-api-version':'2024-01-01','access-control-expose-headers':'x-supabase-api-version'},json:{code:'email_not_confirmed',msg:'Email not confirmed'}}));
  await page.goto('./competencia.html#perfil');await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByLabel('Contraseña',{exact:true}).fill('an-old-pass');await page.getByRole('button',{name:'Iniciar sesión',exact:true}).click();await expect(page.locator('#competition-root .toast')).toHaveText('Confirma tu correo antes de iniciar sesión.');
- await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByRole('button',{name:'Confirmar mi correo',exact:true}).click();await page.getByLabel('Enlace o código del correo').fill('https://evil.invalid/?token=secret');await page.getByRole('button',{name:'Verificar correo',exact:true}).click();await expect(page.locator('dialog [role=alert]')).toContainText('Pega el enlace');
+ await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByRole('button',{name:'Confirmar mi correo',exact:true}).click();await page.route('**/auth/v1/verify',route=>route.fulfill({status:403,headers:{'x-supabase-api-version':'2024-01-01','access-control-expose-headers':'x-supabase-api-version'},json:{code:'otp_expired',msg:'Token expired'}}));await page.getByLabel('Código del correo').fill('000000');await page.getByRole('button',{name:'Verificar correo',exact:true}).click();await expect(page.locator('dialog [role=alert]')).toContainText('El código venció');
 });
 test('Competitive questions retain all five original types of required graph and geometry stimulus',async({page},info)=>{
  const examples=[...new Map(dailyCatalog().items.filter(q=>q.visual).map(q=>[q.visual.type,q.visual])).values()],visual={};await fixturePage(page,{visual});
@@ -134,4 +134,22 @@ test('Registration opens its own form without validating empty login fields',asy
  await expect(page.locator('#signup-form input[name="email"]')).toHaveAttribute('required','');
  await page.getByRole('button',{name:'Ya tengo cuenta'}).click();
  await expect(page.locator('#auth-form')).toBeVisible();
+});
+
+test('Email verification resumes after reload, retains the typed code while waiting and enforces resend cooldown',async({page})=>{
+ await page.clock.install();await fixturePage(page,{signed:false});let resends=0;
+ await page.route('**/auth/v1/resend',async route=>{resends++;await route.fulfill({json:{}});});
+ await page.goto('./competencia.html#perfil');await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByRole('button',{name:'Confirmar mi correo',exact:true}).click();
+ await expect(page.getByRole('button',{name:/Reenviar en/})).toBeDisabled();await page.getByLabel('Código del correo').fill('123456');await page.clock.fastForward(3000);await expect(page.getByLabel('Código del correo')).toHaveValue('123456');expect(resends).toBe(1);
+ await page.reload();await expect(page.getByRole('heading',{name:'Confirma tu correo',exact:true})).toBeVisible();await expect(page.locator('dialog')).toContainText('ui-fixture@example.invalid');await page.clock.fastForward(61000);await expect(page.getByRole('button',{name:'Reenviar código',exact:true})).toBeEnabled();
+ await page.getByRole('button',{name:'Cambiar correo',exact:true}).click();await expect(page.locator('dialog')).not.toBeVisible();expect(await page.evaluate(()=>localStorage.getItem('cachaste-email-verification-v1'))).toBe(null);
+});
+test('A wise subject-specific mentor accompanies each subject and cat avatars keep existing numeric IDs',async({page})=>{
+ const requests=await fixturePage(page);await page.goto('./competencia.html#duelos');
+ for(const [label,key]of [['M1','M1'],['M2','M2'],['Lectora','Lectura'],['Historia','Historia'],['Ciencias','Ciencias']]){await page.getByRole('button',{name:label,exact:true}).click();await expect(page.locator('.comp-hero .subject-mentor')).toHaveAttribute('src','assets/competition-cat-'+key+'-v2.svg');}
+ await page.locator('.comp-nav').getByRole('link',{name:'Perfil',exact:true}).click();await expect(page.locator('.avatar-choice [type=radio]')).toHaveCount(7);await page.getByRole('radio',{name:'Gatita metalera',exact:true}).check();await page.getByRole('button',{name:'Guardar mi perfil',exact:true}).click();await expect.poll(()=>requests.filter(r=>r.operation==='save_profile').at(-1)?.payload.avatar).toBe(1);
+});
+test('Duel invitations refresh without a manual reload; question inputs are never polled away',async({page})=>{
+ await page.clock.install();const requests=await fixturePage(page);await page.goto('./competencia.html#duelos');await expect(page.locator('.duel-row')).toHaveCount(2);const initial=requests.filter(r=>r.operation==='dashboard').length;await page.clock.fastForward(21000);await expect.poll(()=>requests.filter(r=>r.operation==='dashboard').length).toBeGreaterThan(initial);
+ await page.getByRole('button',{name:'Desafiar',exact:true}).click();await page.getByRole('textbox',{name:'Nickname',exact:true}).fill('CataPAES');await page.getByRole('button',{name:'Enviar desafío',exact:true}).click();await page.getByRole('button',{name:'Comenzar duelo',exact:true}).click();await page.getByRole('radio').nth(1).check();const before=requests.length;await page.clock.fastForward(21000);await expect(page.getByRole('radio').nth(1)).toBeChecked();expect(requests.length).toBe(before);
 });

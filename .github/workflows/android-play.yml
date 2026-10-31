@@ -109,10 +109,10 @@ jobs:
           actual=$(openssl x509 -in play-delivery/upload-certificate.pem -noout -fingerprint -sha256 | cut -d= -f2 | tr -d ':' | tr 'A-F' 'a-f')
           test "$actual" = "$EXPECTED_UPLOAD_SHA256" || { echo '::error::La clave no coincide con el certificado de carga fijado y confirmado por el titular.'; exit 1; }
           gradle -p android --no-daemon :app:lintRelease :app:bundleRelease
-          cp android/app/build/outputs/bundle/release/app-release.aab play-delivery/Cachaste-1.5.0-rc7-34.aab
-          java scripts/VerifyPlayBundle.java play-delivery/Cachaste-1.5.0-rc7-34.aab "$EXPECTED_UPLOAD_SHA256" > play-delivery/verification.json
-          java -jar "$RUNNER_TEMP/bundletool.jar" validate --bundle=play-delivery/Cachaste-1.5.0-rc7-34.aab
-          java -jar "$RUNNER_TEMP/bundletool.jar" dump manifest --bundle=play-delivery/Cachaste-1.5.0-rc7-34.aab --module=base > play-delivery/AndroidManifest.xml
+          cp android/app/build/outputs/bundle/release/app-release.aab play-delivery/Cachaste-1.5.0-rc8-35.aab
+          java scripts/VerifyPlayBundle.java play-delivery/Cachaste-1.5.0-rc8-35.aab "$EXPECTED_UPLOAD_SHA256" > play-delivery/verification.json
+          java -jar "$RUNNER_TEMP/bundletool.jar" validate --bundle=play-delivery/Cachaste-1.5.0-rc8-35.aab
+          java -jar "$RUNNER_TEMP/bundletool.jar" dump manifest --bundle=play-delivery/Cachaste-1.5.0-rc8-35.aab --module=base > play-delivery/AndroidManifest.xml
           python3 scripts/verify-play-manifest.py play-delivery/AndroidManifest.xml > play-delivery/manifest-verification.json
           printf '%s\n' "$GITHUB_SHA" > play-delivery/source-commit.txt
           sha256sum play-delivery/*.aab > play-delivery/SHA256SUMS.txt
@@ -121,7 +121,7 @@ jobs:
         run: rm -f "$RUNNER_TEMP/cachaste-upload.jks"
       - uses: actions/upload-artifact@v4
         with:
-          name: Cachaste-Play-SIGNED-34-${{ github.sha }}
+          name: Cachaste-Play-SIGNED-35-${{ github.sha }}
           path: play-delivery/
           if-no-files-found: error
           retention-days: 30

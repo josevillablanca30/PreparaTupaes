@@ -14,8 +14,8 @@ android {
         minSdk 24
         targetSdk 36
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        versionCode 34
-        versionName '1.5.0-rc7'
+        versionCode 35
+        versionName '1.5.0-rc8'
         buildConfigField 'boolean', 'CACHASTE_PLAY_ENABLED', String.valueOf(System.getenv('CACHASTE_PLAY_ENABLED') == 'true')
     }
     signingConfigs {
