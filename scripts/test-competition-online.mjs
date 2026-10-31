@@ -12,6 +12,21 @@ const admin=createClient(url.href,status.SERVICE_ROLE_KEY,{auth:{persistSession:
 const users=[],clients=[],credentials=[],events=[];const record=(name,details={})=>{events.push({name,passed:true,...details});console.log('PASS',name);};
 const call=async(i,operation,payload={})=>{const{data,error}=await clients[i].rpc('cachaste_competition',{operation,payload});if(error)throw error;return data;};
 // Only this disposable database may age fixtures or control server clocks. No test hook exists in the app/RPC.
+// Inspect actual rendered mail captured by the disposable local SMTP server. Never log OTPs.
+const mailbox=new URL(status.MAILPIT_URL||status.INBUCKET_URL||'http://127.0.0.1:54324');
+if(!['localhost','127.0.0.1'].includes(mailbox.hostname))throw new Error('Mail verification refuses hosted servers');
+async function readEmailCode(email,subject){
+ for(let retry=0;retry<20;retry++){
+  const listResponse=await fetch(new URL('/api/v1/messages',mailbox));if(!listResponse.ok)throw Error('Local SMTP inbox unavailable: '+listResponse.status);
+  const list=await listResponse.json(),message=list.messages?.find(m=>m.Subject===subject&&m.To?.some(to=>to.Address?.toLowerCase()===email.toLowerCase()));
+  if(message){const response=await fetch(new URL('/api/v1/message/'+encodeURIComponent(message.ID),mailbox));if(!response.ok)throw Error('Local SMTP message unavailable');const body=await response.json();
+   assert.ok(!/localhost|ConfirmationURL|TokenHash/.test(body.HTML),'Email must not contain a broken confirmation link');
+   const match=body.HTML?.match(/id=["']verification-code["'][^>]*>\s*(\d{6,8})\s*</);assert.ok(match,'The delivered email must visibly contain its numeric OTP');return match[1];
+  }
+  await new Promise(resolve=>setTimeout(resolve,250));
+ }
+ throw Error('Expected Spanish verification email did not reach local SMTP');
+}
 async function agePair(){await db.query("update cachaste.duels set created_at=now()-interval '2 days'");}
 async function startBoth(duelId){const list=[];for(let i=0;i<2;i++){const d=await call(i,'duel',{duelId});list.push(await call(i,'start',{attemptId:d.attemptId}));}return list;}
 async function finishTurn(i,turn,{correct=true,seconds=1}={}){while(turn.status==='active'){
@@ -24,15 +39,16 @@ try{
  for(let i=0;i<2;i++){
   const email='cachaste-ci-'+randomUUID()+'@example.invalid',password=randomUUID()+randomUUID();credentials.push({email,password});
   const client=createClient(url.href,status.ANON_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
-  const signup=await client.auth.signUp({email,password});if(signup.error)throw signup.error;assert.equal(signup.data.session,null,'CI must require email confirmation');users.push(signup.data.user.id);
+  const signup=await client.auth.signUp({email,password});if(signup.error)throw signup.error;assert.ok(!signup.data.session,'CI must require email confirmation');users.push(signup.data.user.id);
   const premature=await client.auth.signInWithPassword({email,password});assert.equal(premature.error?.code,'email_not_confirmed');
-  // Read the test mailbox token from this disposable GoTrue database; no hosted identity or email inbox is accessed.
-  const token=(await db.query('select confirmation_token from auth.users where id=$1',[signup.data.user.id])).rows[0].confirmation_token;
-  assert.ok(token);const confirmation=await client.auth.verifyOtp({token_hash:token,type:'signup'});if(confirmation.error)throw confirmation.error;
+  const token=await readEmailCode(email,'Confirma tu correo en ¿Cachaste?');
+  const invalid=await client.auth.verifyOtp({email,token:token==='000000'?'111111':'000000',type:'email'});assert.ok(invalid.error,'Wrong codes must be rejected');
+  const confirmation=await client.auth.verifyOtp({email,token,type:'email'});if(confirmation.error)throw confirmation.error;
+  const replay=await client.auth.verifyOtp({email,token,type:'email'});assert.ok(replay.error,'A used code must not work twice');
   await client.auth.signOut();const login=await client.auth.signInWithPassword({email,password});if(login.error)throw login.error;clients.push(client);
   await call(i,'save_profile',{nickname:'TestCachaste'+i,communeCode:i?'05109':'05701',publicRanking:true,allowChallenges:true,showCommune:true,avatar:i,communityVersion:'2026-10-23'});
  }
- record('Two public signups require email verification, confirm through real GoTrue and then sign in independently');
+ record('Two public signups receive Spanish OTP emails through local SMTP; valid codes sign in and wrong/reused codes are rejected');
  const duplicate=await clients[1].rpc('cachaste_competition',{operation:'save_profile',payload:{nickname:'testcachaste0',communeCode:'05109',communityVersion:'2026-10-23'}});assert.equal(duplicate.error?.code,'23505');
  await call(0,'save_profile',{nickname:'ChangedNickname',communeCode:'05701',publicRanking:true,allowChallenges:true,showCommune:true,avatar:0,communityVersion:'2026-10-23'});assert.equal((await call(0,'profile')).profile.nickname,'ChangedNickname');
  await call(0,'save_profile',{nickname:'TestCachaste0',communeCode:'05701',publicRanking:true,allowChallenges:true,showCommune:true,avatar:0,communityVersion:'2026-10-23'});
@@ -96,8 +112,8 @@ try{
  const finalRank=await call(1,'rankings',{mode:'duel',subject:'M1',scope:'Chile'});assert.equal(Number(finalRank.me.value),2);assert.equal(finalRank.me.wins,2);assert.equal(finalRank.me.losses,1);assert.equal(finalRank.me.draws,1);assert.equal((await db.query('select count(*)::int n from cachaste.settlements')).rows[0].n,4);record('Four complete scenarios retain historical wins, losses, draws and four unique settlements');
  const exposed=await clients[0].from('entitlements').select('*');assert.ok(exposed.error);record('Client cannot access or modify subscription tables');
  const reset=await clients[1].auth.resetPasswordForEmail(credentials[1].email);if(reset.error)throw reset.error;
- const recoveryToken=(await db.query('select recovery_token from auth.users where id=$1',[users[1]])).rows[0].recovery_token;assert.ok(recoveryToken);
- const recoveryClient=createClient(url.href,status.ANON_KEY,{auth:{persistSession:false,autoRefreshToken:false}}),verified=await recoveryClient.auth.verifyOtp({type:'recovery',token_hash:recoveryToken});if(verified.error)throw verified.error;
+ const recoveryToken=await readEmailCode(credentials[1].email,'Recupera tu acceso a ¿Cachaste?');
+ const recoveryClient=createClient(url.href,status.ANON_KEY,{auth:{persistSession:false,autoRefreshToken:false}}),verified=await recoveryClient.auth.verifyOtp({type:'recovery',email:credentials[1].email,token:recoveryToken});if(verified.error)throw verified.error;
  const password=randomUUID()+randomUUID(),updated=await recoveryClient.auth.updateUser({password});if(updated.error)throw updated.error;await recoveryClient.auth.signOut({scope:'global'});
  const staleSession=await clients[1].rpc('cachaste_competition',{operation:'profile',payload:{}});assert.ok(staleSession.error,'A former session must not survive password recovery logout');
  const former=await clients[1].auth.signInWithPassword(credentials[1]);assert.ok(former.error);credentials[1].password=password;const renewed=await clients[1].auth.signInWithPassword(credentials[1]);if(renewed.error)throw renewed.error;record('A real Auth recovery token changes the password and the former password and old session are rejected; recovery requested through public Auth; local SMTP only');
