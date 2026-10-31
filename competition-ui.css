@@ -48,3 +48,7 @@ dialog{max-height:calc(100dvh - 32px);overflow:auto}dialog .email-help{font-size
 @media(min-width:600px){.comp-hero .hero-cat.subject-mentor{height:205px}}
 
 @media(max-width:420px){.avatar-choice{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.avatar-choice span{font-size:11px}.avatar-choice label{padding:5px;min-height:82px}}
+
+.avatar-collection{border:1px solid #e6d9f1;border-radius:16px;padding:10px}.avatar-collection summary{cursor:pointer;min-height:52px;align-content:center;color:#4e2c74;font-weight:750;line-height:1.4}.avatar-collection summary small{display:block;font-weight:500;font-size:12px;color:#756383}.avatar-filters{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.avatar-filters button{font-size:12px;min-height:48px;padding:8px 12px}.avatar-choice label[hidden]{display:none!important}.avatar-choice{margin:0}
+
+.avatar-collection .avatar-choice{padding:8px;gap:7px}.avatar-collection .avatar-choice label{padding:4px;min-width:0}.avatar-collection .avatar-choice span{max-width:100%;font-size:11px;overflow-wrap:anywhere;hyphens:auto}.avatar-collection .avatar-choice img{max-width:100%}

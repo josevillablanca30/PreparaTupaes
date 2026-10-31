@@ -77,6 +77,125 @@
       "prompt": "Use case: identity-preserve. Asset: ONE isolated upper-body illustration for the educational app Cachaste. The supplied image identifies the official SAME wise cat mascot: black fur, large purple eyes, distinctive white eyebrows, long white whiskers and beard, white hair topknot, purple teacher robe with pale trim. Preserve this exact character identity and polished illustrated 3D fur. Show him teaching natural sciences, holding a small microscope beside a clear laboratory beaker, safe calm laboratory setting implied only by these props. He is a serene, confident experienced master, warm closed-mouth smile, wise expression, mouth closed and no tongue out, never trying to appear like a teenager. No fighting pose or headband. Keep paws feline. Clean upper-body portrait, all props contained in frame, comfortable safe margins. Remove ALL old speech balloons, lettering, yellow rays and background from the reference. No text or diagrams requiring precise information. Genuinely transparent background, no shadows outside the character, no mockup, no collage.",
       "generator": "built-in imagegen",
       "source_file": "exec-f1ee0af2-16fa-490a-9ae6-8cfc75b51cb7.png"
+    },
+    {
+      "asset": "assets/competition-avatar-7.svg",
+      "name": "Gatito punk",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: male black-and-white kitten, short purple punk mohawk, red plaid vest, small decorative studs. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-c874f99a-75de-4b8a-ae9c-fe45ece39164.png"
+    },
+    {
+      "asset": "assets/competition-avatar-8.svg",
+      "name": "Gatita gótica",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: female long-haired black kitten, Victorian gothic black lace collar, tiny purple rose, elegant somber smile. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-e7bf7db3-68a9-4155-a20d-2e42f3d3d082.png"
+    },
+    {
+      "asset": "assets/competition-avatar-9.svg",
+      "name": "Gatita skater",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: female ginger kitten, teal beanie, oversized skate hoodie, miniature skateboard tucked beside shoulder. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-e0cbcefa-7dc9-4f7b-911b-1d3aef01a62d.png"
+    },
+    {
+      "asset": "assets/competition-avatar-10.svg",
+      "name": "Gatito DJ",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: male silver tabby kitten, vivid purple DJ headphones, black bomber jacket, one paw on tiny turntable. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-0d27b5d6-dbd5-46ba-ba6a-c29cf627ad6c.png"
+    },
+    {
+      "asset": "assets/competition-avatar-11.svg",
+      "name": "Gatita rockabilly",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: female cream kitten, red polka-dot head scarf, curled forelock, retro black jacket. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-d690bd77-f1fc-44c0-9eef-5a6a35175726.png"
+    },
+    {
+      "asset": "assets/competition-avatar-12.svg",
+      "name": "Gatito astronauta",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: male white kitten in a compact white and purple spacesuit, round clear open helmet, no logos. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-93167a21-ad30-47af-aa2e-71794c33d5b2.png"
+    },
+    {
+      "asset": "assets/competition-avatar-13.svg",
+      "name": "Gatita surfista",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: female sandy tabby kitten, turquoise tropical shirt, small coral surfboard beside shoulder. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-968034a7-e1d1-4d50-9de6-adf23067eccb.png"
+    },
+    {
+      "asset": "assets/competition-avatar-14.svg",
+      "name": "Gatito hippie",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: male fluffy cream kitten, colorful woven headband, round purple glasses, tie-dye vest with flower. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-067fe07e-204e-43ac-aa16-82aacaf5414f.png"
+    },
+    {
+      "asset": "assets/competition-avatar-15.svg",
+      "name": "Gatita científica",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: female calico kitten, white lab coat, clear safety glasses, small laboratory flask beside shoulder. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-237fe2f5-85ef-4d6c-a284-314851f5a459.png"
+    },
+    {
+      "asset": "assets/competition-avatar-16.svg",
+      "name": "Gatito mago",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: male midnight-blue-black kitten, purple star-pattern wizard hat and robe, tiny wooden wand with soft star glow. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-28facf71-6638-4401-8b2f-82a0cbc70412.png"
+    },
+    {
+      "asset": "assets/competition-avatar-17.svg",
+      "name": "Gatita cyberpunk",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: female silver kitten, asymmetric violet undercut fur, sleek dark futuristic jacket, teal glowing headset. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-7bd79e9b-75ae-4004-9e6c-2fc23fadc7f6.png"
+    },
+    {
+      "asset": "assets/competition-avatar-18.svg",
+      "name": "Gatito disco",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: male fluffy ginger kitten, purple sequin disco jacket, round tinted glasses, 1970s glamorous collar. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-638a0b0c-98ef-44dd-a87e-45961bbc7f5e.png"
+    },
+    {
+      "asset": "assets/competition-avatar-19.svg",
+      "name": "Gatita huasa",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: female brown-and-white kitten in Chilean countryside attire, broad straw huaso hat with simple dark ribbon, colorful woven chamanto, respectfully accurate clothing. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-1c9c7b08-f825-48ce-92f0-be842e1edaa5.png"
+    },
+    {
+      "asset": "assets/competition-avatar-20.svg",
+      "name": "Gatito detective",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: male gray tabby kitten, classic beige detective trenchcoat and matching deerstalker hat, small magnifying glass beside shoulder. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-5854cc6b-03b6-4403-9594-65d2b0a978bc.png"
+    },
+    {
+      "asset": "assets/competition-avatar-21.svg",
+      "name": "Gatita lectora",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: female tortoiseshell kitten, oversized round purple reading glasses, cozy lavender cardigan, little open book beside shoulder. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-5a629d18-7e0c-4713-ab02-a0285d59f3f1.png"
+    },
+    {
+      "asset": "assets/competition-avatar-22.svg",
+      "name": "Gatito bailarín",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: male black-and-white kitten, stylish pastel street-dance jacket, lavender cap tilted back, energetic dance pose visible in bust. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-d67c8008-9ef6-4f28-8c8e-6ee38e0d4b1c.png"
+    },
+    {
+      "asset": "assets/competition-avatar-23.svg",
+      "name": "Gatita fotógrafa",
+      "prompt": "Use case: stylized collectible app avatar. Create exactly ONE original feline avatar matching the supplied Cachaste reference's premium soft 3D illustrated fur, expressive eyes, rounded friendly proportions and lavender circular medallion composition. Subject: female golden kitten, purple utility vest, compact camera hanging at neck, artistic attentive expression. This must be clearly a CAT, feline paws, muzzle, whiskers, prominent ears, never a human face. Friendly and age-appropriate, stylish clothing with no branded logos or lettering. Clean bust portrait centered inside a pale lavender circular medallion, all ears and important props fully inside generous margins. The character's personal style must read clearly even at 64px. Distinctive fur, accessories and silhouette. No text, numbers, speech bubbles, watermark, collage, grid, extra characters or background scene. Transparent canvas outside the circular medallion. Preserve the SAME rendering style as reference, but create this distinct new outfit and character.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-5bbd8be4-6950-4a3a-9136-15ce539a9328.png"
     }
   ]
 }
