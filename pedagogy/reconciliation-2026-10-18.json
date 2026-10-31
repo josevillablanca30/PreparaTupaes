@@ -1,0 +1,39 @@
+{
+  "previousWork": "69ad25a2535e7dfb3e2ef49b9aa1fc50f8983c6a",
+  "main": "560e48cb937cdced1556d86a866c10d5c8012fc7",
+  "previousAssessmentSha256": "ac58131e4a839f1e49ac828814f903e000c5288a7c63bd0532d70744d9aacb0f",
+  "recovered": [
+    {
+      "id": "M2-107",
+      "assessmentSha256": "b37cb0a95259528b4e9c3857ecaa16ee3a0728bd63bf3175c29df74090a898f0"
+    },
+    {
+      "id": "M2-108",
+      "assessmentSha256": "5cccbeaa00a5ce780312f5f72d843ea1f6703912830829a73d146febb4c24669"
+    },
+    {
+      "id": "M2-109",
+      "assessmentSha256": "7d18c8a46b52aa6482b0d907a8b6aed8dd315d03716a817539a2a264e4637b60"
+    },
+    {
+      "id": "M2-110",
+      "assessmentSha256": "cc7ddddf3e686058e93fb4d42d6c9a014b2545aba9dd06114f71c875dab0fa0e"
+    },
+    {
+      "id": "M2-111",
+      "assessmentSha256": "6dc8fda1fa162f69145c5a41e7e911f3db08159e642bfd3c6fb4b1beb86d8b8d"
+    },
+    {
+      "id": "M2-112",
+      "assessmentSha256": "f41542acc0d80ef6768ac1457eeb5970c994696e2ef919ae9171c4613387393b"
+    },
+    {
+      "id": "M2-113",
+      "assessmentSha256": "6b521387e53619f11b5ab5f5e0c6590a48f18d15aa49ab2626d27c7f28a0d8cd"
+    },
+    {
+      "id": "M2-114",
+      "assessmentSha256": "9e6f5bcc74a33b92b86b9ded8b991fe5bf208bcc00188285b8bec2582adc23ac"
+    }
+  ]
+}

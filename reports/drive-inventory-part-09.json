@@ -1,0 +1,426 @@
+{
+ "scanned": "2026-10-16",
+ "root": "Material PAES",
+ "contents": [
+  {
+   "path": "FILADD/Lectura/Ensayos ",
+   "id": "1DbCWtnWy25fcBYZ3oRKAaUyo4UL0ceRd",
+   "items": [
+    {
+     "id": "1wH_VDvzqQjLYEWtlhtJyQEXIVViqozOy",
+     "name": "Notes_251102_151257.pdf",
+     "type": "application/pdf",
+     "bytes": 1617512
+    },
+    {
+     "id": "1mdKdGFDLR8eipPwpElNks7UkiefqxRF8",
+     "name": "Notes_251102_151247.pdf",
+     "type": "application/pdf",
+     "bytes": 2616252
+    },
+    {
+     "id": "1IKl9TgYgjq-JGaRElr8PbJMI6nSREE45",
+     "name": "2CL.pdf",
+     "type": "application/pdf",
+     "bytes": 4725453
+    },
+    {
+     "id": "1_rH8CyoiqhVaEbCTgn-685HfibgcDkfF",
+     "name": "8CL.pdf",
+     "type": "application/pdf",
+     "bytes": 3269995
+    },
+    {
+     "id": "1DeDrIseKUbPMRl49B0ugJsVq-BVsfmkB",
+     "name": "ensayo-general-comprension-lectora-paes-4 (1).pdf",
+     "type": "application/pdf",
+     "bytes": 2150241
+    },
+    {
+     "id": "1quxxA8h5U3IC-oSVjxSi_Nc6dI5uJPbQ",
+     "name": "1° Ensayo General Comprensión Lectora (1) (1).pdf",
+     "type": "application/pdf",
+     "bytes": 1259552
+    },
+    {
+     "id": "1cvVAVCtfnEm1NjBxHTZIgxePPemSaNuz",
+     "name": "CL.pdf",
+     "type": "application/pdf",
+     "bytes": 1902673
+    },
+    {
+     "id": "1bHWYRtpnVgyddyL8SjgouXK20LDI460H",
+     "name": "ensayo-general-comprension-lectora-paes-2 (1).pdf",
+     "type": "application/pdf",
+     "bytes": 1325582
+    },
+    {
+     "id": "1zbF2Nvhp63usFizrvwLAMYS50_tEi3Qs",
+     "name": "ensayo-general-comprension-lectora-paes-3 (1).pdf",
+     "type": "application/pdf",
+     "bytes": 1038751
+    },
+    {
+     "id": "1BYQ8gPxTIkvDWBbKYaFlXbUCb3_jxe9A",
+     "name": "ensayo-general-comprension-lectora-paes-1 (1).pdf",
+     "type": "application/pdf",
+     "bytes": 877769
+    }
+   ]
+  },
+  {
+   "path": "FILADD/Lectura/Mapas conceptuales",
+   "id": "18PZCxagF43Luj4NXisCn_e1ZV0x5pYis",
+   "items": [
+    {
+     "id": "1zDcF-fNPodMVcwT9oHxA_O9VVeA4UpMN",
+     "name": "mapa-conceptual-eje-1.png",
+     "type": "image/png",
+     "bytes": 227166
+    }
+   ]
+  },
+  {
+   "path": "FILADD/Biología/EJE 2",
+   "id": "1VjQ16KF9b9Dh3Th1KuKMW1zHOWq9G6mE",
+   "items": [
+    {
+     "id": "1CRIRkNfTXcOEMlvi4Xul4aM0mF9iAngA",
+     "name": "guia-teorica-eje-2-1-sexualidad-humana.pdf",
+     "type": "application/pdf",
+     "bytes": 9457063
+    }
+   ]
+  },
+  {
+   "path": "FILADD/Biología/EJE 3",
+   "id": "1mfzWdJBN1POkxgrOs9U0Mf-_1rC7M9OR",
+   "items": [
+    {
+     "id": "1QvjRG1U87sI78LDJu0ME9U3YWI3W7yjs",
+     "name": "guia-teorica-eje-3-4-estudio-de-los-origenes-y-evidencias-biologicas.pdf",
+     "type": "application/pdf",
+     "bytes": 7099179
+    },
+    {
+     "id": "1ALLN-fBd0OjLL29otkMF3MZ3nioIHkjL",
+     "name": "guia-teorica-eje-3-2-meiosis.pdf",
+     "type": "application/pdf",
+     "bytes": 3144820
+    },
+    {
+     "id": "1SWT6aQkvRJjt6y5i8OF8bSeC_I8Xe1Hy",
+     "name": "guia-teorica-eje-3-5-teorias-de-la-evolucion-de-la-biodiversidad.pdf",
+     "type": "application/pdf",
+     "bytes": 6244706
+    },
+    {
+     "id": "1rCc2MLbDQ5FFKg4uTEF45B1oifxRueay",
+     "name": "guia-teorica-eje-3-3-manipulacion-genetica.pdf",
+     "type": "application/pdf",
+     "bytes": 4112886
+    }
+   ]
+  },
+  {
+   "path": "FILADD/Biología/EJE 4",
+   "id": "1t_1mFTrDQj8vGQ0oWHISMjvu00fcl0aU",
+   "items": [
+    {
+     "id": "1jF2eAVd0VjcD-xEU8D4L1vhy3Ji9GOGl",
+     "name": "guia-teorica-eje-4-1-productores-y-fotosintesis.pdf",
+     "type": "application/pdf",
+     "bytes": 6727022
+    },
+    {
+     "id": "1Qt6W4h97dqLh_YZj7aB2P7PXbiBe3Kgd",
+     "name": "guia-teorica-eje-4-2-flujos-de-materia-y-energia.pdf",
+     "type": "application/pdf",
+     "bytes": 3808885
+    }
+   ]
+  },
+  {
+   "path": "FILADD/Biología/Ensayos ",
+   "id": "1lZ1j_D8oXlBDLUb6_dMtgG_95sy5ncgR",
+   "items": [
+    {
+     "id": "1g0smwIExwUR3N7PzoAdkThUe-RyjCnsQ",
+     "name": "1° Ensayo General Biología.pdf",
+     "type": "application/pdf",
+     "bytes": 1250226
+    },
+    {
+     "id": "1h6AQpYkjpM1VYmSl5gwnO76jL_kU4P19",
+     "name": "ensayo-general-ciencias-mencion-biologia-paes-5.pdf",
+     "type": "application/pdf",
+     "bytes": 2625074
+    },
+    {
+     "id": "1FMFENEJzAULlcya3RUvGBzOd-IdXIugC",
+     "name": "2do-ensayo-general-nacional-ciencias-mencion-biologia-2025.pdf",
+     "type": "application/pdf",
+     "bytes": 3169506
+    },
+    {
+     "id": "1PHH4-540gUjHDdr8JH8t_1L_oBXBsgN8",
+     "name": "ensayo-general-ciencias-mencion-biologia-paes-3.pdf",
+     "type": "application/pdf",
+     "bytes": 2528821
+    },
+    {
+     "id": "1vszy1eHcO8Fm_Y7I1kMUwpIchWUhg27Z",
+     "name": "ensayo-general-ciencias-mencion-biologia-paes-4.pdf",
+     "type": "application/pdf",
+     "bytes": 2362982
+    },
+    {
+     "id": "1GeP54sFAjYhmdmlukFW0kx9XP_7SJ-et",
+     "name": "1er-ensayo-general-nacional-ciencias-mencion-biologia-2025 (1).pdf",
+     "type": "application/pdf",
+     "bytes": 2022498
+    }
+   ]
+  },
+  {
+   "path": "FILADD/Biología/Guías de práctica",
+   "id": "1DA_6IDtqEZ6uIDAvORdanrSA8vO27Ra7",
+   "items": [
+    {
+     "id": "1g4fvDYkJeEwqXrF-LydZ4rgpEtKiUAB7",
+     "name": "Copia de 06 CICLO CELULAR Y MITOSIS.pdf",
+     "type": "application/pdf",
+     "bytes": 1210376
+    },
+    {
+     "id": "1Fe1C0SDVo6ESLGolbTC7dja8r4JZ5Ew2",
+     "name": "Copia de 02 ESTRUCTURAS Y FUNCION CELULAR 2.pdf",
+     "type": "application/pdf",
+     "bytes": 489956
+    },
+    {
+     "id": "1r2NCtD315LB1k_MIFGA81VnpOzKCNOXn",
+     "name": "Copia de 04 SEXUALIDAD HUMANA.pdf",
+     "type": "application/pdf",
+     "bytes": 1048119
+    },
+    {
+     "id": "1wzu4jMWpMXGCiI2iaPJQyeuCdiMTaA9f",
+     "name": "Copia de 06 Guia practica C Eje 21 Biomoleculas 2 Resolucion .pdf",
+     "type": "application/pdf",
+     "bytes": 546941
+    },
+    {
+     "id": "1CRGaeInmFKzhn9oTfWOUFEoK6qygcPNI",
+     "name": "Copia de 08 MANIPULACION GENETICA (1).pdf",
+     "type": "application/pdf",
+     "bytes": 373123
+    },
+    {
+     "id": "1vfnBLwjb9E5FX6W5_CeW89Z7xhVtQQUb",
+     "name": " INTERACCIONES BIOLOGICAS 2.pdf",
+     "type": "application/pdf",
+     "bytes": 692869
+    },
+    {
+     "id": "11zwRwRqJ5-kuQ3nqHd8Ukg6uZQQ9CRZj",
+     "name": "Copia de 06 BIOMOLECULAS 1.pdf",
+     "type": "application/pdf",
+     "bytes": 539051
+    },
+    {
+     "id": "166uXVJuvzUy6P1v35TMwoQWHETtsEY6-",
+     "name": "Copia de 03 INTERCAMBIO CELULA-AMBIENTE 1.pdf",
+     "type": "application/pdf",
+     "bytes": 493110
+    },
+    {
+     "id": "1_JjlPUvejjRtVui9pOoVBpfkbhCLASYa",
+     "name": "Copia de 15 Guia practica C Eje 41 Productores y fotosintesis 1 Resolucion.pdf",
+     "type": "application/pdf",
+     "bytes": 988799
+    },
+    {
+     "id": "1mvl_b_Sh5gff4Wp6v8XLwh-MsqlhX6zS",
+     "name": "Copia de 08 MANIPULACION GENETICA 2.pdf",
+     "type": "application/pdf",
+     "bytes": 625965
+    },
+    {
+     "id": "1Ta8DGZTMIF5OKvQD0H9dvNi6_0YmPRnc",
+     "name": "Copia de 02 ESTRUCTURA Y FUNCION CELULAR.pdf",
+     "type": "application/pdf",
+     "bytes": 2592830
+    },
+    {
+     "id": "1CVYhbT66dsSCXBDXSZr3wMuhtelqGjtY",
+     "name": "Copia de 03 INTERCAMBIO CELULA-AMBIENTE.pdf",
+     "type": "application/pdf",
+     "bytes": 1984504
+    },
+    {
+     "id": "1Qtpzxxdejk9QB0zhmG-8_AHfIzaFwsS4",
+     "name": "Copia de 08 MANIPULACION GENETICA.pdf",
+     "type": "application/pdf",
+     "bytes": 515502
+    },
+    {
+     "id": "1F0yVR0jHHIRAvB5DV9puvkrOdMvsvKyX",
+     "name": "Copia de 16 Guia practica C Eje 42 Flujos de materia y energia 1 Resolucion.pdf",
+     "type": "application/pdf",
+     "bytes": 657380
+    },
+    {
+     "id": "1jGuaXqEttayghSkUYavzC6YfL7Y4uQ38",
+     "name": "Copia de 18 Guia practica C Eje 44 Efecto de la actividad humana 2 Resolucion.pdf",
+     "type": "application/pdf",
+     "bytes": 721650
+    },
+    {
+     "id": "1k4p-ORR6H8yU3DcfkmtHoprIK28ogo7h",
+     "name": "Copia de Guia practica C Eje 11 Generalidades de la celula 1 - RESOLUCION.pdf",
+     "type": "application/pdf",
+     "bytes": 1950642
+    },
+    {
+     "id": "1Vprx-O-GuMjh407FfsKAFSwk7O6Lccsu",
+     "name": "Copia de 02 Guia practica C Eje 12 Estructuras celulares 2 - RESOLUCION.pdf",
+     "type": "application/pdf",
+     "bytes": 802124
+    },
+    {
+     "id": "1PXStMwS4fvvy7Pi6yv6QHoGDUzxa_-To",
+     "name": "Copia de 06 CICLO CELULAR Y MITOSIS (1).pdf",
+     "type": "application/pdf",
+     "bytes": 2304766
+    },
+    {
+     "id": "1KANEh6APO0Af2plWnmDpCmlIDm9ziulU",
+     "name": "Copia de 04 SEXUALIDAD HUMANA 2.pdf",
+     "type": "application/pdf",
+     "bytes": 524985
+    },
+    {
+     "id": "11lt-l3j4VELo-d1ZsqHrerkUsgd41z61",
+     "name": "Copia de 02 ESTRUCTURAS Y FUNCION CELULAR.pdf",
+     "type": "application/pdf",
+     "bytes": 512055
+    },
+    {
+     "id": "1h1KpB-xoCQnwxoUkKKKOZjCtuMZVfXRE",
+     "name": "Copia de 12 EFECTOS DE LA ACTIVIDAD HUMANA 2.pdf",
+     "type": "application/pdf",
+     "bytes": 483646
+    },
+    {
+     "id": "1IA0jkUbQIQMRorLzGOj84t5dpM45oPPL",
+     "name": "Copia de MEIOSIS.pdf",
+     "type": "application/pdf",
+     "bytes": 1179419
+    },
+    {
+     "id": "1fEPzFtsb61Aqi_1nM4tEj8X7uK6Uy4xx",
+     "name": "Copia de 01 GENERALIDADES 2.pdf",
+     "type": "application/pdf",
+     "bytes": 532007
+    },
+    {
+     "id": "1bY_xfUGVHzyHYpV4QEsjQVpjs4Y_VLOY",
+     "name": "Copia de 06 CICLO CELULAR Y MITOSIS 2.pdf",
+     "type": "application/pdf",
+     "bytes": 514202
+    },
+    {
+     "id": "1VAqLhDJK37AXfMdwqNDOXpryoqAwFNFM",
+     "name": "Copia de 12 EFECTO DE LA ACTIVIDAD HUMANA.pdf",
+     "type": "application/pdf",
+     "bytes": 454675
+    }
+   ]
+  },
+  {
+   "path": "M30M/Expediente secreto/Ciencias ",
+   "id": "1snGLyOCnqmthWCZCOE32uqE9rKPPLEHf",
+   "items": [
+    {
+     "id": "13c4bMA0pRP1wSP18Aos4RLDDqhWfnuY8",
+     "name": "EXPEDIENTE SECRETO C30M.pdf",
+     "type": "application/pdf",
+     "bytes": 36401717
+    }
+   ]
+  },
+  {
+   "path": "M30M/Química/Ensayos",
+   "id": "1MPnn8iuwp349cfdAeMzdzIeaCF5ND0qL",
+   "items": [
+    {
+     "id": "19DvoNFSQaR7QPGjQrTYGhF4Uq61LZZPs",
+     "name": "C30M-EG3-QE.pdf",
+     "type": "application/pdf",
+     "bytes": 3693702
+    },
+    {
+     "id": "1GCi8EL8qLZLFdj0OF8LYFXE7tEoQM5e1",
+     "name": "C30M-EG-2-Q.pdf",
+     "type": "application/pdf",
+     "bytes": 2875083
+    },
+    {
+     "id": "1yU0jKCGjbsjO2ktCr2D_Uuyg581WXU2n",
+     "name": "EG-1-QM.pdf",
+     "type": "application/pdf",
+     "bytes": 1557620
+    }
+   ]
+  },
+  {
+   "path": "M30M/M2/Ensayos",
+   "id": "1TNcZuWC3m4oDvacNjIFzOXpNP1pcJIWo",
+   "items": [
+    {
+     "id": "1n0zl3T0eqRBfL4qd7MiICkdxpZzFY6Aq",
+     "name": "M2-IM-E3.pdf",
+     "type": "application/pdf",
+     "bytes": 663220
+    },
+    {
+     "id": "1AmSV7cK-2AH2V7WTNVMykBmqoY0Deo-b",
+     "name": "1-M2-EG-EG1.pdf",
+     "type": "application/pdf",
+     "bytes": 2366254
+    },
+    {
+     "id": "1rkVLbt9u9kbao_8H3T_yGy_bH9QCAXWp",
+     "name": "1-M2-IM-ME1.pdf",
+     "type": "application/pdf",
+     "bytes": 1922800
+    },
+    {
+     "id": "1brlD1jfRf_UvHkFVpGOa-YfbvZIh86fp",
+     "name": "M2-IM-MES2.pdf",
+     "type": "application/pdf",
+     "bytes": 1291116
+    },
+    {
+     "id": "1SpdsCl-xnLWUwdvE1K__XfCTtmsVvT56",
+     "name": "M2-IM-ME4.pdf",
+     "type": "application/pdf",
+     "bytes": 679014
+    },
+    {
+     "id": "11hnkiGctvac7KAB1RFLxQYTGMUS69Wcs",
+     "name": "solucionarios ensayos.pdf",
+     "type": "application/pdf",
+     "bytes": 43748
+    },
+    {
+     "id": "1XA3CgIHwJ-YgCaNfXTi0rVZQs8Vx7ETF",
+     "name": "M2-IM-EG2.pdf",
+     "type": "application/pdf",
+     "bytes": 912182
+    }
+   ]
+  }
+ ]
+}

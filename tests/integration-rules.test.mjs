@@ -30,6 +30,24 @@ test('Refuerzo cambia pregunta, conserva concepto y no repite el último intento
  assert.ok(transfer.every(q=>q.concept==='Fracciones'));
  assert.equal(L.transfer(bank,[...history,secure('b'),secure('c')],[...history,secure('b'),secure('c')],10).length,0);
 });
+test('Estudiar la solución no acredita dominio y exige nueva evidencia independiente',()=>{
+ const guided={...secure('b'),afterStudy:true};
+ const history=[secure('a'),guided];
+ const original=JSON.stringify(history);
+ const result=L.profile(bank,history).find(x=>x.concept==='Fracciones');
+ assert.equal(result.status,'por reforzar');
+ assert.equal(result.correct,2,'los aciertos siguen siendo aciertos');
+ assert.equal(result.evidence.length,0);
+ assert.equal(L.profile(bank,[...history,secure('c')])[0].status,'por comprobar');
+ assert.equal(L.profile(bank,[...history,secure('c'),secure('a')])[0].status,'comprobado');
+ assert.equal(JSON.stringify(history),original,'no reescribir intentos históricos');
+});
+test('El acierto tras estudiar genera transferencia del mismo concepto a otra familia',()=>{
+ const row={...secure('a'),afterStudy:true};
+ const result=L.transfer(bank,[row],[row],10);
+ assert.deepEqual(Array.from(result.map(q=>q.id)).sort(),['b','c']);
+ assert.ok(result.every(q=>q.concept==='Fracciones'));
+});
 test('Datos de sesión dañados se rechazan sin bloquear el arranque',()=>{
  for(const s of [null,{}, {mode:'full',ids:['a','a'],index:0,results:[]},{mode:'full',ids:['z'],index:0,results:[]},{mode:'full',ids:['a'],index:0.5,results:[]},{mode:'full',ids:['a'],index:0,results:[],selected:5}])assert.equal(L.validSession(s,bank,['full']),false);
  assert.equal(L.validSession({mode:'full',ids:['a'],index:0,results:[],selected:null},bank,['full']),true);

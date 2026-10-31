@@ -1,0 +1,45 @@
+{
+  "scope": "Auditoría estructural y de redacción orientativa; NO certifica comprensión humana de 15 años ni validez conceptual.",
+  "assessmentDigest": "d8a9b8965c4a53d288758624b89b00759b435664e9c6854d7051975be5e0b5fa",
+  "subjects": {
+    "M1": {
+      "questions": 147,
+      "shortOpenings": 147,
+      "vocabularySupport": 29,
+      "maxOpeningWords": 54,
+      "flags": 0
+    },
+    "M2": {
+      "questions": 115,
+      "shortOpenings": 115,
+      "vocabularySupport": 20,
+      "maxOpeningWords": 49,
+      "flags": 0
+    },
+    "Lectura": {
+      "questions": 130,
+      "shortOpenings": 130,
+      "vocabularySupport": 12,
+      "maxOpeningWords": 43,
+      "flags": 0
+    },
+    "Ciencias": {
+      "questions": 305,
+      "shortOpenings": 305,
+      "vocabularySupport": 98,
+      "maxOpeningWords": 59,
+      "flags": 0
+    },
+    "Historia": {
+      "questions": 105,
+      "shortOpenings": 105,
+      "vocabularySupport": 6,
+      "maxOpeningWords": 51,
+      "flags": 0
+    }
+  },
+  "questions": 802,
+  "flags": [],
+  "critical": 0,
+  "flagCount": 0
+}

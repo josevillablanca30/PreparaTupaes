@@ -45,7 +45,7 @@ test('APK unificado abre selector e incluye Matemática y Ciencias sin descarga 
  const workflow=read('.github/workflows/android-apk.yml');
  const build=read('scripts/build.mjs');
  const preview=read('scripts/preview.mjs');
- assert.ok(java.includes('webView.loadUrl("file:///android_asset/inicio.html")'));
+ assert.ok(java.includes('String HOME = "file:///android_asset/inicio.html"'));
  for(const file of ['inicio.html','index.html','science.html','science-bank.js','science-app.js','reading.html','reading-bank.js','reading-app.js']){
   assert.ok(workflow.includes('dist/'+file),'APK no incluye '+file);
   assert.ok(build.includes(file),'build no incluye '+file);

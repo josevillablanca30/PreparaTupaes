@@ -1,0 +1,82 @@
+{
+  "assets": [
+    {
+      "asset": "assets/competition-avatar-0.svg",
+      "prompt": "Use case: stylized-concept. Produce ONE mobile profile avatar of MALE ginger tabby CAT rapper, plum hoodie, sideways dark purple cap, a small simple gold chain, cheerful confident kind expression. The supplied image is a STYLE AND LAYOUT REFERENCE only. Match its polished illustrated 3D fur, warm soft lighting, centered feline bust in a lavender circular medallion. Keep the new character visibly feline with muzzle and triangular ears; no humans, no human hands. Full ears and shoulders within safe padding, readable at 48 pixels. Use distinctive fur and accessories described, with purple eyes. Kind personality, tasteful self-expression. No labels, words, brand names, watermarks or other characters. Transparent outside the circular medallion.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-00af8497-2cd0-4835-81e9-fa0128eb81ae.png"
+    },
+    {
+      "asset": "assets/competition-avatar-1.svg",
+      "prompt": "Single polished 3D feline avatar portrait: female metalhead kitten with black jacket and tasteful studded details, lavender circular medallion, friendly expression, no lettering, transparent background. Match the official Cachaste cat avatar style.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-22c9929a-6f07-4ac6-a633-ec3c978fe52c.png"
+    },
+    {
+      "asset": "assets/competition-avatar-2.svg",
+      "prompt": "Use case: stylized-concept. Produce ONE mobile profile avatar of MALE white and orange CAT anime fan, unbranded purple cosplay scarf, small star hair clip, round glasses, imaginative kind expression. The supplied image is a STYLE AND LAYOUT REFERENCE only. Match its polished illustrated 3D fur, warm soft lighting, centered feline bust in a lavender circular medallion. Keep the new character visibly feline with muzzle and triangular ears; no humans, no human hands. Full ears and shoulders within safe padding, readable at 48 pixels. Use distinctive fur and accessories described, with purple eyes. Kind personality, tasteful self-expression. No labels, words, brand names, watermarks or other characters. Transparent outside the circular medallion.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-fe0ad8c2-897c-4d7f-8997-ffeb340651f2.png"
+    },
+    {
+      "asset": "assets/competition-avatar-3.svg",
+      "prompt": "Use case: stylized-concept. Produce ONE mobile profile avatar of FEMALE black CAT emo style, plum-and-black side-swept fringe, black sweater, small purple heart pin, gentle thoughtful expression. The supplied image is a STYLE AND LAYOUT REFERENCE only. Match its polished illustrated 3D fur, warm soft lighting, centered feline bust in a lavender circular medallion. Keep the new character visibly feline with muzzle and triangular ears; no humans, no human hands. Full ears and shoulders within safe padding, readable at 48 pixels. Use distinctive fur and accessories described, with purple eyes. Kind personality, tasteful self-expression. No labels, words, brand names, watermarks or other characters. Transparent outside the circular medallion.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-78cc7793-90ff-42cc-bcca-ff87c6643984.png"
+    },
+    {
+      "asset": "assets/competition-avatar-4.svg",
+      "prompt": "Use case: stylized-concept. Produce ONE mobile profile avatar of MALE cream and ginger CAT athlete, purple sports jersey without text, teal sweatband, warm determined expression. The supplied image is a STYLE AND LAYOUT REFERENCE only. Match its polished illustrated 3D fur, warm soft lighting, centered feline bust in a lavender circular medallion. Keep the new character visibly feline with muzzle and triangular ears; no humans, no human hands. Full ears and shoulders within safe padding, readable at 48 pixels. Use distinctive fur and accessories described, with purple eyes. Kind personality, tasteful self-expression. No labels, words, brand names, watermarks or other characters. Transparent outside the circular medallion.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-5883ea65-2654-4f51-9ae6-02e4ed9b041b.png"
+    },
+    {
+      "asset": "assets/competition-avatar-5.svg",
+      "prompt": "Use case: stylized-concept. Produce ONE mobile profile avatar of FEMALE silver-gray CAT gamer, lavender over-ear gaming headset, purple hoodie, lively friendly expression. The supplied image is a STYLE AND LAYOUT REFERENCE only. Match its polished illustrated 3D fur, warm soft lighting, centered feline bust in a lavender circular medallion. Keep the new character visibly feline with muzzle and triangular ears; no humans, no human hands. Full ears and shoulders within safe padding, readable at 48 pixels. Use distinctive fur and accessories described, with purple eyes. Kind personality, tasteful self-expression. No labels, words, brand names, watermarks or other characters. Transparent outside the circular medallion.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-3fd3be15-597c-4169-87af-a459494d0a99.png"
+    },
+    {
+      "asset": "assets/competition-avatar-6.svg",
+      "prompt": "Use case: stylized-concept. Produce ONE mobile profile avatar of MALE cream CAT artist, purple beret, simple plum artist smock, small paintbrush behind an ear, creative kind expression. The supplied image is a STYLE AND LAYOUT REFERENCE only. Match its polished illustrated 3D fur, warm soft lighting, centered feline bust in a lavender circular medallion. Keep the new character visibly feline with muzzle and triangular ears; no humans, no human hands. Full ears and shoulders within safe padding, readable at 48 pixels. Use distinctive fur and accessories described, with purple eyes. Kind personality, tasteful self-expression. No labels, words, brand names, watermarks or other characters. Transparent outside the circular medallion.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-b91e3861-c7c6-4182-99ab-3b0a74772d46.png"
+    },
+    {
+      "asset": "assets/competition-cat-mentor-v2.svg",
+      "prompt": "Use case: identity-preserve. Asset: ONE isolated upper-body illustration for the educational app Cachaste. The supplied image identifies the official SAME wise cat mascot: black fur, large purple eyes, distinctive white eyebrows, long white whiskers and beard, white hair topknot, purple teacher robe with pale trim. Preserve this exact character identity and polished illustrated 3D fur. Show him a calm welcoming wise teacher with an open empty paw inviting the learner to begin, no school props. He is a serene, confident experienced master, warm closed-mouth smile, wise expression, mouth closed and no tongue out, never trying to appear like a teenager. No fighting pose or headband. Keep paws feline. Clean upper-body portrait, all props contained in frame, comfortable safe margins. Remove ALL old speech balloons, lettering, yellow rays and background from the reference. No text or diagrams requiring precise information. Genuinely transparent background, no shadows outside the character, no mockup, no collage.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-5e5e218c-8884-4edc-9cba-1fb91f96bf7a.png"
+    },
+    {
+      "asset": "assets/competition-cat-M1-v2.svg",
+      "prompt": "Use case: identity-preserve. Asset: ONE isolated upper-body illustration for the educational app Cachaste. The supplied image identifies the official SAME wise cat mascot: black fur, large purple eyes, distinctive white eyebrows, long white whiskers and beard, white hair topknot, purple teacher robe with pale trim. Preserve this exact character identity and polished illustrated 3D fur. Show him teaching basic mathematics, holding a small wooden abacus with purple beads and a simple measuring ruler. He is a serene, confident experienced master, warm closed-mouth smile, wise expression, mouth closed and no tongue out, never trying to appear like a teenager. No fighting pose or headband. Keep paws feline. Clean upper-body portrait, all props contained in frame, comfortable safe margins. Remove ALL old speech balloons, lettering, yellow rays and background from the reference. No text or diagrams requiring precise information. Genuinely transparent background, no shadows outside the character, no mockup, no collage.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-90f886c3-437e-4a8c-92b6-da8dbf76e84c.png"
+    },
+    {
+      "asset": "assets/competition-cat-M2-v2.svg",
+      "prompt": "Use case: identity-preserve. Asset: ONE isolated upper-body illustration for the educational app Cachaste. The supplied image identifies the official SAME wise cat mascot: black fur, large purple eyes, distinctive white eyebrows, long white whiskers and beard, white hair topknot, purple teacher robe with pale trim. Preserve this exact character identity and polished illustrated 3D fur. Show him teaching advanced mathematics, holding a geometric compass and a small board with only decorative simple geometric shapes, no lettering or equations. He is a serene, confident experienced master, warm closed-mouth smile, wise expression, mouth closed and no tongue out, never trying to appear like a teenager. No fighting pose or headband. Keep paws feline. Clean upper-body portrait, all props contained in frame, comfortable safe margins. Remove ALL old speech balloons, lettering, yellow rays and background from the reference. No text or diagrams requiring precise information. Genuinely transparent background, no shadows outside the character, no mockup, no collage.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-761c6c78-aa38-4412-ba1c-a996c1faae3d.png"
+    },
+    {
+      "asset": "assets/competition-cat-Lectura-v2.svg",
+      "prompt": "Use case: identity-preserve. Asset: ONE isolated upper-body illustration for the educational app Cachaste. The supplied image identifies the official SAME wise cat mascot: black fur, large purple eyes, distinctive white eyebrows, long white whiskers and beard, white hair topknot, purple teacher robe with pale trim. Preserve this exact character identity and polished illustrated 3D fur. Show him teaching reading comprehension, holding a handsome open book with clean blank cream pages and a feather bookmark. He is a serene, confident experienced master, warm closed-mouth smile, wise expression, mouth closed and no tongue out, never trying to appear like a teenager. No fighting pose or headband. Keep paws feline. Clean upper-body portrait, all props contained in frame, comfortable safe margins. Remove ALL old speech balloons, lettering, yellow rays and background from the reference. No text or diagrams requiring precise information. Genuinely transparent background, no shadows outside the character, no mockup, no collage.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-a3cbeab0-2712-44de-ac75-1fba46abecab.png"
+    },
+    {
+      "asset": "assets/competition-cat-Historia-v2.svg",
+      "prompt": "Use case: identity-preserve. Asset: ONE isolated upper-body illustration for the educational app Cachaste. The supplied image identifies the official SAME wise cat mascot: black fur, large purple eyes, distinctive white eyebrows, long white whiskers and beard, white hair topknot, purple teacher robe with pale trim. Preserve this exact character identity and polished illustrated 3D fur. Show him teaching history, holding a rolled parchment and a small classic globe as decorative props, no flags or precise map labels. He is a serene, confident experienced master, warm closed-mouth smile, wise expression, mouth closed and no tongue out, never trying to appear like a teenager. No fighting pose or headband. Keep paws feline. Clean upper-body portrait, all props contained in frame, comfortable safe margins. Remove ALL old speech balloons, lettering, yellow rays and background from the reference. No text or diagrams requiring precise information. Genuinely transparent background, no shadows outside the character, no mockup, no collage.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-f5403605-067f-468d-b9f8-58e144dabd2d.png"
+    },
+    {
+      "asset": "assets/competition-cat-Ciencias-v2.svg",
+      "prompt": "Use case: identity-preserve. Asset: ONE isolated upper-body illustration for the educational app Cachaste. The supplied image identifies the official SAME wise cat mascot: black fur, large purple eyes, distinctive white eyebrows, long white whiskers and beard, white hair topknot, purple teacher robe with pale trim. Preserve this exact character identity and polished illustrated 3D fur. Show him teaching natural sciences, holding a small microscope beside a clear laboratory beaker, safe calm laboratory setting implied only by these props. He is a serene, confident experienced master, warm closed-mouth smile, wise expression, mouth closed and no tongue out, never trying to appear like a teenager. No fighting pose or headband. Keep paws feline. Clean upper-body portrait, all props contained in frame, comfortable safe margins. Remove ALL old speech balloons, lettering, yellow rays and background from the reference. No text or diagrams requiring precise information. Genuinely transparent background, no shadows outside the character, no mockup, no collage.",
+      "generator": "built-in imagegen",
+      "source_file": "exec-f1ee0af2-16fa-490a-9ae6-8cfc75b51cb7.png"
+    }
+  ]
+}

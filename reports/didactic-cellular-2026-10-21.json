@@ -1,0 +1,190 @@
+{
+  "date": "2026-10-21",
+  "batch": "cellular-2026-10-21",
+  "status": "partial-global-review",
+  "scope": "Revisión de las 16 preguntas enumeradas y reescritura de enseñanza compartida en ocho objetivos. No aprobación del catálogo completo ni de todas sus imágenes.",
+  "sources": [
+    {
+      "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+      "title": "Copia de LIBRO BIOLOGIA PLAN COMUN COMPLETO.pdf",
+      "edition": 2020,
+      "sections": "Capítulo 4, páginas impresas 131–134, 137, 143–150; solo secciones textuales señaladas por objetivo",
+      "limitations": "No inspección completa de todas las figuras ni revisión de todo el libro."
+    },
+    {
+      "url": "https://acceso.mineduc.cl/wp-content/uploads/2026/03/Temario-PAESRegular-2026-Ciencias-v1.pdf",
+      "section": "Página 6: organización, estructura y actividad celular",
+      "use": "Límite temático; no fuente suficiente para validar cada mecanismo."
+    },
+    {
+      "url": "https://openstax.org/books/biology-2e/pages/4-4-the-endomembrane-system-and-proteins",
+      "section": "Rough ER; Golgi apparatus",
+      "use": "Contraste del recorrido de proteínas y sus destinos."
+    },
+    {
+      "url": "https://openstax.org/books/biology-2e/pages/7-5-metabolism-without-oxygen",
+      "section": "Fermentation and glycolysis",
+      "use": "Contraste de obtención de ATP sin oxígeno."
+    }
+  ],
+  "sourceCorrections": [
+    "No adoptar la afirmación del libro antiguo de que el metabolismo eucarionte sea exclusivamente aeróbico. La fermentación de levaduras y células animales es compatible con su organización eucarionte.",
+    "No equiparar presencia de una proteína con síntesis nueva ni definir la función de todos los organelos por una analogía sin límites."
+  ],
+  "items": [
+    {
+      "key": "Ciencias:SCI-001",
+      "concept": "Respiración celular y ATP",
+      "decision": "La demanda de ATP distingue mitocondrias de ribosomas, retículo y Golgi; se conserva la salvedad de producción extramitocondrial.",
+      "contentFingerprint": "ba5a9c55e70468bed1890089aae1e1d18f3b55f823416c605008d8312df19eb2",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:TR-SCI-007",
+      "concept": "Respiración celular y ATP",
+      "decision": "Compara rendimiento por glucosa; diferencia glucólisis, fermentación y respiración aeróbica sin concluir ATP cero en ausencia de oxígeno.",
+      "contentFingerprint": "e4af779127f378cb82eab879f0b47f2315c2f4fa12c228c2a3eb51b23f46d387",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:SCI-002",
+      "concept": "Membrana selectiva",
+      "decision": "Ubicación y permeabilidad selectiva permiten distinguir membrana, pared, envoltura nuclear y citoesqueleto.",
+      "contentFingerprint": "bd1ef7c0ebdadc5bda74d73bff4acb36130da813ef6bfb5b5d012b02867e1ca8",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:TR-SCI-008",
+      "concept": "Membrana selectiva",
+      "decision": "Las propiedades del oxígeno y de la glucosa explican vías de paso diferentes; no se infiere uso obligatorio de ATP para oxígeno.",
+      "contentFingerprint": "0a1ebb21d8743422fee7e64c8d2bd42fd22a25e1fd3c04a16c42f32c1fe5f612",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:SCI-003",
+      "concept": "Clasificación y empaquetado de proteínas",
+      "decision": "El procesamiento posterior al retículo dirige a Golgi; se distinguen síntesis, distribución y degradación.",
+      "contentFingerprint": "6872337dd0da0a70fc30aa40f253a8427afb68775a38fa7399c154720958b52e",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:TR-SCI-009",
+      "concept": "Clasificación y empaquetado de proteínas",
+      "decision": "Se sustituye una segunda identificación casi literal por comparación experimental con control. Se conserva la evaluación anterior y se limita la conclusión a la etapa, no a una molécula exacta.",
+      "contentFingerprint": "b5e977e7bf413da3728b3a16956dfb217e01073271b066d0d8419d98a2380586",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:SCI-044",
+      "concept": "Síntesis ribosomal de proteínas",
+      "decision": "El bloqueo de traducción limita cadenas nuevas; disponer de ATP o ARNm no sustituye a los ribosomas. No se afirma desaparición inmediata del producto previo.",
+      "contentFingerprint": "44eb1fc94d10d4b3f20df601ffd917238fa0cd476c10a865ba4951a614b7d614",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:SCI-073",
+      "concept": "Síntesis ribosomal de proteínas",
+      "decision": "Se distingue ensamblaje ribosomal de transporte vesicular y procesamiento en Golgi.",
+      "contentFingerprint": "81c97b35fd30658ef4cebadb4a5cf07655486096fc71900d74513a437db8d452",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:SCI-055",
+      "concept": "Pared y organización vegetal",
+      "decision": "La posición externa y resistencia corresponden a pared vegetal, sin atribuirle selectividad fina ni síntesis de ATP.",
+      "contentFingerprint": "35c58dce8d48cbc65bbbe8e2b6c112667754466f2afeea35812be778bc8cb62f",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:SCI-139",
+      "concept": "Pared y organización vegetal",
+      "decision": "La combinación de pared, cloroplastos y vacuola sustenta la clasificación. El ejemplo aclara que la ausencia de cloroplastos no excluye toda célula vegetal.",
+      "contentFingerprint": "96027bf50513eb652748ddb2362f86e428523be9251a35ef298a528d14e641be",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:SCI-064",
+      "concept": "Ósmosis en medio hipertónico",
+      "decision": "Con solutos no permeantes externos más concentrados, sale agua neta inicialmente; no es bombeo activo ni ausencia de movimiento bidireccional.",
+      "contentFingerprint": "237a71701dc58e2dff30fc2efeeaf1b79e36fa49060c56c35e020d88965136f2",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:TR-SCI-004",
+      "concept": "Ósmosis en medio hipertónico",
+      "decision": "La retracción del protoplasto respecto de la pared apoya plasmólisis. Se conserva el contexto hipertónico y la distinción pared/membrana.",
+      "contentFingerprint": "34b1f9e73f4c899780568b420b7ca673fc6db4f297cca21c59f3e49bb649731a",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:SCI-169",
+      "concept": "Superficie de intercambio",
+      "decision": "Área funcional mayor puede favorecer absorción, sin sustituir ribosomas ni almacenar todo el ADN. No se promete absorción ilimitada.",
+      "contentFingerprint": "2178e76ef90f318f93a74a66a99ceba77e7955cbfee5550c4da914b72bcc1e91",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:TR-SCI-071",
+      "concept": "Superficie de intercambio",
+      "decision": "Igual densidad y menor área implica menor número total de transportadores. Se distingue capacidad de un flujo exacto no medido.",
+      "contentFingerprint": "aa5f0be769ea4e37f77bddb98e3737ba182a84d466529b0bdf7d3a9109ccecab",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:SCI-200",
+      "concept": "Digestión intracelular",
+      "decision": "Degradación vesicular se relaciona con lisosomas, enzimas y condiciones internas; se diferencia de síntesis proteica y fotosíntesis.",
+      "contentFingerprint": "7a12c0f251abbfe3d76870c4f0f33cc670b5fe98442f2ad6d5d0b0c9e26670b3",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    },
+    {
+      "key": "Ciencias:TR-SCI-038",
+      "concept": "Digestión intracelular",
+      "decision": "La acumulación por fallo de enzima digestiva afecta degradación y reciclaje, sin atribuir el efecto a duplicación de ADN o captura de luz.",
+      "contentFingerprint": "3bc6413237714bd091ccd7f2818cd845b4c9c777157ff9a2b22c511af983873f",
+      "status": "text-and-question-reviewed",
+      "visualApproval": "pending-complete-mobile-inspection",
+      "globalApproval": false
+    }
+  ],
+  "remaining": "279 objetivos no pertenecen a esta revisión textual; no se certifica revisión integral de los 526 documentos inventariados.",
+  "visualSpotChecks": {
+    "revision": "742e0577cfd2f30afb1f04f60b85184008ca3dd8",
+    "width": 320,
+    "screens": [
+      "ATP: primera tarjeta, personaje único, título completo y modelo de transferencia",
+      "Ósmosis: primera tarjeta, selector de medios y modelo hipotónico"
+    ],
+    "result": "Inspección visual sin recortes horizontales en estas dos capturas. No certifica todas las pantallas, estados ni los ocho objetivos."
+  }
+}
