@@ -46,9 +46,12 @@ try{
   const confirmation=await client.auth.verifyOtp({email,token,type:'email'});if(confirmation.error)throw confirmation.error;
   const replay=await client.auth.verifyOtp({email,token,type:'email'});assert.ok(replay.error,'A used code must not work twice');
   await client.auth.signOut();const login=await client.auth.signInWithPassword({email,password});if(login.error)throw login.error;clients.push(client);
-  await call(i,'save_profile',{nickname:'TestCachaste'+i,communeCode:i?'05109':'05701',publicRanking:true,allowChallenges:true,showCommune:true,avatar:i,communityVersion:'2026-10-23'});
+  await call(i,'save_profile',{nickname:'TestCachaste'+i,communeCode:i?'05109':'05701',publicRanking:true,allowChallenges:true,showCommune:true,avatar:i?23:0,communityVersion:'2026-10-23'});
  }
  record('Two public signups receive Spanish OTP emails through local SMTP; valid codes sign in and wrong/reused codes are rejected');
+ assert.equal((await call(1,'profile')).profile.avatar,23);
+ const invalidAvatar=await clients[1].rpc('cachaste_competition',{operation:'save_profile',payload:{nickname:'TestCachaste1',communeCode:'05109',avatar:24,communityVersion:'2026-10-23'}});assert.equal(invalidAvatar.error?.code,'23514');
+ record('Expanded cat avatar 23 persists through real HTTP while avatar 24 is rejected');
  const duplicate=await clients[1].rpc('cachaste_competition',{operation:'save_profile',payload:{nickname:'testcachaste0',communeCode:'05109',communityVersion:'2026-10-23'}});assert.equal(duplicate.error?.code,'23505');
  await call(0,'save_profile',{nickname:'ChangedNickname',communeCode:'05701',publicRanking:true,allowChallenges:true,showCommune:true,avatar:0,communityVersion:'2026-10-23'});assert.equal((await call(0,'profile')).profile.nickname,'ChangedNickname');
  await call(0,'save_profile',{nickname:'TestCachaste0',communeCode:'05701',publicRanking:true,allowChallenges:true,showCommune:true,avatar:0,communityVersion:'2026-10-23'});

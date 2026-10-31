@@ -108,3 +108,9 @@ test('Competition database: migration, access control, authoritative scores, geo
  });
 
 });
+
+test('All 24 cosmetic avatar IDs round-trip while out-of-range IDs remain rejected',async t=>{
+ const db=await database();t.after(()=>db.close());
+ for(let avatar=0;avatar<24;avatar++){const owner=Math.floor(avatar/8);await profile(db,owner,{avatar});assert.equal((await rpc(db,owner,'profile')).profile.avatar,avatar);}
+ for(const avatar of [-1,24])await assert.rejects(profile(db,0,{avatar}),/profiles_avatar_check/);
+});
