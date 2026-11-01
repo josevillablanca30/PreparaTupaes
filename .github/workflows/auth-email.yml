@@ -1,0 +1,21 @@
+name: Auth · configuración segura de correo
+on:
+  push:
+    branches: [work/cachaste-motor-duolingo-20261016]
+    paths: ['scripts/configure-auth-email.mjs', 'tests/auth-email*.test.mjs', 'supabase/templates/**', '.github/workflows/auth-email.yml']
+  pull_request:
+    paths: ['scripts/configure-auth-email.mjs', 'tests/auth-email*.test.mjs', 'supabase/templates/**', '.github/workflows/auth-email.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Probar preflight, plantillas y protección de credenciales sin acceso alojado
+        run: node --test tests/auth-email-configuration.test.mjs tests/auth-email-templates.test.mjs

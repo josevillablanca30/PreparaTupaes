@@ -1,12 +1,48 @@
-// Owner-side Management API helper. It never prints credentials or full Auth configuration.
+// Owner-side helper: never print credentials, SMTP identities or full Auth config.
 import {readFile} from 'node:fs/promises';
-const token=process.env.SUPABASE_ACCESS_TOKEN;
-if(!token){console.error('Falta SUPABASE_ACCESS_TOKEN en el entorno del propietario. No lo pegues en el chat.');process.exit(1);}
-const project='jmobinmdwrmdqrxtcruj',url='https://api.supabase.com/v1/projects/'+project+'/config/auth',headers={Authorization:'Bearer '+token,'Content-Type':'application/json'};
-const payload={mailer_subjects_confirmation:'Confirma tu correo en ¿Cachaste?',mailer_subjects_recovery:'Recupera tu acceso a ¿Cachaste?',mailer_templates_confirmation_content:await readFile(new URL('../supabase/templates/confirmation.html',import.meta.url),'utf8'),mailer_templates_recovery_content:await readFile(new URL('../supabase/templates/recovery.html',import.meta.url),'utf8')};
-for(const body of Object.values(payload).filter(v=>v.includes('<html'))){if(!body.includes('{{ .Token }}')||/localhost|ConfirmationURL|TokenHash/.test(body))throw Error('La plantilla no cumple el flujo de código');}
-const first=await fetch(url,{headers,signal:AbortSignal.timeout(15000)});if(!first.ok)throw Error('No se puede leer Auth config: HTTP '+first.status);
-if(!process.argv.includes('--check')){const applied=await fetch(url,{method:'PATCH',headers,body:JSON.stringify(payload),signal:AbortSignal.timeout(15000)});if(!applied.ok)throw Error('No se pudieron aplicar plantillas: HTTP '+applied.status);}
-const response=await fetch(url,{headers,signal:AbortSignal.timeout(15000)});if(!response.ok)throw Error('No se pudo verificar Auth config: HTTP '+response.status);const actual=await response.json();
-for(const[k,v]of Object.entries(payload))if(actual[k]!==v)throw Error('La configuración alojada no coincide: '+k);
-console.log('Confirmación y recuperación verificadas: correo en español con código visible. No se modificaron SMTP, claves, URLs ni otras opciones.');
+import {pathToFileURL} from 'node:url';
+
+const project='jmobinmdwrmdqrxtcruj';
+const endpoint='https://api.supabase.com/v1/projects/'+project+'/config/auth';
+export async function configureAuthEmail({token,fetchImpl=fetch,mode='apply'}={}){
+ if(!token)throw Error('Falta SUPABASE_ACCESS_TOKEN en el entorno del propietario. No lo pegues en el chat.');
+ if(!['apply','check','status'].includes(mode))throw Error('Modo de configuración desconocido.');
+ const headers={Authorization:'Bearer '+token,'Content-Type':'application/json'};
+ async function request(method='GET',body){
+  let response;try{response=await fetchImpl(endpoint,{method,headers,...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(15000)});}catch{throw Error('No se pudo contactar la configuración Auth. No se muestran datos privados.');}
+  if(!response.ok)throw Error('No se pudo '+(method==='PATCH'?'aplicar':'leer')+' Auth config: HTTP '+response.status);
+  if(method==='PATCH')return;
+  try{return await response.json();}catch{throw Error('Auth config devolvió una respuesta no válida.');}
+ }
+ const initial=await request();
+ const nonempty=value=>typeof value==='string'&&value.trim().length>0;
+ const status={project,customSmtpConfigured:['smtp_host','smtp_user','smtp_admin_email'].every(k=>nonempty(initial[k])),emailConfirmationRequired:initial.mailer_autoconfirm===false};
+ if(mode==='status')return status;
+ // New Free projects cannot customize templates with the default SMTP provider.
+ // Default SMTP also cannot deliver signup emails to arbitrary closed-testers.
+ if(!status.customSmtpConfigured)throw Error('SMTP propio no configurado o incompleto. Configúralo en Authentication > Email > SMTP antes de aplicar plantillas. El envío predeterminado restringe destinatarios y los proyectos Free nuevos no pueden personalizarlo.');
+ if(!status.emailConfirmationRequired)throw Error('No se pudo confirmar que la verificación de correo esté activada. Revísala antes de aplicar plantillas.');
+ const payload={mailer_subjects_confirmation:'Confirma tu correo en ¿Cachaste?',mailer_subjects_recovery:'Recupera tu acceso a ¿Cachaste?',mailer_templates_confirmation_content:await readFile(new URL('../supabase/templates/confirmation.html',import.meta.url),'utf8'),mailer_templates_recovery_content:await readFile(new URL('../supabase/templates/recovery.html',import.meta.url),'utf8')};
+ for(const key of ['mailer_templates_confirmation_content','mailer_templates_recovery_content'])if(!payload[key].includes('{{ .Token }}')||/localhost|ConfirmationURL|TokenHash/.test(payload[key]))throw Error('La plantilla no cumple el flujo de código.');
+ const matches=config=>Object.entries(payload).every(([key,value])=>config[key]===value);
+ if(mode==='check'){
+  if(!matches(initial))throw Error('Las plantillas alojadas aún no coinciden con las plantillas españolas de código. No se modificó la configuración.');
+  return {...status,templatesMatch:true,changed:false};
+ }
+ if(matches(initial))return {...status,templatesMatch:true,changed:false};
+ await request('PATCH',payload);
+ const verified=await request();
+ if(!matches(verified))throw Error('La configuración alojada no coincide después de aplicar las plantillas. No se declara verificada.');
+ if(verified.mailer_autoconfirm!==false)throw Error('La verificación de correo cambió durante la operación. Revisar configuración; no se declara verificada.');
+ return {...status,templatesMatch:true,changed:true};
+}
+
+if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
+ try{
+  const flags=process.argv.slice(2);
+  if(flags.length>1||flags.some(f=>!['--check','--status'].includes(f)))throw Error('Uso: node scripts/configure-auth-email.mjs [--status|--check]');
+  const result=await configureAuthEmail({token:process.env.SUPABASE_ACCESS_TOKEN,mode:flags[0]?.slice(2)||'apply'});
+  console.log(JSON.stringify(result));
+  if(result.templatesMatch)console.log('Plantillas de confirmación y recuperación verificadas. Falta comprobar entrega real y registro en los teléfonos. No se modificaron SMTP, claves, URLs ni otras opciones.');
+ }catch(error){console.error(error.message);process.exitCode=1;}
+}
