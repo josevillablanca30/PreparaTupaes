@@ -50,3 +50,46 @@ Rapero, metalera, otaku, emo, deportista, gamer, artista, punk, gótica, skater,
 ### Compatibilidad con correos antiguos
 
 La confirmación propone código por defecto. Para correos que solo contienen enlace, el usuario puede elegir «Mi correo solo tiene un enlace» y copiar el vínculo dentro de la app. La app valida origen/ruta/tipo y utiliza la verificación de Supabase directamente; nunca navega a localhost. No guarda el vínculo. Es una alternativa de compatibilidad y no sustituye la activación de las plantillas en español con código visible.
+
+## Validación de esta entrega
+
+- Commit del código empaquetado: `40ebe2d1642697ac4d0426b6a0ac1ef579b5f75d`.
+- 403 pruebas de lógica aprobadas; 74 pruebas móviles principales aprobadas en Android Chrome y 320 px.
+- 22 escenarios contra Supabase/SMTP local real aprobados, incluyendo avatar 23 en perfil, duelo y ranking, rechazo de avatar 24 y dos cuentas independientes.
+- 24 imágenes distintas verificadas, con 444.900 bytes de imagen WebP en total.
+- Backend alojado: `apiVersion: 1`, `catalogueReady: true`; restricción de avatares 0–23 confirmada. No se declara validado un duelo físico entre los dos testers.
+- [Pruebas y AAB firmado](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41250675255).
+- [Pruebas del APK instalado](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41250675267).
+
+### Bundle firmado
+
+Archivo: `Cachaste-1.5.0-rc8-35.aab`, 12.673.622 bytes.
+
+SHA-256: `93587d2f45838df0e6cdcc0e739975da962f9d3966e3f65cf07921f2e5d1d3a0`.
+
+Certificado de carga SHA-256: `a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575`, igual al fijado en la entrega anterior. Se verificaron localmente las 258 entradas firmadas, el manifiesto release (código 35, target 36, sin debuggable/testOnly) y la presencia de los 24 avatares en el bundle. No se generó una clave nueva.
+
+Artefacto firmado: [GitHub Actions](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41250675255/artifacts/13060479398). El ZIP de Actions es contenedor técnico; la entrega al usuario es el `.aab` individual.
+
+No se publicó en producción ni se modificó la rama web comercial. La subida a la misma prueba cerrada debe hacerse con el AAB y comprobarse en Google Play.
+
+### Commits principales
+
+- `1a1c551`: plantillas de correo españolas y verificación SMTP.
+- `7dc2ff5`: maestro por asignatura, avatares felinos iniciales y flujo de confirmación.
+- `10048fe`: árbol completo conservado, migración de 24 avatares y comprobaciones HTTP. Se corrigió un commit intermedio incompleto; la entrega conserva todos los archivos anteriores.
+- `40ebe2d`: colección final de 24 gatos, filtros, compatibilidad con correos antiguos y pruebas de UI. La verificación previa al guardado confirmó 456 archivos y coincidencia de los hashes locales con GitHub.
+
+La suite completa de navegador también aprobó 402 pruebas en Android Chrome y 402 en 320 px (804 ejecuciones). El job de control comercial del APK instalado aprobó las cinco materias sin activar compras.
+
+También aprobaron las 402 pruebas en iPhone WebKit. Total de la suite completa: 1.206 ejecuciones en los tres perfiles de navegador (separadas de las 403 pruebas de lógica y las 74 del gate de release).
+
+## Cierre de verificación · 1 de noviembre de 2026
+
+El job Android del commit empaquetado terminó correctamente: 432 pruebas de recorrido móvil, 12 de VS beta, compilación y 31 pruebas del APK instalado en emulador API 36. El job comercial independiente también aprobó 5 pruebas de acceso a asignaturas.
+
+La suite completa de los tres perfiles de navegador terminó correctamente en [esta ejecución](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41250680382). Hubo una ejecución duplicada de WebKit cancelada durante instalación; la cobertura de 402 pruebas de WebKit corresponde a la ejecución completa enlazada, que sí aprobó.
+
+**Pendientes humanos:** activar las plantillas del correo alojado y verificar, tras subir el AAB a la misma prueba cerrada, un recorrido completo en los dos teléfonos: acceso, nickname, invitación, aceptación, diez preguntas por persona, resultado y ranking. Las pruebas automáticas y el emulador no se declaran equivalentes a esta comprobación física.
+
+No se declara finalizado el onboarding de nuevos testers mientras las plantillas del proyecto alojado sigan sin aplicar. La alternativa de enlace antiguo permite confirmar dentro de la app sin navegar a localhost.
