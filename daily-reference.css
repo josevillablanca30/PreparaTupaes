@@ -290,3 +290,9 @@ body>main{--reference-gutter:20px}
 #daily-root :is(.home-profile,.entry-path a,.entry-path button):focus-visible{outline:3px solid #7440b0;outline-offset:4px}
 @media(min-width:600px){#daily-root .reference-brand img{width:192px}#daily-root .reference-welcome{grid-template-columns:minmax(0,1fr) 29%}#daily-root .reference-guide{min-height:200px}#daily-root .entry-path{padding:24px}#daily-root .entry-path h2{font-size:25px}#daily-root .entry-path p{font-size:15px}#daily-root .training-subjects .course-choices{display:grid;grid-template-columns:1fr 1fr}#daily-root .training-subjects .course-tile:last-child{grid-column:1/-1}}
 @media(max-width:350px){#daily-root .reference-welcome{grid-template-columns:minmax(0,1fr) 29%;gap:4px}#daily-root .reference-welcome h1{font-size:26px}#daily-root .reference-guide{min-height:130px}#daily-root .home-promise{font-size:13px}#daily-root .entry-paths{gap:8px}#daily-root .entry-path{padding:14px 11px}#daily-root .entry-path h2{font-size:18px}#daily-root .entry-path p{font-size:12px}#daily-root .entry-path .primary{font-size:12px}#daily-root .reference-courses .course-tile{padding:12px 10px;gap:9px}#daily-root .reference-courses .course-tile strong{font-size:17px}}
+/* Keep both main actions aligned and reachable in the initial phone viewport. */
+#daily-root .reference-welcome h1{font-size:clamp(32px,7vw,44px);line-height:1.05}
+#daily-root .reference-guide{align-self:center}
+#daily-root .entry-path{display:grid;grid-template-rows:auto auto 1fr auto auto}
+#daily-root .entry-path .primary{margin-top:0}
+@media(max-width:350px){#daily-root .reference-welcome h1{font-size:31px}#daily-root .mentor-principle{margin-block:12px 16px;padding-block:9px}#daily-root .entry-path{padding:12px 10px}#daily-root .entry-path p{margin-bottom:12px}#daily-root .entry-path h2{font-size:17px}}

@@ -139,3 +139,9 @@ body{background:#f8f6fb}
 .personal-standing>strong{font-size:38px;color:#5a2d91;letter-spacing:-.06em}
 .personal-standing .standing-score{grid-column:1/-1;border-top:1px solid #d9cbe7;padding-top:10px;font-size:16px;font-weight:750;color:#533174}
 .personal-standing .standing-score small{display:inline;font-size:12px;font-weight:500;margin-left:5px}
+/* Caption and mentor remain distinct, in reading order, without legacy absolute sizing. */
+.comp-hero .speech,.comp-hero.rankings .speech,.comp-hero.resultado .speech,.comp-hero.acompanar .speech{order:1}
+.comp-hero .hero-cat.subject-mentor{position:static;height:110px;width:100%;margin:0;order:2;object-fit:contain}
+.comp-hero h1:focus-visible{outline:2px solid #bca4d6;outline-offset:5px;border-radius:4px}
+@media(max-width:350px){.comp-hero .hero-cat.subject-mentor{height:95px}}
+@media(min-width:600px){.comp-hero .hero-cat.subject-mentor{height:140px}}

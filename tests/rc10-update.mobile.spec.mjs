@@ -16,7 +16,7 @@ test('The first screen gives learning and competition real independent routes wi
  await expect(page.locator('.mentor-principle')).toContainText('Primero cachémoslo fácil');
  const duelLink=page.getByRole('link',{name:'Jugar un duelo',exact:true});const duelBox=await duelLink.boundingBox(),subjectsBox=await page.locator('.training-subjects').boundingBox();expect(duelBox.y).toBeLessThan(subjectsBox.y);
  await expect(page.getByRole('link',{name:/Ver rankings/})).toHaveAttribute('href','competencia.html#rankings');
- await layout(page);await page.screenshot({path:info.outputPath('rc10-home-viewport.png'),animations:'disabled'});await page.screenshot({path:info.outputPath('rc10-home-full.png'),fullPage:true,animations:'disabled'});
+ const nav=await page.locator('.competition-entry-nav').boundingBox();for(const action of [page.locator('.learning-entry .primary'),duelLink]){const box=await action.boundingBox();expect(box.y+box.height).toBeLessThanOrEqual(nav.y+1);}await layout(page);await page.screenshot({path:info.outputPath('rc10-home-viewport.png'),animations:'disabled'});await page.screenshot({path:info.outputPath('rc10-home-full.png'),fullPage:true,animations:'disabled'});
  await page.getByRole('button',{name:'Elegir asignatura',exact:true}).click();await expect(page.getByRole('heading',{name:'Elige tu asignatura',exact:true})).toBeFocused();
  await page.locator('[data-action=pick-course][data-subject=M1]').click();await expect(page.locator('.mode-choices button')).toHaveCount(4);await page.locator('[data-action=game-mode]').click();await expect(page.locator('.trail-stop.current')).toHaveCount(1);await layout(page);
 });
@@ -32,7 +32,7 @@ test('The home competition action reaches real invitation controls and returns t
 test('Changing presentation preserves an unfinished educational session and its progress across reload',async({page})=>{
  await fixturePage(page);await page.goto('./inicio.html#courses');const before=await page.evaluate(()=>{const e=CachasteDailyApp.engine;e.start('M1',3,'free');e.save();location.hash='#courses';CachasteDailyApp.render();return{session:JSON.stringify(e.state.session),xp:e.stats().xp,attempts:e.state.attempts.length};});
  await page.reload();await expect(page.locator('.learning-entry [data-action=resume]')).toBeVisible();
- await page.getByRole('link',{name:'Ver rankings',exact:false}).click();await page.getByRole('link',{name:'Inicio',exact:true}).click();
+ await page.getByRole('link',{name:'Ver rankings',exact:false}).click();await page.getByRole('link',{name:'Inicio',exact:true}).click();await expect(page.locator('.learning-entry [data-action=resume]')).toBeVisible();
  expect(await page.evaluate(()=>{const e=CachasteDailyApp.engine;return{session:JSON.stringify(e.state.session),xp:e.stats().xp,attempts:e.state.attempts.length};})).toEqual(before);
  await page.locator('.learning-entry [data-action=resume]').click();expect(await page.evaluate(()=>JSON.stringify(CachasteDailyApp.engine.state.session))).toBe(before.session);
 });
