@@ -38,13 +38,13 @@ test('Changing presentation preserves an unfinished educational session and its 
 });
 
 test('A rematch keeps the actual rival and science track, waits for confirmation and retries without duplicate identities',async({page},info)=>{
- await settled(page,{subject:'Ciencias',track:'Física'});let calls=0;const payloads=[];
- await page.route('**/rest/v1/rpc/cachaste_competition',async route=>{const b=route.request().postDataJSON();if(b.operation==='create_duel'){calls++;payloads.push(b.payload);if(calls===1){await route.fulfill({status:400,json:{message:'RIVAL_UNAVAILABLE',code:'P0001'}});return;}}await route.fallback();});
+ await settled(page,{subject:'Ciencias',track:'Física'});let calls=0;const payloads=[],newDuel={...duel(),id:'30000000-0000-4000-8000-000000000010',subject:'Ciencias',track:'Física'};
+ await page.route('**/rest/v1/rpc/cachaste_competition',async route=>{const b=route.request().postDataJSON();if(b.operation==='create_duel'){calls++;payloads.push(b.payload);if(calls===1){await route.fulfill({status:400,json:{message:'RIVAL_UNAVAILABLE',code:'P0001'}});return;}await route.fulfill({json:newDuel});return;}if(b.operation==='duel'&&b.payload.duelId===newDuel.id){await route.fulfill({json:newDuel});return;}await route.fallback();});
  await page.getByRole('button',{name:'Pedir revancha',exact:true}).click();await expect(page.getByRole('textbox',{name:'Nickname',exact:true})).toHaveValue('CataPAES');expect(calls).toBe(0);
  await expect(page.locator('dialog')).toContainText('Ciencias');await page.screenshot({path:info.outputPath('rc10-rematch.png'),animations:'disabled'});
  await page.getByRole('button',{name:'Enviar desafío',exact:true}).click();await expect(page.locator('dialog [role=alert]')).toBeVisible();await expect(page.getByRole('textbox',{name:'Nickname',exact:true})).toHaveValue('CataPAES');
  await page.getByRole('button',{name:'Enviar desafío',exact:true}).click();await expect(page.getByRole('heading',{name:'Duelo PAES',exact:true})).toBeVisible();
- expect(payloads).toHaveLength(2);for(const p of payloads)expect(p).toMatchObject({subject:'Ciencias',track:'Física',nickname:'CataPAES'});expect(payloads[0].requestId).toBe(payloads[1].requestId);
+ await expect(page).toHaveURL(/#duelo$/);expect(payloads).toHaveLength(2);for(const p of payloads)expect(p).toMatchObject({subject:'Ciencias',track:'Física',nickname:'CataPAES'});expect(payloads[0].requestId).toBe(payloads[1].requestId);
 });
 
 test('A settled result keeps review available and opens the duel league in the result subject',async({page},info)=>{
