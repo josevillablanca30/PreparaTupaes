@@ -52,3 +52,20 @@ dialog{max-height:calc(100dvh - 32px);overflow:auto}dialog .email-help{font-size
 .avatar-collection{border:1px solid #e6d9f1;border-radius:16px;padding:10px}.avatar-collection summary{cursor:pointer;min-height:52px;align-content:center;color:#4e2c74;font-weight:750;line-height:1.4}.avatar-collection summary small{display:block;font-weight:500;font-size:12px;color:#756383}.avatar-filters{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.avatar-filters button{font-size:12px;min-height:48px;padding:8px 12px}.avatar-choice label[hidden]{display:none!important}.avatar-choice{margin:0}
 
 .avatar-collection .avatar-choice{padding:8px;gap:7px}.avatar-collection .avatar-choice label{padding:4px;min-width:0}.avatar-collection .avatar-choice span{max-width:100%;font-size:11px;overflow-wrap:anywhere;hyphens:auto}.avatar-collection .avatar-choice img{max-width:100%}
+
+/* UX rc9: recoverable actions, visible progress and accessible navigation. */
+html{scroll-padding-block:20px calc(110px + env(safe-area-inset-bottom))}
+#competition-root :is(input,select,button,a,summary){scroll-margin-block:20px calc(110px + env(safe-area-inset-bottom))}
+#competition-root :is(a,button,input,select,summary):focus-visible{outline:3px solid #7131c5;outline-offset:3px}
+.operation-progress{position:sticky;top:0;z-index:25;min-height:40px;padding:10px 16px;background:#eee5fc;color:#442260;text-align:center;font-weight:700;font-size:14px}.operation-progress[hidden]{display:none}
+.circle-button{position:relative}.invitation-count{position:absolute;top:0;right:0;min-width:18px;min-height:18px;border:2px solid #fff;border-radius:20px;background:#6320b8;color:#fff;font-size:10px;display:grid;place-items:center;padding:1px}
+.next-duel{display:flex;align-items:center;gap:12px;border-color:#b99adf;background:#f4edff;margin:10px 0}.next-duel>div{flex:1}.next-duel h2{font-size:16px;margin:0 0 5px}.next-duel p{font-size:12px;color:#67517d;margin:0}.next-duel button{min-height:48px;flex:none;font-size:12px}
+.review-prompt{width:100%;text-align:left;color:inherit;text-decoration:none;min-height:64px}
+[data-form-error],.pending-answer-note{padding:12px;border:1px solid #b987ad;border-radius:12px;background:#fff4f7;color:#743054;font-size:14px;line-height:1.45}
+[aria-invalid=true]{border:2px solid #9b3260!important}
+@media(max-width:350px){.next-duel{flex-direction:column;align-items:stretch}.next-duel button{width:100%}}
+/* Maintain the approved palette while increasing readability and touch area. */
+#competition-root :is(button,a).circle-button,#competition-root .back-icon{min-width:48px;min-height:48px}
+#competition-root .small-note,#competition-root .hero-lead,#competition-root .ranking-person small,#competition-root .duel-row small{color:#685575}
+#competition-root :is(input:not([type=radio]):not([type=checkbox]),select){min-height:48px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
