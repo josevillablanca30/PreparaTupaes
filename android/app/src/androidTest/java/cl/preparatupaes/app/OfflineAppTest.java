@@ -439,6 +439,23 @@ public class OfflineAppTest {
         assertEquals("null",js("crossPageReply"));
     }
 
+    @Test public void passwordRecoveryOpensItsOwnEmailFormWithoutLoginValidation() throws Exception {
+        scenario.onActivity(activity -> web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#perfil"));
+        waitFor("window.CachasteCompetition && document.querySelector('#auth-form')");
+        js("window.authInvalid=0;document.addEventListener('invalid',()=>window.authInvalid++,true);document.querySelector('[data-action=password-reset]').click();true");
+        waitFor("document.querySelector('#email-request-form') && !document.querySelector('#auth-form')");
+        assertEquals("0",js("window.authInvalid"));
+        assertEquals("0",js("document.querySelectorAll('input[type=password]').length"));
+        assertEquals("1",js("document.querySelectorAll('#email-request-form input[type=email]').length"));
+        assertEquals("false",js("document.querySelector('#email-request-form').checkValidity()"));
+        js("document.querySelector('#email-request-form input').value='recovery@example.invalid';true");
+        assertEquals("true",js("document.querySelector('#email-request-form').checkValidity()"));
+        captureDidacticScreen("auth-independent-recovery");
+        js("window.authInvalid=0;document.querySelector('[data-action=show-login]').click();true");
+        waitFor("document.querySelector('#auth-form') && !document.querySelector('#email-request-form')");
+        assertEquals("0",js("window.authInvalid"));
+    }
+
     @Test public void registrationNavigationNeverValidatesTheOtherForm() throws Exception {
         scenario.onActivity(activity -> web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#perfil"));
         waitFor("window.CachasteCompetition && document.querySelector('#auth-form')");
