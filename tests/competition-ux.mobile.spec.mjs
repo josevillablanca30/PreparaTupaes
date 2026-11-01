@@ -1,5 +1,5 @@
 import {test,expect} from '@playwright/test';
-import {fixturePage,actor,duel,dashboard,finished} from './helpers/competition-fixtures.mjs';
+import {fixturePage,actor,duel,dashboard,finished,ranking} from './helpers/competition-fixtures.mjs';
 
 async function startDuel(page){
  await page.goto('./competencia.html#duelos');
@@ -15,7 +15,7 @@ test('League details opens the duel ranking for the selected subject',async({pag
  await page.getByRole('button',{name:'M2',exact:true}).click();
  await page.locator('.league-panel').getByRole('link',{name:/Ver detalles/}).click();
  await expect(page.getByRole('button',{name:'Liga de duelos',exact:true})).toHaveAttribute('aria-pressed','true');
- await expect.poll(()=>calls.filter(c=>c.operation==='rankings').at(-1)?.payload).toMatchObject({mode:'duel',subject:'M2'});
+ await expect.poll(()=>calls.filter(c=>c.operation==='rankings').at(-1)?.payload).toMatchObject({mode:'duel',subject:'M2'});await expect(page.getByRole('heading',{name:'Rankings',exact:true})).toBeFocused();
 });
 
 test('The illustrated review card opens the settled duel tutor',async({page})=>{
@@ -107,4 +107,10 @@ test('A changed lobby refresh preserves focus; invitation actions remain visible
  expect(await page.locator('.circle-button:visible').evaluateAll(nodes=>nodes.every(el=>{const r=el.getBoundingClientRect();return r.width>=47.5&&r.height>=47.5;}))).toBe(true);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  await page.screenshot({path:info.outputPath('pending-duel-focus.png'),fullPage:true});
+});
+
+test('Loading rankings never shows a false empty result and a late response cannot overwrite the selected subject',async({page})=>{
+ await fixturePage(page);let release;const wait=new Promise(resolve=>{release=resolve;});let started=false;
+ await page.route('**/rest/v1/rpc/cachaste_competition',async route=>{const body=route.request().postDataJSON();if(body.operation==='rankings'){if(body.payload.subject==='M1'){started=true;await wait;}await route.fulfill({json:{...ranking,top:body.payload.subject==='M2'?ranking.top:[],me:null}});}else await route.fallback();});
+ try{await page.goto('./competencia.html#rankings');await expect.poll(()=>started).toBe(true);await expect(page.locator('#competition-progress')).toHaveText('Actualizando tus datos…');await expect(page.locator('.leaderboard .empty-state')).not.toBeVisible();await page.getByRole('button',{name:'M2',exact:true}).click();await expect(page.locator('.ranking-row')).toHaveCount(5);await expect(page.locator('#competition-progress')).not.toBeVisible();release();await expect(page.getByRole('button',{name:'M2',exact:true})).toHaveAttribute('aria-pressed','true');await expect(page.locator('.ranking-row')).toHaveCount(5);}finally{release();}
 });

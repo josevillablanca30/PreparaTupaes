@@ -69,3 +69,5 @@ html{scroll-padding-block:20px calc(110px + env(safe-area-inset-bottom))}
 #competition-root .small-note,#competition-root .hero-lead,#competition-root .ranking-person small,#competition-root .duel-row small{color:#685575}
 #competition-root :is(input:not([type=radio]):not([type=checkbox]),select){min-height:48px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+#competition-root[data-loading=true] :is(.leaderboard,.invitations) .empty-state{visibility:hidden}
