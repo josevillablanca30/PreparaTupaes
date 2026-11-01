@@ -263,9 +263,9 @@ body>main{--reference-gutter:20px}
 #daily-root .entry-kicker{font-size:10px;font-weight:800;line-height:1.4;letter-spacing:.12em;color:#654482;margin:0 0 8px}
 #daily-root .entry-path h2{font-size:20px;line-height:1.18;letter-spacing:-.035em;margin:0 0 9px}
 #daily-root .entry-path p{font-size:13px;line-height:1.5;color:#65586e;margin:0 0 18px}
-#daily-root .entry-path .primary{margin-top:auto;display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;padding:11px 8px;text-decoration:none;text-align:center;border-radius:11px;font-size:13px;font-weight:750;line-height:1.35;white-space:normal;box-shadow:none!important;background:#6530ac!important;border:1px solid #6530ac!important;color:#fff}
+#daily-root .entry-path .primary{margin-top:auto;display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;padding:11px 8px;text-decoration:none;text-align:center;border-radius:11px;font-size:13px;font-weight:750;line-height:1.35;white-space:normal;box-shadow:none;background:#6530ac;border:1px solid #6530ac;color:#fff}
 #daily-root .competition-entry{background:#f0ebf7;border-color:#cebddf}
-#daily-root .competition-entry .primary{background:#2d1c45!important;border-color:#2d1c45!important}
+#daily-root .competition-entry .primary{background:#2d1c45;border-color:#2d1c45}
 #daily-root .entry-ranking-link{min-height:44px;display:flex;align-items:center;justify-content:center;gap:7px;font-size:13px;font-weight:750;color:#54307f;text-decoration:none;margin-top:6px}
 #daily-root .home-section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 0 13px}
 #daily-root .home-section-heading h2{font-size:21px;line-height:1.2;margin:0}
@@ -308,3 +308,12 @@ body>main{--reference-gutter:20px}
 #daily-root .learning-entry{background:linear-gradient(145deg,#fff,#f5ecff)}#daily-root .entry-path .primary:active{transform:translateY(2px);box-shadow:0 1px 0 #45206b}#daily-root .course-tile:focus-visible,#daily-root .home-mentor-control:focus-visible{outline:3px solid #b47add;outline-offset:3px}
 @media(max-width:350px){#daily-root .reference-welcome{padding:14px 12px;min-height:140px}#daily-root .reference-welcome h1{font-size:29px}#daily-root .home-mentor-control .mentor-welcome{height:112px}#daily-root .reference-hello{font-size:8px;letter-spacing:1px}#daily-root .home-promise{font-size:11px}#daily-root .mentor-principle{padding:8px 10px;margin:10px 0 12px}#daily-root .mentor-principle>span:first-child{font-size:7px}#daily-root .mentor-principle .home-mentor-quote{font-size:11px}#daily-root .entry-path{padding:12px 10px;grid-template-rows:20px auto 1fr 48px 44px}#daily-root .entry-path h2{font-size:18px}#daily-root .entry-path p{font-size:11px}#daily-root .entry-path .entry-kicker{font-size:8px}#daily-root .entry-path .primary{font-size:11px}#daily-root .entry-path .entry-ranking-link{font-size:11px}}
 @media(prefers-reduced-motion:reduce){#daily-root .home-mentor-control .mentor-welcome{animation:none!important}}
+/* Interactive art must receive touch events; decorative layers remain inert. */
+#daily-root .reference-guide{pointer-events:auto;min-height:0;overflow:visible;display:block}
+#daily-root .home-mentor-control{pointer-events:auto}
+#daily-root .home-mentor-control .mentor-welcome{position:relative!important;height:128px!important;mix-blend-mode:normal}
+@media(max-width:350px){#daily-root .home-mentor-control .mentor-welcome{height:112px!important}}
+
+#daily-root .reference-welcome>div:first-child,#daily-root .reference-welcome h1{width:auto;max-width:100%;min-width:0}
+#daily-root .reference-welcome .home-promise{max-width:100%;width:auto}
+@media(max-width:350px){#daily-root .reference-welcome h1{font-size:26px}}
