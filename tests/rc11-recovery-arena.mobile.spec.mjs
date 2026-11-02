@@ -1,6 +1,7 @@
+import {readable} from './helpers/readable-surface.mjs';
 import {test,expect} from '@playwright/test';
 import {fixturePage,session,ranking} from './helpers/competition-fixtures.mjs';
-async function contrastAgainstGradient(locator){const ratios=await locator.evaluate(el=>{const s=getComputedStyle(el),color=s.color.match(/\d+(?:\.\d+)?/g).slice(0,3).map(Number),stops=[...getComputedStyle(el.closest('.comp-hero')||el).backgroundImage.matchAll(/rgba?\(([^)]+)\)/g)].map(m=>m[1].split(',').map(Number)).filter(c=>c.length===3||c[3]===1),light=c=>c.map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4;}).reduce((t,v,i)=>t+v*[.2126,.7152,.0722][i],0),f=light(color);return stops.map(c=>{const b=light(c);return(Math.max(f,b)+.05)/(Math.min(f,b)+.05);});});expect(ratios.length).toBeGreaterThan(0);for(const ratio of ratios)expect(ratio).toBeGreaterThanOrEqual(4.5);}
+const contrastAgainstGradient=readable;
 const overflow=async page=>expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 
 test('Recovery starts from empty login, uses only its own email, recovers from a wrong OTP and ends back at login',async({page},info)=>{
