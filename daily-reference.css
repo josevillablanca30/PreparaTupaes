@@ -317,3 +317,41 @@ body>main{--reference-gutter:20px}
 #daily-root .reference-welcome>div:first-child,#daily-root .reference-welcome h1{width:auto;max-width:100%;min-width:0}
 #daily-root .reference-welcome .home-promise{max-width:100%;width:auto}
 @media(max-width:350px){#daily-root .reference-welcome h1{font-size:26px}}
+
+/* rc12: approved violet/gold night arena. Scope to the entry, preserving lesson reading surfaces. */
+body:has(.reference-courses){background:radial-gradient(ellipse at 94% 14%,#36045a80,transparent 45%),#080611;color:#f8f4ff;color-scheme:dark}
+#daily-root .reference-courses{color:#f8f4ff}
+#daily-root .reference-brand{position:relative;margin-bottom:10px}
+#daily-root .reference-brand img{filter:invert(1) hue-rotate(180deg) brightness(1.7);mix-blend-mode:screen}
+#daily-root .home-profile{background:linear-gradient(150deg,#241332,#0e0919);border-color:#9f43d9;color:#fff;box-shadow:inset 0 0 12px #a126d326,0 0 12px #9d22f024}
+#daily-root .reference-welcome{border:0;border-radius:0;background:radial-gradient(ellipse at 84% 54%,#8e14d778,transparent 58%),linear-gradient(130deg,#080611,#14091e);box-shadow:none;padding:12px 0;min-height:205px;overflow:visible;grid-template-columns:55% 45%}
+#daily-root .reference-welcome:before{content:'';position:absolute;inset:12% 0 0 35%;z-index:-1;background:repeating-conic-gradient(from 25deg at 80% 60%,transparent 0deg 22deg,#a823ed24 23deg 25deg,transparent 26deg 44deg);clip-path:polygon(15% 0,100% 8%,100% 100%,0 84%);pointer-events:none}
+#daily-root .reference-welcome h1{font-style:italic;font-size:clamp(31px,7.5vw,49px);text-shadow:0 2px 18px #b66bff45;margin:8px 0 14px}
+#daily-root .reference-welcome h1 em{color:#ffda57;font-style:inherit;text-shadow:0 0 16px #f7ac2555}
+#daily-root .reference-hello{color:#e6a8ff;letter-spacing:1.2px}
+#daily-root .reference-welcome .home-promise{font-size:12px;color:#eee5f8}
+#daily-root .home-mentor-control .mentor-welcome{height:183px!important;filter:drop-shadow(0 0 12px #b62bff80)}
+#daily-root .mentor-orbit{display:none}
+#daily-root .mentor-principle{background:linear-gradient(110deg,#21112e,#0d0916);border:1px solid #623579;border-left:3px solid #ffcc43;color:#fff;margin:6px 0 16px}
+#daily-root .mentor-principle>span:first-child{color:#df9aff}
+#daily-root .mentor-principle .home-mentor-quote{color:#fff;font-style:italic}
+#daily-root .entry-path{background:radial-gradient(ellipse at 80% 0,#6a149d70,transparent 75%),linear-gradient(160deg,#211132,#0d0918);border:1px solid #bd4dff;box-shadow:inset 0 1px 1px #f3b3ff80,0 0 18px #921cf331;border-radius:18px;padding:14px 12px;grid-template-rows:22px auto 1fr 48px 44px}
+#daily-root .entry-path:before{content:'';position:absolute;inset:0;z-index:-1;opacity:.25;background:linear-gradient(160deg,transparent 30%,#b82bff30),url(assets/map-valley-v1.webp) center 20%/cover;pointer-events:none}
+#daily-root .competition-entry{background:radial-gradient(ellipse at 80% 0,#8e510d80,transparent 70%),linear-gradient(150deg,#23170f,#0d0918);border-color:#f5c048;box-shadow:inset 0 1px 1px #fff2af,0 0 18px #ef9e242b}
+#daily-root .competition-entry:before{background:repeating-conic-gradient(from 10deg at 80% 0,transparent 0 19deg,#ffbb4338 21deg 24deg,transparent 26deg 40deg)}
+#daily-root .entry-path h2,#daily-root .entry-path .entry-ranking-link{color:#fff}
+#daily-root .entry-path p{color:#e5dcef}
+#daily-root .entry-path .entry-kicker{color:#e9a7ff}
+#daily-root .competition-entry .entry-kicker{color:#ffdf61}
+#daily-root .entry-path .primary{background:linear-gradient(160deg,#9c1cdb,#6510bd)!important;border-color:#e99fff!important;box-shadow:inset 0 2px 3px #f1b6ff70,0 0 13px #b420ef70,0 3px 0 #410971!important;color:#fff}
+#daily-root .competition-entry .primary{background:linear-gradient(160deg,#ffe177,#ffb51d)!important;color:#271334;border-color:#fff1ae!important;box-shadow:inset 0 2px 2px #fff5b8,0 0 14px #f5ab2d66,0 3px 0 #975710!important}
+#daily-root .home-section-heading{border-top:1px solid #613284;padding-top:18px}
+#daily-root .home-section-heading .entry-kicker{color:#dda6f3}
+#daily-root .home-section-heading>span{color:#c8b5d8}
+#daily-root .reference-courses .course-tile,#daily-root .reference-stats{background:linear-gradient(130deg,#20142f,#100b1d);border-color:#754392;color:#fff;box-shadow:inset 0 1px 0 #cf8dff30}
+#daily-root .reference-courses .course-tile small,#daily-root .reference-stats small{color:#d5c5e5}
+#daily-root .reference-courses .course-chevron{color:#e7a9ff}
+body:has(.reference-courses) .competition-entry-nav{background:linear-gradient(#21132fee,#0d091bef);border:1px solid #8b45b2;box-shadow:0 -5px 25px #6a12ad25;backdrop-filter:blur(12px)}
+body:has(.reference-courses) .competition-entry-nav a{color:#f0e8f8}
+body:has(.reference-courses) .competition-entry-nav a[aria-current=page]{background:linear-gradient(150deg,#a720ed,#551187);color:#fff;box-shadow:inset 0 1px 2px #e1a0ff,0 0 12px #b328fa55;border:1px solid #dc73ff}
+@media(max-width:350px){#daily-root .reference-welcome{min-height:194px}#daily-root .reference-welcome h1{font-size:31px}#daily-root .home-mentor-control .mentor-welcome{height:155px!important}#daily-root .mentor-principle>span:first-child{font-size:7px}}

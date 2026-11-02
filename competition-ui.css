@@ -168,3 +168,51 @@ body{background:#f8f6fb}
 .arena-emblem{white-space:nowrap;letter-spacing:-4px;font-size:30px;line-height:1;width:43px;justify-self:center}
 .avatar-collection .avatar-choice label>span{width:100%;hyphens:none}
 @media(max-width:350px){.avatar-collection .avatar-choice label>span{font-size:10.5px}}
+
+/* rc12: approved neon arena; data and server decisions remain authoritative. */
+:root{color-scheme:dark;color:#faf5ff;background:#080611;--purple:#cf76ff;--ink:#faf5ff;--muted:#d4c1e4;--line:#70408b;--panel:#171023;--shadow:0 0 18px #9a21dc20}
+body{background:radial-gradient(ellipse at 95% 10%,#3b075c70,transparent 42%),#080611;color:#faf5ff}
+#competition-root{color:#faf5ff}
+.brand img{filter:invert(1) hue-rotate(180deg) brightness(1.7);mix-blend-mode:screen}
+.comp-header .circle-button{background:linear-gradient(145deg,#271334,#0e0919);border-color:#a24ed2;color:#fff;box-shadow:inset 0 0 10px #a525e024}
+.comp-hero,.comp-hero.rankings,.comp-hero.resultado,.comp-hero.acompanar{border:0;border-radius:0;box-shadow:none;background:radial-gradient(ellipse at 90% 60%,#790eae70,transparent 66%),linear-gradient(130deg,#080611,#13091e);padding:12px 0;min-height:190px;overflow:visible;margin:0 0 12px;grid-template-columns:minmax(0,1fr) 44%}
+.comp-hero:before{content:'';position:absolute;inset:0 0 0 30%;z-index:-1;background:repeating-conic-gradient(from 15deg at 85% 70%,transparent 0 25deg,#b518ef28 27deg 29deg,transparent 31deg 50deg);pointer-events:none;clip-path:polygon(10% 0,100% 0,100% 100%,0 90%)}
+.comp-hero h1{font-style:italic;font-weight:900;text-shadow:0 0 20px #a348f56b;padding-bottom:10px;position:relative}
+.comp-hero h1:after{content:'';position:absolute;bottom:0;left:0;width:90%;height:3px;background:linear-gradient(90deg,transparent,#c54dff,#f3bdff,transparent);transform:rotate(-4deg);box-shadow:0 0 11px #cf43ff}
+.comp-hero .eyebrow{color:#edb3ff}
+.comp-hero .mentor-control .hero-cat.subject-mentor{height:170px;filter:drop-shadow(0 0 11px #a524e76b)}
+.comp-hero .speech{background:#150b2180;border-color:#68378c;color:#f6eaff;font-size:10px;padding:6px}
+.comp-hero aside.mentor-stage{gap:4px}
+.panel,.ranking-modes,.subject-tabs,.geography-tabs,.competition-format,.action-tile,.arena-spotlight{background:linear-gradient(135deg,#1e122e,#0c0915);border:1px solid #8747ad;box-shadow:inset 0 1px 0 #e3b1ff26,0 0 15px #9015cd18;color:#fff}
+.subject-tabs button,.ranking-modes button,.geography-tabs button{color:#f7eeff}
+.subject-tabs .selected,.ranking-modes .selected,.geography-tabs .selected{background:linear-gradient(145deg,#9c1cdb,#6610b8)!important;border:1px solid #f2aaff!important;box-shadow:inset 0 2px 3px #efbcff80,0 0 15px #b91df080;color:#fff!important}
+.primary{background:linear-gradient(150deg,#9c1cdb,#7212b8);border-color:#e48bff;color:#fff;box-shadow:inset 0 2px 2px #eaa8ff70,0 0 12px #ac18df50,0 3px 0 #3c0b63}
+.soft,.outline{background:#28133b;border-color:#8c4caf;color:#f1d8ff}
+.arena-spotlight>.primary,.action-tile:first-child .primary{background:linear-gradient(145deg,#ffe277,#ffb71f);border-color:#fff0a4;color:#261132;box-shadow:inset 0 2px 2px #fff4b6,0 0 13px #ffaf3755,0 3px 0 #875416}
+.action-tile{border-color:#a848d9;box-shadow:inset 0 1px 0 #f3adff55,0 0 11px #a91be827}
+.action-tile h2{color:#fff}.action-tile p,.arena-spotlight p,.competition-format span{color:#e0d1eb}
+.action-symbol{background:linear-gradient(150deg,#39174d,#1b0e2b);border-color:#9951bd;color:#eeb1ff;box-shadow:inset 0 1px 2px #ba6de935}
+.competition-format strong{color:#f0c4ff;font-style:italic;font-size:20px}
+.arena-emblem{color:#f0a7ff;text-shadow:0 0 14px #b02cff}
+.arena-spotlight .entry-kicker{color:#e5b1ff}
+#competition-root .small-note,#competition-root .ranking-person small,#competition-root .duel-row small,#competition-root .ranking-caption,.ranking-privacy,.nearby,.track-picker{color:#cfbadd}
+.ranking-row,.duel-row,.own-position{background:linear-gradient(130deg,#251336,#100c1d);border-color:#794096;color:#fff}
+.ranking-row.place-1{background:linear-gradient(125deg,#37240c,#241039 65%);border-color:#edbd49;box-shadow:0 0 14px #d58a2320}
+.ranking-row.place-2{background:linear-gradient(125deg,#292538,#151020);border-color:#bcb0d3}
+.ranking-row.place-3{background:linear-gradient(125deg,#382016,#1b1025);border-color:#ba805b}
+.rank-score,.place-1 .rank-score{background:#2f193e;color:#fff}
+.rank-score small{color:#e4d1ed}
+.leaderboard{border-color:#be62ed;box-shadow:inset 0 -2px 0 #cf31ed66,0 0 22px #a929e932}
+.season-picker select,.track-picker select{background:#1c102b;color:#f7eaff;border:1px solid #9a52c2}
+.empty-state,.empty-state strong{color:#d8bce8}.empty-state p{color:#cdb7db}
+.stat-grid>div{background:#221432;border-color:#74488d}.stat-grid b{color:#fff}#competition-root .stat-grid span{color:#d7c4e4}
+.comp-nav{background:linear-gradient(#251532f5,#0d091af5);border:1px solid #9147b4;box-shadow:0 -4px 20px #8e1ae52b}
+.comp-nav>a{color:#eee6f5}.comp-nav>a[aria-current=page],.comp-nav>a.active{background:linear-gradient(145deg,#ad24eb,#57138b);border:1px solid #de81ff;color:#fff;box-shadow:inset 0 1px 2px #efa7ff,0 0 15px #b025e966}
+#competition-root input,#competition-root select,dialog input,dialog select{background:#160e22;color:#fff;border-color:#9262aa}
+#competition-root label,.profile-form label,.auth-form label{color:#e5d2ef}
+#competition-root .profile-form small,#competition-root .access-note,#competition-root .text-button{color:#d9bee9}
+.avatar-choice label{background:#22132f;color:#fff;border-color:#7e4a9b}.avatar-choice label:has(input:checked){border-color:#e8a3ff;box-shadow:0 0 0 2px #9f38d6}
+.avatar-filters button{background:#281539;color:#edd7fa;border-color:#86549c}
+#competition-root dialog,dialog{background:#180f24;color:#fff;border:1px solid #ac68ca;box-shadow:0 0 30px #ab22ea36}
+#competition-root a:not(.primary):not(.soft):not(.outline):not(.brand):not(.circle-button):not(.comp-nav>a){color:#e1b2fa}
+@media(max-width:350px){.comp-hero .mentor-control .hero-cat.subject-mentor{height:145px}.comp-hero h1{font-size:33px}.comp-hero .speech{font-size:9px}.action-tile{padding:13px 10px}}
