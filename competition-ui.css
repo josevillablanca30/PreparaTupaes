@@ -253,3 +253,6 @@ body.versus-page{background:#080611}
 #competition-root .access-note strong{color:#f3ddff}
 
 #competition-root [data-form-error],#competition-dialog [data-dialog-error]{background:#321829;color:#ffdcf0;border:1px solid #a0658d;border-radius:12px;padding:12px}
+body.versus-page .comp-nav{background:linear-gradient(#251532,#0d091a);background-color:#160e24;border-color:#9147b4}
+body.versus-page .comp-nav>a{color:#eee6f5}
+body.versus-page .comp-nav>a[aria-current=page]{background:linear-gradient(145deg,#9c1cdb,#57138b);color:#fff;border-color:#de81ff}
