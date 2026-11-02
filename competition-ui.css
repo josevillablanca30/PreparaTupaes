@@ -230,3 +230,5 @@ body{background:radial-gradient(ellipse at 95% 10%,#3b075c70,transparent 42%),#0
 .comp-hero.duelos .mentor-control .hero-cat.subject-mentor,.comp-hero.rankings .mentor-control .hero-cat.subject-mentor{height:195px;object-position:center bottom;animation:none}
 .comp-hero.mentor-has-advice .speech{display:block;position:absolute;z-index:5;right:0;bottom:25px;width:100%;background:#170921ed;border:1px solid #c570ee;box-shadow:0 0 14px #ad25e545}
 @media(max-width:350px){.comp-hero.duelos .mentor-control .hero-cat.subject-mentor,.comp-hero.rankings .mentor-control .hero-cat.subject-mentor{height:160px}}
+.comp-hero.duelos,.comp-hero.rankings{background:linear-gradient(90deg,#080611 0%,#080611e8 44%,#08061122 100%),url(assets/competition-reference-energy-v1.webp) center/cover}
+.comp-hero.duelos:before,.comp-hero.rankings:before{display:none}
