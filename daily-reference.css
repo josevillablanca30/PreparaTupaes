@@ -366,7 +366,7 @@ body:has(.reference-courses) .competition-entry-nav a[aria-current=page]{backgro
 /* Reference artwork, not a palette-only approximation. Live controls stay above these layers. */
 #daily-root .reference-welcome{background:linear-gradient(90deg,#080611 0%,#080611e8 44%,#08061122 100%),url(assets/competition-reference-energy-v1.webp) center/cover}
 #daily-root .reference-welcome:before{display:none}
-#daily-root .home-mentor-control .mentor-welcome{width:110%!important;max-width:none;transform:translateX(-5%);object-fit:contain}
+#daily-root .home-mentor-control .mentor-welcome{width:100%!important;max-width:100%;transform:none;object-fit:contain}
 #daily-root .entry-path.learning-entry{background:linear-gradient(180deg,#08061155,#080611d6 48%,#080611 95%),url(assets/competition-reference-mountain-v1.webp) center top/cover}
 #daily-root .entry-path.competition-entry{background:linear-gradient(180deg,#08061155,#080611d6 48%,#080611 95%),url(assets/competition-reference-champions-v1.webp) center top/cover}
 #daily-root .entry-path:before{display:none}
