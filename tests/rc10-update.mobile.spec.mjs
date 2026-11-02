@@ -72,3 +72,21 @@ test('The signed-in session can be closed before testing registration without cl
  await expect(page.locator('.profile-panel')).toHaveCount(0);expect(await page.evaluate(()=>localStorage.getItem('keep-learning-test'))).toBe('retained');
  await page.getByRole('button',{name:'Crear cuenta',exact:true}).click();await expect(page.locator('#signup-form')).toBeVisible();
 });
+
+test('An optional profile photo is compressed, previewed, consented and uploaded independently from profile edits',async({page},info)=>{
+ await fixturePage(page);let photoVersion=null,uploads=0;const raw=Buffer.from('UklGRkgAAABXRUJQVlA4IDwAAAAwAwCdASogACAAPm00lkekIyIhKAgAgA2JZQDJAoAAQFBQAP7wm0P/z0z+tv4/7Pv4oBSOJQzRGqAAAAA=','base64');
+ await page.route('**/storage/v1/object/**',async route=>{
+  if(route.request().method()==='POST'){uploads++;expect(route.request().postDataBuffer().length).toBeLessThan(35000);photoVersion='2026-11-02T10:00:00Z';await route.fulfill({json:{Key:actor.id+'/avatar.webp',Id:'photo-test'}});}
+  else if(route.request().method()==='DELETE'){photoVersion=null;await route.fulfill({json:[]});}
+  else await route.fulfill({contentType:'image/webp',body:raw});
+ });
+ await page.route('**/rest/v1/rpc/cachaste_competition',async route=>{const {operation}=route.request().postDataJSON();if(operation==='photo_status'){await route.fulfill({json:{canUpload:uploads===0,photoVersion,nextChangeAt:'2026-11-09T10:00:00Z'}});return;}if(operation==='profile'){const {profile}=await import('./helpers/competition-fixtures.mjs');await route.fulfill({json:{profile:{...profile,photoVersion},premium:true,season:'2026-10-19'}});return;}await route.fallback();});
+ await page.goto('./competencia.html#perfil');await page.getByRole('button',{name:'Subir mi foto',exact:true}).click();
+ const input=page.locator('#photo-form input[type=file]');await input.setInputFiles({name:'bad.pdf',mimeType:'application/pdf',buffer:Buffer.from('invalid')});await expect(page.locator('[data-photo-note]')).toContainText('Elige una foto');await expect(page.locator('#photo-form [type=submit]')).toBeDisabled();
+ await input.setInputFiles({name:'personal.webp',mimeType:'image/webp',buffer:raw});await expect(page.locator('.photo-preview')).toBeVisible();
+ const size=await page.locator('.photo-preview').evaluate(async img=>{const blob=await fetch(img.src).then(r=>r.blob()),bitmap=await createImageBitmap(blob);return{width:bitmap.width,height:bitmap.height,bytes:blob.size,type:blob.type};});expect(size.width).toBe(256);expect(size.height).toBe(256);expect(size.bytes).toBeLessThanOrEqual(32768);expect(size.type).toBe('image/webp');
+ await page.locator('#photo-form [type=submit]').click();expect(uploads).toBe(0);await page.locator('[name=photoConsent]').check();await page.locator('#photo-form [type=submit]').click();
+ await expect(page.locator('dialog')).not.toBeVisible();await expect(page.locator('.profile-photo-panel img.profile-photo')).toBeVisible();expect(uploads).toBe(1);await layout(page);await page.screenshot({path:info.outputPath('profile-photo.png'),fullPage:true,animations:'disabled'});
+ await page.getByRole('button',{name:'Cambiar mi foto',exact:true}).click();await expect(page.locator('.toast')).toContainText('Podrás subir otra foto');expect(uploads).toBe(1);
+ await page.getByRole('button',{name:'Quitar foto y usar mi gatito'}).click();await expect(page.getByRole('button',{name:'Subir mi foto',exact:true})).toBeVisible();await expect(page.locator('.profile-photo-panel img.profile-photo')).toHaveCount(0);
+});

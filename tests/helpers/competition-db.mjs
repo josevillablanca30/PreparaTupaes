@@ -10,6 +10,11 @@ export async function database(){
  create table auth.sessions(id uuid primary key,user_id uuid,not_after timestamptz,created_at timestamptz default now());
  create function auth.jwt()returns jsonb language sql stable as $$select nullif(current_setting('request.jwt.claims',true),'')::jsonb$$;
  create function auth.uid()returns uuid language sql stable as $$select (auth.jwt()->>'sub')::uuid$$;
+ create schema storage;
+ create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);
+ create table storage.objects(id uuid primary key default gen_random_uuid(),bucket_id text references storage.buckets(id),name text,owner_id text,metadata jsonb,unique(bucket_id,name));
+ alter table storage.objects enable row level security;
+ grant usage on schema storage to authenticated;grant select,insert,update,delete on storage.objects to authenticated;
  grant usage on schema auth to authenticated;grant execute on all functions in schema auth to authenticated;`);
  for(const f of readdirSync(new URL('../../supabase/migrations/',import.meta.url)).filter(x=>x.endsWith('.sql')).sort())await db.exec(readFileSync(new URL('../../supabase/migrations/'+f,import.meta.url),'utf8'));
  await db.exec(competitionSeed());

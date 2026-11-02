@@ -55,6 +55,23 @@ try{
  await call(0,'save_profile',{nickname:'ChangedNickname',communeCode:'05701',publicRanking:true,allowChallenges:true,showCommune:true,avatar:0,communityVersion:'2026-10-23'});assert.equal((await call(0,'profile')).profile.nickname,'ChangedNickname');
  await call(0,'save_profile',{nickname:'TestCachaste0',communeCode:'05701',publicRanking:true,allowChallenges:true,showCommune:true,avatar:0,communityVersion:'2026-10-23'});
  record('Case-insensitive duplicate nicknames are rejected and profile edits persist on the server');
+ const photo=Buffer.from('UklGRkgAAABXRUJQVlA4IDwAAAAwAwCdASogACAAPm00lkekIyIhKAgAgA2JZQDJAoAAQFBQAP7wm0P/z0z+tv4/7Pv4oBSOJQzRGqAAAAA=','base64'),bucket='cachaste-profile-photos',photoPath=users[0]+'/avatar.webp';
+ const storage0=clients[0].storage.from(bucket),storage1=clients[1].storage.from(bucket);
+ assert.equal((await call(0,'photo_status')).canUpload,true);
+ const photoUpload=await storage0.upload(photoPath,photo,{contentType:'image/webp',upsert:true,cacheControl:'3600'});assert.ifError(photoUpload.error);
+ assert.ok((await call(0,'profile')).profile.photoVersion);assert.equal((await call(0,'photo_status')).canUpload,false);
+ const downloaded=await fetch(new URL('/storage/v1/object/public/'+bucket+'/'+photoPath,url));assert.equal(downloaded.status,200);assert.deepEqual(Buffer.from(await downloaded.arrayBuffer()),photo);
+ assert.ok((await storage1.upload(photoPath,photo,{contentType:'image/webp',upsert:true})).error);
+ assert.ok((await storage0.upload(users[0]+'/another.webp',photo,{contentType:'image/webp'})).error);
+ assert.ok((await storage0.upload(photoPath,photo,{contentType:'image/webp',upsert:true})).error);
+ assert.equal((await db.query('select count(*)::int n from storage.objects where bucket_id=$1',[bucket])).rows[0].n,1);
+ const removedPhoto=await storage0.remove([photoPath]);assert.ifError(removedPhoto.error);assert.equal((await call(0,'profile')).profile.photoVersion,null);
+ assert.ok((await storage0.upload(photoPath,photo,{contentType:'image/webp',upsert:true})).error);
+ await db.query("update cachaste.profile_photos set updated_at=now()-interval '7 days 1 second'where user_id=$1",[users[0]]);
+ const newPhoto=await storage0.upload(photoPath,photo,{contentType:'image/webp',upsert:true});assert.ifError(newPhoto.error);assert.equal((await db.query('select count(*)::int n from storage.objects where bucket_id=$1',[bucket])).rows[0].n,1);
+ assert.ifError((await storage0.remove([photoPath])).error);
+ record('Real Storage HTTP: public thumbnail upload/read, foreign/path/cooldown denial, immediate removal and seven-day renewal; one object per account');
+
  const denied=await clients[0].rpc('cachaste_competition',{operation:'dashboard',payload:{}});assert.equal(denied.error?.code,'42501');
  const noAccess=await clients[0].rpc('cachaste_access');assert.ifError(noAccess.error);assert.equal(noAccess.data.active,false);assert.equal(noAccess.data.validUntilMs,null);
  await db.query("update cachaste.settings set environment='test'");

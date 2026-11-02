@@ -1,7 +1,26 @@
 import {createClient} from '@supabase/supabase-js';
 
-export const errors={COMMUNITY_REQUIRED:'Revisa y acepta las reglas de comunidad en tu perfil antes de participar.',ACCOUNT_RESTRICTED:'Tu participación competitiva está restringida. Puedes administrar tu cuenta y seguir estudiando con tu acceso vigente.',INVALID_PLAYER:'No pudimos encontrar a ese estudiante.',INVALID_REPORT_REASON:'Elige un motivo para la denuncia.',INVALID_EMAIL_LINK:'Revisa el código o el enlace del correo y vuelve a intentarlo.',INVALID_NICKNAME:'Usa entre 3 y 20 letras, números o guion bajo; el apodo no puede contener solo números.',PASSWORD_MISMATCH:'Las contraseñas deben coincidir.',SERVICE_NOT_READY:'La competencia aún se está preparando. Tu aprendizaje sigue disponible.',AUTH_REQUIRED:'Inicia sesión para continuar.',PROFILE_REQUIRED:'Completa tu perfil para participar.',SUBSCRIPTION_REQUIRED:'Necesitas una suscripción validada para competir.',RIVAL_UNAVAILABLE:'Ese estudiante no está disponible para desafíos.',SELF_DUEL:'Elige a otro estudiante para el duelo.',PAIR_LIMIT:'Ya hay un desafío pendiente o un duelo en curso con este rival en esta asignatura. Termínenlo para pedir revancha.',RATE_LIMIT:'Alcanzaste el límite de esta acción. Inténtalo más tarde.',INVITATION_UNAVAILABLE:'La invitación venció o ya no está disponible.',FRESH_POOL_EXHAUSTED:'Por ahora no quedan diez preguntas nuevas para ambos. Prueba otra asignatura.',WEEKLY_ATTEMPT_USED:'Ya tienes tu intento de esta semana. Puedes seguir practicando sin límite.',SOLUTIONS_HIDDEN:'Las soluciones se abren cuando termina el duelo para ambos.',ANSWER_OUT_OF_ORDER:'Tu respuesta ya cambió en el servidor. Recupera el duelo para continuar.',CHALLENGES_DISABLED:'Activa los desafíos en la privacidad de tu perfil para buscar rival.',NOT_FOUND:'No pudimos encontrar esa partida en tu cuenta.',SELECT_EQUIVALENT_WEEK:'Elige una semana: solo comparamos ensayos bajo las mismas condiciones.'};
+export const errors={PHOTO_COOLDOWN:'Puedes subir otra foto siete días después de la última. Puedes quitarla cuando quieras.',INVALID_PHOTO:'Elige una foto JPG, PNG o WebP de hasta 12 MB. La prepararemos para tu perfil.',COMMUNITY_REQUIRED:'Revisa y acepta las reglas de comunidad en tu perfil antes de participar.',ACCOUNT_RESTRICTED:'Tu participación competitiva está restringida. Puedes administrar tu cuenta y seguir estudiando con tu acceso vigente.',INVALID_PLAYER:'No pudimos encontrar a ese estudiante.',INVALID_REPORT_REASON:'Elige un motivo para la denuncia.',INVALID_EMAIL_LINK:'Revisa el código o el enlace del correo y vuelve a intentarlo.',INVALID_NICKNAME:'Usa entre 3 y 20 letras, números o guion bajo; el apodo no puede contener solo números.',PASSWORD_MISMATCH:'Las contraseñas deben coincidir.',SERVICE_NOT_READY:'La competencia aún se está preparando. Tu aprendizaje sigue disponible.',AUTH_REQUIRED:'Inicia sesión para continuar.',PROFILE_REQUIRED:'Completa tu perfil para participar.',SUBSCRIPTION_REQUIRED:'Necesitas una suscripción validada para competir.',RIVAL_UNAVAILABLE:'Ese estudiante no está disponible para desafíos.',SELF_DUEL:'Elige a otro estudiante para el duelo.',PAIR_LIMIT:'Ya hay un desafío pendiente o un duelo en curso con este rival en esta asignatura. Termínenlo para pedir revancha.',RATE_LIMIT:'Alcanzaste el límite de esta acción. Inténtalo más tarde.',INVITATION_UNAVAILABLE:'La invitación venció o ya no está disponible.',FRESH_POOL_EXHAUSTED:'Por ahora no quedan diez preguntas nuevas para ambos. Prueba otra asignatura.',WEEKLY_ATTEMPT_USED:'Ya tienes tu intento de esta semana. Puedes seguir practicando sin límite.',SOLUTIONS_HIDDEN:'Las soluciones se abren cuando termina el duelo para ambos.',ANSWER_OUT_OF_ORDER:'Tu respuesta ya cambió en el servidor. Recupera el duelo para continuar.',CHALLENGES_DISABLED:'Activa los desafíos en la privacidad de tu perfil para buscar rival.',NOT_FOUND:'No pudimos encontrar esa partida en tu cuenta.',SELECT_EQUIVALENT_WEEK:'Elige una semana: solo comparamos ensayos bajo las mismas condiciones.'};
 export function errorMessage(e){const authErrors={invalid_credentials:'Correo o contraseña incorrectos.',email_not_confirmed:'Confirma tu correo antes de iniciar sesión.',user_already_exists:'Ya existe una cuenta con ese correo. Inicia sesión o recupera tu contraseña.',weak_password:'Usa una contraseña de al menos doce caracteres.',email_address_invalid:'Revisa la dirección de correo.',over_email_send_rate_limit:'Espera unos minutos antes de solicitar otro correo.',over_request_rate_limit:'Demasiados intentos. Espera unos minutos y vuelve a intentarlo.',otp_expired:'El código venció o ya fue utilizado. Si ya confirmaste tu correo, vuelve a iniciar sesión; si no, solicita otro.',bad_code_verifier:'El enlace no corresponde a esta solicitud. Solicita uno nuevo.',session_not_found:'Tu sesión terminó. Vuelve a iniciar sesión.',refresh_token_not_found:'Tu sesión terminó. Vuelve a iniciar sesión.'};if(authErrors[e?.code])return authErrors[e.code];const s=String(e?.message||e||'');if(/^Email not confirmed$/i.test(s))return authErrors.email_not_confirmed;if(/^Invalid login credentials$/i.test(s))return authErrors.invalid_credentials;return Object.entries(errors).find(([key])=>s.includes(key))?.[1]||(/duplicate key/i.test(s)?'Ese nickname ya está en uso. Elige otro.':/fetch|network|timeout|abort/i.test(s)?'No logramos conectarnos. Tu respuesta pendiente se conserva para reintentar.':'No pudimos completar la operación. Vuelve a intentarlo.');}
+// Only the processed thumbnail is uploaded: square crop, no EXIF/GPS and no original file.
+export async function prepareProfilePhoto(file){
+ if(!file||!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>12*1024*1024)throw Error('INVALID_PHOTO');
+ const url=URL.createObjectURL(file),img=new Image();
+ try{
+  await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('INVALID_PHOTO')),12000);img.onload=()=>{clearTimeout(timer);resolve();};img.onerror=()=>{clearTimeout(timer);reject(Error('INVALID_PHOTO'));};img.src=url;});
+  if(!img.naturalWidth||!img.naturalHeight||img.naturalWidth*img.naturalHeight>60000000)throw Error('INVALID_PHOTO');
+  const canvas=document.createElement('canvas');canvas.width=canvas.height=256;
+  const ctx=canvas.getContext('2d'),side=Math.min(img.naturalWidth,img.naturalHeight);
+  ctx.drawImage(img,(img.naturalWidth-side)/2,(img.naturalHeight-side)/2,side,side,0,0,256,256);
+  for(const quality of [.82,.66,.5,.35]){const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/webp',quality));if(blob?.type==='image/webp'&&blob.size>0&&blob.size<=32768)return blob;}
+  throw Error('INVALID_PHOTO');
+ }finally{URL.revokeObjectURL(url);}
+}
+export function profilePhotoUrl(p,config){
+ const id=p?.id||p?.user_id,version=Date.parse(p?.photoVersion);
+ if(p?.blocked||!Number.isFinite(version)||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id||'')||!/^https:\/\/[a-z0-9]+\.supabase\.co$/.test(config?.supabaseUrl||''))return null;
+ return config.supabaseUrl+'/storage/v1/object/public/cachaste-profile-photos/'+id+'/avatar.webp?v='+version;
+}
 export class CompetitionClient{
  constructor(config,storage=globalThis.localStorage){
   this.config=config;this.storage=storage;this.user=null;this.profile=null;this.premium=false;this.serviceReady=false;this.recovering=false;this.billingUnavailable=false;this.nativeAccessUnavailable=false;this.nativeRequests=new Map();
@@ -67,6 +86,16 @@ export class CompetitionClient{
  }
  async resendConfirmation(email){if(!this.sdk||!this.serviceReady)throw new Error('SERVICE_NOT_READY');const{error}=await this.sdk.auth.resend({type:'signup',email:email.trim()});if(error)throw error;}
  async updatePassword(password){if(!this.sdk||!this.user||!this.recovering)throw new Error('AUTH_REQUIRED');const{error}=await this.sdk.auth.updateUser({password});if(error)throw error;await this.signOut('global');}
+ async photoStatus(){return this.call('photo_status');}
+ async uploadPhoto(blob){
+  if(!this.sdk||!this.user)throw Error('AUTH_REQUIRED');
+  if(blob?.type!=='image/webp'||blob.size>32768||!blob.size)throw Error('INVALID_PHOTO');
+  const status=await this.photoStatus();if(!status.canUpload)throw Error('PHOTO_COOLDOWN');
+  const{error}=await this.sdk.storage.from('cachaste-profile-photos').upload(this.user.id+'/avatar.webp',blob,{contentType:'image/webp',cacheControl:'3600',upsert:true});
+  if(error){const fresh=await this.photoStatus().catch(()=>null);if(fresh&&!fresh.canUpload)throw Error('PHOTO_COOLDOWN');throw error;}
+  return this.connect();
+ }
+ async removePhoto(){if(!this.sdk||!this.user)throw Error('AUTH_REQUIRED');const{error}=await this.sdk.storage.from('cachaste-profile-photos').remove([this.user.id+'/avatar.webp']);if(error)throw error;return this.connect();}
  async signOut(scope='local'){this.clearNativeAccess();if(this.sdk){const{error}=await this.sdk.auth.signOut({scope});if(error)throw error;}this.user=null;this.profile=null;this.premium=false;this.recovering=false;this.billingUnavailable=false;this.nativeAccessUnavailable=false;}
  key(k){return'cachaste-competition-v1:'+this.user.id+':'+k;}
  request(scope){const key=this.key('request:'+scope);let id=this.storage.getItem(key);if(!id){id=crypto.randomUUID();this.storage.setItem(key,id);}return id;}
@@ -80,4 +109,4 @@ export class CompetitionClient{
   const result=await this.call('answer',payload);this.storage.removeItem(this.key('pending'));return result;
  }
 }
-if(typeof window!=='undefined')window.CachasteCompetitionClient={CompetitionClient,errorMessage};
+if(typeof window!=='undefined')window.CachasteCompetitionClient={CompetitionClient,errorMessage,prepareProfilePhoto,profilePhotoUrl};

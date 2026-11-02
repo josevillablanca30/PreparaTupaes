@@ -30,6 +30,9 @@ public class MainActivity extends Activity {
     private final android.os.Handler accessClock=new android.os.Handler(android.os.Looper.getMainLooper());
     private final Runnable checkAccess=new Runnable(){public void run(){enforceEducationalAccess();if(!destroying)accessClock.postDelayed(this,30000);}};
     private boolean destroying;
+    private static final int PROFILE_PHOTO_PICKER=4601;
+    private android.webkit.ValueCallback<Uri[]> photoSelection;
+
 
     private boolean mayOpen(String url){return !SubscriptionLease.requiresSubscription(getPackageName(),url)||(subscriptionAccess!=null&&subscriptionAccess.hasAccess());}
     private void enforceEducationalAccess(){if(webView!=null&&!mayOpen(webView.getUrl())){webView.stopLoading();webView.loadUrl(SUBSCRIPTION);}}
@@ -58,7 +61,7 @@ public class MainActivity extends Activity {
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setAllowFileAccess(true);
-        settings.setAllowContentAccess(false);
+        settings.setAllowContentAccess(true); // Only a URI explicitly selected by the system document picker is returned to the app.
         settings.setAllowFileAccessFromFileURLs(false);
         settings.setAllowUniversalAccessFromFileURLs(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
@@ -109,7 +112,22 @@ public class MainActivity extends Activity {
                 return true;
             }
         });
-        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebChromeClient(new WebChromeClient(){
+            @Override public boolean onShowFileChooser(WebView view,android.webkit.ValueCallback<Uri[]> callback,FileChooserParams params){
+                String page=view.getUrl();
+                if(page==null||!page.split("[?#]",2)[0].equals(COMPETITION)){callback.onReceiveValue(null);return true;}
+                if(photoSelection!=null)photoSelection.onReceiveValue(null);
+                photoSelection=callback;
+                Intent pick=new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                pick.addCategory(Intent.CATEGORY_OPENABLE);
+                pick.setType("image/*");
+                pick.putExtra(Intent.EXTRA_MIME_TYPES,new String[]{"image/jpeg","image/png","image/webp"});
+                pick.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                try{startActivityForResult(pick,PROFILE_PHOTO_PICKER);}
+                catch(android.content.ActivityNotFoundException e){photoSelection.onReceiveValue(null);photoSelection=null;}
+                return true;
+            }
+        });
         // Inset the viewport itself: WebView padding still lets scrolled content draw under bars.
         FrameLayout viewport = new FrameLayout(this);
         viewport.addView(webView,new FrameLayout.LayoutParams(-1,-1));
@@ -165,7 +183,20 @@ public class MainActivity extends Activity {
             }
         );
     }
+    @Override protected void onActivityResult(int requestCode,int resultCode,Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode!=PROFILE_PHOTO_PICKER||photoSelection==null)return;
+        android.webkit.ValueCallback<Uri[]> callback=photoSelection;photoSelection=null;
+        Uri uri=resultCode==RESULT_OK&&data!=null?data.getData():null;
+        String mime=null;
+        try{if(uri!=null&&"content".equals(uri.getScheme()))mime=getContentResolver().getType(uri);}
+        catch(RuntimeException denied){uri=null;}
+        if(!("image/jpeg".equals(mime)||"image/png".equals(mime)||"image/webp".equals(mime)))uri=null;
+        callback.onReceiveValue(uri==null?null:new Uri[]{uri});
+    }
+
     @Override protected void onDestroy() {
+        if(photoSelection!=null){photoSelection.onReceiveValue(null);photoSelection=null;}
         destroying = true;
         accessClock.removeCallbacks(checkAccess);
         if (subscriptionAccess != null) { subscriptionAccess.close(); subscriptionAccess = null; }

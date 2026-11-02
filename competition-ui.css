@@ -256,3 +256,11 @@ body.versus-page{background:#080611}
 body.versus-page .comp-nav{background:linear-gradient(#251532,#0d091a);background-color:#160e24;border-color:#9147b4}
 body.versus-page .comp-nav>a{color:#eee6f5}
 body.versus-page .comp-nav>a[aria-current=page]{background:linear-gradient(145deg,#9c1cdb,#57138b);color:#fff;border-color:#de81ff}
+
+/* Optional public profile thumbnail; original images never leave the device. */
+.profile-photo-panel .student-avatar{width:76px;height:76px;margin:12px;vertical-align:middle}
+.student-avatar .profile-photo,.photo-preview{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.student-avatar .photo-fallback{display:contents}.student-avatar .photo-fallback[hidden]{display:none}
+.photo-preview{display:block;width:160px;height:160px;margin:16px auto;border:2px solid #d077ff}
+.photo-preview[hidden],.profile-photo[hidden]{display:none}
+#photo-form input[type=file]{max-width:100%;font-size:14px}
