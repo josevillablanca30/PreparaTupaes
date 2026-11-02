@@ -145,6 +145,8 @@ jobs:
         id: emulator_primary
         uses: reactivecircus/android-emulator-runner@v2
         with:
+          # Google-published stable36.5.11; compare with37.2.13 in the commercial job.
+          emulator-build: 15261927
           api-level: 36
           arch: x86_64
           target: google_apis

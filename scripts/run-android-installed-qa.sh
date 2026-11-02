@@ -11,6 +11,7 @@ adb shell settings put secure show_ime_with_hard_keyboard 0
 (while true; do
   date -u
   free -m
+  ps -eo pid,ppid,stat,pcpu,rss,comm | rg 'qemu-system|emulator' || true
   for task_memory_file in /sys/fs/cgroup/memory.current /sys/fs/cgroup/memory.max /sys/fs/cgroup/memory.events; do
     if [ -r "$task_memory_file" ]; then
       echo "$task_memory_file"
