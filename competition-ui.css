@@ -286,6 +286,7 @@ body.versus-page .comp-nav>a[aria-current=page]{background:linear-gradient(145de
 .versus-title .eyebrow{color:#e5a4ff;font-size:12px;letter-spacing:.06em;display:flex;align-items:center;gap:7px}
 .versus-title h1{font-size:clamp(33px,8.1vw,58px);font-style:italic;font-weight:900;line-height:1.03;letter-spacing:-.05em;margin:6px -12px 13px 0;white-space:nowrap;text-shadow:0 0 16px #bd45f64d}
 .versus-title h1 em{font-style:inherit;color:#ffdb4a;text-shadow:0 0 13px #ffb91d60}
+.versus-title h1:focus-visible{outline:none;box-shadow:none}
 #competition-root .versus-title>p:last-child{font-size:13px;line-height:1.45;color:#f2e7fc;max-width:24em}
 .versus-title>p>strong{display:block;margin-top:3px}
 .versus-guide{display:block;align-self:end;width:100%;height:200px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 0 11px #c82de94d);pointer-events:none}
