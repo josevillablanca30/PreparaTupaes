@@ -47,9 +47,13 @@ declare u uuid;begin
   update cachaste.profile_photos set enabled=false where user_id=split_part(old.name,'/',1)::uuid;
   return old;
  end if;
- u:=cachaste.require_user();
+ -- Storage commits object metadata with its server connection, after its RLS permission probe.
+ -- Use Storage's assigned owner here; finalization need not carry the caller's JWT.
+ u:=split_part(new.name,'/',1)::uuid;
+ if new.owner_id is distinct from u::text or new.name<>u::text||'/avatar.webp'then raise exception 'INVALID_PHOTO';end if;
  perform pg_advisory_xact_lock(hashtextextended(u::text||'profile-photo',0));
- if not cachaste.can_write_photo(new.name)then raise exception 'PHOTO_COOLDOWN';end if;
+ if not exists(select 1 from cachaste.profiles where user_id=u and community_version='2026-10-23'and moderation_status='active')or exists(select 1 from cachaste.community_restrictions where user_id=u)then raise exception 'PROFILE_REQUIRED';end if;
+ if exists(select 1 from cachaste.profile_photos where user_id=u and updated_at>now()-interval '7 days')then raise exception 'PHOTO_COOLDOWN';end if;
  if new.metadata->>'size' is null then return new;end if;
  if (new.metadata->>'size')::bigint not between 1 and 32768 or new.metadata->>'mimetype' is distinct from 'image/webp'then raise exception 'INVALID_PHOTO';end if;
  insert into cachaste.profile_photos(user_id,updated_at,enabled)values(u,clock_timestamp(),true)

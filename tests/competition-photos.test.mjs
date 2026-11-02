@@ -6,7 +6,7 @@ import {profilePhotoUrl} from '../competition-client.mjs';
 test('Profile photos: one object, own account only, server cooldown survives removal and profile recreation',async t=>{
  const db=await database();t.after(()=>db.close());for(let i=0;i<2;i++)await profile(db,i);
  async function storage(i,sql,params=[]){await db.query("select set_config('request.jwt.claims',$1,false)",[JSON.stringify({sub:users[i],session_id:sessions[i],role:'authenticated'})]);await db.exec('set role authenticated');try{return await db.query(sql,params);}finally{await db.exec('reset role');}}
- const insert="insert into storage.objects(bucket_id,name,metadata)values('cachaste-profile-photos',$1,$2::jsonb)";
+ const insert="insert into storage.objects(bucket_id,name,metadata,owner_id)values('cachaste-profile-photos',$1,$2::jsonb,split_part($1,'/',1))";
  const metadata={size:12000,mimetype:'image/webp'};
  assert.equal((await rpc(db,0,'photo_status')).canUpload,true);
  await assert.rejects(storage(1,insert,[users[0]+'/avatar.webp',metadata]),/row-level security/);
