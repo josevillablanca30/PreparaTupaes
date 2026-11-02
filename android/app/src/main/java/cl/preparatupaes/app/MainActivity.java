@@ -47,12 +47,12 @@ public class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
-        getWindow().getDecorView().setSystemUiVisibility(android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+        getWindow().getDecorView().setSystemUiVisibility(0);
         webView = new WebView(this);
         webView.setTag("cachaste-web");
         playBilling = new PlayBillingController(this,webView);
         subscriptionAccess = new SubscriptionAccessController(this,webView);
-        webView.setBackgroundColor(0xfffaf9fe);
+        webView.setBackgroundColor(0xff080611);
         WebView.setWebContentsDebuggingEnabled((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -113,7 +113,7 @@ public class MainActivity extends Activity {
         // Inset the viewport itself: WebView padding still lets scrolled content draw under bars.
         FrameLayout viewport = new FrameLayout(this);
         viewport.addView(webView,new FrameLayout.LayoutParams(-1,-1));
-        viewport.setBackgroundColor(0xfffaf9fe);
+        viewport.setBackgroundColor(0xff080611);
         viewport.setOnApplyWindowInsetsListener((view, insets) -> {
             if (Build.VERSION.SDK_INT >= 30) {
                 android.graphics.Insets bars=insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());

@@ -360,3 +360,6 @@ body:has(.reference-courses) .competition-entry-nav a[aria-current=page]{backgro
 #daily-root .reference-courses .course-tile{border-color:#8445aa!important;background:linear-gradient(130deg,#20142f,#100b1d)!important}
 #daily-root .entry-path h2{hyphens:none;overflow-wrap:normal;word-break:normal}
 @media(max-width:350px){#daily-root .reference-welcome{min-height:180px;padding-block:6px}#daily-root .mentor-principle{padding-block:7px}#daily-root .entry-path{padding-top:10px}}
+/* Keep the approved book pose when asking the master for another piece of advice. */
+#daily-root .home-mentor-control .mentor-welcome{object-fit:contain;object-position:center bottom;animation:none}
+#daily-root .entry-versus{display:none}

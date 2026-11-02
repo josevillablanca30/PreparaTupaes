@@ -224,3 +224,9 @@ body{background:radial-gradient(ellipse at 95% 10%,#3b075c70,transparent 42%),#0
 #competition-root .comp-hero .speech{color:#f6eaff}
 .comp-hero h1{overflow-wrap:normal;word-break:normal;hyphens:none}
 @media(max-width:350px){.comp-hero h1{font-size:27px}}
+/* Approved reference: route-specific portrait and an unobstructed two-column hero. */
+.comp-hero.duelos .speech,.comp-hero.rankings .speech{display:none}
+.comp-hero.duelos .mentor-stage,.comp-hero.rankings .mentor-stage{align-self:end}
+.comp-hero.duelos .mentor-control .hero-cat.subject-mentor,.comp-hero.rankings .mentor-control .hero-cat.subject-mentor{height:195px;object-position:center bottom;animation:none}
+.comp-hero.mentor-has-advice .speech{display:block;position:absolute;z-index:5;right:0;bottom:25px;width:100%;background:#170921ed;border:1px solid #c570ee;box-shadow:0 0 14px #ad25e545}
+@media(max-width:350px){.comp-hero.duelos .mentor-control .hero-cat.subject-mentor,.comp-hero.rankings .mentor-control .hero-cat.subject-mentor{height:160px}}
