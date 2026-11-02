@@ -1,3 +1,4 @@
+import {readable} from './helpers/readable-surface.mjs';
 import {test,expect} from '@playwright/test';
 import {fixturePage,actor,duel,finished} from './helpers/competition-fixtures.mjs';
 
@@ -86,7 +87,7 @@ test('An optional profile photo is compressed, previewed, consented and uploaded
  await input.setInputFiles({name:'personal.webp',mimeType:'image/webp',buffer:raw});await expect(page.locator('.photo-preview')).toBeVisible();
  const size=await page.locator('.photo-preview').evaluate(async img=>{const blob=await window.CachasteCompetitionClient.prepareProfilePhoto(img.closest('form').querySelector('[type=file]').files[0]);return{width:img.naturalWidth,height:img.naturalHeight,bytes:blob.size,type:blob.type};});expect(size.width).toBe(256);expect(size.height).toBe(256);expect(size.bytes).toBeLessThanOrEqual(32768);expect(size.type).toBe('image/webp');
  await page.locator('#photo-form [type=submit]').click();expect(uploads).toBe(0);await page.locator('[name=photoConsent]').check();await page.locator('#photo-form [type=submit]').click();
- await expect(page.locator('dialog')).not.toBeVisible();await expect(page.locator('.profile-photo-panel img.profile-photo')).toBeVisible();await expect(page.locator('[name=nickname]')).toHaveValue('PhotoDraft');expect(uploads).toBe(1);await layout(page);await page.screenshot({path:info.outputPath('profile-photo.png'),fullPage:true,animations:'disabled'});
+ await expect(page.locator('dialog')).not.toBeVisible();await expect(page.locator('.profile-photo-panel img.profile-photo')).toBeVisible();await expect(page.locator('[name=nickname]')).toHaveValue('PhotoDraft');expect(uploads).toBe(1);await readable(page.locator('.toast'));await readable(page.locator('.community-rules summary'));await layout(page);await page.screenshot({path:info.outputPath('profile-photo.png'),fullPage:true,animations:'disabled'});
  await page.getByRole('button',{name:'Cambiar mi foto',exact:true}).click();await expect(page.locator('.toast')).toContainText('Podrás subir otra foto');expect(uploads).toBe(1);
  await page.getByRole('button',{name:'Quitar foto y usar mi gatito'}).click();await expect(page.getByRole('button',{name:'Subir mi foto',exact:true})).toBeVisible();await expect(page.locator('.profile-photo-panel img.profile-photo')).toHaveCount(0);
 });

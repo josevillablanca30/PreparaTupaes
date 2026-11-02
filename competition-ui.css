@@ -264,3 +264,7 @@ body.versus-page .comp-nav>a[aria-current=page]{background:linear-gradient(145de
 .photo-preview{display:block;width:160px;height:160px;margin:16px auto;border:2px solid #d077ff}
 .photo-preview[hidden],.profile-photo[hidden]{display:none}
 #photo-form input[type=file]{max-width:100%;font-size:14px}
+/* Profile rules and status notices must remain readable on the night theme. */
+.community-rules{background:#21152f;color:#f5efff;border-color:#784aa0}
+.community-rules summary,.community-rules p,.community-rules li{color:#f5efff}
+.toast{background:#24123a;color:#fff3c4;border:1px solid #e8bd65}
