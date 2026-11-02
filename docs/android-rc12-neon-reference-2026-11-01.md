@@ -37,3 +37,50 @@ El control de título mide ahora el rango de texto, excluyendo el padding del su
 Fidelidad de fondos: tres activos `assets/competition-reference-{energy,mountain,champions}-v1.webp`, creados con imagegen integrado desde la referencia y convertidos a WebP86. Prompts: reconstruir solo la energía violeta diagonal del panel central con izquierda oscura vacía, solo la montaña violeta de APRENDE y solo el trofeo con público dorado de COMPITE; eliminar letras, gatos, logos, botones e interfaz; mantener concentración de arte arriba y espacio oscuro para texto real. Fondos decorativos, sin alterar navegación ni representar resultados ficticios. La montaña anterior del recorrido educativo se conserva en su pantalla original, pero deja de sustituir la ilustración aprobada de la tarjeta de Inicio.
 
 La ampliación del retrato de Inicio provocó desborde durante el gesto Web Animations (116/118 aprobadas, falla reproducida en ambos tamaños). Se devuelve el retrato al ancho completo de su columna sin ampliación estática; se conservan gesto y prueba de desborde. No se oculta el fallo ni se elimina el movimiento.
+
+## Entrega firmada comprobada
+
+Fuente del AAB: `498e57566487f92e712dc1400c9c9cc8d2990c28`. [Actions 41372740511](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41372740511): todos los jobs de salida aprobados. 411 pruebas de lógica, escáner de secretos, 118 pruebas móviles entre Android-Chrome y 320 px, 24 comprobaciones Postgres/RLS y 22 escenarios HTTP con Auth/SMTP en Supabase efímero. Esto no equivale a dos personas jugando desde teléfonos con el backend alojado.
+
+AAB individual `Cachaste-1.5.0-rc12-39.aab`: 13 538 716 bytes; SHA-256 `36431fb6c3da393070668796fc007d433a48db557c4cb031dc5135cdb23abef1`. VersionCode39, versionName1.5.0-rc12, paquete cl.preparatupaes.app, targetSdk36, no debuggable ni testOnly. [Artefacto firmado 13109798352](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41372740511/artifacts/13109798352). Certificado de carga `a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575`, sin cambio de clave.
+
+Bundletool y lint release aprobados. Descarga verificada independientemente: ZIP SHA256, manifiesto y fuente; 265 entradas firmadas, certificado permanente coincidente y seis ilustraciones, CSS y JS idénticos al checkout. Sin VS beta local en el AAB comercial. Compilación web: 125 archivos públicos verificados.
+
+Revisión visual de las ilustraciones integradas efectuada en capturas de 320 px: libro en Inicio, apuntando en Duelos y brazos cruzados en Rankings, energía y tarjetas ilustradas. El estado vacío de rankings conserva datos reales y no copia los nombres, fotos ni resultados del mockup. El gate final confirma el gesto sin desborde. Los activos son reconstrucciones desde la referencia; no se afirma una reproducción píxel por píxel de la captura completa.
+
+Suites ampliadas al cerrar esta entrega: [Pages 41372744579](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41372744579) y [APK 41372740506](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41372740506) siguen ejecutándose; el job comercial instalado figura aprobado, sin contar la suite nativa general todavía pendiente como aprobada. No se ha publicado este AAB en Google Play. Correo real de Resend y duelo completo entre ambos teléfonos siguen pendientes antes de invitar al resto de testers.
+
+Commits de implementación:
+
+- `1013984` feat: apply approved violet and gold night arena for rc12
+- `553c269` fix: retain night arena readability and visible actions on narrow phones
+- `a37c1fa` ci: build signed Play candidate after interface and asset corrections
+- `777b244` fix: keep Rankings title intact and master advice readable on 320px
+- `8b44168` feat: match approved book, challenge and crossed-arm master portraits
+- `a8288d8` test: verify approved portraits decode and subject selection remains independent
+- `4ee6800` test: measure heading text separately from neon underline padding
+- `ed60c4a` feat: match approved energy, mountain and champions artwork behind live UI
+- `498e575` fix: contain master gesture without horizontal overflow on phones
+
+Archivos de esta actualización:
+
+- `.github/workflows/android-apk.yml`
+- `.github/workflows/android-play.yml`
+- `android/app/build.gradle`
+- `android/app/src/main/java/cl/preparatupaes/app/MainActivity.java`
+- `assets/competition-cat-book-v4.webp`
+- `assets/competition-cat-crossed-v4.webp`
+- `assets/competition-cat-point-v4.webp`
+- `assets/competition-reference-champions-v1.webp`
+- `assets/competition-reference-energy-v1.webp`
+- `assets/competition-reference-mountain-v1.webp`
+- `competition-app.js`
+- `competition-ui.css`
+- `daily-app.js`
+- `daily-reference.css`
+- `docs/android-rc12-neon-reference-2026-11-01.md`
+- `scripts/competition-public-files.mjs`
+- `scripts/verify-play-manifest.py`
+- `tests/competition.mobile.spec.mjs`
+- `tests/rc11-recovery-arena.mobile.spec.mjs`
+- `tests/reference-ui.mobile.spec.mjs`
