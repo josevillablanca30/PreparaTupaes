@@ -251,3 +251,5 @@ body.versus-page{background:#080611}
 #competition-root .auth-panel p,#competition-root .profile-panel p,#competition-dialog p{color:#ddc9ed}
 #competition-root .access-note{background:#21142e;color:#ddc9ed;border-color:#865399}
 #competition-root .access-note strong{color:#f3ddff}
+
+#competition-root [data-form-error],#competition-dialog [data-dialog-error]{background:#321829;color:#ffdcf0;border:1px solid #a0658d;border-radius:12px;padding:12px}

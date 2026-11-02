@@ -1,3 +1,4 @@
+import {readable} from './helpers/readable-surface.mjs';
 import {test,expect} from '@playwright/test';
 import {fixturePage,actor,duel,dashboard,finished,ranking} from './helpers/competition-fixtures.mjs';
 
@@ -41,7 +42,7 @@ test('A duplicate nickname retains all profile edits and identifies the field to
  await page.locator('.avatar-collection summary').click();await page.getByRole('radio',{name:'Gatita fotógrafa',exact:true}).check();
  await page.locator('[name=publicRanking]').uncheck();await page.locator('[name=showCommune]').uncheck();
  await page.getByRole('button',{name:'Guardar mi perfil',exact:true}).click();
- await expect(page.locator('#profile-form-error')).toContainText('nickname');
+ await expect(page.locator('#profile-form-error')).toContainText('nickname');await readable(page.locator('#profile-form-error'));
  await expect(page.getByLabel('Nickname público',{exact:true})).toHaveValue('NuevoGato');
  await expect(page.getByLabel('Nickname público',{exact:true})).toHaveAttribute('aria-invalid','true');
  await expect(page.getByLabel('Nickname público',{exact:true})).toBeFocused();
