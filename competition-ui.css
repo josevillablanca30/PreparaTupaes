@@ -232,3 +232,22 @@ body{background:radial-gradient(ellipse at 95% 10%,#3b075c70,transparent 42%),#0
 @media(max-width:350px){.comp-hero.duelos .mentor-control .hero-cat.subject-mentor,.comp-hero.rankings .mentor-control .hero-cat.subject-mentor{height:160px}}
 .comp-hero.duelos,.comp-hero.rankings{background:linear-gradient(90deg,#080611 0%,#080611e8 44%,#08061122 100%),url(assets/competition-reference-energy-v1.webp) center/cover}
 .comp-hero.duelos:before,.comp-hero.rankings:before{display:none}
+/* rc13: readable play surfaces after the night-theme transition. */
+#competition-root .answer-option{background:#21142e;color:#faf5ff;border-color:#a063bd;box-shadow:0 2px 0 #09060f}
+#competition-root .answer-option:has(input:checked){background:#4a176b;color:#fff;border-color:#e5a2ff}
+#competition-root .reading-passage{background:#171023;color:#faf5ff;border-color:#9262aa}
+#competition-root .question-meta,#competition-root .question-rules,#competition-root .competitive-question>.eyebrow{color:#ddc9ed}
+#competition-root .versus-player{background:#171023;color:#faf5ff;border-color:#9254b1}
+#competition-root .versus-player h2{color:#faf5ff}
+#competition-root .versus-player .player-place,#competition-root .versus-player>p:last-child,#competition-root .versus-title>p:last-child,#competition-root .duel-rules>div>span{color:#ddc9ed}
+body.versus-page{background:#080611}
+.stadium-lights{opacity:.14}
+#competition-root .invitation-code output{color:#ffe07d}
+#competition-root .invitation-code p,#competition-root .waiting-state p{color:#ddc9ed}
+#competition-root .result-reason{background:#21142e;border-color:#865399}
+#competition-root .result-reason h2{color:#ffe398}
+#competition-root .result-reason p,#competition-root .review-prompt p{color:#ddc9ed}
+#competition-root .selected-feedback{background:#321829;color:#faf5ff;border-color:#a0658d}
+#competition-root .auth-panel p,#competition-root .profile-panel p,#competition-dialog p{color:#ddc9ed}
+#competition-root .access-note{background:#21142e;color:#ddc9ed;border-color:#865399}
+#competition-root .access-note strong{color:#f3ddff}

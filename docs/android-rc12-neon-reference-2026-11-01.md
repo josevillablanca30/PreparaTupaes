@@ -84,3 +84,5 @@ Archivos de esta actualización:
 - `tests/competition.mobile.spec.mjs`
 - `tests/rc11-recovery-arena.mobile.spec.mjs`
 - `tests/reference-ui.mobile.spec.mjs`
+
+**Candidata39 sustituida:** la auditoría posterior encontró superficies del duelo con texto claro sobre fondo claro heredado. Se informó al titular y se prepara40; ver `android-rc13-readable-duels-2026-11-01.md`. El archivo39 entregado ya no es el recomendado para ampliar testers.
