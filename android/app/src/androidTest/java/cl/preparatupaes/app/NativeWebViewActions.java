@@ -22,7 +22,9 @@ final class NativeWebViewActions {
         CountDownLatch complete=new CountDownLatch(1);
         AtomicReference<Throwable> failure=new AtomicReference<>();
         AtomicBoolean pending=new AtomicBoolean(true);
-        new Handler(Looper.getMainLooper()).post(() -> {
+        // Test actions must not wait behind a display synchronization barrier.
+        // The caller still asserts DOM readiness and actual rendered-frame commits.
+        Handler.createAsync(Looper.getMainLooper()).post(() -> {
             if(!pending.get())return;
             try {
                 MainActivity current=null;
@@ -42,8 +44,10 @@ final class NativeWebViewActions {
         boolean completed;
         try {completed=complete.await(10,TimeUnit.SECONDS);}
         finally {pending.set(false);}
+        if(!completed)android.util.Log.e("CachasteQa","Main-thread action missed its ten-second deadline");
         assertTrue("Main-thread WebView action timed out",completed);
         Throwable error=failure.get();
+        if(error!=null)android.util.Log.e("CachasteQa","Main-thread action failed",error);
         if(error instanceof Error)throw (Error)error;
         if(error!=null)throw new AssertionError("Main-thread WebView action failed",error);
     }

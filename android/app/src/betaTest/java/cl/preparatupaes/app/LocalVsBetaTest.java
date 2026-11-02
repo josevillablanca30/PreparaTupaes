@@ -106,6 +106,7 @@ public class LocalVsBetaTest {
             capture("beta-local-result");js("document.querySelector('[data-action=review]').click()");waitFor("document.querySelectorAll('.beta-review-card').length===10");capture("beta-local-review");
             js("window.cachasteNativeBack()");waitFor("document.querySelector('.result-score')");
             assertEquals("true",js("document.documentElement.scrollWidth<=innerWidth+1"));
-        } finally {if(scenario!=null)scenario.close();}
+        } catch(Throwable error) {android.util.Log.e("CachasteQa","Local VS failed before cleanup",error);throw error;}
+        finally {android.util.Log.i("CachasteQa","local-vs closing scenario");if(scenario!=null)scenario.close();android.util.Log.i("CachasteQa","local-vs scenario closed");}
     }
 }
