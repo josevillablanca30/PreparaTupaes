@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [work/cachaste-motor-duolingo-20261016]
-    paths: ['android/app/build.gradle', 'competition-*', 'daily-*', 'assets/**', '.github/workflows/android-play.yml', 'scripts/VerifyPlayBundle.java', 'scripts/verify-play-manifest.py']
+    paths: ['tests/**', 'android/app/build.gradle', 'competition-*', 'daily-*', 'assets/**', '.github/workflows/android-play.yml', 'scripts/VerifyPlayBundle.java', 'scripts/verify-play-manifest.py']
 permissions:
   contents: read
 concurrency:
