@@ -297,7 +297,8 @@ public class OfflineAppTest {
         }
     }
     private void captureDidacticScreen(String name) throws Exception {
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+        // Animated WebViews need a bounded rendered-frame barrier, not global UI idleness.
+        // The two VisualStateCallback/frame-commit assertions below still guard the capture.
         Thread.sleep(1200);
         // VisualStateCallback makes the DOM available for the NEXT draw, not the frame already on screen.
         // Wait for actual render commits: animation callbacks alone allowed screencap to export the previous route.
