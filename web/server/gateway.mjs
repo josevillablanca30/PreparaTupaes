@@ -2,7 +2,7 @@ import{PROJECT_URL,PUBLISHABLE_KEY}from'../shared/config.mjs';
 import{privateAsset}from'./content.mjs';
 import{publicOfflineKey,offlineLicense,safeJson}from'./offline.mjs';
 const COOKIE='cachaste_web_session';
-const PUBLIC_HTML_ALIASES=new Map([['/index.html','/'],...['cuenta','privacidad','condiciones','eliminar-cuenta','offline'].map(name=>['/'+name+'.html','/'+name])]);
+const PUBLIC_HTML_ALIASES=new Map([['/index.html','/'],...['cuenta','recuperar','privacidad','condiciones','eliminar-cuenta','offline'].map(name=>['/'+name+'.html','/'+name])]);
 const ACCESS_HEADERS={'cache-control':'private, no-store','vary':'Cookie','x-content-type-options':'nosniff','referrer-policy':'no-referrer','x-frame-options':'DENY','permissions-policy':'camera=(), microphone=(), geolocation=(), payment=()'};
 const json=(data,status=200,headers={})=>new Response(JSON.stringify(data),{status,headers:{...ACCESS_HEADERS,'content-type':'application/json; charset=utf-8',...headers}});
 const jwtExpires=token=>{try{const s=token.split('.')[1];return JSON.parse(atob(s.replaceAll('-','+').replaceAll('_','/'))).exp*1000;}catch{return 0;}};
@@ -94,7 +94,8 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     }
     return new Response(response.body,{status:response.status,headers});
    }
-   let response=await env.ASSETS.fetch(req);
+   const publicRequest=path==='/recuperar/'?new Request(new URL('/recuperar.html',url.origin),req):req;
+   let response=await env.ASSETS.fetch(publicRequest);
    // Pages canonicalizes public *.html assets. Follow only the known internal alias so Auth
    // return URLs and PWA caches retain their original address without a browser redirect.
    if(PUBLIC_HTML_ALIASES.has(path)&&[301,308].includes(response.status)&&response.headers.has('location')){
@@ -103,7 +104,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
      target.search=url.search;response=await env.ASSETS.fetch(new Request(target,req));
     }
    }
-   const authPage=['/cuenta.html','/cuenta'].includes(path);
+   const authPage=['/cuenta.html','/cuenta','/recuperar.html','/recuperar','/recuperar/'].includes(path);
    const headers=new Headers(response.headers);headers.set('content-security-policy',policy(path,pagePolicies));headers.set('x-content-type-options','nosniff');headers.set('referrer-policy',authPage?'no-referrer':'strict-origin-when-cross-origin');if(authPage)headers.set('cache-control','private, no-store');headers.set('x-frame-options','DENY');headers.set('permissions-policy','camera=(), microphone=(), geolocation=()');
    return new Response(response.body,{status:response.status,headers});
   }catch(e){const raw=String(e?.message||''),status=e.status||(/AUTH_REQUIRED/.test(raw)?401:/SUBSCRIPTION_REQUIRED/.test(raw)?402:/INVALID|JSON|Unexpected/.test(raw)?400:503);return json({error:/^[A-Z_]+$/.test(raw)?raw:'SERVICE_UNAVAILABLE'},status);}

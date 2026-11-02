@@ -9,7 +9,7 @@ function harness(options={}){let active=true,revoked=false;const t=token(),calls
  if(url.endsWith('/rpc/cachaste_web_account'))return Response.json({access:{userId:uid,active},subscriptions:[],trialUsed:false});
  if(url.endsWith('/rpc/cachaste_web_progress'))return Response.json({documents:[]});
  return Response.json({error:'NOT_FOUND'},{status:404});
- }}),env={ASSETS:{async fetch(req){const p=new URL(req.url).pathname;if(p==='/app/index.html')return new Response('<html><head><!--CACHASTE_WEB_BOOTSTRAP--></head></html>',{headers:{'content-type':'text/html'}});if(p==='/app/daily-catalog.js')return new Response('PRIVATE_BANK_ANSWERS',{headers:{'content-type':'text/javascript'}});if(p==='/')return new Response('PUBLIC_LANDING');return new Response('Not found',{status:404});}}};
+ }}),env={ASSETS:{async fetch(req){const p=new URL(req.url).pathname;if(p==='/app/index.html')return new Response('<html><head><!--CACHASTE_WEB_BOOTSTRAP--></head></html>',{headers:{'content-type':'text/html'}});if(p==='/app/daily-catalog.js')return new Response('PRIVATE_BANK_ANSWERS',{headers:{'content-type':'text/javascript'}});if(p==='/')return new Response('PUBLIC_LANDING');if(['/recuperar','/recuperar.html'].includes(p))return new Response('<div id=\"recovery-root\"></div>');return new Response('Not found',{status:404});}}};
  const req=(path,options={})=>new Request('https://qa.example'+path,options);
  return{gateway,env,token:t,calls,req,setActive:v=>active=v,revoke:()=>revoked=true};}
 test('the complete answer bank is denied without a verified server entitlement',async()=>{const h=harness();const r=await h.gateway.fetch(h.req('/app/daily-catalog.js'),h.env);assert.equal(r.status,401);assert.ok(!(await r.text()).includes('PRIVATE_BANK_ANSWERS'));h.setActive(false);const n=await h.gateway.fetch(h.req('/app/daily-catalog.js',{headers:{authorization:'Bearer '+h.token}}),h.env);assert.equal(n.status,402);assert.equal((await h.gateway.fetch(h.req('/'),h.env)).status,200);});
@@ -53,6 +53,14 @@ test('only www.sitecacho.cl redirects to the canonical account origin and preser
 });
 test('account callback pages cannot send authorization codes in referrers or be stored by the HTTP cache',async()=>{
  const h=harness();for(const path of['/cuenta.html?code=disposable-code','/cuenta?code=disposable-code']){const r=await h.gateway.fetch(h.req(path),h.env);assert.equal(r.headers.get('referrer-policy'),'no-referrer');assert.equal(r.headers.get('cache-control'),'private, no-store');}
+});
+
+test('password recovery is public without Premium, never cached and never supplies a referrer',async()=>{
+ const h=harness();h.setActive(false);
+ for(const path of['/recuperar','/recuperar.html','/recuperar/']){
+  const response=await h.gateway.fetch(h.req(path),h.env);assert.equal(response.status,200);assert.equal(response.headers.get('referrer-policy'),'no-referrer');assert.match(response.headers.get('cache-control'),/no-store/);assert.match(response.headers.get('content-security-policy'),/frame-ancestors 'none'/);
+ }
+ assert.equal(h.calls.length,0);
 });
 test('Pages HTML canonicalization serves account and public documents at their stable return URLs, preserving queries and security headers',async()=>{
  const gateway=createGateway();

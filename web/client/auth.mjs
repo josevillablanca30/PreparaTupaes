@@ -2,6 +2,11 @@ import {createClient} from '@supabase/supabase-js';
 
 export const AUTH_STORAGE_KEY = 'cachaste-auth-v1';
 const CLIENT = Symbol.for('cachaste.web.auth');
+async function authFetch(input,options={}){
+ if(options.signal)return fetch(input,options);
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
+ try{return await fetch(input,{...options,signal:controller.signal});}finally{clearTimeout(timer);}
+}
 
 export function nextLearningPage(search = '') {
   const candidate = new URLSearchParams(search).get('next');
@@ -18,7 +23,7 @@ export function getWebClient(config, storage = globalThis.localStorage) {
     if (existing.url !== url || existing.key !== key || existing.storage !== storage) throw Error('AUTH_CONFIGURATION_CHANGED');
     return existing.client;
   }
-  const client = createClient(url, key, {auth: {storage, storageKey: AUTH_STORAGE_KEY, flowType: 'pkce', persistSession: true, autoRefreshToken: true, detectSessionInUrl: false}});
+  const client = createClient(url, key, {global:{fetch:authFetch},auth: {storage, storageKey: AUTH_STORAGE_KEY, flowType: 'pkce', persistSession: true, autoRefreshToken: true, detectSessionInUrl: false}});
   globalThis[CLIENT] = {client, url, key, storage};
   return client;
 }

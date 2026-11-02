@@ -1,0 +1,95 @@
+name: ¿Cachaste? · recuperación alojada y prueba Auth real
+on:
+  push:
+    branches: [work/cachaste-web-comercial-20261024]
+    paths: ['web/auth-recovery.request','web/client/recovery*','web/auth/**','web/scripts/test-recovery-online.mjs','web/scripts/configure-auth-recovery.mjs','.github/workflows/web-auth-recovery.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  hosted-access:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Comprobar accesos privados sin mostrar valores
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          node - <<'JS'
+          const missing=['CLOUDFLARE_API_TOKEN','SUPABASE_ACCESS_TOKEN'].filter(name=>!process.env[name]);
+          console.log(JSON.stringify({cloudflarePagesAccessPresent:!!process.env.CLOUDFLARE_API_TOKEN,supabaseAuthManagementAccessPresent:!!process.env.SUPABASE_ACCESS_TOKEN}));
+          if(missing.length){console.error('Falta acceso privado: '+missing.join(', ')+'. No se cambió SMTP ni se declara publicado/configurado.');process.exitCode=1;}
+          JS
+  recovery-http:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: work/cachaste-motor-duolingo-20261016
+          path: android-recovery-source
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Configurar únicamente el SMTP local desechable con la plantilla web nueva
+        run: |
+          node scripts/competition-catalog.mjs supabase/seed.sql
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('supabase/config.toml');text=p.read_text().replace('site_url = "http://127.0.0.1:3000"','site_url = "http://127.0.0.1:4175"').replace('additional_redirect_urls = ["https://127.0.0.1:3000"]','additional_redirect_urls = ["http://127.0.0.1:4175/recuperar"]').replace('email_sent = 2','email_sent = 100')
+          text+='\n[auth.email.template.recovery]\nsubject = "¿Cachaste? — Recupera tu contraseña"\ncontent_path = "./web/auth/recovery.html"\n';p.write_text(text)
+          PY
+      - name: Arrancar Auth y SMTP efímeros
+        run: npx --yes supabase@2.121.0 start --exclude realtime,storage-api,imgproxy,postgres-meta,studio,edge-runtime,logflare,vector,supavisor > /tmp/cachaste-recovery-stack.log 2>&1
+      - name: Solicitud Android, correo renderizado, enlace, código, contraseña, expiración y reutilización
+        run: |
+          npx --yes supabase@2.121.0 status -o json > /tmp/cachaste-recovery-status.json
+          chmod 600 /tmp/cachaste-recovery-status.json
+          node web/scripts/test-recovery-online.mjs /tmp/cachaste-recovery-status.json "$GITHUB_WORKSPACE/android-recovery-source/competition-client.mjs"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Cachaste-Recovery-HTTP-${{ github.sha }}
+          path: web/artifacts/recovery-http.json
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Eliminar las cuentas y el SMTP de pruebas
+        if: always()
+        run: |
+          npx --yes supabase@2.121.0 stop --no-backup
+          rm -f /tmp/cachaste-recovery-status.json /tmp/cachaste-recovery-stack.log
+  configure-hosted:
+    needs: [hosted-access, recovery-http]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      CACHASTE_RECOVERY_ORIGIN: https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev
+      CACHASTE_RECOVERY_REVISION: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Esperar la página real de este commit sin consumir enlaces ni enviar correos
+        run: |
+          node - <<'JS'
+          const origin=process.env.CACHASTE_RECOVERY_ORIGIN,revision=process.env.CACHASTE_RECOVERY_REVISION,deadline=Date.now()+25*60000;
+          while(Date.now()<deadline){try{const r=await fetch(origin+'/version.json',{cache:'no-store',signal:AbortSignal.timeout(10000)});if(r.ok&&(await r.json()).revision===revision)process.exit(0);}catch{}await new Promise(resolve=>setTimeout(resolve,10000));}
+          console.error('No se verificó el despliegue de este commit. Supabase Auth permanece intacto.');process.exit(1);
+          JS
+      - name: Aplicar URL, destinos, asunto y plantilla conservando las credenciales SMTP
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: node web/scripts/configure-auth-recovery.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Cachaste-Recovery-Hosted-${{ github.sha }}
+          path: web/artifacts/auth-recovery-configuration.json
+          if-no-files-found: ignore
+          retention-days: 14

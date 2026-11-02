@@ -152,7 +152,7 @@ async function liveFixture() {
     throw Error('UNEXPECTED_BACKEND_CALL');
   }});
   const assets = new Map([
-    ['/', '<title>¿Cachaste?</title>'], ['/cuenta.html', '<h1>Mi cuenta</h1>'],
+    ['/', '<title>¿Cachaste?</title>'], ['/cuenta.html', '<h1>Mi cuenta</h1>'], ['/recuperar','<div id=\"recovery-root\"></div>'], ['/recovery.js','/* public recovery SDK fixture */'.repeat(40)],
     ['/manifest.webmanifest', JSON.stringify({display: 'standalone', icons: [{sizes: '512x512'}]})],
     ['/version.json', JSON.stringify({revision, distribution: 'web-commercial', paymentsEnabledByBuild: false})],
     ['/sw-template.js', 'const key=__OFFLINE_PUBLIC_JWK__;const rev="__BUILD_REVISION__";'],
@@ -168,7 +168,7 @@ async function liveFixture() {
 test('post-deploy probe exercises the actual gateway, forgery denial, every private route and ciphertext denial', async () => {
   const result = await probePreview(await liveFixture());
   assert.equal(result.passed, true, JSON.stringify(result.checks.filter(x => !x.passed)));
-  assert.equal(result.checks.length, 18);
+  assert.equal(result.checks.length, 20);
 });
 
 test('post-deploy probe detects a static fail-open bank leak and an accidentally active payment provider', async () => {

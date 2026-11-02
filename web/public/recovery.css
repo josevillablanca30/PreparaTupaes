@@ -1,0 +1,18 @@
+.recovery-page .site-header{padding-top:max(12px,env(safe-area-inset-top));background:#fff}
+.recovery-page .account-main{max-width:660px;min-height:calc(100svh - 180px);padding-bottom:32px}
+.recovery-card{border-top:4px solid #7037cc}
+.recovery-card h1{font-size:clamp(29px,6vw,40px);letter-spacing:-.04em;line-height:1.13}
+.recovery-card>p{line-height:1.65}
+.recovery-card form{display:grid;gap:18px;margin-top:24px}
+.recovery-card label{display:grid;gap:8px;font-size:14px;font-weight:650}
+.recovery-card input{width:100%;min-width:0;min-height:52px;font-size:16px;padding:13px 14px;border:1px solid #c9b6df;border-radius:12px;background:#fff;color:#281344}
+.recovery-card button,.recovery-card>.primary-button{min-height:52px;white-space:normal;text-align:center;line-height:1.35}
+.recovery-card .secondary{width:100%;margin-top:16px}
+.recovery-card .text-button{font-size:14px;min-height:48px;margin:0;background:none;color:#6432ad;border:0;box-shadow:none}
+.recovery-card>.text-link{display:inline-flex;min-height:48px;align-items:center;margin-top:18px;font-size:14px}
+.recovery-card .recovery-help{font-size:14px;color:#665475;line-height:1.6;margin-top:18px}
+.recovery-success-mark{display:grid;place-items:center;width:58px;height:58px;background:#eee3ff;border-radius:50%;color:#7037cc;font-size:32px;margin:4px 0 18px}
+#recovery-status:not(:empty),.recovery-root+#account-status:not(:empty){padding:14px 18px;background:#f0e8fb;color:#3f225e;border:1px solid #c6acdf;border-radius:14px;line-height:1.5;margin-bottom:16px}
+#recovery-status[role=alert]{background:#fff0f3;color:#7b203d;border-color:#dc9bb1}
+@media(max-width:350px){.recovery-card{padding:25px 18px}.recovery-page .site-header{padding-inline:14px;gap:10px}.recovery-page .site-header>.text-link{max-width:110px;font-size:12px}.recovery-card h1{font-size:29px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

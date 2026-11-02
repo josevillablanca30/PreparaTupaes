@@ -1,6 +1,11 @@
 import{getWebClient,nextLearningPage,startGoogleSignIn,finishAuthReturn}from'./auth.mjs';
 import{PLANS}from'../shared/config.mjs';
 import{initPwa,installPwa,serviceWorkerMessage}from'./shell.mjs';
+import{isRecoveryReturn}from'./recovery-flow.mjs';
+import{mountRecoveryPage}from'./recovery-page.mjs';
+if(isRecoveryReturn(location)){
+ mountRecoveryPage({root:document.getElementById('account-root'),status:document.getElementById('account-status')});
+}else{
 const root=document.getElementById('account-root'),status=document.getElementById('account-status');
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=x=>new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',maximumFractionDigits:0}).format(x);
@@ -40,9 +45,11 @@ root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!b.m
  if(b.dataset.action==='google'){await startGoogleSignIn({sdk,config});return;}
  if(b.dataset.action==='signout')await signout();
  if(b.dataset.action==='refresh'){await request({action:'refresh'});await connect();notice(account?.access?.active?'Tu acceso está verificado.':'Todavía no hay un pago o prueba verificados.');}
- if(b.dataset.action==='reset'){const input=root.querySelector('[name=email]');if(!input?.reportValidity())return;if(!config.authReturnReady){notice('La recuperación se habilitará cuando esté configurado el correo seguro del servicio.');return;}const{error}=await sdk.auth.resetPasswordForEmail(input.value,{redirectTo:location.origin+'/cuenta.html?recovery=1'});if(error)throw error;notice('Si la cuenta existe, recibirás las instrucciones por correo.');}
+ if(b.dataset.action==='reset'){location.assign('/recuperar');return;}
  if(b.dataset.plan){if(!billing.ready){notice(messages.BILLING_NOT_READY);return;}if(!account){root.querySelector('[name=email]')?.focus();notice('Primero entra a tu cuenta para vincular la suscripción.');return;}const key='cachaste-checkout:'+account.user.id+':'+b.dataset.plan;let id=localStorage.getItem(key);if(!id){id=crypto.randomUUID();localStorage.setItem(key,id);}const response=await request({action:'checkout',plan:b.dataset.plan,requestId:id});location.assign(response.checkoutUrl);}
  if(b.dataset.cancel){const id=b.dataset.cancel,dialog=document.createElement('dialog');dialog.className='web-dialog';dialog.innerHTML='<h2>Cancelar la renovación</h2><p>Conservarás el período pagado vigente. No se cobrarán renovaciones posteriores a la cancelación confirmada por Mercado Pago.</p><button data-confirm>Confirmar cancelación</button><button data-close class="secondary">Conservar mi plan</button>';document.body.append(dialog);dialog.querySelector('[data-close]').onclick=()=>{dialog.close();dialog.remove();};dialog.querySelector('[data-confirm]').onclick=()=>work(async()=>{await request({action:'cancel',subscriptionId:id});dialog.close();dialog.remove();await connect();notice('Renovación cancelada.');});dialog.showModal();}
 });});
 document.querySelectorAll('[data-install]').forEach(b=>b.addEventListener('click',installPwa));
 (async()=>{try{config=await(await fetch('/api/config')).json();sdk=getWebClient(config);sdk.auth.onAuthStateChange(event=>{if(event==='PASSWORD_RECOVERY')recovering=true;if(['PASSWORD_RECOVERY','TOKEN_REFRESHED','SIGNED_IN','SIGNED_OUT'].includes(event))setTimeout(()=>{if(!busy)work(connect);},0);});try{await finishAuthReturn({sdk});}catch(e){notice(messages[e.message]||messages.AUTH_RETURN_INVALID);}try{billing=await request({action:'status'});}catch{}await connect(true);render();await initPwa();}catch{notice('No logramos conectar tu cuenta. Revisa la conexión y vuelve a intentarlo.');root.innerHTML='<section class="account-card"><h1>Volvamos a intentarlo</h1><p>Conservamos el progreso que ya guardaste en este dispositivo.</p><button data-action="retry" type="button">Reintentar conexión</button></section>';}})();
+
+}
