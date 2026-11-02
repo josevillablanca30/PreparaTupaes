@@ -1,6 +1,6 @@
 import {readable} from './helpers/readable-surface.mjs';
 import {test,expect} from '@playwright/test';
-import {fixturePage,session,ranking} from './helpers/competition-fixtures.mjs';
+import {fixturePage,session,ranking,actor,duel} from './helpers/competition-fixtures.mjs';
 const contrastAgainstGradient=readable;
 const overflow=async page=>expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 
@@ -46,4 +46,32 @@ test('The master makes a real brief gesture on touch and respects reduced motion
 test('Reloading a pending recovery keeps the email-only return path and explicit cancellation clears it',async({page})=>{
  await fixturePage(page,{signed:false});await page.route('**/auth/v1/recover',r=>r.fulfill({json:{}}));await page.goto('./competencia.html#perfil');await page.getByRole('button',{name:'Recuperar contraseña',exact:true}).click();await page.getByLabel('Correo de la cuenta',{exact:true}).fill('ui-fixture@example.invalid');await page.getByRole('button',{name:'Enviar código',exact:true}).click();await expect(page.locator('#email-verification-form')).toBeVisible();await page.reload();await expect(page.locator('#email-verification-form')).toBeVisible();await expect(page.locator('input[type=password]')).toHaveCount(0);await page.getByRole('button',{name:'Volver al correo',exact:true}).click();await expect(page.locator('#email-request-form')).toBeVisible();await expect(page.getByLabel('Correo de la cuenta',{exact:true})).toHaveValue('ui-fixture@example.invalid');await expect(page.locator('#auth-form')).toHaveCount(0);
  await page.evaluate(()=>{window.invalidEvents=0;document.addEventListener('invalid',()=>window.invalidEvents++,true);});await page.getByRole('button',{name:'Volver a iniciar sesión',exact:true}).click();await expect(page.locator('#auth-form')).toBeVisible();expect(await page.evaluate(()=>invalidEvents)).toBe(0);expect(await page.evaluate(()=>localStorage.getItem('cachaste-email-verification-v1'))).toBe(null);await page.reload();await expect(page.locator('#auth-form')).toBeVisible();await expect(page.locator('#email-verification-form')).not.toBeVisible();await overflow(page);
+});
+
+test('An actual mail-service rejection preserves the recovery email and never opens a sent-code dialog',async({page})=>{
+ await fixturePage(page,{signed:false});await page.route('**/auth/v1/recover',r=>r.fulfill({status:500,json:{code:'unexpected_failure',msg:'Error sending recovery email'}}));
+ await page.goto('./competencia.html#perfil');await page.getByRole('button',{name:'Recuperar contraseña',exact:true}).click();await page.getByLabel('Correo de la cuenta',{exact:true}).fill('ui-fixture@example.invalid');await page.getByRole('button',{name:'Enviar código',exact:true}).click();
+ await expect(page.locator('.toast')).toContainText('No pudimos enviar el correo');await expect(page.getByLabel('Correo de la cuenta',{exact:true})).toHaveValue('ui-fixture@example.invalid');await expect(page.locator('#email-verification-form')).toHaveCount(0);expect(await page.evaluate(()=>localStorage.getItem('cachaste-email-verification-v1'))).toBe(null);
+});
+
+test('The official logo has transparent corners and the maestro advice never covers its portrait',async({page},info)=>{
+ await fixturePage(page,{signed:false});await page.goto('./competencia.html#perfil');const logo=page.locator('.brand img');await expect.poll(()=>logo.evaluate(n=>n.complete&&n.naturalWidth>0)).toBe(true);
+ const pixels=await logo.evaluate(img=>{const canvas=document.createElement('canvas');canvas.width=355;canvas.height=97;const c=canvas.getContext('2d');c.drawImage(img,0,0,355,97);const data=c.getImageData(0,0,355,97).data;return{corners:[[2,2],[200,95],[353,90]].map(([x,y])=>c.getImageData(x,y,1,1).data[3]),ink:Array.from(data).filter((value,i)=>i%4===3&&value>128).length};});expect(pixels.corners).toEqual([0,0,0]);expect(pixels.ink).toBeGreaterThan(2000);
+ for(let i=0;i<4;i++){
+  await page.getByRole('button',{name:'Consejo del maestro',exact:true}).click();const portrait=await page.locator('.mentor-stage').boundingBox(),advice=await page.locator('.mentor-advice').boundingBox();expect(advice.y).toBeGreaterThanOrEqual(portrait.y+portrait.height-1);await contrastAgainstGradient(page.locator('.mentor-advice .speech'));
+ }
+ await page.screenshot({path:info.outputPath('rc16-profile-maestro.png'),fullPage:true,animations:'disabled'});await overflow(page);
+});
+
+test('The reference arena aligns both real players and places the start action before the maestro footer',async({page},info)=>{
+ await fixturePage(page);await page.addInitScript(({owner,id})=>localStorage.setItem('cachaste-competition-v1:'+owner+':duel',id),{owner:actor.id,id:duel().id});await page.goto('./competencia.html#duelo');await expect(page.getByRole('heading',{name:'Duelo PAES',exact:true})).toBeVisible();
+ const cards=page.locator('.versus-player'),portraits=page.locator('.versus-player .student-avatar');await expect(cards).toHaveCount(2);
+ const [left,right]=await Promise.all([cards.nth(0).boundingBox(),cards.nth(1).boundingBox()]),[lp,rp]=await Promise.all([portraits.nth(0).boundingBox(),portraits.nth(1).boundingBox()]);expect(Math.abs(left.height-right.height)).toBeLessThanOrEqual(1);expect(Math.abs(lp.y-rp.y)).toBeLessThanOrEqual(1);expect(Math.abs(lp.width-rp.width)).toBeLessThanOrEqual(1);
+ const start=page.getByRole('button',{name:'Comenzar duelo',exact:false}),button=await start.boundingBox(),rules=await page.locator('.duel-rules').boundingBox(),footer=await page.locator('.versus-cat').boundingBox();expect(button.y).toBeGreaterThanOrEqual(rules.y+rules.height);expect(button.y+button.height).toBeLessThanOrEqual(footer.y);await contrastAgainstGradient(start);
+ await expect(cards.nth(0)).toContainText('8 estrellas competitivas');await expect(cards.nth(1)).toContainText('11 estrellas competitivas');await page.screenshot({path:info.outputPath('rc16-duel-arena.png'),fullPage:true,animations:'disabled'});await overflow(page);
+});
+
+test('Ranking photos belong to the row identity and fall back to the selected gatito after a download failure',async({page})=>{
+ await fixturePage(page);await page.route('**/rest/v1/rpc/cachaste_competition',async r=>{if(r.request().postDataJSON().operation==='rankings')await r.fulfill({json:{...ranking,top:ranking.top.map((p,i)=>({...p,photoVersion:i===0?'2026-11-02T10:00:00Z':null}))}});else await r.fallback();});await page.route('**/storage/v1/object/public/**',r=>r.fulfill({status:404,body:''}));await page.goto('./competencia.html#rankings');
+ const row=page.locator('.ranking-row').first();await expect(row.locator('img.profile-photo')).toHaveAttribute('src',new RegExp(ranking.top[0].user_id+'/avatar.webp'));await expect(row.locator('.photo-fallback')).not.toHaveAttribute('hidden','');await expect(row.locator('.photo-fallback img')).toBeVisible();await overflow(page);
 });

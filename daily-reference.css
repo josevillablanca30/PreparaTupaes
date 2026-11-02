@@ -322,7 +322,7 @@ body>main{--reference-gutter:20px}
 body:has(.reference-courses){background:radial-gradient(ellipse at 94% 14%,#36045a80,transparent 45%),#080611;color:#f8f4ff;color-scheme:dark}
 #daily-root .reference-courses{color:#f8f4ff}
 #daily-root .reference-brand{position:relative;margin-bottom:10px}
-#daily-root .reference-brand img{filter:invert(1) hue-rotate(180deg) brightness(1.7);mix-blend-mode:screen}
+#daily-root .reference-brand img{filter:none;mix-blend-mode:normal}
 #daily-root .home-profile{background:linear-gradient(150deg,#241332,#0e0919);border-color:#9f43d9;color:#fff;box-shadow:inset 0 0 12px #a126d326,0 0 12px #9d22f024}
 #daily-root .reference-welcome{border:0;border-radius:0;background:radial-gradient(ellipse at 84% 54%,#8e14d778,transparent 58%),linear-gradient(130deg,#080611,#14091e);box-shadow:none;padding:12px 0;min-height:205px;overflow:visible;grid-template-columns:55% 45%}
 #daily-root .reference-welcome:before{content:'';position:absolute;inset:12% 0 0 35%;z-index:-1;background:repeating-conic-gradient(from 25deg at 80% 60%,transparent 0deg 22deg,#a823ed24 23deg 25deg,transparent 26deg 44deg);clip-path:polygon(15% 0,100% 8%,100% 100%,0 84%);pointer-events:none}

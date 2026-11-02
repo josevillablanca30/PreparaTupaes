@@ -87,6 +87,13 @@ test('Expected Auth errors have actionable messages without echoing credentials'
 
 test('Legacy Auth error responses without a machine code remain actionable',()=>{assert.equal(errorMessage(Error('Email not confirmed')),errorMessage({code:'email_not_confirmed'}));assert.equal(errorMessage(Error('Invalid login credentials')),errorMessage({code:'invalid_credentials'}));});
 
+test('Mail delivery failures explain that the code could not be sent without exposing provider diagnostics',()=>{
+ for(const error of [{code:'unexpected_failure',message:'Error sending recovery email: 535 Authentication credentials invalid'},{code:'email_address_not_authorized',message:'Recipient is not authorized'},{message:'Error sending confirmation email'}]){
+  const message=errorMessage(error);assert.match(message,/No pudimos enviar el correo/);assert.doesNotMatch(message,/535|SMTP|credentials|authorized/);
+ }
+ assert.doesNotMatch(errorMessage({code:'unexpected_failure',message:'Database unavailable'}),/correo/);
+});
+
 test('A recovered password revokes all server sessions while ordinary signout remains local',async()=>{
  const client=new CompetitionClient({},{}),scopes=[];client.user={id:'account'};client.profile={nickname:'Old'};client.premium=true;client.recovering=true;
  client.sdk={auth:{updateUser:async()=>({}),signOut:async options=>{scopes.push(options.scope);return{};}}};
