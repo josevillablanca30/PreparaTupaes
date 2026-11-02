@@ -18,7 +18,7 @@ public class LocalVsBetaTest {
     private WebView web(MainActivity activity){return (WebView)activity.findViewById(android.R.id.content).findViewWithTag("cachaste-web");}
     private String js(String script) throws Exception {
         AtomicReference<String> result=new AtomicReference<>();CountDownLatch latch=new CountDownLatch(1);
-        scenario.onActivity(a->web(a).evaluateJavascript(script,value->{result.set(value);latch.countDown();}));
+        NativeWebViewActions.onActivity(scenario,a->web(a).evaluateJavascript(script,value->{result.set(value);latch.countDown();}));
         assertTrue(latch.await(10,TimeUnit.SECONDS));return result.get();
     }
     private void waitFor(String script) throws Exception {
@@ -44,10 +44,12 @@ public class LocalVsBetaTest {
         for(int frame=0;frame<2;frame++) {
             android.util.Log.i("CachasteQa","local-vs render frame "+frame);
             CountDownLatch painted=new CountDownLatch(1);
-            scenario.onActivity(activity -> {
+            NativeWebViewActions.onActivity(scenario,activity -> {
                 WebView view=web(activity);
+                android.util.Log.i("CachasteQa","local-vs UI capture callback");
                 view.postVisualStateCallback(System.nanoTime(),new WebView.VisualStateCallback() {
                     @Override public void onComplete(long requestId) {
+                        android.util.Log.i("CachasteQa","local-vs visual state callback");
                         if(android.os.Build.VERSION.SDK_INT>=29 && view.isHardwareAccelerated()) {
                             view.getViewTreeObserver().registerFrameCommitCallback(painted::countDown);
                             view.invalidate();
@@ -77,7 +79,7 @@ public class LocalVsBetaTest {
         android.util.Log.i("CachasteQa","local-vs activity launched");
         try {
             assertEquals("cl.preparatupaes.app.sciencebeta",InstrumentationRegistry.getInstrumentation().getTargetContext().getPackageName());
-            scenario.onActivity(a->web(a).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#duelos"));
+            NativeWebViewActions.onActivity(scenario,a->web(a).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#duelos"));
             android.util.Log.i("CachasteQa","local-vs waiting competition entry");
             waitFor("document.querySelector('.beta-entry a')");js("document.querySelector('.beta-entry a').click()");
             waitFor("document.getElementById('beta-setup')");

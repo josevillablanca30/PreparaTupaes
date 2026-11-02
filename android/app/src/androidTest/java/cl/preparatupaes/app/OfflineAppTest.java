@@ -27,7 +27,7 @@ public class OfflineAppTest {
     private String js(String script) throws Exception {
         AtomicReference<String> answer = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
-        scenario.onActivity(activity -> web(activity).evaluateJavascript(script, value -> {answer.set(value);latch.countDown();}));
+        NativeWebViewActions.onActivity(scenario,activity -> web(activity).evaluateJavascript(script, value -> {answer.set(value);latch.countDown();}));
         assertTrue("WebView did not answer JavaScript", latch.await(10, TimeUnit.SECONDS));
         return answer.get();
     }
@@ -39,7 +39,7 @@ public class OfflineAppTest {
         fail("WebView condition timed out: "+expression);
     }
     private void open(String page, String ready) throws Exception {
-        scenario.onActivity(activity -> web(activity).loadUrl("file:///android_asset/"+page));
+        NativeWebViewActions.onActivity(scenario,activity -> web(activity).loadUrl("file:///android_asset/"+page));
         waitFor("location.pathname.endsWith('/"+page+"') && document.readyState==='complete' && ("+ready+")");
     }
     @Before public void launch() {scenario=ActivityScenario.launch(MainActivity.class);}
@@ -47,7 +47,7 @@ public class OfflineAppTest {
 
     @Test public void scrolledLessonViewportStaysOutsideSystemBars() throws Exception {
         open("inicio.html", "window.CachasteDailyApp");
-        scenario.onActivity(activity -> {
+        NativeWebViewActions.onActivity(scenario,activity -> {
             android.graphics.Rect bounds=new android.graphics.Rect();
             WebView view=web(activity);
             assertTrue(view.getGlobalVisibleRect(bounds));
@@ -304,7 +304,7 @@ public class OfflineAppTest {
         // Wait for actual render commits: animation callbacks alone allowed screencap to export the previous route.
         for(int frame=0;frame<2;frame++) {
             CountDownLatch painted=new CountDownLatch(1);
-            scenario.onActivity(activity -> {
+            NativeWebViewActions.onActivity(scenario,activity -> {
                 WebView view=web(activity);
                 view.postVisualStateCallback(System.nanoTime(),new WebView.VisualStateCallback() {
                     @Override public void onComplete(long requestId) {
@@ -426,14 +426,14 @@ public class OfflineAppTest {
     @Test public void betaBillingCannotBeEnabledByThePageAndNeverExposesTheBridgeToOfflineEducation() throws Exception {
         waitFor("window.CachasteDailyApp");
         assertEquals("\"undefined\"",js("typeof window.CachastePlay"));
-        scenario.onActivity(activity -> web(activity).loadUrl("https://appassets.androidplatform.net/assets/suscripcion.html"));
+        NativeWebViewActions.onActivity(scenario,activity -> web(activity).loadUrl("https://appassets.androidplatform.net/assets/suscripcion.html"));
         waitFor("window.CachastePlay && document.querySelector('#subscribe') && window.CACHASTE_COMPETITION_CONFIG");
         assertEquals("true",js("document.querySelector('#subscribe').disabled && document.querySelector('#restore').disabled"));
         js("window.betaReply=null;CachastePlay.onmessage=e=>window.betaReply=JSON.parse(e.data);CachastePlay.postMessage(JSON.stringify({id:'beta-gate',action:'purchase',userId:'10000000-0000-4000-8000-000000000001',offer:'mensual:'}));true");
         waitFor("window.betaReply");
         assertEquals("\"BILLING_NOT_CONFIGURED\"",js("betaReply.error"));
         captureDidacticScreen("subscription-beta-locked");
-        scenario.onActivity(activity -> web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#duelos"));
+        NativeWebViewActions.onActivity(scenario,activity -> web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#duelos"));
         waitFor("window.CachasteCompetition && window.CachastePlay");
         js("window.crossPageReply=null;CachastePlay.onmessage=e=>window.crossPageReply=e.data;CachastePlay.postMessage(JSON.stringify({id:'wrong-page',action:'offers'}));true");
         Thread.sleep(400);
@@ -441,7 +441,7 @@ public class OfflineAppTest {
     }
 
     @Test public void passwordRecoveryOpensItsOwnEmailFormWithoutLoginValidation() throws Exception {
-        scenario.onActivity(activity -> web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#perfil"));
+        NativeWebViewActions.onActivity(scenario,activity -> web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#perfil"));
         waitFor("window.CachasteCompetition && document.querySelector('#auth-form')");
         js("window.authInvalid=0;document.addEventListener('invalid',()=>window.authInvalid++,true);document.querySelector('[data-action=password-reset]').click();true");
         waitFor("document.querySelector('#email-request-form') && !document.querySelector('#auth-form')");
@@ -458,7 +458,7 @@ public class OfflineAppTest {
     }
 
     @Test public void registrationNavigationNeverValidatesTheOtherForm() throws Exception {
-        scenario.onActivity(activity -> web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#perfil"));
+        NativeWebViewActions.onActivity(scenario,activity -> web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#perfil"));
         waitFor("window.CachasteCompetition && document.querySelector('#auth-form')");
         js("window.authInvalid=0;document.addEventListener('invalid',()=>window.authInvalid++,true);document.querySelector('[data-action=show-signup]').click();true");
         waitFor("document.querySelector('#signup-form') && !document.querySelector('#auth-form')");
@@ -477,7 +477,7 @@ public class OfflineAppTest {
             String line;while((line=reader.readLine())!=null)fixture.append(line).append('\n');
         }
         assertTrue(androidx.webkit.WebViewFeature.isFeatureSupported(androidx.webkit.WebViewFeature.DOCUMENT_START_SCRIPT));
-        scenario.onActivity(activity -> {
+        NativeWebViewActions.onActivity(scenario,activity -> {
             androidx.webkit.WebViewCompat.addDocumentStartJavaScript(web(activity),fixture.toString(),java.util.Collections.singleton("https://appassets.androidplatform.net"));
             web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#rankings");
         });
