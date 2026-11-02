@@ -1,0 +1,5 @@
+<es-419>
+Tu perfil, tu estilo: sube una foto o elige entre gatitos y gatitas.
+Vuelve a desafiar al mismo rival y revisa tu historial de duelos.
+Mejoramos el registro, la recuperación de contraseña y la legibilidad.
+</es-419>

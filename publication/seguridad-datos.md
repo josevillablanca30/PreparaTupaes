@@ -1,40 +1,47 @@
-# Seguridad de los datos y contenido de la app — propuesta para completar Console
+# Seguridad de los datos · candidata 42 / 1.5.0-rc15
 
-Revisado contra el código de la candidata rc5. **Borrador pendiente de los datos del titular, URLs y configuración final de servicios/SDKs.** No es una declaración enviada a Google.
+Revisado el 2 de noviembre de 2026 contra el AAB firmado de la fuente eac0a78. Esta guía prepara la actualización de la declaración existente; no crea otra app ni representa un formulario ya enviado a Google.
 
-## Datos de ¿Cachaste?
+## Cambio que requiere la versión 42: fotos opcionales
 
-| Datos | Tratamiento observado | Finalidad propuesta |
+En Contenido de la app → Seguridad de los datos, conservar lo ya declarado para cuenta/actividad y añadir **Fotos y vídeos → Fotos**:
+
+| Pregunta | Implementación de 42 |
+| --- | --- |
+| ¿Se recopilan fotos? | Sí: la miniatura sale del teléfono hacia Supabase Storage. |
+| ¿Es opcional? | Sí: se puede utilizar un gatito y toda la aplicación sin subir foto. |
+| ¿Se procesa solo de forma efímera? | No: la miniatura se conserva hasta quitarla, reemplazarla o borrar el perfil/cuenta desde la app. |
+| Finalidad | Funcionalidad de la app, personalización del perfil y gestión de cuenta. No publicidad ni análisis facial. |
+| ¿Qué archivo se envía? | WebP 256×256 de hasta 32 KB; el original y sus metadatos no se suben. |
+| ¿Dónde se muestra? | Perfil, duelos e historial y rankings, con confirmación explícita de visibilidad pública. |
+| ¿Puede eliminarse? | Sí: Quitar foto en Perfil. El borrado de perfil/cuenta desde la app elimina también el archivo mediante Storage. |
+| ¿Cuándo puede reemplazarse? | Cada siete días, comprobados en el servidor. Quitarla no reinicia el plazo. |
+
+Para la pregunta de datos **compartidos**, Google contempla excepciones para proveedores que procesan por cuenta del desarrollador y transferencias iniciadas por el usuario con divulgación y consentimiento. La miniatura de 42 se aloja en Supabase como proveedor y su exhibición pública la confirma el usuario. La interpretación propuesta para esta implementación es **no contabilizar esas transferencias como compartir con terceros bajo las excepciones del formulario**; esto no significa que la foto sea privada. No introducir esa respuesta si se añaden destinos o usos distintos a los descritos.
+
+La app utiliza el selector de documentos del sistema; no solicita READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_EXTERNAL_STORAGE ni CAMERA. No añadir permisos amplios de galería para esta función.
+
+## Datos que se mantienen
+
+| Datos | Tratamiento | Finalidad |
 | --- | --- | --- |
-| Correo e identificador de cuenta | Auth de Supabase y vínculo con la cuenta competitiva; el correo no es el apodo público | Gestión de cuentas, funcionalidad y seguridad |
-| Contraseña y credenciales de sesión | Autenticación; no publicar ni tratar como texto de perfil | Gestión de cuentas y seguridad |
-| Apodo y avatar predefinido | Perfil competitivo; el avatar no es una foto subida por el estudiante | Funcionalidad |
-| Región y comuna elegidas | Selección manual, sin GPS; clasificación geográfica y visibilidad conforme al perfil | Funcionalidad; revisar ubicación aproximada en el formulario |
-| Respuestas y actividad competitiva | Intentos, preguntas, aciertos, tiempos de servidor, duelos, estadísticas y preferencias | Funcionalidad, integridad de la competencia y prevención de abuso |
-| Convivencia | Consentimiento y fecha de servidor, bloqueos y denuncias privadas con motivo, identificadores implicados y apodo denunciado | Funcionalidad y prevención de abuso |
-| Compras | Historial de verificación, estado/vencimiento y token cifrado; Google procesa el pago | Funcionalidad, gestión de cuenta y prevención de fraude |
-| Datos operativos | Auth/servidor pueden tratar IP y metadatos técnicos de solicitudes; verificar retención efectiva y SDKs | Seguridad y operación; declarar la clasificación que corresponda |
-| Progreso educativo del dispositivo | Diagnóstico, práctica y progreso guardados localmente; el progreso local no se acepta como prueba de puntos del ranking | No declararlo como envío al servidor si permanece exclusivamente local |
+| Correo e identificador de cuenta | Supabase Auth; el correo no es el nickname público | Gestión de cuentas, funcionalidad y seguridad |
+| Contraseña y sesión | Autenticación; no se publican en el perfil | Gestión de cuentas y seguridad |
+| Nickname y avatar del catálogo | Perfil público competitivo; se conserva como alternativa a la foto | Funcionalidad y personalización |
+| Región y comuna elegidas | Selección manual, sin GPS; filtros geográficos del ranking | Funcionalidad; conservar la clasificación geográfica declarada que corresponda |
+| Actividad competitiva | Respuestas, tiempos de servidor, intentos, duelos, revanchas, historial y estadísticas | Funcionalidad e integridad de resultados |
+| Comunidad | Consentimiento, bloqueos y denuncias privadas | Prevención de abuso y moderación |
+| Acceso/compras | La candidata tiene billingReady=false y acceso gratuito para las cuentas autorizadas de prueba. El código de Billing conserva verificación de servidor para su activación futura | Gestión de cuenta; no simular compras ni habilitar cobros durante el piloto |
+| Datos operativos | Auth y alojamiento pueden procesar IP y metadatos de solicitudes | Seguridad y operación conforme al proveedor |
+| Progreso educativo local | Permanece en el teléfono y no prueba puntos del ranking | No declararlo como una transferencia si no sale del dispositivo |
 
-No se solicitan cámara, micrófono, contactos, GPS, fotografías del estudiante ni identificador publicitario desde el código propio revisado. No se integró publicidad ni un SDK de analítica publicitaria. Confirmar las prácticas de la versión final de Google Play Billing y de los demás proveedores antes de enviar el formulario.
+No marcar «no se recopilan datos». No hay publicidad integrada ni SDK de analítica publicitaria en esta candidata. Los perfiles y las fotos opcionales son contenido de usuarios: se mantienen reglas, bloqueo y denuncia por contenido inapropiado. No negar esa interacción en el cuestionario de contenido.
 
-No marcar «no se recopilan datos»: el registro, los duelos y la validación de compras transmiten información fuera del dispositivo. Identificadores y compras son necesarios para el acceso comercial; los datos de perfil se requieren al elegir participar en competencia. La clasificación final de opcional/obligatorio debe reflejar los recorridos efectivamente disponibles en la versión final.
+## Enlaces vigentes
 
-La exhibición voluntaria de apodo/resultados es una función pública de la app. No confundirla con publicidad ni prometer que todos los datos son privados. Los proveedores de alojamiento y pago deben describirse según su función y los acuerdos aplicables; no seleccionar categorías de «compartir» por suposiciones.
+- Política actualizada para fotos: https://cachaste-privacidad.jose-villablanca-hor.chatgpt.site/privacidad
+- Solicitud de eliminación: https://cachaste-privacidad.jose-villablanca-hor.chatgpt.site/eliminar-cuenta
 
-## Respuestas de contenido que pueden prepararse
+La política ya está publicada. La declaración en Play Console aún requiere actualizarse: el navegador del entorno de trabajo no arrancó; no se modificó el formulario por otra vía. No cambiar clasificaciones, cobros ni otras respuestas sin que correspondan al comportamiento distribuido.
 
-- Tipo: app. Categoría propuesta: Educación.
-- Publicidad integrada en esta versión: no se observa en el código revisado.
-- Compras: suscripción de Google Play para acceso completo.
-- Cuenta requerida para el acceso comercial; hay apartados restringidos. Se necesita un acceso de revisión real y funcional para Google antes de enviar a revisión.
-- Público previsto: preparación PAES desde aproximadamente 15 años. Confirmar los grupos concretos de Console; no declarar automáticamente una app para menores de 13 años.
-- Interacción entre estudiantes: duelos e invitaciones. No hay chat, fotos subidas ni contacto público. Hay apodos y resultados públicos por elección del usuario: revisar las preguntas de contenido generado por usuarios y sus obligaciones, sin negar esa función.
-- Clasificación IARC: pendiente de completar el cuestionario; no inventar una clasificación.
-- Privacidad y eliminación: pendientes de publicar con titular/contacto definitivos. La opción interna de eliminar cuenta está implementada; falta la vía externa verificada.
-
-## Antes de enviar
-
-Comprobar que la política publicada, los enlaces dentro de la app, las respuestas de Seguridad de los datos y los SDKs realmente distribuidos coincidan. Comprobar el mecanismo externo de eliminación y la retención aplicable; no declarar plazos o auditorías que no estén definidos. Revisar la moderación/bloqueo que corresponda a los perfiles y rankings públicos antes de habilitarlos al público.
-
-Fuentes: https://support.google.com/googleplay/android-developer/answer/10787469?hl=es-419 y https://support.google.com/googleplay/android-developer/answer/13327111?hl=en
+Fuente oficial: https://support.google.com/googleplay/android-developer/answer/10787469?hl=es-419 . No se declara una auditoría o certificación independiente inexistente.

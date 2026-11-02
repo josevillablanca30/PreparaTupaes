@@ -1,38 +1,35 @@
-# Prueba real del duelo y las compras en dos celulares
+# Piloto final en dos teléfonos · versión 42
 
-Esta guía corresponde al **VS por internet** del paquete comercial, con una cuenta distinta en cada celular. No utiliza el modo local de rc4 ni reemplaza una compra por permisos ficticios.
+Este recorrido corresponde a la **prueba cerrada** de cl.preparatupaes.app, con dos cuentas distintas. El AAB es para cargarlo en Play Console; los teléfonos reciben la actualización desde Google Play. Se utiliza el acceso gratuito concedido administrativamente a las cuentas autorizadas. La candidata 42 tiene billingReady=false: este piloto no requiere comprar una suscripción, activar Billing ni cambiar el entorno de producción del backend.
 
 ## Preparación
 
-- App `cl.preparatupaes.app` en la pista interna y una compilación habilitada para Billing. El primer AAB de configuración todavía no cumple ese requisito.
-- Productos activos y verificador de servidor operativo. SMTP, confirmación y recuperación de cuenta comprobados.
-- Los dos correos Google agregados a la pista interna **y** a verificadores de licencia. Ser participante de una pista no evita por sí solo un cobro real. Confirmar el instrumento y aviso de compra de prueba de Google antes de aceptar.
-- En cada teléfono, aceptar el enlace de participación real que entregue Console e instalar desde Play. Usar la cuenta Google agregada como verificadora de licencia.
-- Crear dos cuentas reales de ¿Cachaste?, verificar el correo y completar cada apodo/perfil. Mantener desactivada la participación pública en rankings durante esta revisión.
-- Habilitar `CACHASTE_PLAY_ALLOW_LICENSE_TESTS=true` solo de forma administrativa para esta prueba. El servidor debe seguir consultando y validando Google; no modificar `settings.environment` ni crear entitlements de laboratorio en producción.
+1. Actualizar Seguridad de los datos para la foto opcional según `seguridad-datos.md` y cargar el AAB 42 firmado en la misma prueba cerrada. No publicar en producción ni crear otra clave de carga.
+2. En cada teléfono, actualizar desde Google Play con la cuenta Google inscrita como tester. Comprobar en la información de la app que la versión instalada es 1.5.0-rc15 / código 42.
+3. Iniciar sesión con dos cuentas diferentes y comprobar que ambas tienen acceso autorizado a la prueba. Mantener suscripciones y cobros deshabilitados.
+4. Actualizar conserva la sesión. Para probar un correo nuevo: Perfil → Cerrar sesión → Crear cuenta, usando un correo aún no registrado. Para probar recepción con la cuenta existente: Cerrar sesión → Recuperar contraseña. No borrar una cuenta ni su progreso para forzar el envío.
 
-## Ejecución y evidencia
+## Recorrido
 
-| Paso | Comprobación | Resultado |
+| Paso | Resultado esperado | Estado |
 | --- | --- | --- |
-| Acceso | Inicio de sesión y confirmación de correo en ambos celulares | Pendiente |
-| Compra de licencia | Cada cuenta obtiene acceso tras verificar Google y asociar el recibo con su usuario | Pendiente |
-| Invitación | El primer celular crea un código real; el segundo lo acepta | Pendiente |
-| VS | Cada celular muestra los dos apodos reales y la misma materia | Pendiente |
-| Primer turno | Responder diez preguntas; las soluciones siguen ocultas hasta que ambos terminen | Pendiente |
-| Reanudación | Salir y volver a mitad del turno; retomar la misma posición y plazo de servidor | Pendiente |
-| Segundo turno | El otro celular completa las mismas diez preguntas | Pendiente |
-| Resultado | Ambos muestran el mismo ganador, aciertos y motivo de desempate | Pendiente |
-| Tutor | Cada cuenta revisa sus errores después de terminar el duelo | Pendiente |
-| Restauración | Recrear la app y restaurar la compra en la cuenta correcta, sin duplicar recompensas | Pendiente |
-| Cuenta distinta | Un recibo vinculado a una cuenta no desbloquea otra | Pendiente |
-| Compra pendiente/fallida | No concede acceso mientras Google no confirme | Pendiente |
-| Ciclo de suscripción | Validar renovación, cancelación, vencimiento y evento RTDN con Google | Pendiente |
-| Recuperación | Completar el enlace de contraseña desde correo y volver a entrar en Android | Pendiente |
-| Eliminación | Probar el borrado desde la app y la vía web publicada | Pendiente |
+| Correo | Código visible en el correo real; se introduce dentro de la app sin depender de localhost | Pendiente en teléfono |
+| Cuenta | Registro/login, nickname y sesión persistente; nickname duplicado rechazado | Pendiente en 42 |
+| Foto A | Perfil → Subir mi foto → selector de Android → vista previa → confirmación pública → Guardar. El usuario B ve esa miniatura en el duelo | Pendiente en teléfono |
+| Foto B | Puede conservar su gatito o subir otra foto. Cambiar la foto no valida campos de otro formulario ni pierde un nickname aún no guardado | Pendiente en teléfono |
+| Cancelación | Cancelar el selector o la vista previa no sube un archivo ni consume el plazo | Pendiente en teléfono |
+| Plazo de foto | La siguiente subida queda bloqueada durante siete días; quitarla está permitido y vuelve al gatito | Pendiente en teléfono |
+| Desafío | A desafía por nickname o crea un código; B recibe/acepta | Un duelo de la versión anterior completado según el titular; repetir en 42 |
+| Ambos turnos | Diez preguntas para cada cuenta, sin soluciones anticipadas | Repetir en 42 |
+| Reanudación | Salir y regresar a mitad del turno conserva posición y tiempo del servidor | Pendiente en teléfono |
+| Resultado | Ambos ven el mismo ganador/marcador; victorias, derrotas/empates y estrellas se registran una vez | Repetir en 42 |
+| Revancha | Al terminar pueden jugar otra vez entre ellos inmediatamente, sin veto diario. Un desafío aún pendiente/activo no debe duplicarse | Pendiente en teléfono; backend y HTTP aprobados |
+| Historial | Cada duelo aparece separado con fecha, rival, marcador y resultado; abre su resultado y permite pedir revancha | Pendiente en teléfono; pruebas web/HTTP aprobadas |
+| Ranking | Si ambos optan por participar públicamente, la misma categoría refleja los resultados; no se cambian estrellas educativas | Pendiente en teléfono; servidor probado automáticamente |
+| Sesión | Cerrar sesión vuelve a login sin borrar progreso educativo; actualizar no obliga a crear otra cuenta | Pendiente en teléfono; pruebas automáticas aprobadas |
 
-Anotar modelo y versión Android de ambos teléfonos, código de versión instalado, fecha y cualquier error visible. Conservar las capturas solo con autorización de quienes prueban. No incluir contraseñas ni tokens de compra en capturas, correos, Git o informes públicos.
+No se considera completa una comprobación solo porque la app compile o porque funcione una cuenta simulada. Registrar versión, modelo/Android y resultado real. No incluir contraseñas, OTP ni tokens en capturas o informes públicos. Usar fotos propias con permiso; las capturas automáticas publicadas en GitHub emplean una imagen sintética, no fotos de personas.
 
-## Cierre
+## Alcance comercial separado
 
-Deshabilitar las compras de licencia en la configuración de producción al terminar, comprobar su vencimiento o revocación y mantener privados los perfiles de prueba. No borrar resultados de usuarios reales. Una vez resuelto el flujo completo, obtener capturas de VS y resultado con estas cuentas reales para revisar la ficha; hasta entonces no usar imágenes de fixtures como evidencia de uso público.
+Renovaciones, compras pendientes, restauración, asociación de recibos y RTDN corresponden a la futura activación de Billing. No son requisitos para este piloto gratuito ni deben reemplazarse por recibos falsos o permisos autoconcedidos. Se conservan los controles de servidor existentes y las pruebas instaladas del acceso comercial.
