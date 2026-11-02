@@ -19,3 +19,5 @@ Continúa desde `2a30c8c019ad683706a2d4fc9072464df80a1df5`, sin sustituir el ár
 - AAB 39: generación y firma pendientes de Actions; no se ha publicado en Google Play. Correo alojado y duelo entre dos teléfonos siguen pendientes de comprobación real.
 
 Primera revisión renderizada: Inicio y Duelos inspeccionados en 320 px y Android habitual. Se detectó una acción principal 14 px debajo de la navegación en 320 px (116 gate aprobadas y dos fallidas), color oscuro heredado en títulos de asignatura y una unidad de tiempo cortada. Se compacta el encabezado estrecho, se corrigen las reglas de color heredadas y se conserva completa la palabra segundos. No se modifica ni relaja la prueba de visibilidad. Nueva ejecución pendiente.
+
+Se amplía el disparo del AAB firmado a cambios de versión, interfaz y activos: una corrección visual posterior no debe dejar el artefacto de Play apuntando al commit anterior. La firma y los gates se conservan.
