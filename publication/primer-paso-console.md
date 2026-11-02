@@ -1,3 +1,5 @@
+> Guía histórica de la primera configuración. La app ya está creada y en prueba cerrada. Para la actualización vigente, seguir [README.md](README.md).
+
 # Primer paso en Play Console
 
 La cuenta ya fue creada por el titular con `jose.villablanca.horta@gmail.com`. El mismo correo se usará como soporte público. Se comprobó directamente que la cuenta es personal. Google está revisando los documentos de identidad enviados y todavía impide crear la primera app. La verificación del teléfono de contacto queda pendiente hasta que Google apruebe la identidad. El siguiente paso depende de esa revisión; no se creó ninguna ficha.

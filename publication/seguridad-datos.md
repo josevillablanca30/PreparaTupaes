@@ -1,12 +1,12 @@
-# Seguridad de los datos · candidata 42 / 1.5.0-rc15
+# Seguridad de los datos · candidata 43 / 1.5.0-rc16
 
-Revisado el 2 de noviembre de 2026 contra el AAB firmado de la fuente eac0a78. Esta guía prepara la actualización de la declaración existente; no crea otra app ni representa un formulario ya enviado a Google.
+Revisado el 2 de noviembre de 2026. La función de fotos se introdujo en 42 (fuente eac0a78) y se conserva en 43; el archivo original admitido baja a 5 MB, sin cambiar la miniatura enviada. Esta guía prepara la actualización de la declaración existente; no crea otra app ni representa un formulario ya enviado a Google.
 
 ## Cambio que requiere la versión 42: fotos opcionales
 
 En Contenido de la app → Seguridad de los datos, conservar lo ya declarado para cuenta/actividad y añadir **Fotos y vídeos → Fotos**:
 
-| Pregunta | Implementación de 42 |
+| Pregunta | Implementación de 43 |
 | --- | --- |
 | ¿Se recopilan fotos? | Sí: la miniatura sale del teléfono hacia Supabase Storage. |
 | ¿Es opcional? | Sí: se puede utilizar un gatito y toda la aplicación sin subir foto. |
@@ -17,7 +17,7 @@ En Contenido de la app → Seguridad de los datos, conservar lo ya declarado par
 | ¿Puede eliminarse? | Sí: Quitar foto en Perfil. El borrado de perfil/cuenta desde la app elimina también el archivo mediante Storage. |
 | ¿Cuándo puede reemplazarse? | Cada siete días, comprobados en el servidor. Quitarla no reinicia el plazo. |
 
-Para la pregunta de datos **compartidos**, Google contempla excepciones para proveedores que procesan por cuenta del desarrollador y transferencias iniciadas por el usuario con divulgación y consentimiento. La miniatura de 42 se aloja en Supabase como proveedor y su exhibición pública la confirma el usuario. La interpretación propuesta para esta implementación es **no contabilizar esas transferencias como compartir con terceros bajo las excepciones del formulario**; esto no significa que la foto sea privada. No introducir esa respuesta si se añaden destinos o usos distintos a los descritos.
+Para la pregunta de datos **compartidos**, Google contempla excepciones para proveedores que procesan por cuenta del desarrollador y transferencias iniciadas por el usuario con divulgación y consentimiento. La miniatura de 43 se aloja en Supabase como proveedor y su exhibición pública la confirma el usuario. La interpretación propuesta para esta implementación es **no contabilizar esas transferencias como compartir con terceros bajo las excepciones del formulario**; esto no significa que la foto sea privada. No introducir esa respuesta si se añaden destinos o usos distintos a los descritos.
 
 La app utiliza el selector de documentos del sistema; no solicita READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_EXTERNAL_STORAGE ni CAMERA. No añadir permisos amplios de galería para esta función.
 
