@@ -35,11 +35,13 @@ public class LocalVsBetaTest {
         }
     }
     private void capture(String name) throws Exception {
+        android.util.Log.i("CachasteQa","local-vs capture begin "+name);
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
         Thread.sleep(1200);
         // VisualStateCallback makes the DOM available for the NEXT draw, not the frame already on screen.
         // Wait for actual render commits: animation callbacks alone allowed screencap to export the previous route.
         for(int frame=0;frame<2;frame++) {
+            android.util.Log.i("CachasteQa","local-vs render frame "+frame);
             CountDownLatch painted=new CountDownLatch(1);
             scenario.onActivity(activity -> {
                 WebView view=web(activity);
@@ -63,18 +65,25 @@ public class LocalVsBetaTest {
         String path="/data/local/tmp/cachaste-didactic-screens/"+name+".png";
         // UiAutomation starts one process per call; it does not interpret shell operators.
         deviceCommand("mkdir -p /data/local/tmp/cachaste-didactic-screens");
+        android.util.Log.i("CachasteQa","local-vs before screencap "+name);
         deviceCommand("screencap -p "+path);
+        android.util.Log.i("CachasteQa","local-vs after screencap "+name);
         assertTrue("Native screenshot export failed",deviceCommand("stat -c %s "+path).matches("[1-9][0-9]*"));
     }
     @Test public void localVsEntryPlaysBothTurnsOfflineAndRestoresHandoff() throws Exception {
+        android.util.Log.i("CachasteQa","local-vs before activity launch");
         scenario=ActivityScenario.launch(MainActivity.class);
+        android.util.Log.i("CachasteQa","local-vs activity launched");
         try {
             assertEquals("cl.preparatupaes.app.sciencebeta",InstrumentationRegistry.getInstrumentation().getTargetContext().getPackageName());
             scenario.onActivity(a->web(a).loadUrl("https://appassets.androidplatform.net/assets/competencia.html#duelos"));
+            android.util.Log.i("CachasteQa","local-vs waiting competition entry");
             waitFor("document.querySelector('.beta-entry a')");js("document.querySelector('.beta-entry a').click()");
             waitFor("document.getElementById('beta-setup')");
+            android.util.Log.i("CachasteQa","local-vs setup ready");
             js("document.querySelector('[name=player0]').value='Prueba_A';document.querySelector('[name=player1]').value='Prueba_B';document.getElementById('beta-setup').requestSubmit()");
-            waitFor("document.querySelector('.versus-players')");capture("beta-local-vs");
+            android.util.Log.i("CachasteQa","local-vs setup submitted");
+            waitFor("document.querySelector('.versus-players')");android.util.Log.i("CachasteQa","local-vs versus ready");capture("beta-local-vs");
             js("document.querySelector('[data-action=begin]').click()");
             for(int p=0;p<2;p++){
                 for(int i=0;i<10;i++){

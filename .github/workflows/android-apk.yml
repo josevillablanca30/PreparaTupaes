@@ -46,7 +46,7 @@ jobs:
       - name: Determinar si cambió el recorrido web
         id: scope
         run: |
-          if git rev-parse --verify HEAD^ >/dev/null 2>&1 && ! git diff --name-only HEAD^ HEAD | grep -Ev '^(android/app/src/androidTest/|android/app/src/main/java/|android/app/build\.gradle$|\.github/workflows/(android-apk|pages|competition-backup-restore)\.yml$|scripts/run-android-installed-qa\.sh$|scripts/competition-(backup|restore)\.mjs$)' | grep -q .; then
+          if git rev-parse --verify HEAD^ >/dev/null 2>&1 && ! git diff --name-only HEAD^ HEAD | grep -Ev '^(android/app/src/(androidTest|betaTest)/|android/app/src/main/java/|android/app/build\.gradle$|\.github/workflows/(android-apk|pages|competition-backup-restore)\.yml$|scripts/run-android-installed-qa\.sh$|scripts/competition-(backup|restore)\.mjs$)' | grep -q .; then
             echo 'browser_required=false' >> "$GITHUB_OUTPUT"
           else
             echo 'browser_required=true' >> "$GITHUB_OUTPUT"
