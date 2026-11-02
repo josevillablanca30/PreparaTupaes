@@ -53,3 +53,22 @@ test('A settled result keeps review available and opens the duel league in the r
  await expect(page.getByRole('button',{name:'Liga de duelos',exact:true})).toHaveAttribute('aria-pressed','true');await expect(page.getByRole('button',{name:'M2',exact:true})).toHaveAttribute('aria-pressed','true');await layout(page);
  await expect(page.getByRole('region',{name:'Tu posición en la liga'})).toBeVisible();await expect(page.locator('.personal-standing')).toContainText('#12');await page.screenshot({path:info.outputPath('rc10-ranking.png'),fullPage:true,animations:'disabled'});
 });
+
+test('Duel history pages retain real scores, deduplicate retries and open the recorded result',async({page},info)=>{
+ await fixturePage(page);const a={...finished(),createdAt:'2026-11-02T10:00:00Z'},b={...finished('loss'),id:'30000000-0000-4000-8000-000000000099',createdAt:'2026-11-01T10:00:00Z'};let reads=0;
+ await page.route('**/rest/v1/rpc/cachaste_competition',async route=>{const {operation,payload}=route.request().postDataJSON();if(operation==='duel_history'){reads++;await route.fulfill({json:{duels:payload.before?[a,b]:[a],next:payload.before?null:{createdAt:a.createdAt,id:a.id},summary:{played:2,wins:1,losses:1,draws:0}}});return;}if(operation==='duel'){await route.fulfill({json:payload.duelId===b.id?b:a});return;}await route.fallback();});
+ await page.goto('./competencia.html#duelos');await page.getByRole('link',{name:'Ver historial de duelos'}).click();
+ await expect(page.locator('.duel-history')).toContainText('2 jugados');await expect(page.locator('.duel-history .duel-row')).toHaveCount(1);
+ await expect(page.locator('.duel-history')).toContainText('Victoria');await page.getByRole('button',{name:'Ver encuentros anteriores'}).click();
+ await expect(page.locator('.duel-history .duel-row')).toHaveCount(2);await expect(page.locator('.duel-history')).toContainText('Derrota');await expect(page.getByRole('button',{name:'Ver encuentros anteriores'})).toHaveCount(0);
+ await layout(page);await page.screenshot({path:info.outputPath('rematches-history.png'),fullPage:true,animations:'disabled'});
+ await page.locator('.duel-history [data-action=open-duel]').last().click();await expect(page.getByRole('button',{name:'Pedir revancha',exact:true})).toBeVisible();expect(reads).toBe(2);
+});
+
+test('The signed-in session can be closed before testing registration without clearing educational progress',async({page})=>{
+ await fixturePage(page);await page.addInitScript(()=>localStorage.setItem('keep-learning-test','retained'));
+ await page.goto('./competencia.html#perfil');await expect(page.locator('.session-panel')).toContainText('Actualizar la app conserva tu sesión');
+ await page.getByRole('button',{name:'Cerrar sesión',exact:true}).click();await expect(page.locator('#auth-form')).toBeVisible();
+ await expect(page.locator('.profile-panel')).toHaveCount(0);expect(await page.evaluate(()=>localStorage.getItem('keep-learning-test'))).toBe('retained');
+ await page.getByRole('button',{name:'Crear cuenta',exact:true}).click();await expect(page.locator('#signup-form')).toBeVisible();
+});

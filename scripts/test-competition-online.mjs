@@ -27,7 +27,6 @@ async function readEmailCode(email,subject){
  }
  throw Error('Expected Spanish verification email did not reach local SMTP');
 }
-async function agePair(){await db.query("update cachaste.duels set created_at=now()-interval '2 days'");}
 async function startBoth(duelId){const list=[];for(let i=0;i<2;i++){const d=await call(i,'duel',{duelId});list.push(await call(i,'start',{attemptId:d.attemptId}));}return list;}
 async function finishTurn(i,turn,{correct=true,seconds=1}={}){while(turn.status==='active'){
  const key=(await db.query('select answer from cachaste.questions where key=$1',[turn.question.key])).rows[0].answer;
@@ -90,8 +89,8 @@ try{
  const revoked=await clients[0].rpc('cachaste_competition',{operation:'dashboard',payload:{}});assert.equal(revoked.error?.code,'42501');assert.equal((await clients[0].rpc('cachaste_access')).data.active,false);
  record('A complete free closed-test network duel settles its ranking; administrative revocation removes competition and native access');
  await db.query("update cachaste.settings set environment='test'");
- await agePair();
- const invite=await call(0,'create_duel',{subject:'M1',requestId:randomUUID()});const joined=await call(1,'join_code',{code:invite.code});assert.equal(joined.id,invite.id);
+
+ const invite=await call(0,'create_duel',{subject:'M1',requestId:randomUUID()});const joined=await call(1,'join_code',{code:invite.code});assert.equal(joined.id,invite.id);assert.notEqual(invite.id,original.id);const previousKeys=(await db.query('select question_keys from cachaste.duels where id=$1',[original.id])).rows[0].question_keys;const nextKeys=(await db.query('select question_keys from cachaste.duels where id=$1',[invite.id])).rows[0].question_keys;assert.equal(nextKeys.some(k=>previousKeys.includes(k)),false);record('Immediate same-rival code rematch is a new duel with a rotated question set, without aging either encounter');
  turns=await startBoth(invite.id);
  const first=turns[0],key=(await db.query('select answer from cachaste.questions where key=$1',[first.question.key])).rows[0].answer;
  const receipt={attemptId:first.id,position:0,choice:key,requestId:randomUUID()};
@@ -101,11 +100,11 @@ try{
  assert.equal((await db.query('select count(*)::int n from cachaste.answers where attempt_id=$1',[first.id])).rows[0].n,1);record('Invitation code and reconnect after a lost response recover one saved answer without duplication');
  turns[0]=await finishTurn(0,turns[0],{correct:false});turns[1]=await finishTurn(1,turns[1]);
  const loss=await call(0,'duel',{duelId:invite.id});assert.equal(loss.result.winner,users[1]);assert.equal(loss.result.changes[users[0]],-1);assert.equal(Number((await call(0,'rankings',{mode:'duel',subject:'M1',scope:'Chile'})).me.value),0);record('A real network defeat removes one competitive star and preserves the nonnegative floor');
- await agePair();
+
  const queued=await call(0,'random',{subject:'M1'});assert.equal(queued.waiting,true);const randomMatch=await call(1,'random',{subject:'M1'});assert.ok(randomMatch.id);turns=await startBoth(randomMatch.id);
  for(let i=0;i<2;i++)turns[i]=await finishTurn(i,turns[i]);
- const draw=await call(0,'duel',{duelId:randomMatch.id});assert.equal(draw.result.winner,null);assert.equal(draw.result.reason,'draw');assert.deepEqual(Object.values(draw.result.changes),[0,0]);record('Asynchronous random matching and equal correct answers/time produce a persistent draw without star changes');
- await agePair();
+ const draw=await call(0,'duel',{duelId:randomMatch.id});assert.equal(draw.result.winner,null);assert.equal(draw.result.reason,'draw');assert.deepEqual(Object.values(draw.result.changes),[0,0]);record('Asynchronous random matching and equal correct answers/time produce a persistent draw without star changes');const history=await call(0,'duel_history',{});assert.equal(history.summary.played,3);assert.equal(history.duels.filter(d=>d.status==='finished').length,3);assert.ok(history.duels.some(d=>d.id===original.id));record('Authenticated private history keeps the original victory, immediate rematch defeat and random-match draw');
+
  const abandoned=await call(0,'create_duel',{subject:'M1',nickname:'TestCachaste1',requestId:randomUUID()});await call(1,'accept',{duelId:abandoned.id});turns=await startBoth(abandoned.id);
  await db.query("update cachaste.attempts set presented_at=clock_timestamp()-interval '91 seconds'where id=$1",[turns[0].id]);
  const timeoutKey=(await db.query('select answer from cachaste.questions where key=$1',[turns[0].question.key])).rows[0].answer;
