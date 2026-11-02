@@ -220,3 +220,7 @@ body{background:radial-gradient(ellipse at 95% 10%,#3b075c70,transparent 42%),#0
 #competition-root .next-duel h2{color:#fff}#competition-root .next-duel p,#competition-root .assessment-card p,#competition-root .link-panel p{color:#d8c4e6}
 .competition-format strong{font-size:clamp(14px,4vw,20px);hyphens:none;overflow-wrap:normal;word-break:normal}
 #competition-root .tutor-review-card{color:#faf4ff}
+/* Full subject headings and readable advice at the narrowest supported width. */
+#competition-root .comp-hero .speech{color:#f6eaff}
+.comp-hero h1{overflow-wrap:normal;word-break:normal;hyphens:none}
+@media(max-width:350px){.comp-hero h1{font-size:27px}}

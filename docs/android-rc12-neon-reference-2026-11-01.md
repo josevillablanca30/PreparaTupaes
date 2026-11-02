@@ -21,3 +21,5 @@ Continúa desde `2a30c8c019ad683706a2d4fc9072464df80a1df5`, sin sustituir el ár
 Primera revisión renderizada: Inicio y Duelos inspeccionados en 320 px y Android habitual. Se detectó una acción principal 14 px debajo de la navegación en 320 px (116 gate aprobadas y dos fallidas), color oscuro heredado en títulos de asignatura y una unidad de tiempo cortada. Se compacta el encabezado estrecho, se corrigen las reglas de color heredadas y se conserva completa la palabra segundos. No se modifica ni relaja la prueba de visibilidad. Nueva ejecución pendiente.
 
 Se amplía el disparo del AAB firmado a cambios de versión, interfaz y activos: una corrección visual posterior no debe dejar el artefacto de Play apuntando al commit anterior. La firma y los gates se conservan.
+
+Segunda ejecución: gate 118/118 aprobado, integración aprobada y capturas revisadas en 320 px. Se identifica además el título Rankings cortado en dos líneas y consejo con color heredado; se ajustan la tipografía estrecha y especificidad del consejo. Se añade comprobación de título completo en una línea, sin relajar el resto del gate.
