@@ -6,6 +6,26 @@ export const PREVIEW_BRANCH = 'work/cachaste-web-comercial-20261024';
 export const RESERVED_PRODUCTION_BRANCH = 'production-requires-owner-approval';
 export const REPOSITORY = 'josevillablanca30/PreparaTupaes';
 
+// Cloudflare responses may contain private bindings or credential fragments.
+// Keep only numeric codes and fixed diagnostic labels, never provider text.
+function apiDiagnostic(method, suffix, status, data) {
+  const queue = Array.isArray(data?.errors) ? [...data.errors] : [], codes = [], messages = [];
+  for (let count = 0; queue.length && count < 12; count++) {
+    const item = queue.shift();
+    if (Number.isSafeInteger(item?.code) && item.code >= 0 && item.code <= 999999) codes.push(item.code);
+    if (typeof item?.message === 'string') messages.push(item.message.slice(0, 2000));
+    if (Array.isArray(item?.error_chain)) queue.push(...item.error_chain);
+  }
+  const description = messages.join(' ');
+  const category = codes.includes(6111) || /invalid.*(?:authorization|request headers)|invalid format for.*header/i.test(description) ? 'AUTH_HEADER_FORMAT'
+    : /authenticat|invalid.*token|expired.*token|revoked.*token/i.test(description) ? 'AUTHENTICATION'
+    : /permission|not authorized|access denied/i.test(description) ? 'PERMISSION'
+    : /compatibility.?date|date.*future/i.test(description) ? 'COMPATIBILITY_DATE'
+    : /deployment.config|environment.variable|env_vars|fail_open|secret.binding/i.test(description) ? 'DEPLOYMENT_CONFIGURATION'
+    : 'API_REQUEST_REJECTED';
+  return {method, operation: suffix.includes('/deployments') ? 'list-deployments' : method === 'POST' ? 'create-project' : method === 'PATCH' ? 'configure-project' : 'read-project', status, codes: [...new Set(codes)], category};
+}
+
 export function credentials(env) {
   if (env.GITHUB_REF_NAME !== PREVIEW_BRANCH) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
   if (env.CLOUDFLARE_PAGES_PROJECT && env.CLOUDFLARE_PAGES_PROJECT !== PAGES_PROJECT) throw Error('UNRELATED_PROJECT_DENIED');
@@ -38,7 +58,11 @@ export function pagesClient(env, {fetcher = fetch} = {}) {
       data = await response.json();
     } catch { throw Error('CLOUDFLARE_API_UNAVAILABLE'); }
     // Provider bodies may include secret bindings. Never print or propagate them in errors.
-    if (!response.ok || data.success !== true) throw Error('CLOUDFLARE_API_REJECTED_HTTP_' + response.status);
+    if (!response.ok || data.success !== true) {
+      const error = Error('CLOUDFLARE_API_REJECTED_HTTP_' + response.status);
+      error.cloudflare = apiDiagnostic(method, suffix, response.status, data);
+      throw error;
+    }
     return data.result;
   }
   return {

@@ -104,6 +104,18 @@ test('Cloudflare error bodies and secret bindings cannot leak through exception 
   await assert.rejects(client.getProject(), error => error.message === 'CLOUDFLARE_API_REJECTED_HTTP_403' && !String(error.stack).includes(sensitive));
 });
 
+test('Cloudflare diagnostics identify the rejected operation and nested auth code without publishing provider text', async () => {
+  const secret = 'private-provider-binding-or-token';
+  const client = pagesClient(env(), {fetcher: async () => Response.json({success: false, errors: [{code: 6003, message: 'Invalid request headers ' + secret, error_chain: [{code: 6111, message: 'Invalid format for Authorization header ' + secret}]}]}, {status: 400})});
+  await assert.rejects(client.getProject(), error => {
+    assert.deepEqual(error.cloudflare, {method: 'GET', operation: 'read-project', status: 400, codes: [6003, 6111], category: 'AUTH_HEADER_FORMAT'});
+    assert.equal(error.message, 'CLOUDFLARE_API_REJECTED_HTTP_400');
+    assert(!JSON.stringify(error).includes(secret));
+    assert(!String(error.stack).includes(secret));
+    return true;
+  });
+});
+
 test('read-only guard rejects plaintext keys, missing gates, fail open or missing content encryption', async () => {
   const api = cloudflare(); const prepared = await prepareProject(env(), {client: api.client});
   for (const mutate of [

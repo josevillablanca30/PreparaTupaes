@@ -45,6 +45,10 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     if (process.argv.includes('--check-credentials')) {
       credentials(process.env);
       console.log('Cloudflare credentials present; fixed preview target verified. No API writes performed.');
+    } else if (process.argv.includes('--check-access')) {
+      const project = await pagesClient(process.env).getProject();
+      if (project) verifyTarget(project, process.env.GITHUB_REF_NAME);
+      console.log(JSON.stringify({project: PAGES_PROJECT, accessVerified: true, projectPresent: Boolean(project), readOnly: true}));
     } else {
       if (!process.env.GITHUB_ENV) throw Error('GITHUB_ACTIONS_ENVIRONMENT_REQUIRED');
       const result = await prepareProject(process.env);
@@ -55,5 +59,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
       }
       console.log(JSON.stringify({project: PAGES_PROJECT, created: result.created, ...result.verified}));
     }
-  } catch (error) { console.error(error.message); process.exitCode = 1; }
+  } catch (error) {
+    console.error(error.message);
+    if (error.cloudflare) console.error(JSON.stringify(error.cloudflare));
+    process.exitCode = 1;
+  }
 }
