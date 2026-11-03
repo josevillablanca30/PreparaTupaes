@@ -1,7 +1,7 @@
 export const RECOVERY_MARKER='cachaste-web-recovery-v1';
 export const RECOVERY_TTL=60*60*1000;
 const SENSITIVE=['code','sb_flow_id','token_hash','token','access_token','refresh_token','error','error_code','error_description','type','expires_in','expires_at','token_type'];
-const textToken=value=>typeof value==='string'&&/^[A-Za-z0-9_.-]{20,8192}$/.test(value);
+const textToken=(value,min=20)=>typeof value==='string'&&value.length>=min&&value.length<=8192&&/^[A-Za-z0-9_.-]+$/.test(value);
 
 export function isRecoveryReturn(location){
  const url=new URL(location.href),fragment=new URLSearchParams(url.hash.slice(1));
@@ -16,7 +16,9 @@ export function captureRecoveryReturn(location,history){
  const value=key=>fragment.get(key)??query.get(key);
  if(duplicate||value('error')||value('error_code'))return{kind:'invalid'};
  if(value('token_hash'))return value('type')==='recovery'&&/^[A-Za-z0-9_-]{20,256}$/.test(value('token_hash'))&&!value('code')&&!value('access_token')?{kind:'hash',tokenHash:value('token_hash')}:{kind:'invalid'};
- if(value('access_token')||value('refresh_token'))return value('type')==='recovery'&&textToken(value('access_token'))&&textToken(value('refresh_token'))&&!value('code')?{kind:'implicit',accessToken:value('access_token'),refreshToken:value('refresh_token')}:{kind:'invalid'};
+ // Supabase still accepts legacy twelve-character refresh tokens. Validation of
+ // credentials remains the SDK/server's responsibility, regardless of format.
+ if(value('access_token')||value('refresh_token'))return value('type')==='recovery'&&textToken(value('access_token'))&&textToken(value('refresh_token'),12)&&!value('code')?{kind:'implicit',accessToken:value('access_token'),refreshToken:value('refresh_token')}:{kind:'invalid'};
  if(value('code'))return /^[A-Za-z0-9_-]{6,2048}$/.test(value('code'))&&(!value('type')||value('type')==='recovery')&&(!value('sb_flow_id')||/^[a-f0-9]{32}$/.test(value('sb_flow_id')))?{kind:'pkce',code:value('code'),flowId:value('sb_flow_id')||null}:{kind:'invalid'};
  return SENSITIVE.some(key=>query.has(key)||fragment.has(key))?{kind:'invalid'}:{kind:'none'};
 }

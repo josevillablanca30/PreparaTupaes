@@ -35,9 +35,9 @@ export async function mountRecoveryPage({root,status,location=window.location,hi
  }
  async function send(){await requestRecovery(sdk,email,location.origin);sentAt=Date.now();mode='sent';note('');}
  async function work(action,{redraw=true}={}){
-  if(busy)return;busy=true;root.setAttribute('aria-busy','true');root.querySelectorAll('button').forEach(b=>button.disabled=true);note('');
+  if(busy)return;busy=true;root.setAttribute('aria-busy','true');root.querySelectorAll('button').forEach(button=>button.disabled=true);note('');
   try{await action();}catch(error){note(recoveryError(error),true);if(['RECOVERY_EXPIRED','RECOVERY_REQUIRED','session_not_found','refresh_token_not_found','otp_expired'].includes(error?.code||error?.message)){ready=false;forgetRecovery(storage);mode='invalid';}}
-  finally{busy=false;if(redraw)render();else{root.setAttribute('aria-busy','false');root.querySelectorAll('button').forEach(b=>button.disabled=false);}}
+  finally{busy=false;if(redraw)render();else{root.setAttribute('aria-busy','false');root.querySelectorAll('button').forEach(button=>button.disabled=false);}}
  }
  root.addEventListener('submit',event=>{
   if(!['recovery-email-form','recovery-password-form'].includes(event.target.id))return;event.preventDefault();const values=new FormData(event.target);

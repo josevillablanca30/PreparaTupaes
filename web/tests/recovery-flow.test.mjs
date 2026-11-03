@@ -1,7 +1,7 @@
 import test from'node:test';import assert from'node:assert/strict';
 import{captureRecoveryReturn,isRecoveryReturn,verifyRecoveryReturn,rememberRecovery,resumeRecovery,forgetRecovery,changeRecoveredPassword,requestRecovery,recoveryError,RECOVERY_MARKER}from'../client/recovery-flow.mjs';
 const uid='10000000-0000-4000-8000-000000000001',token='a'.repeat(64),origin='https://sitecacho.cl';
-const session={access_token:'eyJ'+token,refresh_token:'refresh-'+token,user:{id:uid},expires_at:Math.floor(Date.now()/1000)+3600};
+const session={access_token:'eyJ'+token,refresh_token:'legacy123456',user:{id:uid},expires_at:Math.floor(Date.now()/1000)+3600};
 function capture(suffix){const steps=[];return{steps,entry:captureRecoveryReturn({href:origin+'/recuperar'+suffix},{replaceState:(_a,_b,value)=>steps.push(value)})};}
 test('Recovery captures official hash, implicit and PKCE forms and removes all callback material first',()=>{
  for(const [suffix,kind]of[['#token_hash='+token+'&type=recovery','hash'],['?token_hash='+token+'&type=recovery','hash'],['#access_token='+session.access_token+'&refresh_token='+session.refresh_token+'&type=recovery','implicit'],['?code=pkce-qa-code&recovery=1','pkce']]){const value=capture(suffix);assert.equal(value.entry.kind,kind);assert.deepEqual(value.steps,['/recuperar']);}

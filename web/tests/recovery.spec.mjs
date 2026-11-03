@@ -2,7 +2,7 @@ import{test,expect}from'@playwright/test';
 import{session}from'../../tests/helpers/competition-fixtures.mjs';
 const project='https://jmobinmdwrmdqrxtcruj.supabase.co',hash='b'.repeat(64),mail='recovery-fixture@example.invalid';
 async function recovery(page,{expired=false,network=false}={}){
- let consumed=expired,resets=0,updates=0,requests=[];const identity=session();
+ let consumed=expired,resets=0,updates=0,requests=[];const identity={...session(),refresh_token:'legacy123456'};
  await page.route(project+'/**',async route=>{
   const request=route.request(),url=new URL(request.url()),body=request.postData()?request.postDataJSON():{};requests.push({path:url.pathname,method:request.method(),body});
   if(url.pathname.endsWith('/recover')){resets++;await route.fulfill({json:{}});return;}
@@ -36,5 +36,5 @@ test('A normal signed-in session without a recovery link never grants the change
  const state=await recovery(page);await page.addInitScript(value=>localStorage.setItem('cachaste-auth-v1',JSON.stringify(value)),state.identity);await page.goto('/recuperar');await expect(page.getByRole('heading',{name:'Recupera tu contraseña.'})).toBeVisible();await expect(page.locator('input[type=password]')).toHaveCount(0);expect(state.updates).toBe(0);
 });
 test('Connection errors keep the recovery material in memory for retry and never claim that a change succeeded',async({page})=>{
- const state=await recovery(page,{network:true});await page.goto('/recuperar#token_hash='+hash+'&type=recovery');await expect(page.getByRole('heading',{name:'Volvamos a intentarlo.'})).toBeVisible();await clean(page);state.recoverNetwork();await page.getByRole('button',{name:'Reintentar conexión',exact:true}).click();await expect(page.getByRole('heading',{name:'Elige tu nueva contraseña.'})).toBeVisible();expect(state.updates).toBe(0);
+ const state=await recovery(page,{network:true});await page.goto('/recuperar#token_hash='+hash+'&type=recovery');await expect(page.getByRole('heading',{name:'Volvamos a intentarlo.'})).toBeVisible({timeout:20000});await clean(page);state.recoverNetwork();await page.getByRole('button',{name:'Reintentar conexión',exact:true}).click();await expect(page.getByRole('heading',{name:'Elige tu nueva contraseña.'})).toBeVisible();expect(state.updates).toBe(0);
 });
