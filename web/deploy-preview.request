@@ -1,5 +1,5 @@
 {
-  "request": "publish-recovery-with-existing-cloudflare-access-20261102",
+  "request": "verify-existing-cloudflare-auth-and-publish-recovery-20261102",
   "project": "cachaste-sitecacho",
   "branch": "work/cachaste-web-comercial-20261024",
   "scope": "preview-only",
