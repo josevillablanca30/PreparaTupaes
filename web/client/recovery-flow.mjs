@@ -29,7 +29,7 @@ export function recoveryError(error){
  if(code==='PASSWORD_TOO_SHORT'||code==='weak_password')return'Usa una contraseña de al menos doce caracteres.';
  if(code==='same_password')return'Elige una contraseña distinta a la anterior.';
  if(code==='over_email_send_rate_limit'||code==='over_request_rate_limit'||error?.status===429)return'Espera un momento antes de pedir otro correo.';
- if(code==='RECOVERY_CONNECTION'||/fetch|network|timeout|abort/i.test(String(error?.message||'')))return'No logramos conectarnos. Revisa tu conexión y vuelve a intentarlo.';
+ if(code==='RECOVERY_CONNECTION'||['AuthRetryableFetchError','AbortError','TimeoutError'].includes(error?.name)||/fetch|network|timeout|abort|load failed/i.test(String(error?.message||'')))return'No logramos conectarnos. Revisa tu conexión y vuelve a intentarlo.';
  if(code==='RECOVERY_EXPIRED'||['otp_expired','flow_state_expired','flow_state_not_found','bad_code_verifier','invalid_credentials','session_not_found','refresh_token_not_found'].includes(code))return'Este enlace venció, ya se usó o no corresponde a este navegador. Solicita otro correo para continuar.';
  if(code==='RECOVERY_REQUIRED')return'Abre el enlace del correo de recuperación para cambiar tu contraseña.';
  if(code==='EMAIL_NOT_SENT'||(code==='unexpected_failure'&&/email|smtp/i.test(String(error?.message||''))))return'No pudimos enviar el correo. Conservamos tu dirección para que puedas reintentar.';

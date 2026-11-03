@@ -33,4 +33,5 @@ test('Password updates enforce matching identity, length, confirmation and globa
 test('Recovery requests explicitly target HTTPS recuperar and diagnostics never echo credentials or provider errors',async()=>{
  let payload;await requestRecovery({auth:{resetPasswordForEmail:async(...args)=>{payload=args;return{};}}},' student@example.invalid ',origin);assert.deepEqual(payload,['student@example.invalid',{redirectTo:origin+'/recuperar'}]);
  for(const error of[{code:'otp_expired',message:token},{code:'weak_password',message:'secret-password'},{message:'Network error with '+token},{code:'unexpected_failure',message:'Error sending email: private SMTP diagnostic'}]){assert.ok(!recoveryError(error).includes(token));assert.ok(!recoveryError(error).includes('secret-password'));assert.ok(!recoveryError(error).includes('private SMTP'));}
+ for(const error of[{name:'AuthRetryableFetchError',message:'Load failed'},{name:'TypeError',message:'Load failed'},{name:'AbortError',message:'The operation was aborted.'}])assert.match(recoveryError(error),/^No logramos conectarnos/);
 });

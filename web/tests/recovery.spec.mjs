@@ -2,7 +2,7 @@ import{test,expect}from'@playwright/test';
 import{session}from'../../tests/helpers/competition-fixtures.mjs';
 const project='https://jmobinmdwrmdqrxtcruj.supabase.co',hash='b'.repeat(64),mail='recovery-fixture@example.invalid';
 async function recovery(page,{expired=false,network=false}={}){
- let consumed=expired,resets=0,updates=0,requests=[];const identity={...session(),refresh_token:'legacy123456'};
+ let consumed=expired,resets=0,updates=0,requests=[];const identity={...session(),refresh_token:'legacy123456'};identity.access_token=identity.access_token.replace('.fixture-signature','.c2lnbmF0dXJl');
  await page.route(project+'/**',async route=>{
   const request=route.request(),url=new URL(request.url()),body=request.postData()?request.postDataJSON():{};requests.push({path:url.pathname,method:request.method(),body});
   if(url.pathname.endsWith('/recover')){resets++;await route.fulfill({json:{}});return;}

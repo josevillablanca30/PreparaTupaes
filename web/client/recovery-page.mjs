@@ -3,8 +3,8 @@ import{captureRecoveryReturn,verifyRecoveryReturn,rememberRecovery,resumeRecover
 
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export async function mountRecoveryPage({root,status,location=window.location,history=window.history,storage=window.sessionStorage}={}){
- const entry=captureRecoveryReturn(location,history);
- let sdk,ready=false,verifiedUserId=null,busy=false,mode='loading',email='',sentAt=0,tick=null,active=entry.kind!=='none'&&entry.kind!=='invalid'?entry:null;
+ let entry=captureRecoveryReturn(location,history);
+ let sdk,ready=false,verifiedUserId=null,busy=false,mode='loading',email='',sentAt=0,tick=null,pendingReturn=false,generation=0,active=entry.kind!=='none'&&entry.kind!=='invalid'?entry:null;
  root.classList.add('recovery-root');
  const note=(text,error=false)=>{status.textContent=text;status.setAttribute('role',error?'alert':'status');};
  const stopClock=()=>{if(tick)clearInterval(tick);tick=null;};
@@ -23,21 +23,23 @@ export async function mountRecoveryPage({root,status,location=window.location,hi
   if(mode==='sent'){const update=()=>{const button=root.querySelector('[data-recovery=resend]');if(!button)return;const seconds=Math.max(0,Math.ceil((sentAt+60000-Date.now())/1000));button.disabled=busy||seconds>0;button.textContent=seconds?'Pedir otro correo en '+seconds+' s':'Enviar otro correo';};update();tick=setInterval(update,1000);}
  }
  async function connect(){
+  const attempt=generation,callback=active,startingEntry=entry;
   mode='loading';render();
   try{
    if(!sdk){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);try{const response=await fetch('/api/config',{cache:'no-store',referrerPolicy:'no-referrer',signal:controller.signal});if(!response.ok)throw Error('RECOVERY_CONNECTION');sdk=getWebClient(await response.json());}finally{clearTimeout(timer);}}
-   if(active){forgetRecovery(storage);const verified=await verifyRecoveryReturn(sdk,active);await rememberRecovery(storage,verified);active=null;ready=true;verifiedUserId=verified.userId;mode='password';}
-   else if(entry.kind==='invalid'){forgetRecovery(storage);ready=false;mode='invalid';}
-   else{const resumed=await resumeRecovery(sdk,storage);ready=!!resumed;verifiedUserId=resumed?.userId||null;mode=ready?'password':'request';}
+   if(attempt!==generation)return;
+   if(callback){forgetRecovery(storage);const verified=await verifyRecoveryReturn(sdk,callback);if(attempt!==generation)return;await rememberRecovery(storage,verified);if(attempt!==generation){forgetRecovery(storage);return;}active=null;ready=true;verifiedUserId=verified.userId;mode='password';}
+   else if(startingEntry.kind==='invalid'){forgetRecovery(storage);ready=false;mode='invalid';}
+   else{const resumed=await resumeRecovery(sdk,storage);if(attempt!==generation)return;ready=!!resumed;verifiedUserId=resumed?.userId||null;mode=ready?'password':'request';}
    note('');
-  }catch(error){const message=recoveryError(error),connection=message.startsWith('No logramos conectarnos');ready=false;if(!connection){active=null;forgetRecovery(storage);}mode=connection?'connection':'invalid';note(message,true);}
+  }catch(error){if(attempt!==generation)return;const message=recoveryError(error),connection=message.startsWith('No logramos conectarnos');ready=false;if(!connection){active=null;forgetRecovery(storage);}mode=connection?'connection':'invalid';note(message,true);}
   render();
  }
  async function send(){await requestRecovery(sdk,email,location.origin);sentAt=Date.now();mode='sent';note('');}
  async function work(action,{redraw=true}={}){
   if(busy)return;busy=true;root.setAttribute('aria-busy','true');root.querySelectorAll('button').forEach(button=>button.disabled=true);note('');
   try{await action();}catch(error){note(recoveryError(error),true);if(['RECOVERY_EXPIRED','RECOVERY_REQUIRED','session_not_found','refresh_token_not_found','otp_expired'].includes(error?.code||error?.message)){ready=false;forgetRecovery(storage);mode='invalid';}}
-  finally{busy=false;if(redraw)render();else{root.setAttribute('aria-busy','false');root.querySelectorAll('button').forEach(button=>button.disabled=false);}}
+  finally{busy=false;if(pendingReturn){pendingReturn=false;await work(connect);}else if(redraw)render();else{root.setAttribute('aria-busy','false');root.querySelectorAll('button').forEach(button=>button.disabled=false);}}
  }
  root.addEventListener('submit',event=>{
   if(!['recovery-email-form','recovery-password-form'].includes(event.target.id))return;event.preventDefault();const values=new FormData(event.target);
@@ -52,5 +54,13 @@ export async function mountRecoveryPage({root,status,location=window.location,hi
   if(button.dataset.recovery==='retry')work(connect);
  });
  window.addEventListener('pagehide',stopClock,{once:true});
- await connect();
+ // Opening another email in this same tab can be a fragment navigation, so
+ // scripts do not reload. Capture it immediately and serialize verification.
+ window.addEventListener('hashchange',()=>{
+  const fragment=new URLSearchParams(location.hash.slice(1));
+  if(!['token_hash','token','access_token','refresh_token','code','type','error','error_code'].some(key=>fragment.has(key)))return;
+  entry=captureRecoveryReturn(location,history);active=entry.kind!=='none'&&entry.kind!=='invalid'?entry:null;generation++;ready=false;verifiedUserId=null;forgetRecovery(storage);mode='loading';note('');
+  if(busy){pendingReturn=true;render();}else work(connect);
+ });
+ await work(connect);
 }
