@@ -2,6 +2,18 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {database,rpc,profile,users,sessions,grantTest} from './helpers/competition-db.mjs';
 
+test('Confirmed account deletion removes only its own hashed tester email and rejects an unconfirmed request',async t=>{
+ const db=await database();t.after(()=>db.close());
+ for(let i=0;i<2;i++){await profile(db,i);const email='deletion-'+i+'@example.invalid';await db.query('update auth.users set email=$1,email_confirmed_at=now() where id=$2',[email,users[i]]);await db.query("insert into cachaste.closed_test_emails(email_hash,valid_until,reason)values(sha256(convert_to($1,'UTF8')),now()+interval '1 year','isolated deletion test')",[email]);}
+ await assert.rejects(rpc(db,0,'delete_account',{confirmation:'WRONG'}),/CONFIRMATION_REQUIRED/);
+ assert.equal((await db.query('select count(*)::int n from cachaste.closed_test_emails')).rows[0].n,2);
+ await rpc(db,0,'delete_account',{confirmation:'ELIMINAR'});
+ assert.equal((await db.query('select count(*)::int n from auth.users where id=$1',[users[0]])).rows[0].n,0);
+ assert.equal((await db.query('select count(*)::int n from auth.sessions where user_id=$1',[users[0]])).rows[0].n,0);
+ assert.equal((await db.query('select count(*)::int n from cachaste.closed_test_emails')).rows[0].n,1);
+ assert.equal((await rpc(db,1,'profile')).premium,true);
+});
+
 test('Closed test: owner allowlist grants competition and native access without purchases',async t=>{
  const db=await database();t.after(()=>db.close());
  for(let i=0;i<3;i++)await profile(db,i);
