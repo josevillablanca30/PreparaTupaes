@@ -1,8 +1,8 @@
 {
-  "sourceRevision": "31d4dfbdf254b8a24715225dd7ee1661b4e77e5d",
+  "sourceRevision": "1979a6baeb171d43b0eca3d3dd25dd59daee2268",
   "webBranch": "work/cachaste-web-comercial-20261024",
   "androidBranch": "work/cachaste-motor-duolingo-20261016",
-  "status": "implemented-and-tested; hosted-deployment-blocked-by-access",
+  "status": "web-published; hosted-auth-return-and-real-phone-validation-pending",
   "missionComplete": false,
   "tests": {
     "originalLogic": {
@@ -10,7 +10,7 @@
       "failed": 0
     },
     "webUnit": {
-      "passed": 114,
+      "passed": 117,
       "failed": 0
     },
     "browsers": {
@@ -29,28 +29,34 @@
     },
     "existingAuthAndDuelsHttp": "passed",
     "humanPhoneRecovery": "not-executed",
-    "hostedNewTemplateGmailDelivery": "not-executed"
+    "hostedNewTemplateGmailDelivery": "not-executed",
+    "livePublicationHttp": {
+      "passed": 204,
+      "failed": 0
+    }
   },
   "deployment": {
     "provider": "Cloudflare Pages Free",
     "project": "cachaste-sitecacho",
     "origin": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev",
-    "newRecoveryDeployed": false,
-    "publishedRevision": "38892741771432f56e49fc875e4384de3e0de144",
-    "missingRepositorySecrets": [
-      "CLOUDFLARE_API_TOKEN",
-      "SUPABASE_ACCESS_TOKEN"
-    ]
+    "newRecoveryDeployed": true,
+    "publishedRevision": "1979a6baeb171d43b0eca3d3dd25dd59daee2268",
+    "immutableOrigin": "https://9d43bdeb.cachaste-sitecacho.pages.dev",
+    "cloudflareAccessVerified": true,
+    "recoveryUrl": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/recuperar"
   },
   "supabase": {
     "project": "jmobinmdwrmdqrxtcruj",
     "hostedAuthConfigurationApplied": false,
-    "smtpCredentialsChanged": false
+    "smtpCredentialsChanged": false,
+    "defaultReturnStillUsesLocalhost": true,
+    "configuredDefaultReturn": "http://localhost:3000",
+    "managementConfigurationChangedByDeployment": false
   },
   "email": {
-    "newTemplate": "implemented-not-applied",
+    "newTemplate": "implemented; hosted template not inspected in this deployment",
     "spamFixed": false,
-    "dmarcApplied": false
+    "dnsChangedByDeployment": false
   },
   "android": {
     "sourceChanged": false,
@@ -58,8 +64,9 @@
     "newAabGenerated": false
   },
   "runs": {
-    "web": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41551147391",
+    "web": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41562707550",
     "recovery": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41551147339",
-    "deploymentAttempt": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41528400582"
-  }
+    "deploymentAttempt": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41562707568"
+  },
+  "currentPublicationReport": "../publicacion-20261103/README.md"
 }

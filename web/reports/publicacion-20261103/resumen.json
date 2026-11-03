@@ -1,0 +1,42 @@
+{
+  "deployedRevision": "1979a6baeb171d43b0eca3d3dd25dd59daee2268",
+  "project": "cachaste-sitecacho",
+  "environment": "preview",
+  "deploymentId": "9d43bdeb-d3b2-44d6-b6b2-444629d3d21b",
+  "origin": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev",
+  "recoveryUrl": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/recuperar",
+  "immutableOrigin": "https://9d43bdeb.cachaste-sitecacho.pages.dev",
+  "workflowRun": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41562707568",
+  "workflowAttempt": 2,
+  "cloudflareDeploymentSucceeded": true,
+  "cloudflareErrors9106And6003Resolved": true,
+  "liveHttpChecks": {
+    "passed": 204,
+    "failed": 0
+  },
+  "webUnitTests": {
+    "passed": 117,
+    "failed": 0
+  },
+  "browserQa": {
+    "passed": 168,
+    "failed": 0,
+    "run": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41562707550"
+  },
+  "liveChromeChecks": [
+    "Public recovery form loads without subscription or password input",
+    "Official hosted Auth rejects a synthetic invalid recovery hash",
+    "Callback removed from URL and safe error/new-email form displayed"
+  ],
+  "paymentsEnabled": false,
+  "serviciosVillablancaModified": false,
+  "androidSourceChanged": false,
+  "newAabRequired": false,
+  "supabaseDefaultReturn": "http://localhost:3000",
+  "remaining": [
+    "Update hosted Supabase Auth return and allowed redirect URLs to the published HTTPS recovery page",
+    "Inspect/apply the Spanish recovery email template without changing working Resend credentials",
+    "Complete real Android email receipt, phone opening, new password login and old password rejection"
+  ],
+  "fullAccountRecoveryMissionComplete": false
+}

@@ -1,5 +1,7 @@
 # ¿Cachaste? · Recuperación de cuentas
 
+> Actualización del 3 de noviembre de 2026: la recuperación web ya está publicada y verificada en Cloudflare Pages, commit `1979a6ba`. Los errores de acceso Cloudflare se resolvieron. Supabase todavía retorna a `localhost:3000`; el flujo real de correo y teléfono permanece pendiente. [Estado actual y evidencia](../publicacion-20261103/README.md). El texto inferior conserva el diagnóstico histórico del 2 de noviembre.
+
 Fecha de trabajo: 2 de noviembre de 2026, Chile.
 
 **Implementada y probada; publicación y configuración alojada bloqueadas por acceso. La misión todavía no está terminada.**

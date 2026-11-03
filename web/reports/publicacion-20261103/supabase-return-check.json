@@ -1,0 +1,8 @@
+{
+  "scope": "Read-only test with a synthetic invalid recovery hash. No email sent, user session created or password changed.",
+  "httpStatus": 303,
+  "configuredDefaultReturn": "http://localhost:3000",
+  "usesLocalhost": true,
+  "managementConfigurationChanged": false,
+  "hostedEmailTemplateInspected": false
+}

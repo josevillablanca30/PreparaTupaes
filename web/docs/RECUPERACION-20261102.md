@@ -1,5 +1,7 @@
 # Recuperación pública de ¿Cachaste? · 2 de noviembre de 2026
 
+> Actualización del 3 de noviembre de 2026: la recuperación web ya está publicada y verificada en Cloudflare Pages, commit `1979a6ba`. Los errores de acceso Cloudflare se resolvieron. Supabase todavía retorna a `localhost:3000`; el flujo real de correo y teléfono permanece pendiente. [Estado actual y evidencia](../reports/publicacion-20261103/README.md). El texto inferior conserva el diagnóstico histórico del 2 de noviembre.
+
 Se continúa la web comercial existente en `web/`, sin modificar el código Android ni habilitar cobros. El envío por Resend ya funciona según comprobación del titular; el incidente vigente es el retorno a localhost. No se cambian sus claves SMTP.
 
 ## Implementación
