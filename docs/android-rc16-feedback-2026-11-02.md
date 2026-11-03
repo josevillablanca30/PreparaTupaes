@@ -1,5 +1,8 @@
 # rc16 / 43 · maestro legible, marca transparente y duelo alineado
 
+> Informe histórico. Ver [candidata rc17 / 44](android-rc17-cierre-2026-11-03.md). El titular confirmó que la recuperación web funciona; el antiguo error SMTP no es un pendiente actual.
+
+
 Base: `ac8fef6da6374bf68d7d010cad91319bb7741518`, rama Android existente. Responde al último feedback del titular sobre correo no recibido, consejo sobre el retrato, parche detrás del logo y referencia visual del VS. No cambia las preguntas, puntuación, progreso, permisos Android ni firma de carga.
 
 ## Cambios

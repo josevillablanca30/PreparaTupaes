@@ -1,0 +1,145 @@
+{
+  "observedDate": "2026-11-03",
+  "sourceCommit": "39ce5e21c848420191cb45e75defa2e6637a74a1",
+  "branch": "work/cachaste-motor-duolingo-20261016",
+  "bundle": {
+    "fileName": "Cachaste-1.5.0-rc17-44.aab",
+    "bytes": 13545240,
+    "sha256": "e6843265954760650e177821bac1cdebbf206168132d6760f922c9d099d10fb9",
+    "certificateSha256": "a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575",
+    "verifiedPayloadEntries": 265,
+    "allPayloadsSigned": true,
+    "independentLocalVerification": true,
+    "manifest": {
+      "package": "cl.preparatupaes.app",
+      "versionCode": 44,
+      "versionName": "1.5.0-rc17",
+      "targetSdk": 36,
+      "debuggable": false,
+      "testOnly": false
+    }
+  },
+  "artifact": {
+    "id": 13233398562,
+    "runId": 41642178471,
+    "archiveSha256": "5d7d337592a32cd0922f8c543da16895270ab3edac45c1e27070c137e21189cd",
+    "url": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41642178471/artifacts/13233398562",
+    "expiresAt": "2026-12-03T13:17:18Z"
+  },
+  "runs": [
+    {
+      "id": 41642178471,
+      "status": "completed",
+      "conclusion": "success",
+      "sha": "39ce5e21c848420191cb45e75defa2e6637a74a1",
+      "url": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41642178471"
+    },
+    {
+      "id": 41642178397,
+      "status": "completed",
+      "conclusion": "success",
+      "sha": "39ce5e21c848420191cb45e75defa2e6637a74a1",
+      "url": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41642178397"
+    },
+    {
+      "id": 41642178446,
+      "status": "completed",
+      "conclusion": "success",
+      "sha": "39ce5e21c848420191cb45e75defa2e6637a74a1",
+      "url": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41642178446"
+    }
+  ],
+  "automatedTests": {
+    "logicPassed": 418,
+    "logicFailed": 0,
+    "aabGateMobilePassed": 158,
+    "browserProjects": [
+      {
+        "name": "Android-Chrome",
+        "passed": 433
+      },
+      {
+        "name": "iPhone-WebKit",
+        "passed": 433
+      },
+      {
+        "name": "mobile-320px",
+        "passed": 433
+      }
+    ],
+    "androidEmulator": {
+      "api": 36,
+      "installedApk": "passed",
+      "offlineWebViewPersistenceBack": "passed",
+      "fiveSubjectCommercialGate": "passed",
+      "betaMobileCasesPassed": 494,
+      "localVsCasesPassed": 12
+    },
+    "integration": {
+      "ephemeralSupabase": true,
+      "realAuthPostgrestAccounts": 2,
+      "productionStudentAccountsUsed": false,
+      "status": "passed"
+    },
+    "pedagogy": {
+      "questions": 802,
+      "automaticCritical": 0,
+      "heuristicReviewItems": 20,
+      "humanExhaustiveReview": false
+    }
+  },
+  "hosted": {
+    "project": "jmobinmdwrmdqrxtcruj",
+    "annualTesterMigration": "20261103130224",
+    "migrationApplied": true,
+    "maxTesterPeriod": "one calendar year",
+    "existingEmailPreauthorizations": 2,
+    "uuidGrants": 0,
+    "newGrantsByThisWork": 0,
+    "extensionsByThisWork": 0,
+    "rlsPreserved": true,
+    "clientReadWriteDenied": true,
+    "commercialFunctionsPreserved": true,
+    "physicalRecoveryNewBundleVerified": false
+  },
+  "recovery": {
+    "url": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/recuperar",
+    "httpStatus": 200,
+    "spanishHostedEmailAlreadyApplied": true,
+    "ownerConfirmedWorking": true,
+    "smtpChangedThisRelease": false,
+    "cloudflareTokensChanged": false
+  },
+  "billing": {
+    "androidEnabled": false,
+    "nativeBuildEnabled": false,
+    "hostedVerifierReady": false,
+    "productId": "cachaste_premium",
+    "merchantProfileConfigured": false,
+    "realPurchaseVerified": false,
+    "realPaymentsActivated": false
+  },
+  "console": {
+    "lastObservedActiveVersionCode": 42,
+    "version43Uploaded": false,
+    "optedInTesters": 2,
+    "requiredTesters": 12,
+    "requiredContinuousDays": 14,
+    "productionAccess": false,
+    "dataSafetyCorrectionSaved": false,
+    "dataSafetyCorrectionSubmitted": false,
+    "ownerChoseManualConsoleEntry": true,
+    "ownerUploadsAab": true
+  },
+  "pending": [
+    "Upload AAB 44 to existing closed test by owner",
+    "Correct Data Safety declaration before distributing update",
+    "Physical recovery/photo/duel regression on two updated phones",
+    "Owner completes merchant profile with real legal and payout details",
+    "Configure Play products and receipt verification; run license purchase/restore/cancellation/notification tests before billing enablement",
+    "Meet closed-test requirement and apply for Google production review"
+  ],
+  "servicesVillablancaModified": false,
+  "infrastructureCostsAuthorizedOrCreated": false,
+  "credentialsIncluded": false
+}

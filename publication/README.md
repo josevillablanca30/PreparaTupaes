@@ -1,26 +1,28 @@
-# ¿Cachaste? · actualización de la prueba cerrada
+# ¿Cachaste? · candidata 44 para prueba cerrada
 
-Estado al 2 de noviembre de 2026. La app ya existe en Google Play y el titular realiza personalmente las cargas de AAB. La siguiente candidata es **1.5.0-rc16 / código 43**, con el mismo paquete `cl.preparatupaes.app`, API objetivo 36 y certificado de carga permanente.
+Estado al 3 de noviembre de 2026. **1.5.0-rc17 / código 44** está compilada, firmada y verificada. El titular sube personalmente el AAB a la app y prueba cerrada existentes. La última revisión de Play Console encontró activa la 42; la 43 no estaba cargada.
 
-El AAB 43 definitivo está firmado y verificado, fuente `a961e1f96450f77b482c8d2fb1c686206e9d4aa0`, SHA-256 `5ebac856932def2d8cf4ab5027574427b0caaeadc83f4f80e2f765da6999606f`. El resultado y los identificadores de evidencia se documentan en [el informe rc16](../docs/android-rc16-feedback-2026-11-02.md). No utilizar una compilación previa de 43 si el informe identifica una fuente corregida posterior.
+- Fuente: `39ce5e21c848420191cb45e75defa2e6637a74a1`.
+- Archivo: `Cachaste-1.5.0-rc17-44.aab`, 13.545.240 bytes.
+- SHA-256: `e6843265954760650e177821bac1cdebbf206168132d6760f922c9d099d10fb9`.
+- [Compilación aprobada](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41642178471) · [Artefacto firmado](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41642178471/artifacts/13233398562).
+- [Notas listas para copiar](notas-44.es-419.txt) · [Informe y pruebas](../docs/android-rc17-cierre-2026-11-03.md) · [Verificación](../reports/cachaste-rc17-verification.json).
 
-## Actualizar la misma prueba
+Se conserva el paquete `cl.preparatupaes.app`, API objetivo 36 y certificado de carga permanente. No crear otra app o clave. Actualizar la misma prueba y después realizar [el piloto real en dos teléfonos](prueba-dos-celulares.md).
 
-1. Revisar la [declaración de fotos opcionales](seguridad-datos.md) antes de distribuir esa función.
-2. Abrir la app existente en Play Console, entrar a su prueba cerrada y cargar el AAB 43 definitivo como actualización. No crear otra ficha ni otra clave.
-3. Copiar [las notas de la versión 43](notas-43.es-419.txt).
-4. Actualizar desde Google Play los dos teléfonos inscritos y realizar [el piloto](prueba-dos-celulares.md).
+## Recuperación y testers
 
-## Correo y acceso de prueba
+La recuperación está publicada en https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/recuperar . El correo está en español, con botón y código. El titular confirmó que funciona: el error SMTP 535 del informe rc16 es histórico y no requiere renovar credenciales.
 
-La app usa el acceso gratuito autorizado por el servidor para los testers existentes. `billingReady=false`; este piloto no necesita una compra, activar facturación ni un plan pagado de Supabase.
+La candidata 44 pide el retorno HTTPS explícito y acepta el código o el enlace nuevo pegado dentro de Android. Se verifica mediante Supabase Auth. El correo alojado no se volvió a configurar; SMTP y tokens de Cloudflare no se tocaron.
 
-El flujo de recuperación admite correo y código dentro de la app, pero la recepción real sigue pendiente: los logs alojados muestran error SMTP **535: credenciales inválidas**. Antes se había guardado Resend como proveedor con `auth.sitecacho.cl`; hay que renovar/verificar su credencial privada en SMTP y recibir un correo real antes de considerar ese punto resuelto. No pegar claves en GitHub ni en conversaciones.
+El servidor ya permite acceso de hasta un año calendario para los testers que indique el titular. La migración no otorgó ni extendió acceso a nadie: conserva las dos preautorizaciones existentes. La nueva lista de correos todavía no se recibió.
 
-La recuperación de correo, la selección de foto desde Android y el duelo entre dos teléfonos se registran con resultados reales. Las pruebas automáticas no sustituyen ese piloto.
+## Pendientes reales
 
-## Material de publicación
+1. **Seguridad de los datos:** la última revisión encontró incorrectamente «no se recopilan datos». La edición no se guardó ni envió; se perdió la sesión y el titular optó por completar Play Console manualmente. [Respuestas preparadas](seguridad-datos.md). Resolver antes de distribuir la actualización.
+2. **Prueba cerrada:** había dos inscritos. La cuenta exige doce testers durante catorce días continuos y luego solicitar acceso a producción, sujeto a revisión de Google.
+3. **Pagos:** falta el perfil de comerciante y Google bloquea crear suscripciones hasta completarlo. El titular debe ingresar su identidad legal y datos de abono.
+4. **Venta:** después del perfil, configurar productos/verificación de Play y probar compra de licencia, restauración, cancelación y notificaciones. Recién entonces habilitar Billing en una nueva candidata. No hay una compra real verificada.
 
-Se mantienen la ficha, productos, capturas educativas y documentos legales existentes. La política actual para fotos está publicada en https://cachaste-privacidad.jose-villablanca-hor.chatgpt.site/privacidad y la eliminación de cuenta en https://cachaste-privacidad.jose-villablanca-hor.chatgpt.site/eliminar-cuenta . Las capturas de competencia para la tienda deben usar participantes reales con permiso.
-
-La activación futura de cobros y el lanzamiento de producción son etapas aparte. No se presentan compras, clasificaciones, pruebas físicas o aprobación pública de Google como completadas sin evidencia.
+`billingReady=false`, `CACHASTE_PLAY_ENABLED=false` y el verificador alojado responde `ready:false`. No se activaron cobros ni infraestructura pagada. La candidata está técnicamente lista para prueba gratuita; no se declara habilitada para venta. No se modificó Servicios Villablanca.

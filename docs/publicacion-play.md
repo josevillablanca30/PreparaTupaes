@@ -1,15 +1,9 @@
 # Preparación para Google Play
 
-Guía vigente: [`publication/README.md`](../publication/README.md). Versión preparada: **1.5.0-rc5 / código 32**, paquete `cl.preparatupaes.app`, objetivo API 36.
+Guía vigente: [publication/README.md](../publication/README.md). Candidata firmada: **1.5.0-rc17 / código 44**, fuente `39ce5e21c848420191cb45e75defa2e6637a74a1`, paquete `cl.preparatupaes.app`, API objetivo 36.
 
-La clave de carga original se recuperó del respaldo privado y coincide con el AAB firmado anterior. El certificado público SHA-256 es `779713ca68023f881d4d8d807fcdda32182bcda3aba3c802a95cb0344838c562`. No guardar claves ni contraseñas en el repositorio.
+El [informe rc17](android-rc17-cierre-2026-11-03.md) contiene evidencia y pendientes. Las referencias anteriores a rc5, cuenta sin verificar o SMTP 535 ya no describen el estado actual.
 
-El AAB de esta entrega es una **carga inicial de configuración para pruebas internas**, con cobros todavía deshabilitados. La aplicación incluye cuentas, compras verificadas, duelos y rankings; ya no corresponde describirla como «offline sin cuentas ni Internet». El contenido educativo comercial exige acceso validado y conserva una licencia local acotada para estudiar sin red.
+La app ya tiene una prueba cerrada; su última versión observada es la 42. El titular sube el AAB 44 a esa misma prueba. No crear otra ficha ni clave. Certificado de carga verificado: `a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575`.
 
-Pendientes concretos: esperar la aprobación de identidad de Google en la cuenta personal comprobada, verificar el teléfono y crear la ficha; productos, credenciales de verificación y RTDN; SMTP/retorno de recuperación; titular, soporte y URLs públicas de privacidad/eliminación enlazadas dentro de la app; operación de moderación de comunidad; nueva compilación habilitada; compra de licencia y duelo real entre dos teléfonos; formularios, revisión y prueba cerrada aplicable a la cuenta.
-
-La aplicación pasó pruebas automáticas e integración de dos cuentas mediante Auth/PostgREST en servidor temporal. Esa evidencia no acredita un duelo entre dos teléfonos físicos ni un ciclo de compra real. Los resultados exactos y las huellas del paquete están en la verificación adjunta.
-
-No se ha publicado una versión de producción ni realizado el pago de registro. La ficha, recursos nativos y borradores legales están preparados para revisión; no completar identidades, reseñas, clasificación IARC ni métricas por suposición.
-
-Cuenta Play Console creada según el titular; soporte público confirmado: `jose.villablanca.horta@gmail.com`. La migración de comunidad ya se aplicó y verificó en el servidor alojado.
+Se mantienen los cobros deshabilitados y el acceso de prueba autorizado por el servidor. Faltan el perfil de comerciante, productos y validación real de Billing, requisitos de testers y aprobación de producción. La declaración de datos debe corregirse antes de distribuir; el titular eligió completarla manualmente.
