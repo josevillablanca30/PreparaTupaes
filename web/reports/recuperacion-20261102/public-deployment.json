@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-11-03T00:14:29.333894+00:00",
+  "sourceRevision": "31d4dfbdf254b8a24715225dd7ee1661b4e77e5d",
+  "newDeploymentVerified": false,
+  "checks": [
+    {
+      "url": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/version.json",
+      "status": 200,
+      "recoveryPagePresent": false,
+      "commercialLandingFallback": false,
+      "version": {
+        "revision": "38892741771432f56e49fc875e4384de3e0de144",
+        "androidBase": "add8a5979d28cb1f7598767bb4bf1ad7b8328937",
+        "distribution": "web-commercial",
+        "paymentsEnabledByBuild": false
+      }
+    },
+    {
+      "url": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/cuenta.html",
+      "status": 200,
+      "recoveryPagePresent": false,
+      "commercialLandingFallback": false
+    },
+    {
+      "url": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/recuperar",
+      "status": 200,
+      "recoveryPagePresent": false,
+      "commercialLandingFallback": true
+    },
+    {
+      "url": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/recovery.js",
+      "status": 200,
+      "recoveryPagePresent": false,
+      "commercialLandingFallback": true
+    }
+  ]
+}

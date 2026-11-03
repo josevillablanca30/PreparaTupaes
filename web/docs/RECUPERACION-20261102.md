@@ -26,7 +26,7 @@ Accesos necesarios si no están disponibles: `CLOUDFLARE_API_TOKEN` con Pages Ed
 
 ## Pruebas y límites
 
-Pruebas de lógica web iniciales: 113 aprobadas. Se agregan recorridos en Chrome Android, Safari/WebKit de iPhone, escritorio y 320 px. El preview local administrado no inició por indisponibilidad del relay; no se reemplaza por un servidor o navegador alternativo. Los recorridos se ejecutan mediante la infraestructura de QA existente de GitHub Actions.
+En la revisión `31d4dfbdf254b8a24715225dd7ee1661b4e77e5d` aprobaron 394 pruebas de lógica original, 114 pruebas web y 168 recorridos: 42 en Chrome Android, 42 en Safari/WebKit iPhone, 42 en escritorio y 42 en 320 px. También aprobaron las nueve comprobaciones nuevas con Supabase Auth y SMTP reales, pero locales y desechables, y la regresión HTTP de Auth y duelos. El preview local administrado no inició por indisponibilidad del relay; los navegadores se comprobaron mediante GitHub Actions.
 
 Las pruebas HTTP nuevas usan exclusivamente el Auth y SMTP efímeros de CI. Comprueban entrega HTML real al buzón local, hash, código Android, cambio de contraseña, login nuevo, rechazo de clave anterior, expiración, reutilización, repetición y PKCE. No equivalen a correo nuevo en Gmail ni a tocar un enlace en un teléfono físico.
 
@@ -44,4 +44,12 @@ La consulta pública inicial encontró SPF en `send.auth.sitecacho.cl` y DKIM en
 - https://resend.com/docs/dashboard/domains/introduction
 - https://resend.com/docs/dashboard/domains/dmarc
 
-Los commits, resultados de Actions, URL nueva y cambios realmente aplicados se registran al cerrar la entrega. La configuración preparada no se presenta como configuración aplicada. No hace falta otro AAB mientras Android permanezca sin cambios.
+## Estado comprobado y continuación
+
+La implementación y sus correcciones están en los commits `389756d7`, `d2ce03a5` y `31d4dfbd`. La evidencia y el procedimiento de continuación están en [`../reports/recuperacion-20261102/README.md`](../reports/recuperacion-20261102/README.md).
+
+El despliegue se intentó en Actions y quedó bloqueado porque falta `CLOUDFLARE_API_TOKEN`. El preflight de Auth confirmó que también falta `SUPABASE_ACCESS_TOKEN`. Los paneles Cloudflare y Supabase requieren iniciar sesión en este entorno; no hay una sesión administrativa disponible. La configuración Auth preparada **no se ha aplicado** y no se cambió SMTP.
+
+La comprobación HTTPS encontró la versión pública anterior `38892741771432f56e49fc875e4384de3e0de144`. `/recuperar` y `/recovery.js` devolvieron la portada antigua por el fallback del sitio. Por eso un HTTP 200 no se contabiliza como recuperación desplegada. No se ha solucionado el retorno a localhost para usuarios reales hasta publicar y configurar las URLs.
+
+No se declara la misión terminada. Después del acceso administrativo falta publicar, releer la configuración Auth y completar el recorrido real de correo y teléfono. No hace falta otro AAB: la rama Android permanece sin cambios.

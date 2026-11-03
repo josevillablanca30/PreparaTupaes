@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-11-02T21:26:12.152Z",
+  "resolver": "Google Public DNS over HTTPS",
+  "scope": "Read-only public DNS; record presence does not prove Gmail Authentication-Results or inbox placement",
+  "records": [
+    {
+      "name": "auth.sitecacho.cl",
+      "status": 0,
+      "txt": []
+    },
+    {
+      "name": "send.auth.sitecacho.cl",
+      "status": 0,
+      "txt": [
+        "v=spf1 ip4:52.3.252.119 ip4:44.222.39.36 ip4:199.249.231.0/24 ~all"
+      ]
+    },
+    {
+      "name": "resend._domainkey.auth.sitecacho.cl",
+      "status": 0,
+      "txt": [
+        "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC5s31SZtHQoC4le/UBV1knTg6vEkqXu6NZvkOe2c2lDXjM28nVmy5gJg5dsV30YanOaC6z6p6TNpksFP0jI6E0JmG0RLHr4nHPTPD9YI6SJdv3H54rxC8pqquCTyUMGethnTF7tnXxz6GWvgdi8/L4XsFuqJ8Qjl4f0Q65fxCE2wIDAQAB"
+      ]
+    },
+    {
+      "name": "_dmarc.auth.sitecacho.cl",
+      "status": 3,
+      "txt": []
+    },
+    {
+      "name": "_dmarc.sitecacho.cl",
+      "status": 3,
+      "txt": []
+    }
+  ],
+  "spfPresent": true,
+  "dkimPresent": true,
+  "dmarcPresent": false,
+  "spamFixed": false
+}

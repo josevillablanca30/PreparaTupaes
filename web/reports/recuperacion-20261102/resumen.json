@@ -1,0 +1,65 @@
+{
+  "sourceRevision": "31d4dfbdf254b8a24715225dd7ee1661b4e77e5d",
+  "webBranch": "work/cachaste-web-comercial-20261024",
+  "androidBranch": "work/cachaste-motor-duolingo-20261016",
+  "status": "implemented-and-tested; hosted-deployment-blocked-by-access",
+  "missionComplete": false,
+  "tests": {
+    "originalLogic": {
+      "passed": 394,
+      "failed": 0
+    },
+    "webUnit": {
+      "passed": 114,
+      "failed": 0
+    },
+    "browsers": {
+      "passed": 168,
+      "failed": 0,
+      "projects": {
+        "Android-Chrome": 42,
+        "iPhone-WebKit": 42,
+        "Desktop-Chrome": 42,
+        "mobile-320px": 42
+      }
+    },
+    "recoveryLocalHttp": {
+      "passed": 9,
+      "failed": 0
+    },
+    "existingAuthAndDuelsHttp": "passed",
+    "humanPhoneRecovery": "not-executed",
+    "hostedNewTemplateGmailDelivery": "not-executed"
+  },
+  "deployment": {
+    "provider": "Cloudflare Pages Free",
+    "project": "cachaste-sitecacho",
+    "origin": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev",
+    "newRecoveryDeployed": false,
+    "publishedRevision": "38892741771432f56e49fc875e4384de3e0de144",
+    "missingRepositorySecrets": [
+      "CLOUDFLARE_API_TOKEN",
+      "SUPABASE_ACCESS_TOKEN"
+    ]
+  },
+  "supabase": {
+    "project": "jmobinmdwrmdqrxtcruj",
+    "hostedAuthConfigurationApplied": false,
+    "smtpCredentialsChanged": false
+  },
+  "email": {
+    "newTemplate": "implemented-not-applied",
+    "spamFixed": false,
+    "dmarcApplied": false
+  },
+  "android": {
+    "sourceChanged": false,
+    "newAabRequired": false,
+    "newAabGenerated": false
+  },
+  "runs": {
+    "web": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41551147391",
+    "recovery": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41551147339",
+    "deploymentAttempt": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41528400582"
+  }
+}
