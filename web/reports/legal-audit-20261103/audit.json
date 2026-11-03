@@ -1,0 +1,85 @@
+{
+  "date": "2026-11-03",
+  "web": {
+    "sourceCommit": "276ee9f209a57a298a1d6166f805e20219e29ecb",
+    "deploymentRunId": 41689796792,
+    "qaRunId": 41689796905,
+    "deploymentId": "cf3431fa-3e39-4411-a353-d428b8bfe80a",
+    "canonicalOrigin": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev",
+    "previewUrl": "https://cf3431fa.cachaste-sitecacho.pages.dev",
+    "httpChecksPassed": 208,
+    "liveBrowserChecksPassed": 24,
+    "liveBrowserEngines": [
+      "Desktop-Chrome",
+      "Android-Chrome",
+      "iPhone-WebKit",
+      "mobile-320px"
+    ],
+    "physicalPhonesTested": false,
+    "productionIdentitiesUsedForBrowserTests": false,
+    "emailDeletionRequestSent": false,
+    "unitTestsPassed": 120
+  },
+  "android": {
+    "sourceCommit": "f75b92aa8e72738e23839dc8f5e690cba10922da",
+    "versionCode": 45,
+    "versionName": "1.5.0-rc18",
+    "aabRunId": 41689953231,
+    "aabArtifactId": 13257472535,
+    "bytes": 13545587,
+    "sha256": "ff603b05fde38085d224300fbb238cf28ebb23e84db78bf21a56c3cf48c31b60",
+    "certificateSha256": "a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575",
+    "signedPayloadEntries": 265,
+    "localIndependentSignatureVerification": true,
+    "manifestVerified": true,
+    "logicPassed": 419,
+    "gateMobilePassed": 162,
+    "ownerUploadsBundle": true,
+    "physicalLegalLinkTapTested": false
+  },
+  "backend": {
+    "project": "jmobinmdwrmdqrxtcruj",
+    "migration": "20261103175334_cachaste_delete_tester_preauthorization",
+    "applied": true,
+    "isolatedDeletionTestsPassed": 4,
+    "currentAuthAccountsPreserved": true,
+    "currentTesterGrantsPreserved": true,
+    "currentEmailPreauthorizations": 10,
+    "accountsDeletedByThisWork": 0,
+    "newSecurityAdvisorFindings": 0
+  },
+  "customDomain": {
+    "name": "sitecacho.cl",
+    "dnsA": [],
+    "dnsAAAA": [],
+    "dnsCNAME": [],
+    "nameservers": [
+      "johnny.ns.cloudflare.com",
+      "maxine.ns.cloudflare.com"
+    ],
+    "httpObservedFromEnvironment": 503,
+    "limit": "Upstream connection failure in agent environment; no working custom-domain URL claimed",
+    "dnsModified": false
+  },
+  "playConsole": {
+    "access": "Google account shown signed out",
+    "currentSavedLegalLinksVerified": false,
+    "settingsChanged": false,
+    "ownerPreviouslyChoseManualEntry": true
+  },
+  "pending": [
+    "Paste and save the verified public privacy and deletion URLs in Play Console and finish/verify Data Safety",
+    "Upload AAB 45 to the existing closed test and test a physical-phone legal-link tap",
+    "Connect sitecacho.cl to hosting before using that domain in store forms",
+    "Define and document precise operational retention/deletion periods for support mail, provider logs and backups without inventing guarantees",
+    "Before payments: confirm seller identification/RUT/legal address, contracting/cancellation/refund information and applicable privacy requirements"
+  ],
+  "servicesVillablancaModified": false,
+  "paymentsActivated": false,
+  "credentialsIncluded": false,
+  "sources": [
+    "https://support.google.com/googleplay/android-developer/answer/13327111",
+    "https://support.google.com/googleplay/android-developer/answer/10144311",
+    "https://www.sernac.cl/portal/604/w3-propertyvalue-20982.html"
+  ]
+}

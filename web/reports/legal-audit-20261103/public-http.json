@@ -1,0 +1,23 @@
+[
+  {
+    "path": "/privacidad.html",
+    "status": 200,
+    "url": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/privacidad.html",
+    "bodySha256": "9b0edaee007615c846fb44fef34f347301c5aa64484eaa1af5c85a9abc580bde",
+    "authenticationUsed": false
+  },
+  {
+    "path": "/condiciones.html",
+    "status": 200,
+    "url": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/condiciones.html",
+    "bodySha256": "738bd1b3b1e7fa57f13153e7fce6a18d73ee2fca9573c36a041c5ae2a445a096",
+    "authenticationUsed": false
+  },
+  {
+    "path": "/eliminar-cuenta.html",
+    "status": 200,
+    "url": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/eliminar-cuenta.html",
+    "bodySha256": "bac4cbe0fec762f011af6acf4dfa163023c6338f534fb1e32a8a42976e2b2531",
+    "authenticationUsed": false
+  }
+]
