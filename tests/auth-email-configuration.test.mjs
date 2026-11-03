@@ -4,8 +4,8 @@ import {readFile} from 'node:fs/promises';
 import {configureAuthEmail} from '../scripts/configure-auth-email.mjs';
 
 const token='owner-token-for-isolated-test';
-const smtp={smtp_host:'smtp.example.test',smtp_user:'private-user',smtp_admin_email:'auth@example.test',smtp_pass:'private-smtp-password',mailer_autoconfirm:false};
-const templates={mailer_subjects_confirmation:'Confirma tu correo en ¿Cachaste?',mailer_subjects_recovery:'Recupera tu acceso a ¿Cachaste?',mailer_templates_confirmation_content:await readFile(new URL('../supabase/templates/confirmation.html',import.meta.url),'utf8'),mailer_templates_recovery_content:await readFile(new URL('../supabase/templates/recovery.html',import.meta.url),'utf8')};
+const smtp={smtp_host:'smtp.example.test',smtp_user:'private-user',smtp_admin_email:'auth@example.test',smtp_pass:'private-smtp-password',mailer_autoconfirm:false,site_url:'https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev',uri_allow_list:'https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/recuperar'};
+const templates={mailer_subjects_confirmation:'Confirma tu correo en ¿Cachaste?',mailer_subjects_recovery:'¿Cachaste? — Recupera tu contraseña',mailer_templates_confirmation_content:await readFile(new URL('../supabase/templates/confirmation.html',import.meta.url),'utf8'),mailer_templates_recovery_content:await readFile(new URL('../supabase/templates/recovery.html',import.meta.url),'utf8')};
 function backend(initial,after){let config={...initial};const calls=[];return {calls,fetchImpl:async(url,options)=>{calls.push({url,...options});if(options.method==='PATCH'){config={...config,...JSON.parse(options.body),...after};return new Response(null,{status:200});}return Response.json(config);}};}
 
 test('Auth email preflight requires owner access before making any request',async()=>{
@@ -27,6 +27,9 @@ test('An unconfirmed verification policy cannot be mistaken for a safe signup se
 test('Check is strictly read-only whether templates match or differ',async()=>{
  const b=backend(smtp);await assert.rejects(configureAuthEmail({token,...b,mode:'check'}),/aún no coinciden/);assert.equal(b.calls.length,1);
  const ready=backend({...smtp,...templates});assert.equal((await configureAuthEmail({token,...ready,mode:'check'})).templatesMatch,true);assert.equal(ready.calls.length,1);
+});
+test('An old localhost return or missing recovery allowlist cannot replace the working hosted email template',async()=>{
+ for(const config of [{...smtp,site_url:'http://localhost:3000'},{...smtp,uri_allow_list:''}]){const b=backend(config);await assert.rejects(configureAuthEmail({token,...b}),/URL pública/);assert.equal(b.calls.length,1);}
 });
 test('Apply changes exactly the two subjects and two bodies and verifies readback',async()=>{
  const b=backend(smtp);const result=await configureAuthEmail({token,...b});assert.equal(result.changed,true);assert.deepEqual(b.calls.map(c=>c.method),['GET','PATCH','GET']);assert.deepEqual(JSON.parse(b.calls[1].body),templates);

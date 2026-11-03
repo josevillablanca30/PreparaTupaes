@@ -428,5 +428,5 @@ subject = "Confirma tu correo en ¿Cachaste?"
 content_path = "./supabase/templates/confirmation.html"
 
 [auth.email.template.recovery]
-subject = "Recupera tu acceso a ¿Cachaste?"
+subject = "¿Cachaste? — Recupera tu contraseña"
 content_path = "./supabase/templates/recovery.html"

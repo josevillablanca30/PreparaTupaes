@@ -131,7 +131,7 @@ try{
  const finalRank=await call(1,'rankings',{mode:'duel',subject:'M1',scope:'Chile'});assert.equal(Number(finalRank.me.value),2);assert.equal(finalRank.me.wins,2);assert.equal(finalRank.me.losses,1);assert.equal(finalRank.me.draws,1);assert.equal((await db.query('select count(*)::int n from cachaste.settlements')).rows[0].n,4);record('Four complete scenarios retain historical wins, losses, draws and four unique settlements');
  const exposed=await clients[0].from('entitlements').select('*');assert.ok(exposed.error);record('Client cannot access or modify subscription tables');
  const reset=await clients[1].auth.resetPasswordForEmail(credentials[1].email);if(reset.error)throw reset.error;
- const recoveryToken=await readEmailCode(credentials[1].email,'Recupera tu acceso a ¿Cachaste?');
+ const recoveryToken=await readEmailCode(credentials[1].email,'¿Cachaste? — Recupera tu contraseña');
  const recoveryClient=createClient(url.href,status.ANON_KEY,{auth:{persistSession:false,autoRefreshToken:false}}),verified=await recoveryClient.auth.verifyOtp({type:'recovery',email:credentials[1].email,token:recoveryToken});if(verified.error)throw verified.error;
  const password=randomUUID()+randomUUID(),updated=await recoveryClient.auth.updateUser({password});if(updated.error)throw updated.error;await recoveryClient.auth.signOut({scope:'global'});
  const staleSession=await clients[1].rpc('cachaste_competition',{operation:'profile',payload:{}});assert.ok(staleSession.error,'A former session must not survive password recovery logout');

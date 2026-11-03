@@ -22,8 +22,11 @@ export async function configureAuthEmail({token,fetchImpl=fetch,mode='apply'}={}
  // Default SMTP also cannot deliver signup emails to arbitrary closed-testers.
  if(!status.customSmtpConfigured)throw Error('SMTP propio no configurado o incompleto. Configúralo en Authentication > Email > SMTP antes de aplicar plantillas. El envío predeterminado restringe destinatarios y los proyectos Free nuevos no pueden personalizarlo.');
  if(!status.emailConfirmationRequired)throw Error('No se pudo confirmar que la verificación de correo esté activada. Revísala antes de aplicar plantillas.');
- const payload={mailer_subjects_confirmation:'Confirma tu correo en ¿Cachaste?',mailer_subjects_recovery:'Recupera tu acceso a ¿Cachaste?',mailer_templates_confirmation_content:await readFile(new URL('../supabase/templates/confirmation.html',import.meta.url),'utf8'),mailer_templates_recovery_content:await readFile(new URL('../supabase/templates/recovery.html',import.meta.url),'utf8')};
- for(const key of ['mailer_templates_confirmation_content','mailer_templates_recovery_content'])if(!payload[key].includes('{{ .Token }}')||/localhost|ConfirmationURL|TokenHash/.test(payload[key]))throw Error('La plantilla no cumple el flujo de código.');
+ const origin=initial.site_url;
+ if(!['https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev','https://sitecacho.cl'].includes(origin)||!String(initial.uri_allow_list||'').split(',').map(v=>v.trim()).includes(origin+'/recuperar'))throw Error('Falta una URL pública de recuperación autorizada. No se modificó Auth ni SMTP.');
+ const payload={mailer_subjects_confirmation:'Confirma tu correo en ¿Cachaste?',mailer_subjects_recovery:'¿Cachaste? — Recupera tu contraseña',mailer_templates_confirmation_content:await readFile(new URL('../supabase/templates/confirmation.html',import.meta.url),'utf8'),mailer_templates_recovery_content:await readFile(new URL('../supabase/templates/recovery.html',import.meta.url),'utf8')};
+ for(const key of ['mailer_templates_confirmation_content','mailer_templates_recovery_content'])if(!payload[key].includes('{{ .Token }}')||/localhost|ConfirmationURL|<script/i.test(payload[key]))throw Error('La plantilla no cumple el flujo de recuperación.');
+ if(!payload.mailer_templates_recovery_content.includes('{{ .SiteURL }}/recuperar#token_hash={{ .TokenHash }}&amp;type=recovery'))throw Error('La plantilla de recuperación debe conservar el enlace web y el código Android.');
  const matches=config=>Object.entries(payload).every(([key,value])=>config[key]===value);
  if(mode==='check'){
   if(!matches(initial))throw Error('Las plantillas alojadas aún no coinciden con las plantillas españolas de código. No se modificó la configuración.');
