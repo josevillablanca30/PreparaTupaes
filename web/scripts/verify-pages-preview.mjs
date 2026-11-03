@@ -26,6 +26,7 @@ export async function probePreview({url, revision, protectedFiles, encryptedFile
   const parse = text => {try {return JSON.parse(text);} catch {return null;}};
   const noStore = response => /no-store/.test(response.headers.get('cache-control') || '');
   await check('Landing HTTPS y CSP del Worker', '/', (r, text) => r.status === 200 && text.includes('¿Cachaste?') && /frame-ancestors 'none'/.test(r.headers.get('content-security-policy') || ''));
+  await check('Retorno Android a portada preparado sin caché ni referrer', '/', (r,text)=>r.status===200&&text.includes('id="recovery-page-template"')&&text.includes('<script src="/landing.js"></script>')&&noStore(r)&&r.headers.get('referrer-policy')==='no-referrer');
   await check('Cuenta pública', '/cuenta.html', (r, text) => r.status === 200 && text.includes('cuenta'));
   await check('Recuperación pública HTTPS, privada en caché y sin referrer', '/recuperar', (r,text)=>r.status===200&&text.includes('id=\"recovery-root\"')&&noStore(r)&&r.headers.get('referrer-policy')==='no-referrer');
   await check('Cliente oficial de recuperación disponible', '/recovery.js', (r,text)=>r.status===200&&text.length>1000);

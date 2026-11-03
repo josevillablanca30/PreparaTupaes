@@ -5,7 +5,8 @@ const textToken=(value,min=20)=>typeof value==='string'&&value.length>=min&&valu
 
 export function isRecoveryReturn(location){
  const url=new URL(location.href),fragment=new URLSearchParams(url.hash.slice(1));
- return /^\/recuperar(?:\.html)?\/?$/.test(url.pathname)||url.searchParams.get('recovery')==='1'||url.searchParams.get('type')==='recovery'||fragment.get('type')==='recovery';
+ const home=['/','/index.html'].includes(url.pathname);
+ return /^\/recuperar(?:\.html)?\/?$/.test(url.pathname)||url.searchParams.get('recovery')==='1'||url.searchParams.get('type')==='recovery'||fragment.get('type')==='recovery'||(home&&SENSITIVE.some(key=>url.searchParams.has(key)||fragment.has(key)));
 }
 
 export function captureRecoveryReturn(location,history){
@@ -15,7 +16,8 @@ export function captureRecoveryReturn(location,history){
  const duplicate=SENSITIVE.some(key=>query.getAll(key).length>1||fragment.getAll(key).length>1||(query.has(key)&&fragment.has(key)));
  const value=key=>fragment.get(key)??query.get(key);
  if(duplicate||value('error')||value('error_code'))return{kind:'invalid'};
- if(value('token_hash'))return value('type')==='recovery'&&/^[A-Za-z0-9_-]{20,256}$/.test(value('token_hash'))&&!value('code')&&!value('access_token')?{kind:'hash',tokenHash:value('token_hash')}:{kind:'invalid'};
+ const hash=value('token_hash')||value('token');
+ if(hash)return value('type')==='recovery'&&/^[A-Za-z0-9_-]{20,256}$/.test(hash)&&!(value('token_hash')&&value('token'))&&!value('code')&&!value('access_token')&&!value('refresh_token')?{kind:'hash',tokenHash:hash}:{kind:'invalid'};
  // Supabase still accepts legacy twelve-character refresh tokens. Validation of
  // credentials remains the SDK/server's responsibility, regardless of format.
  if(value('access_token')||value('refresh_token'))return value('type')==='recovery'&&textToken(value('access_token'))&&textToken(value('refresh_token'),12)&&!value('code')?{kind:'implicit',accessToken:value('access_token'),refreshToken:value('refresh_token')}:{kind:'invalid'};
@@ -30,7 +32,7 @@ export function recoveryError(error){
  if(code==='same_password')return'Elige una contraseña distinta a la anterior.';
  if(code==='over_email_send_rate_limit'||code==='over_request_rate_limit'||error?.status===429)return'Espera un momento antes de pedir otro correo.';
  if(code==='RECOVERY_CONNECTION'||['AuthRetryableFetchError','AbortError','TimeoutError'].includes(error?.name)||/fetch|network|timeout|abort|load failed/i.test(String(error?.message||'')))return'No logramos conectarnos. Revisa tu conexión y vuelve a intentarlo.';
- if(code==='RECOVERY_EXPIRED'||['otp_expired','flow_state_expired','flow_state_not_found','bad_code_verifier','invalid_credentials','session_not_found','refresh_token_not_found'].includes(code))return'Este enlace venció, ya se usó o no corresponde a este navegador. Solicita otro correo para continuar.';
+ if(code==='RECOVERY_EXPIRED'||['otp_expired','flow_state_expired','flow_state_not_found','bad_code_verifier','pkce_code_verifier_not_found','invalid_credentials','session_not_found','refresh_token_not_found'].includes(code))return'Este enlace venció, ya se usó o no corresponde a este navegador. Solicita otro correo para continuar.';
  if(code==='RECOVERY_REQUIRED')return'Abre el enlace del correo de recuperación para cambiar tu contraseña.';
  if(code==='EMAIL_NOT_SENT'||(code==='unexpected_failure'&&/email|smtp/i.test(String(error?.message||''))))return'No pudimos enviar el correo. Conservamos tu dirección para que puedas reintentar.';
  return'No pudimos completar el cambio. Vuelve a intentarlo o solicita otro correo.';
@@ -45,6 +47,9 @@ export async function verifyRecoveryReturn(sdk,entry){
  else if(entry.kind==='pkce')result=await sdk.auth.exchangeCodeForSession(entry.code,entry.flowId?{flowId:entry.flowId}:undefined);
  else throw Error('RECOVERY_EXPIRED');
  const data=checked(result);if(!data?.session?.access_token)throw Error('RECOVERY_EXPIRED');
+ // The verifier stored by the official SDK records whether this was a reset.
+ // A Google or signup code must not be treated as password recovery.
+ if(entry.kind==='pkce'&&data.redirectType!=='recovery')throw Error('RECOVERY_EXPIRED');
  const verified=checked(await sdk.auth.getUser());
  if(!verified?.user?.id||verified.user.id!==data.session.user?.id)throw Error('RECOVERY_EXPIRED');
  return{session:data.session,userId:verified.user.id};

@@ -12,6 +12,14 @@ process.chdir(root);execFileSync(process.execPath,['web/scripts/verify-android.m
 await import('../../scripts/build.mjs');
 await rm(out,{recursive:true,force:true});await mkdir(out,{recursive:true});await cp(path.join(root,'dist'),path.join(out,'app'),{recursive:true});
 await cp(path.join(root,'web/public'),out,{recursive:true});await cp(path.join(root,'assets'),path.join(out,'assets'),{recursive:true});
+// The landing callback renders the same recovery document, never a second copy
+// of its UI and never a navigation that forwards the incoming credentials.
+const recoveryDocument=await readFile(path.join(out,'recuperar.html'),'utf8'),recoveryBody=recoveryDocument.match(/<body[^>]*>([\s\S]*?)<\/body>/)?.[1];
+if(!recoveryBody)throw Error('RECOVERY_DOCUMENT_REQUIRED');
+const landingPath=path.join(out,'index.html');
+let landing=await readFile(landingPath,'utf8');
+landing=landing.replace('<script src="/landing.js" defer></script>','').replace('<meta charset="utf-8">','<meta charset="utf-8"><meta name="referrer" content="no-referrer"><script src="/landing.js"></script>').replace('</head>','<link rel="stylesheet" href="/recovery.css"></head>').replace('</body>','<template id="recovery-page-template">'+recoveryBody+'</template></body>');
+await writeFile(landingPath,landing);
 for(const file of await readdir(path.join(out,'icons')))if(file.endsWith('.base64')){await writeFile(path.join(out,'icons',file.slice(0,-7)),Buffer.from(await readFile(path.join(out,'icons',file),'utf8'),'base64'));await rm(path.join(out,'icons',file));}
 const revision=process.env.GITHUB_SHA||execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 const pages=['index.html','inicio.html','science.html','reading.html','m2.html','history.html','competencia.html'];const pagePolicies={};
@@ -25,7 +33,7 @@ for(const name of pages){
  await writeFile(file,text);
 }
 // Web competition uses the existing server dispatcher. Google Play is not invoked on the web.
-await writeFile(path.join(out,'app/competition-config.js'),`window.CACHASTE_COMPETITION_CONFIG=Object.freeze({supabaseUrl:'https://jmobinmdwrmdqrxtcruj.supabase.co',publishableKey:'sb_publishable_wf2Ji381IwRo2exQKJQ7ew_SRYCl_q1',billingReady:false,authReturnUrl:location.origin+'/cuenta.html?recovery=1'});\n`);
+await writeFile(path.join(out,'app/competition-config.js'),`window.CACHASTE_COMPETITION_CONFIG=Object.freeze({supabaseUrl:'https://jmobinmdwrmdqrxtcruj.supabase.co',publishableKey:'sb_publishable_wf2Ji381IwRo2exQKJQ7ew_SRYCl_q1',billingReady:false,authReturnUrl:location.origin+'/recuperar'});\n`);
 await rm(path.join(out,'app/suscripcion.html'));
 for(const name of['science-app.js','reading-app.js']){const file=path.join(out,'app',name);await writeFile(file,adaptLegacyActions(await readFile(file,'utf8')));}
 await writeFile(path.join(out,'app/competition-app.js'),adaptCompetitionUi(await readFile(path.join(root,'competition-app.js'),'utf8')));

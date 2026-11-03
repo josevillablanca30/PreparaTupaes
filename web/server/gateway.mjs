@@ -104,7 +104,9 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
      target.search=url.search;response=await env.ASSETS.fetch(new Request(target,req));
     }
    }
-   const authPage=['/cuenta.html','/cuenta','/recuperar.html','/recuperar','/recuperar/'].includes(path);
+   // A fragment callback is invisible to the server. The root must have the
+   // same privacy headers as /recuperar for old Android/default-template links.
+   const authPage=['/','/index.html','/cuenta.html','/cuenta','/recuperar.html','/recuperar','/recuperar/'].includes(path);
    const headers=new Headers(response.headers);headers.set('content-security-policy',policy(path,pagePolicies));headers.set('x-content-type-options','nosniff');headers.set('referrer-policy',authPage?'no-referrer':'strict-origin-when-cross-origin');if(authPage)headers.set('cache-control','private, no-store');headers.set('x-frame-options','DENY');headers.set('permissions-policy','camera=(), microphone=(), geolocation=()');
    return new Response(response.body,{status:response.status,headers});
   }catch(e){const raw=String(e?.message||''),status=e.status||(/AUTH_REQUIRED/.test(raw)?401:/SUBSCRIPTION_REQUIRED/.test(raw)?402:/INVALID|JSON|Unexpected/.test(raw)?400:503);return json({error:/^[A-Z_]+$/.test(raw)?raw:'SERVICE_UNAVAILABLE'},status);}

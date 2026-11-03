@@ -2,6 +2,7 @@ import {createClient} from '@supabase/supabase-js';
 
 export const AUTH_STORAGE_KEY = 'cachaste-auth-v1';
 const CLIENT = Symbol.for('cachaste.web.auth');
+const RECOVERY_REQUEST_CLIENT = Symbol.for('cachaste.web.recovery-request');
 async function authFetch(input,options={}){
  if(options.signal)return fetch(input,options);
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
@@ -25,6 +26,19 @@ export function getWebClient(config, storage = globalThis.localStorage) {
   }
   const client = createClient(url, key, {global:{fetch:authFetch},auth: {storage, storageKey: AUTH_STORAGE_KEY, flowType: 'pkce', persistSession: true, autoRefreshToken: true, detectSessionInUrl: false}});
   globalThis[CLIENT] = {client, url, key, storage};
+  return client;
+}
+
+// Recovery emails are often opened in Gmail/Safari on a different browser from
+// the request. This request-only official client deliberately sends no PKCE
+// challenge. Google sign-in continues to use the shared PKCE client above.
+export function getRecoveryRequestClient(config) {
+  const url=config.supabaseUrl,key=config.publishableKey;
+  if(!/^https:\/\/[a-z0-9]+\.supabase\.co$/.test(url||'')||!/^sb_publishable_/.test(key||''))throw Error('AUTH_CONFIGURATION_REQUIRED');
+  const existing=globalThis[RECOVERY_REQUEST_CLIENT];
+  if(existing){if(existing.url!==url||existing.key!==key)throw Error('AUTH_CONFIGURATION_CHANGED');return existing.client;}
+  const client=createClient(url,key,{global:{fetch:authFetch},auth:{storageKey:'cachaste-recovery-request-v1',flowType:'implicit',persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+  globalThis[RECOVERY_REQUEST_CLIENT]={url,key,client};
   return client;
 }
 

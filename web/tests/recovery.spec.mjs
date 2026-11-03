@@ -5,7 +5,7 @@ async function recovery(page,{expired=false,network=false}={}){
  let consumed=expired,resets=0,updates=0,requests=[];const identity={...session(),refresh_token:'legacy123456'};identity.access_token=identity.access_token.replace('.fixture-signature','.c2lnbmF0dXJl');
  await page.route(project+'/**',async route=>{
   const request=route.request(),url=new URL(request.url()),body=request.postData()?request.postDataJSON():{};requests.push({path:url.pathname,method:request.method(),body});
-  if(url.pathname.endsWith('/recover')){resets++;await route.fulfill({json:{}});return;}
+  if(url.pathname.endsWith('/recover')){resets++;requests.at(-1).redirectTo=url.searchParams.get('redirect_to');await route.fulfill({json:{}});return;}
   if(url.pathname.endsWith('/verify')||(url.pathname.endsWith('/token')&&url.searchParams.get('grant_type')==='pkce')){
    if(network){await route.abort('internetdisconnected');return;}
    if(consumed){await route.fulfill({status:403,json:{code:'otp_expired',msg:'Token has expired or is invalid'}});return;}consumed=true;await route.fulfill({json:identity});return;
@@ -29,8 +29,20 @@ test('Expired and wrong-purpose links offer a new email without echoing the URL 
 test('Legacy Android implicit links and the older cuenta callback finish in the same public recovery screen',async({page})=>{
  const state=await recovery(page);await page.goto('/cuenta.html#access_token='+state.identity.access_token+'&refresh_token='+state.identity.refresh_token+'&type=recovery');await expect(page.getByRole('heading',{name:'Elige tu nueva contraseña.'})).toBeVisible();await clean(page);await page.reload();await expect(page.getByRole('heading',{name:'Elige tu nueva contraseña.'})).toBeVisible();
 });
-test('The PKCE request and callback share the original verifier in the same browser',async({page})=>{
- const state=await recovery(page);await page.goto('/recuperar');await page.getByLabel('Correo de tu cuenta').fill(mail);await page.getByRole('button',{name:'Enviar correo de recuperación',exact:true}).click();await expect(page.getByRole('heading',{name:'Revisa tu correo.'})).toBeVisible();await page.goto('/recuperar?code=fixture-pkce-single-use');await expect(page.getByRole('heading',{name:'Elige tu nueva contraseña.'})).toBeVisible();expect(state.requests.some(r=>r.path.endsWith('/token')&&r.body.auth_code==='fixture-pkce-single-use'&&r.body.code_verifier?.length>=43)).toBe(true);await clean(page);
+test('New recovery requests work across browsers without a PKCE verifier and always specify the public recovery path',async({page})=>{
+ const state=await recovery(page);await page.goto('/recuperar');await page.getByLabel('Correo de tu cuenta').fill(mail);await page.getByRole('button',{name:'Enviar correo de recuperación',exact:true}).click();await expect(page.getByRole('heading',{name:'Revisa tu correo.'})).toBeVisible();const request=state.requests.find(r=>r.path.endsWith('/recover'));expect(new URL(request.redirectTo).pathname).toBe('/recuperar');expect(request.body.code_challenge).toBeUndefined();await clean(page);
+});
+test('A legacy PKCE recovery code also works at the default Site URL with its original verifier',async({page})=>{
+ const state=await recovery(page);await page.addInitScript(()=>localStorage.setItem('cachaste-auth-v1-code-verifier',JSON.stringify('a'.repeat(64)+'/recovery')));await page.goto('/?code=fixture-pkce-single-use');await expect(page.getByRole('heading',{name:'Elige tu nueva contraseña.'})).toBeVisible();expect(state.requests.some(r=>r.path.endsWith('/token')&&r.body.auth_code==='fixture-pkce-single-use'&&r.body.code_verifier?.length>=43)).toBe(true);await clean(page);
+});
+test('The default Android email callback at the landing page opens the password form and skips commercial requests',async({page})=>{
+ const state=await recovery(page),commercial=[];page.on('request',request=>{if(/\/api\/(billing|session)/.test(request.url()))commercial.push(request.url());});await page.goto('/#access_token='+state.identity.access_token+'&refresh_token='+state.identity.refresh_token+'&type=recovery');await expect(page.getByRole('heading',{name:'Elige tu nueva contraseña.'})).toBeVisible();await expect(page.getByText('Te lo dejamos')).toHaveCount(0);expect(commercial).toEqual([]);await clean(page);
+});
+test('An expired email returned to the landing page explains the problem instead of silently showing the homepage',async({page})=>{
+ await recovery(page,{expired:true});await page.goto('/#error=access_denied&error_code=otp_expired&error_description=private-provider-detail');await expect(page.getByRole('heading',{name:'Pidamos un enlace nuevo.'})).toBeVisible();await expect(page.locator('body')).not.toContainText('private-provider-detail');await clean(page);
+});
+test('An email hash opened while the landing page is already in the same tab is still captured',async({page})=>{
+ await recovery(page);await page.goto('/');await page.goto('/#token_hash='+hash+'&type=recovery');await expect(page.getByRole('heading',{name:'Elige tu nueva contraseña.'})).toBeVisible();await clean(page);
 });
 test('A normal signed-in session without a recovery link never grants the change-password form',async({page})=>{
  const state=await recovery(page);await page.addInitScript(value=>localStorage.setItem('cachaste-auth-v1',JSON.stringify(value)),state.identity);await page.goto('/recuperar');await expect(page.getByRole('heading',{name:'Recupera tu contraseña.'})).toBeVisible();await expect(page.locator('input[type=password]')).toHaveCount(0);expect(state.updates).toBe(0);

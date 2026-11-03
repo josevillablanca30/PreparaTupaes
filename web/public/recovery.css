@@ -1,3 +1,4 @@
+html[data-recovery-return] body{visibility:hidden}
 .recovery-page .site-header{padding-top:max(12px,env(safe-area-inset-top));background:#fff}
 .recovery-page .account-main{max-width:660px;min-height:calc(100svh - 180px);padding-bottom:32px}
 .recovery-card{border-top:4px solid #7037cc}

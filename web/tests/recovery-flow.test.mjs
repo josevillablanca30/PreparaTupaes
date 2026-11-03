@@ -4,17 +4,25 @@ const uid='10000000-0000-4000-8000-000000000001',token='a'.repeat(64),origin='ht
 const session={access_token:'eyJ'+token,refresh_token:'legacy123456',user:{id:uid},expires_at:Math.floor(Date.now()/1000)+3600};
 function capture(suffix){const steps=[];return{steps,entry:captureRecoveryReturn({href:origin+'/recuperar'+suffix},{replaceState:(_a,_b,value)=>steps.push(value)})};}
 test('Recovery captures official hash, implicit and PKCE forms and removes all callback material first',()=>{
- for(const [suffix,kind]of[['#token_hash='+token+'&type=recovery','hash'],['?token_hash='+token+'&type=recovery','hash'],['#access_token='+session.access_token+'&refresh_token='+session.refresh_token+'&type=recovery','implicit'],['?code=pkce-qa-code&recovery=1','pkce']]){const value=capture(suffix);assert.equal(value.entry.kind,kind);assert.deepEqual(value.steps,['/recuperar']);}
- for(const suffix of['?error=expired&error_description='+token,'#token_hash='+token+'&type=signup','?code=first&code=second','?token_hash='+token+'&type=recovery#token_hash='+token,'#access_token=invalid'])assert.equal(capture(suffix).entry.kind,'invalid');
+ for(const [suffix,kind]of[['#token_hash='+token+'&type=recovery','hash'],['?token_hash='+token+'&type=recovery','hash'],['?token='+token+'&type=recovery','hash'],['#access_token='+session.access_token+'&refresh_token='+session.refresh_token+'&type=recovery','implicit'],['?code=pkce-qa-code&recovery=1','pkce']]){const value=capture(suffix);assert.equal(value.entry.kind,kind);assert.deepEqual(value.steps,['/recuperar']);}
+ for(const suffix of['?error=expired&error_description='+token,'#token_hash='+token+'&type=signup','?code=first&code=second','?token_hash='+token+'&type=recovery#token_hash='+token,'?token_hash='+token+'&token='+token+'&type=recovery','?token_hash='+token+'&refresh_token=legacy123456&type=recovery','#access_token=invalid'])assert.equal(capture(suffix).entry.kind,'invalid');
  assert.equal(capture('').entry.kind,'none');assert.equal(isRecoveryReturn({href:origin+'/cuenta.html?recovery=1&code=qa-code'}),true);assert.equal(isRecoveryReturn({href:origin+'/cuenta.html?code=ordinary-google-code'}),false);
 });
 test('A verified recovery calls only the official SDK method and verifies the resulting user',async()=>{
  for(const entry of[capture('#token_hash='+token+'&type=recovery').entry,capture('#access_token='+session.access_token+'&refresh_token='+session.refresh_token+'&type=recovery').entry,capture('?code=pkce-qa-code&recovery=1').entry]){
-  const calls=[],auth={getUser:async()=>({data:{user:session.user}})};for(const name of['verifyOtp','setSession','exchangeCodeForSession'])auth[name]=async(...args)=>{calls.push({name,args});return{data:{session}};};
+  const calls=[],auth={getUser:async()=>({data:{user:session.user}})};for(const name of['verifyOtp','setSession','exchangeCodeForSession'])auth[name]=async(...args)=>{calls.push({name,args});return{data:{session,redirectType:'recovery'}};};
   const result=await verifyRecoveryReturn({auth},entry);assert.equal(result.userId,uid);assert.equal(calls.length,1);assert.equal(calls[0].name,{hash:'verifyOtp',implicit:'setSession',pkce:'exchangeCodeForSession'}[entry.kind]);
  }
  await assert.rejects(verifyRecoveryReturn({auth:{}},{kind:'invalid'}),/RECOVERY_EXPIRED/);
  await assert.rejects(verifyRecoveryReturn({auth:{verifyOtp:async()=>({data:{session}}),getUser:async()=>({data:{user:{id:'another-user'}}})}},capture('#token_hash='+token+'&type=recovery').entry),/RECOVERY_EXPIRED/);
+});
+test('The default Android Site URL callback is recognized at the root, including provider errors and legacy PKCE, without claiming normal anchors',()=>{
+ for(const suffix of['#access_token='+session.access_token+'&refresh_token='+session.refresh_token+'&type=recovery','?code=legacy-recovery-code','#error=access_denied&error_code=otp_expired','?token_hash='+token+'&type=recovery'])for(const path of['/','/index.html'])assert.equal(isRecoveryReturn({href:origin+path+suffix}),true);
+ for(const suffix of['','#planes','#como-aprendes','?campaign=paes'])assert.equal(isRecoveryReturn({href:origin+'/'+suffix}),false);
+});
+test('A PKCE code from a normal OAuth login cannot grant the recovery password form',async()=>{
+ const sdk={auth:{exchangeCodeForSession:async()=>({data:{session,redirectType:null}}),getUser:async()=>assert.fail('not a recovery')}};
+ await assert.rejects(verifyRecoveryReturn(sdk,{kind:'pkce',code:'ordinary-oauth-code'}),/RECOVERY_EXPIRED/);
 });
 test('Only a verified, matching, unexpired recovery can resume; a normal login never grants this form',async()=>{
  const values=new Map(),storage={getItem:k=>values.get(k)||null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)},sdk={auth:{getSession:async()=>({data:{session}}),getUser:async()=>({data:{user:session.user}})}};

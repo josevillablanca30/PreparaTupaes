@@ -1,10 +1,10 @@
-import{getWebClient}from'./auth.mjs';
+import{getWebClient,getRecoveryRequestClient}from'./auth.mjs';
 import{captureRecoveryReturn,verifyRecoveryReturn,rememberRecovery,resumeRecovery,forgetRecovery,requestRecovery,changeRecoveredPassword,recoveryError}from'./recovery-flow.mjs';
 
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-export async function mountRecoveryPage({root,status,location=window.location,history=window.history,storage=window.sessionStorage}={}){
- let entry=captureRecoveryReturn(location,history);
- let sdk,ready=false,verifiedUserId=null,busy=false,mode='loading',email='',sentAt=0,tick=null,pendingReturn=false,generation=0,active=entry.kind!=='none'&&entry.kind!=='invalid'?entry:null;
+export async function mountRecoveryPage({root,status,entry:incoming,location=window.location,history=window.history,storage=window.sessionStorage}={}){
+ let entry=incoming||captureRecoveryReturn(location,history);
+ let sdk,requestSdk,ready=false,verifiedUserId=null,busy=false,mode='loading',email='',sentAt=0,tick=null,pendingReturn=false,generation=0,active=entry.kind!=='none'&&entry.kind!=='invalid'?entry:null;
  root.classList.add('recovery-root');
  const note=(text,error=false)=>{status.textContent=text;status.setAttribute('role',error?'alert':'status');};
  const stopClock=()=>{if(tick)clearInterval(tick);tick=null;};
@@ -26,7 +26,7 @@ export async function mountRecoveryPage({root,status,location=window.location,hi
   const attempt=generation,callback=active,startingEntry=entry;
   mode='loading';render();
   try{
-   if(!sdk){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);try{const response=await fetch('/api/config',{cache:'no-store',referrerPolicy:'no-referrer',signal:controller.signal});if(!response.ok)throw Error('RECOVERY_CONNECTION');sdk=getWebClient(await response.json());}finally{clearTimeout(timer);}}
+   if(!sdk){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);try{const response=await fetch('/api/config',{cache:'no-store',referrerPolicy:'no-referrer',signal:controller.signal});if(!response.ok)throw Error('RECOVERY_CONNECTION');const config=await response.json();sdk=getWebClient(config);requestSdk=getRecoveryRequestClient(config);}finally{clearTimeout(timer);}}
    if(attempt!==generation)return;
    if(callback){forgetRecovery(storage);const verified=await verifyRecoveryReturn(sdk,callback);if(attempt!==generation)return;await rememberRecovery(storage,verified);if(attempt!==generation){forgetRecovery(storage);return;}active=null;ready=true;verifiedUserId=verified.userId;mode='password';}
    else if(startingEntry.kind==='invalid'){forgetRecovery(storage);ready=false;mode='invalid';}
@@ -35,7 +35,7 @@ export async function mountRecoveryPage({root,status,location=window.location,hi
   }catch(error){if(attempt!==generation)return;const message=recoveryError(error),connection=message.startsWith('No logramos conectarnos');ready=false;if(!connection){active=null;forgetRecovery(storage);}mode=connection?'connection':'invalid';note(message,true);}
   render();
  }
- async function send(){await requestRecovery(sdk,email,location.origin);sentAt=Date.now();mode='sent';note('');}
+ async function send(){await requestRecovery(requestSdk,email,location.origin);sentAt=Date.now();mode='sent';note('');}
  async function work(action,{redraw=true}={}){
   if(busy)return;busy=true;root.setAttribute('aria-busy','true');root.querySelectorAll('button').forEach(button=>button.disabled=true);note('');
   try{await action();}catch(error){note(recoveryError(error),true);if(['RECOVERY_EXPIRED','RECOVERY_REQUIRED','session_not_found','refresh_token_not_found','otp_expired'].includes(error?.code||error?.message)){ready=false;forgetRecovery(storage);mode='invalid';}}

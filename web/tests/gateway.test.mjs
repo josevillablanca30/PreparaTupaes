@@ -62,6 +62,9 @@ test('password recovery is public without Premium, never cached and never suppli
  }
  assert.equal(h.calls.length,0);
 });
+test('The Site URL landing callback has private cache and referrer headers even when its token is only a fragment',async()=>{
+ const h=harness();for(const path of['/','/index.html','/?code=synthetic-recovery-code']){const r=await h.gateway.fetch(h.req(path),h.env);assert.equal(r.headers.get('referrer-policy'),'no-referrer');assert.equal(r.headers.get('cache-control'),'private, no-store');}
+});
 test('Pages HTML canonicalization serves account and public documents at their stable return URLs, preserving queries and security headers',async()=>{
  const gateway=createGateway();
  for(const [original,canonical]of[['/cuenta.html','/cuenta'],['/privacidad.html','/privacidad'],['/condiciones.html','/condiciones'],['/eliminar-cuenta.html','/eliminar-cuenta'],['/offline.html','/offline'],['/index.html','/']]){
