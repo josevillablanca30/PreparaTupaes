@@ -4,11 +4,27 @@
   "currency": "CLP",
   "initialCountry": "CL",
   "basePlans": [
-    {"id": "semanal", "billingPeriod": "P1W", "priceCLP": 2490},
-    {"id": "mensual", "billingPeriod": "P1M", "priceCLP": 7990},
-    {"id": "anual", "billingPeriod": "P1Y", "priceCLP": 64990}
+    {
+      "id": "semanal",
+      "billingPeriod": "P1W",
+      "priceCLP": 2490
+    },
+    {
+      "id": "mensual",
+      "billingPeriod": "P1M",
+      "priceCLP": 7990
+    },
+    {
+      "id": "anual",
+      "billingPeriod": "P1Y",
+      "priceCLP": 64990
+    }
   ],
-  "monthlyTrial": {"period": "P7D", "priceCLP": 0, "eligibility": "Google Play must confirm eligibility"},
+  "monthlyTrial": {
+    "period": "P7D",
+    "priceCLP": 0,
+    "eligibility": "Google Play must confirm eligibility"
+  },
   "consoleObservationDate": "2026-11-03",
   "merchantProfileConfigured": false,
   "subscriptionCreationBlockedByMerchantProfile": true,
@@ -17,7 +33,14 @@
   "androidBillingEnabled": false,
   "hostedPlayVerifierReady": false,
   "realPaymentsActivated": false,
-  "testerReward": {"maximumPeriod": "P1Y", "emailListProvided": false, "newAccountsGranted": 0},
+  "testerReward": {
+    "maximumPeriod": "P1Y",
+    "emailListProvided": true,
+    "newEmailPreauthorizations": 8,
+    "authAccountsCreated": 0,
+    "newPreauthorizationsExpireOn": "2027-11-03"
+  },
   "ownerUploadsAab": true,
-  "credentialsIncluded": false
+  "credentialsIncluded": false,
+  "consoleObservationsAreHistorical": true
 }

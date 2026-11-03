@@ -1,0 +1,48 @@
+{
+  "sourceCommit": "f75b92aa8e72738e23839dc8f5e690cba10922da",
+  "versionCode": 45,
+  "versionName": "1.5.0-rc18",
+  "aabRunId": 41689953231,
+  "aabArtifactId": 13257472535,
+  "bytes": 13545587,
+  "sha256": "ff603b05fde38085d224300fbb238cf28ebb23e84db78bf21a56c3cf48c31b60",
+  "certificateSha256": "a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575",
+  "signedPayloadEntries": 265,
+  "localIndependentSignatureVerification": true,
+  "manifestVerified": true,
+  "logicPassed": 419,
+  "gateMobilePassed": 162,
+  "ownerUploadsBundle": true,
+  "physicalLegalLinkTapTested": false,
+  "observedDate": "2026-11-03",
+  "archiveSha256": "ef4a182e4475aaf5db674eca801b6f4ea2ab6e805d5fd7904bda5e6523af67f9",
+  "packageName": "cl.preparatupaes.app",
+  "targetSdk": 36,
+  "debuggable": false,
+  "testOnly": false,
+  "allPayloadsSigned": true,
+  "webSourceCommit": "276ee9f209a57a298a1d6166f805e20219e29ecb",
+  "legalUrls": [
+    "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/privacidad.html",
+    "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/condiciones.html",
+    "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/eliminar-cuenta.html"
+  ],
+  "backend": {
+    "project": "jmobinmdwrmdqrxtcruj",
+    "migration": "20261103175334_cachaste_delete_tester_preauthorization",
+    "applied": true,
+    "isolatedDeletionTestsPassed": 4,
+    "currentAuthAccountsPreserved": true,
+    "currentTesterGrantsPreserved": true,
+    "currentEmailPreauthorizations": 10,
+    "accountsDeletedByThisWork": 0,
+    "newSecurityAdvisorFindings": 0
+  },
+  "physicalPhoneValidationPending": true,
+  "billingEnabled": false,
+  "sourceCommits": [
+    "211e0f0b17f06bd71f4f82500cfc1fa6e53effdf",
+    "f75b92aa8e72738e23839dc8f5e690cba10922da"
+  ],
+  "initialFailedBuild": "The initial legal navigation fixture omitted UTF-8 and rendered mojibake; only the fixture charset was corrected before the successful build. No failed artifact is delivered."
+}

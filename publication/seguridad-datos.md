@@ -1,6 +1,6 @@
-# Seguridad de los datos · candidata 44 / 1.5.0-rc17
+# Seguridad de los datos · candidata 45 / 1.5.0-rc18
 
-Revisión del 3 de noviembre de 2026, basada en código y políticas publicadas. **El formulario no se guardó ni envió.** La última lectura de Play Console mostraba «no se recopilan datos»; la sesión terminó durante su edición y el titular eligió completar Google Play manualmente.
+Revisión del 3 de noviembre de 2026, basada en código y políticas publicadas. **El formulario no se guardó ni envió.** La última lectura autenticada mostraba «no se recopilan datos». El titular está completando Google Play manualmente; los valores actuales no pudieron releerse porque la sesión está cerrada.
 
 La app sí recopila datos, usa HTTPS y conserva datos de cuenta/competencia y miniaturas: no son procesamiento efímero. No declarar certificaciones independientes, MASA o UPI inexistentes.
 
@@ -22,8 +22,8 @@ No hay publicidad o analítica publicitaria integrada, GPS, contactos, llamadas,
 
 Android ofrece correo/contraseña con verificación por código, sin OAuth. Seleccionar el método que cubra contraseña y código sin inventar proveedores.
 
-- Política: https://cachaste-privacidad.jose-villablanca-hor.chatgpt.site/privacidad
-- Eliminación de cuenta y datos: https://cachaste-privacidad.jose-villablanca-hor.chatgpt.site/eliminar-cuenta
+- Política: https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/privacidad.html
+- Eliminación de cuenta y datos: https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/eliminar-cuenta.html
 
 La app permite borrar cuenta con reconfirmación y perfil público por separado. La página incluye el canal de solicitud. No afirmar que borrar una cuenta invalida instantáneamente todos los JWT emitidos.
 
