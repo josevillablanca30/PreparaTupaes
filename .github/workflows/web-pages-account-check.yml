@@ -1,0 +1,44 @@
+name: ¿Cachaste? · comprobar cuenta Pages sin cambios
+on:
+  push:
+    branches: [work/cachaste-web-comercial-20261024]
+    paths: [.github/workflows/web-pages-account-check.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  account-check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    env:
+      CLOUDFLARE_ACCOUNT_ID: cfe4b77c0c39bb056306d16133a93642
+      CLOUDFLARE_PAGES_PROJECT: cachaste-sitecacho
+    steps:
+      - uses: actions/checkout@v4
+      - name: Leer únicamente cuentas accesibles y el proyecto de Cachaste
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_CONFIGURED_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          node --input-type=module - <<'JS'
+          import {credentials,verifyTarget,PAGES_PROJECT,PAGES_ACCOUNT_ID} from './web/scripts/pages-client.mjs';
+          const {token}=credentials(process.env),configured=(process.env.CLOUDFLARE_CONFIGURED_ACCOUNT_ID||'').trim(),ids=new Map([[PAGES_ACCOUNT_ID,'pinned']]);
+          const valid=value=>/^[a-f0-9]{32}$/i.test(value);
+          console.log(JSON.stringify({configuredAccountPresent:!!configured,configuredAccountFormatValid:valid(configured),configuredMatchesPinned:configured===PAGES_ACCOUNT_ID,readOnly:true}));
+          if(valid(configured))ids.set(configured,'configured');
+          async function read(path){
+            try{const r=await fetch('https://api.cloudflare.com/client/v4'+path,{headers:{authorization:'Bearer '+token},redirect:'error',signal:AbortSignal.timeout(12000)}),body=await r.json();return{httpStatus:r.status,success:body.success===true,codes:(body.errors||[]).map(e=>e.code).filter(Number.isSafeInteger),result:body.result};}
+            catch{return{transportUnavailable:true};}
+          }
+          const accounts=await read('/accounts?per_page=5');
+          console.log(JSON.stringify({accountListHttpStatus:accounts.httpStatus,accountListCodes:accounts.codes,accessibleAccounts:accounts.success&&Array.isArray(accounts.result)?accounts.result.length:0}));
+          if(accounts.success&&Array.isArray(accounts.result))for(const account of accounts.result.slice(0,5))if(valid(account.id)&&!ids.has(account.id))ids.set(account.id,'accessible');
+          let found=false;
+          for(const[id,source]of ids){
+            const r=await read('/accounts/'+id+'/pages/projects/'+PAGES_PROJECT);let verified=false;
+            if(r.success)try{verifyTarget(r.result,process.env.GITHUB_REF_NAME);verified=true;}catch{}
+            console.log(JSON.stringify({source,httpStatus:r.httpStatus,codes:r.codes,projectVerified:verified,...(verified?{resolvedAccountId:id}:{}),readOnly:true}));
+            found ||= verified;
+          }
+          if(!found){console.error('No se verificó acceso al proyecto con la cuenta fija ni con las cuentas ya disponibles. No se escribió en Cloudflare.');process.exitCode=1;}
+          JS
