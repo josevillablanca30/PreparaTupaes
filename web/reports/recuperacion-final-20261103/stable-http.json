@@ -1,0 +1,23 @@
+[
+  {
+    "path": "/version.json",
+    "httpStatus": 200,
+    "cacheControl": "public, max-age=0, must-revalidate",
+    "referrerPolicy": "strict-origin-when-cross-origin",
+    "revision": "d0d7e747b7afd217fe52ad55f26021a7974d7395"
+  },
+  {
+    "path": "/recuperar",
+    "httpStatus": 200,
+    "cacheControl": "private, no-store",
+    "referrerPolicy": "no-referrer",
+    "recoveryPage": true
+  },
+  {
+    "path": "/",
+    "httpStatus": 200,
+    "cacheControl": "private, no-store",
+    "referrerPolicy": "no-referrer",
+    "landingCallbackTemplate": true
+  }
+]

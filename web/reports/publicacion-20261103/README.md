@@ -1,5 +1,7 @@
 # ¿Cachaste? · Publicación verificada del 3 de noviembre de 2026
 
+> Estado vigente al 3 de noviembre de 2026: corrección desplegada en `d0d7e747`; URLs de Supabase verificadas y correo de recuperación en español aplicado y recibido en Gmail. Ya no hay configuración manual pendiente en Supabase. Falta la validación del cambio de contraseña e ingreso desde un teléfono físico. [Estado actual y evidencia](../recuperacion-final-20261103/README.md). El contenido inferior es histórico.
+
 **Cloudflare Pages publicó correctamente la web y la ruta de recuperación.** La recuperación completa de una cuenta continúa pendiente porque Supabase todavía utiliza `http://localhost:3000` como retorno predeterminado.
 
 | Dato | Resultado verificado |

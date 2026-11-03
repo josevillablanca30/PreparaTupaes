@@ -68,5 +68,7 @@
     "recovery": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41551147339",
     "deploymentAttempt": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41562707568"
   },
-  "currentPublicationReport": "../publicacion-20261103/README.md"
+  "currentPublicationReport": "../recuperacion-final-20261103/README.md",
+  "historical": true,
+  "supersededBy": "../recuperacion-final-20261103/resumen.json"
 }

@@ -1,0 +1,64 @@
+{
+  "deployedRevision": "d0d7e747b7afd217fe52ad55f26021a7974d7395",
+  "implementationRevision": "9e45078a895276c9003450a494389a017c10450b",
+  "publicRecoveryUrl": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/recuperar",
+  "immutableDeploymentUrl": "https://0085f006.cachaste-sitecacho.pages.dev",
+  "deploymentId": "0085f006-07cb-4971-bfad-45c68c62513e",
+  "cloudflareDeployment": "success",
+  "qaRun": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41632426358",
+  "deploymentRun": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41632426361",
+  "recoveryHttpRun": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41630379450",
+  "tests": {
+    "webUnit": {
+      "passed": 120,
+      "failed": 0
+    },
+    "browsers": {
+      "passed": 184,
+      "failed": 0,
+      "perProfile": 46,
+      "profiles": [
+        "Android-Chrome",
+        "iPhone-WebKit",
+        "Desktop-Chrome",
+        "mobile-320px"
+      ],
+      "physicalPhones": false
+    },
+    "localRecoveryAuthAndSmtp": {
+      "passed": 9,
+      "failed": 0,
+      "hostedUsersModified": false
+    },
+    "liveHttp": {
+      "passed": 205,
+      "failed": 0
+    },
+    "realGmailDelivery": {
+      "passed": true,
+      "inbox": true,
+      "spanishSubjectAndBody": true,
+      "publicRecoveryLink": true
+    },
+    "liveChromeInvalidRootCallback": {
+      "passed": true,
+      "returnedToRecoveryNotLanding": true,
+      "urlCleaned": true
+    },
+    "realPhonePasswordChangeAndLogin": "pending-human-validation"
+  },
+  "hostedSupabaseTemplateApplied": true,
+  "manualSupabaseConfigurationRemaining": [],
+  "androidCodeModified": false,
+  "newAabRequired": false,
+  "paymentsActivated": false,
+  "serviciosVillablancaModified": false,
+  "missionComplete": false,
+  "remainingHumanValidation": [
+    "Open the newest real email on the phone",
+    "Enter and save a new password chosen by the account owner",
+    "Sign in to Android with the new password",
+    "Verify that the old password is rejected"
+  ],
+  "secretValuesIncludedInEvidence": false
+}

@@ -1,0 +1,7 @@
+{
+  "scope": "Read-only synthetic invalid token; no email sent and no password changed",
+  "httpStatus": 303,
+  "defaultReturnOrigin": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev",
+  "defaultReturnPath": "",
+  "usesLocalhost": false
+}

@@ -1,0 +1,20 @@
+{
+  "project": "jmobinmdwrmdqrxtcruj",
+  "siteUrl": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev",
+  "redirectUrls": [
+    "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/recuperar",
+    "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/cuenta.html?recovery=1"
+  ],
+  "urlConfigurationChangedByThisFix": false,
+  "urlConfigurationVerifiedInDashboard": true,
+  "recoveryEmailSubject": "¿Cachaste? — Recupera tu contraseña",
+  "recoveryEmailTemplateApplied": true,
+  "recoveryEmailTemplateVerifiedAfterReload": true,
+  "recoveryEmailTemplateSource": "web/auth/recovery.html",
+  "recoveryEmailTemplateApplication": "Supabase dashboard on the existing project",
+  "senderVerifiedFromDeliveredMessage": "¿Cachaste? <noreply@auth.sitecacho.cl>",
+  "smtpConfigurationChanged": false,
+  "newManagementTokenCreated": false,
+  "privateKeysChanged": false,
+  "manualSupabaseConfigurationRemaining": []
+}

@@ -1,6 +1,6 @@
 # ¿Cachaste? · Recuperación de cuentas
 
-> Actualización del 3 de noviembre de 2026: la recuperación web ya está publicada y verificada en Cloudflare Pages, commit `1979a6ba`. Los errores de acceso Cloudflare se resolvieron. Supabase todavía retorna a `localhost:3000`; el flujo real de correo y teléfono permanece pendiente. [Estado actual y evidencia](../publicacion-20261103/README.md). El texto inferior conserva el diagnóstico histórico del 2 de noviembre.
+> Estado vigente al 3 de noviembre de 2026: corrección desplegada en `d0d7e747`; URLs de Supabase verificadas y correo de recuperación en español aplicado y recibido en Gmail. Ya no hay configuración manual pendiente en Supabase. Falta la validación del cambio de contraseña e ingreso desde un teléfono físico. [Estado actual y evidencia](../recuperacion-final-20261103/README.md). El contenido inferior es histórico.
 
 Fecha de trabajo: 2 de noviembre de 2026, Chile.
 

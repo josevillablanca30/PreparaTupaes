@@ -1,0 +1,44 @@
+{
+  "scope": "Disposable loopback Auth, real SMTP capture, current Android method and official SDK only; no hosted users or mailboxes changed",
+  "passed": 9,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "Public reset request delivers the actual Spanish template to local SMTP, including a fragment-only link and numeric Android code",
+      "passed": true
+    },
+    {
+      "name": "A reset requested in one browser opens its emailed hash in another, changes the password, signs in with the new password and rejects the previous password",
+      "passed": true
+    },
+    {
+      "name": "The consumed email recovery link is rejected on reuse",
+      "passed": true
+    },
+    {
+      "name": "A genuinely expired server recovery token is rejected after its configured lifetime",
+      "passed": true
+    },
+    {
+      "name": "Repeated reset requests deliver distinct messages and the newest link can complete verification",
+      "passed": true
+    },
+    {
+      "name": "The current Android client requests public Auth recovery, accepts the real emailed OTP and changes the password without an AAB rebuild",
+      "passed": true
+    },
+    {
+      "name": "The official PKCE callback exchanges its one-time code using the verifier from the requesting browser",
+      "passed": true
+    },
+    {
+      "name": "The unchanged Android/default-template flow returns official implicit credentials to the Site URL root and still validates recovery",
+      "passed": true
+    },
+    {
+      "name": "A signup confirmation hash is rejected by the official password recovery verification",
+      "passed": true
+    }
+  ],
+  "humanValidation": "Real Android/iPhone email opening and Gmail inbox placement remain separate"
+}
