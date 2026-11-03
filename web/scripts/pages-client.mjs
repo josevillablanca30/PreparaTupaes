@@ -6,6 +6,21 @@ export const PREVIEW_BRANCH = 'work/cachaste-web-comercial-20261024';
 export const RESERVED_PRODUCTION_BRANCH = 'production-requires-owner-approval';
 export const REPOSITORY = 'josevillablanca30/PreparaTupaes';
 
+export function normalizeApiToken(value) {
+  if (typeof value !== 'string' || !value.trim()) throw Error('CLOUDFLARE_API_TOKEN_REQUIRED_IN_GITHUB_SECRETS');
+  let token = value.trim();
+  // Pasting a quoted Authorization header or a Bearer value must not send a
+  // second scheme, quotes or surrounding line breaks to the provider.
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if ((token.startsWith('"') && token.endsWith('"')) || (token.startsWith("'") && token.endsWith("'"))) token = token.slice(1, -1).trim();
+    token = token.replace(/^Authorization\s*:\s*/i, '').replace(/^Bearer[\t ]+/i, '').trim();
+  }
+  // RFC 6750 b64token characters. Cloudflare, rather than a guessed local
+  // checksum/length format, decides whether the opaque credential is valid.
+  if (token.length < 20 || token.length > 4096 || !/^[A-Za-z0-9._~+\/-]+=*$/.test(token)) throw Error('CLOUDFLARE_API_TOKEN_HEADER_FORMAT_INVALID');
+  return token;
+}
+
 // Cloudflare responses may contain private bindings or credential fragments.
 // Keep only numeric codes and fixed diagnostic labels, never provider text.
 function apiDiagnostic(method, suffix, status, data) {
@@ -30,8 +45,7 @@ export function credentials(env) {
   if (env.GITHUB_REF_NAME !== PREVIEW_BRANCH) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
   if (env.CLOUDFLARE_PAGES_PROJECT && env.CLOUDFLARE_PAGES_PROJECT !== PAGES_PROJECT) throw Error('UNRELATED_PROJECT_DENIED');
   if (env.CLOUDFLARE_ACCOUNT_ID !== PAGES_ACCOUNT_ID) throw Error('UNRELATED_ACCOUNT_DENIED');
-  if (!/^[A-Za-z0-9_-]{20,256}$/.test(env.CLOUDFLARE_API_TOKEN || '')) throw Error('CLOUDFLARE_API_TOKEN_REQUIRED_IN_GITHUB_SECRETS');
-  return {account: env.CLOUDFLARE_ACCOUNT_ID, token: env.CLOUDFLARE_API_TOKEN};
+  return {account: env.CLOUDFLARE_ACCOUNT_ID, token: normalizeApiToken(env.CLOUDFLARE_API_TOKEN)};
 }
 
 export function verifyTarget(project, branch) {

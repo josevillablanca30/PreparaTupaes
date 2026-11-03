@@ -65,8 +65,15 @@ export async function prepareProject(env, {client = pagesClient(env), generate =
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     if (process.argv.includes('--check-credentials')) {
-      credentials(process.env);
-      console.log('Cloudflare credentials present; fixed preview target verified. No API writes performed.');
+      const {token} = credentials(process.env);
+      const normalized = token !== process.env.CLOUDFLARE_API_TOKEN;
+      if (normalized && process.env.GITHUB_ENV) {
+        // Register the canonical value before later GitHub steps (including
+        // Wrangler) receive it. Never print a credential in ordinary output.
+        console.log('::add-mask::' + token);
+        await appendFile(process.env.GITHUB_ENV, 'CLOUDFLARE_API_TOKEN=' + token + '\n', {mode: 0o600});
+      }
+      console.log(JSON.stringify({cloudflareCredentialPresent: true, copyFormattingNormalized: normalized, fixedPreviewTargetVerified: true, writesPerformed: false}));
     } else if (process.argv.includes('--check-access')) {
       try {
         const project = await pagesClient(process.env).getProject();

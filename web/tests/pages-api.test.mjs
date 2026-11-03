@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtemp, mkdir, readFile, writeFile, rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
+import {spawnSync} from 'node:child_process';
 import {randomBytes, createCipheriv, createHash} from 'node:crypto';
 import {pagesClient, credentials, previewUrl, PAGES_PROJECT, PAGES_ACCOUNT_ID, PREVIEW_BRANCH, RESERVED_PRODUCTION_BRANCH, REPOSITORY} from '../scripts/pages-client.mjs';
 import {prepareProject, runtimeSecrets} from '../scripts/prepare-pages-project.mjs';
@@ -96,6 +97,34 @@ test('missing token or a different account, project or branch cause zero Cloudfl
     assert.equal(called, false);
   }
   assert.throws(() => credentials({...env(), CLOUDFLARE_API_TOKEN: undefined, CLOUDFLARE_API_KEY: 'old-global-key'}), /TOKEN_REQUIRED/);
+});
+
+test('opaque Bearer credentials retain their value after copy formatting is removed and invalid headers make no API request', async () => {
+  const token = 'opaque.example~fixture+token/for_qa-2026==';
+  for (const value of [token, '\ufeff '+token+'\n', 'Bearer '+token, '"Authorization: Bearer '+token+'"', "'"+token+"'"]) {
+    let called = false;
+    const client = pagesClient({...env(), CLOUDFLARE_API_TOKEN: value}, {fetcher: async (_url, options) => {
+      called = true; assert.equal(options.headers.authorization, 'Bearer '+token);
+      return Response.json({success: true, result: initialProject()});
+    }});
+    await client.getProject(); assert(called);
+  }
+  for (const value of ['Bearer '+token+'\nInjected: header', 'curl --header example', 'opaque-token-with an internal space']) {
+    let called = false;
+    assert.throws(() => pagesClient({...env(), CLOUDFLARE_API_TOKEN: value}, {fetcher: () => {called = true;}}), /HEADER_FORMAT_INVALID/);
+    assert.equal(called, false);
+  }
+});
+
+test('the credential preflight passes the normalized masked value to subsequent GitHub steps including Wrangler', async t => {
+  const dir = await mkdtemp(path.join(tmpdir(), 'cachaste-pages-env-'));
+  t.after(() => rm(dir, {recursive: true, force: true}));
+  const destination = path.join(dir, 'github-env'), token = 'opaque.example~fixture+token/for_qa-2026==';
+  const result = spawnSync(process.execPath, ['web/scripts/prepare-pages-project.mjs', '--check-credentials'], {cwd: new URL('../../', import.meta.url), env: {...process.env, ...env(), GITHUB_ENV: destination, CLOUDFLARE_API_TOKEN: '\nBearer '+token+'\n'}, encoding: 'utf8'});
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(await readFile(destination, 'utf8'), 'CLOUDFLARE_API_TOKEN='+token+'\n');
+  assert(result.stdout.startsWith('::add-mask::'+token+'\n'));
+  assert.equal(JSON.parse(result.stdout.trim().split('\n').at(-1)).copyFormattingNormalized, true);
 });
 
 test('Cloudflare error bodies and secret bindings cannot leak through exception messages', async () => {
