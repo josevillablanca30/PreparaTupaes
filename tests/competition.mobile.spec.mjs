@@ -60,7 +60,7 @@ test('A verified SDK recovery event opens password renewal, then clears the sess
 });
 test('Recovery requests mail without validating the login password and verifies it inside Android',async({page})=>{
  await fixturePage(page,{signed:false});let reset=0,verified=0;
- await page.route('**/auth/v1/recover',async route=>{reset++;expect(route.request().postDataJSON().email).toBe('ui-fixture@example.invalid');await route.fulfill({json:{}});});
+ await page.route('**/auth/v1/recover*',async route=>{reset++;expect(route.request().postDataJSON().email).toBe('ui-fixture@example.invalid');await route.fulfill({json:{}});});
  await page.route('**/auth/v1/verify',async route=>{verified++;expect(route.request().postDataJSON().type).toBe('recovery');await route.fulfill({json:session()});});
  await page.goto('./competencia.html#perfil');await page.getByLabel('Correo de acceso',{exact:true}).fill('ui-fixture@example.invalid');await page.getByRole('button',{name:'Recuperar contraseña',exact:true}).click();
  await expect(page.locator('#email-request-form input[type=password]')).toHaveCount(0);await page.getByRole('button',{name:'Enviar código',exact:true}).click();

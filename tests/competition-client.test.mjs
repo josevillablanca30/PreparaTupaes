@@ -81,6 +81,17 @@ test('Email verification accepts only this project and the requested action, nev
  for(const url of ['https://evil.invalid/auth/v1/verify?type=recovery&token='+token,'https://test.supabase.co/auth/v1/verify?type=signup&token='+token,'https://test.supabase.co/other?type=recovery&token='+token,'not a code'])await assert.rejects(client.verifyEmail('student@example.invalid',url,'recovery'),/INVALID_EMAIL_LINK/);
  assert.equal(seen.length,0);await client.resetPassword(' student@example.invalid ');assert.deepEqual(seen.pop(),['student@example.invalid',{}]);
 });
+test('Android requests the published recovery page and accepts its emailed fragment link or numeric code',async()=>{
+ const returnUrl='https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/recuperar';
+ const client=new CompetitionClient({supabaseUrl:'https://test.supabase.co',authReturnUrl:returnUrl},{}),seen=[];
+ client.serviceReady=true;client.sdk={auth:{verifyOtp:async p=>{seen.push(p);return{};},resetPasswordForEmail:async(...p)=>{seen.push(p);return{};}}};client.connect=async()=>({});
+ await client.resetPassword(' student@example.invalid ');assert.deepEqual(seen.pop(),['student@example.invalid',{redirectTo:returnUrl}]);
+ const token='b'.repeat(64);
+ await client.verifyEmail('student@example.invalid',returnUrl+'#token_hash='+token+'&type=recovery','recovery');assert.deepEqual(seen.pop(),{token_hash:token,type:'recovery'});assert.equal(client.recovering,true);
+ await client.verifyEmail('student@example.invalid','123456','recovery');assert.deepEqual(seen.pop(),{email:'student@example.invalid',token:'123456',type:'recovery'});
+ for(const url of [returnUrl.replace('pages.dev','pages.dev.evil.invalid')+'#token_hash='+token+'&type=recovery',returnUrl+'#token_hash='+token+'&type=signup',returnUrl+'?token_hash='+token+'&type=recovery',returnUrl+'#token_hash='+token+'&token='+token+'&type=recovery',returnUrl+'#token_hash='+token+'&type=recovery&type=signup'])await assert.rejects(client.verifyEmail('student@example.invalid',url,'recovery'),/INVALID_EMAIL_LINK/);
+ assert.equal(seen.length,0);
+});
 test('Expected Auth errors have actionable messages without echoing credentials',()=>{
  for(const code of ['invalid_credentials','email_not_confirmed','weak_password','over_email_send_rate_limit','otp_expired']){const message=errorMessage({code,message:'secret-password'});assert.ok(message.length>10);assert.ok(!message.includes('secret-password'));}
 });

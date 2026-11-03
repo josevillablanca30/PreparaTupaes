@@ -77,9 +77,15 @@ export class CompetitionClient{
   const text=value.trim();let payload;
   if(/^\d{6,8}$/.test(text))payload={email:email.trim(),token:text,type:type==='signup'?'email':type};
   else{let link;try{link=new URL(text);}catch{throw new Error('INVALID_EMAIL_LINK');}
-   const token=link.searchParams.get('token')||link.searchParams.get('token_hash');
-   if(link.origin!==new URL(this.config.supabaseUrl).origin||link.pathname!=='/auth/v1/verify'||!(type==='signup'?['signup','email']:['recovery']).includes(link.searchParams.get('type'))||!token||!/^[A-Za-z0-9_-]{20,256}$/.test(token))throw new Error('INVALID_EMAIL_LINK');
-   payload={token_hash:token,type:link.searchParams.get('type')};
+   const fragment=new URLSearchParams(link.hash.slice(1));
+   const recoveryPage=this.config.authReturnUrl?new URL(this.config.authReturnUrl):null;
+   const webRecovery=type==='recovery'&&recoveryPage?.protocol==='https:'&&link.origin===recoveryPage.origin&&link.pathname===recoveryPage.pathname;
+   const official=link.origin===new URL(this.config.supabaseUrl).origin&&link.pathname==='/auth/v1/verify';
+   const params=webRecovery?fragment:link.searchParams;
+   const token=params.get('token_hash')||params.get('token');
+   const duplicate=['token','token_hash','type'].some(key=>params.getAll(key).length>1)||(params.has('token')&&params.has('token_hash'));
+   if(link.username||link.password||duplicate||(!official&&!webRecovery)||(webRecovery&&link.search)||!(type==='signup'?['signup','email']:['recovery']).includes(params.get('type'))||!token||!/^[A-Za-z0-9_-]{20,256}$/.test(token))throw new Error('INVALID_EMAIL_LINK');
+   payload={token_hash:token,type:params.get('type')};
   }
   const{error}=await this.sdk.auth.verifyOtp(payload);if(error)throw error;
   if(type==='recovery')this.recovering=true;
