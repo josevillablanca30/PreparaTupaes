@@ -21,6 +21,10 @@ async function backend(url,options={}){
  }
  if(parsed.pathname.endsWith('/auth/v1/token')){const body=JSON.parse(options.body||'{}'),u=body.email==='student-b@example.invalid'?users[1]:users[0];return Response.json({access_token:tokens.get(u),refresh_token:'qa-refresh-'+u,token_type:'bearer',expires_in:3600,user:accountUser(u)});}
  if(!id||revoked)return Response.json({message:'AUTH_REQUIRED'},{status:401});
+ if(parsed.pathname==='/storage/v1/object/cachaste-profile-photos'&&options.method==='DELETE'){
+  const body=JSON.parse(options.body||'{}');if(JSON.stringify(body.prefixes)!==JSON.stringify([id+'/avatar.webp']))return Response.json({message:'PHOTO_OWNER_REQUIRED'},{status:403});
+  calls.push({userId:id,operation:'photo_storage_remove',payload:{prefixes:body.prefixes}});return Response.json([{name:id+'/avatar.webp'}]);
+ }
  if(parsed.pathname.endsWith('/auth/v1/user'))return Response.json(accountUser(id));
  const access={userId:id,active,serverTimeMs:Date.now(),validUntilMs:active?Date.now()+3600000:null};
  if(op==='cachaste_access')return Response.json(access);
@@ -36,6 +40,7 @@ async function backend(url,options={}){
  if(op==='cachaste_competition'){
   const p=body.payload||{},operation=body.operation;let data={};
   if(operation==='delete_account'){documents.delete(id);revoked=true;return Response.json({deleted:true});}
+  if(operation==='delete_profile')return Response.json({deleted:true});
   if(operation==='profile'||operation==='save_profile')data={profile:{...profile,user_id:id,nickname:id===actor.id?actor.nickname:opponent.nickname},premium:active,season:'2026-10-19'};
   else if(!active)return Response.json({message:'SUBSCRIPTION_REQUIRED'},{status:403});
   else if(operation==='rankings')data=ranking;
