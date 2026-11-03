@@ -10,5 +10,5 @@ export function adaptCompetitionUi(source){
  source=source.replace(password,"'+(api.user?.app_metadata?.provider==='google'?'<p>Tu cuenta usa Google. Si tu acceso tiene más de diez minutos, <a href=\"/cuenta.html?reauth=google&next=%2Fapp%2Fcompetencia.html\">confirma con Google</a> y vuelve a Perfil. No necesitas crear una contraseña.</p>':'"+password+"')+'");
  const original="await api.signIn(email,String(values.get('password')));await api.call('delete_account'";
  if(!source.includes(original))throw Error('REVIEW_WEB_GOOGLE_DELETION');
- return source.replace(original,"if(api.user?.app_metadata?.provider==='google'){const{data,error}=await api.sdk.auth.getUser();if(error||data.user?.id!==id)throw Error('AUTH_REQUIRED');}else await api.signIn(email,String(values.get('password')));await api.call('delete_account'");
+ return source.replace(original,"if(api.user?.app_metadata?.provider==='google'){const{data,error}=await api.sdk.auth.getUser();if(error||data.user?.id!==id)throw Error('AUTH_REQUIRED');}else await api.signIn(email,String(values.get('password')));await api.call('delete_account'").replaceAll('https://cachaste-privacidad.jose-villablanca-hor.chatgpt.site/privacidad','/privacidad.html').replaceAll('https://cachaste-privacidad.jose-villablanca-hor.chatgpt.site/eliminar-cuenta','/eliminar-cuenta.html');
 }

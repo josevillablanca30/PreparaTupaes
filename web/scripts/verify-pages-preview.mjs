@@ -30,6 +30,7 @@ export async function probePreview({url, revision, protectedFiles, encryptedFile
   await check('Cuenta pública', '/cuenta.html', (r, text) => r.status === 200 && text.includes('cuenta'));
   await check('Recuperación pública HTTPS, privada en caché y sin referrer', '/recuperar', (r,text)=>r.status===200&&text.includes('id=\"recovery-root\"')&&noStore(r)&&r.headers.get('referrer-policy')==='no-referrer');
   await check('Cliente oficial de recuperación disponible', '/recovery.js', (r,text)=>r.status===200&&text.length>1000);
+  for(const[slug,title]of[['privacidad','Política de privacidad'],['condiciones','Condiciones de uso'],['eliminar-cuenta','Eliminar cuenta y datos']])await check('Documento legal público: '+slug,'/'+slug+'.html',(r,text)=>r.status===200&&/text\/html/.test(r.headers.get('content-type')||'')&&text.includes('<h1>'+title+'</h1>')&&text.includes('2026-11-03')&&text.includes('jose.villablanca.horta@gmail.com'));
 
   await check('PWA instalable', '/manifest.webmanifest', (r, text) => r.status === 200 && parse(text)?.display === 'standalone' && parse(text)?.icons?.some(icon => icon.sizes === '512x512'));
   await check('Worker real, mismo commit y registro cerrado', '/api/config', (r, text) => {

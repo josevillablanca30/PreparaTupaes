@@ -65,11 +65,18 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: node web/scripts/verify-pages-preview.mjs
+      - name: Preparar navegadores para enlaces legales públicos
+        run: npx playwright install --with-deps chromium webkit
+      - name: Comprobar páginas legales desplegadas en Android, iPhone y escritorio sin sesión
+        run: node web/scripts/probe-legal-browsers.mjs
       - name: Conservar URL y evidencia sin secretos ni bancos
+        # Public legal resources are also exercised in actual mobile browser engines.
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Cachaste-Pages-Preview
-          path: web/artifacts/pages-preview.json
+          path: |
+            web/artifacts/pages-preview.json
+            web/artifacts/legal-live/
           if-no-files-found: ignore
           retention-days: 14

@@ -198,9 +198,10 @@ async function liveFixture() {
     ['/version.json', JSON.stringify({revision, distribution: 'web-commercial', paymentsEnabledByBuild: false})],
     ['/sw-template.js', 'const key=__OFFLINE_PUBLIC_JWK__;const rev="__BUILD_REVISION__";'],
   ]);
+  for(const[slug,title]of[['privacidad','Política de privacidad'],['condiciones','Condiciones de uso'],['eliminar-cuenta','Eliminar cuenta y datos']])assets.set('/'+slug+'.html','<h1>'+title+'</h1> 2026-11-03 jose.villablanca.horta@gmail.com');
   const bindings = {...keys, ASSETS: {fetch: async request => {
     const body = assets.get(new URL(request.url).pathname);
-    return new Response(body || 'not found', {status: body ? 200 : 404});
+    return new Response(body || 'not found', {status: body ? 200 : 404,headers:{'content-type':'text/html; charset=utf-8'}});
   }}};
   return {url: 'https://123abcd.cachaste-sitecacho.pages.dev', revision, protectedFiles, encryptedFiles,
     fetcher: async (url, options) => gateway.fetch(new Request(url, options), bindings)};
@@ -209,7 +210,7 @@ async function liveFixture() {
 test('post-deploy probe exercises the actual gateway, forgery denial, every private route and ciphertext denial', async () => {
   const result = await probePreview(await liveFixture());
   assert.equal(result.passed, true, JSON.stringify(result.checks.filter(x => !x.passed)));
-  assert.equal(result.checks.length, 21);
+  assert.equal(result.checks.length, 24);
 });
 
 test('post-deploy probe detects a static fail-open bank leak and an accidentally active payment provider', async () => {

@@ -2,3 +2,5 @@ body.web-learning{padding-top:56px}.web-appbar{position:fixed;top:0;left:0;right
 /* Web-only spacing: keep all five subject labels legible on small browser viewports. */
 @media(max-width:599px){.web-learning #competition-root .subject-tabs button{font-size:clamp(10px,2.8vw,12px);gap:3px;padding-left:2px;padding-right:2px}.web-learning #competition-root .subject-tabs .icon{width:16px;height:16px;flex-shrink:0}}
 @media(max-width:350px){.web-learning #competition-root .subject-tabs button{font-size:11px;padding-left:3px;padding-right:3px}.web-learning #competition-root .subject-tabs .icon{display:none}}
+
+.web-legal-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;margin:24px 16px 100px;padding:16px;font:14px/1.5 system-ui,sans-serif}.web-legal-links a{display:inline-flex;align-items:center;min-height:44px;color:inherit;text-decoration:underline}
