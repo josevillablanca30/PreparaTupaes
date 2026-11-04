@@ -8,7 +8,7 @@ import {auditContentContext} from '../scripts/content-context-audit.mjs';
 import {previousTransferAssessments} from '../scripts/transfer-context-review-20261104.mjs';
 const {items}=dailyCatalog(),byKey=new Map(items.map(q=>[q.key,q]));
 const ctx=vm.createContext({});for(const file of ['learning-core.js','daily-visuals.js'])vm.runInContext(readFileSync(new URL('../'+file,import.meta.url),'utf8'),ctx);
-test('802 preguntas: estructura, 130 textos, 18 figuras y 70 respuestas contrastadas independientemente',()=>{
+test('802 preguntas: estructura, 130 referencias lectoras, 18 figuras y 70 respuestas contrastadas independientemente',()=>{
  const report=auditContentContext(items);assert.equal(report.questions,802);assert.equal(report.transfers,171);assert.equal(report.visuals,18);assert.equal(report.calculations.length,70);assert.deepEqual(report.issues,[]);
 });
 test('Una pregunta nueva no puede heredar silenciosamente el gráfico ni el texto de su base',()=>{

@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-04",
+  "oldQuestionCount": 802,
+  "oldInheritedStimuli": [
+    {
+      "key": "M1:TR-M1-007",
+      "type": "inherited-visual",
+      "detail": "Revisar explícitamente contexto y datos compartidos"
+    },
+    {
+      "key": "M1:TR-M1-022",
+      "type": "inherited-visual",
+      "detail": "Revisar explícitamente contexto y datos compartidos"
+    }
+  ],
+  "oldLegacyAliases": 31,
+  "numericalChecksAlonePassed": true
+}

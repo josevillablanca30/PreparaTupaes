@@ -1,0 +1,24 @@
+{
+  "sourceCommit": "edbbfcfdfee55ef8a5963e94052f1f658c40f50c",
+  "run": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41828180569",
+  "artifactId": 13321761399,
+  "artifactSha256": "468307ee69df1372f6739d6ba110cd4963aac7c3b8f84f3bc25e73807599a0dc",
+  "file": "Cachaste-1.5.0-rc19-46.aab",
+  "bytes": 13545559,
+  "verification": {
+    "sha256": "d42633dc921e5dc060b78ebb55e37109c497d1c171cee92f5691bd9f31ba5bda",
+    "certificateSha256": "a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575",
+    "verifiedPayloadEntries": 265,
+    "allPayloadsSigned": true
+  },
+  "manifest": {
+    "package": "cl.preparatupaes.app",
+    "versionName": "1.5.0-rc19",
+    "versionCode": "46",
+    "targetSdk": "36",
+    "debuggable": false,
+    "testOnly": false,
+    "verified": true
+  },
+  "physicalPhoneTest": false
+}
