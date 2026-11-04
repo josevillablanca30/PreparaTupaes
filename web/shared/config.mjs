@@ -1,3 +1,4 @@
+export const CONTENT_BASE='edbbfcfdfee55ef8a5963e94052f1f658c40f50c';
 export const ANDROID_BASE='add8a5979d28cb1f7598767bb4bf1ad7b8328937';
 export const PROJECT_URL='https://jmobinmdwrmdqrxtcruj.supabase.co';
 export const PUBLISHABLE_KEY='sb_publishable_wf2Ji381IwRo2exQKJQ7ew_SRYCl_q1';

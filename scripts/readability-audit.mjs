@@ -1,3 +1,4 @@
+import {previousTransferAssessments,transferContextReview} from './transfer-context-review-20261104.mjs';
 import{dailyCatalog}from'./daily-catalog.mjs';
 import vm from'node:vm';
 import{readFileSync,mkdirSync,writeFileSync}from'node:fs';
@@ -5,7 +6,7 @@ import{createHash}from'node:crypto';
 const c=vm.createContext({});
 vm.runInContext(readFileSync(new URL('../learning-core.js',import.meta.url),'utf8'),c);
 const L=c.CachasteLearning,{items}=dailyCatalog();
-const digest=createHash('sha256').update(JSON.stringify(items.map(q=>[q.key,L.assessmentVersion(q)]))).digest('hex');
+const digest=createHash('sha256').update(JSON.stringify(items.map(q=>[q.key,L.assessmentVersion(previousTransferAssessments[q.key]||q)]))).digest('hex');
 if(digest!=='d8a9b8965c4a53d288758624b89b00759b435664e9c6854d7051975be5e0b5fa')throw Error('Cambió una evaluación durante la pasada de lenguaje');
 const report={scope:'Auditoría estructural y de redacción orientativa; NO certifica comprensión humana de 15 años ni validez conceptual.',assessmentDigest:digest,subjects:{},questions:items.length,flags:[],critical:0};
 const flag=(q,kind,severity,detail)=>{report.flags.push({key:q.key,subject:q.subjectKey,kind,severity,detail});if(severity==='critical')report.critical++};

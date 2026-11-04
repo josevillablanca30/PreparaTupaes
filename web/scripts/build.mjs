@@ -1,3 +1,4 @@
+import {CONTENT_BASE} from '../shared/config.mjs';
 import{readFile,writeFile,mkdir,readdir,cp,rm,stat}from'node:fs/promises';
 import{createHash,randomBytes,createCipheriv}from'node:crypto';
 import{execFileSync}from'node:child_process';
@@ -51,7 +52,7 @@ for(const name of protectedFiles){const plain=await readFile(path.join(out,name)
 const workerEntry=`import{createGateway}from'./server/gateway.mjs';export default createGateway(${JSON.stringify({revision,pagePolicies,protectedFiles,accountFiles,encryptedFiles})});`;
 await build({stdin:{contents:workerEntry,resolveDir:path.join(root,'web'),sourcefile:'worker-entry.mjs'},outfile:path.join(out,'_worker.js'),bundle:true,minify:true,format:'esm',platform:'browser',target:'es2022',legalComments:'eof'});
 await writeFile(path.join(out,'_routes.json'),JSON.stringify({version:1,include:['/*'],exclude:[]}));
-await writeFile(path.join(out,'version.json'),JSON.stringify({revision,androidBase:'add8a5979d28cb1f7598767bb4bf1ad7b8328937',distribution:'web-commercial',paymentsEnabledByBuild:false})+'\n');
+await writeFile(path.join(out,'version.json'),JSON.stringify({revision,androidBase:'add8a5979d28cb1f7598767bb4bf1ad7b8328937',contentBase:CONTENT_BASE,distribution:'web-commercial',paymentsEnabledByBuild:false})+'\n');
 await writeFile(path.join(out,'robots.txt'),'User-agent: *\nDisallow: /\n');
 await writeFile(path.join(out,'_headers'),'/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: no-referrer\n  X-Frame-Options: DENY\n/recuperar*\n  Cache-Control: private, no-store\n  X-Robots-Tag: noindex, nofollow, noarchive\n');
 await mkdir(path.join(root,'web/artifacts'),{recursive:true});await writeFile(path.join(root,'web/artifacts/build-manifest.json'),JSON.stringify({revision,pagePolicies,protectedFiles,accountFiles,encryptedFiles},null,2)+'\n');

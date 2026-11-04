@@ -6,6 +6,7 @@ const root=fileURLToPath(new URL('../dist',import.meta.url)),androidRoot=fileURL
 const users=[actor.id,opponent.id,'10000000-0000-4000-8000-000000000003'];
 const tokenFor=id=>'eyJhbGciOiJIUzI1NiJ9.'+Buffer.from(JSON.stringify({sub:id,exp:Math.floor(Date.now()/1000)+3600,role:'authenticated',session_id:'20000000-0000-4000-8000-000000000001'})).toString('base64url')+'.qa-signature';
 const tokens=new Map(users.map(id=>[id,tokenFor(id)]));
+let qaQuestion=null;
 let active=true,revoked=false,documents=new Map(),position=0,done=false,calls=[],googleReady=false,oauthChallenge=null,oauthUsed=false,googleAccount=false;
 const keyPair=await crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign','verify']),offlineKey=await crypto.subtle.exportKey('jwk',keyPair.privateKey);
 const accountUser=id=>({...actorUser,id,email:id===users[0]?'student-a@example.invalid':'student-b@example.invalid',app_metadata:{provider:googleAccount&&id===users[0]?'google':'email'}});
@@ -47,7 +48,7 @@ async function backend(url,options={}){
   else if(operation==='dashboard')data=dashboard(done);
   else if(['create_duel','join_code','accept','random'].includes(operation))data=duel();
   else if(operation==='duel')data=done?finished():duel();
-  else if(['start','attempt'].includes(operation))data=attempt(position,done?'complete':'active');
+  else if(['start','attempt'].includes(operation)){data=attempt(position,done?'complete':'active');if(data.question&&qaQuestion)data.question=qaQuestion;}
   else if(operation==='answer'){position=Math.max(position,p.position+1);done=position===10;data=attempt(position,done?'complete':'active');}
   else if(operation==='review')data={errors:[{question:{concept:'Números y cantidades',question:'¿Cuánto es 2 + 3?',options:['4','5','6','7'],steps:['Partimos con dos.','Agregamos tres.'],easy:'Junta dos lápices y agrega tres.',example:'Cuatro y uno también hacen cinco.',explanations:['Revisa la suma.']},choice:0,answer:1}]};
   else if(operation==='blocked_users')data={users:[]};
@@ -64,7 +65,7 @@ const env={...local,BANK_CONTENT_KEY:process.env.BANK_CONTENT_KEY||local.BANK_CO
 createServer(async(req,res)=>{try{
  const chunks=[];for await(const chunk of req)chunks.push(chunk);const body=Buffer.concat(chunks),url=new URL(req.url,'http://'+req.headers.host);let response;
  if(url.pathname==='/__qa/session')response=Response.json({users:users.map(id=>({user:accountUser(id),access_token:tokens.get(id),refresh_token:'qa-refresh-'+id,token_type:'bearer',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600}))});
- else if(url.pathname==='/__qa/control'&&req.method==='POST'){const control=JSON.parse(body.toString()||'{}');if(control.reset){active=true;revoked=false;documents=new Map();position=0;done=false;calls=[];googleReady=false;oauthChallenge=null;oauthUsed=false;googleAccount=false;env.WEB_GOOGLE_AUTH_ENABLED='false';env.WEB_AUTH_RETURN_READY='false';}if('active'in control)active=control.active;if('revoked'in control)revoked=control.revoked;if('googleAccount'in control)googleAccount=control.googleAccount;if('googleReady'in control){googleReady=control.googleReady;env.WEB_GOOGLE_AUTH_ENABLED=String(googleReady);env.WEB_AUTH_RETURN_READY=String(googleReady);}if(control.oauthChallenge)oauthChallenge=control.oauthChallenge;response=Response.json({ok:true});}
+ else if(url.pathname==='/__qa/control'&&req.method==='POST'){const control=JSON.parse(body.toString()||'{}');if(control.reset){qaQuestion=null;active=true;revoked=false;documents=new Map();position=0;done=false;calls=[];googleReady=false;oauthChallenge=null;oauthUsed=false;googleAccount=false;env.WEB_GOOGLE_AUTH_ENABLED='false';env.WEB_AUTH_RETURN_READY='false';}if('question'in control)qaQuestion=control.question;if('active'in control)active=control.active;if('revoked'in control)revoked=control.revoked;if('googleAccount'in control)googleAccount=control.googleAccount;if('googleReady'in control){googleReady=control.googleReady;env.WEB_GOOGLE_AUTH_ENABLED=String(googleReady);env.WEB_AUTH_RETURN_READY=String(googleReady);}if(control.oauthChallenge)oauthChallenge=control.oauthChallenge;response=Response.json({ok:true});}
  else if(url.pathname==='/__qa/state')response=Response.json({calls,documents:[...documents].map(([id,map])=>({userId:id,documents:[...map.values()]}))});
  else if(url.pathname.startsWith('/__qa/supabase/'))response=await backend('https://jmobinmdwrmdqrxtcruj.supabase.co/'+url.pathname.slice('/__qa/supabase/'.length)+url.search,{method:req.method,headers:req.headers,body:body.toString()});
  else if(url.pathname.startsWith('/__android_reference/'))response=await asset(url,androidRoot);

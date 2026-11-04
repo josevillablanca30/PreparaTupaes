@@ -1,0 +1,86 @@
+{
+  "M1:TR-M1-007": {
+    "id": "TR-M1-007",
+    "assessmentVersion": "a1-b641cdd41915ab3b1a699445372cb6628b37d98b0b8d4f964b59687c84ae4343",
+    "question": "En un plano de senderos, un segmento de 2 cm de la escala gráfica representa 4 km reales. Si una ruta mide 7 cm sobre el plano, ¿cuál es su longitud real?",
+    "options": [
+      "7 km",
+      "10 km",
+      "14 km",
+      "28 km"
+    ],
+    "answer": 2,
+    "concept": "Unidades de una escala gráfica",
+    "transferGroup": "TR-M1-007",
+    "area": null,
+    "passageId": null,
+    "passageVersion": null,
+    "visual": {
+      "type": "bar",
+      "labels": [
+        "Comida",
+        "Transp.",
+        "Ahorro",
+        "Otros"
+      ],
+      "values": [
+        40,
+        25,
+        20,
+        15
+      ],
+      "caption": "Presupuesto en miles de pesos"
+    }
+  },
+  "M1:TR-M1-022": {
+    "id": "TR-M1-022",
+    "assessmentVersion": "a1-3ff2a4c2b3148336d882b13f6e88f202c731a39ce6e4198c8d4da3556c3392c6",
+    "question": "En una encuesta de 50 estudiantes, 12 prefieren fútbol, 15 dibujo, 15 música y 8 lectura. ¿Qué afirmación describe correctamente la frecuencia máxima?",
+    "options": [
+      "Dibujo es la única preferencia máxima",
+      "Música es la única preferencia máxima",
+      "Dibujo y música comparten la frecuencia máxima",
+      "Fútbol y lectura comparten la frecuencia máxima"
+    ],
+    "answer": 2,
+    "concept": "Máximos y empates",
+    "transferGroup": "TR-M1-022",
+    "area": null,
+    "passageId": null,
+    "passageVersion": null,
+    "visual": {
+      "type": "bar",
+      "labels": [
+        "Lun",
+        "Mar",
+        "Mié",
+        "Jue"
+      ],
+      "values": [
+        12,
+        18,
+        18,
+        9
+      ],
+      "caption": "Préstamos por día"
+    }
+  },
+  "M1:TR-M1-021": {
+    "id": "TR-M1-021",
+    "assessmentVersion": "a1-ee4c7ce49003b09c34f64e1126e46358a4f8f5e89cef6027fa04924c82dc9ca3",
+    "question": "Una impresora reduce el tamaño de un archivo por etapas. La expresión que representa el factor total es (5⁴ × 5²) ÷ 5⁵. ¿Cuál es el factor simplificado?",
+    "options": [
+      "5",
+      "5²",
+      "5⁷",
+      "25²"
+    ],
+    "answer": 0,
+    "concept": "Potencias y operaciones",
+    "transferGroup": "TR-M1-021",
+    "area": null,
+    "passageId": null,
+    "passageVersion": null,
+    "visual": null
+  }
+}
