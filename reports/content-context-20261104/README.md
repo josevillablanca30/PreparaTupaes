@@ -39,3 +39,7 @@ El estado del despliegue, los commits y el AAB se registran tras verificar sus e
 - AAB **46 / 1.5.0-rc19**, firmado con la misma clave permanente; las 265 entradas verificadas también localmente. Se comprobó que incorpora catálogo y escala corregidos. `signed-bundle.json` identifica el archivo, digest y ejecución.
 - La suite adicional completa aprobó 437 casos por configuración (Chrome Android, Safari y 320 px), con 6 omitidos por configuración: 1.311 aprobados, 18 omitidos. Los casos corregidos aprobaron en las tres. La prueba adicional instalada en el emulador se interrumpió tras seis de 32 casos y está en reintento; no se cuenta como aprobada y no se ha establecido la causa.
 - Pendiente: instalar la actualización y repetir el recorrido en un teléfono físico con una cuenta real. No se subió el AAB a Play ni se activaron cobros.
+
+## Revisión complementaria de las 20 alertas
+
+Se revisaron individualmente las 20 preguntas señaladas por la heurística, con cálculos, cotejo de sus pasajes y fuentes primarias. No se confirmó otra clave incorrecta dentro de ese conjunto. Las 20 alertas permanecen visibles; la revisión no valida conceptualmente todo el banco. Se registran tres mejoras de pertinencia del tutor como pendientes, sin cambios de producto en esta pasada. Véanse [decisiones y límites](review-20-alerts.md) y [cuerpos revisados y huellas](review-20-alerts.json).
