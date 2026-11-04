@@ -75,9 +75,18 @@
   },
   "installedAndroidEmulator": {
     "run": 41828180257,
-    "status": "retrying",
+    "attempt": 2,
+    "job": 126577497458,
+    "status": "passed",
+    "passed": 32,
+    "skipped": 0,
+    "failed": 0,
+    "sourceCommit": "edbbfcfdfee55ef8a5963e94052f1f658c40f50c",
+    "sameCodeAsInitialAttempt": true,
+    "artifactId": 13323952247,
+    "artifactSha256": "c0a5d0a9d5fc537264b16c4c137b5cab09acca37bb8c15fd0631baf16a23226e",
     "initialCompleted": 6,
     "initialExpected": 32,
-    "initialConclusion": "instrumentation run interrupted; empty failure body; cause not established"
+    "initialConclusion": "instrumentation run interrupted; empty failure body; cause not established; did not recur on retry"
   }
 }

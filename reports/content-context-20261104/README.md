@@ -37,7 +37,7 @@ El estado del despliegue, los commits y el AAB se registran tras verificar sus e
 - Se abrió `/version.json` en Chrome y se comprobó el commit web y `contentBase`; `/recuperar` mostró el formulario público. No se envió correo ni se modificó una contraseña en esta pasada.
 - La solicitud Python desde la terminal recibió Cloudflare 403/1010. No se presenta como una prueba HTTP 200. La navegación Chrome y los sondeos de Actions sí aprobaron el despliegue real.
 - AAB **46 / 1.5.0-rc19**, firmado con la misma clave permanente; las 265 entradas verificadas también localmente. Se comprobó que incorpora catálogo y escala corregidos. `signed-bundle.json` identifica el archivo, digest y ejecución.
-- La suite adicional completa aprobó 437 casos por configuración (Chrome Android, Safari y 320 px), con 6 omitidos por configuración: 1.311 aprobados, 18 omitidos. Los casos corregidos aprobaron en las tres. La prueba adicional instalada en el emulador se interrumpió tras seis de 32 casos y está en reintento; no se cuenta como aprobada y no se ha establecido la causa.
+- La suite adicional completa aprobó 437 casos por configuración (Chrome Android, Safari y 320 px), con 6 omitidos por configuración: 1.311 aprobados, 18 omitidos. Los casos corregidos aprobaron en las tres. La prueba adicional instalada en Android 36 aprobó los 32 casos en el segundo intento, sin omisiones. El intento inicial se interrumpió tras seis casos; su causa no se estableció y no se reprodujo al reejecutar exactamente el mismo código. Se conservan ambos resultados.
 - Pendiente: instalar la actualización y repetir el recorrido en un teléfono físico con una cuenta real. No se subió el AAB a Play ni se activaron cobros.
 
 ## Revisión complementaria de las 20 alertas

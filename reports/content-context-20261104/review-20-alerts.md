@@ -38,7 +38,7 @@ En SCI-043, el apoyo introductorio menciona mutación somática aunque la consig
 - El control de contexto volvió a aprobar 802 estructuras, 18 figuras y 70 respuestas contrastadas: sin incidencias detectadas por ese control.
 - La auditoría pedagógica volvió a registrar 0 alertas críticas y las mismas 20 de revisión.
 - Se conservaron los 802 cuerpos del catálogo durante esta pasada. No se requiere un AAB nuevo por este informe. La candidata sigue siendo 1.5.0-rc19 / código 46.
-- La prueba Android instalada del reintento 2 de la ejecución [41828180257](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41828180257) seguía en curso al consultar esta revisión. No se cuenta como aprobada.
+- La prueba Android instalada del reintento 2 de la ejecución [41828180257](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41828180257) aprobó posteriormente los 32 casos, sin omisiones ni fallos, con el mismo código. El corte del primer intento y su causa no establecida se conservan en `verification.json`.
 - Sigue pendiente el recorrido de la actualización en un teléfono físico con cuenta real.
 
 ## Fuentes primarias consultadas
