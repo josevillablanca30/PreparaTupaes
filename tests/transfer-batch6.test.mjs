@@ -1,3 +1,4 @@
+import {previousTransferAssessments,transferContextReview} from '../scripts/transfer-context-review-20261104.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {dailyCatalog} from '../scripts/daily-catalog.mjs';
@@ -18,7 +19,7 @@ test('Lote 6: cierra con preguntas originales las once brechas M1 trazadas a DEM
   assert.equal(q.levelId,base.levelId,c.id);
   assert.notEqual(q.family,base.family,c.id);
   assert.notEqual(q.question,base.question,c.id);
-  assert.equal(q.question,c.question);
+  assert.equal(q.question,transferContextReview[q.key]?.question||c.question);
   assert.equal(q.answer,c.answer);
   assert.deepEqual(q.options,c.options);
   assert.equal(new Set(q.options).size,4);

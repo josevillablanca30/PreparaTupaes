@@ -5,7 +5,7 @@
     "M1": {
       "questions": 147,
       "shortOpenings": 147,
-      "vocabularySupport": 29,
+      "vocabularySupport": 30,
       "maxOpeningWords": 54,
       "flags": 0
     },
@@ -26,7 +26,7 @@
     "Ciencias": {
       "questions": 305,
       "shortOpenings": 305,
-      "vocabularySupport": 98,
+      "vocabularySupport": 99,
       "maxOpeningWords": 59,
       "flags": 0
     },

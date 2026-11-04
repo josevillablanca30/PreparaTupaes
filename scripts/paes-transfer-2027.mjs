@@ -6,6 +6,7 @@
  * Cada fila incluye la base pedagógica, 4 alternativas plausibles,
  * error específico por alternativa y demostración paso a paso.
  */
+import {transferContextReview,previousTransferAssessments} from './transfer-context-review-20261104.mjs';
 export const transferCases=[
  {base:"M1:207",id:"TR-M1-001",question:"En una comuna, 450 personas responden una encuesta. El 18% declara utilizar bicicleta para llegar al trabajo. ¿Cuántas personas de la muestra respondieron eso?",options:["18","72","81","90"],answer:2,steps:["La base del porcentaje son las 450 personas encuestadas, no los habitantes totales de la comuna.","Se obtiene 10% = 45, 8% = 36, por lo tanto 18% = 81 personas.","La cantidad 81 es menor que 450 y equivale a 81/450 = 0,18."],errors:["18 es el porcentaje expresado como número, no la cantidad de personas.","72 corresponde al 16% de 450, no al 18%.","","90 sería el 20% de 450; se redondeó sin justificación."]},
  {base:"M1:208",id:"TR-M1-002",question:"Una tienda aplica dos descuentos sucesivos, primero del 10% y luego del 20%. El precio final resulta $36.000. ¿Cuál era el precio antes de ambos descuentos?",options:["$40.000","$45.000","$50.000","$60.000"],answer:2,steps:["Los descuentos sucesivos se aplican sobre bases distintas: queda 0,90 × 0,80 = 0,72 del precio inicial.","Planteamos 0,72P = 36.000; dividimos: P = 36.000 / 0,72 = 50.000.","Comprobamos: 50.000 → 45.000 tras 10% → 36.000 tras 20%."],errors:["40.000 se obtiene al dividir 36.000 por 0,90; deshace solo un factor de descuento y omite el otro.","45.000 se obtiene al dividir 36.000 por 0,80; es el precio tras el primer descuento y aún falta recuperar el inicial.","","60.000 supone que el precio final conserva un 60% del inicial, pero los factores 0,90 y 0,80 dejan un 72%."]},
@@ -36,17 +37,21 @@ export function buildTransfers(originalItems,rows=transferCases){
   if(row.question===base.question)throw Error("Se repite el enunciado original: "+row.id);
   const key=base.subjectKey+":"+row.id;
   if(ids.has(key))throw Error("ID de transferencia repetido: "+row.id);ids.add(key);
+  const review=transferContextReview[key]||{},owns=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
+  if(base.visual&&!owns(row,'visual')&&!owns(review,'visual'))throw Error('Transferencia sin decisión explícita sobre su gráfico: '+key);
+  const visual=owns(row,'visual')?row.visual:review.visual||null,question=review.question||row.question;
   const teaching={
    ...base.teaching,
+   ...review.teaching,...row.teaching,
    aim:"Razonar una situación nueva sobre "+base.concept+" y justificar la elección.",
    application:row.steps,
    check:row.steps.at(-1),
    selectedFeedback:row.options.map((option,i)=>i===row.answer?null:{diagnosis:row.errors[i],repair:row.steps}),
-   example:row.example||base.teaching?.example||{problem:base.question,steps:base.teaching?.application?.slice(0,3)||row.steps}
+   example:row.example||row.teaching?.example||review.teaching?.example||base.teaching?.example||{problem:base.question,steps:base.teaching?.application?.slice(0,3)||row.steps}
   };
   return {...base,id:row.id,sourceId:row.id,key,family:key,transferGroup:row.id,
-    module:row.targetModule||base.module,previousAssessments:undefined,legacyAssessmentVersion:undefined,editorialRevision:undefined,
-    question:row.question,options:row.options.slice(),answer:row.answer,
+    module:row.targetModule||base.module,previousAssessments:previousTransferAssessments[key]?[previousTransferAssessments[key]]:undefined,legacyAssessmentVersion:previousTransferAssessments[key]?.assessmentVersion,editorialRevision:undefined,
+    question,q:base.subjectKey==='M1'?question:undefined,visual,passageId:row.passageId||null,passageVersion:row.passageVersion||null,options:row.options.slice(),answer:row.answer,
     explanations:row.options.map((_,i)=>i===row.answer?"Correcto. "+row.steps.at(-1):"Elegiste «"+row.options[i]+"». "+row.errors[i]),
     why:row.steps.join(" "),hint:row.steps[0],steps:row.steps.slice(),easy:[...(teaching.intuition||[]),...row.steps].join("\n\n"),example:[teaching.example.problem,...teaching.example.steps,teaching.example.bridge].filter(Boolean).join("\n\n"),
     teaching,sourceKey:row.base,sourceTrace:row.sourceTrace||null,transferDesign:row.transferDesign||null,
