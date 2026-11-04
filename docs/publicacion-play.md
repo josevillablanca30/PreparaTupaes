@@ -1,6 +1,6 @@
 # Preparación para Google Play
 
-Guía vigente: [publication/README.md](../publication/README.md). Candidata firmada **1.5.0-rc18 / código 45**, fuente `f75b92aa8e72738e23839dc8f5e690cba10922da`, paquete cl.preparatupaes.app y API 36. [Verificación exacta del AAB](../reports/cachaste-rc18-verification.json).
+Guía vigente: [publication/README.md](../publication/README.md). Candidata firmada **1.5.0-rc19 / código 46**, fuente `edbbfcfdfee55ef8a5963e94052f1f658c40f50c`, paquete cl.preparatupaes.app y API 36. [Verificación exacta del AAB](../reports/content-context-20261104/signed-bundle.json).
 
 El titular actualiza la prueba cerrada existente. Los tres enlaces legales pasan a la web pública de Cloudflare; se conservan las funcionalidades y el certificado permanente. El borrado alojado elimina también la preautorización de tester por correo, sin modificar las cuentas o permisos actuales.
 

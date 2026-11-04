@@ -4,8 +4,8 @@ Este recorrido corresponde a la **prueba cerrada** de cl.preparatupaes.app, con 
 
 ## Preparación
 
-1. Actualizar Seguridad de los datos para la foto opcional según `seguridad-datos.md` y cargar el AAB 45 firmado en la misma prueba cerrada. No publicar en producción ni crear otra clave de carga.
-2. En cada teléfono, actualizar desde Google Play con la cuenta Google inscrita como tester. Comprobar en la información de la app que la versión instalada es 1.5.0-rc18 / código 45.
+1. Actualizar Seguridad de los datos para la foto opcional según `seguridad-datos.md` y cargar el AAB 46 firmado en la misma prueba cerrada. No publicar en producción ni crear otra clave de carga.
+2. En cada teléfono, actualizar desde Google Play con la cuenta Google inscrita como tester. Comprobar en la información de la app que la versión instalada es 1.5.0-rc19 / código 46.
 3. Iniciar sesión con dos cuentas diferentes y comprobar que ambas tienen acceso autorizado a la prueba. Mantener suscripciones y cobros deshabilitados.
 4. Actualizar conserva la sesión. Para probar un correo nuevo: Perfil → Cerrar sesión → Crear cuenta, usando un correo aún no registrado. Para probar recepción con la cuenta existente: Cerrar sesión → Recuperar contraseña. No borrar una cuenta ni su progreso para forzar el envío.
 
@@ -13,7 +13,7 @@ Este recorrido corresponde a la **prueba cerrada** de cl.preparatupaes.app, con 
 
 | Paso | Resultado esperado | Estado |
 | --- | --- | --- |
-| Correo | Correo en español: código en la app o enlace HTTPS. Nueva clave permite login y la anterior falla | Web confirmada por el titular; repetir en AAB 45 |
+| Correo | Correo en español: código en la app o enlace HTTPS. Nueva clave permite login y la anterior falla | Web confirmada por el titular; repetir en AAB 46 |
 | Enlaces y red | Enlace usado/vencido muestra error claro; sin conexión no confirma un envío ni cambio exitoso | Automatizado aprobado; repetir en teléfono |
 | Enlaces legales | Privacidad, condiciones y eliminación abren la web pública sin login desde competencia y planes | Automatizado aprobado; toque en teléfono pendiente |
 | Cuenta | Registro/login, nickname y sesión persistente; nickname duplicado rechazado | Pendiente en 45 |

@@ -1,15 +1,17 @@
-# ¿Cachaste? · candidata 45 para prueba cerrada
+# ¿Cachaste? · candidata 46 para prueba cerrada
 
-Estado al 3 de noviembre de 2026. **1.5.0-rc18 / código 45** está compilada, firmada y verificada. Sustituye a la 44 para distribuir los enlaces legales actualizados. El titular realiza personalmente la carga en la misma app y prueba cerrada de Google Play.
+Estado al 4 de noviembre de 2026. **1.5.0-rc19 / código 46** está compilada, firmada y verificada. Corrige gráficos y tutor de cuatro ejercicios; conserva el progreso y las funciones educativas. El titular realiza la carga en la misma app y prueba cerrada de Google Play.
 
-- Fuente del AAB: `f75b92aa8e72738e23839dc8f5e690cba10922da`.
-- Archivo: `Cachaste-1.5.0-rc18-45.aab`, 13.545.587 bytes.
-- SHA-256: `ff603b05fde38085d224300fbb238cf28ebb23e84db78bf21a56c3cf48c31b60`.
+- Fuente del AAB: `edbbfcfdfee55ef8a5963e94052f1f658c40f50c`.
+- Archivo: `Cachaste-1.5.0-rc19-46.aab`, 13.545.559 bytes.
+- SHA-256: `d42633dc921e5dc060b78ebb55e37109c497d1c171cee92f5691bd9f31ba5bda`.
 - Certificado permanente: `a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575`.
-- [Compilación aprobada](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41689953231) · [Artefacto firmado](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41689953231/artifacts/13257472535).
-- [Notas listas para copiar](notas-45.es-419.txt) · [Verificación](../reports/cachaste-rc18-verification.json) · [Piloto físico](prueba-dos-celulares.md).
+- [Compilación aprobada](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41828180569) · [Artefacto firmado](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41828180569/artifacts/13321761399).
+- [Notas listas para copiar](notas-46.es-419.txt) · [Auditoría y alcance](../reports/content-context-20261104/README.md) · [Piloto físico](prueba-dos-celulares.md).
 
-El manifiesto real conserva cl.preparatupaes.app, API 36 y no habilita debuggable/testOnly. La descarga del ZIP coincide con su digest de Actions y la comprobación local independiente verificó las 265 entradas firmadas. Gate aprobado: 419 pruebas de lógica y 162 recorridos móviles, incluidos enlaces accesibles sin login y con acceso educativo vencido. No se entregó el AAB de la ejecución fallida inicial: su fixture omitía UTF-8; se corrigió sin debilitar la aserción ni cambiar el producto.
+El manifiesto real conserva cl.preparatupaes.app, API 36 y no habilita debuggable/testOnly. El ZIP coincide con su digest de Actions y la comprobación local independiente verificó las 265 entradas firmadas. Pasaron 428 pruebas de lógica y 166 recorridos móviles automatizados, además de la integración Auth/duelos en un entorno efímero.
+
+El servidor de duelos ya contiene los cuatro cuerpos corregidos. Sus 802 hashes de evaluación coinciden con el catálogo de esta versión. Se conservan claves, alternativas e índices correctos; las tres evaluaciones cuyo enunciado o figura cambió archivan la versión previa para el historial. No es una certificación de ausencia de errores conceptuales.
 
 ## Enlaces públicos y borrado
 
@@ -31,7 +33,7 @@ La recuperación española sigue en https://work-cachaste-web-comercial.cachaste
 
 ## Pendientes reales
 
-- El titular sube el AAB 45 y valida un toque de sus enlaces, recuperación, foto y duelo en teléfonos físicos. Las pruebas de navegador son automatizadas.
+- El titular sube el AAB 46 y valida un toque de sus enlaces, recuperación, foto y duelo en teléfonos físicos. Las pruebas de navegador son automatizadas.
 - Google Play Console abrió una cuenta cerrada; no se pudieron releer sus URL o formulario actuales. El titular eligió completar manualmente los enlaces de privacidad/eliminación y Seguridad de los datos. La última cantidad autenticada observada fue dos testers; no se afirma que siga siendo la actual. Para producción se requiere cumplir la prueba cerrada y la revisión de Google.
 - sitecacho.cl aún no devuelve registros A/AAAA/CNAME; no usarlo como una URL legal verificada hasta conectar su hosting. No se modificó DNS.
 - Definir y documentar los plazos operativos reales de soporte, registros técnicos y respaldos. Antes de vender, completar datos del vendedor e información de contratación/devolución, configurar y probar el circuito comercial y obtener acceso a producción.

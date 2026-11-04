@@ -1,0 +1,83 @@
+{
+  "date": "2026-11-04",
+  "androidSource": "edbbfcfdfee55ef8a5963e94052f1f658c40f50c",
+  "webSource": "a7ad0fb636f933636b00f5f8a0abc019e7ceb33c",
+  "androidLogic": {
+    "passed": 428,
+    "failed": 0
+  },
+  "androidReleaseBrowserGate": {
+    "passed": 166,
+    "failed": 0,
+    "run": 41828180569
+  },
+  "webLogic": {
+    "passed": 403,
+    "failed": 0
+  },
+  "webBackendUnits": {
+    "passed": 120,
+    "failed": 0
+  },
+  "webBrowsers": {
+    "passed": 200,
+    "failed": 0,
+    "projects": [
+      "Android-Chrome",
+      "iPhone-WebKit",
+      "Desktop-Chrome",
+      "mobile-320px"
+    ],
+    "run": 41828683383
+  },
+  "pagesDeployment": {
+    "passed": true,
+    "run": 41828683236,
+    "url": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev",
+    "uniqueUrl": "https://1cff0e79.cachaste-sitecacho.pages.dev"
+  },
+  "publicBrowserChecks": {
+    "passed": 24,
+    "failed": 0
+  },
+  "browserUiObservation": {
+    "versionJsonMatchesWebAndContentCommit": true,
+    "recoveryFormOpensWithoutLogin": true
+  },
+  "terminalPythonPublicProbe": {
+    "passed": false,
+    "httpStatus": 403,
+    "cloudflareCode": 1010,
+    "note": "Cloudflare rechazó ese cliente HTTP; no se cuenta como HTTP 200. Las pruebas de Actions y la navegación Chrome sí verificaron el despliegue real."
+  },
+  "phoneWithRealAccount": {
+    "executed": false
+  },
+  "additionalFullAndroidSuite": {
+    "run": 41828180384,
+    "passed": 1311,
+    "skipped": 18,
+    "failed": 0,
+    "perProject": {
+      "Android-Chrome": {
+        "passed": 437,
+        "skipped": 6
+      },
+      "mobile-320px": {
+        "passed": 437,
+        "skipped": 6
+      },
+      "iPhone-WebKit": {
+        "passed": 437,
+        "skipped": 6
+      }
+    }
+  },
+  "installedAndroidEmulator": {
+    "run": 41828180257,
+    "status": "retrying",
+    "initialCompleted": 6,
+    "initialExpected": 32,
+    "initialConclusion": "instrumentation run interrupted; empty failure body; cause not established"
+  }
+}

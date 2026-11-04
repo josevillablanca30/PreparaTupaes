@@ -25,3 +25,17 @@ Además se corrigieron los 31 alias `q` de las transferencias M1: conservaban el
 La auditoría heurística previa sigue mostrando 20 alertas de revisión (no errores conceptuales comprobados). No se ha revisado conceptualmente de forma exhaustiva cada una de las 802 preguntas contra fuentes disciplinares externas. Los ensayos de navegador son automatizados; no equivalen a probar en un teléfono físico con una cuenta real.
 
 El estado del despliegue, los commits y el AAB se registran tras verificar sus ejecuciones. Cobros siguen desactivados y no se modifica Servicios Villablanca.
+
+
+## Entrega comprobada
+
+- Android: `edbbfcfdfee55ef8a5963e94052f1f658c40f50c`; web publicada: `a7ad0fb636f933636b00f5f8a0abc019e7ceb33c`.
+- Cuatro cuerpos de pregunta actualizados y releídos en Supabase. Los 802 hashes de evaluación coinciden con la fuente. Véase `server-readback.json`.
+- El control negativo reproduce los dos gráficos heredados y los 31 alias antiguos. Las 70 claves contrastadas pasaban también antes: por sí solas no detectaban el problema visual. Véase `negative-control.json`.
+- 428 pruebas de lógica Android y 166 recorridos del gate de su AAB aprobados. Web: 403 pruebas de lógica, 120 de backend y 200 de navegador (50 por configuración), todas aprobadas; integración HTTP Auth/duelos aprobada en entorno efímero.
+- Cloudflare Pages Free: despliegue aprobado, alias público con el commit nuevo y 24 comprobaciones adicionales en navegadores sobre las URL legales reales. `pages-preview.json`, `live-legal-browsers.json` y `verification.json` registran la evidencia.
+- Se abrió `/version.json` en Chrome y se comprobó el commit web y `contentBase`; `/recuperar` mostró el formulario público. No se envió correo ni se modificó una contraseña en esta pasada.
+- La solicitud Python desde la terminal recibió Cloudflare 403/1010. No se presenta como una prueba HTTP 200. La navegación Chrome y los sondeos de Actions sí aprobaron el despliegue real.
+- AAB **46 / 1.5.0-rc19**, firmado con la misma clave permanente; las 265 entradas verificadas también localmente. Se comprobó que incorpora catálogo y escala corregidos. `signed-bundle.json` identifica el archivo, digest y ejecución.
+- La suite adicional completa aprobó 437 casos por configuración (Chrome Android, Safari y 320 px), con 6 omitidos por configuración: 1.311 aprobados, 18 omitidos. Los casos corregidos aprobaron en las tres. La prueba adicional instalada en el emulador se interrumpió tras seis de 32 casos y está en reintento; no se cuenta como aprobada y no se ha establecido la causa.
+- Pendiente: instalar la actualización y repetir el recorrido en un teléfono físico con una cuenta real. No se subió el AAB a Play ni se activaron cobros.

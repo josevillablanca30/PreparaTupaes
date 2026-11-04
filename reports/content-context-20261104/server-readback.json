@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-04",
+  "project": "jmobinmdwrmdqrxtcruj",
+  "questions": 802,
+  "allAssessmentHashesMatchSource": true,
+  "assessmentDigest": "71c682244491099641acb8fdba4b2b06",
+  "corrections": [
+    {
+      "key": "Ciencias:TR-SCI-097",
+      "hash": "1edcff98809fc67727b09fe279c348dab8549c9b1f73e110451ddc70f76a1a31",
+      "answerUnchanged": true,
+      "fullBodyMatchesSource": true
+    },
+    {
+      "key": "M1:TR-M1-007",
+      "hash": "fd43159ee3a902751c13ff5d252a35360d991a829b384fcc109e531ad2931fac",
+      "answerUnchanged": true,
+      "fullBodyMatchesSource": true
+    },
+    {
+      "key": "M1:TR-M1-021",
+      "hash": "25e697357bc3f8a2ad6e727ee55d66fae39df5b5adecc1af10d244d1da6c3fad",
+      "answerUnchanged": true,
+      "fullBodyMatchesSource": true
+    },
+    {
+      "key": "M1:TR-M1-022",
+      "hash": "f3cdc18fb2d97e6c366ba867f675b6be50f4474fff14b0c11ac8fe0f13f764c4",
+      "answerUnchanged": true,
+      "fullBodyMatchesSource": true
+    }
+  ],
+  "mutationScope": "four question bodies and their assessment hashes; no account, score or answer row writes"
+}

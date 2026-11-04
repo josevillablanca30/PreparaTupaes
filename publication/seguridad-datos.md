@@ -1,4 +1,4 @@
-# Seguridad de los datos · candidata 45 / 1.5.0-rc18
+# Seguridad de los datos · candidata 46 / 1.5.0-rc19
 
 Revisión del 3 de noviembre de 2026, basada en código y políticas publicadas. **El formulario no se guardó ni envió.** La última lectura autenticada mostraba «no se recopilan datos». El titular está completando Google Play manualmente; los valores actuales no pudieron releerse porque la sesión está cerrada.
 
