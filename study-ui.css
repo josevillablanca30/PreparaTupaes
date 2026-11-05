@@ -42,5 +42,11 @@ p,li,.passage article p,.skill-summary .row span,.encouragement{color:#e4d7ef}
 .passage summary span,.passage summary:after,header a,.toplink{color:#edc8ff}
 header a{background:#251634;border:1px solid #744096}
 .brand b{color:#e6b3ff}
-.btn.soft{background:#30202b;color:#ffe4ad;border-color:#a87b41}
+.btn.soft,.btn.hint-button{background:#30202b;color:#ffe4ad;border-color:#a87b41}
+.subjects-nav .toplink,.subjects-nav .toplink:first-child,.subjects-back a{background:#251634;color:#edc8ff;border:1px solid #744096}
+.exam-choice,.exam-choice.recommended,.review-reminder-text{background:linear-gradient(140deg,#21122f,#100a1b);color:#f8f4ff;border-color:#8550a6}
+.math-choice p,.legacy-m1 summary,.science-subject-stat .row span,.reinforcement summary,.confidence legend,.confidence-field legend,.checklist{color:#e4d7ef}
+.tabs button,.tabrow .btn,.confchoices button,.confidence-choice,.exam-clock,.timer{background:#251634;color:#f8f4ff;border-color:#8550a6}
+.tabs button.active,.tabrow .btn.active,.confchoices button.active,.confidence-choice.active,.exam-number.filled,.question-map .answered{background:#532071;color:#fff;border-color:#dc86ff}
+footer{color:#d7c5e7}
 .question-visual :is(p,figcaption,small,strong){color:#302044}

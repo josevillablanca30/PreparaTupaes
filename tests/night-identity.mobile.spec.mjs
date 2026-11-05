@@ -30,5 +30,5 @@ for(const subject of subjects)test(subject+': el tutor mantiene lectura, contras
  await fits(page);await screen(page,info,'07-tutor-'+subject);
 });
 for(const [file,name] of [['index.html','M1'],['m2.html','M2'],['reading.html','Lectura'],['history.html','Historia'],['science.html','Ciencias']])test(name+': ensayo y revisión comparten el fondo de la app',async({page},info)=>{
- await page.goto('./'+file);await dark(page);await fits(page);for(const heading of await page.locator('h1:visible,h2:visible,.card>p:visible,header a:visible,.btn:not(:disabled):visible,.brand b:visible').all())await readable(heading);await screen(page,info,'08-ensayo-'+name);
+ await page.goto('./'+file);await dark(page);await fits(page);for(const heading of await page.locator('h1:visible,h2:visible,h3:visible,h4:visible,p:visible,small:visible,label:visible,legend:visible,summary:visible,a:visible,button:not(:disabled):visible,.brand b:visible,.pill:visible').all())await readable(heading);await screen(page,info,'08-ensayo-'+name);
 });
