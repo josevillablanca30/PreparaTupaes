@@ -370,3 +370,80 @@ body:has(.reference-courses) .competition-entry-nav a[aria-current=page]{backgro
 #daily-root .entry-path.learning-entry{background:linear-gradient(180deg,#08061155,#080611d6 48%,#080611 95%),url(assets/competition-reference-mountain-v1.webp) center top/cover}
 #daily-root .entry-path.competition-entry{background:linear-gradient(180deg,#08061155,#080611d6 48%,#080611 95%),url(assets/competition-reference-champions-v1.webp) center top/cover}
 #daily-root .entry-path:before{display:none}
+
+/* One visual identity from the approved entry through learning and progress.
+   Scientific drawings retain their own light plotting surface and original ink. */
+:root{--night-canvas:#080611;--night-panel:#191025;--night-panel-deep:#100a1b;--night-line:#744096;--night-ink:#f8f4ff;--night-muted:#d7c5e7;--night-violet:#a91ee5;--night-gold:#ffda66}
+html:has(#daily-root){background:var(--night-canvas);color-scheme:dark}
+body:has(#daily-root){--game-paper:#080611;--game-ink:#f8f4ff;--game-muted:#d7c5e7;--game-purple:#b276fa;--game-deep:#ead1ff;--game-border:#744096;background:radial-gradient(ellipse at 95% 12%,#36045a70,transparent 45%),var(--night-canvas);color:var(--night-ink);color-scheme:dark}
+/* Keep the approved entry's existing token values and composition. */
+body:has(.reference-courses){--game-purple:#7438df;--game-deep:#4c229b;--game-ink:#21153b;--game-muted:#655a74;--game-paper:#faf8ff;--game-border:#e4d8f5;background:radial-gradient(ellipse at 94% 14%,#36045a80,transparent 45%),#080611}
+#daily-root{color:var(--night-ink)}
+#daily-root :is(h1,h2,h3,h4){color:var(--night-ink)!important;text-wrap:pretty}
+#daily-root :is(.kicker,.mission-kicker,.school-band-heading,.reference-subject){color:#e3aaff}
+#daily-root :is(small,.small,.muted,.school-route-note,.daily-session-head,.lesson-top,.arcade-honesty,.path-summary,.studio-coverage-note){color:var(--night-muted)}
+#daily-root a{color:#ebc4ff}
+#daily-root :is(.daily-card,.pace-panel,.mission-preview,.mission-teaser,.prerequisite-card,.personal-plan-card,.star-tutor-guide,.optional-support,.resume-strip,.next-mission-card,.studio-card,.studio-panel,.studio-feature,.studio-entry,.studio-example-problem,.daily-passage,.reference-teaching-card,.reference-easy-card,.reference-example-card,.visual-lesson-content.daily-card,.lesson-reader,.curriculum-overview,.curriculum-chapter-header,.confidence-guide,.exam-reflection,.worked-board,.concept-laboratory,.visual-probe,.lesson-narration,.lesson-companion,.complete-correction,.express-review,.selected-repair){background:linear-gradient(140deg,#21122f,#100a1b)!important;color:var(--night-ink);border:1px solid var(--night-line)!important;border-radius:22px;box-shadow:inset 0 1px 0 #d596ff22,0 8px 22px #0003!important}
+#daily-root :is(.daily-card,.pace-panel,.mission-preview,.studio-card,.studio-panel,.reference-teaching-card,.reference-easy-card,.reference-example-card,.visual-lesson-content.daily-card,.lesson-reader){padding:20px!important}
+#daily-root .daily-card{margin-block:18px}
+#daily-root .daily-card :is(h2,h3){margin-top:0}
+#daily-root :is(.lesson-reader,.daily-passage){line-height:1.8}
+#daily-root :is(.lesson-reader,.daily-passage) p{max-width:68ch}
+#daily-root :is(.didactic-overview>section,.didactic-depth,.didactic-key,.worked-bridge,.teacher-step,.teacher-explanation,.lab-task,.lab-formula,.topic-equation,.concept-bridge,.studio-goals,.studio-feedback,.arcade-prompt,.arcade-placeholder,.visual-explore){background:#1e122d;color:var(--night-ink);border-color:var(--night-line)}
+#daily-root :is(.didactic-depth summary,.lesson-text,.didactic-guided-label,.teacher-step-meta,.reference-card-title small,.reference-card-title h2,.reference-card-title h3,.worked-number,.lesson-reading-control){color:var(--night-ink)!important}
+#daily-root .didactic-overview>:is(.didactic-key,.didactic-model,.didactic-practice){background:linear-gradient(140deg,#21122f,#100a1b)!important;color:#f8f4ff;border:1px solid #744096;box-shadow:inset 0 1px 0 #d596ff22,0 8px 22px #0003}
+#daily-root .didactic-key{border-left:3px solid #e7bf5e!important}
+#daily-root :is(.reference-subject,.reference-card-title small){background:#382048;border:1px solid #7b449a}
+#daily-root :is(button,input,select,.daily-link){background:linear-gradient(150deg,#2b173c,#170e25);color:var(--night-ink);border-color:#8550a6;box-shadow:inset 0 1px 0 #e8b9ff20,0 3px 0 #090510}
+#daily-root button:hover:not(:disabled){border-color:#ce8aff}
+#daily-root :is(button,a,summary,input,select):focus-visible{outline:3px solid var(--night-gold);outline-offset:4px}
+#daily-root button[aria-pressed=true],#daily-root :is(.chosen,.selected,.arcade-chosen):not(svg *){background:linear-gradient(145deg,#532071,#2c143f);border-color:#dc86ff;color:#fff}
+#daily-root .primary{background:linear-gradient(150deg,#a61fe9,#6811bc)!important;border-color:#e08bff!important;color:#fff!important;box-shadow:inset 0 2px 2px #f0b0ff70,0 0 14px #9d24df38,0 4px 0 #400970!important}
+#daily-root :is(.game-toolbar .course-switch,.lesson-top button,.daily-session-head button){color:#ebc4ff!important}
+#daily-root .game-totals span{color:var(--night-gold)}
+#daily-root :is(.daily-notice,.hint,.due-review,.session-switch,.reward-card){background:#2d2036;color:#fff0b3;border-color:#ad803c}
+#daily-root .daily-nav{background:linear-gradient(#21132ff5,#0d091bf5);border:1px solid #8b45b2;box-shadow:0 -5px 25px #6a12ad25;backdrop-filter:blur(12px);border-radius:24px 24px 0 0;padding-top:8px}
+#daily-root .daily-nav button{color:#eee4f7!important;border:1px solid transparent!important;min-height:59px!important}
+#daily-root .daily-nav button[aria-current=page]{background:linear-gradient(150deg,#a720ed,#551187)!important;color:#fff!important;box-shadow:inset 0 1px 2px #e1a0ff,0 0 12px #b328fa55!important;border:1px solid #dc73ff!important;border-radius:20px}
+#daily-root .progress-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-block:18px}
+#daily-root .progress-stats p{margin:0;padding:13px 14px;border:1px solid #70408d;border-radius:15px;background:#100a1d;color:#ded0eb;font-size:14px}
+#daily-root .progress-stats p:first-child{grid-column:1/-1}
+#daily-root .progress-stats strong{color:var(--night-gold);font-size:24px;font-weight:850;margin-right:5px}
+#daily-root .progress-stats~.primary{width:100%}
+#daily-root .stage-banner{background:radial-gradient(ellipse at 90% 45%,#67208e55,transparent 70%)!important;border:0;padding:18px 0 22px;min-height:215px}
+#daily-root .stage-banner h1{color:#fff!important}
+#daily-root .stage-banner>span,#daily-root .stage-banner .school-position{color:#d9b9ed}
+#daily-root .stage-banner>p:not(.school-position){color:#ded0eb}
+#daily-root .stage-banner .unit-link{background:#352044!important;color:#f1d7ff!important;border:1px solid #8f54af!important;box-shadow:none!important}
+#daily-root .reference-map-guide p,#daily-root .reference-speech{background:#281735;border-color:#8951a7;color:#f5eafa;box-shadow:0 4px 15px #0002}
+#daily-root .reference-speech:after{background:#281735;border-color:#8951a7}
+#daily-root .reference-map-guide .mentor-stage{object-fit:contain;object-position:center bottom;filter:drop-shadow(0 0 13px #a928e947)}
+#daily-root .adventure-world:not(.support-world){background:linear-gradient(180deg,#130a2444,#130a2490 45%,#0c0718e8),url('assets/competition-reference-mountain-v1.webp') center top/cover no-repeat;border:1px solid #63317f;border-radius:24px;margin:0 0 18px;padding:0 12px 22px}
+#daily-root .adventure-world:not(.support-world) .world-hud p{color:#e5d6f3}
+#daily-root :is(.world-progress,.lesson-meter,.studio-progress,.daily-quest-progress){background:#38234b;border-color:#744396}
+#daily-root :is(.world-progress,.lesson-meter,.studio-progress,.daily-quest-progress)>span{background:linear-gradient(90deg,#9d27e7,#cf8fff)}
+#daily-root .adventure-world:not(.support-world) .trail-node{background:radial-gradient(circle at 35% 22%,#a849e7,#6a1baa 60%,#44106f);color:#fff;border-color:#b169e2;border-bottom-color:#3c0c68;box-shadow:inset 0 2px 2px #e9a6ff70,0 6px 0 #25083e,0 0 12px #9b25d447}
+#daily-root .adventure-world:not(.support-world) .trail-stop.current .trail-node{background:radial-gradient(circle at 30% 20%,#ca64fc,#8b20d4 55%,#50108e);border-color:#efb8ff;border-bottom-color:#661c9f;box-shadow:0 0 0 3px #ffdc74,0 0 0 8px #ffdc741c,0 7px 0 #290a44,0 0 22px #b43bf455}
+#daily-root .adventure-world:not(.support-world) .trail-stop.locked .trail-node{background:radial-gradient(circle at 35% 22%,#443055,#251a32);border-color:#715280;border-bottom-color:#150d20;color:#d2bde3;box-shadow:0 5px 0 #0d0716}
+#daily-root .adventure-world:not(.support-world) .trail-stop.mastered .trail-node{background:radial-gradient(circle at 35% 22%,#ffe192,#d29a29);border-color:#fff0bc;color:#281432}
+#daily-root .adventure-world:not(.support-world) .trail-stop strong{background:#160d23ed;border:1px solid #744394;color:#fff;box-shadow:0 2px 8px #0003}
+#daily-root .adventure-world:not(.support-world) .trail-stop .trail-status{background:#321846eb;color:#eaccff}
+#daily-root .adventure-world:not(.support-world) .world-gate{background:#1c1029ed;border-color:#ad7c35;color:#f9e9b1}
+#daily-root .road-track{stroke:#8f48c4}#daily-root .road-shadow{stroke:#251034}#daily-root .road-cleared{stroke:#ffda71}
+#daily-root :is(.world-picker-tile,.curriculum-chapter-evidence,.studio-choice,.course-tile){background:linear-gradient(140deg,#251334,#130c20);border-color:#8250a1;color:var(--night-ink)}
+#daily-root .world-picker-tile.locked{background:#17101f;color:#c9bad5;border-color:#5a426b}
+#daily-root :is(.world-picker-number,.mission-emblem){background:linear-gradient(140deg,#6d249e,#3f1a61);color:#ffdd7f;border-color:#b66edc}
+#daily-root .wise-cat p{background:#241432;color:#f6edff;border-color:#8951a7}
+#daily-root .wise-cat p:before{background:#241432;border-color:#8951a7}
+#daily-root .cat-frame.official-master{overflow:visible;filter:drop-shadow(0 0 9px #a729e52e)}
+#daily-root .cat-frame.official-master img{position:absolute;width:100%!important;height:100%!important;max-width:100%!important;left:0!important;top:0!important;object-fit:contain!important;object-position:center bottom}
+#daily-root .reference-lesson-hero .cat-frame.official-master{aspect-ratio:1;min-height:150px}
+/* Deliberately light inset for diagrams: their data and SVG colours are untouched. */
+#daily-root :is(.question-visual,.biology-model,.lab-model,.math-model,.numberline-demo,.numberline,.balance-demo,.powers-demo,.parabola-demo,.scenario-picture,.scenario-table-wrap,.illustrated-relationships,.learning-picture){background:#f6f0fc;color:#302044;border-color:#d8c6e8;border-radius:18px}
+#daily-root :is(.question-visual,.biology-model,.lab-model,.math-model,.scenario-table-wrap,.illustrated-relationships) :is(h2,h3,h4,p,figcaption,td,th,strong,small,span:not(.proton):not(.neutron)){color:#302044!important}
+#daily-root :is(.question-visual,.biology-model,.lab-model,.math-model) button{background:#e9ddf4;color:#38204d;border-color:#8d64aa}
+#daily-root :is(.question-visual,.biology-model,.lab-model,.math-model) button[aria-pressed=true]{background:#60328c;color:#fff;border-color:#552578}
+#daily-root .scenario-table-wrap caption{background:#e7d7f3;color:#39204e}
+#daily-root .daily-options button.correct,#daily-root :is(.visual-response.right,.answer-feedback.right,.studio-feedback.studio-right,.arcade-feedback.right){background:#12382b!important;color:#d6ffe8!important;border-color:#5cca95!important}
+#daily-root .daily-options button.incorrect,#daily-root :is(.visual-response.try-again,.answer-feedback.wrong,.studio-feedback.studio-wrong,.arcade-feedback.try-again,.didactic-selected){background:#3c192a!important;color:#ffe0e7!important;border-color:#e18b9f!important}
+@media(max-width:360px){#daily-root :is(.daily-card,.pace-panel,.mission-preview,.studio-card,.studio-panel,.reference-teaching-card,.reference-easy-card,.reference-example-card,.visual-lesson-content.daily-card,.lesson-reader){padding:16px!important}#daily-root .progress-stats p{padding:11px;font-size:13px}#daily-root .adventure-world:not(.support-world){padding-inline:8px}#daily-root .adventure-world:not(.support-world) .trail-stop{max-width:68%}}
