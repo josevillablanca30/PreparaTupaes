@@ -84,7 +84,7 @@ test('Ciencias: diagnóstico de 30 activa Express y permite registrar incertidum
  await page.getByRole('button',{name:'Comenzar diagnóstico de 30'}).tap();
  await expect(page.getByText('1 / 30',{exact:true})).toBeVisible();
  await expect(page.getByRole('button',{name:'Necesito una pista'})).toHaveCount(0);
- await page.getByRole('button',{name:'Fue al azar'}).tap();
+
  await page.locator('button.option').first().tap();
  await page.getByRole('button',{name:'Comprobar respuesta'}).tap();
  await page.getByRole('button',{name:'Siguiente pregunta →'}).tap();

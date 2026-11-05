@@ -1,0 +1,4 @@
+estado,package_name,product_id,base_plan_id,periodo,moneda,precio_clp,pais_inicial_propuesto,oferta
+PENDIENTE_DE_CONFIGURAR,cl.preparatupaes.app,cachaste_premium,semanal,P1W,CLP,2490,CL,
+PENDIENTE_DE_CONFIGURAR,cl.preparatupaes.app,cachaste_premium,mensual,P1M,CLP,7990,CL,P7D gratis solo cuando Google confirme elegibilidad
+PENDIENTE_DE_CONFIGURAR,cl.preparatupaes.app,cachaste_premium,anual,P1Y,CLP,64990,CL,

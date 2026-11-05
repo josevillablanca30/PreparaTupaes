@@ -111,11 +111,11 @@ test('Ciencias: diagnóstico guardado desbloquea Express y produce un plan propi
  const reopened=science(data);
  assert.equal(reopened.saved().baseline.completed,true);
 });
-test('Ciencias: se registra seguridad y azar sin confundirlo con dominio autónomo',()=>{
+test('Ciencias: registra respuesta sin inventar seguridad declarada',()=>{
  const a=science(unlockedData());a.window.setup('express');
  const q=a.bank.find(x=>x.id===a.saved().session.ids[0]);
  a.window.confidence('azar');a.window.answer(q.answer);a.window.check();
- assert.equal(a.saved().history.at(-1).confidence,'azar');
+ assert.equal(a.saved().history.at(-1).confidence,'no-declarada');
  assert.equal(a.saved().history.at(-1).correct,true);
  assert.equal(a.saved().history.at(-1).assisted,false);
 });
@@ -255,3 +255,12 @@ test('Ciencias migra ensayo anterior sin duplicar intentos ni convertir un error
 });
 
 test('Ciencias: 80 familias caben en todas las menciones incluso con nuevas paráfrasis agrupadas',()=>{for(const track of ['Biología','Física','Química','TP'])for(let trial=0;trial<30;trial++){const a=science(unlockedData());a.window.chooseTrack(track);a.window.setup('completo');const rows=a.saved().session.ids.map(id=>a.bank.find(q=>q.id===id));assert.equal(rows.length,80);assert.equal(new Set(rows.map(q=>q.transferGroup||q.id)).size,80);}});
+
+test('Ciencias guarda versión en práctica y ensayo completo',()=>{
+ const a=science(unlockedData());a.window.setup('mixto');
+ a.window.answer(0);a.window.check();
+ const row=a.saved().history.at(-1),q=a.bank.find(q=>q.id===row.id);
+ assert.equal(row.assessmentVersion,a.window.CachasteLearning.assessmentVersion(q));
+ const b=science(unlockedData());b.window.setup('completo');b.window.examAction('finish');
+ assert.ok(b.saved().history.every(r=>r.assessmentVersion===b.window.CachasteLearning.assessmentVersion(b.bank.find(q=>q.id===r.id))));
+});

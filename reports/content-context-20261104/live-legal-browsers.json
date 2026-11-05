@@ -1,0 +1,168 @@
+{
+  "origin": "https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev",
+  "revision": "a7ad0fb636f933636b00f5f8a0abc019e7ceb33c",
+  "checkedAt": "2026-11-04T12:30:39.383Z",
+  "environment": "real public Cloudflare deployment",
+  "physicalPhones": false,
+  "authenticatedAccountsUsed": false,
+  "requestEmailSent": false,
+  "passed": true,
+  "checks": [
+    {
+      "browser": "Desktop-Chrome",
+      "path": "/privacidad.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "path": "/condiciones.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "path": "/eliminar-cuenta.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "entry": "/",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "entry": "/cuenta.html",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "entry": "/recuperar",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "Android-Chrome",
+      "path": "/privacidad.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "Android-Chrome",
+      "path": "/condiciones.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "Android-Chrome",
+      "path": "/eliminar-cuenta.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "Android-Chrome",
+      "entry": "/",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "Android-Chrome",
+      "entry": "/cuenta.html",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "Android-Chrome",
+      "entry": "/recuperar",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "path": "/privacidad.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "path": "/condiciones.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "path": "/eliminar-cuenta.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "entry": "/",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "entry": "/cuenta.html",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "entry": "/recuperar",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "mobile-320px",
+      "path": "/privacidad.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "mobile-320px",
+      "path": "/condiciones.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "mobile-320px",
+      "path": "/eliminar-cuenta.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "mobile-320px",
+      "entry": "/",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "mobile-320px",
+      "entry": "/cuenta.html",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "mobile-320px",
+      "entry": "/recuperar",
+      "footerNavigation": true,
+      "passed": true
+    }
+  ]
+}

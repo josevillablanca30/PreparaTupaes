@@ -1,0 +1,22 @@
+{
+  "sha256": "2d8343aaec8320e85a7a8b13860b1586861ab085c0e2f60631caedb594842894",
+  "certificateSha256": "a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575",
+  "verifiedPayloadEntries": 265,
+  "allPayloadsSigned": true,
+  "aabBytes": 13550073,
+  "sourceCommit": "13ae26d3f752ccc6f3de97086dee07cb938ac3fc",
+  "matchingDistributionFiles": 124,
+  "androidExcludedDotfile": ".nojekyll",
+  "artifactId": 13381444844,
+  "artifactZipSha256": "ed7d451d09546fe8274b291eba937787a2d8650503783b1074ea744743cdc4e3",
+  "runId": 41954301999,
+  "manifest": {
+    "package": "cl.preparatupaes.app",
+    "versionName": "1.5.0-rc20",
+    "versionCode": "47",
+    "targetSdk": "36",
+    "debuggable": false,
+    "testOnly": false,
+    "verified": true
+  }
+}

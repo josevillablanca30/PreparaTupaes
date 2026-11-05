@@ -1,0 +1,513 @@
+{
+  "inspected_at": "2026-10-16",
+  "root": "Material PAES",
+  "status": "Partial recursive inventory, not full individual book review",
+  "directories_scanned": 128,
+  "directories_unscanned": [],
+  "documents_found": 526,
+  "groups": {
+    "TESLA/Historia": {
+      "files": 4,
+      "folders": 1,
+      "bytes": 1923375
+    },
+    "TESLA/Biología/Ciencias": {
+      "files": 1,
+      "folders": 1,
+      "bytes": 670206
+    },
+    "TESLA/Física": {
+      "files": 10,
+      "folders": 3,
+      "bytes": 12157090
+    },
+    "TESLA/Lectura": {
+      "files": 18,
+      "folders": 2,
+      "bytes": 13492571
+    },
+    "TESLA/M1": {
+      "files": 49,
+      "folders": 3,
+      "bytes": 22312446
+    },
+    "TESLA/Química": {
+      "files": 34,
+      "folders": 2,
+      "bytes": 106641650
+    },
+    "TESLA/M2": {
+      "files": 10,
+      "folders": 2,
+      "bytes": 4163829
+    },
+    "Cumbres/Historia": {
+      "files": 1,
+      "folders": 1,
+      "bytes": 15036061
+    },
+    "Cumbres/Física": {
+      "files": 0,
+      "folders": 1,
+      "bytes": 0
+    },
+    "Cumbres/Biología/Ciencias": {
+      "files": 2,
+      "folders": 1,
+      "bytes": 14984486
+    },
+    "Cumbres/Lectura": {
+      "files": 1,
+      "folders": 1,
+      "bytes": 7103816
+    },
+    "Cumbres/M2": {
+      "files": 1,
+      "folders": 1,
+      "bytes": 4428259
+    },
+    "Cumbres/M1": {
+      "files": 1,
+      "folders": 1,
+      "bytes": 4481820
+    },
+    "PDV/Biología/Ciencias": {
+      "files": 23,
+      "folders": 5,
+      "bytes": 29563960
+    },
+    "PDV/Lectura": {
+      "files": 117,
+      "folders": 8,
+      "bytes": 145589115
+    },
+    "PDV/Historia": {
+      "files": 15,
+      "folders": 1,
+      "bytes": 17861130
+    },
+    "PDV/M1": {
+      "files": 17,
+      "folders": 2,
+      "bytes": 17751422
+    },
+    "PDV/Física": {
+      "files": 21,
+      "folders": 5,
+      "bytes": 21969533
+    },
+    "PDV/M2": {
+      "files": 8,
+      "folders": 1,
+      "bytes": 4815134
+    },
+    "PDV/Química": {
+      "files": 47,
+      "folders": 7,
+      "bytes": 81418774
+    },
+    "CPECH/M1": {
+      "files": 1,
+      "folders": 1,
+      "bytes": 11286979
+    },
+    "CPECH/Historia": {
+      "files": 7,
+      "folders": 6,
+      "bytes": 90768098
+    },
+    "CPECH/Biología/Ciencias": {
+      "files": 6,
+      "folders": 5,
+      "bytes": 67578024
+    },
+    "CPECH/Química": {
+      "files": 23,
+      "folders": 4,
+      "bytes": 193161959
+    },
+    "CPECH/Física": {
+      "files": 5,
+      "folders": 3,
+      "bytes": 60902813
+    },
+    "FILADD/Lectura": {
+      "files": 19,
+      "folders": 4,
+      "bytes": 41175868
+    },
+    "FILADD/Física": {
+      "files": 1,
+      "folders": 2,
+      "bytes": 18279104
+    },
+    "FILADD/Biología/Ciencias": {
+      "files": 37,
+      "folders": 6,
+      "bytes": 83960316
+    },
+    "M30M/Biología/Ciencias": {
+      "files": 1,
+      "folders": 1,
+      "bytes": 36401717
+    },
+    "M30M/Historia": {
+      "files": 1,
+      "folders": 0,
+      "bytes": 16605880
+    },
+    "M30M/Química": {
+      "files": 3,
+      "folders": 1,
+      "bytes": 8126405
+    },
+    "M30M/M2": {
+      "files": 7,
+      "folders": 1,
+      "bytes": 7878334
+    },
+    "M30M/M1": {
+      "files": 7,
+      "folders": 2,
+      "bytes": 37386236
+    },
+    "Flashcards/Química": {
+      "files": 2,
+      "folders": 0,
+      "bytes": 64897647
+    },
+    "Flashcards/Biología/Ciencias": {
+      "files": 1,
+      "folders": 0,
+      "bytes": 8949129
+    },
+    "CPECH/Lectura": {
+      "files": 1,
+      "folders": 0,
+      "bytes": 17552009
+    },
+    "DEMRE/M1": {
+      "files": 0,
+      "folders": 1,
+      "bytes": 0
+    },
+    "ciencias_850/Lectura": {
+      "files": 1,
+      "folders": 0,
+      "bytes": 3925953
+    },
+    "Más libros/Física": {
+      "files": 1,
+      "folders": 1,
+      "bytes": 35859068
+    },
+    "Más libros/M1": {
+      "files": 2,
+      "folders": 0,
+      "bytes": 39312565
+    },
+    "Resúmenes/Biología/Ciencias": {
+      "files": 1,
+      "folders": 0,
+      "bytes": 10146495
+    }
+  },
+  "limitations": [
+    "Files in deeper solution/answer folders may remain",
+    "Filenames are not a review of page content",
+    "Several works are obsolete PSU or older PAES editions",
+    "No rights to redistribute complete proprietary textbooks"
+  ],
+  "sample_files": [
+    {
+      "name": "🥷🏼 C. Lectora _ Ensayo Clasificado PAES _ Preuniversitario Filadd, Preu online #1 en Chile .pdf",
+      "path": "FILADD/Ensayos/🥷🏼 C. Lectora _ Ensayo Clasificado PAES _ Preuniversitario Filadd, Preu online #1 en Chile .pdf"
+    },
+    {
+      "name": "Resumen H30M PAES 2025.pdf",
+      "path": "M30M/Historia/Resumen H30M PAES 2025.pdf"
+    },
+    {
+      "name": "Resumen M30M PAES 2025.pdf",
+      "path": "M30M/M1/Resumen M30M PAES 2025.pdf"
+    },
+    {
+      "name": "Flashcards Química.pdf",
+      "path": "Flashcards/Química/Flashcards Química.pdf"
+    },
+    {
+      "name": "Chemistry Atomic structure Presentation in Lavander red blue illustrative style .pdf",
+      "path": "Flashcards/Química/Chemistry Atomic structure Presentation in Lavander red blue illustrative style .pdf"
+    },
+    {
+      "name": "Embarazo Y Métodos Anticonceptivos.pdf",
+      "path": "Flashcards/Biología/Embarazo Y Métodos Anticonceptivos.pdf"
+    },
+    {
+      "name": "LIBRO BIOLOGÍA completo 2018.pdf",
+      "path": "CPECH/Biología/Libros/LIBRO BIOLOGÍA completo 2018.pdf"
+    },
+    {
+      "name": "Copia de LIBRO BIOLOGIA PLAN COMUN COMPLETO.pdf",
+      "path": "CPECH/Biología/Libros/Copia de LIBRO BIOLOGIA PLAN COMUN COMPLETO.pdf"
+    },
+    {
+      "name": "Copia de PROCESOS Y FUNCIONES BIOLÓGICAS.pdf",
+      "path": "CPECH/Biología/Libros/Copia de PROCESOS Y FUNCIONES BIOLÓGICAS.pdf"
+    },
+    {
+      "name": "LIBRO FISICA PLAN COMUN COMPLETO.pdf",
+      "path": "CPECH/Física/Libros/LIBRO FISICA PLAN COMUN COMPLETO.pdf"
+    },
+    {
+      "name": "BITACORA 01 - ONDAS.pdf",
+      "path": "CPECH/Física/Libros/BITACORA 01 - ONDAS.pdf"
+    },
+    {
+      "name": "Programa intensivo.pdf",
+      "path": "CPECH/Física/Libros/Programa intensivo.pdf"
+    },
+    {
+      "name": "Cuaderno de ejercicios M1.pdf",
+      "path": "CPECH/M1/Cuadernillo/Cuaderno de ejercicios M1.pdf"
+    },
+    {
+      "name": "Copia de Bitácora Historia Mundo, América y Chile siglo XX.pdf",
+      "path": "CPECH/Historia/Libros/Copia de Bitácora Historia Mundo, América y Chile siglo XX.pdf"
+    },
+    {
+      "name": "Copia de Bitácora Historia,mundo,america y chile siglo XIX.pdf",
+      "path": "CPECH/Historia/Libros/Copia de Bitácora Historia,mundo,america y chile siglo XIX.pdf"
+    },
+    {
+      "name": "Copia de Bitácora Sistema económico .pdf",
+      "path": "CPECH/Historia/Libros/Copia de Bitácora Sistema económico .pdf"
+    },
+    {
+      "name": "Copia de Bitácora Formación Ciudadana.pdf",
+      "path": "CPECH/Historia/Libros/Copia de Bitácora Formación Ciudadana.pdf"
+    },
+    {
+      "name": "Copia de 2202-Cuaderno_de_Ejercicios_N°3_BC_2024.pdf",
+      "path": "PDV/Biología/Cuadernillos/Copia de 2202-Cuaderno_de_Ejercicios_N°3_BC_2024.pdf"
+    },
+    {
+      "name": "Copia de 19º Microevolución.pdf",
+      "path": "PDV/Biología/Cuadernillos/Copia de 19º Microevolución.pdf"
+    },
+    {
+      "name": "Copia de 5. Electricidad PDV 2.pdf",
+      "path": "PDV/Física/Cuadernillos/Copia de 5. Electricidad PDV 2.pdf"
+    },
+    {
+      "name": "Copia de 1. Método científico PDV.pdf",
+      "path": "PDV/Física/Cuadernillos/Copia de 1. Método científico PDV.pdf"
+    },
+    {
+      "name": "QC - Cuaderno Nº 2 (P1).pdf",
+      "path": "PDV/Química/Cuadernillos/QC - Cuaderno Nº 2 (P1).pdf"
+    },
+    {
+      "name": "QC - Cuaderno Nº 2 (P2).pdf",
+      "path": "PDV/Química/Cuadernillos/QC - Cuaderno Nº 2 (P2).pdf"
+    },
+    {
+      "name": "QC - Cuaderno Nº 1 (P3).pdf",
+      "path": "PDV/Química/Cuadernillos/QC - Cuaderno Nº 1 (P3).pdf"
+    },
+    {
+      "name": "QC - Cuaderno N°1 (P1).pdf",
+      "path": "PDV/Química/Cuadernillos/QC - Cuaderno N°1 (P1).pdf"
+    },
+    {
+      "name": "LE22_2024_-_Ejercitacioìn_Localizar_(Corregida).pdf",
+      "path": "PDV/Lectura/Guias/LE22_2024_-_Ejercitacioìn_Localizar_(Corregida).pdf"
+    },
+    {
+      "name": "LE09_-_Procedimientos_textuales_I.pdf",
+      "path": "PDV/Lectura/Guias/LE09_-_Procedimientos_textuales_I.pdf"
+    },
+    {
+      "name": "LE36_-_Géneros_periodísticos.pdf",
+      "path": "PDV/Lectura/Guias/LE36_-_Géneros_periodísticos.pdf"
+    },
+    {
+      "name": "LE16_-_Superestructura_argumentativa.pdf",
+      "path": "PDV/Lectura/Guias/LE16_-_Superestructura_argumentativa.pdf"
+    },
+    {
+      "name": "LE02_-_Códigos_comunicativos.pdf",
+      "path": "PDV/Lectura/Guias/LE02_-_Códigos_comunicativos.pdf"
+    },
+    {
+      "name": "LE39_-_Ejercitación_global_PAES_06.pdf",
+      "path": "PDV/Lectura/Guias/LE39_-_Ejercitación_global_PAES_06.pdf"
+    },
+    {
+      "name": "LE32_-Estrategia_de_resolución_general.pdf",
+      "path": "PDV/Lectura/Guias/LE32_-Estrategia_de_resolución_general.pdf"
+    },
+    {
+      "name": "LE10_-_Procedimientos_textuales_II.pdf",
+      "path": "PDV/Lectura/Guias/LE10_-_Procedimientos_textuales_II.pdf"
+    },
+    {
+      "name": "LE12_-_Procedimientos_textuales_Ejercitación.pdf",
+      "path": "PDV/Lectura/Guias/LE12_-_Procedimientos_textuales_Ejercitación.pdf"
+    },
+    {
+      "name": "LE33_-_Ejercitación_global_PAES_05.pdf",
+      "path": "PDV/Lectura/Guias/LE33_-_Ejercitación_global_PAES_05.pdf"
+    },
+    {
+      "name": "LE08_-_Ejercitación_de_aplicación_mecanismos_de_cohesión_y_coherencia.pdf",
+      "path": "PDV/Lectura/Guias/LE08_-_Ejercitación_de_aplicación_mecanismos_de_cohesión_y_coherencia.pdf"
+    },
+    {
+      "name": "LE04_2024_Nociones_baìsicas_de_gramaìtica_V.3.pdf",
+      "path": "PDV/Lectura/Guias/LE04_2024_Nociones_baìsicas_de_gramaìtica_V.3.pdf"
+    },
+    {
+      "name": "LE05_-_Mecaniscos_de_cohesión_y_coherencia_I.pdf",
+      "path": "PDV/Lectura/Guias/LE05_-_Mecaniscos_de_cohesión_y_coherencia_I.pdf"
+    },
+    {
+      "name": "LE21_-_Lectura_a_nivel_literal.pdf",
+      "path": "PDV/Lectura/Guias/LE21_-_Lectura_a_nivel_literal.pdf"
+    },
+    {
+      "name": "LE15_-_Superestructura_instructiva.pdf",
+      "path": "PDV/Lectura/Guias/LE15_-_Superestructura_instructiva.pdf"
+    },
+    {
+      "name": "LE24_-_Lectura_a_nivel_interpretativo.pdf",
+      "path": "PDV/Lectura/Guias/LE24_-_Lectura_a_nivel_interpretativo.pdf"
+    },
+    {
+      "name": "LE19_-_Ejercitación_global_PAES_2.pdf",
+      "path": "PDV/Lectura/Guias/LE19_-_Ejercitación_global_PAES_2.pdf"
+    },
+    {
+      "name": "LE37_-_Textos_narrativos_literarios.pdf",
+      "path": "PDV/Lectura/Guias/LE37_-_Textos_narrativos_literarios.pdf"
+    },
+    {
+      "name": "LE03_-_Signo_linguístico_y_estrategia_léxica.pdf",
+      "path": "PDV/Lectura/Guias/LE03_-_Signo_linguístico_y_estrategia_léxica.pdf"
+    },
+    {
+      "name": "LE13_-_Ejercitación_global_PAES_1 (2).pdf",
+      "path": "PDV/Lectura/Guias/LE13_-_Ejercitación_global_PAES_1 (2).pdf"
+    },
+    {
+      "name": "LE41_-_Ejercitación_final.pdf",
+      "path": "PDV/Lectura/Guias/LE41_-_Ejercitación_final.pdf"
+    },
+    {
+      "name": "LE07_-_Mecaniscos_de_cohesión_y_coherencia_III.pdf",
+      "path": "PDV/Lectura/Guias/LE07_-_Mecaniscos_de_cohesión_y_coherencia_III.pdf"
+    },
+    {
+      "name": "LE27_-_Interpretar.pdf",
+      "path": "PDV/Lectura/Guias/LE27_-_Interpretar.pdf"
+    },
+    {
+      "name": "LE13_-_Ejercitación_global_PAES_1.pdf",
+      "path": "PDV/Lectura/Guias/LE13_-_Ejercitación_global_PAES_1.pdf"
+    },
+    {
+      "name": "LE26_-_Determinar_función_y_sentido.pdf",
+      "path": "PDV/Lectura/Guias/LE26_-_Determinar_función_y_sentido.pdf"
+    },
+    {
+      "name": "LE29_-_Evaluar_la_situación_comunicativa.pdf",
+      "path": "PDV/Lectura/Guias/LE29_-_Evaluar_la_situación_comunicativa.pdf"
+    },
+    {
+      "name": "LE38_-_Ejercitación_de_textos_narrativos_literarios.pdf",
+      "path": "PDV/Lectura/Guias/LE38_-_Ejercitación_de_textos_narrativos_literarios.pdf"
+    },
+    {
+      "name": "LE01_-_Introducción_a_la_lectura_intensiva.pdf",
+      "path": "PDV/Lectura/Guias/LE01_-_Introducción_a_la_lectura_intensiva.pdf"
+    },
+    {
+      "name": "LE28_-_Ejercitación_global_PAES_04.pdf",
+      "path": "PDV/Lectura/Guias/LE28_-_Ejercitación_global_PAES_04.pdf"
+    },
+    {
+      "name": "LE17_-_Superestructura_narrativa.pdf",
+      "path": "PDV/Lectura/Guias/LE17_-_Superestructura_narrativa.pdf"
+    },
+    {
+      "name": "LE11_-_Procedimientos_para_juzgar_información_V2.pdf",
+      "path": "PDV/Lectura/Guias/LE11_-_Procedimientos_para_juzgar_información_V2.pdf"
+    },
+    {
+      "name": "LE31_-_Ejercitación_habilidad_PAES_III_Evaluar.pdf",
+      "path": "PDV/Lectura/Guias/LE31_-_Ejercitación_habilidad_PAES_III_Evaluar.pdf"
+    },
+    {
+      "name": "LE34_-_Disposición_gráfica.pdf",
+      "path": "PDV/Lectura/Guias/LE34_-_Disposición_gráfica.pdf"
+    },
+    {
+      "name": "LE30_-_Evaluar_la_postura_del_emisor.pdf",
+      "path": "PDV/Lectura/Guias/LE30_-_Evaluar_la_postura_del_emisor.pdf"
+    },
+    {
+      "name": "LE40_-_Ejercitación_gloobal_PAES_07.pdf",
+      "path": "PDV/Lectura/Guias/LE40_-_Ejercitación_gloobal_PAES_07.pdf"
+    }
+  ],
+  "groups_by_source": {
+    "FILADD": 59,
+    "M30M": 20,
+    "Flashcards": 3,
+    "CPECH": 46,
+    "PDV": 251,
+    "TESLA": 126,
+    "Cumbres": 6,
+    "ciencias_850": 1,
+    "Más libros": 7,
+    "Resúmenes": 1,
+    "DEMRE": 1,
+    "Libros Clave": 1,
+    "Libros Moraleja": 3,
+    "Manual puntaje nacional": 1
+  },
+  "file_year_mentions": {
+    "2015": 1,
+    "2016": 1,
+    "2018": 1,
+    "2020": 19,
+    "2021": 4,
+    "2022": 22,
+    "2023": 1,
+    "2024": 6,
+    "2025": 9
+  },
+  "included_root_books": [
+    {
+      "id": "1I1stMkC5pkUqWOB_b_e7byp5oH306KwI",
+      "path": "Libros Clave"
+    },
+    {
+      "id": "1RvHmpvRurMMp40T0K0sR4bPG4AnoNJZs",
+      "path": "Libros Moraleja"
+    },
+    {
+      "id": "1KotS2OkIle49-6IN4-rk20RNm3IKGa3-",
+      "path": "Libros Moraleja"
+    },
+    {
+      "id": "1dF7h0xG7o9JN4tT1dRAncbCGEtvX7htw",
+      "path": "Libros Moraleja"
+    },
+    {
+      "id": "1J3s8TW9uaIOTI-rOgrVwEvFj2jZfPxlt",
+      "path": "Manual puntaje nacional"
+    }
+  ],
+  "note": "All discovered nested directories listed in parts 01–12 were scanned, though this is not a complete text audit of 500+ documents; directories with >=500 items may need pagination."
+}

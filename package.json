@@ -11,6 +11,12 @@
     "preview": "node scripts/preview.mjs"
   },
   "devDependencies": {
-    "@playwright/test": "1.64.0"
+    "@electric-sql/pglite": "0.5.11",
+    "@playwright/test": "1.64.0",
+    "esbuild": "0.28.2",
+    "pg": "8.23.1"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.118.0"
   }
 }

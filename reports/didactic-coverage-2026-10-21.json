@@ -1,0 +1,3939 @@
+{
+  "scope": "All current catalogue questions, including complementary content",
+  "method": "Structural consistency audit; not individual editorial approval",
+  "referenceRequirements": [
+    "Explanation from zero",
+    "Relevant visual support",
+    "Specific feedback for the selected distractor",
+    "Simpler explanation",
+    "Different worked example",
+    "Independent unassisted check",
+    "Traceable source and scope"
+  ],
+  "releaseReady": false,
+  "releaseBlockers": [
+    "Complete individual didactic review of each objective and question",
+    "Verify factual correctness, alternatives and source correspondence",
+    "Review visual relevance and independent assessment coverage"
+  ],
+  "totalQuestions": 802,
+  "totalObjectives": 287,
+  "subjects": {
+    "M1": {
+      "questions": 147,
+      "objectives": 65,
+      "checks": {
+        "foundations": 147,
+        "application": 147,
+        "simplerExplanation": 147,
+        "reviewExplanation": 147,
+        "reviewDoesNotRepeatSteps": 147,
+        "differentWorkedExample": 147,
+        "optionFeedback": 147
+      }
+    },
+    "M2": {
+      "questions": 115,
+      "objectives": 48,
+      "checks": {
+        "foundations": 115,
+        "application": 115,
+        "simplerExplanation": 115,
+        "reviewExplanation": 115,
+        "reviewDoesNotRepeatSteps": 115,
+        "differentWorkedExample": 115,
+        "optionFeedback": 115
+      }
+    },
+    "Lectura": {
+      "questions": 130,
+      "objectives": 10,
+      "checks": {
+        "foundations": 130,
+        "application": 130,
+        "simplerExplanation": 130,
+        "reviewExplanation": 130,
+        "reviewDoesNotRepeatSteps": 130,
+        "differentWorkedExample": 130,
+        "optionFeedback": 130
+      }
+    },
+    "Ciencias": {
+      "questions": 305,
+      "objectives": 114,
+      "checks": {
+        "foundations": 305,
+        "application": 305,
+        "simplerExplanation": 305,
+        "reviewExplanation": 305,
+        "reviewDoesNotRepeatSteps": 305,
+        "differentWorkedExample": 305,
+        "optionFeedback": 305
+      }
+    },
+    "Historia": {
+      "questions": 105,
+      "objectives": 50,
+      "checks": {
+        "foundations": 105,
+        "application": 105,
+        "simplerExplanation": 105,
+        "reviewExplanation": 105,
+        "reviewDoesNotRepeatSteps": 105,
+        "differentWorkedExample": 105,
+        "optionFeedback": 105
+      }
+    }
+  },
+  "objectives": [
+    {
+      "subject": "M1",
+      "concept": "Descuento porcentual",
+      "questionKeys": [
+        "M1:1",
+        "M1:101"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Ecuación lineal",
+      "questionKeys": [
+        "M1:2",
+        "M1:102",
+        "M1:113",
+        "M1:221",
+        "M1:222"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Proporción directa",
+      "questionKeys": [
+        "M1:3",
+        "M1:103",
+        "M1:219"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Potencias y operaciones",
+      "questionKeys": [
+        "M1:4",
+        "M1:TR-M1-021"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Probabilidad simple",
+      "questionKeys": [
+        "M1:5",
+        "M1:105",
+        "M1:269"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Variación porcentual",
+      "questionKeys": [
+        "M1:104",
+        "M1:112",
+        "M1:270"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Área rectangular",
+      "questionKeys": [
+        "M1:106",
+        "M1:114",
+        "M1:276"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Área triangular",
+      "questionKeys": [
+        "M1:107",
+        "M1:278",
+        "M1:TR-M1-031"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1-WfLICwtrKyEp9Pyv8QkHNeJA_lk6OPQ",
+          "title": "TESLA · Geometría 250",
+          "section": "Ejercicios seleccionados de triángulos, áreas y Pitágoras; pertinencia PAES contrastada aparte",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Moda",
+      "questionKeys": [
+        "M1:108",
+        "M1:266"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Media aritmética",
+      "questionKeys": [
+        "M1:109",
+        "M1:267"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Perímetro",
+      "questionKeys": [
+        "M1:110",
+        "M1:277"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Total de frecuencias",
+      "questionKeys": [
+        "M1:111",
+        "M1:251"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Mediana",
+      "questionKeys": [
+        "M1:115",
+        "M1:254",
+        "M1:292"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Enteros y cambios",
+      "questionKeys": [
+        "M1:200",
+        "M1:201",
+        "M1:202"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Fracciones y unidad común",
+      "questionKeys": [
+        "M1:203",
+        "M1:205",
+        "M1:281",
+        "M1:283"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Fracción de una cantidad",
+      "questionKeys": [
+        "M1:204",
+        "M1:TR-M1-008"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Cambios porcentuales sucesivos",
+      "questionKeys": [
+        "M1:206",
+        "M1:280"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Parte porcentual",
+      "questionKeys": [
+        "M1:207",
+        "M1:TR-M1-001"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Recuperar valor original",
+      "questionKeys": [
+        "M1:208",
+        "M1:TR-M1-002"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Producto de potencias",
+      "questionKeys": [
+        "M1:209",
+        "M1:TR-M1-003"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Exponente negativo",
+      "questionKeys": [
+        "M1:210",
+        "M1:282"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Raíz cuadrada principal",
+      "questionKeys": [
+        "M1:211",
+        "M1:TR-M1-013"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Raíz cúbica",
+      "questionKeys": [
+        "M1:212",
+        "M1:TR-M1-009"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Simplificación de radicales",
+      "questionKeys": [
+        "M1:213",
+        "M1:TR-M1-014"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Cuadrado de una suma",
+      "questionKeys": [
+        "M1:214",
+        "M1:TR-M1-011"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Diferencia de cuadrados",
+      "questionKeys": [
+        "M1:215",
+        "M1:TR-M1-015"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Términos semejantes",
+      "questionKeys": [
+        "M1:216",
+        "M1:TR-M1-017"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Sustitución con signos",
+      "questionKeys": [
+        "M1:217",
+        "M1:TR-M1-018"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Proporción inversa",
+      "questionKeys": [
+        "M1:218",
+        "M1:TR-M1-010"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Escalas de longitudes",
+      "questionKeys": [
+        "M1:220",
+        "M1:248"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Inecuaciones",
+      "questionKeys": [
+        "M1:223",
+        "M1:224",
+        "M1:284"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Sistemas lineales",
+      "questionKeys": [
+        "M1:225",
+        "M1:226"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Evaluación de función afín",
+      "questionKeys": [
+        "M1:227",
+        "M1:229",
+        "M1:274"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Pendiente de una recta",
+      "questionKeys": [
+        "M1:228",
+        "M1:272",
+        "M1:273"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Cuadráticas y soluciones reales",
+      "questionKeys": [
+        "M1:230",
+        "M1:287"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Extremo de una cuadrática",
+      "questionKeys": [
+        "M1:231",
+        "M1:232"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Teorema de Pitágoras",
+      "questionKeys": [
+        "M1:233",
+        "M1:234",
+        "M1:235",
+        "M1:289"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1-WfLICwtrKyEp9Pyv8QkHNeJA_lk6OPQ",
+          "title": "TESLA · Geometría 250",
+          "section": "Ejercicios seleccionados de triángulos, áreas y Pitágoras; pertinencia PAES contrastada aparte",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Área de un círculo",
+      "questionKeys": [
+        "M1:236",
+        "M1:279"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Longitud de circunferencia",
+      "questionKeys": [
+        "M1:237",
+        "M1:TR-M1-012"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Área de un trapecio",
+      "questionKeys": [
+        "M1:238",
+        "M1:TR-M1-016"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1-WfLICwtrKyEp9Pyv8QkHNeJA_lk6OPQ",
+          "title": "TESLA · Geometría 250",
+          "section": "Ejercicios seleccionados de triángulos, áreas y Pitágoras; pertinencia PAES contrastada aparte",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Área de un paralelogramo",
+      "questionKeys": [
+        "M1:239",
+        "M1:TR-M1-019"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1-WfLICwtrKyEp9Pyv8QkHNeJA_lk6OPQ",
+          "title": "TESLA · Geometría 250",
+          "section": "Ejercicios seleccionados de triángulos, áreas y Pitágoras; pertinencia PAES contrastada aparte",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Volumen de prismas",
+      "questionKeys": [
+        "M1:240",
+        "M1:241"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Superficie total de un cubo",
+      "questionKeys": [
+        "M1:242",
+        "M1:TR-M1-025"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Cilindro: volumen",
+      "questionKeys": [
+        "M1:243",
+        "M1:290"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Cilindro: superficie lateral",
+      "questionKeys": [
+        "M1:244",
+        "M1:TR-M1-026"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Reflexión y conservación de distancias",
+      "questionKeys": [
+        "M1:245",
+        "M1:291"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Traslación",
+      "questionKeys": [
+        "M1:246",
+        "M1:TR-M1-027"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Rotación",
+      "questionKeys": [
+        "M1:247",
+        "M1:TR-M1-028"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Semejanza de longitudes",
+      "questionKeys": [
+        "M1:249",
+        "M1:TR-M1-029"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Frecuencia relativa",
+      "questionKeys": [
+        "M1:250",
+        "M1:268"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Diferencia de frecuencias",
+      "questionKeys": [
+        "M1:252",
+        "M1:264"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Promedio ponderado",
+      "questionKeys": [
+        "M1:253",
+        "M1:TR-M1-006"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Cálculo de cuartiles",
+      "questionKeys": [
+        "M1:255",
+        "M1:TR-M1-023"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Percentiles",
+      "questionKeys": [
+        "M1:256",
+        "M1:TR-M1-024"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Rango intercuartílico",
+      "questionKeys": [
+        "M1:257",
+        "M1:295"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Complemento de un evento",
+      "questionKeys": [
+        "M1:258",
+        "M1:TR-M1-005"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Unión de eventos",
+      "questionKeys": [
+        "M1:259",
+        "M1:262"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Eventos independientes",
+      "questionKeys": [
+        "M1:260",
+        "M1:TR-M1-020"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1CpI2iTh-0hTR_kWfeJEQGzlnU-SnamJ-",
+          "title": "TESLA · M19 Probabilidades II",
+          "section": "Reposición, condicionamiento y límites de la independencia",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Extracción sin reposición",
+      "questionKeys": [
+        "M1:261",
+        "M1:293"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1CpI2iTh-0hTR_kWfeJEQGzlnU-SnamJ-",
+          "title": "TESLA · M19 Probabilidades II",
+          "section": "Reposición, condicionamiento y límites de la independencia",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Eventos incompatibles",
+      "questionKeys": [
+        "M1:263",
+        "M1:294"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Máximos y empates",
+      "questionKeys": [
+        "M1:265",
+        "M1:TR-M1-022"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Unidades de una escala gráfica",
+      "questionKeys": [
+        "M1:271",
+        "M1:TR-M1-007"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Interpretación de función afín",
+      "questionKeys": [
+        "M1:275",
+        "M1:286"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Propiedad distributiva",
+      "questionKeys": [
+        "M1:285",
+        "M1:TR-M1-004"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M1",
+      "concept": "Escala de áreas",
+      "questionKeys": [
+        "M1:288",
+        "M1:TR-M1-030"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Vértice de una cuadrática",
+      "questionKeys": [
+        "M2:M2-001",
+        "M2:M2-023",
+        "M2:M2-052"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Función exponencial",
+      "questionKeys": [
+        "M2:M2-002",
+        "M2:M2-020",
+        "M2:M2-024",
+        "M2:M2-058",
+        "M2:M2-111",
+        "M2:M2-114"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Probabilidad sin reposición",
+      "questionKeys": [
+        "M2:M2-003",
+        "M2:M2-081",
+        "M2:M2-107"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1CpI2iTh-0hTR_kWfeJEQGzlnU-SnamJ-",
+          "title": "TESLA · M19 Probabilidades II",
+          "section": "Reposición, condicionamiento y límites de la independencia",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Independencia de eventos",
+      "questionKeys": [
+        "M2:M2-004",
+        "M2:M2-014"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1CpI2iTh-0hTR_kWfeJEQGzlnU-SnamJ-",
+          "title": "TESLA · M19 Probabilidades II",
+          "section": "Reposición, condicionamiento y límites de la independencia",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Sectores circulares",
+      "questionKeys": [
+        "M2:M2-005",
+        "M2:M2-082"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Distancia en el plano",
+      "questionKeys": [
+        "M2:M2-006",
+        "M2:M2-017",
+        "M2:M2-033"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1-WfLICwtrKyEp9Pyv8QkHNeJA_lk6OPQ",
+          "title": "TESLA · Geometría 250",
+          "section": "Ejercicios seleccionados de triángulos, áreas y Pitágoras; pertinencia PAES contrastada aparte",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Logaritmos",
+      "questionKeys": [
+        "M2:M2-007",
+        "M2:M2-028",
+        "M2:M2-056",
+        "M2:M2-057",
+        "M2:M2-113"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Raíces y restricciones",
+      "questionKeys": [
+        "M2:M2-008",
+        "M2:M2-048",
+        "M2:M2-050"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Interés compuesto",
+      "questionKeys": [
+        "M2:M2-009",
+        "M2:M2-076",
+        "M2:M2-108"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Rectas y pendiente",
+      "questionKeys": [
+        "M2:M2-010",
+        "M2:M2-043"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Dominio de raíces",
+      "questionKeys": [
+        "M2:M2-011",
+        "M2:M2-083"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Evaluación de funciones",
+      "questionKeys": [
+        "M2:M2-012",
+        "M2:M2-022"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Composición de funciones",
+      "questionKeys": [
+        "M2:M2-013",
+        "M2:M2-084"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Probabilidad equiprobable",
+      "questionKeys": [
+        "M2:M2-015",
+        "M2:M2-036",
+        "M2:M2-039"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Rectas perpendiculares",
+      "questionKeys": [
+        "M2:M2-016",
+        "M2:M2-085"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Ecuaciones exponenciales",
+      "questionKeys": [
+        "M2:M2-018",
+        "M2:M2-086"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Productos notables",
+      "questionKeys": [
+        "M2:M2-019",
+        "M2:M2-087"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Ecuaciones lineales",
+      "questionKeys": [
+        "M2:M2-021",
+        "M2:M2-046"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Inversa de funciones",
+      "questionKeys": [
+        "M2:M2-025",
+        "M2:M2-088"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Sistemas lineales",
+      "questionKeys": [
+        "M2:M2-026",
+        "M2:M2-047",
+        "M2:M2-059",
+        "M2:M2-079"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Valor absoluto",
+      "questionKeys": [
+        "M2:M2-027",
+        "M2:M2-089"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Discriminante",
+      "questionKeys": [
+        "M2:M2-029",
+        "M2:M2-090"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Inecuaciones",
+      "questionKeys": [
+        "M2:M2-030",
+        "M2:M2-091"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Área de triángulos",
+      "questionKeys": [
+        "M2:M2-031",
+        "M2:M2-092"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1-WfLICwtrKyEp9Pyv8QkHNeJA_lk6OPQ",
+          "title": "TESLA · Geometría 250",
+          "section": "Ejercicios seleccionados de triángulos, áreas y Pitágoras; pertinencia PAES contrastada aparte",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Teorema de Pitágoras",
+      "questionKeys": [
+        "M2:M2-032",
+        "M2:M2-093"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1-WfLICwtrKyEp9Pyv8QkHNeJA_lk6OPQ",
+          "title": "TESLA · Geometría 250",
+          "section": "Ejercicios seleccionados de triángulos, áreas y Pitágoras; pertinencia PAES contrastada aparte",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Ángulos de polígonos",
+      "questionKeys": [
+        "M2:M2-034",
+        "M2:M2-094"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Vectores",
+      "questionKeys": [
+        "M2:M2-035",
+        "M2:M2-095"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Media aritmética",
+      "questionKeys": [
+        "M2:M2-037",
+        "M2:M2-096",
+        "M2:TR-M2-001"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Mediana",
+      "questionKeys": [
+        "M2:M2-038",
+        "M2:M2-097"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Eventos excluyentes",
+      "questionKeys": [
+        "M2:M2-040",
+        "M2:M2-098"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Modelo afín",
+      "questionKeys": [
+        "M2:M2-041",
+        "M2:M2-099"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Porcentajes",
+      "questionKeys": [
+        "M2:M2-042",
+        "M2:M2-055",
+        "M2:M2-109",
+        "M2:M2-110"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Interés simple",
+      "questionKeys": [
+        "M2:M2-044",
+        "M2:M2-077"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Proporcionalidad",
+      "questionKeys": [
+        "M2:M2-045",
+        "M2:M2-100"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Área de rectángulos",
+      "questionKeys": [
+        "M2:M2-049",
+        "M2:M2-101"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Área de cuadrados",
+      "questionKeys": [
+        "M2:M2-051",
+        "M2:M2-102"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Probabilidad de dos dados",
+      "questionKeys": [
+        "M2:M2-053",
+        "M2:M2-103"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Área de círculos",
+      "questionKeys": [
+        "M2:M2-054",
+        "M2:M2-104"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Funciones trigonométricas",
+      "questionKeys": [
+        "M2:M2-060",
+        "M2:M2-061"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Homotecia",
+      "questionKeys": [
+        "M2:M2-062",
+        "M2:M2-063"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Razones trigonométricas",
+      "questionKeys": [
+        "M2:M2-064",
+        "M2:M2-065"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Relaciones en la circunferencia",
+      "questionKeys": [
+        "M2:M2-066",
+        "M2:M2-080",
+        "M2:M2-112"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Esferas",
+      "questionKeys": [
+        "M2:M2-067",
+        "M2:M2-105"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Combinatoria",
+      "questionKeys": [
+        "M2:M2-068",
+        "M2:M2-069"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Modelo binomial",
+      "questionKeys": [
+        "M2:M2-070",
+        "M2:M2-071"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Distribución normal",
+      "questionKeys": [
+        "M2:M2-072",
+        "M2:M2-073"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Dispersión",
+      "questionKeys": [
+        "M2:M2-074",
+        "M2:M2-075"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1J7bDVSy_wrEWZtESP3xy7VA4fo_6rl1W",
+          "title": "TESLA · M2 MM05 Dispersión y probabilidad condicional",
+          "section": "Propiedades y 20 problemas propuestos, con erratas y excepciones documentadas",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "M2",
+      "concept": "Números reales",
+      "questionKeys": [
+        "M2:M2-078",
+        "M2:M2-106"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Lectura",
+      "concept": "Dato explícito",
+      "questionKeys": [
+        "Lectura:LEC-001",
+        "Lectura:LEC-002",
+        "Lectura:LEC-006",
+        "Lectura:LEC-007",
+        "Lectura:LEC-011",
+        "Lectura:LEC-021",
+        "Lectura:LEC-026",
+        "Lectura:LEC-027",
+        "Lectura:LEC-031",
+        "Lectura:LEC-032",
+        "Lectura:LEC-036",
+        "Lectura:LEC-037",
+        "Lectura:LEC-041",
+        "Lectura:LEC-042",
+        "Lectura:LEC-046",
+        "Lectura:LEC-051",
+        "Lectura:LEC-052",
+        "Lectura:LEC-056",
+        "Lectura:LEC-057",
+        "Lectura:LEC-061",
+        "Lectura:LEC-066",
+        "Lectura:LEC-067",
+        "Lectura:LEC-071",
+        "Lectura:LEC-072",
+        "Lectura:LEC-076",
+        "Lectura:LEC-077",
+        "Lectura:LEC-086",
+        "Lectura:LEC-087",
+        "Lectura:LEC-091",
+        "Lectura:LEC-092",
+        "Lectura:LEC-096",
+        "Lectura:LEC-097",
+        "Lectura:LEC-101",
+        "Lectura:LEC-106",
+        "Lectura:LEC-111",
+        "Lectura:LEC-118",
+        "Lectura:LEC-120",
+        "Lectura:LEC-123",
+        "Lectura:LEC-127"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Lectura",
+      "concept": "Relación causal",
+      "questionKeys": [
+        "Lectura:LEC-003",
+        "Lectura:LEC-018",
+        "Lectura:LEC-047",
+        "Lectura:LEC-049",
+        "Lectura:LEC-068",
+        "Lectura:LEC-073",
+        "Lectura:LEC-104",
+        "Lectura:LEC-114",
+        "Lectura:LEC-128"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "10ygMNihVqm8kr2HpajJxCkF8rD2kEzdV",
+          "title": "PDV · Estrategias para inferir e interpretar",
+          "section": "Apartados I–II: pistas, contexto y sobreinferencia",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Lectura",
+      "concept": "Idea global y tesis",
+      "questionKeys": [
+        "Lectura:LEC-004",
+        "Lectura:LEC-012",
+        "Lectura:LEC-022",
+        "Lectura:LEC-024",
+        "Lectura:LEC-043",
+        "Lectura:LEC-064",
+        "Lectura:LEC-079",
+        "Lectura:LEC-099",
+        "Lectura:LEC-102",
+        "Lectura:LEC-119"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1oXFeyfS3ekJoHZ03UmM2XVPvT4GGFBfv",
+          "title": "PDV · LE25, contenido interno: Sintetizar",
+          "section": "Introducción y estrategia de síntesis; nombre de archivo distinto de su contenido",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Lectura",
+      "concept": "Evaluar evidencia pertinente",
+      "questionKeys": [
+        "Lectura:LEC-005",
+        "Lectura:LEC-014",
+        "Lectura:LEC-020",
+        "Lectura:LEC-035",
+        "Lectura:LEC-045",
+        "Lectura:LEC-055",
+        "Lectura:LEC-065",
+        "Lectura:LEC-070",
+        "Lectura:LEC-080",
+        "Lectura:LEC-095",
+        "Lectura:LEC-100",
+        "Lectura:LEC-105",
+        "Lectura:LEC-110",
+        "Lectura:LEC-117",
+        "Lectura:LEC-121"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1kdO-qCqBF6XTAca0I9LQqpmxrd_oN8bl",
+          "title": "PDV · LE16 Superestructura argumentativa",
+          "section": "Tesis, argumentos, conclusión y funciones de fragmentos",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Lectura",
+      "concept": "Límites de una conclusión",
+      "questionKeys": [
+        "Lectura:LEC-008",
+        "Lectura:LEC-010",
+        "Lectura:LEC-038",
+        "Lectura:LEC-040",
+        "Lectura:LEC-053",
+        "Lectura:LEC-054",
+        "Lectura:LEC-062",
+        "Lectura:LEC-084",
+        "Lectura:LEC-088",
+        "Lectura:LEC-093",
+        "Lectura:LEC-107",
+        "Lectura:LEC-108"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "10ygMNihVqm8kr2HpajJxCkF8rD2kEzdV",
+          "title": "PDV · Estrategias para inferir e interpretar",
+          "section": "Apartados I–II: pistas, contexto y sobreinferencia",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Lectura",
+      "concept": "Función de un fragmento",
+      "questionKeys": [
+        "Lectura:LEC-009",
+        "Lectura:LEC-013",
+        "Lectura:LEC-015",
+        "Lectura:LEC-023",
+        "Lectura:LEC-025",
+        "Lectura:LEC-039",
+        "Lectura:LEC-044",
+        "Lectura:LEC-050",
+        "Lectura:LEC-063",
+        "Lectura:LEC-069",
+        "Lectura:LEC-078",
+        "Lectura:LEC-090",
+        "Lectura:LEC-094",
+        "Lectura:LEC-098",
+        "Lectura:LEC-109",
+        "Lectura:LEC-112",
+        "Lectura:LEC-122"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1kdO-qCqBF6XTAca0I9LQqpmxrd_oN8bl",
+          "title": "PDV · LE16 Superestructura argumentativa",
+          "section": "Tesis, argumentos, conclusión y funciones de fragmentos",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Lectura",
+      "concept": "Tabla y relaciones entre datos",
+      "questionKeys": [
+        "Lectura:LEC-016",
+        "Lectura:LEC-017",
+        "Lectura:LEC-019",
+        "Lectura:LEC-081",
+        "Lectura:LEC-082",
+        "Lectura:LEC-083",
+        "Lectura:LEC-115",
+        "Lectura:LEC-116"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Lectura",
+      "concept": "Imagen literaria y tema",
+      "questionKeys": [
+        "Lectura:LEC-028",
+        "Lectura:LEC-030",
+        "Lectura:LEC-060",
+        "Lectura:LEC-075",
+        "Lectura:LEC-124"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Lectura",
+      "concept": "Cambio de un personaje",
+      "questionKeys": [
+        "Lectura:LEC-029",
+        "Lectura:LEC-033",
+        "Lectura:LEC-034",
+        "Lectura:LEC-048",
+        "Lectura:LEC-058",
+        "Lectura:LEC-059",
+        "Lectura:LEC-074",
+        "Lectura:LEC-089",
+        "Lectura:LEC-125",
+        "Lectura:LEC-130"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Lectura",
+      "concept": "Pregunta de afirmación no respaldada",
+      "questionKeys": [
+        "Lectura:LEC-085",
+        "Lectura:LEC-103",
+        "Lectura:LEC-113",
+        "Lectura:LEC-126",
+        "Lectura:LEC-129"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "10ygMNihVqm8kr2HpajJxCkF8rD2kEzdV",
+          "title": "PDV · Estrategias para inferir e interpretar",
+          "section": "Apartados I–II: pistas, contexto y sobreinferencia",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Respiración celular y ATP",
+      "questionKeys": [
+        "Ciencias:SCI-001",
+        "Ciencias:TR-SCI-007"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 148",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-001",
+          "decision": "La demanda de ATP distingue mitocondrias de ribosomas, retículo y Golgi; se conserva la salvedad de producción extramitocondrial.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:TR-SCI-007",
+          "decision": "Compara rendimiento por glucosa; diferencia glucólisis, fermentación y respiración aeróbica sin concluir ATP cero en ausencia de oxígeno.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Membrana selectiva",
+      "questionKeys": [
+        "Ciencias:SCI-002",
+        "Ciencias:TR-SCI-008"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 131–134",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-002",
+          "decision": "Ubicación y permeabilidad selectiva permiten distinguir membrana, pared, envoltura nuclear y citoesqueleto.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:TR-SCI-008",
+          "decision": "Las propiedades del oxígeno y de la glucosa explican vías de paso diferentes; no se infiere uso obligatorio de ATP para oxígeno.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Clasificación y empaquetado de proteínas",
+      "questionKeys": [
+        "Ciencias:SCI-003",
+        "Ciencias:TR-SCI-009"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 145–146",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-003",
+          "decision": "El procesamiento posterior al retículo dirige a Golgi; se distinguen síntesis, distribución y degradación.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:TR-SCI-009",
+          "decision": "Se sustituye una segunda identificación casi literal por comparación experimental con control. Se conserva la evaluación anterior y se limita la conclusión a la etapa, no a una molécula exacta.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Sinapsis química",
+      "questionKeys": [
+        "Ciencias:SCI-004",
+        "Ciencias:SCI-046",
+        "Ciencias:SCI-163",
+        "Ciencias:TR-SCI-013"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Circuito reflejo y señal nerviosa",
+      "questionKeys": [
+        "Ciencias:SCI-005",
+        "Ciencias:SCI-162",
+        "Ciencias:TR-SCI-014"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Prevención y mecanismos anticonceptivos",
+      "questionKeys": [
+        "Ciencias:SCI-006",
+        "Ciencias:SCI-179",
+        "Ciencias:TR-SCI-085"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Mitosis y control del ciclo",
+      "questionKeys": [
+        "Ciencias:SCI-007",
+        "Ciencias:SCI-140",
+        "Ciencias:SCI-170",
+        "Ciencias:SCI-181"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Recombinación y variabilidad",
+      "questionKeys": [
+        "Ciencias:SCI-008",
+        "Ciencias:SCI-045",
+        "Ciencias:SCI-079",
+        "Ciencias:TR-SCI-086"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1IA0jkUbQIQMRorLzGOj84t5dpM45oPPL",
+          "title": "FILADD · Práctica de Meiosis",
+          "section": "Meiosis I, meiosis II y gametogénesis; límites del modelo explicitados",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Selección natural y evidencia",
+      "questionKeys": [
+        "Ciencias:SCI-009",
+        "Ciencias:SCI-065",
+        "Ciencias:SCI-081",
+        "Ciencias:TR-SCI-087"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Fotosíntesis y ciclo del carbono",
+      "questionKeys": [
+        "Ciencias:SCI-010",
+        "Ciencias:SCI-074",
+        "Ciencias:SCI-184",
+        "Ciencias:TR-SCI-084"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Redes tróficas y energía",
+      "questionKeys": [
+        "Ciencias:SCI-011",
+        "Ciencias:SCI-056",
+        "Ciencias:SCI-066",
+        "Ciencias:SCI-082",
+        "Ciencias:SCI-120",
+        "Ciencias:SCI-142"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Variable independiente",
+      "questionKeys": [
+        "Ciencias:SCI-012",
+        "Ciencias:TR-SCI-001"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Relación rapidez, frecuencia y longitud",
+      "questionKeys": [
+        "Ciencias:SCI-013",
+        "Ciencias:SCI-014",
+        "Ciencias:SCI-125"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1BYAEhP-jVMlVBjM3HL9KNPUSJbyOJ6EC",
+          "title": "CPECH · Bitácora 01 Ondas",
+          "section": "Magnitudes de ondas: frecuencia, período, longitud y rapidez",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Refracción y cambio de dirección",
+      "questionKeys": [
+        "Ciencias:SCI-015",
+        "Ciencias:SCI-098",
+        "Ciencias:TR-SCI-067"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Rapidez media y unidades",
+      "questionKeys": [
+        "Ciencias:SCI-016",
+        "Ciencias:SCI-057",
+        "Ciencias:SCI-088",
+        "Ciencias:SCI-146",
+        "Ciencias:TR-SCI-082"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Segunda ley de Newton",
+      "questionKeys": [
+        "Ciencias:SCI-017",
+        "Ciencias:SCI-089",
+        "Ciencias:TR-SCI-083"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Fuerza resultante y velocidad constante",
+      "questionKeys": [
+        "Ciencias:SCI-018",
+        "Ciencias:SCI-068",
+        "Ciencias:SCI-124"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Placas tectónicas",
+      "questionKeys": [
+        "Ciencias:SCI-019",
+        "Ciencias:SCI-020",
+        "Ciencias:SCI-021",
+        "Ciencias:SCI-050",
+        "Ciencias:SCI-173",
+        "Ciencias:SCI-190",
+        "Ciencias:SCI-202"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Ley de Ohm",
+      "questionKeys": [
+        "Ciencias:SCI-022",
+        "Ciencias:SCI-099",
+        "Ciencias:TR-SCI-050"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1Br-fqf2HsB1oeUK2RfiunAmsQrNrLD19",
+          "title": "PDV · Cuaderno 5 Electricidad",
+          "section": "Ley de Ohm, serie/paralelo, potencia y energía, pp. 5–7",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Resistencias en serie y paralelo",
+      "questionKeys": [
+        "Ciencias:SCI-023",
+        "Ciencias:SCI-049",
+        "Ciencias:SCI-069",
+        "Ciencias:SCI-100",
+        "Ciencias:SCI-101",
+        "Ciencias:SCI-127",
+        "Ciencias:SCI-174",
+        "Ciencias:SCI-189",
+        "Ciencias:TR-SCI-016"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1Br-fqf2HsB1oeUK2RfiunAmsQrNrLD19",
+          "title": "PDV · Cuaderno 5 Electricidad",
+          "section": "Ley de Ohm, serie/paralelo, potencia y energía, pp. 5–7",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Energía eléctrica y duración",
+      "questionKeys": [
+        "Ciencias:SCI-024",
+        "Ciencias:TR-SCI-003"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1Br-fqf2HsB1oeUK2RfiunAmsQrNrLD19",
+          "title": "PDV · Cuaderno 5 Electricidad",
+          "section": "Ley de Ohm, serie/paralelo, potencia y energía, pp. 5–7",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Materia y transformaciones",
+      "questionKeys": [
+        "Ciencias:SCI-025",
+        "Ciencias:SCI-059",
+        "Ciencias:SCI-071",
+        "Ciencias:SCI-134",
+        "Ciencias:SCI-155"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Separación de mezclas",
+      "questionKeys": [
+        "Ciencias:SCI-026",
+        "Ciencias:SCI-116",
+        "Ciencias:SCI-176",
+        "Ciencias:SCI-198"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Número atómico y neutralidad",
+      "questionKeys": [
+        "Ciencias:SCI-027",
+        "Ciencias:SCI-103",
+        "Ciencias:TR-SCI-061"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Identidad del elemento y protones",
+      "questionKeys": [
+        "Ciencias:SCI-028",
+        "Ciencias:TR-SCI-019"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Carbono y enlaces",
+      "questionKeys": [
+        "Ciencias:SCI-029",
+        "Ciencias:SCI-031",
+        "Ciencias:SCI-032",
+        "Ciencias:SCI-107",
+        "Ciencias:SCI-109",
+        "Ciencias:SCI-133",
+        "Ciencias:SCI-156"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Grupo alcohol",
+      "questionKeys": [
+        "Ciencias:SCI-030",
+        "Ciencias:SCI-072",
+        "Ciencias:SCI-108",
+        "Ciencias:TR-SCI-051"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Balance y proporción molar",
+      "questionKeys": [
+        "Ciencias:SCI-033",
+        "Ciencias:SCI-053",
+        "Ciencias:SCI-060",
+        "Ciencias:SCI-111",
+        "Ciencias:SCI-115",
+        "Ciencias:SCI-131",
+        "Ciencias:TR-SCI-017",
+        "Ciencias:TR-SCI-076"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Mol y masa molar",
+      "questionKeys": [
+        "Ciencias:SCI-034",
+        "Ciencias:SCI-112",
+        "Ciencias:TR-SCI-081"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Porcentaje masa por volumen",
+      "questionKeys": [
+        "Ciencias:SCI-035",
+        "Ciencias:TR-SCI-012"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Conservación de soluto al diluir",
+      "questionKeys": [
+        "Ciencias:SCI-036",
+        "Ciencias:SCI-054",
+        "Ciencias:TR-SCI-077"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Control de variables",
+      "questionKeys": [
+        "Ciencias:SCI-037",
+        "Ciencias:SCI-041",
+        "Ciencias:SCI-084",
+        "Ciencias:SCI-164"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Alcance de una muestra",
+      "questionKeys": [
+        "Ciencias:SCI-038",
+        "Ciencias:TR-SCI-002"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Medición y fiabilidad",
+      "questionKeys": [
+        "Ciencias:SCI-039",
+        "Ciencias:SCI-040"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Representación de pares de datos",
+      "questionKeys": [
+        "Ciencias:SCI-042",
+        "Ciencias:TR-SCI-068"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Alelos y herencia",
+      "questionKeys": [
+        "Ciencias:SCI-043",
+        "Ciencias:SCI-077",
+        "Ciencias:SCI-119",
+        "Ciencias:SCI-143",
+        "Ciencias:TR-SCI-073"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Síntesis ribosomal de proteínas",
+      "questionKeys": [
+        "Ciencias:SCI-044",
+        "Ciencias:SCI-073"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 143–145",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-044",
+          "decision": "El bloqueo de traducción limita cadenas nuevas; disponer de ATP o ARNm no sustituye a los ribosomas. No se afirma desaparición inmediata del producto previo.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:SCI-073",
+          "decision": "Se distingue ensamblaje ribosomal de transporte vesicular y procesamiento en Golgi.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Frecuencia al cambiar de medio",
+      "questionKeys": [
+        "Ciencias:SCI-047",
+        "Ciencias:TR-SCI-020"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1BYAEhP-jVMlVBjM3HL9KNPUSJbyOJ6EC",
+          "title": "CPECH · Bitácora 01 Ondas",
+          "section": "Magnitudes de ondas: frecuencia, período, longitud y rapidez",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Velocidad con aceleración constante",
+      "questionKeys": [
+        "Ciencias:SCI-048",
+        "Ciencias:TR-SCI-011"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Número másico y neutrones",
+      "questionKeys": [
+        "Ciencias:SCI-051",
+        "Ciencias:SCI-132"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Grupo carboxilo",
+      "questionKeys": [
+        "Ciencias:SCI-052",
+        "Ciencias:SCI-110"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Pared y organización vegetal",
+      "questionKeys": [
+        "Ciencias:SCI-055",
+        "Ciencias:SCI-139"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 149–150",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-055",
+          "decision": "La posición externa y resistencia corresponden a pared vegetal, sin atribuirle selectividad fina ni síntesis de ATP.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:SCI-139",
+          "decision": "La combinación de pared, cloroplastos y vacuola sustenta la clasificación. El ejemplo aclara que la ausencia de cloroplastos no excluye toda célula vegetal.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Unidad de corriente",
+      "questionKeys": [
+        "Ciencias:SCI-058",
+        "Ciencias:TR-SCI-022"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Hipótesis contrastable",
+      "questionKeys": [
+        "Ciencias:SCI-061",
+        "Ciencias:SCI-063"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Pregunta investigable",
+      "questionKeys": [
+        "Ciencias:SCI-062",
+        "Ciencias:TR-SCI-021"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Ósmosis en medio hipertónico",
+      "questionKeys": [
+        "Ciencias:SCI-064",
+        "Ciencias:TR-SCI-004"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 133–134",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-064",
+          "decision": "Con solutos no permeantes externos más concentrados, sale agua neta inicialmente; no es bombeo activo ni ausencia de movimiento bidireccional.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:TR-SCI-004",
+          "decision": "La retracción del protoplasto respecto de la pared apoya plasmólisis. Se conserva el contexto hipertónico y la distinción pared/membrana.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Frecuencia y período",
+      "questionKeys": [
+        "Ciencias:SCI-067",
+        "Ciencias:SCI-095",
+        "Ciencias:TR-SCI-079"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1BYAEhP-jVMlVBjM3HL9KNPUSJbyOJ6EC",
+          "title": "CPECH · Bitácora 01 Ondas",
+          "section": "Magnitudes de ondas: frecuencia, período, longitud y rapidez",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Isótopos",
+      "questionKeys": [
+        "Ciencias:SCI-070",
+        "Ciencias:SCI-104",
+        "Ciencias:TR-SCI-080"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Regulación de glucosa",
+      "questionKeys": [
+        "Ciencias:SCI-075",
+        "Ciencias:SCI-121"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Enzimas y estructura",
+      "questionKeys": [
+        "Ciencias:SCI-076",
+        "Ciencias:TR-SCI-028"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Reducción cromosómica en gametos",
+      "questionKeys": [
+        "Ciencias:SCI-078",
+        "Ciencias:TR-SCI-015"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1IA0jkUbQIQMRorLzGOj84t5dpM45oPPL",
+          "title": "FILADD · Práctica de Meiosis",
+          "section": "Meiosis I, meiosis II y gametogénesis; límites del modelo explicitados",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Mutación y línea germinal",
+      "questionKeys": [
+        "Ciencias:SCI-080",
+        "Ciencias:TR-SCI-010"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Diversidad y parentesco",
+      "questionKeys": [
+        "Ciencias:SCI-083",
+        "Ciencias:TR-SCI-039"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Ventilación y demanda metabólica",
+      "questionKeys": [
+        "Ciencias:SCI-085",
+        "Ciencias:SCI-141",
+        "Ciencias:TR-SCI-090",
+        "Ciencias:TR-SCI-097"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Defensas innatas y memoria inmune",
+      "questionKeys": [
+        "Ciencias:SCI-086",
+        "Ciencias:SCI-144",
+        "Ciencias:TR-SCI-091",
+        "Ciencias:TR-SCI-098"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "ADN y ascendencia común",
+      "questionKeys": [
+        "Ciencias:SCI-087",
+        "Ciencias:TR-SCI-033"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Peso gravitatorio",
+      "questionKeys": [
+        "Ciencias:SCI-090",
+        "Ciencias:TR-SCI-023"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Aceleración media",
+      "questionKeys": [
+        "Ciencias:SCI-091",
+        "Ciencias:TR-SCI-024"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Trabajo de una fuerza constante",
+      "questionKeys": [
+        "Ciencias:SCI-092",
+        "Ciencias:TR-SCI-088"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Eficiencia energética",
+      "questionKeys": [
+        "Ciencias:SCI-093",
+        "Ciencias:TR-SCI-030"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Energía potencial y transformación",
+      "questionKeys": [
+        "Ciencias:SCI-094",
+        "Ciencias:TR-SCI-043"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Tono e intensidad del sonido",
+      "questionKeys": [
+        "Ciencias:SCI-096",
+        "Ciencias:SCI-148",
+        "Ciencias:TR-SCI-096",
+        "Ciencias:TR-SCI-099"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1BYAEhP-jVMlVBjM3HL9KNPUSJbyOJ6EC",
+          "title": "CPECH · Bitácora 01 Ondas",
+          "section": "Magnitudes de ondas: frecuencia, período, longitud y rapidez",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Ángulos de reflexión",
+      "questionKeys": [
+        "Ciencias:SCI-097",
+        "Ciencias:TR-SCI-029"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Ondas sísmicas P y S",
+      "questionKeys": [
+        "Ciencias:SCI-102",
+        "Ciencias:SCI-128"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Formación de cationes",
+      "questionKeys": [
+        "Ciencias:SCI-105",
+        "Ciencias:TR-SCI-005"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Enlace iónico",
+      "questionKeys": [
+        "Ciencias:SCI-106",
+        "Ciencias:TR-SCI-031"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Molaridad",
+      "questionKeys": [
+        "Ciencias:SCI-113",
+        "Ciencias:SCI-137"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Cálculo de una dilución",
+      "questionKeys": [
+        "Ciencias:SCI-114",
+        "Ciencias:TR-SCI-018"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Separación de homólogos",
+      "questionKeys": [
+        "Ciencias:SCI-117",
+        "Ciencias:TR-SCI-070"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1IA0jkUbQIQMRorLzGOj84t5dpM45oPPL",
+          "title": "FILADD · Práctica de Meiosis",
+          "section": "Meiosis I, meiosis II y gametogénesis; límites del modelo explicitados",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "ARN mensajero y traducción",
+      "questionKeys": [
+        "Ciencias:SCI-118",
+        "Ciencias:TR-SCI-027"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Variable dependiente",
+      "questionKeys": [
+        "Ciencias:SCI-122",
+        "Ciencias:SCI-145",
+        "Ciencias:TR-SCI-075",
+        "Ciencias:TR-SCI-095"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Inflamación local",
+      "questionKeys": [
+        "Ciencias:SCI-123",
+        "Ciencias:TR-SCI-092"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Potencia eléctrica",
+      "questionKeys": [
+        "Ciencias:SCI-126",
+        "Ciencias:TR-SCI-064"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1Br-fqf2HsB1oeUK2RfiunAmsQrNrLD19",
+          "title": "PDV · Cuaderno 5 Electricidad",
+          "section": "Ley de Ohm, serie/paralelo, potencia y energía, pp. 5–7",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Potencia mecánica media",
+      "questionKeys": [
+        "Ciencias:SCI-129",
+        "Ciencias:TR-SCI-006"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Efecto Doppler",
+      "questionKeys": [
+        "Ciencias:SCI-130",
+        "Ciencias:SCI-186",
+        "Ciencias:TR-SCI-074"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Grupo aldehído",
+      "questionKeys": [
+        "Ciencias:SCI-135",
+        "Ciencias:TR-SCI-052"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Electrones de valencia",
+      "questionKeys": [
+        "Ciencias:SCI-136",
+        "Ciencias:TR-SCI-041"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Conectividad e isomería",
+      "questionKeys": [
+        "Ciencias:SCI-138",
+        "Ciencias:TR-SCI-036"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Roce y desaceleración",
+      "questionKeys": [
+        "Ciencias:SCI-147",
+        "Ciencias:TR-SCI-069"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Trayectoria de un circuito cerrado",
+      "questionKeys": [
+        "Ciencias:SCI-149",
+        "Ciencias:TR-SCI-072"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1Br-fqf2HsB1oeUK2RfiunAmsQrNrLD19",
+          "title": "PDV · Cuaderno 5 Electricidad",
+          "section": "Ley de Ohm, serie/paralelo, potencia y energía, pp. 5–7",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Protección frente a sobrecorriente",
+      "questionKeys": [
+        "Ciencias:SCI-150",
+        "Ciencias:TR-SCI-065"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Transformaciones en generadores",
+      "questionKeys": [
+        "Ciencias:SCI-151",
+        "Ciencias:TR-SCI-093"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Reflexión y eco",
+      "questionKeys": [
+        "Ciencias:SCI-152",
+        "Ciencias:TR-SCI-089"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Carga del electrón",
+      "questionKeys": [
+        "Ciencias:SCI-153",
+        "Ciencias:TR-SCI-035"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Tabla periódica y valencia",
+      "questionKeys": [
+        "Ciencias:SCI-154",
+        "Ciencias:TR-SCI-094"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Masa de una solución",
+      "questionKeys": [
+        "Ciencias:SCI-157",
+        "Ciencias:TR-SCI-056"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Comparación de concentraciones",
+      "questionKeys": [
+        "Ciencias:SCI-158",
+        "Ciencias:TR-SCI-025"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Conducción y transducción nerviosa",
+      "questionKeys": [
+        "Ciencias:SCI-159",
+        "Ciencias:SCI-160",
+        "Ciencias:SCI-161",
+        "Ciencias:SCI-165",
+        "Ciencias:SCI-166"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Fecundación y diploidía",
+      "questionKeys": [
+        "Ciencias:SCI-167",
+        "Ciencias:TR-SCI-044"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1IA0jkUbQIQMRorLzGOj84t5dpM45oPPL",
+          "title": "FILADD · Práctica de Meiosis",
+          "section": "Meiosis I, meiosis II y gametogénesis; límites del modelo explicitados",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Eventos del ciclo reproductivo",
+      "questionKeys": [
+        "Ciencias:SCI-168",
+        "Ciencias:TR-SCI-045"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Superficie de intercambio",
+      "questionKeys": [
+        "Ciencias:SCI-169",
+        "Ciencias:TR-SCI-071"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 137",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-169",
+          "decision": "Área funcional mayor puede favorecer absorción, sin sustituir ribosomas ni almacenar todo el ADN. No se promete absorción ilimitada.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:TR-SCI-071",
+          "decision": "Igual densidad y menor área implica menor número total de transportadores. Se distingue capacidad de un flujo exacto no medido.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Espectro electromagnético",
+      "questionKeys": [
+        "Ciencias:SCI-171",
+        "Ciencias:SCI-203",
+        "Ciencias:TR-SCI-078"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Elasticidad y ley de Hooke",
+      "questionKeys": [
+        "Ciencias:SCI-172",
+        "Ciencias:TR-SCI-040"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Modelo nuclear y evidencia",
+      "questionKeys": [
+        "Ciencias:SCI-175",
+        "Ciencias:TR-SCI-058"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Geometría e hibridación",
+      "questionKeys": [
+        "Ciencias:SCI-177",
+        "Ciencias:TR-SCI-047"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Porcentaje masa por masa",
+      "questionKeys": [
+        "Ciencias:SCI-178",
+        "Ciencias:TR-SCI-063"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Agentes de ITS",
+      "questionKeys": [
+        "Ciencias:SCI-180",
+        "Ciencias:TR-SCI-034"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Expresión de ADN introducido",
+      "questionKeys": [
+        "Ciencias:SCI-182",
+        "Ciencias:SCI-205"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Homología y función",
+      "questionKeys": [
+        "Ciencias:SCI-183",
+        "Ciencias:TR-SCI-048"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Lente convergente y foco",
+      "questionKeys": [
+        "Ciencias:SCI-185",
+        "Ciencias:TR-SCI-055"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Referencia y suma de velocidades",
+      "questionKeys": [
+        "Ciencias:SCI-187",
+        "Ciencias:TR-SCI-066"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Modelos astronómicos y observación",
+      "questionKeys": [
+        "Ciencias:SCI-188",
+        "Ciencias:TR-SCI-059"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Molalidad",
+      "questionKeys": [
+        "Ciencias:SCI-191",
+        "Ciencias:TR-SCI-060"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Fracción molar",
+      "questionKeys": [
+        "Ciencias:SCI-192",
+        "Ciencias:TR-SCI-046"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Partes por millón en masa",
+      "questionKeys": [
+        "Ciencias:SCI-193",
+        "Ciencias:TR-SCI-062"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Mezcla de soluciones y moles",
+      "questionKeys": [
+        "Ciencias:SCI-194",
+        "Ciencias:TR-SCI-057"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Fórmula empírica",
+      "questionKeys": [
+        "Ciencias:SCI-195",
+        "Ciencias:TR-SCI-032"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Grupo éster",
+      "questionKeys": [
+        "Ciencias:SCI-196",
+        "Ciencias:TR-SCI-053"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Grupo éter",
+      "questionKeys": [
+        "Ciencias:SCI-197",
+        "Ciencias:TR-SCI-054"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Consentimiento y autonomía",
+      "questionKeys": [
+        "Ciencias:SCI-199",
+        "Ciencias:TR-SCI-037"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Digestión intracelular",
+      "questionKeys": [
+        "Ciencias:SCI-200",
+        "Ciencias:TR-SCI-038"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1JMyd3VkMlsZD1EqHUVkwgHVuDu6koHRJ",
+          "title": "CPECH · Biología Ciencias Plan Común, 2020",
+          "section": "Páginas impresas 147",
+          "reviewedAt": "2026-10-21",
+          "use": "Cotejo de secciones; no aprobación integral del libro"
+        }
+      ],
+      "editorialApproval": "partial-text-and-question-review",
+      "reviewedQuestions": [
+        {
+          "key": "Ciencias:SCI-200",
+          "decision": "Degradación vesicular se relaciona con lisosomas, enzimas y condiciones internas; se diferencia de síntesis proteica y fotosíntesis.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        },
+        {
+          "key": "Ciencias:TR-SCI-038",
+          "decision": "La acumulación por fallo de enzima digestiva afecta degradación y reciclaje, sin atribuir el efecto a duplicación de ADN o captura de luz.",
+          "visualApproval": "pending-complete-mobile-inspection"
+        }
+      ]
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Imagen en espejo plano",
+      "questionKeys": [
+        "Ciencias:SCI-201",
+        "Ciencias:TR-SCI-049"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Densidad de una muestra",
+      "questionKeys": [
+        "Ciencias:SCI-204",
+        "Ciencias:TR-SCI-026"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Ciencias",
+      "concept": "Elipse y primera ley de Kepler",
+      "questionKeys": [
+        "Ciencias:SCI-206",
+        "Ciencias:TR-SCI-042"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Secularización del Estado",
+      "questionKeys": [
+        "Historia:HIS-001",
+        "Historia:TR-HIS-007"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Industrialización y fomento estatal",
+      "questionKeys": [
+        "Historia:HIS-002",
+        "Historia:HIS-024",
+        "Historia:TR-HIS-013"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Ruptura democrática de 1973",
+      "questionKeys": [
+        "Historia:HIS-003",
+        "Historia:TR-HIS-008"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Transición democrática de 1988 a 1990",
+      "questionKeys": [
+        "Historia:HIS-004",
+        "Historia:HIS-026"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Estado de derecho y límites constitucionales",
+      "questionKeys": [
+        "Historia:HIS-005",
+        "Historia:HIS-034"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Funciones y separación de poderes",
+      "questionKeys": [
+        "Historia:HIS-006",
+        "Historia:HIS-016",
+        "Historia:HIS-035"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Secreto del sufragio",
+      "questionKeys": [
+        "Historia:HIS-007",
+        "Historia:TR-HIS-003"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Precio y cantidad demandada",
+      "questionKeys": [
+        "Historia:HIS-008",
+        "Historia:TR-HIS-026"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1bFruW8e2qlIYkve9LYwWeGuprEfKP-ka",
+          "title": "CPECH · Bitácora Sistema económico",
+          "section": "Escasez, asignación y funcionamiento del mercado; precisiones de modelación propias",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Costo de oportunidad",
+      "questionKeys": [
+        "Historia:HIS-009",
+        "Historia:HIS-059"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1bFruW8e2qlIYkve9LYwWeGuprEfKP-ka",
+          "title": "CPECH · Bitácora Sistema económico",
+          "section": "Escasez, asignación y funcionamiento del mercado; precisiones de modelación propias",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Industrialización y urbanización",
+      "questionKeys": [
+        "Historia:HIS-010",
+        "Historia:HIS-029"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "17UO2f5pYX-6ZUH1TkBAKjssWQCtWykSr",
+          "title": "TESLA · Progreso indefinido y sus contradicciones",
+          "section": "Industrialización, crecimiento urbano y cuestión social",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Junta de 1810 e independencia",
+      "questionKeys": [
+        "Historia:HIS-011",
+        "Historia:TR-HIS-009"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Minería exportadora y urbanización",
+      "questionKeys": [
+        "Historia:HIS-012",
+        "Historia:HIS-021",
+        "Historia:TR-HIS-034"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Razón y crítica ilustrada",
+      "questionKeys": [
+        "Historia:HIS-013",
+        "Historia:TR-HIS-001"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Origen y propósito de la ONU",
+      "questionKeys": [
+        "Historia:HIS-014",
+        "Historia:TR-HIS-002"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Pluralismo político",
+      "questionKeys": [
+        "Historia:HIS-015",
+        "Historia:TR-HIS-014"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Transparencia y rendición de cuentas",
+      "questionKeys": [
+        "Historia:HIS-017",
+        "Historia:HIS-053"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Inflación y poder adquisitivo",
+      "questionKeys": [
+        "Historia:HIS-018",
+        "Historia:TR-HIS-015"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Bienes públicos y recursos comunes",
+      "questionKeys": [
+        "Historia:HIS-019",
+        "Historia:TR-HIS-027"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Ampliación del sufragio femenino",
+      "questionKeys": [
+        "Historia:HIS-020",
+        "Historia:TR-HIS-010",
+        "Historia:TR-HIS-016"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Cuestión social",
+      "questionKeys": [
+        "Historia:HIS-022",
+        "Historia:TR-HIS-004"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "17UO2f5pYX-6ZUH1TkBAKjssWQCtWykSr",
+          "title": "TESLA · Progreso indefinido y sus contradicciones",
+          "section": "Industrialización, crecimiento urbano y cuestión social",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Predominio parlamentario tras 1891",
+      "questionKeys": [
+        "Historia:HIS-023",
+        "Historia:TR-HIS-017"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Reforma agraria y tenencia de tierra",
+      "questionKeys": [
+        "Historia:HIS-025",
+        "Historia:TR-HIS-023"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Procedencia y alcance de testimonios",
+      "questionKeys": [
+        "Historia:HIS-027",
+        "Historia:HIS-046"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Crítica y contraste de fuentes",
+      "questionKeys": [
+        "Historia:HIS-028",
+        "Historia:HIS-048",
+        "Historia:HIS-060"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Guerra Fría",
+      "questionKeys": [
+        "Historia:HIS-030",
+        "Historia:TR-HIS-019"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Igualdad jurídica en 1789",
+      "questionKeys": [
+        "Historia:HIS-031",
+        "Historia:TR-HIS-031"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Imperialismo y dominio colonial",
+      "questionKeys": [
+        "Historia:HIS-032",
+        "Historia:TR-HIS-032"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Descolonización y autodeterminación",
+      "questionKeys": [
+        "Historia:HIS-033",
+        "Historia:TR-HIS-028"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Participación ciudadana",
+      "questionKeys": [
+        "Historia:HIS-036",
+        "Historia:TR-HIS-024"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Igualdad y no discriminación",
+      "questionKeys": [
+        "Historia:HIS-037",
+        "Historia:TR-HIS-011"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Libertad de prensa",
+      "questionKeys": [
+        "Historia:HIS-038",
+        "Historia:TR-HIS-022"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Debido proceso",
+      "questionKeys": [
+        "Historia:HIS-039",
+        "Historia:TR-HIS-025"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Producción final y PIB",
+      "questionKeys": [
+        "Historia:HIS-040",
+        "Historia:TR-HIS-037"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Desocupación y fuerza de trabajo",
+      "questionKeys": [
+        "Historia:HIS-041",
+        "Historia:HIS-065"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Desplazamientos de oferta",
+      "questionKeys": [
+        "Historia:HIS-042",
+        "Historia:TR-HIS-005"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1bFruW8e2qlIYkve9LYwWeGuprEfKP-ka",
+          "title": "CPECH · Bitácora Sistema económico",
+          "section": "Escasez, asignación y funcionamiento del mercado; precisiones de modelación propias",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Progresividad tributaria",
+      "questionKeys": [
+        "Historia:HIS-043",
+        "Historia:TR-HIS-012"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Externalidades negativas",
+      "questionKeys": [
+        "Historia:HIS-044",
+        "Historia:TR-HIS-006"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Diversificación y riesgo",
+      "questionKeys": [
+        "Historia:HIS-045",
+        "Historia:TR-HIS-067"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Alcance de indicadores de matrícula",
+      "questionKeys": [
+        "Historia:HIS-047",
+        "Historia:TR-HIS-020"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Evidencias de cambios territoriales",
+      "questionKeys": [
+        "Historia:HIS-049",
+        "Historia:TR-HIS-018"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Porcentajes: base y alcance",
+      "questionKeys": [
+        "Historia:HIS-050",
+        "Historia:HIS-055"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Transporte y articulación de mercados",
+      "questionKeys": [
+        "Historia:HIS-051",
+        "Historia:TR-HIS-021"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "17UO2f5pYX-6ZUH1TkBAKjssWQCtWykSr",
+          "title": "TESLA · Progreso indefinido y sus contradicciones",
+          "section": "Industrialización, crecimiento urbano y cuestión social",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Detonante y causas de la Primera Guerra Mundial",
+      "questionKeys": [
+        "Historia:HIS-052",
+        "Historia:TR-HIS-029"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Ahorro por aportes periódicos",
+      "questionKeys": [
+        "Historia:HIS-054",
+        "Historia:TR-HIS-068"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Ocupación de la Araucanía",
+      "questionKeys": [
+        "Historia:HIS-056",
+        "Historia:TR-HIS-036"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Reconstrucción y Plan Marshall",
+      "questionKeys": [
+        "Historia:HIS-057",
+        "Historia:TR-HIS-038"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Representación y soberanía popular",
+      "questionKeys": [
+        "Historia:HIS-058",
+        "Historia:HIS-063"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Nacionalización del cobre",
+      "questionKeys": [
+        "Historia:HIS-061",
+        "Historia:TR-HIS-035"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Gran Depresión de 1929",
+      "questionKeys": [
+        "Historia:HIS-062",
+        "Historia:TR-HIS-030"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [],
+      "editorialApproval": "pending-individual-review"
+    },
+    {
+      "subject": "Historia",
+      "concept": "Ingreso y demanda de bienes normales",
+      "questionKeys": [
+        "Historia:HIS-064",
+        "Historia:TR-HIS-033"
+      ],
+      "structuralGaps": [],
+      "consultedSources": [
+        {
+          "id": "1bFruW8e2qlIYkve9LYwWeGuprEfKP-ka",
+          "title": "CPECH · Bitácora Sistema económico",
+          "section": "Escasez, asignación y funcionamiento del mercado; precisiones de modelación propias",
+          "reviewedAt": "2026-10-20",
+          "use": "Cotejo conceptual; desarrollo y modelos originales"
+        }
+      ],
+      "editorialApproval": "pending-individual-review"
+    }
+  ]
+}

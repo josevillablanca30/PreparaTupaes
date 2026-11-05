@@ -1,0 +1,31 @@
+{
+  "sourceCommit": "a961e1f96450f77b482c8d2fb1c686206e9d4aa0",
+  "aab": "Cachaste-1.5.0-rc16-43.aab",
+  "bytes": 13545078,
+  "sha256": "5ebac856932def2d8cf4ab5027574427b0caaeadc83f4f80e2f765da6999606f",
+  "signature": {
+    "sha256": "5ebac856932def2d8cf4ab5027574427b0caaeadc83f4f80e2f765da6999606f",
+    "certificateSha256": "a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575",
+    "verifiedPayloadEntries": 265,
+    "allPayloadsSigned": true
+  },
+  "manifest": {
+    "package": "cl.preparatupaes.app",
+    "versionName": "1.5.0-rc16",
+    "versionCode": "43",
+    "targetSdk": "36",
+    "debuggable": false,
+    "testOnly": false,
+    "verified": true
+  },
+  "distributionFilesCompared": 124,
+  "webOnlyFilesNotPackaged": [
+    ".nojekyll"
+  ],
+  "gate": 41516857964,
+  "logicPassed": 415,
+  "mobileBrowserPassed": 134,
+  "postgresChecksPassed": 27,
+  "realPhonePilot": "pending",
+  "hostedMail": "blocked: SMTP 535 Authentication credentials invalid"
+}

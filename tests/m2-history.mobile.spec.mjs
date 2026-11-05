@@ -10,28 +10,31 @@ for(const subject of [
   await expect(page.getByRole('button',{name:'Express · 10 preguntas'})).toBeDisabled();
   await page.getByRole('button',{name:'Diagnóstico · 30 preguntas'}).tap();
   await expect(page.locator('.eyebrow')).toContainText('1 de 30');
-  const sample=await page.evaluate(key=>{const s=JSON.parse(localStorage.getItem(key)).session;const bank=key.includes('m2')?window.CACHASTE_M2:window.CACHASTE_HISTORIA;return {ids:s.ids,areas:s.ids.map(id=>bank.find(q=>q.id===id).area)}},subject.key);
+  const sample=await page.evaluate(key=>{const s=JSON.parse(localStorage.getItem(key)).session;const bank=key.includes('m2')?window.CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey==='M2'):window.CACHASTE_DAILY_CATALOG.items.filter(q=>q.subjectKey==='Historia');return {ids:s.ids,areas:s.ids.map(id=>bank.find(q=>q.id===id).area)}},subject.key);
   expect(sample.ids.length).toBe(30);
   expect(new Set(sample.ids).size).toBe(30);
   const tally={};for(const area of sample.areas)tally[area]=(tally[area]||0)+1;
   expect(Object.keys(tally).length).toBeGreaterThanOrEqual(5);
   expect(Math.max(...Object.values(tally))-Math.min(...Object.values(tally))).toBeLessThanOrEqual(1);
   await page.locator('[data-choice="0"]').tap();
-  await page.getByRole('button',{name:'Fue al azar'}).tap();
+
   await page.reload();
   await page.getByRole('button',{name:'Retomar sesión guardada'}).tap();
   await expect(page.locator('[data-choice="0"]')).toHaveClass(/selected/);
-  await expect(page.getByRole('button',{name:'Fue al azar'})).toHaveClass(/selected/);
+  await expect(page.getByRole('button',{name:'Fue al azar'})).toHaveCount(0);
   await expect(page.getByRole('button',{name:'Revisar respuesta'})).toBeEnabled();
   const overflows=await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+1);
   expect(overflows).toBe(false);
  });
  test(subject.file+': completar diagnóstico habilita Express y banco completo',async({page})=>{
+  // 30 respuestas y más de 120 interacciones reales: el presupuesto total no
+  // mide latencia de una sola acción. Conservamos todos los pasos y aserciones.
+  test.setTimeout(90000);
   await page.goto('./'+subject.file);
   await page.getByRole('button',{name:'Diagnóstico · 30 preguntas'}).tap();
   for(let i=0;i<30;i++){
    await page.locator('[data-choice="0"]').click();
-   await page.getByRole('button',{name:'Tengo dudas'}).click();
+
    await page.getByRole('button',{name:'Revisar respuesta'}).click();
    await page.getByRole('button',{name:i===29?'Ver resultado':'Continuar'}).click();
   }

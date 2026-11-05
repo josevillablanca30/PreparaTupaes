@@ -1,0 +1,130 @@
+{
+  "sourceSha": "037b863f1a21b5055392fcfd9ae32e291542da10",
+  "androidRun": 39960691720,
+  "integrationRun": 39958858061,
+  "version": "1.5.0-rc2",
+  "versionCode": 29,
+  "request": 4,
+  "notes": "APK rc2 y recorrido Android 16 completo; captura sincronizada con fotogramas realmente comprometidos. Billing permanece cerrado hasta validación oficial.",
+  "androidConclusion": "success",
+  "nativeScreenshots": 65,
+  "realAuthChecks": 15,
+  "apkSha256": "9fdca3423b3788da9eab703802e89b150eaa9e45ec57014165481694c0eae0bd",
+  "apkBytes": 13684689,
+  "apkRevision": "037b863f1a21b5055392fcfd9ae32e291542da10",
+  "testFixturesInCandidate": false,
+  "package": "package: name='cl.preparatupaes.app.sciencebeta' versionCode='29' versionName='1.5.0-rc2' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'",
+  "certificate": [
+    "V2 Signer: certificate DN: CN=Android Debug, O=Cachaste Beta, C=CL",
+    "V2 Signer: certificate SHA-256 digest: 06fea3ef23af90358868d6c7edf877a871404027e1f7104036ed25ff7b05df22",
+    "V2 Signer: certificate SHA-1 digest: 1559aaa8ead296e19f4742cd25f4fa4c490ae748",
+    "V2 Signer: certificate MD5 digest: 14587330f186a49bfa503aec215a2b5c"
+  ],
+  "nativeTestSuites": [
+    {
+      "name": "cl.preparatupaes.app.OfflineAppTest",
+      "tests": "26",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "230.638",
+      "timestamp": "2026-10-23T13:30:03",
+      "hostname": "localhost"
+    }
+  ],
+  "nativeFailures": [],
+  "logic": {
+    "passed": 375,
+    "failed": 0
+  },
+  "browsers": {
+    "run": 39958370541,
+    "source": "b2f3cc0776b0f76a5142650d1f955930983ae33c",
+    "applicationCodeUnchanged": true,
+    "results": {
+      "Android-Chrome": 382,
+      "mobile-320px": 382,
+      "iPhone-WebKit": 382
+    },
+    "failed": 0
+  },
+  "backup": {
+    "run": 39958858074,
+    "source": "677f73c676b2c3654915e83e3794303d5f51443b",
+    "scope": "Disposable PostgreSQL 17 only; not a hosted production restore",
+    "encryptedPgDump": true,
+    "restored": true,
+    "questions": 802,
+    "communes": 346,
+    "authPasswordHashPreserved": true,
+    "sessionsExcluded": true,
+    "refreshTokensExcluded": true,
+    "recoveryTokensCleared": true,
+    "historicalStatsPreserved": true,
+    "migrationHistoryPreserved": true,
+    "rlsAndAclsPreserved": true
+  },
+  "review": {
+    "nativeScreenshotsReviewed": 65,
+    "referencesCompared": 4,
+    "scope": "Native emulator screenshots; competitive sample data only in instrumentation APK",
+    "pixelPerfectClaim": false
+  },
+  "catalogue": {
+    "questions": 802,
+    "competitiveEligible": 755,
+    "levels": 318,
+    "objectives": 287,
+    "foundationLessons": 8,
+    "readingPassages": 20,
+    "wrongOptionExplanations": 2414,
+    "requiredDiagrams": 18,
+    "assessmentDigest": "d8a9b8965c4a53d288758624b89b00759b435664e9c6854d7051975be5e0b5fa"
+  },
+  "hosted": {
+    "project": "jmobinmdwrmdqrxtcruj",
+    "checkedAt": "2026-10-23T13:11:39Z",
+    "questions": 802,
+    "eligible": 755,
+    "communes": 346,
+    "authUsers": 0,
+    "profiles": 0,
+    "entitlements": 0,
+    "rlsTables": 20,
+    "bytes": 14849715,
+    "migrations": [
+      "20261023003939",
+      "20261023113148"
+    ],
+    "health": {
+      "status": 200,
+      "catalogueReady": true
+    },
+    "anonymousOperationStatus": 401,
+    "billing": {
+      "ready": false,
+      "withoutAuthStatus": 401,
+      "unconfiguredEventsStatus": 503
+    },
+    "functions": [
+      {
+        "slug": "cachaste-play",
+        "version": 2,
+        "status": "ACTIVE"
+      },
+      {
+        "slug": "cachaste-play-events",
+        "version": 2,
+        "status": "ACTIVE"
+      }
+    ],
+    "hostedTwoSubscriberDuelVerified": false,
+    "googlePurchaseVerified": false
+  },
+  "limitations": [
+    "Official SMTP/HTTPS recovery configuration still required.",
+    "Official Google Play products, service-account secrets, RTDN and real license-purchase lifecycle still required.",
+    "Production backup scheduling and isolated hosted restore still required.",
+    "Final physical-device approval and commercial signing still required."
+  ]
+}

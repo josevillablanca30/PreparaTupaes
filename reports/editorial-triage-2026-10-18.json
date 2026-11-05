@@ -1,0 +1,415 @@
+{
+  "date": "2026-10-18",
+  "applicationCommit": "69ad25a2535e7dfb3e2ef49b9aa1fc50f8983c6a",
+  "scope": "Revisión editorial asistida de secuencias y triage de distractores. No validación con estudiantes ni certificación de cobertura.",
+  "changes": {
+    "scienceSolutionsRewritten": [
+      "SCI-016",
+      "SCI-017",
+      "SCI-022",
+      "SCI-024",
+      "SCI-027",
+      "SCI-035",
+      "SCI-036",
+      "SCI-048",
+      "SCI-051",
+      "SCI-067",
+      "SCI-078",
+      "SCI-088",
+      "SCI-089",
+      "SCI-090",
+      "SCI-091",
+      "SCI-095",
+      "SCI-099",
+      "SCI-113",
+      "SCI-114",
+      "SCI-126",
+      "SCI-129",
+      "SCI-132",
+      "SCI-137",
+      "SCI-146",
+      "SCI-155",
+      "SCI-157",
+      "SCI-172",
+      "SCI-187",
+      "SCI-189",
+      "SCI-192",
+      "SCI-193",
+      "SCI-194",
+      "SCI-204"
+    ],
+    "mathFeedback": "M2-007, opción 1: explicar 2⁰=1 frente a 2³=8",
+    "assessmentFieldsPreserved": 780,
+    "heuristicBefore": 134,
+    "heuristicAfter": 102,
+    "critical": 0
+  },
+  "triage": {
+    "reviewed": 44,
+    "accepted": 20,
+    "toRewrite": 24,
+    "shortStepsPending": 58,
+    "note": "Las alertas aceptadas siguen visibles en la auditoría automática; no se cambian umbrales ni se eliminan reglas. Aceptar una alerta no certifica todo el ítem."
+  },
+  "reviews": [
+    {
+      "bank": "M1",
+      "id": 210,
+      "flag": "short_stem",
+      "decision": "aceptada",
+      "rationale": "La expresión 2⁻³ está completa; evalúa inverso multiplicativo y signo. Alargarla no añade información necesaria.",
+      "assessmentSha256": "a9ed2f0a8c926fe1f39a9910a16b92fcf544dd35b609999ef3185502c280c62c"
+    },
+    {
+      "bank": "M1",
+      "id": 224,
+      "flag": "short_stem",
+      "decision": "aceptada",
+      "rationale": "La inecuación es autosuficiente; los distractores distinguen el cambio de sentido al dividir por un número negativo.",
+      "assessmentSha256": "8a67754309dad0912300beb082955ada1c035a2e9372ed8e0f929b14062767c9"
+    },
+    {
+      "bank": "M1",
+      "id": 291,
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "Girar 90 grados representa confusión entre reflexión y rotación; la propiedad de conservación de longitudes es inequívoca.",
+      "assessmentSha256": "40283b0d2c5dc79833fc539a37cf127773adb7e0055017f7e26c90b43dc0db2c"
+    },
+    {
+      "bank": "M1",
+      "id": 292,
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "La imposibilidad de hallar mediana con tres datos representa desconocimiento del procedimiento; las otras opciones confunden centro, máximo y media.",
+      "assessmentSha256": "07c3233a29c63b43b88ee6667676631e1e9a23e769fd9717e1e6ee460713b7df"
+    },
+    {
+      "bank": "M1",
+      "id": 294,
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "No hay error expresa adhesión a la multiplicación indebida de eventos incompatibles. La negación no vuelve inválido el distractor.",
+      "assessmentSha256": "1c3c6f35d575ca3a736a09dad023ce49f19de21f3311d0412fd87dde60b702a4"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-006",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "El uso posterior al contacto y la supresión del ciclo son distractores muy evidentes; comparar mecanismos de métodos sin prometer protección absoluta.",
+      "assessmentSha256": "3c713942f3c728090e703cf71a5ff63386d7cc1854ec3c06c940466c81e2d9f1"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-009",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "La mutación dirigida por necesidad es un error pertinente, pero el cambio universal inmediato y la pérdida automática de herencia facilitan descarte superficial.",
+      "assessmentSha256": "7617a8f1876a9cf381664a3ed008306305b80489457d8c4351699aa1818d0c30"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-014",
+      "flag": "reverse_length_cue",
+      "decision": "reformular",
+      "rationale": "Las alternativas mezclan respuestas de una palabra con causas extensas; igualar el tipo de respuesta y mantener el contraste c = λf.",
+      "assessmentSha256": "e3fe46b61f5c10852574e2d1355f6bf4db085a07f71425748a88296c063ca6f5"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-020",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "Centro de océanos sin placas y polos no compiten razonablemente con límites de placas; construir opciones geológicas comparables.",
+      "assessmentSha256": "898132f72cb8c3b19176bd545ee5ae7afe6b58219f5ccfcd9da8f8a5a940ad3e"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-043",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "Todos Aa modela el cruce AA × aa confundido con Aa × Aa; la opción fenotípica también comprueba si se distingue genotipo de fenotipo.",
+      "assessmentSha256": "475b037caa626b75a9cd898f0512d62e52f6c608086cc8994794ca871820b371"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-044",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "La clave repite el enunciado y los distractores carecen de un mecanismo celular plausible. Requiere una situación funcional nueva, no solo cambiar palabras.",
+      "assessmentSha256": "2bda95cc07855fe70b7f1f9e95af2bae87dfa1079891913ba74009bf94a84aac"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-054",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "Transformar en otro elemento o desaparecer son distractores demasiado remotos; contrastar cantidad de soluto, concentración y volumen.",
+      "assessmentSha256": "95f12203d58cb5f8b08535ed739b14f6c1032361f43de83451a5878c2e07d6f7"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-063",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "Solo una opción tiene forma de relación entre variables; hay una pista de estructura. Crear alternativas contrastables y exigir identificar la hipótesis pertinente al diseño.",
+      "assessmentSha256": "69dafa23264ab48b03f5e313c2168591d133d62be55f3347e5e28bc5f41796e8"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-064",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "Entrar agua es una inversión pertinente, pero sal convertida en agua no es un error osmótico plausible. Mantener la condición de solutos impermeantes.",
+      "assessmentSha256": "ebb594a509c85467f3081120d164f241e80172bc2d97855f9a53b61442b9eb20"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-071",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "Confundir calor con pérdida de masa es pertinente en el modelo escolar; duplicación automática merece sustitución por un balance de materia plausible.",
+      "assessmentSha256": "e247ac93ac16a7c61eda92ec53f9b980c842807acb33a5179138a50967f5d68e"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-073",
+      "flag": "answer_length_cue",
+      "decision": "reformular",
+      "rationale": "La clave es extensa y las opciones responden En... cuando se preguntan estructuras. Homogeneizar sintaxis sin confundir síntesis con tránsito secretor.",
+      "assessmentSha256": "558c4df9f5b0c24dc5169308aec15425ff2c1ff3802852ecdd317452cb12eb58"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-079",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "Clones y desaparición total del ADN facilitan descarte. Contrastar recombinación, segregación y duplicación en opciones equivalentes.",
+      "assessmentSha256": "8a42e377bf27a3a102679a26c586ed01266e9fad05823b78c156ef14c556af72"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-080",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "Conservar el contraste somático/germinal; evitar que necesaria, siempre y automáticamente marquen las tres falsas.",
+      "assessmentSha256": "abf1729aa629e690902fa74a9cf6aa21302ddedf1ebe4959a9d953e449dcfafd"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-082",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "Convertir conejos en productores o detener toda transferencia de energía no discrimina comprensión de relaciones tróficas.",
+      "assessmentSha256": "16edce8f04b385ff2fed4d867af8986ba7624a72c0c0f1234e124a1b7c5cadd8"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-117",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "Separar homólogos es correcto; perder todos los genes y duplicar tras anafase no compiten con confusiones típicas entre homólogos y cromátidas.",
+      "assessmentSha256": "a6b6e30b2dfa39135fc9d207621d00f5cf3d4be8a30f6037d665884d72836ba7"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-124",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "La velocidad constante implica aceleración y resultante cero. Las direcciones hacia arriba/abajo representan confusión entre movimiento y fuerza neta.",
+      "assessmentSha256": "a87746eaf0ba5c5ab76226d8a098c287bd3406ea334d14e5174678ca6e2a53ed"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-128",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "Frecuencia cero y naturaleza luminosa son descartables. Mantener además la clasificación curricular vigente, sin promover contenido complementario.",
+      "assessmentSha256": "27cf1df915760237b8998174d550794e7aed60657bae29787bdac479df730561"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-143",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "Voluntad y falta de agua no compiten con combinaciones alélicas. Replantear una comparación de herencia y ambiente con datos.",
+      "assessmentSha256": "60530436ec9f6d72cfbbfb9e9e400acc31e5e8275023411140feebbe0fc0434e"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-185",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "Las alternativas contrastan reflexión, lente divergente y ausencia de refracción dentro del modelo explícito de lente ideal.",
+      "assessmentSha256": "937d51d3ce7858f6243964fb9ef61d6a4fbe384c82e75e20efce68aa80958f5f"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "TR-SCI-010",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "Conservar la condición de gameto que participa en fecundación; dos opciones absolutas dejan muy poca competencia entre mecanismos.",
+      "assessmentSha256": "058d033d44a1f27022998faacc287cb82ebd7905bf67c8dda0d2798d7cde8dde"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "TR-SCI-039",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "Contar individuos en vez de especies es la confusión central; negar que el conteo permita comparar evalúa la definición de riqueza, no una verdad general.",
+      "assessmentSha256": "8493b51e8c4ec6854a50256132722268a0e80bf494c142738f7f661259645680"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "TR-SCI-055",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "Negar imagen ante rayos divergentes es la confusión real/virtual buscada. El enunciado entrega la evidencia de prolongaciones.",
+      "assessmentSha256": "142211f0f06a4d53af34f4175bcdb80955e805a31f926aef7b0e0f7b6f708e35"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "TR-SCI-080",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "Excluir iones del mismo elemento comprueba si se confunde carga con identidad nuclear. P y Q conservan Z y difieren en neutrones.",
+      "assessmentSha256": "f0a856d0e00c42588fc13397ef0d31d5956bc1dd1a1edf678ae7b6060a721e2c"
+    },
+    {
+      "bank": "Ciencias",
+      "id": "TR-SCI-084",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "Todos los átomos extrapola indebidamente el resultado del trazador; contrasta alcance de evidencia con identificación del origen del O₂.",
+      "assessmentSha256": "11c175dfcf6f5e54222b899cad8428257646464b76925b45ef1c0fc4b44c97bd"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-017",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "T04 muestra lechugas 18→15→12; Todos aumentaron extrapola el total o los otros cultivos e ignora esa serie.",
+      "assessmentSha256": "1768fd737b265a73ba8f86e94964eaeb410cdadf928cd908547861fe74831e68"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-051",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "T11 respalda rótulos, buses y planos. Recetas y moda actual son poco competitivas; usar fuentes cercanas al proceso de datación.",
+      "assessmentSha256": "23bae251f16e3a3e2dbeea684de355a86f092eab924a3c6535777cc7180afe87"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-053",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "T11 limita la fecha a 1972–1978. Las falsas convierten límite en año exacto, confunden evidencia o inventan precisión diaria.",
+      "assessmentSha256": "d2f4e30052d214e5c0840a2f711205526885dbe138051b3028588514fd1e196d"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-054",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "La clave modal es la única prudente y las tres falsas son absolutas. Mantener el contraste documental con grados de certeza plausibles.",
+      "assessmentSha256": "c3993a2b80d82613f074b96aba13c99f5114fd55de895661b788945509b6f147"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-077",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "T16 menciona también caminar y pedalear; aprovechar esos elementos reales para distractores de atribución, sin grupos externos arbitrarios.",
+      "assessmentSha256": "b6e48eceea1efc3311b0cd212a3ddc6e0828652b55dd0da5746969ff8fa9d89e"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-087",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "T18 contiene literalmente la advertencia del viento. La negación pertenece al contenido de una opción y no determina por sí sola su corrección.",
+      "assessmentSha256": "66ffca11f5dafdbfb90ce8fcd515b02d0a25f5ca020bab9f77d5cd38a7d94627"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-088",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "T18 distingue datos numéricos de observaciones omitidas; ausencia de fechas y exceso de notas son lecturas erróneas contrastables con el pasaje.",
+      "assessmentSha256": "2eda31a4d09743fc21e8b22d9e78bd9a1ddaf2cda8edbdc78ec6db2a58e027f5"
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-101",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "T01 explicita los dos buses. Medianoche y cierre semanal no retoman información del pasaje; dar competencia mediante confusiones de traslado y servicio.",
+      "assessmentSha256": "ad6604d4fa52c5e247391642e889fafd07a5d27ac0b360d1d51945a0aefb2e85"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-011",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "Todos los reales representa olvidar la restricción x−5≥0; el dominio correcto es x≥5.",
+      "assessmentSha256": "e9141a04bbbd5ac033504bd36e549a384097d48d25afb76c45eeef3d770ac687"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-072",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "La simetría normal da P(X<media)=0,5 independientemente de la desviación estándar positiva; exigir ese dato es un error pertinente.",
+      "assessmentSha256": "a4c695e7ceaff5c4a1d8fe0f67e4f5b792de6b5e584e8ee7a2f6db26ef128259"
+    },
+    {
+      "bank": "M2",
+      "id": "M2-083",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "Todos los reales representa omitir la condición del radicando. Las otras opciones distinguen desigualdad invertida y exclusión errónea de cero.",
+      "assessmentSha256": "6592112db86b4a74641516f1f6244561b69701a875ba08816ccf960a7c5f253b"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-038",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "La clave es la única consecuencia plausible; eliminación de contrastes o sustitución de tribunales simplifica demasiado la decisión.",
+      "assessmentSha256": "3766657627847aeb224034418b4f67159df9d1d78f6de70994b8564048b47ea3"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-041",
+      "flag": "absolute_distractor",
+      "decision": "aceptada",
+      "rationale": "No recibir sueldo, estudiar o jubilarse confunde desempleo con otras situaciones. La clave incluye búsqueda y disponibilidad.",
+      "assessmentSha256": "beb1df145fa6b09d820027008307438f17857deae96c566a123762cab15d9b60"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-047",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "La clave reproduce el enunciado y las falsas son generalizaciones extremas. Incorporar interpretación de datos sin atribuir calidad a matrícula.",
+      "assessmentSha256": "ca8f76222695daefe68b7c06b8b7fdb9235bb521b73cb6452829b4aff7e1918f"
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-055",
+      "flag": "absolute_distractor",
+      "decision": "reformular",
+      "rationale": "Padrón frente a población es un contraste válido; unanimidad del voto y crecimiento exacto del padrón compiten poco con esa interpretación.",
+      "assessmentSha256": "eb95215dc0f39f446c1db2c74dfa3052ce7fb953ca162bc20f027f7fd64c3d65"
+    }
+  ],
+  "validation": {
+    "logicPassed": 214,
+    "build": "success",
+    "browserRun": 39129828864,
+    "androidRun": 39129828899,
+    "remoteStatus": "pending"
+  }
+}

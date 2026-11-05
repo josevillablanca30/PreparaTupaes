@@ -1,0 +1,347 @@
+{
+  "date": "2026-10-18",
+  "work": "17974dfa43d720503b15254462b6b44fa4767cbe",
+  "main": "560e48cb937cdced1556d86a866c10d5c8012fc7",
+  "scope": "Comparación editorial asistida de 37 evaluaciones; candidate significa revisar para integrar, no ítem certificado ni cambio aplicado. Pasajes T01/T04/T11/T16/T18 leídos íntegramente.",
+  "summary": {
+    "candidate": 28,
+    "equivalent": 3,
+    "retain": 2,
+    "blocked": 4
+  },
+  "rows": [
+    {
+      "key": "M1:291",
+      "decision": "candidate",
+      "reason": "Los distractores de main distinguen reflexión, orientación y conservación; revisar la explicación de orientación para figuras simétricas.",
+      "workAssessmentSha256": "40283b0d2c5dc79833fc539a37cf127773adb7e0055017f7e26c90b43dc0db2c",
+      "mainAssessmentSha256": "87190b22416cf65a8ec7aa82db56469c04e2b63318d35a308bca8fd9a0f2d3cb",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "M1:292",
+      "decision": "candidate",
+      "reason": "Main reemplaza la imposibilidad de calcular por errores de posición e intercambio de medidas; mediana 3 y media 35 verificadas.",
+      "workAssessmentSha256": "07c3233a29c63b43b88ee6667676631e1e9a23e769fd9717e1e6ee460713b7df",
+      "mainAssessmentSha256": "180d7e4ef9b3efc17fb91cf55c0bc05eb3725a7e6fdf3450836b001091017fff",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "M1:294",
+      "decision": "equivalent",
+      "reason": "La clave no cambia y ambas versiones contrastan intersección con exclusión mutua; no es urgente reemplazar un distractor ya interpretable.",
+      "workAssessmentSha256": "1c3c6f35d575ca3a736a09dad023ce49f19de21f3311d0412fd87dde60b702a4",
+      "mainAssessmentSha256": "d66d55474d18e4a657d83b9dc0ace9622e2e5181287f4563a8a1779eec770270",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "M2:M2-011",
+      "decision": "retain",
+      "reason": "Todos los reales es una confusión legítima para dominio radical, aceptada en el triage; main cambia el error evaluado, no corrige una clave.",
+      "workAssessmentSha256": "e9141a04bbbd5ac033504bd36e549a384097d48d25afb76c45eeef3d770ac687",
+      "mainAssessmentSha256": "ca6343d668b0e97f5958b51d98ac0ecc3b376830735e6bc3b5410e82e6f14ced",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "M2:M2-072",
+      "decision": "equivalent",
+      "reason": "Depende de sigma abrevia la misma confusión. La versión de trabajo explicita desviación estándar y resulta más accesible desde fundamentos.",
+      "workAssessmentSha256": "a4c695e7ceaff5c4a1d8fe0f67e4f5b792de6b5e584e8ee7a2f6db26ef128259",
+      "mainAssessmentSha256": "c0ea53502ffebd406996f441a04b8c6a9ed4dc4982e18d5a8f87934765c7f337",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "M2:M2-083",
+      "decision": "retain",
+      "reason": "El dominio sigue siendo x≥4; todos los reales es un distractor pertinente. No importar el reemplazo por x>0 solo para reducir alertas.",
+      "workAssessmentSha256": "6592112db86b4a74641516f1f6244561b69701a875ba08816ccf960a7c5f253b",
+      "mainAssessmentSha256": "ed38378e0cf561f3b222248dfbde584166f6bdbdb094292d3f9e9054390ea2cc",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-006",
+      "decision": "blocked",
+      "reason": "El distractor de main sobre colocación antes de la eyaculación usa reduce el riesgo sin precisar uso correcto desde el inicio; necesita revisión de alcance y fuente sanitaria antes de asegurar una única afirmación correcta.",
+      "workAssessmentSha256": "3c713942f3c728090e703cf71a5ff63386d7cc1854ec3c06c940466c81e2d9f1",
+      "mainAssessmentSha256": "e7108b24b749db372c65df151552e773983ce557cc94bb1f150d8a1d971aa112",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-009",
+      "decision": "candidate",
+      "reason": "Main aproxima distractores a adaptación individual, mutación dirigida y selección parcial; comprobar explicaciones contra heredabilidad, no inducir mutaciones dirigidas.",
+      "workAssessmentSha256": "7617a8f1876a9cf381664a3ed008306305b80489457d8c4351699aa1818d0c30",
+      "mainAssessmentSha256": "8d82cf9f09cb9684e6012d73ea4f07258c565bfe2d18f657a48615f734439071",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-014",
+      "decision": "candidate",
+      "reason": "Main explicita relación inversa y conserva clave; c=f·lambda permite justificar por qué velocidad constante no implica lambda constante.",
+      "workAssessmentSha256": "e3fe46b61f5c10852574e2d1355f6bf4db085a07f71425748a88296c063ca6f5",
+      "mainAssessmentSha256": "e27c5d23fa839e0774334c0af71b6b4dc10457fdd561ac211ea4703cdc88a535",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-020",
+      "decision": "candidate",
+      "reason": "Main reemplaza lugares absurdos por límites, interior de placas y confusión volcánica. Evitar convertir concentración en exclusividad.",
+      "workAssessmentSha256": "898132f72cb8c3b19176bd545ee5ae7afe6b58219f5ccfcd9da8f8a5a940ad3e",
+      "mainAssessmentSha256": "4674198bb279bc5b216b7d369949ff2bd3350d054c0206fbc2b523be475f9b45",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-043",
+      "decision": "candidate",
+      "reason": "Main incorpora razones genotípicas plausibles; AA,Aa,Aa,aa confirma 1:2:1. El distractor fenotípico requiere explicación específica.",
+      "workAssessmentSha256": "475b037caa626b75a9cd898f0512d62e52f6c608086cc8994794ca871820b371",
+      "mainAssessmentSha256": "de84bcdb0fd603bdc0ffb7ee8ea9c51275d779884fd8cff8becd4f8fe5e60b4d",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-044",
+      "decision": "blocked",
+      "reason": "Main mejora alternativas, pero el enunciado deja de sintetizar proteínas todavía revela disminución de producción. Reformular la tarea, no solo opciones.",
+      "workAssessmentSha256": "2bda95cc07855fe70b7f1f9e95af2bae87dfa1079891913ba74009bf94a84aac",
+      "mainAssessmentSha256": "bb11d801bcedcd67ec546544d9a3d5fbae43dbda1d5fb06a5b0ba56cd06324a8",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-054",
+      "decision": "candidate",
+      "reason": "Mejora conservación frente a concentración, separación de partículas y reacción; explicitar dilución sin pérdida ni reacción cuando se revise.",
+      "workAssessmentSha256": "95f12203d58cb5f8b08535ed739b14f6c1032361f43de83451a5878c2e07d6f7",
+      "mainAssessmentSha256": "633a8af4107af06e338d9508e95fafe5b250970288e02e97153260f0a3e5af4f",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-063",
+      "decision": "blocked",
+      "reason": "Main precisa masa máxima, pero la hipótesis de que temperatura afecta rapidez y no masa máxima también responde al objetivo: una hipótesis de ausencia de efecto es comprobable. No aprobar la clave única sin reformular opciones o aportar evidencia.",
+      "workAssessmentSha256": "69dafa23264ab48b03f5e313c2168591d133d62be55f3347e5e28bc5f41796e8",
+      "mainAssessmentSha256": "080862fbfafec7772e5abf74ab7885c53edbbdcfdc0ee43d475741b5bd93f37b",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-064",
+      "decision": "candidate",
+      "reason": "Sustituye transformación sal-agua por permeabilidad/transporte. Revisar redacción de entrada hacia medio más concentrado para distinguir dirección del agua y ubicación del medio.",
+      "workAssessmentSha256": "ebb594a509c85467f3081120d164f241e80172bc2d97855f9a53b61442b9eb20",
+      "mainAssessmentSha256": "87475469952d043bcc0b012c375ddf04e545da7ef20addb38c2179352cbbf02d",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-071",
+      "decision": "candidate",
+      "reason": "Main usa volumen, enlaces y calor como confusiones de masa; conservar el modelo químico escolar de sistema cerrado.",
+      "workAssessmentSha256": "e247ac93ac16a7c61eda92ec53f9b980c842807acb33a5179138a50967f5d68e",
+      "mainAssessmentSha256": "096095e613122379b589a4bf2d2d4855b8f2ed0aa5f371fe0a29e416c66545cb",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-073",
+      "decision": "candidate",
+      "reason": "Main distingue ensamblaje ribosomal, Golgi y vesículas; contrastar inicio en ribosomas libres y continuación en vía secretora al revisar tutor.",
+      "workAssessmentSha256": "558c4df9f5b0c24dc5169308aec15425ff2c1ff3802852ecdd317452cb12eb58",
+      "mainAssessmentSha256": "cb590981af3227de8afbf5518737ca37ee39fadebb7b3bfb354f77b14f8ef97c",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-079",
+      "decision": "candidate",
+      "reason": "Main desplaza distractores absurdos hacia recombinación, copia y número cromosómico; mantener distinción con cromátidas hermanas.",
+      "workAssessmentSha256": "8a42e377bf27a3a102679a26c586ed01266e9fad05823b78c156ef14c556af72",
+      "mainAssessmentSha256": "c15faec04fc7d5bc22c3def519dfca6663f8069b989cc828d5f137bd9ed1d806",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-080",
+      "decision": "candidate",
+      "reason": "Main concentra errores en herencia somática/germinal. Requiere revisión disciplinar de explicación; no certificada por esta comparación editorial.",
+      "workAssessmentSha256": "abf1729aa629e690902fa74a9cf6aa21302ddedf1ebe4959a9d953e449dcfafd",
+      "mainAssessmentSha256": "a2998e0da9fab057be8fab0345cb86ca99e8ee8e2422e66fa09b6197ba7b1acf",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-082",
+      "decision": "candidate",
+      "reason": "Main conecta presas y alimento; revisar si puede ocurrir permite escenarios alternativos de competencia aun con otras condiciones fijas.",
+      "workAssessmentSha256": "16edce8f04b385ff2fed4d867af8986ba7624a72c0c0f1234e124a1b7c5cadd8",
+      "mainAssessmentSha256": "d08772ff2720a67169f1b01b8a740c445269943e519c8d6fb89f820b82506a7e",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-117",
+      "decision": "candidate",
+      "reason": "Main diferencia homólogos y cromátidas, primera y segunda división; alternativa incorrecta debe explicar momento preciso.",
+      "workAssessmentSha256": "a6b6e30b2dfa39135fc9d207621d00f5cf3d4be8a30f6037d665884d72836ba7",
+      "mainAssessmentSha256": "662dbe41e659815b85dc95f9d9c0c44e470ed3821949032e03ee0e6c422fdf9e",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-124",
+      "decision": "candidate",
+      "reason": "Velocidad constante implica aceleración y fuerza neta cero; main explicita equilibrio peso-normal, pero la opción correcta queda más explicativa que otras.",
+      "workAssessmentSha256": "a87746eaf0ba5c5ab76226d8a098c287bd3406ea334d14e5174678ca6e2a53ed",
+      "mainAssessmentSha256": "f6d2258dfe19a0dcd85b8eb485411c5b185841a5e4433bbe78c4fd458d543a37",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-128",
+      "decision": "candidate",
+      "reason": "Main usa atenuación y frecuencia como confusiones más próximas; revisar en fuente de ondas el soporte de cizalla y evitar confundir atenuación con imposibilidad.",
+      "workAssessmentSha256": "27cf1df915760237b8998174d550794e7aed60657bae29787bdac479df730561",
+      "mainAssessmentSha256": "3f39390d05c0e3ab9b7dac355def3fd8ce7afaf4cde761fa8a1415acc10c7afe",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-143",
+      "decision": "candidate",
+      "reason": "Main mejora lenguaje de alelos, aunque voluntad/adaptación sigue siendo distractor remoto. No basta para cerrar profundidad.",
+      "workAssessmentSha256": "60530436ec9f6d72cfbbfb9e9e400acc31e5e8275023411140feebbe0fc0434e",
+      "mainAssessmentSha256": "aeb0ac53282837053b23144de3763505e4722da74ff4963560c788ae4b117e9b",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Ciencias:SCI-185",
+      "decision": "candidate",
+      "reason": "Main distingue convergente/divergente y reflexión con más precisión; conservar hipótesis de lente ideal y foco imagen.",
+      "workAssessmentSha256": "937d51d3ce7858f6243964fb9ef61d6a4fbe384c82e75e20efce68aa80958f5f",
+      "mainAssessmentSha256": "710c7d0c7d76f6d0381fc23637c338645d13278f7a5b618b2617257a6ec0d58d",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Lectura:LEC-017",
+      "decision": "blocked",
+      "reason": "T04 confirma lechugas 18,15,12. Main repite Tomates en dos opciones y mezcla nombre de cultivo con explicación opuesta al descenso. Reformular opciones paralelas.",
+      "workAssessmentSha256": "1768fd737b265a73ba8f86e94964eaeb410cdadf928cd908547861fe74831e68",
+      "mainAssessmentSha256": "900f96b0e82374ae489639485d8d30126867618c89379df08dd1fef78e8a3de0",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Lectura:LEC-051",
+      "decision": "candidate",
+      "reason": "T11 menciona rótulos, buses y planos. Main usa fuentes plausibles no mencionadas; verificar retroalimentación con evidencia del pasaje.",
+      "workAssessmentSha256": "23bae251f16e3a3e2dbeea684de355a86f092eab924a3c6535777cc7180afe87",
+      "mainAssessmentSha256": "de9e25c3dab47de464730632ff5e578fb8b09f587d72c58b4f46c32e3fcbd4eb",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Lectura:LEC-053",
+      "decision": "candidate",
+      "reason": "T11 acota 1972–1978, no confirma 1974; main sustituye el absoluto por confusión sobre evidencia temporal.",
+      "workAssessmentSha256": "d2f4e30052d214e5c0840a2f711205526885dbe138051b3028588514fd1e196d",
+      "mainAssessmentSha256": "5e59139ce85eb67be6d698e00961332432f08da2a43b9d0821c12e3f0060a6de",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Lectura:LEC-054",
+      "decision": "candidate",
+      "reason": "T11 exige grado de certeza. Main mejora distractores sobre jerarquía de fuentes y coincidencia de recuerdos.",
+      "workAssessmentSha256": "c3993a2b80d82613f074b96aba13c99f5114fd55de895661b788945509b6f147",
+      "mainAssessmentSha256": "fe6fd71093debf1f3982fd55d4ee9e4d22fee731ffe1d4ff6faf6218fedf20dd",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Lectura:LEC-077",
+      "decision": "equivalent",
+      "reason": "T16 nombra ambulancias, buses y mercancías. Main solo contextualiza alternativas; revisar prioridad antes de cambiar índices históricos.",
+      "workAssessmentSha256": "b6e48eceea1efc3311b0cd212a3ddc6e0828652b55dd0da5746969ff8fa9d89e",
+      "mainAssessmentSha256": "53549ad79d7937d2545f0eab35bec009d7d970bba39f3ef9810f24c425f216d4",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Lectura:LEC-087",
+      "decision": "candidate",
+      "reason": "T18 contiene literalmente viento del sur, no confiarse. Main propone advertencias cercanas pero no presentes.",
+      "workAssessmentSha256": "66ffca11f5dafdbfb90ce8fcd515b02d0a25f5ca020bab9f77d5cd38a7d94627",
+      "mainAssessmentSha256": "61229dafa04c4e16a754e46a732914e7f25da489f5ee15f7ce86bbe34fc64c85",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Lectura:LEC-088",
+      "decision": "candidate",
+      "reason": "T18 identifica notas y vacíos ocultos; main sustituye errores remotos por gráficos/ejes, sin soporte textual para esas opciones.",
+      "workAssessmentSha256": "2eda31a4d09743fc21e8b22d9e78bd9a1ddaf2cda8edbdc78ec6db2a58e027f5",
+      "mainAssessmentSha256": "8f50616673072eaa1b7e13217ab12719eeb955f2c07d8aae13a613bf6d7a1d08",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Lectura:LEC-101",
+      "decision": "candidate",
+      "reason": "T01 dice dos buses para devolver. Las ferias sí aparecen después, pero no explican dificultad anterior: explicitar temporalidad en feedback.",
+      "workAssessmentSha256": "ad6604d4fa52c5e247391642e889fafd07a5d27ac0b360d1d51945a0aefb2e85",
+      "mainAssessmentSha256": "b692322bffb27202fa33c4bc562892d47d40e0823f8f465dcc0a5daa6c517265",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Historia:HIS-038",
+      "decision": "candidate",
+      "reason": "Main mejora distinción entre información, control institucional y sanción. No confundir libertad de difusión con veracidad garantizada.",
+      "workAssessmentSha256": "3766657627847aeb224034418b4f67159df9d1d78f6de70994b8564048b47ea3",
+      "mainAssessmentSha256": "792a08ec3cd6e6d3fdc88e6110d5eed5a7e8196800e8d89bd569f89353bb6fb5",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Historia:HIS-041",
+      "decision": "candidate",
+      "reason": "Main separa búsqueda, disponibilidad e inactividad. Antes de certificar contrastar definición estadística y periodo de referencia con fuente oficial.",
+      "workAssessmentSha256": "beb1df145fa6b09d820027008307438f17857deae96c566a123762cab15d9b60",
+      "mainAssessmentSha256": "307b8778442d9dc00567c8254f1de52495e0b0c6cc1f59527c2bff1d22787e50",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Historia:HIS-047",
+      "decision": "candidate",
+      "reason": "Main distingue matrícula, calidad, territorio y egreso; el único dato respalda matrícula, no causalidad ni distribución.",
+      "workAssessmentSha256": "ca8f76222695daefe68b7c06b8b7fdb9235bb521b73cb6452829b4aff7e1918f",
+      "mainAssessmentSha256": "20eaa359a1d92f6327d442c4b22bba638b08fb914ce55e6b5b6c0e052cd5a777",
+      "sameAnswerIndex": true,
+      "imported": false
+    },
+    {
+      "key": "Historia:HIS-055",
+      "decision": "candidate",
+      "reason": "70% del padrón equivale a siete de diez habilitados; no respalda población total, distribución regional ni crecimiento interanual.",
+      "workAssessmentSha256": "eb95215dc0f39f446c1db2c74dfa3052ce7fb953ca162bc20f027f7fd64c3d65",
+      "mainAssessmentSha256": "a787bec61b1c8ca3751cdbefef033acec33dc99d9d3b5ce6e03116f0d38bfab5",
+      "sameAnswerIndex": true,
+      "imported": false
+    }
+  ]
+}
