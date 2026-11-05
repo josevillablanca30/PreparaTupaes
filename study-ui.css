@@ -40,4 +40,7 @@ p,li,.passage article p,.skill-summary .row span,.encouragement{color:#e4d7ef}
 .option.wrong,.feedback.wrong,.result.error,.explain.error{background:#3c192a;color:#ffe0e7;border-color:#e18b9f}
 .bar>div{background:linear-gradient(90deg,#9d27e7,#cf8fff)}
 .passage summary span,.passage summary:after,header a,.toplink{color:#edc8ff}
+header a{background:#251634;border:1px solid #744096}
+.brand b{color:#e6b3ff}
+.btn.soft{background:#30202b;color:#ffe4ad;border-color:#a87b41}
 .question-visual :is(p,figcaption,small,strong){color:#302044}
