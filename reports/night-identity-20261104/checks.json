@@ -1,0 +1,56 @@
+{
+  "sourceCommit": "13ae26d3f752ccc6f3de97086dee07cb938ac3fc",
+  "logic": {
+    "passed": 429,
+    "failed": 0
+  },
+  "releaseGate": {
+    "passed": 188,
+    "failed": 0,
+    "runId": 41954301999
+  },
+  "fullBrowserRun": 41954301955,
+  "fullBrowserProfiles": {
+    "Android-Chrome": {
+      "passed": 448,
+      "skipped": 6,
+      "failed": 0
+    },
+    "mobile-320px": {
+      "passed": 448,
+      "skipped": 6,
+      "failed": 0
+    },
+    "iPhone-WebKit": {
+      "status": "in_progress",
+      "jobId": 127005838386
+    }
+  },
+  "skipsReason": "Seis pruebas por perfil pertenecen a la beta local retirada y no incluida en la distribución pública.",
+  "catalogueLayout": {
+    "all802Questions": true,
+    "allWrongOptions": true,
+    "tutorModes": [
+      "steps",
+      "easy",
+      "example"
+    ],
+    "passedProfiles": [
+      "Android-Chrome",
+      "mobile-320px"
+    ]
+  },
+  "installedCommercialAccess": {
+    "status": "success",
+    "runId": 41954301943,
+    "jobId": 127005652401,
+    "device": "Android 36 emulator",
+    "paymentsEnabled": false
+  },
+  "installedWebViewQa": {
+    "status": "in_progress",
+    "runId": 41954301943,
+    "jobId": 127005652799
+  },
+  "physicalPhone": "not_executed"
+}

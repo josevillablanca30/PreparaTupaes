@@ -1,0 +1,6 @@
+<es-419>
+• Unificamos recorrido, progreso, lecciones y ensayos con la estética oscura violeta y dorada de ¿Cachaste?.
+• Incorporamos el maestro oficial en las pantallas de aprendizaje.
+• Mejoramos contraste, botones y lectura en pantallas pequeñas.
+• Conservamos las preguntas, explicaciones, progreso, rankings y duelos. Los cobros siguen desactivados durante las pruebas.
+</es-419>

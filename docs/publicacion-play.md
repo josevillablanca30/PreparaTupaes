@@ -1,6 +1,6 @@
 # Preparación para Google Play
 
-Guía vigente: [publication/README.md](../publication/README.md). Candidata firmada **1.5.0-rc19 / código 46**, fuente `edbbfcfdfee55ef8a5963e94052f1f658c40f50c`, paquete cl.preparatupaes.app y API 36. [Verificación exacta del AAB](../reports/content-context-20261104/signed-bundle.json).
+Guía vigente: [publication/README.md](../publication/README.md). Candidata firmada **1.5.0-rc20 / código 47**, fuente `13ae26d3f752ccc6f3de97086dee07cb938ac3fc`, paquete cl.preparatupaes.app y API 36. [Verificación exacta del AAB](../reports/night-identity-20261104/signed-bundle.json).
 
 El titular actualiza la prueba cerrada existente. Los tres enlaces legales pasan a la web pública de Cloudflare; se conservan las funcionalidades y el certificado permanente. El borrado alojado elimina también la preautorización de tester por correo, sin modificar las cuentas o permisos actuales.
 

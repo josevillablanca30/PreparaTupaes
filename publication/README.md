@@ -1,15 +1,15 @@
-# ¿Cachaste? · candidata 46 para prueba cerrada
+# ¿Cachaste? · candidata 47 para prueba cerrada
 
-Estado al 4 de noviembre de 2026. **1.5.0-rc19 / código 46** está compilada, firmada y verificada. Corrige gráficos y tutor de cuatro ejercicios; conserva el progreso y las funciones educativas. El titular realiza la carga en la misma app y prueba cerrada de Google Play.
+Estado al 4 de noviembre de 2026. **1.5.0-rc20 / código 47** está compilada, firmada y verificada. Unifica recorrido, progreso, lecciones y ensayos con la identidad oscura violeta/dorada de la portada aprobada. Conserva las correcciones de la candidata 46, el contenido, el progreso y las funciones educativas. El titular realiza la carga en la misma app y prueba cerrada de Google Play.
 
-- Fuente del AAB: `edbbfcfdfee55ef8a5963e94052f1f658c40f50c`.
-- Archivo: `Cachaste-1.5.0-rc19-46.aab`, 13.545.559 bytes.
-- SHA-256: `d42633dc921e5dc060b78ebb55e37109c497d1c171cee92f5691bd9f31ba5bda`.
+- Fuente del AAB: `13ae26d3f752ccc6f3de97086dee07cb938ac3fc`.
+- Archivo: `Cachaste-1.5.0-rc20-47.aab`, 13.550.073 bytes.
+- SHA-256: `2d8343aaec8320e85a7a8b13860b1586861ab085c0e2f60631caedb594842894`.
 - Certificado permanente: `a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575`.
-- [Compilación aprobada](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41828180569) · [Artefacto firmado](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41828180569/artifacts/13321761399).
-- [Notas listas para copiar](notas-46.es-419.txt) · [Auditoría y alcance](../reports/content-context-20261104/README.md) · [Piloto físico](prueba-dos-celulares.md).
+- [Compilación aprobada](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41954301999) · [Artefacto firmado](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/41954301999/artifacts/13381444844).
+- [Notas listas para copiar](notas-47.es-419.txt) · [Auditoría y alcance](../reports/night-identity-20261104/README.md) · [Piloto físico](prueba-dos-celulares.md).
 
-El manifiesto real conserva cl.preparatupaes.app, API 36 y no habilita debuggable/testOnly. El ZIP coincide con su digest de Actions y la comprobación local independiente verificó las 265 entradas firmadas. Pasaron 428 pruebas de lógica y 166 recorridos móviles automatizados, además de la integración Auth/duelos en un entorno efímero.
+El manifiesto real conserva cl.preparatupaes.app, API 36 y no habilita debuggable/testOnly. El ZIP coincide con su digest de Actions y la comprobación local independiente verificó las 265 entradas firmadas. Pasaron 429 pruebas de lógica y 188 recorridos móviles automatizados, además de la integración Auth/duelos en un entorno efímero.
 
 El servidor de duelos ya contiene los cuatro cuerpos corregidos. Sus 802 hashes de evaluación coinciden con el catálogo de esta versión. Se conservan claves, alternativas e índices correctos; las tres evaluaciones cuyo enunciado o figura cambió archivan la versión previa para el historial. No es una certificación de ausencia de errores conceptuales.
 
@@ -33,7 +33,7 @@ La recuperación española sigue en https://work-cachaste-web-comercial.cachaste
 
 ## Pendientes reales
 
-- El titular sube el AAB 46 y valida un toque de sus enlaces, recuperación, foto y duelo en teléfonos físicos. Las pruebas de navegador son automatizadas.
+- El titular sube el AAB 47 y valida un toque de sus enlaces, recuperación, foto y duelo en teléfonos físicos. Las pruebas de navegador son automatizadas.
 - Google Play Console abrió una cuenta cerrada; no se pudieron releer sus URL o formulario actuales. El titular eligió completar manualmente los enlaces de privacidad/eliminación y Seguridad de los datos. La última cantidad autenticada observada fue dos testers; no se afirma que siga siendo la actual. Para producción se requiere cumplir la prueba cerrada y la revisión de Google.
 - sitecacho.cl aún no devuelve registros A/AAAA/CNAME; no usarlo como una URL legal verificada hasta conectar su hosting. No se modificó DNS.
 - Definir y documentar los plazos operativos reales de soporte, registros técnicos y respaldos. Antes de vender, completar datos del vendedor e información de contratación/devolución, configurar y probar el circuito comercial y obtener acceso a producción.
