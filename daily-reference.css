@@ -450,6 +450,18 @@ body:has(.reference-courses){--game-purple:#7438df;--game-deep:#4c229b;--game-in
 #daily-root .scenario-table-wrap caption{background:#e7d7f3;color:#39204e}
 #daily-root .daily-options button.correct,#daily-root :is(.visual-response.right,.answer-feedback.right,.studio-feedback.studio-right,.arcade-feedback.right){background:#12382b!important;color:#d6ffe8!important;border-color:#5cca95!important}
 #daily-root .daily-options button.incorrect,#daily-root :is(.visual-response.try-again,.answer-feedback.wrong,.studio-feedback.studio-wrong,.arcade-feedback.try-again,.didactic-selected){background:#3c192a!important;color:#ffe0e7!important;border-color:#e18b9f!important}
+/* Explicitly cover legacy answer and tutor rules with more specific selectors. */
+#daily-root .daily-options button:not(.correct):not(.incorrect){background:linear-gradient(150deg,#2b173c,#170e25)!important;color:#f8f4ff!important;border-color:#8550a6;box-shadow:inset 0 1px 0 #e8b9ff20,0 3px 0 #090510}
+#daily-root .daily-options button[aria-pressed=true]:not(.correct):not(.incorrect){background:#532071!important;border-color:#dc86ff;color:#fff!important}
+#daily-root .answer-feedback{background:#281735;color:#f5eafa;border-color:#ad69d6}
+#daily-root .teacher-step.text-only .lesson-text,#daily-root .tutor details{background:#21122f;color:#f8f4ff;border-color:#8550a6}
+#daily-root .tutor .lesson-text :is(p,li,strong),#daily-root .tutor summary,#daily-root .tutor details p{color:#f8f4ff!important}
+#daily-root .complete-correction aside{background:#12382b;color:#d6ffe8}
+#daily-root .complete-correction aside :is(strong,p){color:#d6ffe8!important}
+#daily-root .confidence-guide :is(strong,p,small),#daily-root .selected-repair small{color:#e4d7ef}
+#daily-root .challenge-meter{background:#38234b}
+#daily-root .challenge-meter>span{background:linear-gradient(90deg,#9d27e7,#cf8fff)}
+#daily-root .question-title{hyphens:none;word-break:normal;overflow-wrap:normal}
 #daily-root :is(.lab-caption,.worked-pin,.worked-status,.visual-guided-note){color:var(--night-muted)}
 #daily-root .lesson-chapters{grid-template-columns:repeat(3,minmax(0,1fr))}
 #daily-root .lesson-chapters button{white-space:nowrap;overflow-wrap:normal;word-break:normal;font-size:13px!important}

@@ -23,9 +23,10 @@ for(const subject of subjects)test(subject+': el tutor mantiene lectura, contras
  for(const heading of await page.locator('.reference-lesson-hero h1,.reference-speech,.reference-subject,.didactic-overview h2,.didactic-key>p,.didactic-depth summary,.lab-caption,.worked-pin,.worked-status,.visual-guided-note,.lesson-chapters button').all())await readable(heading);
  expect(await page.locator('.lesson-chapters button').evaluateAll(ns=>ns.every(n=>n.scrollWidth<=n.clientWidth+1))).toBe(true);
  await fits(page);await screen(page,info,'05-leccion-'+subject);
- await page.locator('[data-action=begin-question]').click();await expect(page.locator('.question-title')).toHaveText(content.question);await readable(page.locator('.question-title'));
+ await page.locator('[data-action=begin-question]').click();await expect(page.locator('.question-title')).toHaveText(content.question);await readable(page.locator('.question-title'));for(const option of await page.locator('.daily-options button').all())await readable(option);
  await fits(page);await screen(page,info,'06-pregunta-'+subject);
  const wrong=(content.answer+1)%content.options.length;await page.locator('[data-action=choice][data-index="'+wrong+'"]').click();await page.locator('[data-action=check]').click();await expect(page.locator('.tutor')).toBeVisible();await readable(page.locator('.tutor h3').first());
+ for(const item of await page.locator('.daily-options button,.answer-feedback,.tutor .lesson-text p,.tutor .complete-correction aside p,.tutor .complete-correction aside strong,.tutor summary:visible,.confidence-guide strong,.confidence-guide p,.confidence-guide small,.selected-repair small').all())await readable(item);
  expect(await page.evaluate(key=>{const q=CachasteDailyApp.engine.byKey.get(key);return{question:q.question,options:q.options,answer:q.answer,foundation:q.teaching.foundation};},content.key)).toEqual({question:content.question,options:content.options,answer:content.answer,foundation:content.foundation});
  await fits(page);await screen(page,info,'07-tutor-'+subject);
 });
