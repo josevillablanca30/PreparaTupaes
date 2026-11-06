@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const browser=readFileSync(new URL('web-commercial.spec.mjs',import.meta.url),'utf8');
 const build=readFileSync(new URL('../scripts/build.mjs',import.meta.url),'utf8');
+const hosted=readFileSync(new URL('../scripts/test-hosted-preview.mjs',import.meta.url),'utf8');
 const workflow=readFileSync(new URL('../../.github/workflows/web-commercial.yml',import.meta.url),'utf8');
 test('web release has browser coverage for the five subjects and every core Android experience',()=>{
  const required=[
@@ -20,4 +21,16 @@ test('web release has browser coverage for the five subjects and every core Andr
  assert.match(build,/adaptCompetitionUi\(androidSource\('competition-app\.js'\)/);
  assert.match(build,/verify-android\.mjs/);
  assert.match(workflow,/Android-Chrome, iPhone-WebKit, Desktop-Chrome, mobile-320px/);
+});
+
+test('hosted QA requires real tutor, Express, five full exams, duels and rankings',()=>{
+ for(const evidence of [
+  'Real deployed tutor opens its visual lesson',
+  'Real deployed Express completes fifteen questions',
+  'Real deployed complete M2 exam resumes',
+  'Real deployed full PAES exams open with answer options in all five subjects',
+  'Three full duels and two rematches',
+  "operation:'rankings'",
+ ])assert.ok(hosted.includes(evidence),'Missing hosted QA: '+evidence);
+ assert.match(hosted,/HOSTED_PREVIEW_QA_FAILED at/);
 });
