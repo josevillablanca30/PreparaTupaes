@@ -69,3 +69,15 @@ body.web-learning{padding-top:56px}.web-appbar{position:fixed;top:0;left:0;right
  .web-learning #competition-root *, .web-learning #competition-root *::before,
  .web-learning #competition-root *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
+
+/* Historial competitivo web: controles táctiles, sin modificar el diseño Android. */
+.web-learning #competition-root .web-duel-filters{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 18px}
+.web-learning #competition-root .web-duel-filters button{min-height:44px;min-width:112px;max-width:100%;white-space:normal;text-align:center}
+.web-learning #competition-root .duel-row{min-width:0}
+.web-learning #competition-root .duel-row>div{min-width:0}
+.web-learning #competition-root .duel-row strong,.web-learning #competition-root .duel-row small{overflow-wrap:anywhere}
+@media(max-width:480px){
+ .web-learning #competition-root .web-duel-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .web-learning #competition-root .web-duel-filters button{width:100%;min-width:0}
+ .web-learning #competition-root .duel-row-actions{flex-wrap:wrap;justify-content:flex-end}
+}
