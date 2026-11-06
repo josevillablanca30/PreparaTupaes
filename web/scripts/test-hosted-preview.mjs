@@ -126,7 +126,7 @@ try{
  record('Three full duels and two rematches use the real UI, same questions, independent completion, verified scores, rankings and retained history');
  await mkdir('web/artifacts/hosted-live',{recursive:true});await a.screenshot({path:'web/artifacts/hosted-live/history-desktop.png',fullPage:true});await b.screenshot({path:'web/artifacts/hosted-live/result-android.png',fullPage:true});
  stage='logout';await a.goto(origin+'/cuenta.html');await a.getByRole('button',{name:'Cerrar sesión',exact:true}).click();await expect(a.getByRole('heading',{name:'Tu preparación comienza aquí.'})).toBeVisible();assert.equal((await a.request.get(origin+'/app/daily-catalog.js')).status(),401);record('Logout revokes the browser cookie and private bank access');
-}catch(e){failed=stage;console.error('HOSTED_PREVIEW_QA_FAILED at '+stage);process.exitCode=1;}
+}catch(e){failed=stage;console.error('HOSTED_PREVIEW_QA_FAILED at '+stage+': '+String(e?.message||e).replace(/https?:\/\/[^\s]+/g,'[url-redacted]').slice(0,400));process.exitCode=1;}
 finally{
  for(const c of contexts)await c.close().catch(()=>{});if(browser)await browser.close().catch(()=>{});
  for(const sdk of clients)await sdk.auth.stopAutoRefresh();
