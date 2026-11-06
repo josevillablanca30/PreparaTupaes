@@ -26,3 +26,8 @@ body.web-learning{padding-top:56px}.web-appbar{position:fixed;top:0;left:0;right
 @media(max-width:560px){.web-learning .web-appbar .web-duels-link{font-size:11px;padding:8px;min-height:44px}.web-learning .web-appbar [data-install]{display:none}}
 @media(max-width:370px){.web-learning .web-appbar .web-duels-link{font-size:0;min-width:54px}.web-learning .web-appbar .web-duels-link::after{content:'VS';font-size:13px;letter-spacing:.04em}}
 @media(prefers-reduced-motion:reduce){.web-learning .web-appbar .web-duels-link{transition:none}}
+
+/* Indicate the active duels screen without changing competition state. */
+.web-learning .web-appbar .web-duels-link[aria-current=page]{background:#281344;box-shadow:inset 0 0 0 2px #c8a6fa}
+.web-learning .web-appbar [data-sync-open][aria-label]{overflow-wrap:anywhere}
+@media(forced-colors:active){.web-learning .web-appbar .web-duels-link{border:1px solid ButtonText}.web-learning .web-appbar .web-duels-link[aria-current=page]{outline:2px solid Highlight;outline-offset:2px}}
