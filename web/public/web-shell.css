@@ -32,38 +32,35 @@ body.web-learning{padding-top:56px}.web-appbar{position:fixed;top:0;left:0;right
 .web-learning .web-appbar [data-sync-open][aria-label]{overflow-wrap:anywhere}
 @media(forced-colors:active){.web-learning .web-appbar .web-duels-link{border:1px solid ButtonText}.web-learning .web-appbar .web-duels-link[aria-current=page]{outline:2px solid Highlight;outline-offset:2px}}
 
-/* Web V13-style competition layout: retain the Android visual language and assets,
-   but use desktop space instead of stretching a 760px mobile viewport. */
+/* Reuse the current Android art and palette, with room for desktop navigation. */
+body.web-learning .web-appbar{background:#160d24;border-color:#68418a;color:#f7edff;box-shadow:0 3px 14px #0005}
+.web-learning .web-appbar>a{color:#ebd8ff}
+.web-learning .web-appbar button{background:#2d1a43!important;color:#f4e7ff!important;border-color:#795294!important}
+.web-learning .web-appbar .web-duels-link{background:#7b25c3}
+.web-learning .web-appbar[data-sync=saved] [data-sync-open]{background:#17392d!important;color:#d2f7e4!important}
+.web-learning .web-appbar[data-sync=pending] [data-sync-open],.web-learning .web-appbar[data-sync=conflict] [data-sync-open]{background:#47351d!important;color:#ffedbf!important}
+.web-learning .web-appbar[data-sync=expired] [data-sync-open]{background:#542034!important;color:#ffe3ec!important}
+.web-learning .web-legal-links{color:#d6b8ee}
 @media(min-width:1000px){
- body.web-learning:has(#competition-root){background:radial-gradient(ellipse at 80% 0%,#eee4ff 0%,transparent 46%),#f9f7ff}
- .web-learning #competition-root{max-width:1120px;padding:20px 32px calc(110px + env(safe-area-inset-bottom));overflow:visible}
- .web-learning #competition-root .comp-header{min-height:74px;margin:0 8px 14px}
+ .web-learning #competition-root{max-width:1120px;padding:24px 32px calc(120px + env(safe-area-inset-bottom));overflow:visible}
+ .web-learning #competition-root .comp-header{margin-bottom:18px}
  .web-learning #competition-root .comp-header .brand img{width:235px}
- .web-learning #competition-root .comp-hero{grid-template-columns:minmax(0,55%) minmax(0,45%);min-height:250px;margin:0 12px 24px}
- .web-learning #competition-root .comp-hero>div{padding:18px 0 28px}
- .web-learning #competition-root .comp-hero h1{font-size:clamp(48px,5vw,70px)}
- .web-learning #competition-root .comp-hero .hero-lead{font-size:22px;max-width:520px;line-height:1.4}
- .web-learning #competition-root .comp-hero .hero-cat{width:min(95%,390px);right:12px;bottom:0;object-fit:contain}
- .web-learning #competition-root .comp-hero .speech{left:-8%;top:4%;width:55%;max-width:260px;font-size:17px}
- .web-learning #competition-root .panel{padding:22px;border-radius:24px}
- .web-learning #competition-root .ranking-modes{gap:10px;padding:9px;border-radius:20px}
- .web-learning #competition-root .ranking-modes button{font-size:15px;min-height:74px}
- .web-learning #competition-root .subject-tabs{gap:9px;padding:8px}
- .web-learning #competition-root .subject-tabs button{font-size:14px;min-height:52px;padding:8px}
- .web-learning #competition-root .geography-tabs{gap:10px}
- .web-learning #competition-root .geography-tabs button{font-size:15px}
+ .web-learning #competition-root .comp-hero{grid-template-columns:minmax(0,1fr) 38%;min-height:260px;padding:24px 32px;border-radius:22px}
+ .web-learning #competition-root .comp-hero h1{font-size:58px}
+ .web-learning #competition-root .comp-hero .hero-lead{font-size:19px;max-width:38ch}
+ .web-learning #competition-root .comp-hero .mentor-control .hero-cat{height:245px}
+ .web-learning #competition-root .panel{padding:24px}
+ .web-learning #competition-root .subject-tabs button{font-size:15px;min-height:54px}
  .web-learning #competition-root .comp-nav{left:50%;right:auto;transform:translateX(-50%);width:min(920px,calc(100% - 48px));border-radius:22px 22px 0 0}
-}
-@media(min-width:700px) and (max-width:999px){
- .web-learning #competition-root{max-width:880px;padding-left:24px;padding-right:24px}
- .web-learning #competition-root .comp-hero{min-height:200px}
- .web-learning #competition-root .comp-hero .hero-cat{width:min(110%,310px)}
-}
-@media(max-width:699px){
- .web-learning #competition-root{max-width:100%;overflow-x:clip}
- .web-learning #competition-root .comp-hero{min-width:0}
- .web-learning #competition-root .comp-hero .hero-cat{max-height:245px;object-fit:contain;object-position:bottom right}
- .web-learning #competition-root .panel{max-width:100%}
+ .web-learning #competition-root .versus-intro{min-height:260px;grid-template-columns:60% 40%;padding:18px 32px}
+ .web-learning #competition-root .versus-guide{height:250px}
+ .web-learning #competition-root .versus-title h1{font-size:64px}
+ body.web-learning:has(#daily-root)>main{max-width:1120px!important;padding-left:32px!important;padding-right:32px!important}
+ .web-learning #daily-root .course-choices{grid-template-columns:repeat(2,minmax(0,1fr));display:grid}
+ .web-learning #daily-root .reference-welcome{min-height:320px}
+ .web-learning #daily-root .reference-welcome h1{font-size:72px}
+ .web-learning #daily-root .reference-guide .mentor-portrait{max-height:320px}
+ .web-learning #daily-root .daily-nav{left:50%;transform:translateX(-50%);max-width:920px;width:calc(100% - 48px)}
 }
 @media(prefers-reduced-motion:reduce){
  .web-learning #competition-root *, .web-learning #competition-root *::before,

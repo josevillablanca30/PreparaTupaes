@@ -113,7 +113,24 @@ for(const state of['rankings','duelos','duelo','resultado'])test('approved '+sta
  await identity(page);await page.goto('/cuenta.html');await expect(page.getByRole('link',{name:'Continuar mi preparación',exact:false})).toBeVisible();await showCompetition(page,state,'/app/competencia.html');
  await layout(page);await page.screenshot({path:info.outputPath('competition-'+state+'-web.png'),fullPage:true});
  expect(await page.locator('.brand img').first().getAttribute('src')).toBe('assets/competition-logo.svg');
- const use=info.project.use,baselineContext=await browser.newContext({baseURL,viewport:page.viewportSize(),userAgent:use.userAgent,deviceScaleFactor:use.deviceScaleFactor,isMobile:use.isMobile,hasTouch:use.hasTouch,serviceWorkers:'block'}),baseline=await baselineContext.newPage();try{await fixturePage(baseline);await showCompetition(baseline,state,'/__android_reference/competencia.html');await layout(baseline,{checkCompetitionLabels:false});await baseline.screenshot({path:info.outputPath('competition-'+state+'-android-reference.png'),fullPage:true,animations:'disabled'});const art='#competition-root';const a=PNG.sync.read(await page.locator(art).screenshot({animations:'disabled',style:'.web-appbar{visibility:hidden}body.web-learning{padding-top:0}',path:info.outputPath('comparison-'+state+'-web-content.png')})),b=PNG.sync.read(await baseline.locator(art).screenshot({animations:'disabled',path:info.outputPath('comparison-'+state+'-android-content.png')}));expect(a.width).toBe(b.width);expect(a.height).toBe(b.height);let changed=0;for(let i=0;i<a.data.length;i+=4)if(Math.max(...[0,1,2].map(c=>Math.abs(a.data[i+c]-b.data[i+c])))>36)changed++;const ratio=changed/(a.width*a.height);await info.attach('visual-comparison.json',{body:Buffer.from(JSON.stringify({state,reference:'Original Android competition UI and official art; web account bar excluded; mobile subject labels use web-only spacing',pixels:a.width*a.height,changed,ratio,tolerance:0.025})),contentType:'application/json'});expect(ratio).toBeLessThanOrEqual(0.025);}finally{await baselineContext.close();}
+ const use=info.project.use,baselineContext=await browser.newContext({baseURL,viewport:page.viewportSize(),userAgent:use.userAgent,deviceScaleFactor:use.deviceScaleFactor,isMobile:use.isMobile,hasTouch:use.hasTouch,serviceWorkers:'block'}),baseline=await baselineContext.newPage();
+ try{
+  await fixturePage(baseline);await showCompetition(baseline,state,'/__android_reference/competencia.html');
+  await layout(baseline,{checkCompetitionLabels:false});
+  await baseline.screenshot({path:info.outputPath('competition-'+state+'-android-reference.png'),fullPage:true,animations:'disabled'});
+  // Desktop intentionally uses the available width. Mobile compares the unchanged
+  // official hero, excluding web-only navigation and recent-history filters.
+  const desktop=page.viewportSize().width>=1000;
+  const selector=state==='duelo'?'.versus-intro':'.comp-hero';
+  expect(await page.locator(selector+' img').evaluateAll(imgs=>imgs.map(i=>i.getAttribute('src')))).toEqual(await baseline.locator(selector+' img').evaluateAll(imgs=>imgs.map(i=>i.getAttribute('src'))));
+  if(desktop){expect((await page.locator('#competition-root').boundingBox()).width).toBeGreaterThan(1000);expect((await baseline.locator('#competition-root').boundingBox()).width).toBeLessThanOrEqual(760);}
+  else{
+   const a=PNG.sync.read(await page.locator(selector).screenshot({animations:'disabled'})),b=PNG.sync.read(await baseline.locator(selector).screenshot({animations:'disabled'}));
+   expect(a.width).toBe(b.width);expect(a.height).toBe(b.height);let changed=0;
+   for(let i=0;i<a.data.length;i+=4)if(Math.max(...[0,1,2].map(c=>Math.abs(a.data[i+c]-b.data[i+c])))>36)changed++;
+   const ratio=changed/(a.width*a.height);await info.attach('visual-comparison.json',{body:Buffer.from(JSON.stringify({state,reference:'Pinned current Android official hero',pixels:a.width*a.height,changed,ratio,tolerance:0.025})),contentType:'application/json'});expect(ratio).toBeLessThanOrEqual(0.025);
+  }
+ }finally{await baselineContext.close();}
 });
 test('four independent rankings send the correct subject and geography filters to the shared server',async({page,request})=>{
  await identity(page);await page.goto('/cuenta.html');await expect(page.getByRole('link',{name:'Continuar mi preparación',exact:false})).toBeVisible();await page.goto('/app/competencia.html#rankings');await expect(page.locator('.ranking-row')).toHaveCount(6);

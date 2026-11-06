@@ -2,7 +2,7 @@
 import{createServer}from'node:http';import{readFile,stat}from'node:fs/promises';import path from'node:path';import{fileURLToPath}from'node:url';
 import{createGateway}from'../server/gateway.mjs';import{actor,opponent,profile,ranking,duel,finished,attempt,dashboard,user as actorUser}from'../../tests/helpers/competition-fixtures.mjs';
 import{createHash}from'node:crypto';
-const root=fileURLToPath(new URL('../dist',import.meta.url)),androidRoot=fileURLToPath(new URL('../../dist',import.meta.url));
+const root=fileURLToPath(new URL('../dist',import.meta.url)),androidRoot=fileURLToPath(new URL('../artifacts/android-reference',import.meta.url));
 const users=[actor.id,opponent.id,'10000000-0000-4000-8000-000000000003'];
 const tokenFor=id=>'eyJhbGciOiJIUzI1NiJ9.'+Buffer.from(JSON.stringify({sub:id,exp:Math.floor(Date.now()/1000)+3600,role:'authenticated',session_id:'20000000-0000-4000-8000-000000000001'})).toString('base64url')+'.qa-signature';
 const tokens=new Map(users.map(id=>[id,tokenFor(id)]));
@@ -46,6 +46,7 @@ async function backend(url,options={}){
   else if(!active)return Response.json({message:'SUBSCRIPTION_REQUIRED'},{status:403});
   else if(operation==='rankings')data=ranking;
   else if(operation==='dashboard')data=dashboard(done);
+  else if(operation==='duel_history')data={duels:done?[finished()]:[],next:null,summary:{played:done?1:0,wins:done?1:0,losses:0,draws:0}};
   else if(['create_duel','join_code','accept','random'].includes(operation))data=duel();
   else if(operation==='duel')data=done?finished():duel();
   else if(['start','attempt'].includes(operation)){data=attempt(position,done?'complete':'active');if(data.question&&qaQuestion)data.question=qaQuestion;}

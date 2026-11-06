@@ -113,4 +113,4 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
  }
  return{fetch:handler};
 }
-export function policy(path,pagePolicies){return `default-src 'self'; script-src 'self' ${(pagePolicies[path]||[]).join(' ')}; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' ${PROJECT_URL}; worker-src 'self'; manifest-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none'; form-action 'self'`;}
+export function policy(path,pagePolicies){return `default-src 'self'; script-src 'self' ${(pagePolicies[path]||[]).join(' ')}; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: ${PROJECT_URL}/storage/v1/object/public/cachaste-profile-photos/; connect-src 'self' ${PROJECT_URL}; worker-src 'self'; manifest-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none'; form-action 'self'`;}
