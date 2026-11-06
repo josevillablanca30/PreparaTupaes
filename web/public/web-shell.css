@@ -31,3 +31,41 @@ body.web-learning{padding-top:56px}.web-appbar{position:fixed;top:0;left:0;right
 .web-learning .web-appbar .web-duels-link[aria-current=page]{background:#281344;box-shadow:inset 0 0 0 2px #c8a6fa}
 .web-learning .web-appbar [data-sync-open][aria-label]{overflow-wrap:anywhere}
 @media(forced-colors:active){.web-learning .web-appbar .web-duels-link{border:1px solid ButtonText}.web-learning .web-appbar .web-duels-link[aria-current=page]{outline:2px solid Highlight;outline-offset:2px}}
+
+/* Web V13-style competition layout: retain the Android visual language and assets,
+   but use desktop space instead of stretching a 760px mobile viewport. */
+@media(min-width:1000px){
+ body.web-learning:has(#competition-root){background:radial-gradient(ellipse at 80% 0%,#eee4ff 0%,transparent 46%),#f9f7ff}
+ .web-learning #competition-root{max-width:1120px;padding:20px 32px calc(110px + env(safe-area-inset-bottom));overflow:visible}
+ .web-learning #competition-root .comp-header{min-height:74px;margin:0 8px 14px}
+ .web-learning #competition-root .comp-header .brand img{width:235px}
+ .web-learning #competition-root .comp-hero{grid-template-columns:minmax(0,55%) minmax(0,45%);min-height:250px;margin:0 12px 24px}
+ .web-learning #competition-root .comp-hero>div{padding:18px 0 28px}
+ .web-learning #competition-root .comp-hero h1{font-size:clamp(48px,5vw,70px)}
+ .web-learning #competition-root .comp-hero .hero-lead{font-size:22px;max-width:520px;line-height:1.4}
+ .web-learning #competition-root .comp-hero .hero-cat{width:min(95%,390px);right:12px;bottom:0;object-fit:contain}
+ .web-learning #competition-root .comp-hero .speech{left:-8%;top:4%;width:55%;max-width:260px;font-size:17px}
+ .web-learning #competition-root .panel{padding:22px;border-radius:24px}
+ .web-learning #competition-root .ranking-modes{gap:10px;padding:9px;border-radius:20px}
+ .web-learning #competition-root .ranking-modes button{font-size:15px;min-height:74px}
+ .web-learning #competition-root .subject-tabs{gap:9px;padding:8px}
+ .web-learning #competition-root .subject-tabs button{font-size:14px;min-height:52px;padding:8px}
+ .web-learning #competition-root .geography-tabs{gap:10px}
+ .web-learning #competition-root .geography-tabs button{font-size:15px}
+ .web-learning #competition-root .comp-nav{left:50%;right:auto;transform:translateX(-50%);width:min(920px,calc(100% - 48px));border-radius:22px 22px 0 0}
+}
+@media(min-width:700px) and (max-width:999px){
+ .web-learning #competition-root{max-width:880px;padding-left:24px;padding-right:24px}
+ .web-learning #competition-root .comp-hero{min-height:200px}
+ .web-learning #competition-root .comp-hero .hero-cat{width:min(110%,310px)}
+}
+@media(max-width:699px){
+ .web-learning #competition-root{max-width:100%;overflow-x:clip}
+ .web-learning #competition-root .comp-hero{min-width:0}
+ .web-learning #competition-root .comp-hero .hero-cat{max-height:245px;object-fit:contain;object-position:bottom right}
+ .web-learning #competition-root .panel{max-width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ .web-learning #competition-root *, .web-learning #competition-root *::before,
+ .web-learning #competition-root *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
