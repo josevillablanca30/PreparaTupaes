@@ -11,8 +11,7 @@ test('web release has browser coverage for the five subjects and every core Andr
   'full PAES exam, answer navigation and cloud persistence',
   'complete Express results, educational review and diagnostic resume',
   'four independent rankings send the correct subject and geography filters',
-  'approved duelo UI keeps the Android composition',
-  'approved resultado UI keeps the Android composition',
+  "for(const state of['rankings','duelos','duelo','resultado'])",
   'two browser contexts synchronize one identity',
  ];
  for(const phrase of required)assert.ok(browser.includes(phrase),'Missing web parity QA: '+phrase);
