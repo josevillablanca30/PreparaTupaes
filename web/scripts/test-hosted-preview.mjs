@@ -103,6 +103,16 @@ try{
  await a.getByRole('button',{name:'Retomar sesión guardada',exact:true}).click();
  await expect(a.locator('[data-choice],.option,.answer-option').first()).toHaveClass(/selected|chosen/);
  record('Real deployed complete M2 exam resumes the selected answer after reload');
+ // All five subjects must open their actual complete exam, not merely their subject cards.
+ for(const subject of ['M1','M2','Lectura','Ciencias','Historia']){
+  await a.goto(origin+'/app/inicio.html#courses');
+  await a.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();
+  if(subject==='Ciencias')await a.locator('[data-track=Biología]').click();
+  await a.locator('[data-action=exam-mode]').click();
+  await expect(a).toHaveURL(/modo=ensayo/);
+  await expect(a.locator('[data-choice],.option,.answer-option').first()).toBeVisible();
+ }
+ record('Real deployed full PAES exams open with answer options in all five subjects');
  await mkdir('web/artifacts/hosted-live',{recursive:true});
  await a.screenshot({path:'web/artifacts/hosted-live/full-exam-m2-desktop.png',fullPage:true});
  stage='duels';await Promise.all(pages.map(p=>p.goto(origin+'/app/competencia.html#duelos')));
