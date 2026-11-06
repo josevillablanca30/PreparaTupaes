@@ -8,3 +8,19 @@
 .legal-nav{display:flex;flex-wrap:wrap;gap:8px 20px}.legal-nav a{display:inline-flex;align-items:center;min-height:44px}.legal-callout{margin-top:24px;padding:20px;border:1px solid #ddc9f5;border-radius:20px;background:#f4edfc}.legal-callout h2{margin-top:0}.legal-page .legal-action{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;border-radius:14px;background:#7436d5;color:#fff;font-weight:700;text-decoration:none;line-height:1.5}.legal-action:focus-visible,.legal-nav a:focus-visible{outline:3px solid #a36fef;outline-offset:4px}.legal-skip{position:absolute;left:16px;top:-100px;z-index:20;padding:12px;background:#fff;color:#7436d5}.legal-skip:focus{top:12px}
 /* Accessible Google entry; uses no remote font, tracking or third-party script. */
 .account-card button.google-signin{display:flex;align-items:center;justify-content:center;gap:12px;min-height:52px;width:100%;margin-top:24px;border:1px solid #747775;background:#fff;color:#1f1f1f;box-shadow:none;font-weight:500;font-size:14px;padding:12px}.account-card button.google-signin:hover{background:#f5f7fc;color:#1f1f1f;box-shadow:none}.google-signin>img{width:20px;height:20px;flex-shrink:0;background:#fff}.auth-divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:#6c5d7c;font-size:13px}.auth-divider::before,.auth-divider::after{content:'';height:1px;background:#e8dff0;flex:1}.auth-divider span{flex-shrink:0}
+
+
+/* Pre-PAES visitor journey: preserves the existing brand, no new visual assets. */
+.paes-moment{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:55px;padding-top:62px;padding-bottom:78px}
+.paes-moment-heading h2{font-size:clamp(32px,3.8vw,49px);line-height:1.14;letter-spacing:-1.6px;margin:16px 0 20px}
+.paes-moment-heading h2 span{color:var(--purple)}
+.paes-moment-heading>p{font-size:15px;line-height:1.8;color:var(--muted);max-width:520px}
+.paes-moment-heading .paes-access-note{padding:14px 18px;background:#f5f0fc;border-left:4px solid var(--purple);border-radius:10px;font-size:13px;color:var(--deep)}
+.paes-moment-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.paes-moment-steps{display:grid;gap:12px}
+.paes-moment-steps article{background:var(--paper);border:1px solid var(--line);border-radius:19px;padding:20px 24px}
+.paes-moment-steps article>span{font-size:12px;font-weight:850;color:var(--purple)}
+.paes-moment-steps h3{font-size:18px;margin:7px 0}
+.paes-moment-steps p{font-size:13px;line-height:1.65;color:var(--muted);margin:0}
+@media(max-width:760px){.paes-moment{grid-template-columns:1fr;gap:25px;padding-top:42px;padding-bottom:50px}.paes-moment-actions>a{min-height:48px}.paes-moment-steps article{padding:18px}}
+@media(max-width:420px){.paes-moment-actions{flex-direction:column}.paes-moment-actions>a{width:100%}}
