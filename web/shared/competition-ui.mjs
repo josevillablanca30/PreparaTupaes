@@ -27,6 +27,22 @@ export function adaptCompetitionUi(source){
  const oldAction="if(action==='challenge'||action==='join'){if(guard())modal(action);return;}";
  if(!source.includes(oldAction))throw Error('REVIEW_WEB_REMATCH_ACTION');
  source=source.replace(oldAction,"if(action==='rematch'){if(!guard())return;const d=state.duel,other=d?.creator?.id===api.user?.id?d?.opponent:d?.creator;if(d?.status!=='finished'||!other?.nickname){state.message='Solo puedes pedir revancha después de un duelo terminado con un rival identificado.';render();return;}state.subject=d.subject;state.track=d.track||state.track;modal('challenge',other.nickname);return;}\n  "+oldAction);
+ // Web-only duel history: filter the server-provided list without inventing results.
+ const oldList="list=state.dashboard?.duels||[];return header()";
+ const newList="list=state.dashboard?.duels||[],finished=list.filter(d=>d.status==='finished'),visible=state.webDuelFilter==='finished'?finished:list;return header()";
+ if(!source.includes(oldList))throw Error('REVIEW_WEB_HISTORY_LIST');
+ source=source.replace(oldList,newList);
+ const oldHeading="'</h2>'+btn('refresh','Actualizar','soft compact')+'</div>'+(list.length?'<ul class=\\\"duel-list\\\">'+list.map(duelRow).join('')+'</ul>':empty('Aún no tienes duelos','Las invitaciones y tus resultados reales aparecerán aquí.'))";
+ // Replace only the stable HTML list expression; keep existing empty state for the all view.
+ const oldHistory="(list.length?'<ul class=\\\"duel-list\\\">'+list.map(duelRow).join('')+'</ul>':empty('Aún no tienes duelos','Las invitaciones y tus resultados reales aparecerán aquí.'))";
+ const historyFallback="(list.length?'<ul class=\\\"duel-list\\\">'+list.map(duelRow).join('')+'</ul>':empty('Aún no tienes duelos','Las invitaciones y tus resultados reales aparecerán aquí.'))";
+ const historyAnchor="(list.length?'<ul class=\"duel-list\">'+list.map(duelRow).join('')+'</ul>':empty('Aún no tienes duelos','Las invitaciones y tus resultados reales aparecerán aquí.'))";
+ if(!source.includes(historyAnchor))throw Error('REVIEW_WEB_HISTORY_RENDER');
+ const historyNew="'<div class=\"web-duel-filters\" role=\"group\" aria-label=\"Filtrar historial de duelos\">'+btn('web-duel-filter','Todos ('+list.length+')',state.webDuelFilter!=='finished'?'primary compact':'soft compact','data-filter=\"all\" aria-pressed=\"'+(state.webDuelFilter!=='finished')+'\"')+btn('web-duel-filter','Terminados ('+finished.length+')',state.webDuelFilter==='finished'?'primary compact':'soft compact','data-filter=\"finished\" aria-pressed=\"'+(state.webDuelFilter==='finished')+'\"')+'</div>'+(visible.length?'<ul class=\"duel-list\">'+visible.map(duelRow).join('')+'</ul>':empty(state.webDuelFilter==='finished'?'Aún no hay resultados terminados':'Aún no tienes duelos',state.webDuelFilter==='finished'?'Los duelos completados aparecerán aquí.':'Las invitaciones y tus resultados reales aparecerán aquí.'))";
+ source=source.replace(historyAnchor,historyNew);
+ const filterAnchor="if(action==='subject'){state.subject=b.dataset.subject;";
+ if(!source.includes(filterAnchor))throw Error('REVIEW_WEB_HISTORY_ACTION');
+ source=source.replace(filterAnchor,"if(action==='web-duel-filter'){state.webDuelFilter=b.dataset.filter==='finished'?'finished':'all';render();return;}\\n  "+filterAnchor);
  const profileDelete="await api.call('delete_profile')";if(!source.includes(profileDelete))throw Error('REVIEW_WEB_PROFILE_DELETION');
  source=source.replace(profileDelete,"await cachasteRemoveWebProfilePhoto(api);"+profileDelete);
  return "async function cachasteRemoveWebProfilePhoto(api){if(!api.user?.id)throw Error('AUTH_REQUIRED');const{error}=await api.sdk.storage.from('cachaste-profile-photos').remove([api.user.id+'/avatar.webp']);if(error)throw error;}\n"+source;
