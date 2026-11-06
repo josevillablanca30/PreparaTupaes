@@ -1,7 +1,7 @@
 name: ¿Cachaste? Web · seguridad, cinco materias y navegadores
 on:
   push:
-    branches: [work/cachaste-web-comercial-20261024]
+    branches: [work/cachaste-web-comercial-20261024, work/cachaste-web-unificada-20261106]
     paths: ['web/**','supabase/functions/_shared/mercadopago-*','supabase/functions/cachaste-mercadopago/**','supabase/functions/cachaste-mp-events/**','.github/workflows/web-commercial.yml','.github/workflows/web-pages-preview.yml']
   workflow_dispatch:
 permissions:
