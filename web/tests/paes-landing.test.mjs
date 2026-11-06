@@ -20,3 +20,12 @@ test('prelaunch pricing FAQ never promises active Mercado Pago billing',()=>{
  assert.doesNotMatch(html,/suscripción web confirmada por Mercado Pago/);
  assert.match(html,/Preparación independiente de DEMRE/);
 });
+
+
+test('landing presents the full Android feature set without claiming public access',()=>{
+ for(const feature of ['Tutor paso a paso','Modo juego y diagnóstico','Ensayo Express','Ensayos PAES completos','Duelos y revanchas','Rankings y progreso'])assert.ok(html.includes(feature),feature);
+ assert.match(html,/Quince preguntas por asignatura/);
+ assert.match(html,/Acceso completo en pruebas cerradas/);
+ assert.match(html,/href="\/cuenta.html">Ingresar con mi cuenta/);
+ assert.match(css,/\.feature-parity-grid/);
+});
