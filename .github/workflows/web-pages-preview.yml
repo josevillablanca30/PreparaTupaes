@@ -69,6 +69,10 @@ jobs:
         run: npx playwright install --with-deps chromium webkit
       - name: Comprobar páginas legales desplegadas en Android, iPhone y escritorio sin sesión
         run: node web/scripts/probe-legal-browsers.mjs
+      - name: Dos cuentas temporales en la preview y Supabase reales
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: node web/scripts/test-hosted-preview.mjs
       - name: Conservar URL y evidencia sin secretos ni bancos
         # Public legal resources are also exercised in actual mobile browser engines.
         if: always()
@@ -78,5 +82,6 @@ jobs:
           path: |
             web/artifacts/pages-preview.json
             web/artifacts/legal-live/
+            web/artifacts/hosted-live/
           if-no-files-found: ignore
           retention-days: 14

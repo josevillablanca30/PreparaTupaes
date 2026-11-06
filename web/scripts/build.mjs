@@ -22,6 +22,7 @@ for(const file of [...ANDROID_UI_FILES.filter(f=>!f.endsWith('.mjs')),...android
 const currentClient=androidSource('competition-client.mjs').toString();
 await build({stdin:{contents:currentClient,resolveDir:root,sourcefile:'android-reference-client.mjs'},outfile:path.join(reference,'competition-client.js'),bundle:true,minify:true,target:['safari15','chrome100'],format:'iife',legalComments:'eof'});
 await cp(path.join(root,'web/public'),out,{recursive:true});await cp(path.join(root,'assets'),path.join(out,'assets'),{recursive:true});
+for(const file of androidArt())await writeFile(path.join(out,file),androidSource(file));
 // The landing callback renders the same recovery document, never a second copy
 // of its UI and never a navigation that forwards the incoming credentials.
 const recoveryDocument=await readFile(path.join(out,'recuperar.html'),'utf8'),recoveryBody=recoveryDocument.match(/<body[^>]*>([\s\S]*?)<\/body>/)?.[1];
