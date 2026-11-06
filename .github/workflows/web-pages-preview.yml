@@ -14,7 +14,7 @@ jobs:
   preview:
     if: github.ref_name == 'work/cachaste-web-unificada-20261106'
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: 55
     env:
       CLOUDFLARE_PAGES_PROJECT: cachaste-sitecacho
       # Account IDs are public identifiers, not credentials. This is the owner's confirmed account.
