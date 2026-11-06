@@ -3,8 +3,8 @@ import {adaptCurrentCompetitionUi} from './current-competition-ui.mjs';
 export function adaptCompetitionUi(source){
  if(source.includes('function historyPage()'))return adaptCurrentCompetitionUi(source);
  const changes=[
- ['Los cobros y la prueba de siete días se habilitarán con Google Play.','Las suscripciones web se administran en Mi cuenta mediante Mercado Pago.'],
- ['Se eliminarán tu cuenta y tus datos competitivos. Tu aprendizaje local seguirá en este teléfono. Eliminar la cuenta no cancela una suscripción de Google Play: cancélala allí si no quieres que se renueve. Las compras quedan vinculadas a esta cuenta. Para protegerte, vuelve a confirmar tu contraseña.','Se eliminarán tu cuenta, tu progreso web y tus datos competitivos. Cancela primero la renovación de Mercado Pago en Mi cuenta. Las compras de Google Play se administran allí. Los importes de pagos necesarios para obligaciones contables pueden conservarse sin el vínculo a tu cuenta. Para protegerte, confirma nuevamente tu acceso antes de eliminar.']
+ ['Los cobros y la prueba de siete días se habilitarán con Google Play.','Los cobros están desactivados durante las pruebas. Revisa tu acceso en Mi cuenta.'],
+ ['Se eliminarán tu cuenta y tus datos competitivos. Tu aprendizaje local seguirá en este teléfono. Eliminar la cuenta no cancela una suscripción de Google Play: cancélala allí si no quieres que se renueve. Las compras quedan vinculadas a esta cuenta. Para protegerte, vuelve a confirmar tu contraseña.','Se eliminarán tu cuenta, tu progreso web y tus datos competitivos. Si en el futuro activas una suscripción web, cancela su renovación desde Mi cuenta. Las compras de Google Play se administran allí. Los importes de pagos necesarios para obligaciones contables pueden conservarse sin el vínculo a tu cuenta. Para protegerte, confirma nuevamente tu acceso antes de eliminar.']
  ];
  for(const[from,to]of changes){if(!source.includes(from))throw Error('Review web account copy: Android source changed');source=source.replace(from,to);}
  const password='<label>Contraseña actual<input name="password" type="password" autocomplete="current-password" required></label>';
