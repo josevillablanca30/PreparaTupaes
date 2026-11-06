@@ -2,7 +2,7 @@
 export const PAGES_PROJECT = 'cachaste-sitecacho';
 // Public resource identifier confirmed in the owner's Cloudflare screenshot; not an API credential.
 export const PAGES_ACCOUNT_ID = 'cfe4b77c0c39bb056306d16133a93642';
-export const PREVIEW_BRANCH = 'work/cachaste-web-comercial-20261024';
+export const PREVIEW_BRANCH = 'work/cachaste-web-unificada-20261106';
 export const RESERVED_PRODUCTION_BRANCH = 'production-requires-owner-approval';
 export const REPOSITORY = 'josevillablanca30/PreparaTupaes';
 

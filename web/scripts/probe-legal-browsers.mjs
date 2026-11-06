@@ -1,6 +1,9 @@
 import {chromium,webkit,devices} from '@playwright/test';
-import {mkdir,writeFile} from 'node:fs/promises';
-const origin='https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev';
+import {mkdir,writeFile,readFile} from 'node:fs/promises';
+import {previewUrl} from './pages-client.mjs';
+const deployed=JSON.parse(await readFile('web/artifacts/pages-preview.json','utf8'));
+const origin=previewUrl(deployed.url);
+if(deployed.deployment?.id==null||deployed.revision!==process.env.GITHUB_SHA)throw Error('VERIFIED_PREVIEW_REQUIRED');
 const revision=process.env.GITHUB_SHA;
 if(!/^[a-f\d]{40}$/.test(revision||''))throw Error('EXACT_REVISION_REQUIRED');
 const version=await fetch(origin+'/version.json',{signal:AbortSignal.timeout(20000)}).then(r=>r.json());
