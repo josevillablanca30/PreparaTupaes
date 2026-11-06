@@ -42,7 +42,7 @@ export function adaptCompetitionUi(source){
  source=source.replace(historyAnchor,historyNew);
  const filterAnchor="if(action==='subject'){state.subject=b.dataset.subject;";
  if(!source.includes(filterAnchor))throw Error('REVIEW_WEB_HISTORY_ACTION');
- source=source.replace(filterAnchor,"if(action==='web-duel-filter'){state.webDuelFilter=b.dataset.filter==='finished'?'finished':'all';render();return;}\\n  "+filterAnchor);
+ source=source.replace(filterAnchor,"if(action==='web-duel-filter'){state.webDuelFilter=b.dataset.filter==='finished'?'finished':'all';render();return;}\n  "+filterAnchor);
  const profileDelete="await api.call('delete_profile')";if(!source.includes(profileDelete))throw Error('REVIEW_WEB_PROFILE_DELETION');
  source=source.replace(profileDelete,"await cachasteRemoveWebProfilePhoto(api);"+profileDelete);
  return "async function cachasteRemoveWebProfilePhoto(api){if(!api.user?.id)throw Error('AUTH_REQUIRED');const{error}=await api.sdk.storage.from('cachaste-profile-photos').remove([api.user.id+'/avatar.webp']);if(error)throw error;}\n"+source;
