@@ -18,3 +18,11 @@ body.web-learning{padding-top:56px}.web-appbar{position:fixed;top:0;left:0;right
 @media(min-width:900px){body.web-learning{padding-top:68px}.web-learning .web-appbar{min-height:68px}.web-learning .web-appbar>a{font-size:14px}.web-learning .web-appbar button{font-size:13px}}
 @media(max-width:480px){.web-learning .web-appbar{gap:5px;padding-left:max(7px,env(safe-area-inset-left));padding-right:max(7px,env(safe-area-inset-right))}.web-learning .web-appbar button{font-size:11px;padding:8px 9px}.web-learning .web-appbar [data-sync-open]{min-width:0;max-width:140px}.web-learning .web-appbar>a{font-size:11px;gap:4px}.web-learning .web-appbar img{width:26px;height:26px}}
 @media(prefers-reduced-motion:reduce){.web-learning .web-appbar button{transition:none!important;transform:none!important}}
+
+/* Competition shortcut uses the same existing competition route on mobile and desktop. */
+.web-learning .web-appbar .web-duels-link{display:inline-flex;justify-content:center;align-items:center;min-height:44px;padding:9px 14px;border-radius:12px;background:#6f35b1;color:#fff;font-weight:750;text-decoration:none;white-space:nowrap;transition:background-color .16s ease}
+.web-learning .web-appbar .web-duels-link:hover{background:#50218b}
+.web-learning .web-appbar .web-duels-link:focus-visible{outline:3px solid #ad78ef;outline-offset:2px}
+@media(max-width:560px){.web-learning .web-appbar .web-duels-link{font-size:11px;padding:8px;min-height:44px}.web-learning .web-appbar [data-install]{display:none}}
+@media(max-width:370px){.web-learning .web-appbar .web-duels-link{font-size:0;min-width:54px}.web-learning .web-appbar .web-duels-link::after{content:'VS';font-size:13px;letter-spacing:.04em}}
+@media(prefers-reduced-motion:reduce){.web-learning .web-appbar .web-duels-link{transition:none}}
