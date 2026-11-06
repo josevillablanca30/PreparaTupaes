@@ -19,7 +19,7 @@ test('la revancha reutiliza invitación con nickname y exige duelo terminado',()
  const web=adaptCompetitionUi(source);
  assert.match(web,/d\?\.status!=='finished'/);
  assert.match(web,/modal\('challenge',other\.nickname\)/);
- assert.match(web,/value=\\"'\+esc\(nickname\?prefill:''\)/);
+ assert.ok(web.includes(`value="'+esc(nickname?prefill:'')+'"`),'el nickname debe quedar precargado');
  assert.match(web,/if\(!guard\(\)\)return/);
 });
 
