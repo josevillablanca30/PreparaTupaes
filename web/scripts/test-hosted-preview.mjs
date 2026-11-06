@@ -103,6 +103,8 @@ try{
  await a.getByRole('button',{name:'Retomar sesión guardada',exact:true}).click();
  await expect(a.locator('[data-choice],.option,.answer-option').first()).toHaveClass(/selected|chosen/);
  record('Real deployed complete M2 exam resumes the selected answer after reload');
+ await mkdir('web/artifacts/hosted-live',{recursive:true});
+ await a.screenshot({path:'web/artifacts/hosted-live/full-exam-m2-desktop.png',fullPage:true});
  stage='duels';await Promise.all(pages.map(p=>p.goto(origin+'/app/competencia.html#duelos')));
  const duelIds=[];
  for(let round=0;round<3;round++){
