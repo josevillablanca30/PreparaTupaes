@@ -30,7 +30,7 @@ test('hosted QA requires real tutor, Express, five full exams, duels and ranking
   'Real deployed complete M2 exam resumes',
   'Real deployed full PAES exams open with answer options in all five subjects',
   'Three full duels and two rematches',
-  "operation:'rankings'",
+  "rpc(0,'rankings'",
  ])assert.ok(hosted.includes(evidence),'Missing hosted QA: '+evidence);
  assert.match(hosted,/HOSTED_PREVIEW_QA_FAILED at/);
 });
