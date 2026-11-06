@@ -26,3 +26,20 @@ test('la revancha reutiliza invitación con nickname y exige duelo terminado',()
 test('falla explícitamente si cambia un ancla de Android',()=>{
  assert.throws(()=>adaptCompetitionUi(source.replace('Buscar otro duelo','Buscar siguiente duelo')),/REVIEW_WEB_REMATCH_RESULT/);
 });
+
+test('la versión web conserva las reglas de protección de cuentas',()=>{
+ const web=adaptCompetitionUi(source);
+ assert.match(web,/await cachasteRemoveWebProfilePhoto\(api\)/);
+ assert.match(web,/AUTH_REQUIRED/);
+ assert.match(web,/Pedir revancha al mismo rival/);
+ assert.doesNotMatch(source,/Pedir revancha al mismo rival/);
+});
+
+test('el adaptador no agrega una revancha que salte el control de suscripción',()=>{
+ const web=adaptCompetitionUi(source);
+ const action=web.match(/if\(action==='rematch'\)\{[\s\S]*?modal\('challenge',other\.nickname\);return;\}/)?.[0];
+ assert.ok(action,'debe existir la acción web');
+ assert.match(action,/if\(!guard\(\)\)return/);
+ assert.match(action,/d\?\.status!=='finished'/);
+ assert.match(web,/api\.call\('create_duel'/);
+});
