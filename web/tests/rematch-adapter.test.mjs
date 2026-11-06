@@ -43,3 +43,14 @@ test('el adaptador no agrega una revancha que salte el control de suscripción',
  assert.match(action,/d\?\.status!=='finished'/);
  assert.match(web,/api\.call\('create_duel'/);
 });
+
+test('el historial filtra únicamente duelos terminados y muestra conteos reales',()=>{
+ const web=adaptCompetitionUi(source);
+ assert.doesNotThrow(()=>new Script(web,{filename:'competition-web.js'}));
+ assert.match(web,/finished=list\.filter\(d=>d\.status==='finished'\)/);
+ assert.match(web,/visible=state\.webDuelFilter==='finished'\?finished:list/);
+ assert.match(web,/visible\.map\(duelRow\)/);
+ assert.match(web,/Terminados \('/);
+ assert.match(web,/if\(action==='web-duel-filter'\)/);
+ assert.doesNotMatch(source,/web-duel-filters/);
+});
