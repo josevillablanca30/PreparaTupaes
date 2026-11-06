@@ -60,6 +60,49 @@ try{
  const second=await browser.newContext({viewport:{width:390,height:844},locale:'es-CL'});contexts.push(second);const same=await second.newPage();await login(same,users[0]);await expect.poll(()=>same.evaluate(()=>CachasteDailyApp.engine.state.subject)).toBe('Historia');await same.close();
  assert.deepEqual((await clients[1].rpc('cachaste_web_progress',{operation:'snapshot',payload:{}})).data.documents.filter(d=>d.key==='cachaste-daily-v1'),[]);
  record('Five subjects open; a second browser resumes the same account and a different account stays separate');
+ stage='full-education';
+ // Exercise the real deployed learning UI, not only its five subject selection cards.
+ await a.goto(origin+'/app/inicio.html#courses');
+ await a.locator('[data-action=pick-course][data-subject="M1"]').click();
+ await a.locator('[data-action=game-mode]').click();
+ await a.locator('.trail-stop.current .trail-node').click();
+ await a.locator('[data-action=lesson]').click();
+ await expect(a.locator('.visual-lesson')).toBeVisible();
+ for(let step=0;step<22&&!await a.locator('.visual-probe').count();step++)await a.locator('[data-action=intro-next]').click();
+ await expect(a.locator('.visual-probe')).toBeVisible();
+ const visualAnswer=await a.evaluate(()=>{const e=CachasteDailyApp.engine,s=e.state.session,q=e.byKey.get(s.keys[s.index]);return CachasteLessons.current(q,s.visualLesson).answer;});
+ await a.locator('[data-action=visual-choose][data-value="'+visualAnswer+'"]').click();
+ await expect(a.locator('.visual-response.right')).toBeVisible();
+ record('Real deployed tutor opens its visual lesson and validates a correct conceptual answer');
+ await a.goto(origin+'/app/inicio.html#courses');
+ await a.locator('[data-action=pick-course][data-subject="M1"]').click();
+ await a.locator('[data-action=express-mode]').click();
+ for(let n=0;n<15;n++){
+  await expect(a.locator('.question-title')).toBeVisible();
+  const answer=await a.evaluate(n=>{const e=CachasteDailyApp.engine,s=e.state.session,q=e.byKey.get(s.keys[s.index]);return n<10?q.answer:(q.answer+1)%q.options.length;},n);
+  await a.locator('[data-action=choice][data-index="'+answer+'"]').click();
+  await a.locator('[data-action=check]').click();
+  await a.locator('[data-action=next]').click();
+ }
+ await expect(a.locator('.express-report')).toContainText('10/15');
+ await expect(a.locator('.express-review')).toHaveCount(15);
+ await a.evaluate(()=>CachasteWebProgress.flush());
+ await expect.poll(()=>a.evaluate(()=>CachasteWebProgress.pending())).toBe(0);
+ record('Real deployed Express completes fifteen questions, verifies the 10/15 result and synchronizes review');
+ await a.goto(origin+'/app/inicio.html#courses');
+ await a.locator('[data-action=pick-course][data-subject="M2"]').click();
+ await a.locator('[data-action=exam-mode]').click();
+ await expect(a).toHaveURL(/modo=ensayo/);
+ const examOptions=a.locator('[data-choice],.option,.answer-option');
+ await expect(examOptions.first()).toBeVisible();
+ await examOptions.first().click();
+ await expect(examOptions.first()).toHaveClass(/selected|chosen/);
+ await a.evaluate(()=>CachasteWebProgress.flush());
+ await expect.poll(()=>a.evaluate(()=>CachasteWebProgress.pending())).toBe(0);
+ await a.reload();
+ await a.getByRole('button',{name:'Retomar sesión guardada',exact:true}).click();
+ await expect(a.locator('[data-choice],.option,.answer-option').first()).toHaveClass(/selected|chosen/);
+ record('Real deployed complete M2 exam resumes the selected answer after reload');
  stage='duels';await Promise.all(pages.map(p=>p.goto(origin+'/app/competencia.html#duelos')));
  const duelIds=[];
  for(let round=0;round<3;round++){
