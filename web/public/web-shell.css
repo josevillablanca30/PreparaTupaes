@@ -4,3 +4,17 @@ body.web-learning{padding-top:56px}.web-appbar{position:fixed;top:0;left:0;right
 @media(max-width:350px){.web-learning #competition-root .subject-tabs button{font-size:11px;padding-left:3px;padding-right:3px}.web-learning #competition-root .subject-tabs .icon{display:none}}
 
 .web-legal-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;margin:24px 16px 100px;padding:16px;font:14px/1.5 system-ui,sans-serif}.web-legal-links a{display:inline-flex;align-items:center;min-height:44px;color:inherit;text-decoration:underline}
+
+/* Unified web shell: desktop-friendly layout, touch-safe controls and responsive safe areas. */
+.web-learning .web-appbar{padding-left:max(12px,env(safe-area-inset-left),calc((100vw - 1120px)/2));padding-right:max(12px,env(safe-area-inset-right),calc((100vw - 1120px)/2));gap:clamp(8px,2vw,20px)}
+.web-learning .web-appbar>a{font-size:clamp(12px,1.1vw,14px);gap:9px}
+.web-learning .web-appbar img{width:32px;height:32px;object-fit:contain}
+.web-learning .web-appbar button{font-size:clamp(11px,1vw,13px);padding:10px 14px;border:1px solid #e6d8f3!important;transition:background-color .16s ease,box-shadow .16s ease}
+.web-learning .web-appbar button:hover{background:#eee2fa!important;box-shadow:0 2px 8px #36145a12!important}
+.web-learning .web-appbar button:active{transform:translateY(1px)}
+.web-learning .web-appbar [data-sync-open]{max-width:none;min-width:145px}
+.web-learning .web-appbar[data-sync=saved] [data-sync-open]{background:#f0f9f4!important;color:#24543c!important}
+.web-learning .web-appbar[data-sync=expired] [data-sync-open]{background:#fff0ef!important;color:#923d39!important}
+@media(min-width:900px){body.web-learning{padding-top:68px}.web-learning .web-appbar{min-height:68px}.web-learning .web-appbar>a{font-size:14px}.web-learning .web-appbar button{font-size:13px}}
+@media(max-width:480px){.web-learning .web-appbar{gap:5px;padding-left:max(7px,env(safe-area-inset-left));padding-right:max(7px,env(safe-area-inset-right))}.web-learning .web-appbar button{font-size:11px;padding:8px 9px}.web-learning .web-appbar [data-sync-open]{min-width:0;max-width:140px}.web-learning .web-appbar>a{font-size:11px;gap:4px}.web-learning .web-appbar img{width:26px;height:26px}}
+@media(prefers-reduced-motion:reduce){.web-learning .web-appbar button{transition:none!important;transform:none!important}}
