@@ -2,7 +2,7 @@
 export function adaptCurrentCompetitionUi(source){
  const replace=(from,to)=>{if(!source.includes(from))throw Error('REVIEW_CURRENT_ANDROID_UI: '+from.slice(0,60));source=source.replace(from,to);};
  replace('Los cobros y la prueba de siete días se habilitarán con Google Play.','Los cobros están desactivados durante las pruebas. Revisa tu acceso en Mi cuenta.');
- replace('href="suscripcion.html"','href="/cuenta.html#planes"');
+ source=source.replaceAll('href="suscripcion.html"','href="/cuenta.html#planes"');
  replace('Se eliminarán tu cuenta y tus datos competitivos. Tu aprendizaje local seguirá en este teléfono. Eliminar la cuenta no cancela una suscripción de Google Play: cancélala allí si no quieres que se renueve. Las compras quedan vinculadas a esta cuenta. Para protegerte, vuelve a confirmar tu contraseña.','Se eliminarán tu cuenta, tu progreso web y tus datos competitivos. Las compras de Google Play se administran allí. Si en el futuro activas una suscripción web, cancela su renovación desde Mi cuenta. Los datos contables exigidos pueden conservarse sin vincularlos a tu cuenta. Confirma tu acceso para continuar.');
  const password='<label>Contraseña actual<input name="password" type="password" autocomplete="current-password" required></label>';
  replace(password,"'+(api.user?.app_metadata?.provider==='google'?'<p>Confirma tu acceso con <a href=\"/cuenta.html?reauth=google&next=%2Fapp%2Fcompetencia.html\">Google en Mi cuenta</a> y vuelve a Perfil. No necesitas crear una contraseña.':'"+password+"')+'");
