@@ -20,7 +20,18 @@ if(typeof window!=='undefined'&&location.pathname.startsWith('/app/')&&!window.C
  const legal=document.createElement('footer');legal.className='web-legal-links';legal.setAttribute('aria-label','Información legal');legal.innerHTML='<a href="/privacidad.html">Privacidad</a><a href="/condiciones.html">Condiciones</a><a href="/eliminar-cuenta.html">Eliminar cuenta</a>';document.body.append(legal);
  document.body.classList.add('web-learning');const bar=document.createElement('div');bar.className='web-appbar';bar.innerHTML='<a href="/cuenta.html" aria-label="Mi cuenta de Cachaste"><img src="/assets/cachaste-icon.svg" alt="" width="28" height="28"><span>Mi cuenta</span></a><a class="web-duels-link" href="/app/competencia.html" aria-label="Abrir duelos y rankings">Duelos y rankings</a><button data-sync-open aria-label="Estado de sincronización"><span data-sync-label>Guardando…</span></button><button data-install>Instalar</button>';document.body.prepend(bar);
  const labels={saved:'Guardado en tu cuenta',pending:'Guardado aquí · por sincronizar',conflict:'Hay dos sesiones guardadas',expired:'Renueva tu acceso',reload:'Progreso combinado · vuelve a abrir'};
- const update=()=>{bar.querySelector('[data-sync-label]').textContent=labels[window.CachasteWebSyncStatus]||'Guardando…';bar.dataset.sync=window.CachasteWebSyncStatus||'pending';};addEventListener('cachaste-sync',update);update();
+ const duelLink=bar.querySelector('.web-duels-link');
+ if(location.pathname==='/app/competencia.html')duelLink.setAttribute('aria-current','page');
+ const update=()=>{
+  const state=window.CachasteWebSyncStatus||'pending';
+  const label=labels[state]||'Guardando…';
+  const syncButton=bar.querySelector('[data-sync-open]');
+  bar.querySelector('[data-sync-label]').textContent=label;
+  syncButton.setAttribute('aria-label','Sincronización: '+label+'. Ver opciones');
+  syncButton.setAttribute('title',label);
+  bar.dataset.sync=state;
+ };
+ addEventListener('cachaste-sync',update);update();
  bar.querySelector('[data-install]').onclick=installPwa;
  bar.querySelector('[data-sync-open]').onclick=async()=>{
   const sync=window.CachasteWebProgress,entry=Object.entries(sync?.conflicts||{})[0];if(!entry){await sync?.flush();return;}
