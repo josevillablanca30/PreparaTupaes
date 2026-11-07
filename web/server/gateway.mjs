@@ -70,6 +70,10 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     if(body.action!=='status')await identity(req,env,{active:false,fresh:true});
     const res=await fetcher((env.SUPABASE_URL||PROJECT_URL)+'/functions/v1/cachaste-mercadopago',{method:'POST',headers:{apikey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,'content-type':'application/json',...(body.action!=='status'?{authorization:'Bearer '+(bearer(req)||cookie(req))}:{})},body:JSON.stringify(body)});
     const headers=new Headers(ACCESS_HEADERS);for(const name of['content-type','content-disposition'])if(res.headers.has(name))headers.set(name,res.headers.get(name));
+    if(body.action==='status'&&env.WEB_PAYMENTS_ENABLED!=='true'&&res.ok){
+     const provider=await res.json();
+     return json({...provider,ready:false,trialAvailable:false});
+    }
     return new Response(res.body,{status:res.status,headers});
    }
    if(path.startsWith('/api/'))return json({error:'NOT_FOUND'},404);
