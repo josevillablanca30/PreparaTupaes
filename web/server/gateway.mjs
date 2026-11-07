@@ -64,6 +64,9 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
    if(path==='/api/billing'&&req.method==='POST'){
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
     const text=await req.text();if(text.length>8192)return json({error:'PAYLOAD_TOO_LARGE'},413);const body=JSON.parse(text);
+    // Checkout stays explicitly disabled until the owner approves live web payments.
+    // Status/refresh may still reconcile existing access without initiating a charge.
+    if(!['status','refresh'].includes(body.action)&&env.WEB_PAYMENTS_ENABLED!=='true')return json({error:'BILLING_NOT_READY'},503);
     if(body.action!=='status')await identity(req,env,{active:false,fresh:true});
     const res=await fetcher((env.SUPABASE_URL||PROJECT_URL)+'/functions/v1/cachaste-mercadopago',{method:'POST',headers:{apikey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,'content-type':'application/json',...(body.action!=='status'?{authorization:'Bearer '+(bearer(req)||cookie(req))}:{})},body:JSON.stringify(body)});
     const headers=new Headers(ACCESS_HEADERS);for(const name of['content-type','content-disposition'])if(res.headers.has(name))headers.set(name,res.headers.get(name));
