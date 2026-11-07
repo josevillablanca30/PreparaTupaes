@@ -113,6 +113,17 @@ try{
   await expect(a.locator('[data-choice],.option,.answer-option').first()).toBeVisible();
  }
  record('Real deployed full PAES exams open with answer options in all five subjects');
+ // Verify Express uses exactly 15 questions in every subject, not just M1.
+ for(const subject of ['M1','M2','Lectura','Ciencias','Historia']){
+  await a.goto(origin+'/app/inicio.html#courses');
+  await a.locator('[data-action=pick-course][data-subject="'+subject+'"]').click();
+  if(subject==='Ciencias')await a.locator('[data-track=Biología]').click();
+  await a.locator('[data-action=express-mode]').click();
+  await expect(a.locator('.question-title')).toBeVisible();
+  const count=await a.evaluate(()=>CachasteDailyApp.engine.state.session.keys.length);
+  assert.equal(count,15,'Express must use fifteen questions in '+subject);
+ }
+ record('Real deployed Express has exactly fifteen questions in all five subjects');
  await mkdir('web/artifacts/hosted-live',{recursive:true});
  await a.screenshot({path:'web/artifacts/hosted-live/full-exam-m2-desktop.png',fullPage:true});
  stage='duels';await Promise.all(pages.map(p=>p.goto(origin+'/app/competencia.html#duelos')));
