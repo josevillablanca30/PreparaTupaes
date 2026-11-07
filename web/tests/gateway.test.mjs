@@ -85,7 +85,7 @@ test('a public asset redirect cannot cause the gateway to fetch another origin o
 
 test('web checkout remains closed unless live billing is explicitly enabled',async()=>{
  const h=harness();
- const response=await h.gateway.fetch(h.req('/api/billing',{method:'POST',headers:{origin:'https://sitecacho.cl',authorization:'Bearer '+h.token,'x-cachaste-request':'1'},body:JSON.stringify({action:'checkout',plan:'monthly'})}),h.env);
+ const response=await h.gateway.fetch(h.req('/api/billing',{method:'POST',headers:{origin:'https://qa.example',authorization:'Bearer '+h.token,'x-cachaste-request':'1'},body:JSON.stringify({action:'checkout',plan:'monthly'})}),h.env);
  assert.equal(response.status,503);
  assert.equal((await response.json()).error,'BILLING_NOT_READY');
  assert.equal(h.calls.length,0,'No payment or identity request may be made for a disabled checkout');
