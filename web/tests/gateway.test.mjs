@@ -90,3 +90,17 @@ test('web checkout remains closed unless live billing is explicitly enabled',asy
  assert.equal((await response.json()).error,'BILLING_NOT_READY');
  assert.equal(h.calls.length,0,'No payment or identity request may be made for a disabled checkout');
 });
+
+
+test('billing status cannot advertise checkout when the web launch switch is off',async()=>{
+ let calls=0;
+ const gateway=createGateway({fetcher:async()=>{calls++;return Response.json({ready:true,trialAvailable:true,managementReady:true});}});
+ const req=new Request('https://qa.example/api/billing',{method:'POST',headers:{origin:'https://qa.example','content-type':'application/json','x-cachaste-request':'1'},body:JSON.stringify({action:'status'})});
+ const response=await gateway.fetch(req,{WEB_PAYMENTS_ENABLED:'false'});
+ assert.equal(response.status,200);
+ const status=await response.json();
+ assert.equal(status.ready,false);
+ assert.equal(status.trialAvailable,false);
+ assert.equal(status.managementReady,true);
+ assert.equal(calls,1);
+});
