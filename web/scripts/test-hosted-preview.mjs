@@ -8,7 +8,8 @@ import assert from 'node:assert/strict';
 import {PROJECT_URL,PUBLISHABLE_KEY} from '../shared/config.mjs';
 import {PREVIEW_BRANCH,REPOSITORY,previewUrl} from './pages-client.mjs';
 const project='jmobinmdwrmdqrxtcruj',revision=process.env.GITHUB_SHA;
-if(process.env.GITHUB_REPOSITORY!==REPOSITORY||process.env.GITHUB_REF_NAME!==PREVIEW_BRANCH||!process.env.SUPABASE_ACCESS_TOKEN||!/^\w{40}$/.test(revision||''))throw Error('HOSTED_QA_CONTEXT_REQUIRED');
+if(process.env.GITHUB_REPOSITORY!==REPOSITORY||process.env.GITHUB_REF_NAME!==PREVIEW_BRANCH||!/^\w{40}$/.test(revision||''))throw Error('HOSTED_QA_CONTEXT_REQUIRED');
+if(!process.env.SUPABASE_ACCESS_TOKEN)throw Error('HOSTED_QA_MISSING_SUPABASE_ACCESS_TOKEN: configure repository Actions secret SUPABASE_ACCESS_TOKEN; hosted account tests cannot run without it');
 const report=JSON.parse(await readFile('web/artifacts/pages-preview.json','utf8')),origin=previewUrl(report.url);
 assert.equal(report.revision,revision);assert.equal(report.passed,true);
 const management=async(suffix,body)=>{
