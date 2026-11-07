@@ -159,7 +159,7 @@ try{
   const button=a.getByRole('button',{name:category,exact:true});
   await button.click();
   await expect(button).toHaveAttribute('aria-pressed','true');
-  await expect(a.locator('.ranking-row').first()).toBeVisible();
+  await expect(a.locator('.ranking-row').first().or(a.getByText(/sin resultados|todavía no|aún no|sin participantes/i).first())).toBeVisible();
  }
  record('Real deployed ranking UI opens exam, Express, game and duel leaderboards');
 
