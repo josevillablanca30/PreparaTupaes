@@ -153,6 +153,16 @@ try{
  await a.goto(origin+'/app/competencia.html#historial');await expect(a.locator('.duel-history .duel-row')).toHaveCount(3);
  const standings=await rpc(0,'rankings',{subject:'M1',track:'',mode:'duel',scope:'Chile',season:'all'});assert.ok(standings.me);assert.equal(standings.me.wins,3);
  record('Three full duels and two rematches use the real UI, same questions, independent completion, verified scores, rankings and retained history');
+ // Verify the four ranking categories from the deployed UI, not only the duel RPC.
+ await a.goto(origin+'/app/competencia.html#rankings');
+ for(const category of ['Ensayo PAES','PAES Express','Modo juego','Liga de duelos']){
+  const button=a.getByRole('button',{name:category,exact:true});
+  await button.click();
+  await expect(button).toHaveAttribute('aria-pressed','true');
+  await expect(a.locator('.ranking-row').first()).toBeVisible();
+ }
+ record('Real deployed ranking UI opens exam, Express, game and duel leaderboards');
+
  await mkdir('web/artifacts/hosted-live',{recursive:true});await a.screenshot({path:'web/artifacts/hosted-live/history-desktop.png',fullPage:true});await b.screenshot({path:'web/artifacts/hosted-live/result-android.png',fullPage:true});
  stage='logout';await a.goto(origin+'/cuenta.html');await a.getByRole('button',{name:'Cerrar sesión',exact:true}).click();await expect(a.getByRole('heading',{name:'Tu preparación comienza aquí.'})).toBeVisible();assert.equal((await a.request.get(origin+'/app/daily-catalog.js')).status(),401);record('Logout revokes the browser cookie and private bank access');
 }catch(e){failed=stage;console.error('HOSTED_PREVIEW_QA_FAILED at '+stage+': '+String(e?.message||e).replace(/https?:\/\/[^\s]+/g,'[url-redacted]').slice(0,400));process.exitCode=1;}
