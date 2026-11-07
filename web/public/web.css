@@ -77,3 +77,8 @@ body{background:radial-gradient(ellipse at 86% 12%,#3b0c59 0,transparent 35%),#0
  .section-wrap{padding-left:20px;padding-right:20px}
 }
 @media(prefers-reduced-motion:reduce){.subject-grid a{transition:none}}
+
+/* The original Android cat artwork has a nonrectangular cutout: no framed image tile. */
+.hero-art>img{aspect-ratio:408/278;object-fit:contain;border:0;border-radius:0;box-shadow:none;background:transparent;filter:drop-shadow(0 0 24px #a329e15c)}
+.hero-art{background:transparent}
+@media(max-width:760px){.hero-art>img{max-height:310px;object-position:center}}
