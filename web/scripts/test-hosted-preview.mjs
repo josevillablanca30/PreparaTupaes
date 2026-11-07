@@ -126,6 +126,12 @@ try{
   assert.equal(count,15,'Express must use fifteen questions in '+subject);
  }
  record('Real deployed Express has exactly fifteen questions in all five subjects');
+ // Science must preserve all four Android tracks on the deployed version.
+ await a.goto(origin+'/app/inicio.html#courses');
+ await a.locator('[data-action=pick-course][data-subject="Ciencias"]').click();
+ await expect(a.locator('[data-action=pick-track]')).toHaveCount(4);
+ record('Real deployed Ciencias offers all four science tracks');
+
  await mkdir('web/artifacts/hosted-live',{recursive:true});
  await a.screenshot({path:'web/artifacts/hosted-live/express-start-desktop.png',fullPage:true});
  stage='duels';await Promise.all(pages.map(p=>p.goto(origin+'/app/competencia.html#duelos')));
