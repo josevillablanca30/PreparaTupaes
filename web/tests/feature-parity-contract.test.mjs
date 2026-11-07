@@ -18,7 +18,7 @@ test('web release has browser coverage for the five subjects and every core Andr
  for(const phrase of required)assert.ok(browser.includes(phrase),'Missing web parity QA: '+phrase);
  assert.match(browser,/for\(const subject of \['M1','M2','Lectura','Ciencias','Historia'\]\)/);
  assert.match(browser,/for\(let n=0;n<15;n\+\+\)/);
- assert.match(build,/adaptCompetitionUi\(androidSource\('competition-app\.js'\)/);
+ assert.ok(build.includes("adaptCompetitionUi(androidSource('competition-app.js').toString())"),'Web must package the original Android competition UI');
  assert.match(build,/verify-android\.mjs/);
  assert.match(workflow,/Android-Chrome, iPhone-WebKit, Desktop-Chrome, mobile-320px/);
 });
