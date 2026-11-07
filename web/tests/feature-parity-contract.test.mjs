@@ -36,4 +36,7 @@ test('hosted QA requires real tutor, Express, five full exams, duels and ranking
   "rpc(0,'rankings'",
  ])assert.ok(hosted.includes(evidence),'Missing hosted QA: '+evidence);
  assert.match(hosted,/HOSTED_PREVIEW_QA_FAILED at/);
+ assert.match(hosted,/temporaryAccountsRemoved:cleanup/);
+ assert.match(hosted,/realPayments:false/);
+ assert.match(hosted,/assert\.equal\(report\.revision,revision\)/);
 });
