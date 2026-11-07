@@ -30,6 +30,8 @@ test('hosted QA requires real tutor, Express, five full exams, duels and ranking
   'Real deployed complete M2 exam resumes',
   'Real deployed full PAES exams open with answer options in all five subjects',
   'Real deployed Express has exactly fifteen questions in all five subjects',
+  'Real deployed Ciencias offers all four science tracks',
+  'Real deployed ranking UI opens exam, Express, game and duel leaderboards',
   'Three full duels and two rematches',
   "rpc(0,'rankings'",
  ])assert.ok(hosted.includes(evidence),'Missing hosted QA: '+evidence);
