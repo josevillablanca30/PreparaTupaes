@@ -127,7 +127,7 @@ try{
  }
  record('Real deployed Express has exactly fifteen questions in all five subjects');
  await mkdir('web/artifacts/hosted-live',{recursive:true});
- await a.screenshot({path:'web/artifacts/hosted-live/express-history-desktop.png',fullPage:true});
+ await a.screenshot({path:'web/artifacts/hosted-live/express-start-desktop.png',fullPage:true});
  stage='duels';await Promise.all(pages.map(p=>p.goto(origin+'/app/competencia.html#duelos')));
  const duelIds=[];
  for(let round=0;round<3;round++){
