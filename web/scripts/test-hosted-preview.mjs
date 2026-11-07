@@ -161,6 +161,16 @@ try{
   await expect(button).toHaveAttribute('aria-pressed','true');
  }
  record('Real deployed ranking UI opens exam, Express, game and duel leaderboards');
+ for(const scope of ['Comuna','Región','Chile']){
+  const button=a.getByRole('button',{name:scope,exact:true});
+  await button.click();
+  await expect(button).toHaveAttribute('aria-pressed','true');
+ }
+ await a.getByRole('button',{name:'Ciencias',exact:true}).click();
+ await a.locator('#science-track').selectOption('Química');
+ await expect(a.locator('#science-track')).toHaveValue('Química');
+ record('Real deployed rankings switch geography and Ciencias Química filters');
+
 
  await mkdir('web/artifacts/hosted-live',{recursive:true});await a.screenshot({path:'web/artifacts/hosted-live/rankings-desktop.png',fullPage:true});await b.screenshot({path:'web/artifacts/hosted-live/result-android.png',fullPage:true});
  stage='logout';await a.goto(origin+'/cuenta.html');await a.getByRole('button',{name:'Cerrar sesión',exact:true}).click();await expect(a.getByRole('heading',{name:'Tu preparación comienza aquí.'})).toBeVisible();assert.equal((await a.request.get(origin+'/app/daily-catalog.js')).status(),401);record('Logout revokes the browser cookie and private bank access');
