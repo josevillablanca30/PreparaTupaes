@@ -162,7 +162,7 @@ try{
  }
  record('Real deployed ranking UI opens exam, Express, game and duel leaderboards');
 
- await mkdir('web/artifacts/hosted-live',{recursive:true});await a.screenshot({path:'web/artifacts/hosted-live/history-desktop.png',fullPage:true});await b.screenshot({path:'web/artifacts/hosted-live/result-android.png',fullPage:true});
+ await mkdir('web/artifacts/hosted-live',{recursive:true});await a.screenshot({path:'web/artifacts/hosted-live/rankings-desktop.png',fullPage:true});await b.screenshot({path:'web/artifacts/hosted-live/result-android.png',fullPage:true});
  stage='logout';await a.goto(origin+'/cuenta.html');await a.getByRole('button',{name:'Cerrar sesión',exact:true}).click();await expect(a.getByRole('heading',{name:'Tu preparación comienza aquí.'})).toBeVisible();assert.equal((await a.request.get(origin+'/app/daily-catalog.js')).status(),401);record('Logout revokes the browser cookie and private bank access');
 }catch(e){failed=stage;console.error('HOSTED_PREVIEW_QA_FAILED at '+stage+': '+String(e?.message||e).replace(/https?:\/\/[^\s]+/g,'[url-redacted]').slice(0,400));process.exitCode=1;}
 finally{
