@@ -36,7 +36,10 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
    const range=body.fromDate||body.toDate?chileDateRange(body.fromDate,body.toDate):body;const from=Date.parse(range.from),to=Date.parse(range.to);if(!Number.isFinite(from)||!Number.isFinite(to)||to<=from||to-from>367*86400000)throw Error('INVALID_REPORT_RANGE');
    const report=await call('sales',{from:new Date(from).toISOString(),to:new Date(to).toISOString()});return new Response(csvReport(report.rows),{headers:{...cors(req),'content-type':'text/csv; charset=utf-8','content-disposition':'attachment; filename="cachaste-ventas-comisiones.csv"'}});
   }
-  if(body.action==='checkout'?!ready():!configured())return json(req,{error:'BILLING_NOT_READY',ready:false},503);
+  // The database launch policy is authoritative for creating new subscriptions,
+  // even when every provider credential and environment flag is configured.
+  if(body.action==='checkout'&&(!ready()||(await call('policy')).enabled!==true))return json(req,{error:'BILLING_NOT_READY',ready:false},503);
+  if(body.action!=='checkout'&&!configured())return json(req,{error:'BILLING_NOT_READY',ready:false},503);
   if(!live()&&env('CACHASTE_MP_ALLOW_TEST_PURCHASES')!=='true')throw Error('TEST_PURCHASES_DISABLED');
   if(body.action==='checkout'){
    if(!MP_PLANS[body.plan]||!UUID.test(body.requestId||''))throw Error('INVALID_PLAN');await call('rate',{userId:user.id});
