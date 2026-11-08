@@ -43,7 +43,7 @@ export function createPlayHandler({env,createClient,fetcher=fetch,now=()=>Date.n
    let result;
    if(payload.action==='refresh'){
     const receipts=await call('receipts',{userId});result={premium:profile.data?.premium===true};
-    const stale=receipts.filter(receipt=>Date.parse(receipt.checked_at)<now()-5*60000);
+    const stale=receipts.filter(receipt=>!Number.isFinite(Date.parse(receipt.checked_at))||Date.parse(receipt.checked_at)<now()-5*60000);
     // Opening a screen with recently verified receipts must not consume the purchase-verification quota.
     if(stale.length)await call('rate',{userId});
     for(const receipt of stale)result=await verify(await decryptToken(receipt,key),receipt);
