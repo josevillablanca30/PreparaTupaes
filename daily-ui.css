@@ -1013,3 +1013,30 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
   color:#30283e!important;
   -webkit-text-fill-color:#30283e!important;
 }
+
+/* Explicit surface/foreground pairs: never rely on inherited dark theme colors. */
+#daily-root .worked-board{
+  background:#f8f4ff!important;
+  border-radius:16px;
+  padding:12px 16px;
+}
+#daily-root .worked-board li{background:transparent!important}
+#daily-root .visual-choices button{
+  background:#fff!important;
+}
+#daily-root .visual-choices button.right{background:#eaf7ef!important}
+#daily-root .visual-choices button.try-again{background:#fff4df!important}
+#daily-root .studio-options .studio-choice:not(.studio-right):not(.studio-wrong){
+  background:#fff!important;
+  color:#251638!important;
+  -webkit-text-fill-color:#251638!important;
+}
+#daily-root .studio-options .studio-choice[aria-pressed="true"]:not(.studio-right):not(.studio-wrong){
+  background:#ece6fc!important;
+}
+#daily-root .studio-options .studio-choice.studio-right{
+  -webkit-text-fill-color:#225a36!important;
+}
+#daily-root .studio-options .studio-choice.studio-wrong{
+  -webkit-text-fill-color:#814d3c!important;
+}
