@@ -982,3 +982,32 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
   outline:3px solid #d5a3ff!important;
   outline-offset:3px;
 }
+
+/* Follow-up: interactive mini-practice and worked solutions. */
+#daily-root .visual-choices button,
+#daily-root .visual-choices button:disabled,
+#daily-root .visual-choices button[aria-pressed="true"]{
+  color:#251638!important;
+  -webkit-text-fill-color:#251638!important;
+  opacity:1!important;
+}
+#daily-root .visual-choices button.right{
+  color:#164b32!important;
+  -webkit-text-fill-color:#164b32!important;
+}
+#daily-root .visual-choices button.try-again{
+  color:#653b19!important;
+  -webkit-text-fill-color:#653b19!important;
+}
+#daily-root .worked-board li p,
+#daily-root .worked-board li p *,
+#daily-root .worked-board li,
+#daily-root .worked-board .worked-status{
+  color:#30283e!important;
+  -webkit-text-fill-color:#30283e!important;
+  opacity:1!important;
+}
+#daily-root .visual-lesson-content:has(.worked-board) .teacher-step .lesson-text{
+  color:#30283e!important;
+  -webkit-text-fill-color:#30283e!important;
+}
