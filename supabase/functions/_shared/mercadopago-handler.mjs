@@ -2,7 +2,7 @@ import{MP_PLANS,validatePlan,checkoutUrl,canonicalSubscription,verifyMpSignature
 const UUID=/^[a-f\d]{8}-[a-f\d]{4}-[1-5][a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i;
 export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()=>Date.now()}){
  const supabaseUrl=()=>env('SUPABASE_URL'),anon=()=>env('SUPABASE_ANON_KEY')||env('SUPABASE_PUBLISHABLE_KEY');
- const configured=()=>!!env('MP_COLLECTOR_ID')&&((env('CACHASTE_MP_MODE')==='production'&&/^APP_USR-/.test(env('MP_ACCESS_TOKEN')||''))||(env('CACHASTE_MP_MODE')==='test'&&/^TEST-/.test(env('MP_ACCESS_TOKEN')||'')));
+ const configured=()=>!!env('MP_COLLECTOR_ID')&&((env('CACHASTE_MP_MODE')==='production'&&/^APP_USR-/.test(env('MP_ACCESS_TOKEN')||''))||(env('CACHASTE_MP_MODE')==='test'&&/^(TEST-|APP_USR-)/.test(env('MP_ACCESS_TOKEN')||'')&&!!env('MP_TEST_COLLECTOR_ID')&&String(env('MP_COLLECTOR_ID'))===String(env('MP_TEST_COLLECTOR_ID'))&&!!env('MP_TEST_ACCESS_TOKEN')&&env('MP_ACCESS_TOKEN')===env('MP_TEST_ACCESS_TOKEN')));
  const webOrigin=()=>{try{const value=new URL(env('CACHASTE_WEB_ORIGIN'));return value.protocol==='https:'&&value.pathname==='/'&&!value.search&&!value.hash?value.origin:null;}catch{return null;}};
  const ready=()=>configured()&&env('CACHASTE_MP_ENABLED')==='true'&&env('CACHASTE_MP_TAX_READY')==='true'&&!!env('MP_WEBHOOK_SECRET')&&!!webOrigin()&&(env('CACHASTE_MP_MODE')!=='production'||new URL(webOrigin()).hostname.endsWith('.cl'))&&['WEEKLY','MONTHLY','YEARLY'].every(x=>!!env('MP_PLAN_'+x));
  const live=()=>env('CACHASTE_MP_MODE')==='production';
