@@ -61,7 +61,7 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   throw Error('INVALID_OPERATION');
  }catch(e){const key=String(e?.message||'REQUEST_FAILED'),status=/AUTH_REQUIRED/.test(key)?401:/FORBIDDEN|ORIGIN_DENIED/.test(key)?403:/PROVIDER_UNAVAILABLE/.test(key)?503:400;try{return json(req,{error:/^[A-Z_]+$/.test(key)?key:'REQUEST_FAILED'},status);}catch{return new Response('Forbidden',{status:403});}}}
  async function webhook(req){try{
-  if(req.method!=='POST')return new Response(null,{status:405});if(!configured()||!env('MP_WEBHOOK_SECRET'))return new Response('Billing disabled',{status:503});
+  if(req.method!=='POST')return new Response(null,{status:405});if(!configured()||!env('MP_WEBHOOK_SECRET')){console.error('MP_WEBHOOK_CONFIGURATION_INCOMPLETE',JSON.stringify({collectorId:!!env('MP_COLLECTOR_ID'),mode:env('CACHASTE_MP_MODE')||'unset',accessTokenFormat:env('CACHASTE_MP_MODE')==='production'?/^APP_USR-/.test(env('MP_ACCESS_TOKEN')||''):env('CACHASTE_MP_MODE')==='test'?/^TEST-/.test(env('MP_ACCESS_TOKEN')||''):false,webhookSecret:!!env('MP_WEBHOOK_SECRET')}));return new Response('Billing disabled',{status:503});}
   const signature=await verifyMpSignature(req,env('MP_WEBHOOK_SECRET'),now());
   if((await call('webhook_seen',{hash:signature.hash})).seen)return new Response(null,{status:200});
   const text=await req.text();if(text.length>16384)throw Error('PAYLOAD_TOO_LARGE');const body=JSON.parse(text);
