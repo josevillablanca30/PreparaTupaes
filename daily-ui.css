@@ -966,6 +966,7 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
   opacity:1;
 }
 #daily-root .wise-cat p {background:#fff!important}
+/* Keep foreground and background paired, including the text-only teaching card. */
 #daily-root .teacher-step .lesson-text,
 #daily-root .lesson-sheet .lesson-text,
 #daily-root .visual-lesson-content .lesson-text {
@@ -974,8 +975,9 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
   opacity:1!important;
 }
 #daily-root .teacher-step.text-only .lesson-text {
-  background:#291936!important;
-  color:#f6efff!important;
+  background:#f8f4ff!important;
+  color:#251638!important;
+  -webkit-text-fill-color:#251638!important;
 }
 #daily-root button:focus-visible,
 #daily-root [role="button"]:focus-visible {
