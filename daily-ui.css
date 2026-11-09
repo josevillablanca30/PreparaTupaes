@@ -936,3 +936,49 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
     overflow-x:auto;
   }
 }
+
+/* Accessibility regression fix 2026-11-09: readable text in every interaction state.
+   Scoped to the game root to avoid changing other pages' visual identity. */
+#daily-root .daily-options button,
+#daily-root .daily-options button:disabled,
+#daily-root .daily-options button[aria-pressed="true"],
+#daily-root .daily-options button.selected,
+#daily-root .daily-options button.chosen {
+  color:#251638!important;
+  -webkit-text-fill-color:#251638!important;
+  opacity:1!important;
+}
+#daily-root .daily-options button.correct,
+#daily-root .daily-options button.correct:disabled {
+  color:#164b32!important;
+  -webkit-text-fill-color:#164b32!important;
+}
+#daily-root .daily-options button.wrong,
+#daily-root .daily-options button.incorrect {
+  color:#672a27!important;
+  -webkit-text-fill-color:#672a27!important;
+}
+#daily-root .wise-cat p,
+#daily-root .wise-cat p *,
+#daily-root .teacher-step .wise-cat p {
+  color:#251638!important;
+  -webkit-text-fill-color:#251638!important;
+  opacity:1;
+}
+#daily-root .wise-cat p {background:#fff!important}
+#daily-root .teacher-step .lesson-text,
+#daily-root .lesson-sheet .lesson-text,
+#daily-root .visual-lesson-content .lesson-text {
+  color:#f6efff!important;
+  -webkit-text-fill-color:#f6efff!important;
+  opacity:1!important;
+}
+#daily-root .teacher-step.text-only .lesson-text {
+  background:#291936!important;
+  color:#f6efff!important;
+}
+#daily-root button:focus-visible,
+#daily-root [role="button"]:focus-visible {
+  outline:3px solid #d5a3ff!important;
+  outline-offset:3px;
+}
