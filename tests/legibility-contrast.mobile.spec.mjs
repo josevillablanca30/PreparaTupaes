@@ -10,6 +10,11 @@ test('Tutor, alternativas y desarrollos conservan contraste de texto AA',async({
   await page.goto('./inicio.html');
   await page.locator('[data-action=pick-course][data-subject="M1"]').click();
   if(await page.locator('[data-action=game-mode]').count())await page.locator('[data-action=game-mode]').click();
+  await page.locator('.stage-banner [data-action=units]').click();
+  await page.locator('[data-action=stage][data-stage=basics]').click();
+  await page.locator('[data-action=basic-level]').first().click();
+  await page.locator('[data-action=basic-start]').click();
+  await expect(page.locator('.lesson-text').first()).toBeVisible();
   const results=await page.evaluate(()=>{
     const selectors=['.wise-cat p','.daily-options button','.visual-choices button','.worked-board li p','.lesson-text'];
     const rgb=s=>{const m=s.match(/rgba?\(([^)]+)\)/);return m?m[1].split(',').slice(0,3).map(Number):null;};
@@ -23,6 +28,6 @@ test('Tutor, alternativas y desarrollos conservan contraste de texto AA',async({
     }
     return out;
   });
-  expect(results.length,'No se encontraron componentes para auditar').toBeGreaterThan(0);
+  expect(results.some(item=>item.selector==='.lesson-text'),'No se auditó texto educativo').toBe(true);
   for(const item of results)expect(contrast(item.fg,item.bg),JSON.stringify(item)).toBeGreaterThanOrEqual(4.5);
 });
