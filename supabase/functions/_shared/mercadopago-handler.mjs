@@ -71,6 +71,6 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   else if(body.type==='payment'){const payment=await mp('/v1/payments/'+signature.id);if(!payment.external_reference)throw Error('UNKNOWN_CHECKOUT');const checkout=await call('lookup',{reference:payment.external_reference});id=checkout?.provider_id;if(!id)throw Error('UNKNOWN_CHECKOUT');}
   else return new Response(null,{status:200});
   await reconcile(id);await call('webhook',{hash:signature.hash});return new Response(null,{status:200});
- }catch(e){return new Response(/SIGNATURE|EVENT_ID/.test(String(e?.message))?'Invalid notification':'Notification not processed',{status:/SIGNATURE|EVENT_ID/.test(String(e?.message))?401:503});}}
+ }catch(e){const code=String(e?.message||'UNKNOWN_ERROR');console.error('MP_WEBHOOK_PROCESSING_ERROR',/^[A-Z_]+$/.test(code)?code:'INTERNAL_ERROR');return new Response(/SIGNATURE|EVENT_ID/.test(code)?'Invalid notification':'Notification not processed',{status:/SIGNATURE|EVENT_ID/.test(code)?401:503});}}
  return{billing,webhook};
 }
