@@ -1,0 +1,36 @@
+name: Cachaste · contraste y legibilidad
+on:
+  push:
+    branches:
+      - fix/legibilidad-global-20261109
+    paths:
+      - 'daily-ui.css'
+      - 'study-ui.css'
+      - 'tests/legibility-contrast.mobile.spec.mjs'
+      - '.github/workflows/legibility-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contrast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run build
+      - run: npx playwright test tests/legibility-contrast.mobile.spec.mjs --reporter=line
+      - name: Guardar evidencia ante fallas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: contraste-cachaste
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
