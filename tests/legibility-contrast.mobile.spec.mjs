@@ -12,16 +12,17 @@ test('Tutor, alternativas y desarrollos conservan contraste de texto AA',async({
   if(await page.locator('[data-action=game-mode]').count())await page.locator('[data-action=game-mode]').click();
   const results=await page.evaluate(()=>{
     const selectors=['.wise-cat p','.daily-options button','.visual-choices button','.worked-board li p','.lesson-text'];
-    const rgb=s=>{const m=s.match(/rgba?\\(([^)]+)\\)/);return m?m[1].split(',').slice(0,3).map(Number):null;};
+    const rgb=s=>{const m=s.match(/rgba?\(([^)]+)\)/);return m?m[1].split(',').slice(0,3).map(Number):null;};
     const out=[];
     for(const selector of selectors)for(const el of document.querySelectorAll(selector)){
       const box=el.getBoundingClientRect();if(!box.width||!box.height)continue;
       const style=getComputedStyle(el);const fg=rgb(style.webkitTextFillColor!=='currentcolor'?style.webkitTextFillColor:style.color)||rgb(style.color);
       let node=el,bg=null;
-      while(node){const c=getComputedStyle(node).backgroundColor,v=rgb(c);if(v&&Number((c.match(/rgba\\([^,]+,[^,]+,[^,]+,\\s*([^)]+)/)||[])[1]??1)>.95){bg=v;break;}node=node.parentElement;}
+      while(node){const c=getComputedStyle(node).backgroundColor,v=rgb(c);if(v&&Number((c.match(/rgba\([^,]+,[^,]+,[^,]+,\s*([^)]+)/)||[])[1]??1)>.95){bg=v;break;}node=node.parentElement;}
       if(fg&&bg)out.push({selector,text:(el.textContent||'').trim().slice(0,55),fg,bg});
     }
     return out;
   });
+  expect(results.length,'No se encontraron componentes para auditar').toBeGreaterThan(0);
   for(const item of results)expect(contrast(item.fg,item.bg),JSON.stringify(item)).toBeGreaterThanOrEqual(4.5);
 });
