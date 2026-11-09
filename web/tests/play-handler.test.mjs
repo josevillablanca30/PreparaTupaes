@@ -20,3 +20,15 @@ test('Play refresh avoids rate quota for a recently checked receipt',async()=>{
  const h=fixture(new Date(Date.UTC(2026,10,8)).toISOString());const response=await h.handler(h.request);
  assert.equal(response.status,200);assert.deepEqual(await response.json(),{premium:false});assert.ok(!h.calls.includes('rate'));
 });
+
+test('Play refresh preserves Premium granted by another provider when no Play receipts exist',async()=>{
+ const values={CACHASTE_PLAY_ENABLED:'true',GOOGLE_PLAY_SERVICE_ACCOUNT:'{}',PLAY_RECEIPT_ENCRYPTION_KEY:Buffer.alloc(32,1).toString('base64'),SUPABASE_URL:'https://qa.example',SUPABASE_ANON_KEY:'public-test',SUPABASE_SERVICE_ROLE_KEY:'service-test'};
+ const operations=[];
+ const createClient=(_url,key)=>key==='service-test'?{rpc:async(_name,{operation})=>{operations.push(operation);return{data:[]};}}:{auth:{getUser:async()=>({data:{user:{id:'10000000-0000-4000-8000-000000000001'}}})},rpc:async()=>({data:{premium:true}})};
+ const handler=createPlayHandler({env:k=>values[k],createClient,now:()=>Date.UTC(2026,10,8)});
+ const request=new Request('https://qa.example/play',{method:'POST',headers:{authorization:'Bearer qa-token','content-type':'application/json'},body:JSON.stringify({action:'refresh'})});
+ const response=await handler(request);
+ assert.equal(response.status,200);
+ assert.deepEqual(await response.json(),{premium:true});
+ assert.deepEqual(operations,['receipts']);
+});
