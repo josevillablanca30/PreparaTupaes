@@ -41,7 +41,7 @@ test('Estados de alternativas y burbujas mantienen contraste aun sin responder',
     host.style.cssText='position:fixed;top:0;left:0;z-index:9999;background:#fff;padding:8px';
     host.innerHTML='<div class="daily-options"><button>Normal</button><button aria-pressed="true">Seleccionada</button><button class="correct" disabled>Correcta</button><button class="wrong" disabled>Incorrecta</button></div><div class="wise-cat"><p>Explicación del tutor</p></div><div class="visual-choices"><button>Mini práctica</button><button class="right">Acierto</button><button class="try-again">Reintentar</button></div><div class="studio-options"><button class="studio-choice">Estudio</button><button class="studio-choice studio-right">Bien</button><button class="studio-choice studio-wrong">Error</button></div>';
     root.append(host);
-    const rgb=value=>{const match=value.match(/rgba?\\(([^)]+)\\)/);return match?match[1].split(',').slice(0,3).map(Number):null;};
+    const rgb=value=>{const match=value.match(/rgba?\(([^)]+)\)/);return match?match[1].split(',').slice(0,3).map(Number):null;};
     const items=[...host.querySelectorAll('button,p')].map(el=>{
       const style=getComputedStyle(el);
       const foreground=rgb(style.webkitTextFillColor==='currentcolor'?style.color:style.webkitTextFillColor)||rgb(style.color);
