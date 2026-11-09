@@ -969,8 +969,8 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .teacher-step .lesson-text,
 #daily-root .lesson-sheet .lesson-text,
 #daily-root .visual-lesson-content .lesson-text {
-  color:#f6efff!important;
-  -webkit-text-fill-color:#f6efff!important;
+  color:#251638!important;
+  -webkit-text-fill-color:#251638!important;
   opacity:1!important;
 }
 #daily-root .teacher-step.text-only .lesson-text {
