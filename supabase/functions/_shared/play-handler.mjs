@@ -47,6 +47,9 @@ export function createPlayHandler({env,createClient,fetcher=fetch,now=()=>Date.n
     // Opening a screen with recently verified receipts must not consume the purchase-verification quota.
     if(stale.length)await call('rate',{userId});
     for(const receipt of stale)result=await verify(await decryptToken(receipt,key),receipt);
+    // A receipt's individual verdict is not the user's combined Premium entitlement:
+    // another Play receipt, a web subscription, or a granted period may still be active.
+    if(stale.length){const latest=await client.rpc('cachaste_competition',{operation:'profile',payload:{}});if(latest.error)throw Error('SERVER_UNAVAILABLE');result={...result,premium:latest.data?.premium===true};}
    }else if(payload.action==='verify'&&validToken(payload.purchaseToken)){await call('rate',{userId});result=await verify(payload.purchaseToken);}
    else return reply(400,{error:'INVALID_REQUEST'});
    return reply(200,result);
