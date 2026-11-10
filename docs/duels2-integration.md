@@ -85,6 +85,6 @@ La prueba de navegador bloquea deliberadamente tráfico al Supabase público y u
 
 Las pruebas locales de servidor, idempotencia, acceso, cinco materias/menciones y transformación móvil pasaron. Pasaron también la suite web completa y las pruebas de cuatro conexiones TCP simultáneas con 40 RPC de respuestas/reintentos, una sola liquidación y revancha/aceptación simultáneas.
 
-La ejecución [42864509327](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42864509327) completó navegador, builds web/Android y APK. La entrega final incluye ajustes adicionales de contraste, recuperación de barra y revocación de lectura Realtime; su ejecución exacta se documenta en el informe de pruebas.
+La ejecución final del código es [42867098117](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42867098117), correspondiente a `50fa693f`. Incluye privacidad, historial combinado, contraste, recuperación y compilación APK. El [informe de pruebas](../reports/duels2-20261110/README.md) contiene las capturas y los resultados ejecutados.
 
 Pendientes de integración, sin declarar aprobados: migración en Supabase alojado, permiso CSP WSS de Work 1, ejecución del scheduler sin clientes, Realtime alojado y prueba en Android instalado. Duelos 2 permanece aislado para no retrasar el lanzamiento.
