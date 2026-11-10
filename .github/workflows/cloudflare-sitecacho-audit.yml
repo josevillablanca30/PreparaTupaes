@@ -36,10 +36,20 @@ jobs:
               report[key]={httpStatus:r.status,success:d.success===true,errorCodes:(d.errors||[]).map(e=>e.code)};
               if(d.success===true){
                 if(key==='pagesProject'){const p=d.result;report[key].project={name:p.name,productionBranch:p.production_branch,sourceConnected:!!p.source,domains:p.domains,canonical:deployment(p.canonical_deployment),latest:deployment(p.latest_deployment),configs:Object.fromEntries(Object.entries(p.deployment_configs||{}).map(([n,c])=>[n,{failOpen:c.fail_open,variables:Object.fromEntries(Object.entries(c.env_vars||{}).map(([k,v])=>[k,{type:v.type,...(['WEB_SIGNUP_ENABLED','WEB_AUTH_RETURN_READY','WEB_GOOGLE_AUTH_ENABLED','CACHASTE_MP_LIVE_ENABLED'].includes(k)?{value:v.value}:{})}]))}]))};}
-                else if(key==='pagesDomains')report[key].domains=d.result.map(x=>({name:x.name,status:x.status,validationStatus:x.validation_data?.status,verificationStatus:x.verification_data?.status}));
+                else if(key==='pagesDomains')report[key].domains=d.result.map(x=>({name:x.name,status:x.status,validationStatus:x.validation_data?.status,verificationStatus:x.verification_data?.status,zoneTag:x.zone_tag}));
                 else report[key].deployments=d.result.map(deployment);
               }
             }catch{report[key]={error:'PAGES_LOOKUP_UNAVAILABLE'};}
+          }
+          const zoneTag=report.pagesDomains?.domains?.find(d=>d.name===domain)?.zoneTag;
+          if(/^[a-f0-9]{32}$/.test(zoneTag||'')){
+            report.namedDnsReads=[];
+            for(const name of[domain,'www.'+domain]){
+              try{
+                const r=await fetch('https://api.cloudflare.com/client/v4/zones/'+zoneTag+'/dns_records?name='+name,{headers,redirect:'error',signal:AbortSignal.timeout(15000)}),d=await r.json();
+                report.namedDnsReads.push({name,httpStatus:r.status,success:d.success===true,errorCodes:(d.errors||[]).map(e=>e.code),records:(d.result||[]).filter(x=>['A','AAAA','CNAME'].includes(x.type)).map(x=>({id:x.id,name:x.name,type:x.type,content:x.content,proxied:x.proxied,ttl:x.ttl}))});
+              }catch{report.namedDnsReads.push({name,error:'NAMED_DNS_LOOKUP_UNAVAILABLE'});}
+            }
           }
           try{
             const r=await fetch('https://cloudflare-dns.com/dns-query?name='+domain+'&type=NS',{headers:{accept:'application/dns-json'},redirect:'error',signal:AbortSignal.timeout(15000)});
