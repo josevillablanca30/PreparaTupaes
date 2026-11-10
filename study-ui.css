@@ -6,3 +6,23 @@
 nav>a{display:inline-flex;align-items:center;min-height:44px;padding:8px 0}button[aria-pressed=true]{font-weight:750}.feedback.right{background:#eaf6ef;color:#205537}.feedback.wrong{background:#fff2e6;color:#6a381e}
 /* Clases extensas: lectura en el flujo normal, sin paneles con scroll atrapado. */
 .tutor-panel{font-size:16px;line-height:1.75;min-width:0}.teaching-section{margin:22px 0;max-width:65ch}.teaching-section h4{font-size:17px;line-height:1.5;margin:0 0 12px;color:#45316f}.teaching-section p{margin:12px 0;line-height:1.8}.teaching-section ol{padding-left:24px}.teaching-section li{padding-left:4px;margin:0 0 16px;line-height:1.8}.teaching-check,.teaching-example{padding:14px;background:#f1ecfc;border-radius:12px}.error-reason p{margin:8px 0}.error-reason summary{cursor:pointer;min-height:44px;line-height:1.6;padding:10px 0;font-weight:650}.error-reason li{line-height:1.75}.review-item .teaching-section{max-width:65ch}@media(max-width:380px){.tutor-panel{padding-left:12px;padding-right:0}.teaching-section ol{padding-left:21px}.teaching-check,.teaching-example{padding:12px}}
+
+/* Contrast-safe choices across exam, review and tutor states. */
+.choice,.option,.review-item .choice,.review-item .option{
+  color:#251638!important;
+  -webkit-text-fill-color:#251638!important;
+}
+.choice:disabled,.option:disabled{opacity:1!important}
+.choice.selected,.option.selected,.option.chosen{
+  background:#eee7ff!important;
+  color:#30204f!important;
+  -webkit-text-fill-color:#30204f!important;
+}
+.choice.correct,.option.correct,.feedback.right{
+  color:#205537!important;
+  -webkit-text-fill-color:#205537!important;
+}
+.choice.wrong,.option.wrong,.feedback.wrong{
+  color:#6a381e!important;
+  -webkit-text-fill-color:#6a381e!important;
+}
