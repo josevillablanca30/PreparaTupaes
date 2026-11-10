@@ -88,6 +88,7 @@
   if(action==='duels2-rules'){
    event.preventDefault();event.stopImmediatePropagation();dialog.innerHTML=d2Rules()+btn('duels2-rules-close','Entendido','primary wide');dialog.showModal();return;
   }
+  if(action==='start-duel'&&state.duel?.version!==2)return;
   if(['random','challenge','join','start-duel'].includes(action)&&api.user&&api.premium&&api.storage.getItem(api.key('duels2-rules'))!=='2026-11-10'){
    event.preventDefault();event.stopImmediatePropagation();d2PendingAction=action;dialog.innerHTML=d2Rules()+btn('duels2-rules-accept','Entendido, vamos','primary wide')+btn('duels2-rules-close','Volver','soft wide');dialog.showModal();return;
   }

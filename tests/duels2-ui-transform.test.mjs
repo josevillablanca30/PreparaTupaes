@@ -3,7 +3,7 @@ for(const ref of ['685e9ecc3d55d353c8c9fdf3e29f9549eaa5fac9','e3a0434d70042afc40
  const input=execFileSync('git',['show',ref+':competition-app.js'],{encoding:'utf8'}),out=ref.startsWith('685')?adaptCompetitionUi(input):adaptDuels2Ui(input);new vm.Script(out);
  const avatar=input.slice(input.indexOf(' const avatar='),input.indexOf(' const avatar=')+input.slice(input.indexOf(' const avatar=')).indexOf('\n'));assert.ok(out.includes(avatar));
  for(const text of ['CACHASTE_DUELS2_RUNTIME','Tu alternativa:','Respuesta:','Paso a paso','Más fácil','Otro ejemplo',"api.call('review'",'cachasteNativeBack','cachaste_duels2_live','prefers-reduced-motion'])assert.ok(out.includes(text),text);
- assert.ok(!out.includes('90 segundos por pregunta · gana quien tenga más aciertos.'));assert.equal(adaptDuels2Ui(out),out);
+ assert.ok(out.includes("a.version===2?'40 minutos"));assert.ok(out.includes('90 segundos por pregunta · gana quien tenga más aciertos.'));assert.ok(out.includes("d.version===2?'Sin carrera"));assert.equal(adaptDuels2Ui(out),out);
 });
 test('Realtime publishes no player progress and UI refetches authoritative aggregates',()=>{
  const sql=readFileSync(new URL('../web/supabase/migrations/20261110130920_cachaste_duels2_isolated.sql',import.meta.url),'utf8'),runtime=readFileSync(new URL('../duels2/ui-runtime.js',import.meta.url),'utf8');
