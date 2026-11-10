@@ -28,7 +28,7 @@ jobs:
           import {requireQa} from './web/scripts/verify-preview-qa.mjs';
           import {preparePublicProject,validatePublicRequest} from './web/scripts/publish-sitecacho.mjs';
           const taskEnv={...process.env,GITHUB_SHA:'2777ab4c5d26a781c1005bd9ea2671d89ca4fd3f'};
-          const words=['both','preview','production','required','missing','deployment_configs','env_vars','empty','compatibility_date','secret_text','bindings','maximum','characters','unknown','unexpected','invalid','cannot','patch','replace','request','account','must','all','environment'];
+          const words=['both','preview','production','required','missing','deployment_configs','env_vars','empty','compatibility_date','compatibility','date','same','flags','identical','different','configuration','configure','configured','set','value','secret_text','bindings','maximum','characters','unknown','unexpected','invalid','cannot','patch','replace','request','account','must','all','environment'];
           const client=pagesClient(taskEnv,{fetcher:async(url,options)=>{
             const r=await fetch(url,options);
             if(!r.ok){const d=await r.clone().json();const errors=d.errors||[];const message=errors.map(e=>e.message||'').join(' ').toLowerCase();console.log(JSON.stringify({providerStatus:r.status,codes:errors.map(e=>e.code),knownTerms:words.filter(w=>message.includes(w))}));}
@@ -36,7 +36,7 @@ jobs:
           }});
           // The API requires both environment objects. Omitted fields retain the other environment's bindings.
           const configure=client.configureProject;
-          client.configureProject=configs=>configure({preview:{},production:{},...configs});
+          client.configureProject=configs=>configure({preview:{compatibility_date:'2026-10-24'},production:{compatibility_date:'2026-10-24'},...configs});
           try{
             validatePublicRequest(JSON.parse(await readFile('web/deploy-public.request','utf8')),taskEnv);
             console.log('Verified QA: '+await requireQa(taskEnv));
