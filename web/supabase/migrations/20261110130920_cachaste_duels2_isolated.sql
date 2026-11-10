@@ -65,6 +65,12 @@ create table if not exists cachaste_duels2.star_ledger(
  created_at timestamptz not null default clock_timestamp(),primary key(match_id,user_id,season)
 );
 
+-- The small RLS predicate checks live Auth sessions, including revocations.
+create or replace function cachaste_duels2.live_member(c uuid,o uuid)returns boolean language sql stable security definer set search_path='' as $$
+ select (select auth.uid()) in(c,o)
+ and exists(select 1 from auth.users where id=(select auth.uid()) and not coalesce(is_anonymous,false) and deleted_at is null)
+ and exists(select 1 from auth.sessions where id::text=auth.jwt()->>'session_id' and user_id=(select auth.uid()) and(not_after is null or not_after>now()))
+$$;
 -- This is the ONLY replicated row. No actor, answer, progress, sequence or timestamps.
 create table if not exists public.cachaste_duels2_live(
  id uuid primary key references cachaste_duels2.matches(id) on delete cascade,
@@ -75,7 +81,7 @@ revoke all on public.cachaste_duels2_live from public,anon,authenticated;
 grant select on public.cachaste_duels2_live to authenticated;
 drop policy if exists d2_participant_read on public.cachaste_duels2_live;
 create policy d2_participant_read on public.cachaste_duels2_live for select to authenticated
- using((select auth.uid()) in(creator,opponent));
+ using(cachaste_duels2.live_member(creator,opponent));
 -- Default replica identity publishes keys only for old rows, never private records.
 do $$declare t record;begin
  for t in select tablename from pg_tables where schemaname='cachaste_duels2' loop
@@ -390,6 +396,7 @@ create or replace function public.cachaste_duels2_maintenance()returns integer l
 revoke all on all functions in schema cachaste_duels2 from public,anon,authenticated;
 revoke all on function public.cachaste_duels2(text,jsonb)from public,anon;
 revoke all on function public.cachaste_duels2_maintenance()from public,anon,authenticated;
+grant execute on function cachaste_duels2.live_member(uuid,uuid)to authenticated;
 grant execute on function cachaste_duels2.dispatch(text,jsonb),public.cachaste_duels2(text,jsonb)to authenticated;
 grant execute on function cachaste_duels2.sweep(),public.cachaste_duels2_maintenance()to service_role;
 grant all on all tables in schema cachaste_duels2 to service_role;
@@ -400,4 +407,5 @@ do $$begin
   perform cron.schedule('cachaste-duels2-maintenance','* * * * *','select cachaste_duels2.sweep()');
  end if;
 end$$;
+notify pgrst,'reload schema';
 commit;

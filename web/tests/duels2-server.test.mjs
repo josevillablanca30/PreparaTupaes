@@ -75,7 +75,7 @@ test('Duelos 2: private tables/RLS/authorization, opt-out, blocks, suspended acc
  await db.exec('set role authenticated');for(const table of ['matches','players','answers','bot_plan','star_ledger'])await assert.rejects(db.query('select * from cachaste_duels2.'+table),/permission denied/);await assert.rejects(db.query('update public.cachaste_duels2_live set balance=20'),/permission denied/);await assert.rejects(db.query('select cachaste_duels2.advance(gen_random_uuid())'),/permission denied/);await db.exec('reset role');
  const d=await human(db);await d2(db,2,'health');await db.exec('set role authenticated');assert.equal((await db.query('select * from public.cachaste_duels2_live')).rows.length,0);await db.exec('reset role');await d2(db,0,'health');await db.exec('set role authenticated');assert.equal((await db.query('select * from public.cachaste_duels2_live')).rows.length,1);await db.exec('reset role');
  await db.query("update cachaste.profiles set moderation_status='suspended'where user_id=$1",[users[2]]);await assert.rejects(d2(db,2,'health'),/ACCOUNT_RESTRICTED/);
- await db.query("update auth.sessions set not_after=now()-interval '1 second'where id=$1",[sessions[0]]);await assert.rejects(d2(db,0,'duel',{duelId:d.id}),/AUTH_REQUIRED/);
+ await db.query("update auth.sessions set not_after=now()-interval '1 second'where id=$1",[sessions[0]]);await assert.rejects(d2(db,0,'duel',{duelId:d.id}),/AUTH_REQUIRED/);await db.exec('set role authenticated');assert.equal((await db.query('select * from public.cachaste_duels2_live')).rows.length,0);await db.exec('reset role');
 });
 
 test('Duelos 2: challenge opt-out, blocked invitation, stable queue wait and both abandoned expiry',async t=>{
