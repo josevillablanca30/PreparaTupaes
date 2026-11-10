@@ -4,7 +4,7 @@ import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {PROJECT_URL, PUBLISHABLE_KEY} from '../shared/config.mjs';
-import {credentials, pagesClient, verifyTarget, PAGES_PROJECT, PAGES_ACCOUNT_ID} from './pages-client.mjs';
+import {credentials, pagesClient, verifyTarget, reviewedPublicRuntime, PAGES_PROJECT, PAGES_ACCOUNT_ID} from './pages-client.mjs';
 import {verifyProject} from './verify-pages-project.mjs';
 
 export function runtimeSecrets() {
@@ -37,7 +37,7 @@ export async function prepareProject(env, {client = pagesClient(env), generate =
   credentials(env);
   let project = await client.getProject();
   const created = !project;
-  // Inspect before any write. Never adopt a Git-connected project or existing production site.
+  // Inspect before any write. Never adopt Git integration or an unreviewed production site.
   if (project) verifyTarget(project, env.GITHUB_REF_NAME);
   const secrets = generate();
   const publicVars = {
@@ -53,13 +53,13 @@ export async function prepareProject(env, {client = pagesClient(env), generate =
       env_vars: {...publicVars, ...Object.fromEntries(Object.entries(secrets).map(([key, value]) => [key, {type: 'secret_text', value}]))},
     },
     // Reserve production, fail closed and omit educational decryption/signing keys.
-    production: {fail_open: false, compatibility_date: '2026-10-24', env_vars: {...publicVars}},
+    ...(!reviewedPublicRuntime(project?.deployment_configs?.production)?{production: {fail_open: false, compatibility_date: '2026-10-24', env_vars: {...publicVars}}}:{}),
   };
   if (created) await client.createProject(deployment_configs);
   else await client.configureProject(deployment_configs);
   project = await client.getProject();
   const verified = verifyProject(project, {branch: env.GITHUB_REF_NAME, contentKey: secrets.BANK_CONTENT_KEY});
-  return {verified, created, secrets};
+  return {verified, created, secrets,publicWebsitePresent:reviewedPublicRuntime(project.deployment_configs?.production)};
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
@@ -91,6 +91,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
         console.log('::add-mask::' + value);
         await appendFile(process.env.GITHUB_ENV, key + '=' + value + '\n', {mode: 0o600});
       }
+      await appendFile(process.env.GITHUB_ENV,'PUBLIC_WEBSITE_PRESENT='+result.publicWebsitePresent+'\n');
       console.log(JSON.stringify({project: PAGES_PROJECT, created: result.created, ...result.verified}));
     }
   } catch (error) {

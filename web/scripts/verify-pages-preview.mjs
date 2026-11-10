@@ -12,8 +12,8 @@ export function matchingDeployment(deployments, revision) {
   return {id: deployment.id, url: previewUrl(deployment.url), aliases: (deployment.aliases || []).map(previewUrl)};
 }
 
-export async function probePreview({url, revision, protectedFiles, encryptedFiles, fetcher = fetch}) {
-  const origin = previewUrl(url), checks = [];
+export async function probeDeployment({url, revision, protectedFiles, encryptedFiles, fetcher = fetch, validateUrl = previewUrl}) {
+  const origin = validateUrl(url), checks = [];
   async function check(name, pathname, inspect, options = {}) {
     try {
       const response = await fetcher(origin + pathname, {
@@ -64,6 +64,8 @@ export async function probePreview({url, revision, protectedFiles, encryptedFile
   }
   return {url: origin, checkedAt: new Date().toISOString(), passed: checks.every(x => x.passed), checks};
 }
+
+export function probePreview(options) {return probeDeployment(options);}
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {

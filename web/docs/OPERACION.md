@@ -23,7 +23,9 @@ Salida: `web/dist`. Contiene el Worker avanzado, landing, cuenta, PWA y archivos
 
 Usar la cuenta Cloudflare existente del titular y crear un proyecto Pages Free independiente llamado **`cachaste-sitecacho`**, exclusivamente para `sitecacho.cl`. No editar la zona, registros, nameservers, proyecto ni conexión Lovable de **`somosvillablanca.cl`**. El verificador rechaza cualquier otro nombre de proyecto, incluso dentro de la misma cuenta.
 
-El flujo crea el proyecto con la rama de producción reservada **`production-requires-owner-approval`**, distinta de la rama web; si un proyecto existente tiene otra reserva, se detiene. Ningún workflow entregado publica producción. El workflow `web-pages-preview.yml` exige QA exitosa del mismo SHA y rechaza cualquier rama distinta de la web. Mientras no exista en la rama predeterminada de GitHub, se activa actualizando la solicitud en `web/deploy-preview.request` dentro de la rama web. Ese commit inicia QA y espera su resultado antes de subir. No requiere fusionar a main. Después de guardar el token, puede reintentarse una ejecución detenida por credenciales sin volver a solicitar acceso al panel.
+El proyecto conserva su rama Pages **`production-requires-owner-approval`**, distinta de la rama fuente web. El 10 de noviembre el titular solicitó servir la web pública después de reparar su CNAME, manteniendo los cobros cerrados. Para esa publicación se usa `web-sitecacho-public.yml`, activado por **`web/deploy-public.request`** en la rama web: exige QA del mismo SHA, verifica Mercado Pago deshabilitado, prepara claves educativas privadas del runtime público y publica únicamente este proyecto. La autorización de una web pública no activa pagos, registros nuevos ni Google. No modifica DNS ni Resend. Revalida solamente los dos dominios nombrados por la API de Pages.
+
+El flujo separado `web-pages-preview.yml` se activa con `web/deploy-preview.request`, exige la misma QA y publica solo la preview. Si existe la web pública revisada, conserva íntegros su runtime y claves y omite la antigua vinculación del dominio a una preview. Ambos flujos comparten exclusión mutua para evitar carreras. No requieren fusionar a main ni acceder al panel de Cloudflare. Un proyecto, cuenta, rama de publicación o sitio canónico ajeno hace detener el proceso antes de escribir.
 
 El método elegido es **Direct Upload desde GitHub Actions y Wrangler**. La API oficial crea/configura únicamente `cachaste-sitecacho`, sin iniciar sesión desde Work, sin instalar Git integration y sin tocar otra zona o proyecto. Cloudflare no permite convertir después ese proyecto a Git integration; la automatización queda en Actions. Instrucciones completas y acciones manuales mínimas en [DESPLIEGUE-CLOUDFLARE.md](DESPLIEGUE-CLOUDFLARE.md).
 
@@ -35,12 +37,15 @@ Antes de subir, configurar **Settings > Runtime > Fail open / closed > Fail clos
 | --- | --- |
 | `SUPABASE_URL` | Público; ya definido en `web/wrangler.jsonc`. |
 | `SUPABASE_PUBLISHABLE_KEY` | Público; ya definido. No es una service role. |
-| `BANK_CONTENT_KEY` | Secreto: 32 bytes aleatorios en base64. Actions genera uno por despliegue preview y usa el mismo valor en compilación y ejecución. |
+| `BANK_CONTENT_KEY` | Secreto: 32 bytes aleatorios en base64. Actions genera uno por despliegue en su propio entorno y usa el mismo valor en compilación y ejecución. Preview y web pública conservan claves independientes. |
 | `OFFLINE_SIGNING_JWK` | Secreto: JWK privado EC P-256, generado por Actions; solo su parte pública llega al service worker. |
 | `WEB_SIGNUP_ENABLED` | `false` hasta configurar correo, URLs de retorno y documentos definitivos. |
 | `WEB_AUTH_RETURN_READY` | `false` hasta comprobar recuperación y confirmación de correo por HTTPS. |
 | `WEB_GOOGLE_AUTH_ENABLED` | `false` hasta configurar y verificar el proveedor Google real; [guía exacta](AUTENTICACION.md). |
-| `WEB_ADMIN_IDS` | UUID de administradores, separados por coma; nunca correos ni user_metadata. |
+| `WEB_PAYMENTS_ENABLED` | `false` en la publicación pública; la política Supabase también permanece cerrada. |
+| `WEB_PUBLIC_RELEASE` | Marcador `sitecacho-payments-closed-v1` para reconocer únicamente una publicación pública revisada. |
+
+El rol administrador se obtiene de `auth.users.raw_app_meta_data.role` mediante consulta actual a la base de datos. `WEB_ADMIN_IDS` y los metadatos editables no conceden administración.
 
 No registrar claves en logs, commits ni capturas. La compilación local sin clave genera un secreto efímero en `web/.local-bindings.json`, ignorado por Git. Ese archivo no se entrega ni se sube a Pages. En Cloudflare Build, una clave ausente detiene la compilación. Cambiar `BANK_CONTENT_KEY` exige reconstruir todo el contenido con la nueva clave; cambiar la clave offline revoca las licencias offline anteriores al siguiente arranque.
 

@@ -38,7 +38,7 @@ function cloudflare(initial = null) {
     } else {
       assert.equal(options.method, 'PATCH'); assert.equal(url, base + '/' + PAGES_PROJECT);
       assert.deepEqual(Object.keys(body), ['deployment_configs']);
-      project.deployment_configs = body.deployment_configs;
+      project.deployment_configs = {...project.deployment_configs,...body.deployment_configs};
     }
     return Response.json({success: true, result: project});
   }});

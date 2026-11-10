@@ -4,6 +4,8 @@ export const PAGES_PROJECT = 'cachaste-sitecacho';
 export const PAGES_ACCOUNT_ID = 'cfe4b77c0c39bb056306d16133a93642';
 export const PREVIEW_BRANCH = 'work/cachaste-web-unificada-20261106';
 export const RESERVED_PRODUCTION_BRANCH = 'production-requires-owner-approval';
+// The owner requested the public website on 2026-11-10; payment activation remains separate.
+export const PUBLIC_RELEASE_MARKER = 'sitecacho-payments-closed-v1';
 export const REPOSITORY = 'josevillablanca30/PreparaTupaes';
 
 export function normalizeApiToken(value) {
@@ -52,9 +54,27 @@ export function verifyTarget(project, branch) {
   if (project?.name !== PAGES_PROJECT) throw Error('UNRELATED_PROJECT_DENIED');
   if (branch !== PREVIEW_BRANCH || project.production_branch !== RESERVED_PRODUCTION_BRANCH) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
   if (project.source) throw Error('DIRECT_UPLOAD_PROJECT_REQUIRED');
-  if (project.canonical_deployment) throw Error('EXISTING_PRODUCTION_DEPLOYMENT_DENIED');
+  if (project.canonical_deployment) {
+    const release=project.canonical_deployment;
+    if (!reviewedPublicRuntime(project.deployment_configs?.production) || release.project_name!==PAGES_PROJECT || release.environment!=='production' ||
+      release.deployment_trigger?.metadata?.branch!==RESERVED_PRODUCTION_BRANCH || !/^[a-f\d]{40}$/.test(release.deployment_trigger?.metadata?.commit_hash||'')) throw Error('EXISTING_PRODUCTION_DEPLOYMENT_DENIED');
+  }
   const domains = new Set([PAGES_PROJECT + '.pages.dev', 'sitecacho.cl', 'www.sitecacho.cl']);
   if ((project.domains || []).some(x => !domains.has(x))) throw Error('UNRELATED_DOMAIN_DENIED');
+}
+
+export function reviewedPublicRuntime(config) {
+  const v=config?.env_vars||{};
+  return config?.fail_open===false && v.WEB_PUBLIC_RELEASE?.type==='plain_text' && v.WEB_PUBLIC_RELEASE.value===PUBLIC_RELEASE_MARKER &&
+    ['WEB_PAYMENTS_ENABLED','WEB_SIGNUP_ENABLED','WEB_AUTH_RETURN_READY','WEB_GOOGLE_AUTH_ENABLED'].every(k=>v[k]?.type==='plain_text'&&v[k].value==='false') &&
+    ['BANK_CONTENT_KEY','OFFLINE_SIGNING_JWK'].every(k=>v[k]?.type==='secret_text');
+}
+
+export function publicSiteUrl(value) {
+  let url;try{url=new URL(value);}catch{throw Error('UNRELATED_PUBLIC_SITE_DENIED');}
+  if(url.protocol!=='https:'||url.username||url.password||url.port||url.search||url.hash||url.pathname!=='/'||
+    !['sitecacho.cl','www.sitecacho.cl',PAGES_PROJECT+'.pages.dev'].includes(url.hostname))throw Error('UNRELATED_PUBLIC_SITE_DENIED');
+  return url.origin;
 }
 
 export function pagesClient(env, {fetcher = fetch} = {}) {
@@ -86,6 +106,10 @@ export function pagesClient(env, {fetcher = fetch} = {}) {
     }),
     configureProject: deployment_configs => request('PATCH', '/' + PAGES_PROJECT, {deployment_configs}),
     listDeployments: () => request('GET', '/' + PAGES_PROJECT + '/deployments?env=preview&per_page=25'),
+    listPublicDeployments: () => request('GET', '/' + PAGES_PROJECT + '/deployments?env=production&per_page=25'),
+    listDomains: () => request('GET', '/' + PAGES_PROJECT + '/domains'),
+    addDomain: name => {if(!['sitecacho.cl','www.sitecacho.cl'].includes(name))throw Error('UNRELATED_DOMAIN_DENIED');return request('POST','/'+PAGES_PROJECT+'/domains',{name});},
+    retryDomain: name => {if(!['sitecacho.cl','www.sitecacho.cl'].includes(name))throw Error('UNRELATED_DOMAIN_DENIED');return request('PATCH','/'+PAGES_PROJECT+'/domains/'+name,{});},
   };
 }
 

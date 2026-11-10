@@ -39,17 +39,25 @@ El responsable del código activa `web-pages-preview.yml` guardando una nueva so
 2. Verifica que Android permanezca idéntico y ejecuta las pruebas de backend/pagos simulados.
 3. Espera el resultado exitoso de `web-commercial.yml` para **el mismo SHA y rama**: motor original, banco completo, HTTP real con Auth/PostgREST y los cuatro perfiles de navegador.
 4. Consulta el proyecto exacto. Si no existe, lo crea mediante la API oficial con producción reservada. Si existe y es compatible, prepara sus variables. No compra servicios ni cambia el plan de la cuenta.
-5. Genera una clave AES-256-GCM y una clave de firma offline EC P-256 nuevas para ese despliegue, dentro del runner. Las guarda como `secret_text` en **preview**, las enmascara y entrega la clave AES al siguiente paso de compilación. Nunca guarda las claves en el repositorio ni en artefactos. No se suministran claves educativas a producción.
+5. Genera una clave AES-256-GCM y una clave de firma offline EC P-256 nuevas para ese despliegue, dentro del runner. Las guarda como `secret_text` en **preview**, las enmascara y entrega la clave AES al siguiente paso de compilación. Nunca guarda las claves en el repositorio ni en artefactos. El flujo preview conserva las claves y configuración de una publicación pública ya revisada.
 6. Verifica por API **Fail closed** tanto en preview como en producción, claves de ejecución secretas y registro/retornos Auth deshabilitados.
-7. Compila `web/dist`, comprueba que no exista `/app` en claro, autentica el cifrado de los 94 archivos privados y exige las cinco materias. El marcador vacío `.nojekyll` es el único archivo sin contenido permitido.
+7. Compila `web/dist`, comprueba que no exista `/app` en claro, autentica el cifrado de los 124 archivos privados y exige las cinco materias. El marcador vacío `.nojekyll` es el único archivo sin contenido permitido.
 8. Wrangler publica únicamente una preview de la rama web. La reserva de producción impide tratarla como despliegue de producción.
 9. Lee la URL real de un despliegue exitoso de ese SHA por la API; no inventa el alias a partir del nombre de rama.
-10. Comprueba por HTTPS landing, cuenta, manifest, versión, Worker real, sesión/progreso/checkout anónimos denegados, token fabricado rechazado, protección de origen y firma pública offline. Revisa **cada archivo privado** y **cada ruta del cifrado**; comprueba además que Mercado Pago continúe deshabilitado. Con los 94 archivos actuales son **202 verificaciones HTTP**.
+10. Comprueba por HTTPS landing, cuenta, manifest, versión, Worker real, sesión/progreso/checkout anónimos denegados, token fabricado rechazado, protección de origen y firma pública offline. Revisa **cada archivo privado** y **cada ruta del cifrado**; comprueba además que Mercado Pago continúe deshabilitado. Con los 124 archivos actuales son **268 verificaciones HTTP**.
 11. Entrega el enlace y `pages-preview.json` en el resumen de Actions y el artefacto **`Cachaste-Pages-Preview`**. El artefacto solo contiene URL, SHA y resultados; no contiene bancos, secretos ni sesiones.
 
 Las claves de preview se renuevan junto con cada compilación; no cambiar una clave suelta de un despliegue que ya está construido. Para recuperar una versión anterior se reconstruye el commit autorizado con una solicitud nueva. La configuración de secretos se aplica al nuevo despliegue; los despliegues previos no se usan como fuente para recuperar sus valores privados. Después de renovar la firma, un cliente conectado debe descargar el service worker actualizado; las licencias offline anteriores siguen limitadas por su vencimiento y revisión.
 
 Una falta de credenciales, rechazo de API, QA incompleta, proyecto incompatible o comprobación HTTP fallida deja la ejecución sin una URL declarada como verificada. Los cuerpos de error de Cloudflare y sus variables no se imprimen. No se crea un usuario ficticio ni un permiso Premium de prueba en el Supabase compartido con Android.
+
+## Web pública con cobros cerrados, solicitada el 10 de noviembre
+
+`web-sitecacho-public.yml` y `web/deploy-public.request` publican la misma web en el espacio principal de Pages, manteniendo separadas publicación y activación comercial. El CNAME `@ → cachaste-sitecacho.pages.dev` necesita una versión en ese espacio: una preview por sí sola no sirve el dominio principal.
+
+La publicación exige QA completa del mismo commit, cuenta/proyecto fijos, vendedor deshabilitado para nuevos cobros y revisión canónica coincidente. Configura claves nuevas **solo para el runtime público**, conserva la preview y fuerza `WEB_PAYMENTS_ENABLED=false` junto a los tres controles de apertura Auth. No configura credenciales de Mercado Pago ni modifica su política Supabase.
+
+Después publica la rama Pages reservada y verifica por HTTPS `cachaste-sitecacho.pages.dev` y `sitecacho.cl`: contenido, revisión exacta, todos los archivos privados, sesiones falsas y cobros cerrados. También verifica documentos legales en los cuatro perfiles de navegador. Los resultados quedan en `Cachaste-Sitecacho-Public`. `www.sitecacho.cl` se revalida por Pages; si falta DNS se informa como pendiente, sin acreditar activación ni cambiar los registros de Resend.
 
 ## DNS: únicamente sitecacho.cl
 

@@ -75,6 +75,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: node web/scripts/verify-pages-preview.mjs
       - name: Vincular exclusivamente sitecacho.cl a la rama verificada, con cobros cerrados
+        if: env.PUBLIC_WEBSITE_PRESENT != 'true'
         continue-on-error: true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
