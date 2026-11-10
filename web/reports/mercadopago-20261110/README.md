@@ -31,6 +31,8 @@ Se comprobaron **268/268 verificaciones HTTPS** contra esa publicación: revisi�
 
 El [diagnóstico de solo lectura 42819924209](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42819924209), conservado en [sitecacho-domain-audit.json](sitecacho-domain-audit.json), obtuvo `200` de Cloudflare pero ninguna zona visible llamada `sitecacho.cl`, con o sin el filtro de la cuenta Pages. Los NS públicos son `johnny.ns.cloudflare.com` y `maxine.ns.cloudflare.com`. Esto no permite distinguir por sí solo entre permisos del token y una zona en otra cuenta: se requiere acceso personal a la cuenta que administra esa zona. No se cambió ningún nameserver, cuenta, zona ni credencial.
 
+El usuario eligió ingreso seguro mediante GitHub. Cloudflare respondió **“Unable to sign in. Try again or use your email and password.”** y la comprobación de una pestaña nueva volvió a la pantalla de acceso. No se completó una sesión Cloudflare ni se reintentaron credenciales automáticamente. [Captura del bloqueo sin credenciales](cloudflare-login-block.png).
+
 La configuración publicada mantiene registro nuevo, Google y retorno Auth de apertura deshabilitados (`signupEnabled=false`, `googleAuthEnabled=false`, `authReturnReady=false`). La pantalla de ingreso existente se conserva; no se declara una apertura pública de registros.
 
 ## Cambios comprobados
