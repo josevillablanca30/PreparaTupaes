@@ -1040,3 +1040,27 @@ body.is-learning [data-action=check],body.is-learning [data-action=basic-check]{
 #daily-root .studio-options .studio-choice.studio-wrong{
   -webkit-text-fill-color:#814d3c!important;
 }
+
+/* Android night-mode regression: explicit surfaces for evaluated answer states. */
+#daily-root .daily-options button,
+#daily-root .daily-options button:disabled{
+  background:#fff!important;
+  background-image:none!important;
+}
+#daily-root .daily-options button.selected,
+#daily-root .daily-options button.chosen,
+#daily-root .daily-options button[aria-pressed="true"]{
+  background:#eee7ff!important;
+}
+#daily-root .daily-options button.correct,
+#daily-root .daily-options button.correct:disabled{
+  background:#e7f6ec!important;
+}
+#daily-root .daily-options button.wrong,
+#daily-root .daily-options button.incorrect{
+  background:#fff0e8!important;
+}
+#daily-root .worked-board .worked-status{
+  background:#f8f4ff!important;
+  background-image:none!important;
+}
