@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-10T12:13:33.764Z",
+  "checkedAt": "2026-11-10T12:23:04.161Z",
   "checks": [
     {
       "name": "provider_seller_is_test_account",
@@ -31,7 +31,7 @@
       "name": "hosted_checkout_created_with_real_test_seller",
       "passed": true,
       "httpStatus": 200,
-      "providerId": "07912e9e8e4649bbb68834e6a88457ca"
+      "providerId": "ae83502e8c3149f6a1acbbf735fc1230"
     },
     {
       "name": "checkout_retry_reuses_provider_id",
@@ -68,7 +68,7 @@
       "name": "sandbox_trial_activation_is_verified_and_separate",
       "passed": true,
       "httpStatus": 200,
-      "trialUntil": "2026-11-17T12:13:25.269Z"
+      "trialUntil": "2026-11-17T12:22:56.416Z"
     },
     {
       "name": "sandbox_never_activates_production_learning",
@@ -115,23 +115,32 @@
   "failed": null,
   "cleanup": [
     {
-      "providerSubscription": "07912e9e8e4649bbb68834e6a88457ca",
+      "providerSubscription": "ae83502e8c3149f6a1acbbf735fc1230",
       "cancelled": true
     },
     {
-      "providerSubscription": "90da137549aa4fdaa429b6f0a08901cd",
+      "providerSubscription": "371cc4b35df447a7846ea59ac19d855c",
       "cancelled": true
     },
     {
-      "temporaryAuthUser": "4e53184a-57de-4f2d-9c4f-bdb7bad72674",
+      "temporaryAuthUser": "bc25e2f2-8a2f-4ab2-8175-159815670b5d",
       "deleted": true
     },
     {
-      "temporaryAuthUser": "38d78391-9a7d-4ce7-a72d-f26007df1c3e",
+      "temporaryAuthUser": "921c7167-3a99-4807-aea4-f86824d51c24",
       "deleted": true
     }
   ],
   "productionPurchasesCreated": 0,
   "mode": "sandbox",
-  "providerRenewalWaitNotExecuted": true
+  "providerRenewalWaitNotExecuted": true,
+  "sourceHashes": {
+    "supabase/functions/_shared/mercadopago-core.mjs": "7e98fb659e394ea199efa2ef876ae61633be6803d8eab2ccd7169da7be137fa2",
+    "supabase/functions/_shared/mercadopago-sandbox.mjs": "3990700789b7c0f133cf6eeba9028016d506747cc71b6c0b4ca05f75ddee9bbd"
+  },
+  "limits": [
+    "El webhook positivo fue una notificación firmada simulada contra un recurso real; falta configurar MP_TEST_WEBHOOK_SECRET para recibir una entrega de Mercado Pago.",
+    "No se esperó una renovación por calendario.",
+    "La autorización interactiva del checkout alojado requiere ingresar como comprador; el ciclo autorizado se ejercitó mediante la API oficial de plan asociado."
+  ]
 }

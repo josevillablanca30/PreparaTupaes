@@ -48,7 +48,7 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix:
-        browser: [Android-Chrome, iPhone-WebKit, Desktop-Chrome, mobile-320px]
+        browser: [Android-Chrome, Desktop-Chrome, mobile-320px]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -60,11 +60,7 @@ jobs:
       - run: npm ci
       - run: node web/scripts/build.mjs
       - name: Preparar Chrome
-        if: matrix.browser != 'iPhone-WebKit'
         run: bash scripts/install-chromium-qa.sh
-      - name: Preparar WebKit de iPhone
-        if: matrix.browser == 'iPhone-WebKit'
-        run: npx playwright install --with-deps webkit
       - name: Navegación, cinco materias, persistencia, PWA y comparación visual
         run: npx playwright test --config=web/playwright.config.mjs --project="${{ matrix.browser }}"
       - name: Conservar evidencia real de navegador
@@ -72,6 +68,34 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Cachaste-Web-QA-${{ matrix.browser }}-${{ github.run_id }}
+          path: web/artifacts/
+          retention-days: 14
+  webkit:
+    needs: core
+    name: Navegador · iPhone-WebKit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node web/scripts/build.mjs
+      - name: Verificar WebKit preinstalado de la misma versión
+        run: node -e "const fs=require('node:fs');const {webkit}=require('@playwright/test');if(!fs.existsSync(webkit.executablePath()))throw Error('MATCHING_WEBKIT_REQUIRED')"
+      - name: Navegación, cinco materias, persistencia, PWA y comparación visual
+        run: npx playwright test --config=web/playwright.config.mjs --project=iPhone-WebKit
+      - name: Conservar evidencia real de iPhone
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cachaste-Web-QA-iPhone-WebKit-${{ github.run_id }}
           path: web/artifacts/
           retention-days: 14
   http-auth-and-duels:

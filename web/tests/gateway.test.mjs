@@ -101,7 +101,7 @@ test('billing status cannot advertise checkout when the web launch switch is off
  const status=await response.json();
  assert.equal(status.ready,false);
  assert.equal(status.trialAvailable,false);
- assert.equal(status.managementReady,false);
+ assert.equal(status.managementReady,true);
  assert.equal(calls,1);
 });
 

@@ -82,7 +82,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     const headers=new Headers(ACCESS_HEADERS);for(const name of['content-type','content-disposition'])if(res.headers.has(name))headers.set(name,res.headers.get(name));
     if(body.action==='status'&&env.WEB_PAYMENTS_ENABLED!=='true'&&res.ok){
      const provider=await res.json();
-     return json({...provider,ready:false,trialAvailable:false,managementReady:false});
+     return json({...provider,ready:false,trialAvailable:false,managementReady:provider.managementReady===true});
     }
     return new Response(res.body,{status:res.status,headers});
    }

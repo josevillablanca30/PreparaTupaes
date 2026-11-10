@@ -20,7 +20,7 @@ test('web release has browser coverage for the five subjects and every core Andr
  assert.match(browser,/for\(let n=0;n<15;n\+\+\)/);
  assert.ok(build.includes("adaptCompetitionUi(androidSource('competition-app.js').toString())"),'Web must package the original Android competition UI');
  assert.match(build,/verify-android\.mjs/);
- assert.match(workflow,/Android-Chrome, iPhone-WebKit, Desktop-Chrome, mobile-320px/);
+ for(const browser of ['Android-Chrome','iPhone-WebKit','Desktop-Chrome','mobile-320px'])assert.ok(workflow.includes(browser),'Missing required browser: '+browser);
 });
 
 test('hosted QA requires real tutor, Express, five full exams, duels and rankings',()=>{

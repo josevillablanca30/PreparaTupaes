@@ -18,7 +18,7 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
   if(!path.startsWith('/'))throw Error('INVALID_PROVIDER_PATH');
   const response=await fetcher('https://api.mercadopago.com'+path,{method,headers:{authorization:'Bearer '+env('MP_TEST_ACCESS_TOKEN'),'content-type':'application/json',...(requestId?{'X-Idempotency-Key':requestId}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(12000)});
   const data=await response.json().catch(()=>({}));
-  if(!response.ok){console.error('MP_SANDBOX_PROVIDER_ERROR',JSON.stringify({status:response.status,operation:path.split('?')[0].replace(/\/[a-f0-9]{20,}/g,'/:id')}));throw Error('PROVIDER_CHECKOUT_FAILED');}return data;
+  if(!response.ok){console.error('MP_SANDBOX_PROVIDER_ERROR',JSON.stringify({status:response.status,operation:path.split('?')[0].replace(/\/[a-f0-9]{20,}/g,'/:id')}));throw Object.assign(Error('PROVIDER_CHECKOUT_FAILED'),{providerStatus:response.status});}return data;
  }
  async function seller(){
   if(env('MP_TEST_MODE')!=='test'||!env('MP_TEST_ACCESS_TOKEN')||!/^\d+$/.test(env('MP_TEST_COLLECTOR_ID')||''))throw Error('TEST_CONFIG_MISSING');
@@ -51,7 +51,7 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
    if(row.provider_id){const existing=await mp('/preapproval/'+encodeURIComponent(row.provider_id));if(existing.status!=='pending')throw Error('CHECKOUT_ALREADY_FINISHED');return reply(req,{id:row.provider_id,checkoutUrl:checkoutUrl(existing.init_point),mode:'sandbox'});}
    if(!row.created)throw Error('CHECKOUT_PENDING');
    const p=MP_PLANS[c.plan],auto_recurring={frequency:p.frequency,frequency_type:p.frequency_type,transaction_amount:p.amount,currency_id:'CLP',...(c.trial?{start_date:new Date(now()+7*86400000).toISOString()}:{})};
-   const sub=await mp('/preapproval',{method:'POST',requestId:row.id,body:{auto_recurring,external_reference:row.id,payer_email:email,reason:'Cachaste QA '+c.plan,back_url:'https://sitecacho.cl/cuenta.html?qa=mp&checkout=return',status:'pending'}});
+   let sub;try{sub=await mp('/preapproval',{method:'POST',requestId:row.id,body:{auto_recurring,external_reference:row.id,payer_email:email,reason:'Cachaste QA '+c.plan,back_url:'https://sitecacho.cl/cuenta.html?qa=mp&checkout=return',status:'pending'}});}catch(error){if([400,401,403,404,422].includes(error.providerStatus))await call('checkout_failed',{id:row.id,userId:user.id,status:error.providerStatus});throw error;}
    await call('attach',{id:row.id,userId:user.id,providerId:String(sub.id)});
    return reply(req,{checkoutUrl:checkoutUrl(sub.init_point),id:String(sub.id),mode:'sandbox',notice:'QA_ONLY_NOT_APP_ENTITLEMENT'});
   }

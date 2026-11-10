@@ -47,7 +47,7 @@ export async function probePreview({url, revision, protectedFiles, encryptedFile
   await check('Checkout anónimo rechazado sin crear compra', '/api/billing', r => r.status === 401, post({action: 'checkout', plan: 'mensual'}));
   await check('Mercado Pago realmente deshabilitado', '/api/billing', (r, text) => {
     const billing = parse(text);
-    return r.status === 200 && billing?.ready === false && billing.trialAvailable === false && billing.managementReady === false;
+    return r.status === 200 && billing?.ready === false && billing.trialAvailable === false;
   }, post({action: 'status'}));
   await check('Escritura desde otro sitio rechazada', '/api/session', r => r.status === 403, {...post({}), headers: {origin: 'https://example.invalid', 'x-cachaste-request': '1'}});
   const forged = Buffer.from(JSON.stringify({alg: 'none'})).toString('base64url') + '.' + Buffer.from(JSON.stringify({sub: '00000000-0000-4000-8000-000000000001', exp: Math.floor(Date.now() / 1000) + 3600})).toString('base64url') + '.forged';

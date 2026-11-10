@@ -36,6 +36,10 @@ test('Web schema: caller-scoped sync, conflict versions and payment isolation',a
   await billing(db,'attach',{id:checkout,userId:users[2],providerId:'qa-subscription'});
   await billing(db,'apply',{userId:users[2],checkoutId:checkout,providerId:'qa-subscription',plan:'mensual',status:'authorized',paidUntil:new Date(Date.now()+86400000).toISOString(),trialUntil:null,observedAt:new Date().toISOString(),liveMode:true,renews:true,nextPaymentAt:null,payments:[]});
   assert.equal((await rpc(db,2,'profile')).premium,true);assert.ok((await rpc(db,2,'dashboard',{subject:'M1'})).season);
+  await db.exec('update cachaste_web.policy set payments_enabled=false,tax_ready=false');
+  assert.equal((await rpc(db,2,'profile')).premium,true,'Stopping new sales must preserve already verified paid time');
+  await assert.rejects(billing(db,'checkout',{id:randomUUID(),userId:users[2],plan:'anual',providerPlanId:'qa-yearly'}),/BILLING_NOT_READY/);
+  await db.exec('update cachaste_web.policy set payments_enabled=true,tax_ready=true');
   await webRpc(db,2,'snapshot');assert.equal((await db.query('select count(*)::int n from cachaste.entitlements where user_id=$1',[users[2]])).rows[0].n,0);
   await db.query("select set_config('request.jwt.claims',$1,false)",[JSON.stringify({sub:users[2],session_id:sessions[2]})]);const access=(await db.query('select public.cachaste_access() x')).rows[0].x;assert.equal(access.active,true);assert.equal(access.userId,users[2]);assert.ok(access.validUntilMs-access.serverTimeMs<=43200000);
  });
