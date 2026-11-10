@@ -50,7 +50,7 @@ root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!b.m
   if(!account?.isAdmin||new URLSearchParams(location.search).get('qa')!=='mp')throw Error('AUTH_REQUIRED');
   const {data:{session}}=await sdk.auth.getSession();if(!session)throw Error('AUTH_REQUIRED');
   const email=root.querySelector('#mp-qa-email')?.value.trim()||'';
-  const res=await fetch('https://jmobinmdwrmdqrxtcruj.supabase.co/functions/v1/cachaste-mp-sandbox-checkout',{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+session.access_token,apikey:config.supabaseAnonKey||config.supabasePublishableKey||'sb_publishable_wf2Ji381IwRo2exQKJQ7ew_SRYCl_q1'},body:JSON.stringify({action:'checkout',plan:'MONTHLY_TRIAL',payerEmail:email})});
+  const res=await fetch('https://jmobinmdwrmdqrxtcruj.supabase.co/functions/v1/cachaste-mp-sandbox-checkout',{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+session.access_token,apikey:config.publishableKey},body:JSON.stringify({action:'checkout',plan:'MONTHLY_TRIAL',payerEmail:email})});
   const result=await res.json().catch(()=>({}));if(!res.ok)throw Error(result.error||'SERVICE_UNAVAILABLE');
   if(!result.checkoutUrl)throw Error('SERVICE_UNAVAILABLE');location.assign(result.checkoutUrl);return;
  }
