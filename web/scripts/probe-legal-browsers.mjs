@@ -1,6 +1,7 @@
 import {chromium,webkit,devices} from '@playwright/test';
 import {mkdir,writeFile,readFile} from 'node:fs/promises';
 import {previewUrl,publicSiteUrl} from './pages-client.mjs';
+import {measureTextContrast,PUBLIC_SURFACE_TEXT} from '../tests/helpers/text-contrast.mjs';
 const isPublic=process.argv.includes('--public');
 const deployed=JSON.parse(await readFile(isPublic?'web/artifacts/pages-public.json':'web/artifacts/pages-preview.json','utf8'));
 const origin=(isPublic?publicSiteUrl:previewUrl)(deployed.url);
@@ -31,6 +32,17 @@ for(const[name,engine,use]of[['Desktop-Chrome',chromium,{viewport:{width:1365,he
   for(const entry of['/','/cuenta.html','/recuperar']){
    try{await page.goto(origin+entry);for(const[slug]of pages){const link=page.locator('footer a[href="/'+slug+'.html"]');if(!await link.isVisible())throw Error('LEGAL_LINK_MISSING');}await page.locator('footer a[href="/eliminar-cuenta.html"]').click();await page.getByRole('heading',{name:'Eliminar cuenta y datos',exact:true}).waitFor();checks.push({browser:name,entry,footerNavigation:true,passed:true});}
    catch{checks.push({browser:name,entry,footerNavigation:true,passed:false});}
+  }
+  if(isPublic)for(const[path,title]of[['/','Te lo dejamos clarito para un buen resultado.'],['/cuenta.html','Tu preparación comienza aquí.'],['/recuperar','Recupera tu contraseña.']]){
+   try{
+    const response=await page.goto(origin+path,{waitUntil:'networkidle'});
+    if(response.status()!==200)throw Error('PUBLIC_HTTPS_REQUIRED');
+    await page.getByRole('heading',{name:title,exact:true}).waitFor();
+    const measurements=await page.evaluate(measureTextContrast,PUBLIC_SURFACE_TEXT);
+    if(measurements.length<9||measurements.some(x=>!x.passed))throw Error('PUBLIC_TEXT_CONTRAST_FAILED');
+    await page.screenshot({path:'web/artifacts/legal-live/'+name+'-readable-'+(path==='/'?'landing':path.includes('cuenta')?'account':'recovery')+'.png',fullPage:!name.includes('iPhone')});
+    checks.push({browser:name,path,renderedTextContrast:true,textSamples:measurements.length,minimumRatio:Math.min(...measurements.map(x=>x.ratio)),passed:true});
+   }catch{checks.push({browser:name,path,renderedTextContrast:true,passed:false});}
   }
  }finally{await context.close();await browser.close();}
 }

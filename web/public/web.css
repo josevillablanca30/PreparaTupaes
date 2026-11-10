@@ -82,3 +82,15 @@ body{background:radial-gradient(ellipse at 86% 12%,#3b0c59 0,transparent 35%),#0
 .hero-art>img{aspect-ratio:408/278;object-fit:contain;border:0;border-radius:0;box-shadow:none;background:transparent;filter:drop-shadow(0 0 24px #a329e15c)}
 .hero-art{background:transparent}
 @media(max-width:760px){.hero-art>img{max-height:310px;object-position:center}}
+
+/* Keep the account, billing and recovery surfaces on the public dark palette. */
+.account-card,.account-subscriptions article,.price-card,.practice-grid article,.web-dialog{background:#21102e;color:var(--deep);border-color:var(--line)}
+.price-card.featured{background:#2c153c}
+.account-main:before{background:transparent}
+.account-card input,.account-card select{background:#13091e;color:var(--deep);border-color:#9470ac}
+.account-card .auth-divider{color:var(--muted)}
+.account-card .auth-divider:before,.account-card .auth-divider:after{background:var(--line)}
+.account-card .text-button{color:#e2a9ff}
+.site-footer{background:#170a24}
+#account-status:not(:empty){background:#2c153c;color:var(--deep);border-color:var(--line)}
+.skip-link{background:#21102e;color:var(--deep)}

@@ -17,3 +17,6 @@ html[data-recovery-return] body{visibility:hidden}
 #recovery-status[role=alert]{background:#fff0f3;color:#7b203d;border-color:#dc9bb1}
 @media(max-width:350px){.recovery-card{padding:25px 18px}.recovery-page .site-header{padding-inline:14px;gap:10px}.recovery-page .site-header>.text-link{max-width:110px;font-size:12px}.recovery-card h1{font-size:29px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.recovery-page .site-header{background:#170a24}
+.recovery-card .recovery-help{color:var(--muted)}
+.recovery-card .text-button{color:#e2a9ff}
