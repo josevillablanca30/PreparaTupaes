@@ -34,6 +34,9 @@ jobs:
             if(!r.ok){const d=await r.clone().json();const errors=d.errors||[];const message=errors.map(e=>e.message||'').join(' ').toLowerCase();console.log(JSON.stringify({providerStatus:r.status,codes:errors.map(e=>e.code),knownTerms:words.filter(w=>message.includes(w))}));}
             return r;
           }});
+          // The API requires both environment objects. Omitted fields retain the other environment's bindings.
+          const configure=client.configureProject;
+          client.configureProject=configs=>configure({preview:{},production:{},...configs});
           try{
             validatePublicRequest(JSON.parse(await readFile('web/deploy-public.request','utf8')),taskEnv);
             console.log('Verified QA: '+await requireQa(taskEnv));
