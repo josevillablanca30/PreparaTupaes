@@ -1,0 +1,44 @@
+name: ¿Cachaste? · Diagnóstico acotado del runtime público
+on:
+  push:
+    branches: [work/cachaste-web-unificada-20261106]
+    paths: [.github/workflows/sitecacho-runtime-diagnostic.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect-rejection:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 2777ab4c5d26a781c1005bd9ea2671d89ca4fd3f
+          fetch-depth: 0
+      - name: Diagnosticar la solicitud ya validada sin imprimir respuestas privadas
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          CLOUDFLARE_ACCOUNT_ID: cfe4b77c0c39bb056306d16133a93642
+          CLOUDFLARE_PAGES_PROJECT: cachaste-sitecacho
+          GITHUB_SHA: 2777ab4c5d26a781c1005bd9ea2671d89ca4fd3f
+        run: |
+          node --input-type=module <<'NODE'
+          import {readFile} from 'node:fs/promises';
+          import {pagesClient} from './web/scripts/pages-client.mjs';
+          import {requireQa} from './web/scripts/verify-preview-qa.mjs';
+          import {preparePublicProject,validatePublicRequest} from './web/scripts/publish-sitecacho.mjs';
+          const words=['both','preview','production','required','missing','deployment_configs','env_vars','empty','compatibility_date','secret_text','bindings','maximum','characters','unknown','unexpected','invalid','cannot','patch','replace','request','account','must','all','environment'];
+          const client=pagesClient(process.env,{fetcher:async(url,options)=>{
+            const r=await fetch(url,options);
+            if(!r.ok){const d=await r.clone().json();const errors=d.errors||[];const message=errors.map(e=>e.message||'').join(' ').toLowerCase();console.log(JSON.stringify({providerStatus:r.status,codes:errors.map(e=>e.code),knownTerms:words.filter(w=>message.includes(w))}));}
+            return r;
+          }});
+          try{
+            validatePublicRequest(JSON.parse(await readFile('web/deploy-public.request','utf8')),process.env);
+            console.log('Verified QA: '+await requireQa(process.env));
+            if((await client.getProject()).canonical_deployment)throw Error('DIAGNOSTIC_DENIED_AFTER_PUBLICATION');
+            const result=await preparePublicProject(process.env,{client});
+            console.log(JSON.stringify({prepared:true,realPayments:result.realPayments,previewPreserved:result.previewPreserved}));
+          }catch(e){console.log(JSON.stringify({operationError:e.message,diagnostic:e.cloudflare}));}
+          NODE
