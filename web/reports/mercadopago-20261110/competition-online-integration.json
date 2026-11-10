@@ -1,0 +1,75 @@
+{
+  "scope": "disposable local Supabase; real HTTP Auth/PostgREST, not hosted production",
+  "events": [
+    {
+      "name": "Two independent accounts authenticate through real GoTrue over HTTP",
+      "passed": true
+    },
+    {
+      "name": "Educational access reads only each live Auth account and never exceeds its server entitlement",
+      "passed": true
+    },
+    {
+      "name": "No subscription means server denial; isolated test entitlement never enables production access",
+      "passed": true
+    },
+    {
+      "name": "Both players get the same question, without answers or tutor leakage",
+      "passed": true
+    },
+    {
+      "name": "Complete 10-versus-10 network duel; server grades and replay cannot duplicate an answer",
+      "passed": true
+    },
+    {
+      "name": "Persistent rankings update once; winner +1 and loser floored at zero",
+      "passed": true
+    },
+    {
+      "name": "Educational tutor unlocks only after verified final settlement",
+      "passed": true
+    },
+    {
+      "name": "Invitation code and reconnect after a lost response recover one saved answer without duplication",
+      "passed": true
+    },
+    {
+      "name": "A real network defeat removes one competitive star and preserves the nonnegative floor",
+      "passed": true
+    },
+    {
+      "name": "Asynchronous random matching and equal correct answers/time produce a persistent draw without star changes",
+      "passed": true
+    },
+    {
+      "name": "Server question timeout ignores a forged phone time; abandonment settles only after the rival finishes",
+      "passed": true
+    },
+    {
+      "name": "Four complete scenarios retain historical wins, losses, draws and four unique settlements",
+      "passed": true
+    },
+    {
+      "name": "Client cannot access or modify subscription tables",
+      "passed": true
+    },
+    {
+      "name": "A real Auth recovery token changes the password and the former password is rejected; no email is sent by fixtures",
+      "passed": true
+    },
+    {
+      "name": "Restoring production environment rejects the same test entitlement for competition and education",
+      "passed": true
+    },
+    {
+      "name": "Explicit community consent and private report/block actions survive real HTTP Auth without a subscription",
+      "passed": true
+    },
+    {
+      "name": "A recently authenticated account can erase its identity without a subscription; its old session stops working",
+      "passed": true
+    }
+  ],
+  "passed": 17,
+  "failed": 0
+}

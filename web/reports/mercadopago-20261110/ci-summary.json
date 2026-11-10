@@ -1,0 +1,71 @@
+{
+  "checkedAt": "2026-11-10T12:58:40.771Z",
+  "codeRevision": "c474b81c95bbdc0181d7ef4cda2b05c9e21d2ce1",
+  "qaRun": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42818360586",
+  "deploymentRun": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42818360679",
+  "jobs": [
+    {
+      "id": 129837348740,
+      "name": "core",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 129837349247,
+      "name": "http-auth-and-duels",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 129837833392,
+      "name": "Navegador · iPhone-WebKit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 129837833413,
+      "name": "Navegador · mobile-320px",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 129837833472,
+      "name": "Navegador · Desktop-Chrome",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 129837833484,
+      "name": "Navegador · Android-Chrome",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "deployment": [
+    {
+      "id": 129837177927,
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "executed": {
+    "logic": 403,
+    "webBackendAndSecurity": 161,
+    "browserTests": 204,
+    "browserProjects": 4,
+    "localHttpWeb": 9,
+    "localHttpCompetition": 17,
+    "hostedHttpsChecks": 268,
+    "hostedLegalBrowserChecks": 24,
+    "hostedSandboxBackend": 22
+  },
+  "allListedJobsPassed": true,
+  "limits": {
+    "physicalPhones": false,
+    "providerWebhookDelivery": false,
+    "hostedInteractivePayerAuthorization": false,
+    "calendarRenewalWait": false,
+    "additionalHostedAuthenticatedBrowserSuite": false,
+    "customDomainConnected": false
+  }
+}

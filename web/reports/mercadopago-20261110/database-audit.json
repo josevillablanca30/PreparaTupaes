@@ -1,0 +1,18 @@
+{
+  "policy": {
+    "id": true,
+    "tax_ready": false,
+    "payments_enabled": false,
+    "allow_test_purchases": false
+  },
+  "checkedAt": "2026-11-10T12:52:50.693594+00:00",
+  "adminAccounts": 1,
+  "expectedTesters": 12,
+  "annualTesterGrants": 10,
+  "productionPayments": 0,
+  "shorterTesterGrants": 0,
+  "productionSubscriptions": 0,
+  "sandboxCheckoutsRemaining": 0,
+  "temporaryQaUsersRemaining": 0,
+  "identifiedActiveTesterGrants": 10
+}

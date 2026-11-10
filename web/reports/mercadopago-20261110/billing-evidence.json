@@ -1,0 +1,15 @@
+{
+  "verified": true,
+  "executedBackendChecks": 22,
+  "providerWebhookDelivery": "not_verified",
+  "additionalHostedBrowserSuite": "not_executed",
+  "reason": "SUPABASE_ACCESS_TOKEN_NOT_CONFIGURED",
+  "limits": [
+    "El webhook positivo fue una notificación firmada simulada contra un recurso real; falta configurar MP_TEST_WEBHOOK_SECRET para recibir una entrega de Mercado Pago.",
+    "No se esperó una renovación por calendario.",
+    "La autorización interactiva del checkout alojado requiere ingresar como comprador; el ciclo autorizado se ejercitó mediante la API oficial de plan asociado."
+  ],
+  "checkedAt": "2026-11-10T12:53:47.391Z",
+  "currentAnonymousSandboxStatus": 401,
+  "currentProductionPaymentsReady": false
+}
