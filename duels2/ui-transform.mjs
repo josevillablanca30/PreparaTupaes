@@ -14,8 +14,10 @@ export function adaptDuels2Ui(source){
  source=source.replaceAll('El encuentro es por turnos. Puedes actualizar las invitaciones; no necesitas permanecer conectado.','Buscamos personas por 10 segundos. Si no hay un rival disponible, jugarás con un bot identificado.');
  source=source.replaceAll("esc(r.creator.correct)","esc(d.version===2?r.creator.mastery:r.creator.correct)").replaceAll("esc(r.opponent.correct)","esc(d.version===2?r.opponent.mastery:r.opponent.correct)");
  source=source.replaceAll('<small> / 10</small>','<small> / \'+(d.version===2?\'20\':\'10\')+\'</small>');
- source=source.replace("r.reason==='correct'?","r.reason==='mastery'?'Se decidió por dominio. Cada acierto suma para ti y cada error suma para tu rival.':r.reason==='correct'?");
+ source=source.replace("r.reason==='correct'?","r.reason==='both_abandoned'?'Ambos dejaron el duelo. No cambian las estrellas.':r.reason==='mastery'?'Se decidió por dominio. Cada acierto suma para ti y cada error suma para tu rival.':r.reason==='correct'?");
  source=source.replaceAll('Igualaron en aciertos y tiempo válido.','Igualaron en dominio. El tiempo no desempata.');
+ source=source.replace("function safetyButton(p){","function safetyButton(p){if(p?.virtual)return '';");
+ source=source.replaceAll("'estrella competitiva'","'estrellas competitivas'");
  // Mandatory review: preserve tutorial body and restore the selected alternative + passage.
  const review="'<p><strong>Respuesta:</strong> '+esc(q.options?.[r.answer])";
  if(!source.includes(review))throw Error('REVIEW_DUELS2_EDUCATIONAL_REVIEW');

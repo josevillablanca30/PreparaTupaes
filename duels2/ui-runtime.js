@@ -2,8 +2,8 @@
  const d2Style=document.createElement('style');d2Style.textContent=/*DUELS2_CSS*/;document.head.append(d2Style);
  const d2BaseCall=api.call.bind(api),d2OriginalRender=render;
  const d2Operations=new Set(['create_duel','join_code','accept','decline','random','cancel_queue','duel','start','attempt','answer','forfeit','review','rematch']);
- let d2Channel=null,d2ChannelMatch=null,d2Realtime=false,d2Polling=false,d2PendingAction=null,d2QueueGeneration=0,d2LastWidth=50,d2LastQuestion=null;
- function d2Rules(){return '<div class="duels2-rules"><h2 id="dialog-title">Así se juega Duelos 2.0</h2><ul><li>Ambos reciben las mismas <strong>10 preguntas</strong>, en distinto orden.</li><li>Importa acertar: <strong>terminar primero no da ventaja</strong>. Tienen 40 minutos desde el inicio del duelo.</li><li>Cada acierto suma un punto de dominio para ti. Cada error le entrega un punto al rival.</li><li>La barra compartida cambia en tiempo real. No muestra las preguntas, respuestas ni avance del rival.</li><li>Buscamos personas primero. Si no aparece nadie tras unos 10 segundos, jugarás con un <strong>rival virtual identificado</strong>.</li><li>Contra personas: victoria <strong>+3 estrellas</strong> y derrota <strong>−3</strong>. Contra bots: <strong>+1 / −1</strong>. Empate: 0. Tu saldo nunca baja de cero.</li><li>Al terminar ambos, podrás revisar tu alternativa, la respuesta correcta y el tutor paso a paso.</li></ul><p>Las estrellas competitivas y tu dominio académico se guardan por separado.</p></div>';}
+ let d2Channel=null,d2ChannelMatch=null,d2Realtime=false,d2Polling=false,d2PendingAction=null,d2QueuePayload=null,d2QueueGeneration=0,d2LastWidth=50,d2LastQuestion=null;
+ function d2Rules(){return '<div class="duels2-rules"><h2 id="dialog-title">Así se juega Duelos 2.0</h2><ul><li>Ambos reciben las mismas <strong>10 preguntas</strong>, en distinto orden.</li><li>Importa acertar: <strong>terminar primero no da ventaja</strong>. Tienen 40 minutos desde el inicio del duelo.</li><li>Cada acierto suma un punto de dominio para ti. Cada error le entrega un punto al rival.</li><li>La barra compartida cambia en tiempo real. No muestra las preguntas, respuestas ni avance del rival.</li><li>Buscamos personas primero. Si no aparece nadie tras unos 10 segundos, jugarás con un <strong>rival virtual identificado</strong>.</li><li>Contra personas: victoria <strong>+3 estrellas</strong> y derrota <strong>−3</strong>. Contra bots: <strong>+1 / −1</strong>. Empate: 0. Tu saldo nunca baja de cero.</li><li>Si abandonas o vence tu tiempo sin terminar, pierdes. Tu rival conserva su turno. Si ambos abandonan, no cambia el saldo.</li><li>Al terminar ambos, podrás revisar tu alternativa, la respuesta correcta y el tutor paso a paso.</li></ul><p>Las estrellas competitivas y tu dominio académico se guardan por separado.</p></div>';}
  async function d2Rpc(operation,payload){
   if(!api.sdk)throw Error('SERVICE_NOT_READY');
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
@@ -18,11 +18,12 @@
   }
   if(!d2Operations.has(operation))return d2BaseCall(operation,payload);
   const body={...payload};
-  if(operation==='random')body.requestId=api.request('duels2-random:'+JSON.stringify(bodySubject()));
+  if(operation==='random'){d2QueuePayload={subject:body.subject,track:body.track||''};body.requestId=api.request('duels2-random:'+JSON.stringify(d2QueuePayload));}
   try{
    const value=await d2Rpc(operation,body);
-   if(operation==='random'&&!value.waiting)api.clearRequest('duels2-random:'+JSON.stringify(bodySubject()));
-   if(operation==='cancel_queue')api.clearRequest('duels2-random:'+JSON.stringify(bodySubject()));
+   if(operation==='random'&&!value.waiting){api.clearRequest('duels2-random:'+JSON.stringify(d2QueuePayload));d2QueuePayload=null;}
+   if(operation==='cancel_queue'){if(d2QueuePayload)api.clearRequest('duels2-random:'+JSON.stringify(d2QueuePayload));d2QueuePayload=null;}
+   if(value?.version===2&&value.duelId){if(state.duel?.id!==value.duelId)state.duel=await d2Rpc('duel',{duelId:value.duelId});else state.duel.balance=value.balance;}
    return value;
   }catch(error){
    // Only a missing D2 identity falls through. Auth/access/network failures never do.
@@ -50,7 +51,7 @@
   if(state.route==='resultado'&&d.result&&!root.querySelector('.duels2-result-note')){const note=document.createElement('p');note.className='panel duels2-result-note';const own=d.creator?.id===api.user?.id?d.result.creator:d.result.opponent;note.textContent='Tu dominio final: '+own.mastery+' / 20 · Tus aciertos: '+own.correct+' / 10. Los errores del rival también suman a tu dominio.';root.querySelector('.result-score')?.after(note);}
  }
  function d2Subscribe(){
-  const d=state.duel,match=d?.version===2&&d.status==='active'&&['duelo','pregunta'].includes(state.route)?d.id:null;
+  const d=state.duel,match=api.user&&api.premium&&d?.version===2&&d.status==='active'&&['duelo','pregunta'].includes(state.route)?d.id:null;
   if(match===d2ChannelMatch)return;
   if(d2Channel)api.sdk?.removeChannel(d2Channel);d2Channel=null;d2ChannelMatch=match;d2Realtime=false;
   if(!match||!api.sdk)return;
@@ -67,7 +68,7 @@
   d2Polling=true;
   try{
    if(state.queue){
-    const generation=d2QueueGeneration,d=await api.call('random',bodySubject());
+    const generation=d2QueueGeneration,d=await api.call('random',d2QueuePayload||bodySubject());
     if(generation!==d2QueueGeneration||!state.queue)return;
     if(!d.waiting){state.queue=false;state.duel=d;go('duelo');}return;
    }
@@ -96,4 +97,5 @@
   }
  },true);
  dialog.addEventListener('click',event=>{const action=event.target.closest('[data-action]')?.dataset.action;if(!['duels2-rules-close','duels2-rules-accept'].includes(action))return;event.preventDefault();event.stopImmediatePropagation();dialog.close();if(action==='duels2-rules-accept'){api.storage.setItem(api.key('duels2-rules'),'2026-11-10');const action=d2PendingAction;d2PendingAction=null;root.querySelector('[data-action="'+action+'"]')?.click();}},true);
+ window.addEventListener('hashchange',()=>{if(state.queue&&location.hash!=='#duelos'){state.queue=false;d2QueueGeneration++;void api.call('cancel_queue').catch(()=>{});}});
  window.addEventListener('pagehide',()=>{if(d2Channel)api.sdk?.removeChannel(d2Channel);});

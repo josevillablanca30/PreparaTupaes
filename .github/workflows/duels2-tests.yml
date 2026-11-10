@@ -2,6 +2,7 @@ name: Duelos 2 · isolated integration tests
 on:
   push:
     branches: [work/cachaste-duelos-2-20261110]
+    paths: ['duels2/**', 'scripts/*duels2*', 'tests/*duels2*', 'tests/helpers/duels2*', 'web/tests/duels2*', 'web/supabase/migrations/*duels2*', 'web/shared/competition-ui.mjs', '.github/workflows/duels2-tests.yml']
   pull_request:
     branches: [work/cachaste-web-unificada-20261106]
     paths: ['duels2/**', 'scripts/*duels2*', 'tests/*duels2*', 'tests/helpers/duels2*', 'web/tests/duels2*', 'web/supabase/migrations/*duels2*', '.github/workflows/duels2-tests.yml']

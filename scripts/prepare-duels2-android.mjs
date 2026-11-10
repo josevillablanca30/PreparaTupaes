@@ -8,6 +8,8 @@ export async function prepareAndroid(out){
  const target=path.resolve(out);if(!target.includes('/dist/')||target===root)throw Error('Use a regenerable directory below dist/');
  await mkdir(target,{recursive:true});const archive=execFileSync('git',['archive',ANDROID_DUELS2_BASE],{cwd:root,maxBuffer:100*1024*1024});execFileSync('tar',['-x','-C',target],{input:archive,maxBuffer:1024*1024});
  await writeFile(path.join(target,'competition-app.js'),adaptDuels2Ui(await readFile(path.join(target,'competition-app.js'),'utf8')));
+ // The native document also needs the authenticated Realtime WSS origin.
+ const html=path.join(target,'competencia.html');await writeFile(html,(await readFile(html,'utf8')).replace("connect-src 'self' https://jmobinmdwrmdqrxtcruj.supabase.co;","connect-src 'self' https://jmobinmdwrmdqrxtcruj.supabase.co wss://jmobinmdwrmdqrxtcruj.supabase.co;"));
  // Reuse installed, lockfile-pinned dependencies without installing/changing the candidate.
  const{symlink}=await import('node:fs/promises');await symlink(path.join(root,'node_modules'),path.join(target,'node_modules'),'dir').catch(e=>{if(e.code!=='EEXIST')throw e;});
  execFileSync(process.execPath,['scripts/build.mjs'],{cwd:target,stdio:'inherit'});
