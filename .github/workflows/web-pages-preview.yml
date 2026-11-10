@@ -67,6 +67,10 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: node web/scripts/verify-pages-preview.mjs
+      - name: Vincular exclusivamente sitecacho.cl a la rama verificada, con cobros cerrados
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node web/scripts/configure-sitecacho-domain.mjs
       - name: Preparar navegadores para enlaces legales públicos
         run: npx playwright install --with-deps chromium webkit
       - name: Comprobar páginas legales desplegadas en Android, iPhone y escritorio sin sesión
@@ -83,6 +87,7 @@ jobs:
           name: Cachaste-Pages-Preview
           path: |
             web/artifacts/pages-preview.json
+            web/artifacts/domain-live.json
             web/artifacts/legal-live/
             web/artifacts/hosted-live/
           if-no-files-found: ignore

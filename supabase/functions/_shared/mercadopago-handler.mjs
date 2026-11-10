@@ -1,4 +1,4 @@
-import{MP_PLANS,validatePlan,checkoutUrl,canonicalSubscription,verifyMpSignature,csvReport,chileDateRange}from'./mercadopago-core.mjs';
+import{MP_PLANS,validatePlan,checkoutUrl,canonicalSubscription,verifyMpSignature,csvReport,chileDateRange,subscriptionInvoices,subscriptionPayments}from'./mercadopago-core.mjs';
 const UUID=/^[a-f\d]{8}-[a-f\d]{4}-[1-5][a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i;
 export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()=>Date.now()}){
  const supabaseUrl=()=>env('SUPABASE_URL'),anon=()=>env('SUPABASE_ANON_KEY')||env('SUPABASE_PUBLISHABLE_KEY');
@@ -17,10 +17,7 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   const sub=await mp('/preapproval/'+id),checkout=await call('lookup',{providerId:id,reference:reference||sub.external_reference});if(!checkout)throw Error('UNKNOWN_CHECKOUT');
   if(!checkout.provider_id){await call('attach',{id:checkout.id,userId:checkout.user_id,providerId:id});checkout.provider_id=id;}
   const existing=(await call('subscriptions',{userId:checkout.user_id})).find(s=>s.provider_id===id);
-  const charges=await mp('/authorized_payments/search?preapproval_id='+encodeURIComponent(id)+'&limit=50');
-  const records=charges.results||[],payments=[];
-  if(records.length>=50)throw Error('PAYMENT_RECONCILIATION_LIMIT');
-  for(const charge of records)if(charge.payment?.id){if(!/^\d+$/.test(String(charge.payment.id)))throw Error('INVALID_PAYMENT_ID');payments.push(await mp('/v1/payments/'+charge.payment.id));}
+  const records=await subscriptionInvoices(mp,id),payments=await subscriptionPayments(mp,records);
   const canonical=canonicalSubscription(sub,checkout,records,payments,{now:now(),collectorId:env('MP_COLLECTOR_ID'),liveMode:live(),existing});
   return call('apply',canonical);
  }

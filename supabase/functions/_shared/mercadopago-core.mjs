@@ -1,6 +1,31 @@
 export const MP_PLANS=Object.freeze({semanal:{amount:2490,frequency:7,frequency_type:'days'},mensual:{amount:7990,frequency:1,frequency_type:'months'},anual:{amount:64990,frequency:12,frequency_type:'months'}});
 const encoder=new TextEncoder();
 export const iso=(value)=>Number.isFinite(Date.parse(value))?new Date(value).toISOString():null;
+// MP currently rejects limit=20 and limit=50 for this endpoint. Follow the
+// provider's default page size and explicit paging metadata instead.
+export async function subscriptionInvoices(mp,id,{maxRecords=1000}={}){
+ const records=[],seen=new Set();let offset=0;
+ while(true){
+  const page=await mp('/authorized_payments/search?preapproval_id='+encodeURIComponent(id)+(offset?'&offset='+offset:''));
+  if(!Array.isArray(page.results))throw Error('INVALID_PAYMENT_HISTORY');
+  const batch=page.results,paging=page.paging,total=paging?.total===undefined?null:Number(paging.total);
+  if(paging?.offset!==undefined&&Number(paging.offset)!==offset)throw Error('INCONSISTENT_PAYMENT_HISTORY');
+  if(total!==null&&(!Number.isSafeInteger(total)||total<0||total>maxRecords))throw Error('PAYMENT_RECONCILIATION_LIMIT');
+  for(const charge of batch){if(charge.id!==undefined){const key=String(charge.id);if(seen.has(key))throw Error('INCONSISTENT_PAYMENT_HISTORY');seen.add(key);}records.push(charge);}
+  if(records.length>maxRecords)throw Error('PAYMENT_RECONCILIATION_LIMIT');
+  if(total!==null&&records.length>=total)return records;
+  if(batch.length===0){if(total!==null&&records.length<total)throw Error('INCOMPLETE_PAYMENT_HISTORY');return records;}
+  if(total===null&&(!paging?.limit||batch.length<Number(paging.limit)))return records;
+  offset+=batch.length;
+ }
+}
+export async function subscriptionPayments(mp,charges){
+ const ids=[...new Set(charges.filter(c=>c.payment?.id).map(c=>String(c.payment.id)))];
+ if(ids.some(id=>!/^\d+$/.test(id)))throw Error('INVALID_PAYMENT_ID');
+ const payments=[];
+ for(let start=0;start<ids.length;start+=4)payments.push(...await Promise.all(ids.slice(start,start+4).map(id=>mp('/v1/payments/'+id))));
+ return payments;
+}
 export function periodEnd(start,plan){
  const p=MP_PLANS[plan];if(!p||!iso(start))throw Error('INVALID_PERIOD');
  const d=new Date(start);if(p.frequency_type==='days')d.setUTCDate(d.getUTCDate()+p.frequency);

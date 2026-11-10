@@ -1,4 +1,4 @@
-import {MP_PLANS,validatePlan,checkoutUrl,canonicalSubscription,verifyMpSignature} from './mercadopago-core.mjs';
+import {MP_PLANS,validatePlan,checkoutUrl,canonicalSubscription,verifyMpSignature,subscriptionInvoices,subscriptionPayments} from './mercadopago-core.mjs';
 const UUID=/^[a-f\d]{8}-[a-f\d]{4}-[1-5][a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i;
 const choices={WEEKLY:{plan:'semanal'},MONTHLY:{plan:'mensual'},YEARLY:{plan:'anual'},MONTHLY_TRIAL:{plan:'mensual',trial:true}};
 export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Date.now()}){
@@ -30,9 +30,7 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
  }
  async function reconcile(row){
   const sub=await mp('/preapproval/'+encodeURIComponent(row.provider_id));
-  const charges=await mp('/authorized_payments/search?preapproval_id='+encodeURIComponent(row.provider_id)+'&limit=50');
-  const authorized=charges.results||[];if(authorized.length>=50)throw Error('PAYMENT_RECONCILIATION_LIMIT');
-  const payments=[];for(const charge of authorized)if(charge.payment?.id){if(!/^\d+$/.test(String(charge.payment.id)))throw Error('INVALID_PAYMENT_ID');payments.push(await mp('/v1/payments/'+charge.payment.id));}
+  const authorized=await subscriptionInvoices(mp,row.provider_id),payments=await subscriptionPayments(mp,authorized);
   const snapshot=canonicalSubscription(sub,row,authorized,payments,{now:now(),collectorId:env('MP_TEST_COLLECTOR_ID'),liveMode:false,existing:row.snapshot?{trial_until:row.snapshot.trialUntil}:null});
   await call('apply',{id:row.id,userId:row.user_id,snapshot});return snapshot;
  }

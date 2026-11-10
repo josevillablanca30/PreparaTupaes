@@ -1,0 +1,137 @@
+{
+  "checkedAt": "2026-11-10T12:13:33.764Z",
+  "checks": [
+    {
+      "name": "provider_seller_is_test_account",
+      "passed": true
+    },
+    {
+      "name": "two_real_temporary_auth_sessions",
+      "passed": true
+    },
+    {
+      "name": "anonymous_is_denied",
+      "passed": true
+    },
+    {
+      "name": "editable_metadata_cannot_grant_administration",
+      "passed": true
+    },
+    {
+      "name": "service_only_sandbox_rpc_is_denied_to_student",
+      "passed": true
+    },
+    {
+      "name": "admin_reads_verified_four_plan_catalogue",
+      "passed": true,
+      "httpStatus": 200,
+      "webhookConfigured": false
+    },
+    {
+      "name": "hosted_checkout_created_with_real_test_seller",
+      "passed": true,
+      "httpStatus": 200,
+      "providerId": "07912e9e8e4649bbb68834e6a88457ca"
+    },
+    {
+      "name": "checkout_retry_reuses_provider_id",
+      "passed": true,
+      "httpStatus": 200
+    },
+    {
+      "name": "pending_checkout_grants_no_trial",
+      "passed": true,
+      "httpStatus": 200
+    },
+    {
+      "name": "official_test_card_token_created",
+      "passed": true,
+      "httpStatus": 201,
+      "providerLiveMode": true
+    },
+    {
+      "name": "hosted_checkout_requires_payer_authorization",
+      "passed": true,
+      "httpStatus": 400
+    },
+    {
+      "name": "unapproved_checkout_can_be_cancelled",
+      "passed": true
+    },
+    {
+      "name": "provider_authorizes_test_subscription",
+      "passed": true,
+      "httpStatus": 201,
+      "providerStatus": "authorized"
+    },
+    {
+      "name": "sandbox_trial_activation_is_verified_and_separate",
+      "passed": true,
+      "httpStatus": 200,
+      "trialUntil": "2026-11-17T12:13:25.269Z"
+    },
+    {
+      "name": "sandbox_never_activates_production_learning",
+      "passed": true
+    },
+    {
+      "name": "signed_simulated_webhook_with_real_provider_and_database",
+      "passed": true
+    },
+    {
+      "name": "signed_webhook_replay_is_idempotent",
+      "passed": true
+    },
+    {
+      "name": "forged_webhook_is_rejected",
+      "passed": true
+    },
+    {
+      "name": "provider_delivered_signed_webhook",
+      "passed": null,
+      "blocked": true,
+      "httpStatus": 503,
+      "reason": "MP_TEST_WEBHOOK_SECRET_NOT_CONFIGURED"
+    },
+    {
+      "name": "deployed_cancel_confirms_no_future_renewal",
+      "passed": true,
+      "httpStatus": 200,
+      "status": "cancelled"
+    },
+    {
+      "name": "cancellation_keeps_verified_trial_end",
+      "passed": true
+    },
+    {
+      "name": "another_subscription_cannot_be_cancelled",
+      "passed": true
+    },
+    {
+      "name": "admin_revocation_applies_to_existing_jwt",
+      "passed": true
+    }
+  ],
+  "failed": null,
+  "cleanup": [
+    {
+      "providerSubscription": "07912e9e8e4649bbb68834e6a88457ca",
+      "cancelled": true
+    },
+    {
+      "providerSubscription": "90da137549aa4fdaa429b6f0a08901cd",
+      "cancelled": true
+    },
+    {
+      "temporaryAuthUser": "4e53184a-57de-4f2d-9c4f-bdb7bad72674",
+      "deleted": true
+    },
+    {
+      "temporaryAuthUser": "38d78391-9a7d-4ce7-a72d-f26007df1c3e",
+      "deleted": true
+    }
+  ],
+  "productionPurchasesCreated": 0,
+  "mode": "sandbox",
+  "providerRenewalWaitNotExecuted": true
+}

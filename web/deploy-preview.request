@@ -1,10 +1,11 @@
 {
-  "request": "web-unificada-mercadopago-sandbox-20261110",
+  "request": "web-unificada-mp-lifecycle-domain-20261110",
   "project": "cachaste-sitecacho",
   "branch": "work/cachaste-web-unificada-20261106",
   "scope": "preview-only",
   "production": false,
   "realPayments": false,
   "requiresSuccessfulQa": true,
-  "verifyHostedSupabase": true
+  "verifyHostedSupabase": true,
+  "configureDomain": "sitecacho.cl"
 }

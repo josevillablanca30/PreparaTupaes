@@ -34,3 +34,13 @@ test('sales CSV neutralizes spreadsheet formula injection and records commission
 test('CSV guards whitespace-prefixed formulas while keeping numeric refund balances numeric',()=>{const report=csvReport([{provider_id:'\t=2+2',net_clp:-2490}]);assert.ok(report.includes("'\t=2+2"));assert.ok(report.includes('"-2490"'));});
 
 test('sales calendar boundaries use Chile winter/summer time and include the complete last day',()=>{assert.deepEqual(chileDateRange('2026-01-15','2026-01-15'),{from:'2026-01-15T03:00:00.000Z',to:'2026-01-16T03:00:00.000Z'});assert.deepEqual(chileDateRange('2026-07-15','2026-07-15'),{from:'2026-07-15T04:00:00.000Z',to:'2026-07-16T04:00:00.000Z'});assert.throws(()=>chileDateRange('2026-02-31','2026-03-01'),/INVALID_REPORT_RANGE/);});
+
+test('invoice reconciliation follows the provider default pagination beyond fifty renewals without an invalid limit',async()=>{
+ const {subscriptionInvoices,subscriptionPayments}=await import('../../supabase/functions/_shared/mercadopago-core.mjs');
+ const all=Array.from({length:53},(_,id)=>({id,preapproval_id:'qa-sub',payment:{id:id+1}})),calls=[];
+ const mp=async path=>{calls.push(path);const url=new URL('https://provider.invalid'+path);assert.equal(url.searchParams.has('limit'),false);if(url.pathname==='/authorized_payments/search'){const offset=Number(url.searchParams.get('offset')||0);return {paging:{offset,limit:12,total:all.length},results:all.slice(offset,offset+12)};}return {id:Number(url.pathname.split('/').at(-1))};};
+ const records=await subscriptionInvoices(mp,'qa-sub');assert.equal(records.length,53);assert.equal(calls.length,5);
+ const payments=await subscriptionPayments(mp,[...records,records[0]]);assert.equal(payments.length,53);
+ await assert.rejects(subscriptionInvoices(async()=>({paging:{total:1001,offset:0,limit:12},results:[]}), 'qa-sub'),/PAYMENT_RECONCILIATION_LIMIT/);
+ await assert.rejects(subscriptionInvoices(async()=>({paging:{total:2,offset:0,limit:12},results:[]}), 'qa-sub'),/INCOMPLETE_PAYMENT_HISTORY/);
+});
