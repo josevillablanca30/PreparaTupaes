@@ -1,0 +1,41 @@
+name: ¿Cachaste? · Diagnóstico DNS de sitecacho.cl sin cambios
+on:
+  workflow_dispatch:
+  push:
+    branches: [work/cachaste-web-unificada-20261106]
+    paths: [.github/workflows/cloudflare-sitecacho-audit.yml]
+permissions:
+  contents: read
+jobs:
+  domain-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Consultar únicamente la zona nombrada y los NS públicos
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import {writeFile} from 'node:fs/promises';
+          const domain='sitecacho.cl',account='cfe4b77c0c39bb056306d16133a93642';
+          const report={checkedAt:new Date().toISOString(),readOnly:true,domain,pagesAccount:account};
+          async function zones(suffix){
+            const r=await fetch('https://api.cloudflare.com/client/v4/zones?name='+domain+suffix,{headers:{authorization:'Bearer '+process.env.CLOUDFLARE_API_TOKEN},redirect:'error',signal:AbortSignal.timeout(15000)});
+            const data=await r.json();return {httpStatus:r.status,success:data.success===true,errorCodes:(data.errors||[]).map(e=>e.code),zones:(data.result||[]).map(z=>({id:z.id,name:z.name,status:z.status,accountId:z.account?.id,nameServers:z.name_servers,originalNameServers:z.original_name_servers}))};
+          }
+          for(const [key,suffix]of [['inPagesAccount','&account.id='+account],['visibleNamedZone','']]){
+            try{report[key]=await zones(suffix);}catch{report[key]={error:'ZONE_LOOKUP_UNAVAILABLE'};}
+          }
+          try{
+            const r=await fetch('https://cloudflare-dns.com/dns-query?name='+domain+'&type=NS',{headers:{accept:'application/dns-json'},redirect:'error',signal:AbortSignal.timeout(15000)});
+            const d=await r.json();report.publicNameservers={httpStatus:r.status,status:d.Status,answers:(d.Answer||[]).map(a=>({name:a.name,type:a.type,data:a.data}))};
+          }catch{report.publicNameservers={error:'PUBLIC_DNS_UNAVAILABLE'};}
+          await writeFile('sitecacho-domain-audit.json',JSON.stringify(report,null,2)+'\n');
+          console.log(JSON.stringify(report));
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Cachaste-Sitecacho-Domain-Audit
+          path: sitecacho-domain-audit.json
+          retention-days: 14
