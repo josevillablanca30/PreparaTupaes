@@ -77,3 +77,18 @@ test('Duelos 2: private tables/RLS/authorization, opt-out, blocks, suspended acc
  await db.query("update cachaste.profiles set moderation_status='suspended'where user_id=$1",[users[2]]);await assert.rejects(d2(db,2,'health'),/ACCOUNT_RESTRICTED/);
  await db.query("update auth.sessions set not_after=now()-interval '1 second'where id=$1",[sessions[0]]);await assert.rejects(d2(db,0,'duel',{duelId:d.id}),/AUTH_REQUIRED/);
 });
+
+test('Duelos 2: challenge opt-out, blocked invitation, stable queue wait and both abandoned expiry',async t=>{
+ const db=await setup(t);
+ await db.query('update cachaste.profiles set allow_challenges=false where user_id=$1',[users[1]]);
+ await assert.rejects(d2(db,1,'random',{subject:'M1',requestId:randomUUID()}),/CHALLENGES_DISABLED/);
+ await assert.rejects(d2(db,0,'create_duel',{subject:'M1',nickname:'TestAlumno1',requestId:randomUUID()}),/RIVAL_UNAVAILABLE/);
+ await db.query('update cachaste.profiles set allow_challenges=true where user_id=$1',[users[1]]);
+ const invite=await d2(db,0,'create_duel',{subject:'Historia',nickname:'TestAlumno1',requestId:randomUUID()});await rpc(db,0,'block',{userId:users[1]});
+ assert.equal((await d2(db,1,'accept',{duelId:invite.id})).status,'cancelled');
+ await rpc(db,0,'unblock',{userId:users[1]});
+ const payload={subject:'M1',requestId:randomUUID()};await d2(db,0,'random',payload);const joined=(await db.query('select joined_at from cachaste_duels2.queue where user_id=$1',[users[0]])).rows[0].joined_at;
+ assert.equal((await d2(db,0,'random',payload)).waiting,true);assert.deepEqual((await db.query('select joined_at from cachaste_duels2.queue where user_id=$1',[users[0]])).rows[0].joined_at,joined);
+ await d2(db,0,'cancel_queue');assert.equal((await db.query('select count(*)::int n from cachaste_duels2.queue')).rows[0].n,0);
+ const d=await human(db);await db.query("update cachaste_duels2.matches set expires_at=clock_timestamp()-interval '1 second'where id=$1",[d.id]);const end=await d2(db,0,'duel',{duelId:d.id});assert.equal(end.result.reason,'both_abandoned');assert.equal(end.result.changes[users[0]],0);assert.equal(end.result.changes[users[1]],0);assert.equal((await d2(db,0,'review',{attemptId:d.attemptId})).errors.length,10);
+});
