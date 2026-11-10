@@ -15,6 +15,7 @@ La presentación web conserva su referencia Android aprobada `685e9ecc`.
 - Victoria/derrota humana ±3; virtual ±1; empate 0; saldo mínimo cero. Se conserva el ranking existente por comuna, región y Chile, incluyendo estadísticas semanales e históricas.
 - Libro de movimientos privado con delta solicitado, delta efectivo y saldo posterior; clave única por duelo/persona/temporada. Los reintentos conservan su UUID.
 - Planes de bots privados, predefinidos al activar, con tres niveles, errores y tiempos de 20–90 segundos según materia. No reciben ni consultan las respuestas humanas. No usan IA.
+- Historial combinado con los duelos anteriores: totales, victorias, derrotas, empates y paginación común sin duplicar encuentros.
 - Revancha con preguntas nuevas cuando el banco lo permite; para humanos requiere aceptación del rival; para bots comienza directamente.
 - Abandono/expiración marca pendientes sin responder y pierde frente a quien completa. Si ambos abandonan, no cambian las estrellas. El tutor incluye también las preguntas sin responder.
 - Repaso completo: alternativa elegida, correcta, texto/estímulos, distractores, Paso a paso, Más fácil y Otro ejemplo.

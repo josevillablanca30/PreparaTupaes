@@ -256,7 +256,7 @@ create or replace function cachaste_duels2.dispatch(operation text,payload jsonb
 #variable_conflict use_column
 declare u uuid:=cachaste_duels2.require_player();p jsonb:=coalesce(payload,'{}');s text:=coalesce(p->>'subject','M1');t text:=coalesce(p->>'track','');
  mid uuid;pid uuid;rid uuid;other uuid;m cachaste_duels2.matches;parent cachaste_duels2.matches;pl cachaste_duels2.players;
- queue_row cachaste_duels2.queue;own_queue cachaste_duels2.queue;q cachaste.questions;pos integer;selected integer;ok boolean;items jsonb;begin
+ queue_row cachaste_duels2.queue;own_queue cachaste_duels2.queue;q cachaste.questions;pos integer;selected integer;ok boolean;items jsonb;before_time timestamptz;before_id uuid;rival uuid;cursor_value jsonb;summary jsonb;begin
  if octet_length(p::text)>16384 then raise exception 'PAYLOAD_TOO_LARGE';end if;
  if operation='health'then return jsonb_build_object('apiVersion',2,'waitSeconds',10,'durationSeconds',2400);end if;
  if operation in('random','create_duel','join_code','accept','rematch','cancel_queue')then
@@ -266,6 +266,23 @@ declare u uuid:=cachaste_duels2.require_player();p jsonb:=coalesce(payload,'{}')
  if operation='cancel_queue'then delete from cachaste_duels2.queue where user_id=u;return jsonb_build_object('waiting',false);end if;
  if operation='dashboard' or operation='duel_history'then
   for m in select * from cachaste_duels2.matches where u in(creator,opponent)and status in('active','invited')order by id limit 50 loop perform cachaste_duels2.advance(m.id);end loop;
+  if operation='duel_history'then
+   before_time:=(p->'before'->>'createdAt')::timestamptz;before_id:=(p->'before'->>'id')::uuid;rival:=nullif(p->>'rivalId','')::uuid;
+   if(before_time is null)<>(before_id is null)then raise exception 'INVALID_FILTER';end if;
+   with rows as(
+    select id,created_at from cachaste_duels2.matches where u in(creator,opponent)and status in('finished','declined','cancelled','expired')
+     and(rival is null or rival in(creator,opponent))and(before_time is null or(created_at,id)<(before_time,before_id))
+    order by created_at desc,id desc limit 21
+   ),visible as(select * from rows order by created_at desc,id desc limit 20)
+   select coalesce((select jsonb_agg(cachaste_duels2.match_view(v.id,u)order by v.created_at desc,v.id desc)from visible v),'[]'),
+    case when(select count(*)from rows)>20 then(select jsonb_build_object('createdAt',v.created_at,'id',v.id)from visible v order by v.created_at,v.id limit 1)end
+   into items,cursor_value;
+   select jsonb_build_object('played',count(*),'wins',count(*)filter(where result->>'winner'=u::text),
+    'losses',count(*)filter(where result->>'winner' is not null and result->>'winner'<>u::text),
+    'draws',count(*)filter(where result->>'winner' is null))into summary
+   from cachaste_duels2.matches where u in(creator,opponent)and status='finished'and(rival is null or rival in(creator,opponent));
+   return jsonb_build_object('duels',items,'summary',summary,'next',cursor_value);
+  end if;
   select coalesce(jsonb_agg(cachaste_duels2.match_view(id,u)order by created_at desc),'[]')into items from(
    select id,created_at from cachaste_duels2.matches where u in(creator,opponent)
    and(operation<>'duel_history' or status in('finished','declined','cancelled','expired'))order by created_at desc,id desc limit 50)x;

@@ -36,7 +36,7 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Server, privacy, review and legacy compatibility
-        run: node --test web/tests/duels2-server.test.mjs tests/duels2-ui-transform.test.mjs tests/competition-client.test.mjs web/tests/rematch-server.test.mjs web/tests/rematch-adapter.test.mjs web/tests/android-compat.test.mjs
+        run: node --test web/tests/duels2-server.test.mjs tests/duels2-ui-transform.test.mjs tests/duels2-history.test.mjs tests/competition-client.test.mjs web/tests/rematch-server.test.mjs web/tests/rematch-adapter.test.mjs web/tests/android-compat.test.mjs
       - name: Real simultaneous PostgreSQL connections
         run: node scripts/test-duels2-concurrency.mjs
       - name: Web build without deployment

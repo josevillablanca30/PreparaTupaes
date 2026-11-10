@@ -1,5 +1,6 @@
  // CACHASTE_DUELS2_RUNTIME — injected into both reviewed platform presentations.
  const d2Style=document.createElement('style');d2Style.textContent=/*DUELS2_CSS*/;document.head.append(d2Style);
+ /*DUELS2_HISTORY*/
  const d2BaseCall=api.call.bind(api),d2OriginalRender=render;
  const d2Operations=new Set(['create_duel','join_code','accept','decline','random','cancel_queue','duel','start','attempt','answer','forfeit','review','rematch']);
  let d2Channel=null,d2ChannelMatch=null,d2Realtime=false,d2Polling=false,d2PendingAction=null,d2QueuePayload=null,d2QueueGeneration=0,d2LastWidth=50,d2LastQuestion=null;
@@ -13,6 +14,7 @@
   if(operation==='dashboard'||operation==='duel_history'){
    const legacy=await d2BaseCall(operation,payload);
    const modern=await d2Rpc(operation,payload);
+   if(operation==='duel_history')return mergeDuelHistory(legacy,modern);
    const rows=[...(modern.duels||[]),...(legacy.duels||[])].sort((a,b)=>Date.parse(b.createdAt)-Date.parse(a.createdAt));
    return {...legacy,...(operation==='dashboard'?{stats:modern.stats,history:modern.history}:{}),duels:rows};
   }

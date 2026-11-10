@@ -103,3 +103,12 @@ test('Duelos 2: all PAES subjects and science tracks retain ten safe real questi
   await d2(db,0,'forfeit',{attemptId:p[0].id});await d2(db,1,'forfeit',{attemptId:p[1].id});
  }
 });
+
+test('Duelos 2 history counts virtual losses and paginates without repeating results',async t=>{
+ const db=await setup(t);
+ // Isolated history fixtures test the cursor independently of gameplay scoring.
+ await db.query("insert into cachaste_duels2.matches(creator,opponent_kind,subject,season,status,created_at,result)select $1,'bot','M1',cachaste.season(),'finished',clock_timestamp()-make_interval(secs=>n),jsonb_build_object('winner','virtual')from generate_series(1,25)n",[users[0]]);
+ const first=await d2(db,0,'duel_history');assert.equal(first.summary.played,25);assert.equal(first.summary.losses,25);assert.equal(first.duels.length,20);assert.ok(first.next);
+ const second=await d2(db,0,'duel_history',{before:first.next});assert.equal(second.duels.length,5);assert.equal(second.next,null);assert.equal(new Set([...first.duels,...second.duels].map(d=>d.id)).size,25);
+ await assert.rejects(d2(db,0,'duel_history',{before:{id:first.duels[0].id}}),/INVALID_FILTER/);
+});

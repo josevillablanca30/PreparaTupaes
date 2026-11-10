@@ -1,3 +1,4 @@
+import {mergeDuelHistory} from './history.mjs';
 import {readFileSync} from 'node:fs';
 const runtime=readFileSync(new URL('./ui-runtime.js',import.meta.url),'utf8');
 const css=readFileSync(new URL('./ui.css',import.meta.url),'utf8');
@@ -6,7 +7,7 @@ export function adaptDuels2Ui(source){
  const anchor=' (async()=>{try{state.geo=';
  if(!source.includes(anchor))throw Error('REVIEW_DUELS2_UI_STARTUP');
  // Keep every existing avatar/photo renderer, tutor tab and platform Auth path intact.
- source=source.replace(anchor,runtime.replace('/*DUELS2_CSS*/',JSON.stringify(css))+'\n'+anchor);
+ source=source.replace(anchor,runtime.replace('/*DUELS2_CSS*/',JSON.stringify(css)).replace('/*DUELS2_HISTORY*/',mergeDuelHistory.toString())+'\n'+anchor);
  source=source.replaceAll("'90 segundos por pregunta · gana quien tenga más aciertos.'","(a.version===2?'40 minutos para las 10 preguntas · los errores favorecen al rival.':'90 segundos por pregunta · gana quien tenga más aciertos.')");
  source=source.replaceAll('<strong>90 segundos</strong> por pregunta','<strong>40 minutos</strong> para resolver');
  source=source.replaceAll('Desempate por tiempo',"'+(d.version===2?'Sin carrera de velocidad':'Desempate por tiempo')+'").replaceAll('Desempate<br>por tiempo',"'+(d.version===2?'Sin carrera<br>de velocidad':'Desempate<br>por tiempo')+'").replaceAll('Solo si hay igual cantidad de aciertos.',"'+(d.version===2?'Los empates se conservan.':'Solo si hay igual cantidad de aciertos.')+'");
