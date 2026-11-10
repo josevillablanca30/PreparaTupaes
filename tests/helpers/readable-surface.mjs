@@ -10,5 +10,5 @@ export async function readable(locator){
   const chain=[];for(let n=el;n;n=n.parentElement)chain.unshift(getComputedStyle(n));let backgrounds=[[255,255,255,1]];
   for(const style of chain){const fill=rgba(style.backgroundColor);backgrounds=backgrounds.map(bg=>over(fill,bg));const stops=[...style.backgroundImage.matchAll(/rgba?\(([^)]+)\)/g)].map(m=>rgba(m[0]));if(stops.length)backgrounds=backgrounds.flatMap(bg=>stops.map(stop=>over(stop,bg)));}
   const fg=rgba(getComputedStyle(el).color);return Math.min(...backgrounds.map(bg=>{const f=light(over(fg,bg)),b=light(bg);return(Math.max(f,b)+.05)/(Math.min(f,b)+.05);}));
- });return ratio??0;}).toBeGreaterThanOrEqual(4.5);
+ });return ratio??0;},{message:'Contrast of '+await locator.evaluate(el=>el.tagName.toLowerCase()+(el.className&&typeof el.className==='string'?'.'+el.className.trim().replace(/\\s+/g,'.'):'')+' — '+(el.textContent||'').trim().slice(0,65))}).toBeGreaterThanOrEqual(4.5);
 }
