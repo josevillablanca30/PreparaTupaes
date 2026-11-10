@@ -20,6 +20,8 @@ for(const file of [...ANDROID_UI_FILES.filter(f=>!f.endsWith('.mjs')),...android
  const bytes=androidSource(file);for(const dir of [path.join(out,'app'),reference]){await mkdir(path.dirname(path.join(dir,file)),{recursive:true});await writeFile(path.join(dir,file),bytes);}
 }
 const currentClient=androidSource('competition-client.mjs').toString();
+// Keep the reviewed accessibility fixes merged into this branch in both renders.
+for(const file of ['daily-ui.css','study-ui.css'])for(const dir of [path.join(out,'app'),reference])await cp(path.join(root,file),path.join(dir,file));
 await build({stdin:{contents:currentClient,resolveDir:root,sourcefile:'android-reference-client.mjs'},outfile:path.join(reference,'competition-client.js'),bundle:true,minify:true,target:['safari15','chrome100'],format:'iife',legalComments:'eof'});
 await cp(path.join(root,'web/public'),out,{recursive:true});await cp(path.join(root,'assets'),path.join(out,'assets'),{recursive:true});
 for(const file of androidArt())await writeFile(path.join(out,file),androidSource(file));

@@ -104,3 +104,30 @@ test('billing status cannot advertise checkout when the web launch switch is off
  assert.equal(status.managementReady,false);
  assert.equal(calls,1);
 });
+
+test('sandbox proxy uses the current account authority and validates origin before provider traffic',async()=>{
+ let admin=false,providerCalls=0;const t=token(),uid='10000000-0000-4000-8000-000000000001';
+ const gateway=createGateway({fetcher:async(url,options)=>{
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:uid});
+  if(url.endsWith('/rpc/cachaste_access'))return Response.json({userId:uid,active:false,serverTimeMs:Date.now()});
+  if(url.endsWith('/rpc/cachaste_web_account'))return Response.json({isAdmin:admin,access:{active:false}});
+  if(url.endsWith('/functions/v1/cachaste-mp-sandbox-checkout')){providerCalls++;assert.equal(options.headers.authorization,'Bearer '+t);return Response.json({ready:true,mode:'sandbox',productionEnabled:false});}
+  throw Error('UNEXPECTED_BACKEND');
+ }});
+ const request=origin=>new Request('https://qa.example/api/billing/sandbox',{method:'POST',headers:{origin,'x-cachaste-request':'1',authorization:'Bearer '+t},body:'{"action":"status"}'});
+ assert.equal((await gateway.fetch(request('https://foreign.invalid'),{})).status,403);
+ assert.equal((await gateway.fetch(request('https://qa.example'),{WEB_ADMIN_IDS:uid})).status,403);assert.equal(providerCalls,0);
+ admin=true;assert.equal((await gateway.fetch(request('https://qa.example'),{})).status,200);assert.equal(providerCalls,1);
+ admin=false;assert.equal((await gateway.fetch(request('https://qa.example'),{})).status,403);assert.equal(providerCalls,1);
+});
+test('closing new web sales preserves cancellation of an existing subscription',async()=>{
+ let forwarded=0;const uid='10000000-0000-4000-8000-000000000001',t=token();
+ const gateway=createGateway({fetcher:async url=>{
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:uid});
+  if(url.endsWith('/rpc/cachaste_access'))return Response.json({userId:uid,active:false,serverTimeMs:Date.now()});
+  if(url.endsWith('/functions/v1/cachaste-mercadopago')){forwarded++;return Response.json({cancelled:true});}throw Error('UNEXPECTED');
+ }});
+ const req=action=>new Request('https://qa.example/api/billing',{method:'POST',headers:{origin:'https://qa.example','x-cachaste-request':'1',authorization:'Bearer '+t},body:JSON.stringify({action})});
+ assert.equal((await gateway.fetch(req('checkout'),{})).status,503);assert.equal(forwarded,0);
+ assert.equal((await gateway.fetch(req('cancel'),{})).status,200);assert.equal(forwarded,1);
+});

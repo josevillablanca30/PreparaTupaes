@@ -47,10 +47,13 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
    const trial=body.plan==='mensual'&&!state.trialUsed&&env('CACHASTE_MP_TRIAL_ENABLED')==='true'&&!!env('MP_PLAN_MONTHLY_TRIAL');
    const planId=env(trial?'MP_PLAN_MONTHLY_TRIAL':'MP_PLAN_'+{semanal:'WEEKLY',mensual:'MONTHLY',anual:'YEARLY'}[body.plan]);
    const plan=await mp('/preapproval_plan/'+encodeURIComponent(planId));validatePlan(plan,body.plan,planId,{trial,collectorId:env('MP_COLLECTOR_ID')});
-   const checkout=await call('checkout',{id:body.requestId,userId:user.id,plan:body.plan,providerPlanId:planId,trial});
+   const checkout=await call('checkout',{id:body.requestId,userId:user.id,plan:body.plan,providerPlanId:planId,trial,linkedPlan:false});
    if(checkout.provider_id){const current=await mp('/preapproval/'+checkout.provider_id);return json(req,{checkoutUrl:checkoutUrl(current.init_point),id:checkout.provider_id});}
    if(!checkout.created)return json(req,{error:'CHECKOUT_PENDING'},409);
-   const sub=await mp('/preapproval',{method:'POST',headers:{'X-Idempotency-Key':body.requestId},body:JSON.stringify({preapproval_plan_id:planId,external_reference:body.requestId,payer_email:user.email,reason:'¿Cachaste? · '+body.plan,back_url:webOrigin()+'/cuenta.html?checkout=return',status:'pending'})});
+   // Associated plans require a card token. A hosted pending checkout instead
+   // copies the verified server catalogue recurrence, keeping card data at MP.
+   const p=MP_PLANS[body.plan],auto_recurring={frequency:p.frequency,frequency_type:p.frequency_type,transaction_amount:p.amount,currency_id:'CLP',...(trial?{start_date:new Date(now()+7*86400000).toISOString()}:{})};
+   const sub=await mp('/preapproval',{method:'POST',headers:{'X-Idempotency-Key':body.requestId},body:JSON.stringify({auto_recurring,external_reference:body.requestId,payer_email:user.email,reason:'¿Cachaste? · '+body.plan,back_url:webOrigin()+'/cuenta.html?checkout=return',status:'pending'})});
    await call('attach',{id:body.requestId,userId:user.id,providerId:String(sub.id)});
    return json(req,{checkoutUrl:checkoutUrl(sub.init_point),id:String(sub.id)});
   }

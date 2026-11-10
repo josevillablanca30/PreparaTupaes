@@ -149,3 +149,24 @@ test('PWA manifest, original icons, signed private cache and logout purge work',
 test('a server-expired subscription denies sync and never opens an unguarded bank',async({page,request})=>{
  await enter(page);await request.post('/__qa/control',{data:{active:false}});const response=await page.evaluate(async()=>{const r=await fetch('/api/progress',{method:'POST',headers:{'x-cachaste-request':'1','content-type':'application/json'},body:JSON.stringify({operation:'snapshot'})});return r.status;});expect(response).toBe(402);await page.goto('/app/inicio.html');await expect(page).toHaveURL(/cuenta.html/);await expect(page.locator('.access-state')).toContainText('Necesitas una suscripción');
 });
+
+
+test('complimentary testers see their expiry and cannot start a subscription; sandbox stays admin-only',async({page,request},info)=>{
+ await request.post('/__qa/control',{data:{complimentary:true}});await identity(page);await page.goto('/cuenta.html?qa=mp');
+ await expect(page.getByRole('heading',{name:'Tu año gratuito de tester'})).toBeVisible();
+ await expect(page.getByText('No tiene renovación automática ni requiere tarjeta.',{exact:false})).toBeVisible();
+ for(const button of await page.locator('[data-plan]').all())await expect(button).toBeDisabled();
+ await expect(page.locator('#mp-qa')).toHaveCount(0);
+ await request.post('/__qa/control',{data:{qaAdmin:true}});await page.reload();
+ await expect(page.getByRole('heading',{name:'Checkout Mercado Pago QA'})).toBeVisible();
+ await page.getByRole('button',{name:'Verificar configuración y suscripciones'}).click();
+ await expect(page.getByText('Falta la firma de webhooks de la aplicación de prueba.',{exact:false})).toBeVisible();
+ await page.getByLabel('Correo real de la cuenta compradora de prueba').fill('test_user_synthetic@testuser.com');
+ await page.getByLabel('Plan de prueba').selectOption('MONTHLY_TRIAL');
+ const posted=page.waitForRequest(r=>r.url().endsWith('/api/billing/sandbox')&&r.postDataJSON()?.action==='checkout');
+ await page.route('https://www.mercadopago.cl/subscriptions/checkout?**',route=>route.fulfill({status:200,contentType:'text/html',body:'<h1>Destino de checkout simulado para QA de interfaz</h1>'}));
+ await page.screenshot({path:info.outputPath('sandbox-admin-and-complimentary-account.png'),fullPage:true});
+ await page.getByRole('button',{name:'Abrir checkout de prueba'}).click();
+ const payload=(await posted).postDataJSON();expect(payload.plan).toBe('MONTHLY_TRIAL');expect(payload.payerEmail).toBe('test_user_synthetic@testuser.com');expect(payload.requestId).toMatch(/^[a-f0-9-]{36}$/);
+ await expect(page.getByRole('heading',{name:'Destino de checkout simulado para QA de interfaz'})).toBeVisible();
+});
