@@ -92,3 +92,14 @@ test('Duelos 2: challenge opt-out, blocked invitation, stable queue wait and bot
  await d2(db,0,'cancel_queue');assert.equal((await db.query('select count(*)::int n from cachaste_duels2.queue')).rows[0].n,0);
  const d=await human(db);await db.query("update cachaste_duels2.matches set expires_at=clock_timestamp()-interval '1 second'where id=$1",[d.id]);const end=await d2(db,0,'duel',{duelId:d.id});assert.equal(end.result.reason,'both_abandoned');assert.equal(end.result.changes[users[0]],0);assert.equal(end.result.changes[users[1]],0);assert.equal((await d2(db,0,'review',{attemptId:d.attemptId})).errors.length,10);
 });
+
+test('Duelos 2: all PAES subjects and science tracks retain ten safe real questions',async t=>{
+ const db=await setup(t);
+ for(const[subject,track]of[['M1',''],['M2',''],['Lectura',''],['Historia',''],['Ciencias','Biología'],['Ciencias','Física'],['Ciencias','Química'],['Ciencias','TP']]){
+  const d=await d2(db,0,'create_duel',{subject,track,nickname:'TestAlumno1',requestId:randomUUID()});await d2(db,1,'accept',{duelId:d.id});
+  const p=(await db.query('select id,question_keys from cachaste_duels2.players where match_id=$1 order by slot',[d.id])).rows;
+  assert.equal(p[0].question_keys.length,10);assert.deepEqual([...p[0].question_keys].sort(),[...p[1].question_keys].sort());
+  const a=await d2(db,0,'start',{attemptId:p[0].id});assert.ok(a.question.question);assert.ok(a.question.options.length>=2);assert.equal(a.question.answer,undefined);
+  await d2(db,0,'forfeit',{attemptId:p[0].id});await d2(db,1,'forfeit',{attemptId:p[1].id});
+ }
+});
