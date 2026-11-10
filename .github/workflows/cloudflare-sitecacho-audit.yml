@@ -27,6 +27,20 @@ jobs:
           for(const [key,suffix]of [['inPagesAccount','&account.id='+account],['visibleNamedZone','']]){
             try{report[key]=await zones(suffix);}catch{report[key]={error:'ZONE_LOOKUP_UNAVAILABLE'};}
           }
+          const base='https://api.cloudflare.com/client/v4/accounts/'+account+'/pages/projects/cachaste-sitecacho';
+          const headers={authorization:'Bearer '+process.env.CLOUDFLARE_API_TOKEN};
+          for(const [key,suffix]of [['pagesProject',''],['pagesDomains','/domains'],['pagesDeployments','/deployments?per_page=10']]){
+            try{
+              const r=await fetch(base+suffix,{headers,redirect:'error',signal:AbortSignal.timeout(15000)}),d=await r.json();
+              const deployment=x=>x?({id:x.id,environment:x.environment,url:x.url,branch:x.deployment_trigger?.metadata?.branch,revision:x.deployment_trigger?.metadata?.commit_hash,latestStage:x.latest_stage}):null;
+              report[key]={httpStatus:r.status,success:d.success===true,errorCodes:(d.errors||[]).map(e=>e.code)};
+              if(d.success===true){
+                if(key==='pagesProject'){const p=d.result;report[key].project={name:p.name,productionBranch:p.production_branch,sourceConnected:!!p.source,domains:p.domains,canonical:deployment(p.canonical_deployment),latest:deployment(p.latest_deployment),configs:Object.fromEntries(Object.entries(p.deployment_configs||{}).map(([n,c])=>[n,{failOpen:c.fail_open,variables:Object.fromEntries(Object.entries(c.env_vars||{}).map(([k,v])=>[k,{type:v.type,...(['WEB_SIGNUP_ENABLED','WEB_AUTH_RETURN_READY','WEB_GOOGLE_AUTH_ENABLED','CACHASTE_MP_LIVE_ENABLED'].includes(k)?{value:v.value}:{})}]))}]))};}
+                else if(key==='pagesDomains')report[key].domains=d.result.map(x=>({name:x.name,status:x.status,validationStatus:x.validation_data?.status,verificationStatus:x.verification_data?.status}));
+                else report[key].deployments=d.result.map(deployment);
+              }
+            }catch{report[key]={error:'PAGES_LOOKUP_UNAVAILABLE'};}
+          }
           try{
             const r=await fetch('https://cloudflare-dns.com/dns-query?name='+domain+'&type=NS',{headers:{accept:'application/dns-json'},redirect:'error',signal:AbortSignal.timeout(15000)});
             const d=await r.json();report.publicNameservers={httpStatus:r.status,status:d.Status,answers:(d.Answer||[]).map(a=>({name:a.name,type:a.type,data:a.data}))};
