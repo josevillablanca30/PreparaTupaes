@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-11-10T17:54:38.258Z",
+  "readOnly": true,
+  "passed": true,
+  "checks": [
+    {
+      "name": "Production seller remains closed",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Anonymous production checkout denied",
+      "status": 401,
+      "passed": true,
+      "code": "AUTH_REQUIRED"
+    },
+    {
+      "name": "Anonymous sandbox administration denied",
+      "status": 401,
+      "passed": true,
+      "code": "AUTH_REQUIRED"
+    },
+    {
+      "name": "Forged sandbox token denied",
+      "status": 401,
+      "passed": true,
+      "code": "AUTH_REQUIRED"
+    },
+    {
+      "name": "Foreign website origin denied",
+      "status": 403,
+      "passed": true
+    },
+    {
+      "name": "Private sandbox RPC denied to anonymous client",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "name": "Private billing RPC denied to anonymous client",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "name": "Temporary QA endpoint stays retired",
+      "status": 404,
+      "passed": true
+    }
+  ],
+  "blockers": [
+    {
+      "name": "Provider-delivered signed webhook",
+      "status": 503,
+      "executed": false,
+      "reason": "MP_TEST_WEBHOOK_SECRET_NOT_CONFIGURED"
+    }
+  ],
+  "productionChargesCreated": 0,
+  "temporaryAccountsCreated": 0
+}

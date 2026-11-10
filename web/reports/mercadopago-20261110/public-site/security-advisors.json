@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-11-10T17:51:36.936Z",
+  "source": "Supabase security advisors",
+  "errors": 0,
+  "warnings": [
+    {
+      "name": "auth_leaked_password_protection",
+      "title": "Leaked Password Protection Disabled",
+      "count": 1,
+      "remediation": "https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection"
+    }
+  ],
+  "information": [
+    {
+      "name": "rls_enabled_no_policy",
+      "count": 34
+    }
+  ],
+  "privateBillingPrivilegesVerifiedSeparately": true
+}

@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-11-10T18:14:49.460Z",
+  "sourceRevision": "2777ab4c5d26a781c1005bd9ea2671d89ca4fd3f",
+  "sourceQaRun": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42869345581",
+  "diagnosticRun": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42873196763",
+  "testedAdjustment": "Explicit fail_open=false for both deployment environments, omitting the untouched preview bindings",
+  "providerAccepted": true,
+  "realPayments": false,
+  "previewPreserved": true,
+  "publishedByThisDiagnostic": false,
+  "dnsRecordsModified": false,
+  "temporaryDiagnosticWorkflowRetiredIn": "2177d3aedbb962098de1b50ff837159f7d3e64a9"
+}

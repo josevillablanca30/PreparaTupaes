@@ -1,0 +1,20 @@
+{
+  "policy": {
+    "id": true,
+    "tax_ready": false,
+    "payments_enabled": false,
+    "allow_test_purchases": false
+  },
+  "checkedAt": "2026-11-10T17:56:14.493511+00:00",
+  "annualTesterGrants": 10,
+  "productionPayments": 0,
+  "shorterTesterGrants": 0,
+  "productionSubscriptions": 0,
+  "sandboxCheckoutsRemaining": 0,
+  "complimentaryCheckoutGuard": true,
+  "publicClientTablePrivileges": 0,
+  "anonymousBillingAdminExecute": false,
+  "anonymousSandboxAdminExecute": false,
+  "authenticatedBillingAdminExecute": false,
+  "authenticatedSandboxAdminExecute": false
+}

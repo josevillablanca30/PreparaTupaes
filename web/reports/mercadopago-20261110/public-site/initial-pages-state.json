@@ -1,0 +1,272 @@
+{
+  "checkedAt": "2026-11-10T17:44:12.679Z",
+  "readOnly": true,
+  "domain": "sitecacho.cl",
+  "pagesAccount": "cfe4b77c0c39bb056306d16133a93642",
+  "inPagesAccount": {
+    "httpStatus": 200,
+    "success": true,
+    "errorCodes": [],
+    "zones": []
+  },
+  "visibleNamedZone": {
+    "httpStatus": 200,
+    "success": true,
+    "errorCodes": [],
+    "zones": []
+  },
+  "pagesProject": {
+    "httpStatus": 200,
+    "success": true,
+    "errorCodes": [],
+    "project": {
+      "name": "cachaste-sitecacho",
+      "productionBranch": "production-requires-owner-approval",
+      "sourceConnected": false,
+      "domains": [
+        "cachaste-sitecacho.pages.dev",
+        "sitecacho.cl"
+      ],
+      "canonical": null,
+      "latest": {
+        "id": "de4e67d5-5280-43c9-835e-761bdaaf22ab",
+        "environment": "preview",
+        "url": "https://de4e67d5.cachaste-sitecacho.pages.dev",
+        "branch": "work/cachaste-web-unificada-20261106",
+        "revision": "c474b81c95bbdc0181d7ef4cda2b05c9e21d2ce1",
+        "latestStage": {
+          "name": "deploy",
+          "started_on": null,
+          "ended_on": "2026-11-10T12:53:11.196992Z",
+          "status": "success"
+        }
+      },
+      "configs": {
+        "preview": {
+          "failOpen": false,
+          "variables": {
+            "BANK_CONTENT_KEY": {
+              "type": "secret_text"
+            },
+            "OFFLINE_SIGNING_JWK": {
+              "type": "secret_text"
+            },
+            "SUPABASE_PUBLISHABLE_KEY": {
+              "type": "plain_text"
+            },
+            "SUPABASE_URL": {
+              "type": "plain_text"
+            },
+            "WEB_AUTH_RETURN_READY": {
+              "type": "plain_text",
+              "value": "false"
+            },
+            "WEB_GOOGLE_AUTH_ENABLED": {
+              "type": "plain_text",
+              "value": "false"
+            },
+            "WEB_SIGNUP_ENABLED": {
+              "type": "plain_text",
+              "value": "false"
+            }
+          }
+        },
+        "production": {
+          "failOpen": false,
+          "variables": {
+            "SUPABASE_PUBLISHABLE_KEY": {
+              "type": "plain_text"
+            },
+            "SUPABASE_URL": {
+              "type": "plain_text"
+            },
+            "WEB_AUTH_RETURN_READY": {
+              "type": "plain_text",
+              "value": "false"
+            },
+            "WEB_GOOGLE_AUTH_ENABLED": {
+              "type": "plain_text",
+              "value": "false"
+            },
+            "WEB_SIGNUP_ENABLED": {
+              "type": "plain_text",
+              "value": "false"
+            }
+          }
+        }
+      }
+    }
+  },
+  "pagesDomains": {
+    "httpStatus": 200,
+    "success": true,
+    "errorCodes": [],
+    "domains": [
+      {
+        "name": "sitecacho.cl",
+        "status": "active",
+        "validationStatus": "active",
+        "verificationStatus": "active"
+      },
+      {
+        "name": "www.sitecacho.cl",
+        "status": "deactivated",
+        "validationStatus": "deactivated",
+        "verificationStatus": "deactivated"
+      }
+    ]
+  },
+  "pagesDeployments": {
+    "httpStatus": 200,
+    "success": true,
+    "errorCodes": [],
+    "deployments": [
+      {
+        "id": "de4e67d5-5280-43c9-835e-761bdaaf22ab",
+        "environment": "preview",
+        "url": "https://de4e67d5.cachaste-sitecacho.pages.dev",
+        "branch": "work/cachaste-web-unificada-20261106",
+        "revision": "c474b81c95bbdc0181d7ef4cda2b05c9e21d2ce1",
+        "latestStage": {
+          "name": "deploy",
+          "started_on": null,
+          "ended_on": "2026-11-10T12:53:11.196992Z",
+          "status": "success"
+        }
+      },
+      {
+        "id": "754181ef-e5a4-4615-a670-806ecf5a5be2",
+        "environment": "preview",
+        "url": "https://754181ef.cachaste-sitecacho.pages.dev",
+        "branch": "work/cachaste-web-unificada-20261106",
+        "revision": "ee48921995b2760fc9cc4c9ba9b0f3e6bd7f1540",
+        "latestStage": {
+          "name": "deploy",
+          "started_on": null,
+          "ended_on": "2026-11-07T22:56:05.879184Z",
+          "status": "success"
+        }
+      },
+      {
+        "id": "e3e504f0-00a3-47ae-8da8-df816c14fb59",
+        "environment": "preview",
+        "url": "https://e3e504f0.cachaste-sitecacho.pages.dev",
+        "branch": "work/cachaste-web-unificada-20261106",
+        "revision": "34c536b412da70fa6921d1d14323261fccfb5e30",
+        "latestStage": {
+          "name": "deploy",
+          "started_on": null,
+          "ended_on": "2026-11-07T17:30:11.61935Z",
+          "status": "success"
+        }
+      },
+      {
+        "id": "c278f219-d0bb-4805-b308-70c3d1268917",
+        "environment": "preview",
+        "url": "https://c278f219.cachaste-sitecacho.pages.dev",
+        "branch": "work/cachaste-web-unificada-20261106",
+        "revision": "68add6d580748a8ddd695423354072584e33e1c4",
+        "latestStage": {
+          "name": "deploy",
+          "started_on": null,
+          "ended_on": "2026-11-06T18:51:41.81956Z",
+          "status": "success"
+        }
+      },
+      {
+        "id": "1cff0e79-1f53-467c-a80d-2785be7320b6",
+        "environment": "preview",
+        "url": "https://1cff0e79.cachaste-sitecacho.pages.dev",
+        "branch": "work/cachaste-web-comercial-20261024",
+        "revision": "a7ad0fb636f933636b00f5f8a0abc019e7ceb33c",
+        "latestStage": {
+          "name": "deploy",
+          "started_on": null,
+          "ended_on": "2026-11-04T12:29:01.109531Z",
+          "status": "success"
+        }
+      },
+      {
+        "id": "cf3431fa-3e39-4411-a353-d428b8bfe80a",
+        "environment": "preview",
+        "url": "https://cf3431fa.cachaste-sitecacho.pages.dev",
+        "branch": "work/cachaste-web-comercial-20261024",
+        "revision": "276ee9f209a57a298a1d6166f805e20219e29ecb",
+        "latestStage": {
+          "name": "deploy",
+          "started_on": null,
+          "ended_on": "2026-11-03T18:07:35.872035Z",
+          "status": "success"
+        }
+      },
+      {
+        "id": "36cfb1ec-84a5-4c7f-a0b7-02179c8f9f4f",
+        "environment": "preview",
+        "url": "https://36cfb1ec.cachaste-sitecacho.pages.dev",
+        "branch": "work/cachaste-web-comercial-20261024",
+        "revision": "71368413730b6b5c7c5c6d6a67968b4fe5f1a777",
+        "latestStage": {
+          "name": "deploy",
+          "started_on": null,
+          "ended_on": "2026-11-03T17:58:31.520354Z",
+          "status": "success"
+        }
+      },
+      {
+        "id": "0085f006-07cb-4971-bfad-45c68c62513e",
+        "environment": "preview",
+        "url": "https://0085f006.cachaste-sitecacho.pages.dev",
+        "branch": "work/cachaste-web-comercial-20261024",
+        "revision": "d0d7e747b7afd217fe52ad55f26021a7974d7395",
+        "latestStage": {
+          "name": "deploy",
+          "started_on": null,
+          "ended_on": "2026-11-03T12:07:25.404126Z",
+          "status": "success"
+        }
+      },
+      {
+        "id": "9d43bdeb-d3b2-44d6-b6b2-444629d3d21b",
+        "environment": "preview",
+        "url": "https://9d43bdeb.cachaste-sitecacho.pages.dev",
+        "branch": "work/cachaste-web-comercial-20261024",
+        "revision": "1979a6baeb171d43b0eca3d3dd25dd59daee2268",
+        "latestStage": {
+          "name": "deploy",
+          "started_on": null,
+          "ended_on": "2026-11-03T10:24:21.649146Z",
+          "status": "success"
+        }
+      },
+      {
+        "id": "69cfd5f2-7e65-4b7b-a841-9b664755a592",
+        "environment": "preview",
+        "url": "https://69cfd5f2.cachaste-sitecacho.pages.dev",
+        "branch": "work/cachaste-web-comercial-20261024",
+        "revision": "38892741771432f56e49fc875e4384de3e0de144",
+        "latestStage": {
+          "name": "deploy",
+          "started_on": null,
+          "ended_on": "2026-10-25T22:40:34.342368Z",
+          "status": "success"
+        }
+      }
+    ]
+  },
+  "publicNameservers": {
+    "httpStatus": 200,
+    "status": 0,
+    "answers": [
+      {
+        "name": "sitecacho.cl",
+        "type": 2,
+        "data": "johnny.ns.cloudflare.com."
+      },
+      {
+        "name": "sitecacho.cl",
+        "type": 2,
+        "data": "maxine.ns.cloudflare.com."
+      }
+    ]
+  }
+}
