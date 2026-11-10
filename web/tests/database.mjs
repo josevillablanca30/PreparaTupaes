@@ -1,7 +1,8 @@
 import{database as base,users,sessions,rpc,profile,grantTest}from'../../tests/helpers/competition-db.mjs';
 import{readFile,readdir}from'node:fs/promises';
 export{users,sessions,rpc,profile,grantTest};
-export async function database(){const db=await base();await db.exec(`create schema storage;
+export async function database(){const db=await base();await db.exec(`alter table auth.users add column raw_app_meta_data jsonb default '{}'::jsonb;
+ create schema storage;
  create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);
  create table storage.objects(id uuid primary key default gen_random_uuid(),bucket_id text references storage.buckets(id),name text,owner_id text,metadata jsonb,unique(bucket_id,name));
  alter table storage.objects enable row level security;

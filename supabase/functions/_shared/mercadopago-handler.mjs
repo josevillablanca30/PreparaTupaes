@@ -32,7 +32,7 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   if(body.action==='status'){const enabled=ready()&&(await call('policy')).enabled===true;let trialAvailable=false;if(enabled&&env('CACHASTE_MP_TRIAL_ENABLED')==='true'&&env('MP_PLAN_MONTHLY_TRIAL')){try{const planId=env('MP_PLAN_MONTHLY_TRIAL');validatePlan(await mp('/preapproval_plan/'+encodeURIComponent(planId)),'mensual',planId,{trial:true,collectorId:env('MP_COLLECTOR_ID')});trialAvailable=true;}catch{}}return json(req,{ready:enabled,trialAvailable,managementReady:configured()});}
   const{user,state}=await auth(req);
   if(body.action==='sales'){
-   const admins=(env('CACHASTE_WEB_ADMIN_IDS')||'').split(',').filter(Boolean);if(!admins.includes(user.id))throw Error('FORBIDDEN');
+   if(state.isAdmin!==true)throw Error('FORBIDDEN');
    const range=body.fromDate||body.toDate?chileDateRange(body.fromDate,body.toDate):body;const from=Date.parse(range.from),to=Date.parse(range.to);if(!Number.isFinite(from)||!Number.isFinite(to)||to<=from||to-from>367*86400000)throw Error('INVALID_REPORT_RANGE');
    const report=await call('sales',{from:new Date(from).toISOString(),to:new Date(to).toISOString()});return new Response(csvReport(report.rows),{headers:{...cors(req),'content-type':'text/csv; charset=utf-8','content-disposition':'attachment; filename="cachaste-ventas-comisiones.csv"'}});
   }
@@ -42,6 +42,7 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   if(body.action!=='checkout'&&!configured())return json(req,{error:'BILLING_NOT_READY',ready:false},503);
   if(!live()&&env('CACHASTE_MP_ALLOW_TEST_PURCHASES')!=='true')throw Error('TEST_PURCHASES_DISABLED');
   if(body.action==='checkout'){
+   if(state.complimentary?.active===true)return json(req,{error:'COMPLIMENTARY_ACCESS'},409);
    if(!MP_PLANS[body.plan]||!UUID.test(body.requestId||''))throw Error('INVALID_PLAN');await call('rate',{userId:user.id});
    const trial=body.plan==='mensual'&&!state.trialUsed&&env('CACHASTE_MP_TRIAL_ENABLED')==='true'&&!!env('MP_PLAN_MONTHLY_TRIAL');
    const planId=env(trial?'MP_PLAN_MONTHLY_TRIAL':'MP_PLAN_'+{semanal:'WEEKLY',mensual:'MONTHLY',anual:'YEARLY'}[body.plan]);

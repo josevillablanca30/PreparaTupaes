@@ -42,7 +42,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
    if(path==='/api/session'&&req.method==='GET'){
     const auth=await identity(req,env,{active:false,fresh:true});let account;
     try{account=await backend(env,'/rest/v1/rpc/cachaste_web_account',auth.token,{method:'POST',body:{}});}catch(e){if(e.status===404)account={access:auth.access,subscriptions:[],trialUsed:false};else throw e;}
-    return json({user:{id:auth.user.id,email:auth.user.email},...account,offlineAvailable:!!publicOfflineKey(env),isAdmin:(env.WEB_ADMIN_IDS||'').split(',').includes(auth.user.id)});
+    return json({user:{id:auth.user.id,email:auth.user.email},...account,offlineAvailable:!!publicOfflineKey(env),isAdmin:account.isAdmin===true});
    }
    if(path==='/api/session'&&req.method==='POST'){
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
@@ -61,13 +61,23 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     const body=JSON.parse(text);if(body.userId!==undefined&&body.userId!==auth.user.id)return json({error:'SESSION_CHANGED'},409);if(!['snapshot','put'].includes(body.operation))return json({error:'INVALID_OPERATION'},400);
     return json(await backend(env,'/rest/v1/rpc/cachaste_web_progress',auth.token,{method:'POST',body}));
    }
+   if(path==='/api/billing/sandbox'&&req.method==='POST'){
+    if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
+    const auth=await identity(req,env,{active:false,fresh:true});
+    const account=await backend(env,'/rest/v1/rpc/cachaste_web_account',auth.token,{method:'POST',body:{}});
+    if(account.isAdmin!==true)return json({error:'QA_ADMIN_REQUIRED'},403);
+    const text=await req.text();if(text.length>8192)return json({error:'PAYLOAD_TOO_LARGE'},413);
+    const body=JSON.parse(text);
+    const data=await backend(env,'/functions/v1/cachaste-mp-sandbox-checkout',auth.token,{method:'POST',body});
+    return json(data);
+   }
    if(path==='/api/billing'&&req.method==='POST'){
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
     const text=await req.text();if(text.length>8192)return json({error:'PAYLOAD_TOO_LARGE'},413);const body=JSON.parse(text);
     // Checkout stays explicitly disabled until the owner approves live web payments.
     // Status/refresh may still reconcile existing access without initiating a charge.
     if(body.action!=='status')await identity(req,env,{active:false,fresh:true});
-    if(!['status','refresh'].includes(body.action)&&env.WEB_PAYMENTS_ENABLED!=='true')return json({error:'BILLING_NOT_READY'},503);
+    if(!['status','refresh','cancel','sales'].includes(body.action)&&env.WEB_PAYMENTS_ENABLED!=='true')return json({error:'BILLING_NOT_READY'},503);
     const res=await fetcher((env.SUPABASE_URL||PROJECT_URL)+'/functions/v1/cachaste-mercadopago',{method:'POST',headers:{apikey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,'content-type':'application/json',...(body.action!=='status'?{authorization:'Bearer '+(bearer(req)||cookie(req))}:{})},body:JSON.stringify(body)});
     const headers=new Headers(ACCESS_HEADERS);for(const name of['content-type','content-disposition'])if(res.headers.has(name))headers.set(name,res.headers.get(name));
     if(body.action==='status'&&env.WEB_PAYMENTS_ENABLED!=='true'&&res.ok){
