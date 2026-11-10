@@ -145,6 +145,18 @@ test('Cloudflare diagnostics identify the rejected operation and nested auth cod
   });
 });
 
+test('Pages PATCH keeps both environments fail closed without resending any variables or secrets of the untouched runtime',async()=>{
+  const calls=[],client=pagesClient(env(),{fetcher:async(url,o)=>{calls.push({url,body:JSON.parse(o.body)});return Response.json({success:true,result:{}});}});
+  await client.configureProject({production:{fail_open:false,env_vars:{WEB_PAYMENTS_ENABLED:{type:'plain_text',value:'false'}}}});
+  assert.deepEqual(calls[0].body.deployment_configs.preview,{fail_open:false});
+  assert.equal(calls[0].body.deployment_configs.production.env_vars.WEB_PAYMENTS_ENABLED.value,'false');
+  await client.configureProject({preview:{fail_open:false}});assert.deepEqual(calls[1].body.deployment_configs.production,{fail_open:false});
+  assert(calls.every(c=>!JSON.stringify(c.body).includes('secret_text')));
+  const rejected=pagesClient(env(),{fetcher:async()=>Response.json({success:false,errors:[{code:8000066,message:'Private provider body'}]},{status:400})});
+  await assert.rejects(rejected.getProject(),e=>e.cloudflare.codes.includes(8000066)&&e.cloudflare.category==='FAIL_CLOSED_ENVIRONMENTS_REQUIRED'&&!JSON.stringify(e).includes('Private provider body'));
+  assert.throws(()=>client.configureProject({preview:{fail_open:true}}),/FAIL_CLOSED/);assert.equal(calls.length,2);
+});
+
 test('read-only guard rejects plaintext keys, missing gates, fail open or missing content encryption', async () => {
   const api = cloudflare(); const prepared = await prepareProject(env(), {client: api.client});
   for (const mutate of [

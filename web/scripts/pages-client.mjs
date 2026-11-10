@@ -29,12 +29,13 @@ function apiDiagnostic(method, suffix, status, data) {
   const queue = Array.isArray(data?.errors) ? [...data.errors] : [], codes = [], messages = [];
   for (let count = 0; queue.length && count < 12; count++) {
     const item = queue.shift();
-    if (Number.isSafeInteger(item?.code) && item.code >= 0 && item.code <= 999999) codes.push(item.code);
+    if (Number.isSafeInteger(item?.code) && item.code >= 0 && item.code <= 999999999) codes.push(item.code);
     if (typeof item?.message === 'string') messages.push(item.message.slice(0, 2000));
     if (Array.isArray(item?.error_chain)) queue.push(...item.error_chain);
   }
   const description = messages.join(' ');
-  const category = codes.includes(6111) || /invalid.*(?:authorization|request headers)|invalid format for.*header/i.test(description) ? 'AUTH_HEADER_FORMAT'
+  const category = codes.includes(8000066) ? 'FAIL_CLOSED_ENVIRONMENTS_REQUIRED'
+    : codes.includes(6111) || /invalid.*(?:authorization|request headers)|invalid format for.*header/i.test(description) ? 'AUTH_HEADER_FORMAT'
     : /authenticat|invalid.*token|expired.*token|revoked.*token/i.test(description) ? 'AUTHENTICATION'
     : /permission|not authorized|access denied/i.test(description) ? 'PERMISSION'
     : /compatibility.?date|date.*future/i.test(description) ? 'COMPATIBILITY_DATE'
@@ -104,7 +105,12 @@ export function pagesClient(env, {fetcher = fetch} = {}) {
     createProject: deployment_configs => request('POST', '', {
       name: PAGES_PROJECT, production_branch: RESERVED_PRODUCTION_BRANCH, deployment_configs,
     }),
-    configureProject: deployment_configs => request('PATCH', '/' + PAGES_PROJECT, {deployment_configs}),
+    // When setting fail_open, Pages requires a value in both environments (8000066).
+    // Omit the other environment's variables so its encrypted bindings remain unchanged.
+    configureProject: deployment_configs => {
+      if(Object.values(deployment_configs).some(c=>c?.fail_open===true))throw Error('PAGES_FAIL_CLOSED_REQUIRED');
+      return request('PATCH','/'+PAGES_PROJECT,{deployment_configs:{preview:{fail_open:false,...deployment_configs.preview},production:{fail_open:false,...deployment_configs.production}}});
+    },
     listDeployments: () => request('GET', '/' + PAGES_PROJECT + '/deployments?env=preview&per_page=25'),
     listPublicDeployments: () => request('GET', '/' + PAGES_PROJECT + '/deployments?env=production&per_page=25'),
     listDomains: () => request('GET', '/' + PAGES_PROJECT + '/domains'),
