@@ -34,15 +34,19 @@ for(const[name,engine,use]of[['Desktop-Chrome',chromium,{viewport:{width:1365,he
    catch{checks.push({browser:name,entry,footerNavigation:true,passed:false});}
   }
   if(isPublic)for(const[path,title]of[['/','Te lo dejamos clarito para un buen resultado.'],['/cuenta.html','Tu preparación comienza aquí.'],['/recuperar','Recupera tu contraseña.']]){
+   let measurements=[];
    try{
     const response=await page.goto(origin+path,{waitUntil:'networkidle'});
     if(response.status()!==200)throw Error('PUBLIC_HTTPS_REQUIRED');
     await page.getByRole('heading',{name:title,exact:true}).waitFor();
-    const measurements=await page.evaluate(measureTextContrast,PUBLIC_SURFACE_TEXT);
+    measurements=await page.evaluate(measureTextContrast,PUBLIC_SURFACE_TEXT);
     if(measurements.length<9||measurements.some(x=>!x.passed))throw Error('PUBLIC_TEXT_CONTRAST_FAILED');
     await page.screenshot({path:'web/artifacts/legal-live/'+name+'-readable-'+(path==='/'?'landing':path.includes('cuenta')?'account':'recovery')+'.png',fullPage:!name.includes('iPhone')});
     checks.push({browser:name,path,renderedTextContrast:true,textSamples:measurements.length,minimumRatio:Math.min(...measurements.map(x=>x.ratio)),passed:true});
-   }catch{checks.push({browser:name,path,renderedTextContrast:true,passed:false});}
+   }catch(error){
+    await page.screenshot({path:'web/artifacts/legal-live/'+name+'-failed-'+(path==='/'?'landing':path.includes('cuenta')?'account':'recovery')+'.png',fullPage:false}).catch(()=>{});
+    checks.push({browser:name,path,renderedTextContrast:true,passed:false,reason:error.message.split('\n')[0],observedHeading:await page.locator('h1').allTextContents().catch(()=>[]),textSamples:measurements.length,contrastFailures:measurements.filter(x=>!x.passed)});
+   }
   }
  }finally{await context.close();await browser.close();}
 }

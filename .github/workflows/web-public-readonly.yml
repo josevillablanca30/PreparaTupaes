@@ -1,0 +1,43 @@
+name: ¿Cachaste? · Auditoría pública sin despliegue
+on:
+  workflow_dispatch:
+  push:
+    branches: [work/cachaste-web-unificada-20261106]
+    paths: [.github/workflows/web-public-readonly.yml]
+permissions:
+  contents: read
+jobs:
+  public-audit:
+    if: github.ref_name == 'work/cachaste-web-unificada-20261106'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Auditar exclusivamente la revisión pública documentada
+        run: |
+          node --input-type=module <<'NODE'
+          import {readFile,mkdir,writeFile} from 'node:fs/promises';
+          import {spawnSync} from 'node:child_process';
+          const report=JSON.parse(await readFile('web/reports/mercadopago-20261110/public-site/pages-public.json','utf8'));
+          if(report.url!=='https://sitecacho.cl'||report.passed!==true||!/^[a-f0-9]{40}$/.test(report.revision||'')||!report.deployment?.id)throw Error('VERIFIED_PUBLIC_DEPLOYMENT_REQUIRED');
+          const live=await fetch(report.url+'/version.json',{redirect:'error',signal:AbortSignal.timeout(20000)}).then(r=>r.json());
+          if(live.revision!==report.revision||live.paymentsEnabledByBuild!==false)throw Error('PUBLIC_REVISION_OR_PAYMENTS_CHANGED');
+          await mkdir('web/artifacts',{recursive:true});
+          await writeFile('web/artifacts/pages-public.json',JSON.stringify(report));
+          const result=spawnSync(process.execPath,['web/scripts/probe-legal-browsers.mjs','--public'],{stdio:'inherit',env:{...process.env,GITHUB_SHA:report.revision}});
+          process.exitCode=result.status??1;
+          NODE
+      - name: Guardar pruebas y capturas públicas sin secretos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cachaste-Public-Readonly
+          path: web/artifacts/legal-live/
+          retention-days: 14

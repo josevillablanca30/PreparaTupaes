@@ -1,0 +1,2184 @@
+{
+  "url": "https://sitecacho.cl",
+  "checkedAt": "2026-11-10T19:03:28.769Z",
+  "revision": "cd94b9e07d6da02c5bb39cb6a6e1005d3c140e45",
+  "deployment": {
+    "id": "c0645339-b756-427e-9812-524466354305",
+    "environment": "production",
+    "revision": "cd94b9e07d6da02c5bb39cb6a6e1005d3c140e45",
+    "url": "https://cachaste-sitecacho.pages.dev"
+  },
+  "fullQa": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42880083500",
+  "passed": true,
+  "realPayments": false,
+  "probes": [
+    {
+      "url": "https://cachaste-sitecacho.pages.dev",
+      "checkedAt": "2026-11-10T19:03:18.635Z",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Landing HTTPS y CSP del Worker",
+          "passed": true
+        },
+        {
+          "name": "Retorno Android a portada preparado sin cach\u00e9 ni referrer",
+          "passed": true
+        },
+        {
+          "name": "Cuenta p\u00fablica",
+          "passed": true
+        },
+        {
+          "name": "Recuperaci\u00f3n p\u00fablica HTTPS, privada en cach\u00e9 y sin referrer",
+          "passed": true
+        },
+        {
+          "name": "Cliente oficial de recuperaci\u00f3n disponible",
+          "passed": true
+        },
+        {
+          "name": "Documento legal p\u00fablico: privacidad",
+          "passed": true
+        },
+        {
+          "name": "Documento legal p\u00fablico: condiciones",
+          "passed": true
+        },
+        {
+          "name": "Documento legal p\u00fablico: eliminar-cuenta",
+          "passed": true
+        },
+        {
+          "name": "PWA instalable",
+          "passed": true
+        },
+        {
+          "name": "Worker real, mismo commit y registro cerrado",
+          "passed": true
+        },
+        {
+          "name": "Distribuci\u00f3n web, versi\u00f3n y cobros cerrados",
+          "passed": true
+        },
+        {
+          "name": "Sesi\u00f3n an\u00f3nima rechazada",
+          "passed": true
+        },
+        {
+          "name": "Progreso an\u00f3nimo rechazado",
+          "passed": true
+        },
+        {
+          "name": "Checkout an\u00f3nimo rechazado sin crear compra",
+          "passed": true
+        },
+        {
+          "name": "Mercado Pago realmente deshabilitado",
+          "passed": true
+        },
+        {
+          "name": "Escritura desde otro sitio rechazada",
+          "passed": true
+        },
+        {
+          "name": "Token fabricado no concede Premium",
+          "passed": true
+        },
+        {
+          "name": "Navegaci\u00f3n privada exige cuenta",
+          "passed": true
+        },
+        {
+          "name": "Service worker con clave p\u00fablica offline",
+          "passed": true
+        },
+        {
+          "name": "C\u00f3digo del Worker oculto",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/.nojekyll",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/.nojekyll",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-0.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/cachaste-logo.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/cachaste-icon.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-0.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/cachaste-logo.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/cachaste-icon.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-12.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-11.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-10.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-11.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-1.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-12.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-10.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-1.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-14.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-16.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-15.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-16.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-14.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-13.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-15.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-13.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-17.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-19.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-19.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-18.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-2.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-17.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-2.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-18.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-21.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-22.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-20.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-21.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-23.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-22.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-23.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-20.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-3.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-4.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-6.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-5.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-5.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-4.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-3.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-6.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-8.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatars-male-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-7.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-9.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-9.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatars-male-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-7.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-8.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-Historia-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-Ciencias-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-banner-left.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-Ciencias-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-banner-right.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-banner-left.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-Historia-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-banner-right.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-Lectura-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-book-v4.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-Lectura-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-M1-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-M2-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-book-v4.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-M1-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-M2-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-crossed-v4.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-crossed-v4.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-mentor-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-point-v4.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-point-v4.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-mentor-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-duels.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-duels.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-challenge.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-result.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-result.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-challenge.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-vs.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-vs.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-rank.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-rank.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-random.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-reference-energy-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-reference-champions-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-logo.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-random.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-reference-energy-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-logo.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-reference-champions-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/gatito-sabio-oficial.png",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-stadium.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-reference-mountain-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-review.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/gatito-sabio-oficial.png",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-stadium.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-reference-mountain-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-review.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/gatito-sabio-poses-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-algebra-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-argument-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/gatito-sabio-poses-v1.png",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-algebra-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/gatito-sabio-poses-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/gatito-sabio-poses-v1.png",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-argument-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-electricity-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-atp-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-functions-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-balance-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-atp-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-balance-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-functions-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-electricity-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-mechanics-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-industry-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-geometry-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-history-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-mechanics-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-industry-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-geometry-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-history-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-probability-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-numbers-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-osmosis-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-osmosis-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-numbers-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-meiosis-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-probability-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-meiosis-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-waves-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-sources-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-reading-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-solutions-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-waves-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-sources-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-reading-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-solutions-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/subject-history-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/subject-m2-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/subject-m1-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/map-valley-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/subject-history-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/subject-m1-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/map-valley-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/subject-m2-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/competencia.html",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/subject-reading-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/subject-science-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/competition-app.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/competencia.html",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/subject-reading-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/subject-science-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/competition-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/competition-client.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/competition-geography.json",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/competition-billing.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/competition-geography.json",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/competition-client.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/competition-config.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/competition-billing.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/competition-config.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-basics.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-basics.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-catalog.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-app.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-catalog.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/competition-ui.css",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/competition-ui.css",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-foundation-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-curriculum.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-demonstrations.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-core.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-curriculum.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-foundation-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-core.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-demonstrations.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-lessons.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-lesson-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-illustration-kit.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-gameplay.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-lessons.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-lesson-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-illustration-kit.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-gameplay.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-school.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-progression.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-reference.css",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-progression.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-school.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-reference.css",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-scenarios.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-scenarios.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-ui.css",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-topic-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-studios.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-topic-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-ui.css",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-studios.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/history.html",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/history-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/editorial-revisions.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/history-app.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/history.html",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/history-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/editorial-revisions.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/history-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/m1-teaching.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/learning-core.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/inicio.html",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/learning-core.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/m1-teaching.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/inicio.html",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/index.html",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/index.html",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/reading-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/m2.html",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/m2-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/m2-app.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/m2.html",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/m2-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/reading-app.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/m2-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/science-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/science-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/reading-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/reading.html",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/science-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/science-app.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/reading-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/reading.html",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/version.json",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/study-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/study-ui.css",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/study-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/science.html",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/study-ui.css",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/version.json",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/science.html",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "url": "https://sitecacho.cl",
+      "checkedAt": "2026-11-10T19:03:28.769Z",
+      "passed": true,
+      "checks": [
+        {
+          "name": "Landing HTTPS y CSP del Worker",
+          "passed": true
+        },
+        {
+          "name": "Retorno Android a portada preparado sin cach\u00e9 ni referrer",
+          "passed": true
+        },
+        {
+          "name": "Cuenta p\u00fablica",
+          "passed": true
+        },
+        {
+          "name": "Recuperaci\u00f3n p\u00fablica HTTPS, privada en cach\u00e9 y sin referrer",
+          "passed": true
+        },
+        {
+          "name": "Cliente oficial de recuperaci\u00f3n disponible",
+          "passed": true
+        },
+        {
+          "name": "Documento legal p\u00fablico: privacidad",
+          "passed": true
+        },
+        {
+          "name": "Documento legal p\u00fablico: condiciones",
+          "passed": true
+        },
+        {
+          "name": "Documento legal p\u00fablico: eliminar-cuenta",
+          "passed": true
+        },
+        {
+          "name": "PWA instalable",
+          "passed": true
+        },
+        {
+          "name": "Worker real, mismo commit y registro cerrado",
+          "passed": true
+        },
+        {
+          "name": "Distribuci\u00f3n web, versi\u00f3n y cobros cerrados",
+          "passed": true
+        },
+        {
+          "name": "Sesi\u00f3n an\u00f3nima rechazada",
+          "passed": true
+        },
+        {
+          "name": "Progreso an\u00f3nimo rechazado",
+          "passed": true
+        },
+        {
+          "name": "Checkout an\u00f3nimo rechazado sin crear compra",
+          "passed": true
+        },
+        {
+          "name": "Mercado Pago realmente deshabilitado",
+          "passed": true
+        },
+        {
+          "name": "Escritura desde otro sitio rechazada",
+          "passed": true
+        },
+        {
+          "name": "Token fabricado no concede Premium",
+          "passed": true
+        },
+        {
+          "name": "Navegaci\u00f3n privada exige cuenta",
+          "passed": true
+        },
+        {
+          "name": "Service worker con clave p\u00fablica offline",
+          "passed": true
+        },
+        {
+          "name": "C\u00f3digo del Worker oculto",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/cachaste-logo.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/.nojekyll",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/cachaste-logo.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/cachaste-icon.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/.nojekyll",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/cachaste-icon.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-0.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-0.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-11.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-12.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-11.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-1.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-10.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-12.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-1.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-10.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-13.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-15.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-14.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-14.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-13.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-16.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-15.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-16.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-19.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-17.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-18.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-2.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-18.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-17.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-19.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-22.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-21.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-20.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-23.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-21.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-23.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-22.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-20.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-3.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-5.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-4.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-5.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-3.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-6.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-4.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-6.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-9.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-8.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatars-male-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-9.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-8.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-avatar-7.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatars-male-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-avatar-7.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-Ciencias-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-banner-left.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-banner-right.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-Historia-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-Ciencias-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-banner-left.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-Historia-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-banner-right.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-Lectura-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-M2-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-M1-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-book-v4.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-M1-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-M2-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-Lectura-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-book-v4.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-mentor-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-crossed-v4.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-duels.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-crossed-v4.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-mentor-v2.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-point-v4.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-duels.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-point-v4.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-rank.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-vs.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-cat-result.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-challenge.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-result.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-vs.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-cat-rank.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-challenge.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-reference-champions-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-logo.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-reference-energy-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-reference-champions-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-reference-energy-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-random.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-logo.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-random.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-stadium.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-review.svg",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/competition-reference-mountain-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/gatito-sabio-oficial.png",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-review.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-stadium.svg",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/competition-reference-mountain-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/gatito-sabio-oficial.png",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-algebra-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/gatito-sabio-poses-v1.png",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/gatito-sabio-poses-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-argument-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/gatito-sabio-poses-v1.png",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/gatito-sabio-poses-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-argument-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-algebra-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-balance-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-electricity-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-atp-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-balance-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-electricity-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-atp-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-functions-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-functions-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-industry-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-mechanics-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-history-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-industry-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-geometry-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-mechanics-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-geometry-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-history-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-probability-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-osmosis-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-meiosis-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-numbers-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-osmosis-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-meiosis-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-numbers-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-probability-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-waves-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-reading-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-sources-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/lesson-cat-solutions-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-reading-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-sources-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-solutions-v2.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/lesson-cat-waves-v3.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/subject-m2-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/subject-m1-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/map-valley-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/subject-history-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/map-valley-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/subject-m1-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/subject-history-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/subject-m2-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/competition-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/subject-reading-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/competencia.html",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/assets/subject-science-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/subject-reading-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/competencia.html",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/assets/subject-science-v1.webp",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/competition-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/competition-billing.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/competition-geography.json",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/competition-config.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/competition-geography.json",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/competition-client.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/competition-billing.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/competition-config.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/competition-client.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-basics.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-catalog.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/competition-ui.css",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-basics.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-catalog.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/competition-ui.css",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-core.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-foundation-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-demonstrations.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-curriculum.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-demonstrations.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-foundation-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-core.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-curriculum.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-lesson-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-lessons.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-illustration-kit.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-gameplay.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-lesson-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-lessons.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-gameplay.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-illustration-kit.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-progression.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-scenarios.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-school.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-reference.css",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-scenarios.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-progression.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-reference.css",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-school.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-studios.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-ui.css",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-topic-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-studios.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-topic-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-ui.css",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/daily-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/daily-visuals.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/history-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/history-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/history.html",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/editorial-revisions.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/history-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/history.html",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/history-app.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/editorial-revisions.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/m1-teaching.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/index.html",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/inicio.html",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/learning-core.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/index.html",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/inicio.html",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/m1-teaching.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/learning-core.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/m2.html",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/m2-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/reading-app.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/m2-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/m2-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/m2.html",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/m2-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/reading-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/science-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/reading-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/science-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/science-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/reading.html",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/reading-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/science-bank.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/reading.html",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/science.html",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/study-app.js",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/study-ui.css",
+          "passed": true
+        },
+        {
+          "name": "Acceso privado denegado: /app/version.json",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/study-app.js",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/study-ui.css",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/science.html",
+          "passed": true
+        },
+        {
+          "name": "Cifrado no descargable: /app/version.json",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "www": {
+    "url": "https://www.sitecacho.cl",
+    "passed": false,
+    "status": "pending",
+    "reason": "DNS_ACTIVATION_PENDING"
+  },
+  "limits": [
+    "No habilita pagos, registro nuevo ni Google.",
+    "No acredita tel\u00e9fonos f\u00edsicos ni la aprobaci\u00f3n interactiva del comprador."
+  ]
+}
