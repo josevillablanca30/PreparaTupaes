@@ -167,3 +167,13 @@ test('a hosted sandbox cancellation rejects foreign and live resources before th
  assert.equal((await h.billing(h.req(scope))).status,200);
  assert.equal(h.calls.filter(c=>c.options?.method==='PUT').length,1);
 });
+
+test('hosted payment lookup rejects a mismatched payer before linking a subscription',async()=>{
+ const h=harness();
+ h.setHostedPayments([{id:188037470295,payer:{id:'999999'},collector_id:123,currency_id:'CLP',transaction_amount:2490,live_mode:false,status:'approved',date_approved:new Date(now).toISOString()}]);
+ const response=await h.billing(h.req({action:'plan_payment_lookup',plan:'WEEKLY',payerId:hostedBuyer,paymentId:'188037470295'}));
+ assert.equal(response.status,400);
+ assert.equal((await response.json()).error,'PAYMENT_NOT_VERIFIED');
+ assert.equal(h.rows.size,0);
+ assert.equal(h.calls.some(call=>call.operation==='apply'),false);
+});
