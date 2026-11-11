@@ -32,7 +32,12 @@
     "productionDeployed": false,
     "hostedMigrationApplied": false,
     "ciRun": 42934538098,
-    "ciStatus": "in_progress"
+    "ciStatus": "completed",
+    "ciConclusion": "success",
+    "combinedCiTests": 189,
+    "postgresConcurrentRpc": 40,
+    "debugApkCompiled": true,
+    "reportCommit": "804cd3456bff4b790707f32537148e683033c85b"
   },
   "previousSandboxEvidence": {
     "file": "../live-sandbox.json",
