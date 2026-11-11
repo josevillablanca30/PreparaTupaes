@@ -2,7 +2,6 @@ import {expect,test} from '@playwright/test';
 
 const supabase='https://jmobinmdwrmdqrxtcruj.supabase.co';
 const student='student-a@example.invalid';
-const codeHeaders={'x-supabase-api-version':'2024-01-01','access-control-expose-headers':'x-supabase-api-version'};
 
 test('A closed registration button explains availability without requiring login fields',async({page})=>{
   await page.goto('/cuenta.html');
@@ -12,9 +11,7 @@ test('A closed registration button explains availability without requiring login
 });
 
 test('Email signup opens a separate form, verifies the OTP and preserves account access',async({page})=>{
-  await page.request.post('/__qa/control',{data:{reset:true,active:false}});
-  const {users:[session]}=await (await page.request.get('/__qa/session')).json();
-  const calls=[];
+  await page.request.post('/__qa/control',{data:{reset:true,active:false,signupEnabled:true}});
   await page.addInitScript(origin=>{
     const transport=window.fetch.bind(window);
     window.fetch=(input,options)=>{
@@ -24,29 +21,6 @@ test('Email signup opens a separate form, verifies the OTP and preserves account
       return transport(input instanceof Request?new Request(local,input):local,options);
     };
   },supabase);
-  await page.route('**/api/config',async route=>{
-    const response=await route.fetch();
-    await route.fulfill({response,json:{...await response.json(),signupEnabled:true}});
-  });
-  await page.route('**/__qa/supabase/auth/v1/**',async route=>{
-    const url=new URL(route.request().url());
-    if(url.pathname.endsWith('/auth/v1/signup')){
-      const body=route.request().postDataJSON();
-      expect(body.email).toBe(student);
-      expect(body.password).toBe('Cachaste-prueba-2026!');
-      calls.push('signup');
-      await route.fulfill({json:session.user});
-    }else if(url.pathname.endsWith('/auth/v1/verify')){
-      const body=route.request().postDataJSON();
-      expect(body).toMatchObject({email:student,type:'signup'});
-      calls.push('verify');
-      if(body.token==='000000')await route.fulfill({status:403,headers:codeHeaders,json:{code:'otp_expired',msg:'Token expired'}});
-      else {expect(body.token).toBe('123456');await route.fulfill({json:session});}
-    }else if(url.pathname.endsWith('/auth/v1/resend')){
-      expect(route.request().postDataJSON()).toMatchObject({email:student,type:'signup'});
-      calls.push('resend');await route.fulfill({json:{}});
-    }else await route.continue();
-  });
   try{
     await page.goto('/cuenta.html');
     await page.getByRole('button',{name:'Crear mi cuenta',exact:true}).click();
@@ -66,6 +40,7 @@ test('Email signup opens a separate form, verifies the OTP and preserves account
     await expect(page.getByText(student,{exact:true})).toBeVisible();
     await page.reload();
     await expect(page.getByText(student,{exact:true})).toBeVisible();
-    expect(calls).toEqual(['signup','verify','resend','verify']);
+    const {calls}=await (await page.request.get('/__qa/state')).json();
+    expect(calls.filter(c=>c.operation?.startsWith('email_')).map(c=>c.operation)).toEqual(['email_signup','email_verify','email_resend','email_verify']);
   }finally{await page.request.post('/__qa/control',{data:{reset:true}});}
 });
