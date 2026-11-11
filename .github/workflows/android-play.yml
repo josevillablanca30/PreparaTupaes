@@ -53,8 +53,8 @@ jobs:
         run: |
           git diff --exit-code 7589d7aba376f39a3876bf1f484b014af1ed6af1 -- daily-ui.css daily-reference.css study-ui.css competition-ui.css
           npm run build
-          rg -q 'CACHASTE_DUELS2_RUNTIME' dist/competition-app.js
-          rg -q 'wss://jmobinmdwrmdqrxtcruj.supabase.co' dist/competencia.html
+          grep -Fq 'CACHASTE_DUELS2_RUNTIME' dist/competition-app.js
+          grep -Fq 'wss://jmobinmdwrmdqrxtcruj.supabase.co' dist/competencia.html
       - run: bash scripts/install-chromium-qa.sh
       - name: Probar recuperación recargada, maestro, contraste y avatares en Android
         run: npx playwright test tests/competition.mobile.spec.mjs tests/competition-ux.mobile.spec.mjs tests/rc10-update.mobile.spec.mjs tests/rc11-recovery-arena.mobile.spec.mjs tests/competition-community.mobile.spec.mjs tests/five-subjects.mobile.spec.mjs tests/daily-session-recovery.mobile.spec.mjs tests/subscription-mobile.spec.mjs tests/billing-flow.mobile.spec.mjs tests/legal-links.mobile.spec.mjs tests/content-context.mobile.spec.mjs tests/night-identity.mobile.spec.mjs --project=Android-Chrome --project=mobile-320px
