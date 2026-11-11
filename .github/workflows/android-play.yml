@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [work/cachaste-motor-duolingo-20261016, work/cachaste-android-legibilidad-final-20261110]
-    paths: ['tests/**', 'android/app/build.gradle', 'android/app/src/main/AndroidManifest.xml', 'android/app/src/main/java/**', 'android/app/src/androidTest/**', 'competition-*', 'daily-*', 'assets/**', '.github/workflows/android-play.yml', 'scripts/VerifyPlayBundle.java', 'scripts/verify-play-manifest.py']
+    paths: ['tests/**', 'android/app/build.gradle', 'android/app/src/main/AndroidManifest.xml', 'android/app/src/main/java/**', 'android/app/src/androidTest/**', 'competition-*', 'daily-*', 'study-ui.css', 'suscripcion.html', 'assets/**', '.github/workflows/android-play.yml', '.github/workflows/android-apk.yml', 'scripts/run-android-installed-qa.sh', 'scripts/VerifyPlayBundle.java', 'scripts/verify-play-manifest.py']
 permissions:
   contents: read
 concurrency:
@@ -89,7 +89,6 @@ jobs:
           retention-days: 14
           if-no-files-found: error
   native:
-    needs: verify
     uses: ./.github/workflows/android-apk.yml
   signed-bundle:
     needs: [signing-preflight, verify, integration, visual-audit, native]
