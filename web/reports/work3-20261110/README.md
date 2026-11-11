@@ -28,17 +28,16 @@ No desplegar automáticamente. Work 1 debe revisar e integrar este PR.
 
 Los precios, las condiciones, los planes, los accesos gratuitos y los textos que avisan que los cobros están cerrados permanecen iguales. No se introduce ninguna garantía de puntaje. Los textos académicos quedan intactos.
 
-## Validación
+## Validación del PR
 
-- 169 comprobaciones web existentes aprobadas localmente antes de añadir la prueba de conservación del recorte.
-- Build y verificación de distribución: 124 archivos privados cifrados, cero bancos educativos en claro y ningún secreto de contenido embebido en el worker.
-- Pruebas de navegador y comparativas: `.github/workflows/work3-web-qa.yml`, exclusivamente para esta rama, sin permisos de despliegue.
-- Las pruebas nuevas miden el color realmente pintado, incluyendo `-webkit-text-fill-color`, capas translúcidas y extremos de gradiente; usan 4,5:1 en el texto educativo y los controles. Las capturas permiten revisar gráficos y composición.
-- Pendiente completar resultados ejecutados y fijar la revisión Android que supere las validaciones.
-
+- La revisión `713a179d44abc73303146ef2bf034eca038617ba` aprobó 170 pruebas de lógica, 47 de auditoría visual y 156 de navegación y regresión. [Ejecución verificada](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42940126178)
+- La auditoría cubrió 320, 360, 390, 430 y 1280 px. Registró 18.601 mediciones de texto y controles con un mínimo de **5,258:1** en las pantallas verificadas. Las capturas recorren portada, cuenta, recuperación, tutor, mini prácticas y corrección en todas las materias. [Capturas y resultados](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42940126178/artifacts/13821445714)
+- La regresión se ejecutó en Chromium móvil y de escritorio. Incluyó inicio de sesión de prueba, redirecciones, recuperación, persistencia y acceso a contenido protegido. La prueba de portada verificó que el RGB del gato coincide píxel por píxel con el recurso original.
+- La compilación toma `daily-ui.css`, `daily-reference.css` y `study-ui.css` desde la revisión Android `8b6ab59f8780c55ecc3dd38d800e34057e40b602`. El checkout con historial completo debe tener disponible esa revisión. La distribución verificada mantiene los 124 archivos privados cifrados.
+- Work 1 recibe el PR para revisar e integrar. [PR web #9](https://github.com/josevillablanca30/PreparaTupaes/pull/9)
 
 ## Primer ciclo de navegador
 
-Run `42936906512`: aprobaron las seis pruebas públicas (cinco anchos y la captura anterior de portada). En la parte educativa se reprodujeron los mismos tres problemas de contraste de Android, ya corregidos en la revisión fijada posterior. Las pruebas que no alcanzaron a ejecutarse por el límite de fallos quedan pendientes en la revisión siguiente. Los 170 controles de lógica web aprobaron, incluida la comparación de todos los píxeles RGB del personaje.
+Run `42936906512`: aprobaron las seis pruebas públicas (cinco anchos y la captura anterior de portada). En la parte educativa se reprodujeron los mismos tres problemas de contraste de Android, ya corregidos en la revisión fijada posterior. La revisión final completó las pruebas que en ese ciclo no se alcanzaron a ejecutar. Los 170 controles de lógica web aprobaron, incluida la comparación de todos los píxeles RGB del personaje.
 
 La rama base se volvió a inspeccionar: `35ac82e94646d16ee552b27cf343b4aada7be318` incorpora informes de lanzamiento de Work 1. Son cambios ajenos al PR y se conservan.
