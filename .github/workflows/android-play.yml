@@ -89,7 +89,7 @@ jobs:
           retention-days: 14
           if-no-files-found: error
   native:
-    needs: [verify, visual-audit]
+    needs: verify
     uses: ./.github/workflows/android-apk.yml
   signed-bundle:
     needs: [signing-preflight, verify, integration, visual-audit, native]

@@ -24,3 +24,11 @@ Run `42935940787`, fuente `1d47211a8b2de496eff5b5191cf2789a78bbe39b`:
 - La comparativa anterior necesitaba historial git completo; el checkout superficial no incluía `e3a0434`. Se corrige la infraestructura de captura.
 - La firma y el emulador quedaron bloqueados por el control de verificación, como corresponde. No se produjo un AAB que ocultara estas fallas.
 - Copy Android: «Terminar mi ratito» pasa a «Terminar práctica» para describir la acción. El título genérico de respaldo «Cada ratito suma» pasa a «Práctica completada»; no se alteran textos académicos.
+
+
+## Auditoría ampliada de recorrido
+
+- `42937325159`: 188/188 originales; 36/41 de tutor y mini práctica. El único fallo restante fue la misma fórmula en cinco anchos dentro del modelo de ondas, cuyo contenedor es `.biology-model`. Se agregó el par claro para ese recuadro de datos.
+- `42938797727`: **41/41** de tutor y mini práctica, con todas las menciones y anchos. Las siete pruebas adicionales de recorrido detectaron estilos fuera del tutor: globo de bienvenida (1,088:1), texto secundario del modo juego (3,262:1), acciones deshabilitadas de diagnósticos clásicos (2,055–2,251:1), leyendas de avatares (2,789–3,275:1) y rótulo informativo de suscripción (4,111:1). Se emparejan sus fondos y colores; sólo cambia el color del rótulo en suscripción.
+- Se excluye de la sonda el valor interno de radios y casillas, que el navegador no pinta. Se mantienen las etiquetas visibles y se añade el texto visible de los selectores. Los umbrales, recorridos y controles existentes se conservan.
+- Se verificó directamente la firma del AAB anterior 47: SHA-256 `a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575`. La nueva firma tiene que coincidir con esa huella.

@@ -50,3 +50,9 @@ header a{background:#251634;border:1px solid #744096}
 .tabs button.active,.tabrow .btn.active,.confchoices button.active,.confidence-choice.active,.exam-number.filled,.question-map .answered{background:#532071;color:#fff;border-color:#dc86ff}
 footer{color:#d7c5e7}
 .question-visual :is(p,figcaption,small,strong){color:#302044}
+
+/* Keep the disabled label readable without presenting it as an available action. */
+:is(button,.btn):disabled{opacity:1}
+:is(button.primary,.btn):disabled:not(.choice):not(.option){background:#352341;color:#e4d7ef;border:1px dashed #85649b;box-shadow:none}
+.review-item{background:#21122f;color:#f8f4ff;border-color:#8550a6}
+.error-reason{background:#3c192a;color:#ffe0e7}

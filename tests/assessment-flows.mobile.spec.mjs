@@ -1,4 +1,5 @@
 import {test,expect} from '@playwright/test';
+import {renderedContrast} from './helpers/rendered-contrast.mjs';
 const subjects=[{page:'m2.html',key:'cachaste-m2-v1',bank:'M2',count:55,minutes:140},{page:'history.html',key:'cachaste-history-v1',bank:'Historia',count:65,minutes:120}];
 async function diagnosis(page,subject,wrong=false){
  await page.locator('#diagnostic').click();
@@ -44,7 +45,10 @@ for(const subject of subjects){
   await page.locator('#reinforce').click();const after=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).session,subject.key);
   expect(after.mode).toBe('reinforce');expect(after.ids.length).toBeGreaterThan(0);expect(after.ids.every(id=>!before.some(r=>r.id===id))).toBe(true);
   await page.locator('[data-choice]').first().click();await page.locator('#check').click();
-  await expect(page.locator('.tutor-panel')).toBeVisible();const first=await page.locator('.tutor-panel').innerText();
+  await expect(page.locator('.tutor-panel')).toBeVisible();
+  const feedback=await page.evaluate(renderedContrast,'.tutor-panel h4,.tutor-panel p,.tutor-panel li,.error-reason summary,.error-reason p,.error-reason li');
+  expect(feedback.length).toBeGreaterThan(4);expect(feedback.filter(item=>!item.passed)).toEqual([]);
+  const first=await page.locator('.tutor-panel').innerText();
   await page.getByRole('button',{name:'Más fácil',exact:true}).click();expect(await page.locator('.tutor-panel').innerText()).not.toBe(first);
   await page.getByRole('button',{name:'Con un ejemplo',exact:true}).click();await expect(page.locator('[data-explain="example"]')).toHaveAttribute('aria-pressed','true');
  });

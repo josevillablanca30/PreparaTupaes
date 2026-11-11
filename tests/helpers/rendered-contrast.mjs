@@ -10,7 +10,9 @@ export function renderedContrast(selector){
  for(const el of document.querySelectorAll(selector)){
   const style=getComputedStyle(el),rect=el.getBoundingClientRect();
   if(!rect.width||!rect.height||style.visibility==='hidden'||el.closest('[aria-hidden=true]')||style.clipPath==='inset(50%)')continue;
-  const text=Array.from(el.childNodes).filter(n=>n.nodeType===Node.TEXT_NODE).map(n=>n.textContent).join(' ').trim()||(el.matches('input,textarea')?(el.value||el.placeholder):'');
+  // Native radio/checkbox values are submitted data, not painted text.
+  const fieldText=el.matches('input:not([type=radio]):not([type=checkbox]):not([type=hidden]):not([type=file]):not([type=range]):not([type=color]),textarea')?(el.value||el.placeholder):el.matches('select')?el.selectedOptions[0]?.textContent:'';
+  const text=Array.from(el.childNodes).filter(n=>n.nodeType===Node.TEXT_NODE).map(n=>n.textContent).join(' ').trim()||fieldText;
   if(!text)continue;
   const chain=[];for(let n=el;n;n=n.parentElement)chain.unshift(getComputedStyle(n));
   let backgrounds=[[255,255,255,1]],opacity=1;

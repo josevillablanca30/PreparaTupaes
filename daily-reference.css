@@ -437,8 +437,8 @@ body:has(.reference-courses){--game-purple:#7438df;--game-deep:#4c229b;--game-in
 #daily-root :is(.world-picker-tile,.curriculum-chapter-evidence,.studio-choice,.course-tile){background:linear-gradient(140deg,#251334,#130c20);border-color:#8250a1;color:var(--night-ink)}
 #daily-root .world-picker-tile.locked{background:#17101f;color:#c9bad5;border-color:#5a426b}
 #daily-root :is(.world-picker-number,.mission-emblem){background:linear-gradient(140deg,#6d249e,#3f1a61);color:#ffdd7f;border-color:#b66edc}
-#daily-root .wise-cat p{background:#241432;color:#f6edff;border-color:#8951a7}
-#daily-root .wise-cat p:before{background:#241432;border-color:#8951a7}
+#daily-root .wise-cat[data-cat-state] p{background:#241432;color:#f6edff;border-color:#8951a7}
+#daily-root .wise-cat[data-cat-state] p:before{background:#241432;border-color:#8951a7}
 #daily-root .cat-frame.official-master{overflow:visible;filter:drop-shadow(0 0 9px #a729e52e)}
 #daily-root .cat-frame.official-master img{position:absolute;width:100%!important;height:100%!important;max-width:100%!important;left:0!important;top:0!important;object-fit:contain!important;object-position:center bottom}
 #daily-root .reference-lesson-hero .cat-frame.official-master{aspect-ratio:1;min-height:150px}
@@ -502,3 +502,8 @@ body:has(.reference-courses){--game-purple:#7438df;--game-deep:#4c229b;--game-in
 #daily-root :is(.reference-subject,.reference-card-title small,.reference-speech,.trail-status,.world-hud p,.school-position,.reference-stats small){font-size:12px}
 
 #daily-root .express-report .reward-card strong{color:var(--night-gold)}
+
+#daily-root .mode-tile.primary{background:linear-gradient(150deg,#8b20c7,#6811bc)!important}
+#daily-root .mode-tile.primary small{color:#f8f4ff}
+#daily-root .wise-cat[data-cat-state=celebrating] p{background:#12382b;color:#d6ffe8;border-color:#5cca95}
+#daily-root .wise-cat[data-cat-state=celebrating] p:before{background:#12382b;border-color:#5cca95}
