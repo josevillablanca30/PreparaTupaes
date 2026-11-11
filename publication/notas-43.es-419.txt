@@ -1,0 +1,7 @@
+<es-419>
+Mejoramos el VS: tarjetas alineadas y acceso más claro al duelo.
+El maestro entrega sus consejos sin tapar su imagen.
+Logo integrado sin fondo y fotos de perfil de hasta 5 MB, comprimidas antes de subir.
+Las fotos también aparecen en rankings.
+Mensajes más claros si el servicio de correo rechaza el envío.
+</es-419>

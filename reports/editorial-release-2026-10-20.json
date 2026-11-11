@@ -1,0 +1,613 @@
+{
+  "date": "2026-10-20",
+  "scope": "24 reformulaciones y 14 ejercicios originales de transferencia. No certifica cobertura integral de cada página del Drive ni equivalencia estadística a PAES.",
+  "revisions": [
+    {
+      "key": "Lectura:LEC-051",
+      "priorVersion": "a1-752918aeee102c58216a9faa78bb52b6db4d5d952324a8356a1b5b56d553ca2e",
+      "currentVersion": "a1-9bea0e900d43687bac48a944b97e7ed5b81daaaed3758848ca47cb426ffb89a0",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Lectura:LEC-054",
+      "priorVersion": "a1-90a04fd267db930227e86a7128831ccc34edeeacce573c1b7b7f4055a7ae1e79",
+      "currentVersion": "a1-0c87691e81f004c8aef0e90a55d6ee4bdfe58b2add7f5a0a42d334bb2a97e25a",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Lectura:LEC-077",
+      "priorVersion": "a1-5f95ece5ac95c3fd96e553ce8c943dfa03a27d2fd8d3fd6d203a74ef54e88732",
+      "currentVersion": "a1-69a6b506c5eaa3347578cc28bdeefb38de468bd50e529755a88363b0415a9a6f",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Lectura:LEC-101",
+      "priorVersion": "a1-7867b9d7a6c05bf1555a50d09acf29384db7f72326b2c09f9d5cb7de10f11510",
+      "currentVersion": "a1-9521325ab773c947274528f8c028ec72ae17fd2f3033c1b29c0d44f453ccd78d",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-006",
+      "priorVersion": "a1-4474089b0bb1ffd9e50ba86278dedc9d94d7b41cbbccc148279f130e9fe1a786",
+      "currentVersion": "a1-ab3a0a35ea01ab9f62d8ddfbcdeb494ccc12cf208df39295be229c90ecd42885",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-009",
+      "priorVersion": "a1-77ec4dff2c44515499fe664ceda65e2acfc235f32b2abd854764fb2b34427b93",
+      "currentVersion": "a1-0bb32f9d081ab0113d3e0ac35fa938ca98be78e0e5d287c307531ebcfef2bf3a",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-014",
+      "priorVersion": "a1-7540fbe146cac99eb0a19d158d8e5f07a56436e8658fd24ee182edd376758c4d",
+      "currentVersion": "a1-059b3f8ed67702991a45a06080e0e06bd814355db78ab23896194eaab600d640",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-020",
+      "priorVersion": "a1-924e26be2feebe00449b4fc67e647bb5e2afc1f647944525f4a072e2e5119463",
+      "currentVersion": "a1-16383821c8d1236349a245b7ad8542ea9b17133fa003886ca2235bf6dfea5e8c",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-044",
+      "priorVersion": "a1-e8fb07f1f9592659675667de4afcf4fe46b9e1849cc13500109045b03b08e618",
+      "currentVersion": "a1-a719c2dbd06a0bb546b47c5a662a876e317218acc33747f1a6ccbeff5f875dc7",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-054",
+      "priorVersion": "a1-b33784486a19e50dadc84d095746e2a6f6233c0d577394bac4a7b126804c64cf",
+      "currentVersion": "a1-ebe47c88e24b95d0bbaf7ce81b2c9970606a83ab64501d2b25d6c972bc841453",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-063",
+      "priorVersion": "a1-976d14204886521f1f318424019356d21c228f53e6bc7c6a8c5e720202f5e67a",
+      "currentVersion": "a1-5515dc3cc8ae896e41c6e367a1f929b9c0b4f15095207fcb78fbebae78d64d5f",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-064",
+      "priorVersion": "a1-b0a584b8de5dc9fc167c89aaf99c724c56142c4e85a8bb903b6eb13fdde5430f",
+      "currentVersion": "a1-6d9b6e7e88b91f16f85822eeeecfe140520d05edbb140b2dd083c2d99d64e114",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-071",
+      "priorVersion": "a1-89207f5cb1018e55294beef8c2742ea8fd35b14f88fcb4c8ab18e8742de9b3c1",
+      "currentVersion": "a1-a1b487801aec0b97460f0a6a25a617aeebed009672df4ae650befab9028a07ff",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-073",
+      "priorVersion": "a1-29370e852b992033c55830a1179566af6f39a3f4c126a9c146010d475e6e7766",
+      "currentVersion": "a1-fb5877eb680f7a978ca1845b185d13c70b3992e3ff38b49c67874a084e0a2e0c",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-079",
+      "priorVersion": "a1-46153e7cb12ac4f5236139a64d585d777406c2d8817b81f5dafa378512a1b99f",
+      "currentVersion": "a1-7414d589baa32d32270ea43f8b30395d716290d5538118eda9289120ac349ea1",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-080",
+      "priorVersion": "a1-b462a7324b53c0a8ba42bbf990121c0019812a2630c7f8c4eb71500310484255",
+      "currentVersion": "a1-4c23c6b2c11c8f66e6279e630f3dd63328e47c05b6e0bbd67ef21f6b723c34bf",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-082",
+      "priorVersion": "a1-162b4b3a0c1f8ac8d082af88fb9a9fe3aad7265ef8fe12a24b15fb626ffb20bd",
+      "currentVersion": "a1-563fd801ce179b6e7f5c25db036b969377c38bf9d3306285790b3fb7d1b2cdf6",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-117",
+      "priorVersion": "a1-bb1405c01c8aec6bc1f87830a5c61e9bf7d6b8d26efbb267424e632fb51d10f5",
+      "currentVersion": "a1-4a07d1a5adca93f1b25d08068e1d61db325f526d95c695e6edadb58182f4e3a2",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-128",
+      "priorVersion": "a1-b214714868fec15fa3d278cb4eaf20a1479674e42e3df609ae869a9f09aa065d",
+      "currentVersion": "a1-6be699b37eb500b273f7485594b7690572ebf7ba856e065d6780d81b40d84410",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:SCI-143",
+      "priorVersion": "a1-70989c6f053ce7afce9ceaeaa9a72361fe2ae3475df6f4763b7088216cd8896c",
+      "currentVersion": "a1-30e0e40c9133bbfd4dd8369c465d8d40b04fd6002dae6996396a4d54604d27f4",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Historia:HIS-038",
+      "priorVersion": "a1-d0b1a8174b2d5ea2c4815b36933404ba8bb56ec9e17617bd4d658305dc864d68",
+      "currentVersion": "a1-5127902cef077c537835169f4ec32f9494435fc4b47c8df15742bcf4914215bf",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Historia:HIS-047",
+      "priorVersion": "a1-b7f4ff8a8f59d1f4c73fad71a77b380e88546b93a804eaec9eb7f6874d0accb6",
+      "currentVersion": "a1-ed0efe95fa35080e09be986dd74864c3b4ecd9c7d7bfc8e3de57a940efb7da4f",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Historia:HIS-055",
+      "priorVersion": "a1-0318554fe1d58dc3046a367f441aab407eadf0605a029dbe00ab866f4ab49bd2",
+      "currentVersion": "a1-5813404d26039a2cb6feffcc4caf3f759bc36088ac3112d9a7504bc41008a503",
+      "answerIndexPreserved": true
+    },
+    {
+      "key": "Ciencias:TR-SCI-010",
+      "priorVersion": "a1-431425c2abc860e6ee553de42d8cf2d78cdd9093a0d13e12b1ebfe80ab6308ec",
+      "currentVersion": "a1-236b44e6eb8c4f505a0aec0cdcfc76e2a0ac6441bf31bb4bc49abb37237676d0",
+      "answerIndexPreserved": true
+    }
+  ],
+  "remainingHeuristics": [
+    {
+      "bank": "M1",
+      "id": 210,
+      "area": "Potencias",
+      "type": "short_stem",
+      "level": "review",
+      "detail": "Enunciado muy breve",
+      "decision": "aceptada",
+      "rationale": "La expresión 2⁻³ está completa; evalúa inverso multiplicativo y signo. Alargarla no añade información necesaria."
+    },
+    {
+      "bank": "M1",
+      "id": 224,
+      "area": "Inecuaciones",
+      "type": "short_stem",
+      "level": "review",
+      "detail": "Enunciado muy breve",
+      "decision": "aceptada",
+      "rationale": "La inecuación es autosuficiente; los distractores distinguen el cambio de sentido al dividir por un número negativo."
+    },
+    {
+      "bank": "M1",
+      "id": 291,
+      "area": "Transformaciones",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "Girar 90 grados representa confusión entre reflexión y rotación; la propiedad de conservación de longitudes es inequívoca."
+    },
+    {
+      "bank": "M1",
+      "id": 292,
+      "area": "Estadística",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "La imposibilidad de hallar mediana con tres datos representa desconocimiento del procedimiento; las otras opciones confunden centro, máximo y media."
+    },
+    {
+      "bank": "M1",
+      "id": 294,
+      "area": "Probabilidad",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "No hay error expresa adhesión a la multiplicación indebida de eventos incompatibles. La negación no vuelve inválido el distractor."
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-043",
+      "area": "Herencia y evolución",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "Todos Aa modela el cruce AA × aa confundido con Aa × Aa; la opción fenotípica también comprueba si se distingue genotipo de fenotipo."
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-124",
+      "area": "Mecánica",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "La velocidad constante implica aceleración y resultante cero. Las direcciones hacia arriba/abajo representan confusión entre movimiento y fuerza neta."
+    },
+    {
+      "bank": "Ciencias",
+      "id": "SCI-185",
+      "area": "Ondas",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "Las alternativas contrastan reflexión, lente divergente y ausencia de refracción dentro del modelo explícito de lente ideal."
+    },
+    {
+      "bank": "Ciencias",
+      "id": "TR-SCI-039",
+      "area": "Organismo y ambiente",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "Contar individuos en vez de especies es la confusión central; negar que el conteo permita comparar evalúa la definición de riqueza, no una verdad general."
+    },
+    {
+      "bank": "Ciencias",
+      "id": "TR-SCI-055",
+      "area": "Ondas",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "Negar imagen ante rayos divergentes es la confusión real/virtual buscada. El enunciado entrega la evidencia de prolongaciones."
+    },
+    {
+      "bank": "Ciencias",
+      "id": "TR-SCI-080",
+      "area": "Estructura atómica",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "Excluir iones del mismo elemento comprueba si se confunde carga con identidad nuclear. P y Q conservan Z y difieren en neutrones."
+    },
+    {
+      "bank": "Ciencias",
+      "id": "TR-SCI-084",
+      "area": "Organismo y ambiente",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "Todos los átomos extrapola indebidamente el resultado del trazador; contrasta alcance de evidencia con identificación del origen del O₂."
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-017",
+      "area": "Localizar",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "T04 muestra lechugas 18→15→12; Todos aumentaron extrapola el total o los otros cultivos e ignora esa serie."
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-053",
+      "area": "Interpretar",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "T11 limita la fecha a 1972–1978. Las falsas convierten límite en año exacto, confunden evidencia o inventan precisión diaria."
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-087",
+      "area": "Localizar",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "T18 contiene literalmente la advertencia del viento. La negación pertenece al contenido de una opción y no determina por sí sola su corrección."
+    },
+    {
+      "bank": "Lectura",
+      "id": "LEC-088",
+      "area": "Interpretar",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "T18 distingue datos numéricos de observaciones omitidas; ausencia de fechas y exceso de notas son lecturas erróneas contrastables con el pasaje."
+    },
+    {
+      "bank": "M2",
+      "id": "M2-011",
+      "area": "Funciones",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "Todos los reales representa olvidar la restricción x−5≥0; el dominio correcto es x≥5."
+    },
+    {
+      "bank": "M2",
+      "id": "M2-072",
+      "area": "Probabilidad",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "La simetría normal da P(X<media)=0,5 independientemente de la desviación estándar positiva; exigir ese dato es un error pertinente."
+    },
+    {
+      "bank": "M2",
+      "id": "M2-083",
+      "area": "Funciones",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "Todos los reales representa omitir la condición del radicando. Las otras opciones distinguen desigualdad invertida y exclusión errónea de cero."
+    },
+    {
+      "bank": "Historia",
+      "id": "HIS-041",
+      "area": "Economía y sociedad",
+      "type": "absolute_distractor",
+      "level": "review",
+      "detail": "Alternativa con negación o absoluto: comprobar plausibilidad",
+      "decision": "aceptada",
+      "rationale": "No recibir sueldo, estudiar o jubilarse confunde desempleo con otras situaciones. La clave incluye búsqueda y disponibilidad."
+    }
+  ],
+  "summary": {
+    "critical": 0,
+    "review": 20,
+    "questionCount": 802,
+    "unresolvedReformulations": 0,
+    "integratedTransfers": 14
+  },
+  "readiness": {
+    "generatedAt": "runtime",
+    "overall": {
+      "questions": 802,
+      "originals": 631,
+      "transfers": 171,
+      "concepts": 287,
+      "unverifiableConcepts": 0
+    },
+    "subjects": {
+      "M1": {
+        "questions": 147,
+        "originals": 116,
+        "transfers": 31,
+        "concepts": 65,
+        "verifiableConcepts": 65,
+        "unverifiableConcepts": 0,
+        "verifiedCases": 146
+      },
+      "M2": {
+        "questions": 115,
+        "originals": 114,
+        "transfers": 1,
+        "concepts": 48,
+        "verifiableConcepts": 48,
+        "unverifiableConcepts": 0,
+        "verifiedCases": 114
+      },
+      "Lectura": {
+        "questions": 130,
+        "originals": 130,
+        "transfers": 0,
+        "concepts": 10,
+        "verifiableConcepts": 10,
+        "unverifiableConcepts": 0,
+        "verifiedCases": 81
+      },
+      "Ciencias": {
+        "questions": 305,
+        "originals": 206,
+        "transfers": 99,
+        "concepts": 114,
+        "verifiableConcepts": 114,
+        "unverifiableConcepts": 0,
+        "verifiedCases": 292
+      },
+      "Historia": {
+        "questions": 105,
+        "originals": 65,
+        "transfers": 40,
+        "concepts": 50,
+        "verifiableConcepts": 50,
+        "unverifiableConcepts": 0,
+        "verifiedCases": 104
+      }
+    },
+    "gaps": [],
+    "scopes": {
+      "paes": {
+        "generatedAt": "runtime",
+        "overall": {
+          "questions": 755,
+          "originals": 604,
+          "transfers": 151,
+          "concepts": 270,
+          "unverifiableConcepts": 0
+        },
+        "subjects": {
+          "M1": {
+            "questions": 147,
+            "originals": 116,
+            "transfers": 31,
+            "concepts": 65,
+            "verifiableConcepts": 65,
+            "unverifiableConcepts": 0,
+            "verifiedCases": 146
+          },
+          "M2": {
+            "questions": 115,
+            "originals": 114,
+            "transfers": 1,
+            "concepts": 48,
+            "verifiableConcepts": 48,
+            "unverifiableConcepts": 0,
+            "verifiedCases": 114
+          },
+          "Lectura": {
+            "questions": 130,
+            "originals": 130,
+            "transfers": 0,
+            "concepts": 10,
+            "verifiableConcepts": 10,
+            "unverifiableConcepts": 0,
+            "verifiedCases": 81
+          },
+          "Ciencias": {
+            "questions": 262,
+            "originals": 181,
+            "transfers": 81,
+            "concepts": 99,
+            "verifiableConcepts": 99,
+            "unverifiableConcepts": 0,
+            "verifiedCases": 249
+          },
+          "Historia": {
+            "questions": 101,
+            "originals": 63,
+            "transfers": 38,
+            "concepts": 48,
+            "verifiableConcepts": 48,
+            "unverifiableConcepts": 0,
+            "verifiedCases": 100
+          }
+        },
+        "gaps": []
+      },
+      "complementary": {
+        "generatedAt": "runtime",
+        "overall": {
+          "questions": 47,
+          "originals": 27,
+          "transfers": 20,
+          "concepts": 21,
+          "unverifiableConcepts": 2
+        },
+        "subjects": {
+          "Ciencias": {
+            "questions": 43,
+            "originals": 25,
+            "transfers": 18,
+            "concepts": 19,
+            "verifiableConcepts": 17,
+            "unverifiableConcepts": 2,
+            "verifiedCases": 41
+          },
+          "Historia": {
+            "questions": 4,
+            "originals": 2,
+            "transfers": 2,
+            "concepts": 2,
+            "verifiableConcepts": 2,
+            "unverifiableConcepts": 0,
+            "verifiedCases": 4
+          }
+        },
+        "gaps": [
+          {
+            "subject": "Ciencias",
+            "concept": "Efecto Doppler",
+            "questions": 1,
+            "families": 1,
+            "reason": "Se requieren al menos dos familias independientes de evaluación"
+          },
+          {
+            "subject": "Ciencias",
+            "concept": "Separación de mezclas",
+            "questions": 1,
+            "families": 1,
+            "reason": "Se requieren al menos dos familias independientes de evaluación"
+          }
+        ]
+      }
+    },
+    "scienceTracks": {
+      "Biología": {
+        "generatedAt": "runtime",
+        "overall": {
+          "questions": 137,
+          "originals": 95,
+          "transfers": 42,
+          "concepts": 57,
+          "unverifiableConcepts": 0
+        },
+        "subjects": {
+          "Ciencias": {
+            "questions": 137,
+            "originals": 95,
+            "transfers": 42,
+            "concepts": 57,
+            "verifiableConcepts": 57,
+            "unverifiableConcepts": 0,
+            "verifiedCases": 133
+          }
+        },
+        "gaps": []
+      },
+      "Física": {
+        "generatedAt": "runtime",
+        "overall": {
+          "questions": 143,
+          "originals": 94,
+          "transfers": 49,
+          "concepts": 61,
+          "unverifiableConcepts": 0
+        },
+        "subjects": {
+          "Ciencias": {
+            "questions": 143,
+            "originals": 94,
+            "transfers": 49,
+            "concepts": 61,
+            "verifiableConcepts": 61,
+            "unverifiableConcepts": 0,
+            "verifiedCases": 137
+          }
+        },
+        "gaps": []
+      },
+      "Química": {
+        "generatedAt": "runtime",
+        "overall": {
+          "questions": 147,
+          "originals": 98,
+          "transfers": 49,
+          "concepts": 63,
+          "unverifiableConcepts": 0
+        },
+        "subjects": {
+          "Ciencias": {
+            "questions": 147,
+            "originals": 98,
+            "transfers": 49,
+            "concepts": 63,
+            "verifiableConcepts": 63,
+            "unverifiableConcepts": 0,
+            "verifiedCases": 141
+          }
+        },
+        "gaps": []
+      },
+      "TP": {
+        "generatedAt": "runtime",
+        "overall": {
+          "questions": 141,
+          "originals": 92,
+          "transfers": 49,
+          "concepts": 62,
+          "unverifiableConcepts": 0
+        },
+        "subjects": {
+          "Ciencias": {
+            "questions": 141,
+            "originals": 92,
+            "transfers": 49,
+            "concepts": 62,
+            "verifiableConcepts": 62,
+            "unverifiableConcepts": 0,
+            "verifiedCases": 138
+          }
+        },
+        "gaps": []
+      }
+    }
+  }
+}

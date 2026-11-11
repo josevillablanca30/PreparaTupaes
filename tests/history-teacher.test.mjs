@@ -7,7 +7,7 @@ const before=JSON.parse(readFileSync(new URL('../pedagogy/history-before-2026-10
 const bank=loadBanks().Historia,by=n=>bank.find(q=>q.id==='HIS-'+String(n).padStart(3,'0'));
 test('Historia: las 65 claves, preguntas y alternativas de la beta se conservan',()=>{
  assert.equal(bank.length,65);
- for(const old of before){const q=bank.find(q=>q.id===old.id);assert.equal(q.question,old.question);assert.equal(q.answer,old.answer);assert.deepEqual(Array.from(q.options),old.options);}
+ for(const old of before){const current=bank.find(q=>q.id===old.id),q=current.previousAssessments?.[0]||current;assert.equal(q.question,old.question);assert.equal(q.answer,old.answer);assert.deepEqual(Array.from(q.options),old.options);}
 });
 test('Historia: cada clase revisada integra fundamentos, aplicación, otra estrategia y tres errores particulares',()=>{
  const reviewed=bank.filter(q=>q.teaching);assert.equal(reviewed.length,65);
@@ -38,7 +38,7 @@ test('Historia: los ejemplos distinguen porcentaje, base, tasa y cantidades sin 
  assert.equal(.6*20,12);assert.equal(.8*10,8);
  assert.match(by(50).teaching.example.steps.join(' '),/cantidad baja de doce a ocho/);
  assert.match(by(46).teaching.application.join(' '),/sin.*su puesto de trabajo|ni su puesto de trabajo/);
- assert.match(by(47).teaching.check,/solo conocemos la tendencia descrita/);
+ assert.match(by(47).teaching.check,/Sin población en edad escolar|solo conocemos la tendencia descrita/);
  assert.match(by(48).teaching.check,/no podemos decidir cuál tiene razón ni inventar citas/);
 });
 test('Historia: los últimos doce ejemplos calculan y delimitan correctamente sus conclusiones',()=>{

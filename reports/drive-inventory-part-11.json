@@ -1,0 +1,78 @@
+{
+ "scanned": "2026-10-16",
+ "root": "Material PAES",
+ "contents": [
+  {
+   "path": "DEMRE/M1",
+   "id": "1NvvnmETW2H8w5RC0uSicD3LGfY-2idp4",
+   "items": [
+    {
+     "id": "1xyo9vhYttyXSjKjKI_pVSnq1oPFH77R7",
+     "name": "Solucionario ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    }
+   ]
+  },
+  {
+   "path": "ciencias_850/CL",
+   "id": "11kmMskDjwdc7m48sj3Okr0dSFK2mMKIj",
+   "items": [
+    {
+     "id": "1jD-B8KFcvTjf07HrctAR__0a1s1-1u9D",
+     "name": "LIBRO_LENGUAJE_-_ADMISIÓN_REGULAR_2025.pdf",
+     "type": "application/pdf",
+     "bytes": 3925953
+    }
+   ]
+  },
+  {
+   "path": "Más libros/Física",
+   "id": "1U-MZUmr7dVo5cioEcERy3cK4H9slCHfW",
+   "items": [
+    {
+     "id": "1v8HVEyowV3Yw5EGhsijr3lRrY0i69o5N",
+     "name": "Guías ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "1YE9DrOwKaFMnc6F7SCuYVPLC7rdN-FTw",
+     "name": "FÍSICA PAES .pdf",
+     "type": "application/pdf",
+     "bytes": 35859068
+    }
+   ]
+  },
+  {
+   "path": "Más libros/M1",
+   "id": "1EJRtiOVLo2rYiLns6lUwiFHqxapiFJhd",
+   "items": [
+    {
+     "id": "1iwrAShdxs1_lIyHP0HyDMP3nAHEMkVwL",
+     "name": "Copia de Santillana, Cuaderno de ejercicios matemáticas (2015).pdf",
+     "type": "application/pdf",
+     "bytes": 9254756
+    },
+    {
+     "id": "16r2S3v04KZQecB34doL3tDrm76HzxwyQ",
+     "name": "Libro (13).pdf",
+     "type": "application/pdf",
+     "bytes": 30057809
+    }
+   ]
+  },
+  {
+   "path": "Resúmenes/Biología",
+   "id": "1fyVVfR4OpBzOo_fy1y9BImncrX_oeg8h",
+   "items": [
+    {
+     "id": "1qxYBLQcx85U8QCoZXELbh-keF6Y0S6Al",
+     "name": "MIS APUNTES EVOLUCIÓN.pdf",
+     "type": "application/pdf",
+     "bytes": 10146495
+    }
+   ]
+  }
+ ]
+}

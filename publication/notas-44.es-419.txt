@@ -1,0 +1,3 @@
+Recuperación de contraseña con el nuevo correo en español: permite usar el código o pegar el enlace dentro de la app. El enlace abre la página HTTPS de recuperación.
+Se conservan las cinco asignaturas, el gatito maestro, las fotos de perfil, los duelos, las revanchas y los rankings.
+Acceso gratuito para las cuentas de prueba autorizadas. Compras y cobros reales deshabilitados durante esta etapa.

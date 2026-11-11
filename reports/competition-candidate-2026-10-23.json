@@ -1,0 +1,109 @@
+{
+  "sourceSha": "da479cc3c6ded5bd8693c65c4e2ffe8ea41a086e",
+  "androidRun": 39894280241,
+  "integrationRun": 39891307745,
+  "request": 2,
+  "notes": "APK beta: misma implementación 7c507cd; esta revisión añade diagnóstico Android. Competencia remota y cobros siguen pendientes de activación.",
+  "androidConclusion": "success",
+  "nativeScreenshots": 64,
+  "realAuthChecks": 15,
+  "apkSha256": "11e7c9c187b8d2dbde4c2cc8cdf75497b8f5e3eed21ffe41720dddd2ee887a4b",
+  "apkBytes": 11374496,
+  "apkRevision": "da479cc3c6ded5bd8693c65c4e2ffe8ea41a086e",
+  "testFixturesInCandidate": false,
+  "package": "package: name='cl.preparatupaes.app.sciencebeta' versionCode='28' versionName='1.5.0-rc1' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'",
+  "certificate": [
+    "V2 Signer: certificate DN: CN=Android Debug, O=Cachaste Beta, C=CL",
+    "V2 Signer: certificate SHA-256 digest: 06fea3ef23af90358868d6c7edf877a871404027e1f7104036ed25ff7b05df22",
+    "V2 Signer: certificate SHA-1 digest: 1559aaa8ead296e19f4742cd25f4fa4c490ae748",
+    "V2 Signer: certificate MD5 digest: 14587330f186a49bfa503aec215a2b5c"
+  ],
+  "nativeTestSuites": [
+    {
+      "name": "cl.preparatupaes.app.OfflineAppTest",
+      "tests": "25",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "229.968",
+      "timestamp": "2026-10-23T03:30:07",
+      "hostname": "localhost"
+    }
+  ],
+  "nativeFailures": [],
+  "nativePassedAndroid": {
+    "androidVersion": 15,
+    "apiLevel": 35,
+    "tests": 25,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "nativeAndroid16": {
+    "apiLevel": 36,
+    "status": "incomplete",
+    "reason": "Emulator disappeared from ADB during VS; successful fallback uses API 35; root cause unconfirmed"
+  },
+  "browserTests": {
+    "perProject": 376,
+    "projects": [
+      "Android-Chrome",
+      "mobile-320px",
+      "iPhone-WebKit"
+    ],
+    "total": 1128,
+    "failures": 0,
+    "source": "7c507cd01f4a3cddf8ffdd4ac44a1201ced41d7e",
+    "run": 39891307642
+  },
+  "logicTests": {
+    "passed": 365,
+    "failed": 0
+  },
+  "catalogue": {
+    "questions": 802,
+    "levels": 318,
+    "foundationLessons": 8,
+    "objectives": 287,
+    "readingPassages": 20,
+    "wrongOptionExplanations": 2414,
+    "competitiveEligibleQuestions": 755,
+    "assessmentDigest": "d8a9b8965c4a53d288758624b89b00759b435664e9c6854d7051975be5e0b5fa",
+    "subjects": {
+      "M1": {
+        "questions": 147,
+        "levels": 73,
+        "objectives": 65
+      },
+      "M2": {
+        "questions": 115,
+        "levels": 54,
+        "objectives": 48
+      },
+      "Lectura": {
+        "questions": 130,
+        "levels": 16,
+        "objectives": 10
+      },
+      "Ciencias": {
+        "questions": 305,
+        "levels": 122,
+        "objectives": 114
+      },
+      "Historia": {
+        "questions": 105,
+        "levels": 53,
+        "objectives": 50
+      }
+    }
+  },
+  "hostedCompetition": {
+    "project": "jmobinmdwrmdqrxtcruj",
+    "status": "not_activated",
+    "tablesPresent": false,
+    "blocker": "Migration write connector returned Invalid or expired requestState; read-back confirms no Cachaste tables.",
+    "billingReady": false,
+    "authEmailAndRedirectsConfigured": false,
+    "twoHostedAccountsTested": false
+  }
+}

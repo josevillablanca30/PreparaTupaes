@@ -1,0 +1,6 @@
+<es-419>
+• Corregimos los gráficos de las preguntas sobre escalas de planos y encuestas.
+• Ajustamos explicaciones del tutor sobre escalas, frecuencias, potencias y respiración de peces.
+• Incorporamos controles para evitar que ejercicios nuevos reutilicen gráficos de otras preguntas.
+• Conservamos el progreso, los rankings y los duelos. Cobros desactivados durante las pruebas.
+</es-419>

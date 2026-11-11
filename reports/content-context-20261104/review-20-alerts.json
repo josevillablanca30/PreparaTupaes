@@ -1,0 +1,815 @@
+{
+  "date": "2026-11-04",
+  "sourceCommit": "76209654dfee67e042ffae1e34fb78ef9890acb4",
+  "sourceContentCommit": "edbbfcfdfee55ef8a5963e94052f1f658c40f50c",
+  "method": "Revisión editorial asistida de enunciado, alternativas, clave, tutor y, para Lectura, pasaje completo. Cálculos independientes y contraste con las fuentes primarias enlazadas. No es revisión de profesor externo ni prueba empírica de calidad de distractores.",
+  "scope": {
+    "totalQuestions": 802,
+    "reviewedQuestions": 20,
+    "shortStem": 2,
+    "absoluteDistractor": 18
+  },
+  "result": {
+    "confirmedAnswerErrors": 0,
+    "changedQuestionBodies": 0,
+    "rawHeuristicAlertsRetained": 20,
+    "reviewedCatalogSha256": "daffcad173a65ecc00c14518b4e18321dbfaab18df00e99131b5eb7859836c8e"
+  },
+  "limitations": [
+    "Solo se revisaron las 20 preguntas señaladas; no es validación conceptual exhaustiva de las 802.",
+    "No se elimina una alerta por el solo hecho de haber sido revisada. Las 20 siguen en el informe heurístico.",
+    "La plausibilidad y dificultad de los distractores requieren revisión docente o resultados de estudiantes.",
+    "Mejoras de pertinencia del apoyo introductorio pendientes en SCI-043, LEC-053 y LEC-088; sin otra clave incorrecta confirmada.",
+    "El AAB 46 no se recompila ni modifica en esta revisión documental."
+  ],
+  "references": {
+    "genetica": {
+      "title": "OpenStax Biology 2e §12.2: cruce monohíbrido",
+      "url": "https://openstax.org/books/biology-2e/pages/12-2-characteristics-and-traits"
+    },
+    "newton": {
+      "title": "OpenStax College Physics 2e §4.2: primera ley de Newton",
+      "url": "https://openstax.org/books/college-physics-2e/pages/4-2-newtons-first-law-of-motion-inertia"
+    },
+    "lentes": {
+      "title": "OpenStax College Physics 2e §25.6: formación de imágenes por lentes",
+      "url": "https://openstax.org/books/college-physics-2e/pages/25-6-image-formation-by-lenses"
+    },
+    "riqueza": {
+      "title": "OpenStax Biology 2e §45.6: riqueza de especies",
+      "url": "https://openstax.org/books/biology-2e/pages/45-6-community-ecology"
+    },
+    "isotopos": {
+      "title": "OpenStax Biology 2e §2.1: isótopos e iones",
+      "url": "https://openstax.org/books/biology-2e/pages/2-1-atoms-isotopes-ions-and-molecules-the-building-blocks"
+    },
+    "fotosintesis": {
+      "title": "OpenStax Biology 2e §8.2: reacciones dependientes de la luz",
+      "url": "https://openstax.org/books/biology-2e/pages/8-2-the-light-dependent-reactions-of-photosynthesis"
+    },
+    "normal": {
+      "title": "OpenStax Introductory Statistics 2e, introducción al capítulo 6: simetría normal",
+      "url": "https://openstax.org/books/introductory-statistics-2e/pages/6-introduction"
+    },
+    "ene": {
+      "title": "INE: Documento Metodológico ENE 2020, §3.1.2.2, pp. 18–19; copia en Banco Central",
+      "url": "https://si3.bcentral.cl/estadisticas/Principal1/Metodologias/MLD/INE/Metodologia_ENE_ene_2020.pdf"
+    }
+  },
+  "records": [
+    {
+      "key": "M1:210",
+      "flag": "short_stem",
+      "reviewedContentSha256": "e049a34b738e55325fd2d629b0f292e33c7a4613c1f5c88391ad25cefc46e365",
+      "reviewedContent": {
+        "question": "¿Cuánto vale 2⁻³?",
+        "options": [
+          "−8",
+          "−1/8",
+          "1/8",
+          "8"
+        ],
+        "answer": 2,
+        "easy": "Piensa en retroceder por una escalera donde cada peldaño hacia adelante duplica la cantidad. Hacia atrás la reduces a la mitad; no saltas a una cantidad con signo menos.\n\nEl menos está en la altura de la escalera, el exponente, no delante del resultado. Puedes obtener una fracción positiva muy pequeña.\n\nCalculamos 2³ = 2 × 2 × 2 = 8.\n\nAplicamos la definición: 2⁻³ = 1/2³ = 1/8.\n\nEl resultado es positivo porque la base y su recíproco son positivos.",
+        "example": "Una señal conserva una décima parte de su intensidad en cada filtro. Después de tres filtros, ¿qué fracción conserva?\n\nCada filtro multiplica por 1/10. Tres filtros producen (1/10) × (1/10) × (1/10).\n\nEl resultado es 1/1.000 = 10⁻³: una fracción positiva, no −1.000.\n\nAl multiplicar 10⁻³ por 10³ obtenemos 1. Esa comprobación muestra la relación de recíprocos.\n\nCalcula primero la potencia positiva y colócala en el denominador; comprueba que su producto con la potencia original sea uno.",
+        "steps": [
+          "El menos en el exponente pide el recíproco de 2³, no un número con signo negativo.",
+          "Un exponente negativo indica el recíproco de una potencia: a⁻ⁿ = 1/aⁿ, con a distinto de cero. No indica que el resultado deba ser negativo.",
+          "La regla mantiene el patrón de las potencias: al reducir el exponente en uno dividimos por la base. Con base 2: 2¹ = 2, 2⁰ = 1, 2⁻¹ = 1/2 y 2⁻² = 1/4.",
+          "Calculamos 2³ = 2 × 2 × 2 = 8.",
+          "Aplicamos la definición: 2⁻³ = 1/2³ = 1/8.",
+          "El resultado es positivo porque la base y su recíproco son positivos.",
+          "Comprobamos multiplicando por la potencia positiva: (1/8) × 8 = 1. Por eso 1/8 es el recíproco de 2³. El signo menos del exponente indica esa división; no vuelve negativo el resultado."
+        ],
+        "explanations": [
+          "Elegiste «−8». −8 convierte el signo del exponente en signo del resultado, sin tomar el recíproco. Para corregirlo: Calculamos 2³ = 2 × 2 × 2 = 8. Aplicamos la definición: 2⁻³ = 1/2³ = 1/8. El resultado es positivo porque la base y su recíproco son positivos.",
+          "Elegiste «−1/8». −1/8 toma el recíproco pero agrega un signo negativo que no corresponde. Para corregirlo: Calculamos 2³ = 2 × 2 × 2 = 8. Aplicamos la definición: 2⁻³ = 1/2³ = 1/8. El resultado es positivo porque la base y su recíproco son positivos.",
+          "Comprobamos multiplicando por la potencia positiva: (1/8) × 8 = 1. Por eso 1/8 es el recíproco de 2³. El signo menos del exponente indica esa división; no vuelve negativo el resultado.",
+          "Elegiste «8». 8 ignora el signo del exponente: es 2³, no 2⁻³. Para corregirlo: Calculamos 2³ = 2 × 2 × 2 = 8. Aplicamos la definición: 2⁻³ = 1/2³ = 1/8. El resultado es positivo porque la base y su recíproco son positivos."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "El enunciado breve determina una única operación. 2⁻³ = 1/(2³) = 1/8; los distractores distinguen signo, recíproco y exponente positivo. La brevedad no omite una condición necesaria.",
+      "evidence": [
+        "cálculo independiente"
+      ],
+      "quality": "La alerta por longitud es informativa; no requiere alargar el enunciado."
+    },
+    {
+      "key": "M1:224",
+      "flag": "short_stem",
+      "reviewedContentSha256": "8cd6c157ab611d9ba1f3a6c7d8b730da31b118abf4d7d713d172c7f883557648",
+      "reviewedContent": {
+        "question": "Resuelve −2x > 8.",
+        "options": [
+          "x > −4",
+          "x < −4",
+          "x > 4",
+          "x < 4"
+        ],
+        "answer": 1,
+        "easy": "Piensa en una fila de números. Multiplicar por un negativo refleja toda la fila alrededor del cero y cambia quién queda a la izquierda. Esa vuelta explica por qué la flecha debe invertirse.\n\nNo es una regla para cambiar todos los signos porque sí: ocurre al multiplicar o dividir la comparación por un negativo. Para comprobar, elige un número dentro del intervalo y otro fuera.\n\nDividimos ambos lados de −2x > 8 por −2.\n\n8/(−2) = −4 y el signo > cambia a <: x < −4.\n\nProbamos x = −5: −2(−5) = 10 > 8; x = −3 daría 6 y no cumple.",
+        "example": "Un congelador registra T = −2h grados después de h horas. ¿Para qué h se cumple T < −10 en este modelo?\n\nSustituimos la regla de temperatura: −2h < −10.\n\nDividimos por −2 e invertimos < a >: h > 5. A las cinco horas T = −10 y todavía no es estrictamente menor.\n\nProbamos h = 6: T = −12 < −10, sí cumple. Con h = 4, T = −8, no cumple. Esto confirma la dirección del intervalo.\n\nDespeja conservando la comparación e invierte el sentido solo al multiplicar o dividir por un negativo; prueba valores a ambos lados.",
+        "steps": [
+          "El factor −2 obliga a invertir la comparación cuando despejamos x.",
+          "Una inecuación describe valores que cumplen una comparación, no necesariamente un único número. El signo < significa menor que y > mayor que; si son estrictos, el extremo no está incluido.",
+          "Sumar o restar lo mismo a ambos lados conserva el orden. Multiplicar o dividir por un positivo también; hacerlo por un negativo invierte el orden. Por ejemplo, 2 < 5 pero −2 > −5.",
+          "Dividimos ambos lados de −2x > 8 por −2.",
+          "8/(−2) = −4 y el signo > cambia a <: x < −4.",
+          "Probamos x = −5: −2(−5) = 10 > 8; x = −3 daría 6 y no cumple.",
+          "x = −4 produce igualdad, por lo que queda fuera de esta desigualdad estricta."
+        ],
+        "explanations": [
+          "Elegiste «x > −4». x > −4 conserva indebidamente el signo al dividir por un negativo. Para corregirlo: Dividimos ambos lados de −2x > 8 por −2. 8/(−2) = −4 y el signo > cambia a <: x < −4. Probamos x = −5: −2(−5) = 10 > 8; x = −3 daría 6 y no cumple.",
+          "x = −4 produce igualdad, por lo que queda fuera de esta desigualdad estricta.",
+          "Elegiste «x > 4». x > 4 pierde el signo del cociente y también la dirección correcta; x = 5 da −10. Para corregirlo: Dividimos ambos lados de −2x > 8 por −2. 8/(−2) = −4 y el signo > cambia a <: x < −4. Probamos x = −5: −2(−5) = 10 > 8; x = −3 daría 6 y no cumple.",
+          "Elegiste «x < 4». x < 4 usa el extremo positivo; incluye cero, que produciría 0 > 8, falso. Para corregirlo: Dividimos ambos lados de −2x > 8 por −2. 8/(−2) = −4 y el signo > cambia a <: x < −4. Probamos x = −5: −2(−5) = 10 > 8; x = −3 daría 6 y no cumple."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "Al dividir −2x > 8 por −2 se invierte el orden: x < −4. −5 satisface y −4 no satisface la desigualdad estricta. La consigna es breve y completa.",
+      "evidence": [
+        "cálculo independiente"
+      ],
+      "quality": "La alerta por longitud es informativa; no requiere alargar el enunciado."
+    },
+    {
+      "key": "M1:291",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "5a134216850d806983cfa2706bb2a7988487a64f495b86b8915b6d6ca2e39170",
+      "reviewedContent": {
+        "question": "Una figura se refleja respecto de una recta. ¿Qué afirmación debe mantenerse verdadera?",
+        "options": [
+          "Su área se reduce a la mitad.",
+          "Las longitudes de sus lados se conservan.",
+          "Siempre gira 90 grados.",
+          "Pasa a tener el doble de perímetro."
+        ],
+        "answer": 1,
+        "easy": "Imagina un espejo vertical en la línea x = 0: alguien tres pasos a la derecha aparece tres a la izquierda, pero a la misma altura.\n\nEl espejo no estira las figuras ni las gira un cuarto de vuelta. Tu mano reflejada tiene el mismo tamaño, aunque su orientación se invierta.\n\nCada punto queda a igual distancia del eje en el lado opuesto.\n\nEse movimiento conserva las distancias entre puntos: las longitudes de los lados no cambian.\n\nTambién se conservan área y perímetro, aunque cambie la orientación.",
+        "example": "Los extremos de un segmento son (1,2) y (4,2). ¿Dónde quedan al reflejarlos respecto del eje y y cuánto mide el segmento?\n\nCambiamos solo las coordenadas horizontales: (1,2) pasa a (−1,2) y (4,2) a (−4,2).\n\nAntes la separación horizontal era 4 − 1 = 3; después es |−4 − (−1)| = 3.\n\nLa longitud se conserva. Las alturas siguen siendo dos y cada extremo queda al lado opuesto del espejo, a la misma distancia de él.\n\nUbica el eje del espejo, cambia solo la coordenada perpendicular a él y comprueba que se conserven distancias.",
+        "steps": [
+          "Hay que reconocer qué propiedad se conserva al formar una imagen en un espejo.",
+          "Reflejar es obtener la imagen especular respecto de una recta: cada punto y su imagen están a igual distancia perpendicular del eje, en lados opuestos.",
+          "Respecto del eje y cambia el signo de x y se conserva y: (x,y) → (−x,y). La reflexión conserva longitudes, ángulos y áreas, aunque invierte la orientación de la figura.",
+          "Cada punto queda a igual distancia del eje en el lado opuesto.",
+          "Ese movimiento conserva las distancias entre puntos: las longitudes de los lados no cambian.",
+          "También se conservan área y perímetro, aunque cambie la orientación.",
+          "Una reflexión es una isometría, término que significa que conserva distancias."
+        ],
+        "explanations": [
+          "Elegiste «Su área se reduce a la mitad.». El espejo no reduce el tamaño; el área permanece igual. Para corregirlo: Cada punto queda a igual distancia del eje en el lado opuesto. Ese movimiento conserva las distancias entre puntos: las longitudes de los lados no cambian. También se conservan área y perímetro, aunque cambie la orientación.",
+          "Una reflexión es una isometría, término que significa que conserva distancias.",
+          "Elegiste «Siempre gira 90 grados.». Girar noventa grados es una rotación, no la definición de reflexión. Para corregirlo: Cada punto queda a igual distancia del eje en el lado opuesto. Ese movimiento conserva las distancias entre puntos: las longitudes de los lados no cambian. También se conservan área y perímetro, aunque cambie la orientación.",
+          "Elegiste «Pasa a tener el doble de perímetro.». Si cada lado conserva su longitud, la suma de lados también se conserva: el perímetro no se duplica. Para corregirlo: Cada punto queda a igual distancia del eje en el lado opuesto. Ese movimiento conserva las distancias entre puntos: las longitudes de los lados no cambian. También se conservan área y perímetro, aunque cambie la orientación."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "Una reflexión respecto de una recta conserva distancias y, por ello, las longitudes de lados. El distractor sobre girar 90° confunde reflexión con rotación; no introduce una segunda correcta.",
+      "evidence": [
+        "derivación de isometría: respecto del eje y, (x,y)→(−x,y); se conserva (Δx)²+(Δy)²"
+      ],
+      "quality": "Se conserva la advertencia sobre formulación absoluta; una revisión futura de dificultad puede reemplazar distractores poco plausibles."
+    },
+    {
+      "key": "M1:292",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "09d9c02df2caefff13465831713dc254944395bb0cca7a77a638a2f05e514dd3",
+      "reviewedContent": {
+        "question": "En los datos 2, 3 y 100, una persona dice que la mediana también es 35 porque ese es el promedio. ¿Qué argumento es correcto?",
+        "options": [
+          "Ambos valores son 35 porque hay tres datos.",
+          "La mediana es 3; el promedio es 35.",
+          "La mediana es 100 porque es el valor más grande.",
+          "No se puede calcular mediana con tres datos."
+        ],
+        "answer": 1,
+        "easy": "Imagina formar una fila por estatura y señalar a la persona que queda al centro. Quien mide muchísimo no cambia por sí solo a quién le toca la posición central.\n\nLa media reparte un total; la mediana busca un lugar en una fila ordenada. Son preguntas distintas y por eso un valor extremo puede separarlas mucho.\n\nLos valores ordenados son 2, 3 y 100. El central es tres: esa es la mediana.\n\nEl promedio usa la suma: (2 + 3 + 100)/3 = 105/3 = 35.\n\nLa afirmación correcta distingue mediana tres de media treinta y cinco.",
+        "example": "Los atrasos de cinco buses fueron 1, 2, 8, 3 y 26 minutos. ¿Cuál es la mediana?\n\nOrdenamos primero: 1, 2, 3, 8, 26. Hay cinco datos, así que buscamos la tercera posición.\n\nEl dato de esa posición es 3 minutos: quedan dos datos antes y dos después.\n\nEl promedio sería (1 + 2 + 3 + 8 + 26)/5 = 40/5 = 8 minutos. No sustituye la mediana: el atraso de 26 afecta mucho esa suma.\n\nOrdena y busca la posición central; no confundas esa posición con su dato ni con el promedio del grupo.",
+        "steps": [
+          "Los tres datos permiten comparar posición central con reparto del total.",
+          "La mediana es el valor central de los datos ordenados de menor a mayor. Deja la mitad de las posiciones a cada lado; no se calcula sumando todos los valores.",
+          "Con una cantidad impar de datos, la posición central es (n + 1)/2. Con una cantidad par se promedian los dos datos centrales. La posición no es el valor que se debe responder.",
+          "Los valores ordenados son 2, 3 y 100. El central es tres: esa es la mediana.",
+          "El promedio usa la suma: (2 + 3 + 100)/3 = 105/3 = 35.",
+          "La afirmación correcta distingue mediana tres de media treinta y cinco.",
+          "El valor extremo cien eleva mucho la media, pero no desplaza el dato central de la lista."
+        ],
+        "explanations": [
+          "Elegiste «Ambos valores son 35 porque hay tres datos.». Tener tres datos no iguala media y mediana; son procedimientos distintos. Para corregirlo: Los valores ordenados son 2, 3 y 100. El central es tres: esa es la mediana. El promedio usa la suma: (2 + 3 + 100)/3 = 105/3 = 35. La afirmación correcta distingue mediana tres de media treinta y cinco.",
+          "El valor extremo cien eleva mucho la media, pero no desplaza el dato central de la lista.",
+          "Elegiste «La mediana es 100 porque es el valor más grande.». Cien es el máximo, no el valor central. Para corregirlo: Los valores ordenados son 2, 3 y 100. El central es tres: esa es la mediana. El promedio usa la suma: (2 + 3 + 100)/3 = 105/3 = 35. La afirmación correcta distingue mediana tres de media treinta y cinco.",
+          "Elegiste «No se puede calcular mediana con tres datos.». Con tres datos sí existe un centro: hay un dato a cada lado de tres. Para corregirlo: Los valores ordenados son 2, 3 y 100. El central es tres: esa es la mediana. El promedio usa la suma: (2 + 3 + 100)/3 = 105/3 = 35. La afirmación correcta distingue mediana tres de media treinta y cinco."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "La mediana de 2, 3, 100 es 3 y la media es 105/3 = 35. El distractor niega erróneamente la posibilidad de calcular mediana con tres datos; la explicación lo refuta.",
+      "evidence": [
+        "cálculo independiente"
+      ],
+      "quality": "El detector señala una negación; no demuestra una clave incorrecta."
+    },
+    {
+      "key": "M1:294",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "8f2b10a3c7d7348380a4ae46bb5430954d2c092499cfe641c8269cce905599c2",
+      "reviewedContent": {
+        "question": "Al lanzar una moneda una vez, alguien calcula P(cara Y sello)=1/2×1/2=1/4. ¿Qué está mal?",
+        "options": [
+          "No hay error porque cada resultado tiene probabilidad 1/2.",
+          "Cara y sello no pueden ocurrir juntos en un lanzamiento; la probabilidad es 0.",
+          "La probabilidad correcta es 1/2.",
+          "La probabilidad es 1 porque siempre ocurre uno de los dos."
+        ],
+        "answer": 1,
+        "easy": "Una puerta puede estar abierta o cerrada en el instante definido, pero no en ambos estados a la vez. Pedir ambos estados simultáneos es distinto de pedir cualquiera de los dos.\n\nLa palabra Y exige coincidencia. La palabra O acepta cualquiera de las opciones. Antes de usar una operación, imagina si existe un resultado concreto que cumpla todo lo que se pide.\n\nCara y sello son resultados distintos del mismo ensayo.\n\nSu intersección está vacía, así que P(cara y sello) = 0.\n\nMultiplicar 1/2 × 1/2 describiría cara en un lanzamiento y sello en otro independiente, que no es este caso.",
+        "example": "Al elegir una tarjeta numerada del 1 al 4, ¿qué probabilidad hay de obtener simultáneamente un 2 y un 4? ¿Y de obtener 2 o 4?\n\nUna tarjeta tiene un solo número. Ninguna tarjeta es a la vez 2 y 4: P(2 y 4) = 0.\n\nPara 2 o 4 sí sirven dos de las cuatro tarjetas, así que P(2 o 4) = 2/4 = 1/2.\n\nMultiplicar (1/4)(1/4) inventaría dos elecciones independientes. Aquí solo se realiza una elección y la coincidencia solicitada es imposible.\n\nVerifica si existe algún resultado que cumpla las dos condiciones en el mismo ensayo; si no existe, la intersección tiene probabilidad cero.",
+        "steps": [
+          "Un solo lanzamiento no puede mostrar cara y sello simultáneamente.",
+          "Dos eventos son incompatibles cuando no pueden ocurrir en un mismo resultado. Su intersección, expresada por Y, está vacía y tiene probabilidad cero.",
+          "No confundas incompatible con independiente. Si ocurre cara en un único lanzamiento, sello ya no puede ocurrir en ese mismo lanzamiento. No corresponde multiplicar las probabilidades como si fueran dos ensayos independientes.",
+          "Cara y sello son resultados distintos del mismo ensayo.",
+          "Su intersección está vacía, así que P(cara y sello) = 0.",
+          "Multiplicar 1/2 × 1/2 describiría cara en un lanzamiento y sello en otro independiente, que no es este caso.",
+          "P(cara o sello) = 1 expresa certeza de uno de los dos; la condición Y exige ambos juntos."
+        ],
+        "explanations": [
+          "Elegiste «No hay error porque cada resultado tiene probabilidad 1/2.». Las probabilidades individuales de un medio no convierten eventos incompatibles en independientes. Para corregirlo: Cara y sello son resultados distintos del mismo ensayo. Su intersección está vacía, así que P(cara y sello) = 0. Multiplicar 1/2 × 1/2 describiría cara en un lanzamiento y sello en otro independiente, que no es este caso.",
+          "P(cara o sello) = 1 expresa certeza de uno de los dos; la condición Y exige ambos juntos.",
+          "Elegiste «La probabilidad correcta es 1/2.». 1/2 sería la probabilidad de cara sola o sello solo, no de ambos a la vez. Para corregirlo: Cara y sello son resultados distintos del mismo ensayo. Su intersección está vacía, así que P(cara y sello) = 0. Multiplicar 1/2 × 1/2 describiría cara en un lanzamiento y sello en otro independiente, que no es este caso.",
+          "Elegiste «La probabilidad es 1 porque siempre ocurre uno de los dos.». Uno corresponde a cara O sello: cambia el conector y responde otra pregunta. Para corregirlo: Cara y sello son resultados distintos del mismo ensayo. Su intersección está vacía, así que P(cara y sello) = 0. Multiplicar 1/2 × 1/2 describiría cara en un lanzamiento y sello en otro independiente, que no es este caso."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "En el modelo cara/sello de un lanzamiento, los dos eventos son incompatibles y su intersección es vacía. La respuesta marcada distingue intersección de unión y de dos ensayos independientes.",
+      "evidence": [
+        "enumeración de resultados {cara,sello}"
+      ],
+      "quality": "La negación del distractor responde al error conceptual planteado; no debe eliminarse solo por comenzar con No."
+    },
+    {
+      "key": "Ciencias:SCI-043",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "e40ab2a6442c09202ef1f3085696e6833020ff8c683bb230c703a6a38eb33bc9",
+      "reviewedContent": {
+        "question": "En un cruce entre dos individuos heterocigotos Aa y Aa con dominancia completa, ¿qué proporción genotípica se espera?",
+        "options": [
+          "1 AA : 2 Aa : 1 aa",
+          "3 fenotipos dominantes : 1 recesivo",
+          "Todos Aa",
+          "Todos aa"
+        ],
+        "answer": 0,
+        "easy": "Imagina dos sobres, uno por progenitor, cada uno con una de dos versiones de una instrucción. El descendiente recibe una versión de cada sobre: no recibe las dos versiones de ambos.\n\nEl resultado visible puede agrupar combinaciones distintas. Es como dos recetas con instrucciones diferentes que producen el mismo color: ver el color no identifica siempre la receta.\n\nCada progenitor aporta A o a con probabilidad 1/2.\n\nLas combinaciones son AA, Aa, aA y aa: 1:2:1.\n\nCada progenitor produce gametos A y a. Al combinarlos aparecen AA, Aa, aA y aa; Aa y aA son el mismo genotipo heterocigoto.\n\nProporción genotípica esperada: 1 AA : 2 Aa : 1 aa. El 3:1 agrupa fenotipos y responde otra clasificación.",
+        "example": "Una planta Tt se cruza con tt y T domina completamente. ¿Cómo se distribuyen genotipos y fenotipos esperados?\n\nEl primer progenitor aporta T o t con probabilidad 1/2. El segundo solo aporta t.\n\nLas combinaciones son Tt y tt, cada una con probabilidad 1/2. La mitad expresa el rasgo dominante y la otra el recesivo bajo dominancia completa.\n\nEstas proporciones son probabilidades por descendiente, no una obligación de obtener exactamente mitad y mitad en una familia pequeña. Genotipo y apariencia no deben contarse como si fueran la misma clasificación.\n\nEscribe los gametos de cada progenitor y combina uno de cada uno; separa probabilidades genotípicas de agrupaciones por fenotipo.",
+        "steps": [
+          "Vamos a identificar el proceso o magnitud que se pide y explicar cómo se obtiene: En un cruce entre dos individuos heterocigotos Aa y Aa con dominancia completa, ¿qué proporción genotípica se espera?",
+          "Un gen puede presentar variantes llamadas alelos. Un individuo diploide tiene dos copias en un locus: AA y aa son homocigotos; Aa es heterocigoto. El genotipo describe esas combinaciones y el fenotipo el rasgo observado.",
+          "En segregación simple, un heterocigoto forma gametos A y a con igual probabilidad. Al unir dos gametos se construye el genotipo descendiente. Con dominancia completa, AA y Aa pueden compartir fenotipo dominante, pero siguen siendo genotipos distintos. Una mutación somática no se transmite normalmente por reproducción sexual si no alcanza la línea germinal.",
+          "Cada progenitor aporta A o a con probabilidad 1/2.",
+          "Las combinaciones son AA, Aa, aA y aa: 1:2:1.",
+          "Cada progenitor produce gametos A y a. Al combinarlos aparecen AA, Aa, aA y aa; Aa y aA son el mismo genotipo heterocigoto.",
+          "Proporción genotípica esperada: 1 AA : 2 Aa : 1 aa. El 3:1 agrupa fenotipos y responde otra clasificación."
+        ],
+        "explanations": [
+          "Proporción genotípica esperada: 1 AA : 2 Aa : 1 aa. El 3:1 agrupa fenotipos y responde otra clasificación.",
+          "Elegiste «3 fenotipos dominantes : 1 recesivo». La relación 3:1 describe fenotipos bajo dominancia completa; la pregunta pide genotipos 1:2:1. Proporción genotípica esperada: 1 AA : 2 Aa : 1 aa. El 3:1 agrupa fenotipos y responde otra clasificación.",
+          "Elegiste «Todos Aa». También pueden obtenerse AA y aa. Proporción genotípica esperada: 1 AA : 2 Aa : 1 aa. El 3:1 agrupa fenotipos y responde otra clasificación.",
+          "Elegiste «Todos aa». Ambos progenitores pueden aportar A o a. Proporción genotípica esperada: 1 AA : 2 Aa : 1 aa. El 3:1 agrupa fenotipos y responde otra clasificación."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "Aa × Aa produce AA, Aa, aA y aa, agrupados en proporción genotípica 1:2:1. El 3:1 corresponde al fenotipo con dominancia completa; Todos Aa y Todos aa no describen ese cruce.",
+      "evidence": [
+        "genetica"
+      ],
+      "quality": "Los distractores absolutos son incorrectos y se explican. El apoyo introductorio incluye una mención lateral a mutación somática; no invalida la respuesta, pero su pertinencia puede mejorarse."
+    },
+    {
+      "key": "Ciencias:SCI-124",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "0ae2da0dcd1fe602a6bdd86f390e2e89d60db1b1d734bd225ea717fd87abad72",
+      "reviewedContent": {
+        "question": "Un ascensor se mueve hacia arriba con velocidad constante. ¿Cuál es la fuerza neta vertical sobre una persona en su interior?",
+        "options": [
+          "Dirigida necesariamente hacia abajo",
+          "Cero",
+          "Siempre igual al doble de su peso",
+          "Dirigida necesariamente hacia arriba"
+        ],
+        "answer": 1,
+        "easy": "Imagina dos equipos tirando de una cuerda. Si tiran igual en direcciones opuestas, sus aportes se equilibran, aunque ambos sigan haciendo fuerza.\n\nMoverse no exige una resultante hacia adelante en todo instante. La resultante indica cómo cambia la velocidad, no simplemente hacia dónde se mueve el objeto.\n\nVelocidad constante significa aceleración igual a cero.\n\nPor F_neta=m×a, la fuerza neta vertical es cero.\n\nEso no significa ausencia de fuerzas: peso y fuerza normal se equilibran.\n\nVelocidad vertical constante significa a vertical = 0. Por F neta = ma, la resultante vertical es cero; peso abajo y normal arriba pueden equilibrarse.\n\nSubir no exige aceleración ascendente. Fuerza neta cero no significa ausencia de peso o apoyo.",
+        "example": "Un carro de 4 kg recibe 14 N hacia la derecha y 6 N hacia la izquierda. ¿Qué aceleración tiene y qué pasaría si ambas fuerzas fueran iguales?\n\nElegimos derecha positiva: fuerza neta = 14 − 6 = 8 N.\n\nDe F = ma despejamos a = F/m = 8/4 = 2 m/s² hacia la derecha.\n\nSi ambas fuerzas se igualaran, la resultante y aceleración serían cero. El carro podría seguir moviéndose con velocidad constante: equilibrio no exige reposo.\n\nSuma fuerzas con sus direcciones, despeja la magnitud pedida y distingue equilibrio de reposo y masa de peso.",
+        "steps": [
+          "Vamos a identificar el proceso o magnitud que se pide y explicar cómo se obtiene: Un ascensor se mueve hacia arriba con velocidad constante. ¿Cuál es la fuerza neta vertical sobre una persona en su interior?",
+          "La fuerza neta es la suma vectorial de las fuerzas: sus direcciones importan. La segunda ley de Newton relaciona esa resultante con masa y aceleración, F neta = ma. Un newton equivale a kg·m/s².",
+          "Velocidad constante implica aceleración cero y, por tanto, fuerza neta cero; no ausencia de todas las fuerzas. El peso es fuerza gravitatoria, P = mg, y se mide en N; la masa se mide en kg. El roce puede aportar una fuerza opuesta al movimiento.",
+          "Velocidad constante significa aceleración igual a cero.",
+          "Por F_neta=m×a, la fuerza neta vertical es cero.",
+          "Eso no significa ausencia de fuerzas: peso y fuerza normal se equilibran.",
+          "Velocidad vertical constante significa a vertical = 0. Por F neta = ma, la resultante vertical es cero; peso abajo y normal arriba pueden equilibrarse.",
+          "Subir no exige aceleración ascendente. Fuerza neta cero no significa ausencia de peso o apoyo."
+        ],
+        "explanations": [
+          "Elegiste «Dirigida necesariamente hacia abajo». No hay aceleración vertical con velocidad constante. Subir no exige aceleración ascendente. Fuerza neta cero no significa ausencia de peso o apoyo.",
+          "Subir no exige aceleración ascendente. Fuerza neta cero no significa ausencia de peso o apoyo.",
+          "Elegiste «Siempre igual al doble de su peso». Velocidad constante implica aceleración vertical cero. Subir no exige aceleración ascendente. Fuerza neta cero no significa ausencia de peso o apoyo.",
+          "Elegiste «Dirigida necesariamente hacia arriba». Subir no implica que exista aceleración hacia arriba. Subir no exige aceleración ascendente. Fuerza neta cero no significa ausencia de peso o apoyo."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "Velocidad vertical constante implica aceleración vertical cero y fuerza neta vertical cero. Peso y apoyo pueden seguir actuando y equilibrarse. La explicación diferencia fuerza neta de ausencia de fuerzas.",
+      "evidence": [
+        "newton"
+      ],
+      "quality": "Siempre igual al doble de su peso representa una afirmación falsa, no otra condición válida del enunciado."
+    },
+    {
+      "key": "Ciencias:SCI-185",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "3004ddbbf84cbabc66390067809241a65c1a99418551d826fd0a28bcff79177f",
+      "reviewedContent": {
+        "question": "Una lente convergente recibe rayos paralelos a su eje principal. En el modelo de lente delgada ideal, ¿qué sucede después de atravesarla?",
+        "options": [
+          "Se reflejan todos hacia la fuente",
+          "Se dispersan como si provinieran del foco del mismo lado",
+          "Todos conservan la misma dirección sin desviarse",
+          "Convergen hacia el foco del otro lado"
+        ],
+        "answer": 3,
+        "easy": "Imagina caminos que llegan paralelos y una pieza óptica los desvía hacia un punto común. Atravesar la pieza distingue lente de espejo.\n\nEl punto común se define por esos rayos particulares. No lo conviertas en un imán que hace llegar allí toda luz de cualquier origen.\n\nIdentificamos las condiciones del modelo: lente delgada convergente y rayos incidentes paralelos a su eje principal. No estamos describiendo un espejo ni una lente divergente.\n\nAl atravesar la lente, los rayos se refractan y se reúnen en el foco imagen situado al otro lado. Esa convergencia es la propiedad que permite elegir la respuesta.\n\nEn una lente divergente saldrían separándose, como si provinieran de un foco del lado de entrada. Conservar todos los rayos paralelos tampoco representa la acción de la lente convergente indicada.",
+        "example": "Un modelo de cámara recibe luz de un objeto muy lejano, aproximada por rayos paralelos. ¿Dónde se sitúa el sensor para una imagen enfocada en el modelo ideal?\n\nLa lente convergente refracta ese haz paralelo hacia el foco del lado de salida.\n\nSituar el sensor en ese plano permite registrar el punto donde se reúne el haz ideal; antes o después las trayectorias todavía no coinciden o ya se separaron.\n\nLa regla depende de la aproximación de objeto muy lejano. Para objetos cercanos, la posición de imagen requiere analizar otra geometría y no se fija siempre en el mismo foco.\n\nUsa la condición de rayos paralelos y sigue transmisión y convergencia hasta el lado correcto de la lente.",
+        "steps": [
+          "Vamos a identificar el proceso o magnitud que se pide y explicar cómo se obtiene: Una lente convergente recibe rayos paralelos a su eje principal. En el modelo de lente delgada ideal, ¿qué sucede después de atravesarla?",
+          "Una lente transmite y refracta luz en sus superficies. En el modelo de lente delgada convergente, rayos paralelos al eje principal se reúnen en el foco imagen del otro lado. La distancia del centro óptico a ese foco es la distancia focal.",
+          "El foco no es siempre la posición de cualquier imagen de cualquier objeto: la regla de rayos paralelos corresponde al caso descrito. Una lente divergente hace que los rayos salgan separándose, como si procedieran de un foco del lado de entrada.",
+          "Identificamos las condiciones del modelo: lente delgada convergente y rayos incidentes paralelos a su eje principal. No estamos describiendo un espejo ni una lente divergente.",
+          "Al atravesar la lente, los rayos se refractan y se reúnen en el foco imagen situado al otro lado. Esa convergencia es la propiedad que permite elegir la respuesta.",
+          "En una lente divergente saldrían separándose, como si provinieran de un foco del lado de entrada. Conservar todos los rayos paralelos tampoco representa la acción de la lente convergente indicada."
+        ],
+        "explanations": [
+          "Elegiste «Se reflejan todos hacia la fuente». Una lente transmite y refracta; no equivale a un espejo. Convergen en el foco del otro lado, sin reflejarse todos ni salir como si provinieran de un foco del lado inicial.",
+          "Elegiste «Se dispersan como si provinieran del foco del mismo lado». Ese comportamiento corresponde a una lente divergente. Convergen en el foco del otro lado, sin reflejarse todos ni salir como si provinieran de un foco del lado inicial.",
+          "Elegiste «Todos conservan la misma dirección sin desviarse». Excepto casos particulares como el rayo central, la lente desvía los rayos. Convergen en el foco del otro lado, sin reflejarse todos ni salir como si provinieran de un foco del lado inicial.",
+          "Convergen en el foco del otro lado, sin reflejarse todos ni salir como si provinieran de un foco del lado inicial."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "Bajo el modelo ideal indicado, los rayos paralelos al eje se reúnen en el foco del otro lado de la lente convergente. La explicación distingue lente de espejo y contempla el rayo central sin desviación.",
+      "evidence": [
+        "lentes"
+      ],
+      "quality": "Todos conservan la dirección se descarta porque la condición no se cumple para el conjunto de rayos."
+    },
+    {
+      "key": "Ciencias:TR-SCI-039",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "f4100340f4cb324d1303d2137cb9035c47bf358084f9102e355df941282a4299",
+      "reviewedContent": {
+        "question": "En dos reservas se registran estas especies: la reserva A contiene 12 especies distintas y la reserva B contiene 8. Aunque B suma más individuos en total, ¿qué conclusión se sostiene sobre la riqueza de especies?",
+        "options": [
+          "A tiene mayor riqueza de especies",
+          "B tiene mayor riqueza porque reúne más individuos",
+          "Ambas tienen igual riqueza porque ambas son reservas",
+          "No es posible comparar riqueza contando especies distintas"
+        ],
+        "answer": 0,
+        "why": "La riqueza de especies se refiere al número de especies distintas registradas, no al total de individuos. La reserva A tiene 12 especies y la B tiene 8; la abundancia total de individuos no cambia esos conteos. Al comparar el número de especies distintas, se observa que A tiene cuatro más que B y, por eso, mayor riqueza.",
+        "easy": "Imagina una biblioteca: contar títulos diferentes no es contar todos los ejemplares. Si pierdes un título completo, baja la riqueza aunque queden muchos ejemplares de otros.\n\nPara parentesco, busca páginas heredadas con patrones compartidos, no solo que dos libros tengan el mismo color de tapa. El parecido superficial puede tener otra explicación.\n\nLa riqueza de especies se refiere al número de especies distintas registradas, no al total de individuos.\n\nLa reserva A tiene 12 especies y la B tiene 8; la abundancia total de individuos no cambia esos conteos.\n\nAl comparar el número de especies distintas, se observa que A tiene cuatro más que B y, por eso, mayor riqueza.",
+        "example": "Un bosque tiene cien árboles de dos especies. Otro tiene veinte árboles de cinco especies. ¿Cuál tiene mayor riqueza y qué no permite concluir ese dato?\n\nEl segundo tiene cinco especies y el primero dos: el segundo presenta mayor riqueza, aunque tenga menos individuos.\n\nNo sabemos automáticamente cuál tiene más variación genética dentro de cada especie ni cuántos niveles tróficos contiene.\n\nTampoco esa cuenta determina el parentesco de las especies: para ello harían falta comparaciones heredables, como caracteres homólogos y ADN.\n\nIdentifica el nivel que se cuenta: especies, individuos, variantes o evidencia de parentesco, y no conviertas uno en todos los demás.",
+        "steps": [
+          "La riqueza de especies se refiere al número de especies distintas registradas, no al total de individuos.",
+          "La reserva A tiene 12 especies y la B tiene 8; la abundancia total de individuos no cambia esos conteos.",
+          "Al comparar el número de especies distintas, se observa que A tiene cuatro más que B y, por eso, mayor riqueza."
+        ],
+        "explanations": [
+          "Correcto. Al comparar el número de especies distintas, se observa que A tiene cuatro más que B y, por eso, mayor riqueza.",
+          "Elegiste «B tiene mayor riqueza porque reúne más individuos». El total de individuos corresponde a abundancia; no reemplaza el conteo de especies distintas.",
+          "Elegiste «Ambas tienen igual riqueza porque ambas son reservas». Ser reservas no implica que tengan la misma cantidad de especies.",
+          "Elegiste «No es posible comparar riqueza contando especies distintas». El número de especies distintas sí permite comparar riqueza."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "La riqueza cuenta especies distintas. A registra 12 y B 8; mayor abundancia de individuos en B no cambia la comparación de riqueza.",
+      "evidence": [
+        "riqueza"
+      ],
+      "quality": "La negación del distractor representa la confusión entre riqueza y abundancia."
+    },
+    {
+      "key": "Ciencias:TR-SCI-055",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "9b71c84f654e001386b7fef4591014cf0213e9a360a4e0db420c8ecc610f4898",
+      "reviewedContent": {
+        "question": "Se usa una lente convergente como lupa, situando un objeto entre la lente y su foco. Los rayos que salen de la lente divergen, pero sus prolongaciones hacia atrás se encuentran. ¿Cómo debe interpretarse la imagen?",
+        "options": [
+          "Es real, porque los rayos se cruzan físicamente detrás de la lente",
+          "Es virtual: surge de las prolongaciones y no se recoge directamente en una pantalla",
+          "Es real y necesariamente invertida por tratarse de una lente convergente",
+          "No puede existir imagen si los rayos que salen de la lente divergen"
+        ],
+        "answer": 1,
+        "why": "La convergencia del tipo de lente no garantiza una imagen real para cualquier posición del objeto. En el caso descrito se encuentran las prolongaciones hacia atrás, mientras que los rayos reales que salen de la lente divergen. Ese encuentro aparente define una imagen virtual, como la de una lupa, que no se proyecta directamente sobre una pantalla.",
+        "easy": "Imagina caminos que llegan paralelos y una pieza óptica los desvía hacia un punto común. Atravesar la pieza distingue lente de espejo.\n\nEl punto común se define por esos rayos particulares. No lo conviertas en un imán que hace llegar allí toda luz de cualquier origen.\n\nLa convergencia del tipo de lente no garantiza una imagen real para cualquier posición del objeto.\n\nEn el caso descrito se encuentran las prolongaciones hacia atrás, mientras que los rayos reales que salen de la lente divergen.\n\nEse encuentro aparente define una imagen virtual, como la de una lupa, que no se proyecta directamente sobre una pantalla.",
+        "example": "Un modelo de cámara recibe luz de un objeto muy lejano, aproximada por rayos paralelos. ¿Dónde se sitúa el sensor para una imagen enfocada en el modelo ideal?\n\nLa lente convergente refracta ese haz paralelo hacia el foco del lado de salida.\n\nSituar el sensor en ese plano permite registrar el punto donde se reúne el haz ideal; antes o después las trayectorias todavía no coinciden o ya se separaron.\n\nLa regla depende de la aproximación de objeto muy lejano. Para objetos cercanos, la posición de imagen requiere analizar otra geometría y no se fija siempre en el mismo foco.\n\nUsa la condición de rayos paralelos y sigue transmisión y convergencia hasta el lado correcto de la lente.",
+        "steps": [
+          "La convergencia del tipo de lente no garantiza una imagen real para cualquier posición del objeto.",
+          "En el caso descrito se encuentran las prolongaciones hacia atrás, mientras que los rayos reales que salen de la lente divergen.",
+          "Ese encuentro aparente define una imagen virtual, como la de una lupa, que no se proyecta directamente sobre una pantalla."
+        ],
+        "explanations": [
+          "Elegiste «Es real, porque los rayos se cruzan físicamente detrás de la lente». El enunciado distingue prolongaciones geométricas de rayos que se cruzan físicamente.",
+          "Correcto. Ese encuentro aparente define una imagen virtual, como la de una lupa, que no se proyecta directamente sobre una pantalla.",
+          "Elegiste «Es real y necesariamente invertida por tratarse de una lente convergente». Dentro de la distancia focal, una lente convergente puede producir una imagen virtual y derecha.",
+          "Elegiste «No puede existir imagen si los rayos que salen de la lente divergen». El encuentro aparente de prolongaciones permite observar una imagen virtual."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "Con el objeto entre foco y lente convergente, los rayos salientes divergen y sus prolongaciones se encuentran. Es una imagen virtual que no se proyecta directamente en pantalla.",
+      "evidence": [
+        "lentes"
+      ],
+      "quality": "El distractor No puede existir imagen confunde imagen virtual con ausencia de imagen; la explicación responde a esa confusión."
+    },
+    {
+      "key": "Ciencias:TR-SCI-080",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "fbda270034a97a1ea7f6eaf1d009250432f56251ff737945b2abfbdf6054973e",
+      "reviewedContent": {
+        "question": "Se describen tres especies: P tiene 17 protones, 18 neutrones y 18 electrones; Q tiene 17 protones, 20 neutrones y 17 electrones; R tiene 18 protones, 18 neutrones y 18 electrones. ¿Qué par corresponde a isótopos del mismo elemento?",
+        "options": [
+          "P y R, porque tienen igual número de electrones",
+          "P y Q, porque tienen igual número de protones y distinto número de neutrones",
+          "Q y R, porque ambos son neutros",
+          "Ningún par, porque un ion no puede pertenecer al mismo elemento que un átomo neutro"
+        ],
+        "answer": 1,
+        "why": "La identidad de un elemento está determinada por su número de protones; el número de electrones determina su carga, no su identidad. P y Q tienen 17 protones, pero sus cantidades de neutrones son diferentes: 18 y 20; sus números másicos son 35 y 37. Por ello corresponden a isótopos del mismo elemento, aunque P tenga carga negativa y Q sea neutro; R pertenece a otro elemento.",
+        "easy": "Imagina una ficha con casilleros separados: identidad, masa nuclear y carga. Cambiar un electrón altera la carga; cambiar un neutrón no altera el número de protones que define la identidad.\n\nNo todos los números de una ficha cuentan lo mismo. Primero pregunta si el dato se refiere a protones, nucleones o electrones externos.\n\nLa identidad de un elemento está determinada por su número de protones; el número de electrones determina su carga, no su identidad.\n\nP y Q tienen 17 protones, pero sus cantidades de neutrones son diferentes: 18 y 20; sus números másicos son 35 y 37.\n\nPor ello corresponden a isótopos del mismo elemento, aunque P tenga carga negativa y Q sea neutro; R pertenece a otro elemento.",
+        "example": "Un átomo con Z = 8 y A = 18 gana dos electrones. ¿Cuántos protones, neutrones y electrones tendrá y cambió de elemento?\n\nZ fija ocho protones. Los neutrones son A − Z = 18 − 8 = 10.\n\nNeutro tenía ocho electrones; al ganar dos queda con diez y carga neta −2.\n\nSigue siendo el mismo elemento porque conserva ocho protones. El cambio de electrones produjo un anión, no otro elemento ni un cambio de número másico.\n\nCuenta por separado protones, neutrones y electrones y comprueba qué cantidad define identidad, número másico y carga.",
+        "steps": [
+          "La identidad de un elemento está determinada por su número de protones; el número de electrones determina su carga, no su identidad.",
+          "P y Q tienen 17 protones, pero sus cantidades de neutrones son diferentes: 18 y 20; sus números másicos son 35 y 37.",
+          "Por ello corresponden a isótopos del mismo elemento, aunque P tenga carga negativa y Q sea neutro; R pertenece a otro elemento."
+        ],
+        "explanations": [
+          "Elegiste «P y R, porque tienen igual número de electrones». La coincidencia de electrones no basta: P y R tienen distinto número atómico.",
+          "Correcto. Por ello corresponden a isótopos del mismo elemento, aunque P tenga carga negativa y Q sea neutro; R pertenece a otro elemento.",
+          "Elegiste «Q y R, porque ambos son neutros». Ser neutro no identifica un elemento; Q y R tienen distinto número de protones.",
+          "Elegiste «Ningún par, porque un ion no puede pertenecer al mismo elemento que un átomo neutro». Ganar o perder electrones cambia la carga sin cambiar el número de protones del elemento."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "P y Q comparten Z=17 y tienen 18 y 20 neutrones: números másicos 35 y 37. Los 18 electrones de P dan carga −1 sin cambiar el elemento. R tiene Z=18 y pertenece a otro elemento.",
+      "evidence": [
+        "isotopos"
+      ],
+      "quality": "La negación sobre ion y átomo neutro es una confusión conceptual explícita, refutada en el tutor."
+    },
+    {
+      "key": "Ciencias:TR-SCI-084",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "7b77b5ae2098508e14c810369c93db0dd8f490274fb8ae2a6980ce7db0508426",
+      "reviewedContent": {
+        "question": "En un ensayo con algas se marca el oxígeno del agua y se usa CO₂ sin esa marca. Tras iluminar, la marca se detecta en el O₂ liberado. ¿Qué conclusión está apoyada directamente por este resultado?",
+        "options": [
+          "El carbono de la glucosa proviene del agua",
+          "El oxígeno molecular liberado procede del agua utilizada",
+          "Las algas no incorporan CO₂ durante la fotosíntesis",
+          "Todos los átomos de los productos fotosintéticos provienen del agua"
+        ],
+        "answer": 1,
+        "why": "El marcador permite seguir los átomos de oxígeno que estaban en el agua suministrada, distinguiéndolos de los del dióxido de carbono. Su presencia en el oxígeno molecular liberado apoya que el agua es la fuente de ese producto de la fotosíntesis oxigénica. El ensayo no muestra que todos los productos provengan del agua ni elimina la incorporación de carbono desde el CO₂.",
+        "easy": "Piensa en una cocina que usa luz para preparar alimento: hay ingredientes distintos con destinos distintos. El agua aporta el oxígeno gaseoso liberado y el dióxido de carbono aporta carbono a la materia orgánica.\n\nFabricar alimento y usarlo para hacer trabajo son procesos relacionados, no uno exclusivo de plantas y otro exclusivo de animales. Una planta necesita ambos.\n\nEl marcador permite seguir los átomos de oxígeno que estaban en el agua suministrada, distinguiéndolos de los del dióxido de carbono.\n\nSu presencia en el oxígeno molecular liberado apoya que el agua es la fuente de ese producto de la fotosíntesis oxigénica.\n\nEl ensayo no muestra que todos los productos provengan del agua ni elimina la incorporación de carbono desde el CO₂.",
+        "example": "En un experimento se marca el oxígeno del agua que recibe un alga fotosintética. ¿Dónde podría detectarse esa marca al liberar gas y qué no demuestra esto sobre el carbono?\n\nAl dividir agua en las reacciones luminosas, parte de su oxígeno pasa al O₂ liberado; la marca permite seguir esos átomos.\n\nEsto distingue la fuente directa del gas de la fuente del carbono orgánico, que procede del CO₂ fijado.\n\nLa marca no significa creación de átomos nuevos ni ausencia de respiración en el alga. Seguir un elemento exige conservar su identidad entre moléculas.\n\nDistingue fuente de energía, fuente de carbono y origen del O₂; sigue átomos y transformaciones sin confundirlos con creación de materia.",
+        "steps": [
+          "El marcador permite seguir los átomos de oxígeno que estaban en el agua suministrada, distinguiéndolos de los del dióxido de carbono.",
+          "Su presencia en el oxígeno molecular liberado apoya que el agua es la fuente de ese producto de la fotosíntesis oxigénica.",
+          "El ensayo no muestra que todos los productos provengan del agua ni elimina la incorporación de carbono desde el CO₂."
+        ],
+        "explanations": [
+          "Elegiste «El carbono de la glucosa proviene del agua». Se siguieron átomos de oxígeno, no átomos de carbono; el agua además no contiene carbono.",
+          "Correcto. El ensayo no muestra que todos los productos provengan del agua ni elimina la incorporación de carbono desde el CO₂.",
+          "Elegiste «Las algas no incorporan CO₂ durante la fotosíntesis». Identificar la fuente del O₂ no implica que el CO₂ no participe en la fijación de carbono.",
+          "Elegiste «Todos los átomos de los productos fotosintéticos provienen del agua». La evidencia se refiere al O₂ liberado y no determina el origen de todos los átomos de todos los productos."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "El seguimiento de oxígeno marcado desde el agua al O₂ respalda el origen del oxígeno molecular liberado. No respalda que todo producto provenga del agua ni que el CO₂ deje de incorporarse.",
+      "evidence": [
+        "fotosintesis"
+      ],
+      "quality": "El distractor Todos los átomos exagera el alcance de la evidencia; es una alternativa falsa con justificación específica."
+    },
+    {
+      "key": "Lectura:LEC-017",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "2af3249b59596921dcfec2614f74b498ec530eef7502357e0edc18c98eec82cd",
+      "reviewedContent": {
+        "question": "¿Qué cultivo disminuyó su cosecha cada mes?",
+        "options": [
+          "Lechugas",
+          "Zanahorias",
+          "Tomates",
+          "Todos aumentaron"
+        ],
+        "answer": 0,
+        "easy": "Imagina un edificio con pisos y puertas: acertar el piso pero equivocarte de puerta lleva a otra vivienda. En una tabla, mes y categoría funcionan como esas dos coordenadas.\n\nDespués de encontrar los casilleros correctos, pregunta si buscan uno, la suma de varios o una diferencia. Los mismos números pueden resolver preguntas distintas con operaciones diferentes.\n\nEn el párrafo 1 de «Reporte de un huerto comunitario» encontramos esta evidencia: «abril, lechugas 18 kg».\n\nLa serie completa de lechugas es 18, 15, 12. Ambas variaciones son negativas: −3 y −3; tomates y zanahorias suben.\n\nLa respuesta que se justifica es «Lechugas». La condición exige bajar cada mes, y solo lechugas cumple los dos cambios.",
+        "example": "Texto nuevo: «Lunes: cuadernos 8, lápices 12. Martes: cuadernos 6, lápices 15». ¿Cuántos cuadernos se vendieron en ambos días y cuál fue su tendencia?\n\nSeleccionamos solo cuadernos: ocho el lunes y seis el martes. Los doce y quince pertenecen a lápices.\n\nEl total es 8 + 6 = 14 cuadernos. La tendencia es una disminución de 8 a 6, es decir dos menos.\n\nNo confundimos el total de catorce con un valor diario ni atribuimos la caída a una causa que el texto no explica. Leer la tabla incluye preservar categorías y alcance.\n\nUbica la fila y categoría pertinentes, aplica la operación solicitada y no atribuyas causas o cantidades de personas que la tabla no mide.",
+        "steps": [
+          "Identifiquemos qué pide la consigna y cómo justificarlo con este pasaje. ¿Qué cultivo disminuyó su cosecha cada mes?",
+          "En una tabla cada valor pertenece al cruce de dos criterios, como mes y producto. Localiza primero ambos y conserva la unidad antes de sumar, comparar o describir tendencias.",
+          "Un aumento de cantidad no siempre implica más personas distintas ni mayor eficiencia. La eficiencia compara resultado con recursos; una tendencia describe cómo cambia el dato y no demuestra sola su causa.",
+          "En el párrafo 1 de «Reporte de un huerto comunitario» encontramos esta evidencia: «abril, lechugas 18 kg».",
+          "La serie completa de lechugas es 18, 15, 12. Ambas variaciones son negativas: −3 y −3; tomates y zanahorias suben.",
+          "La respuesta que se justifica es «Lechugas». La condición exige bajar cada mes, y solo lechugas cumple los dos cambios.",
+          "La condición exige bajar cada mes, y solo lechugas cumple los dos cambios."
+        ],
+        "explanations": [
+          "¡Cachaste! La condición exige bajar cada mes, y solo lechugas cumple los dos cambios.",
+          "Elegiste «Zanahorias». Zanahorias suben de siete a ocho y diez; no disminuyen. La condición exige bajar cada mes, y solo lechugas cumple los dos cambios. La alternativa que responde a esta consigna es «Lechugas». ",
+          "Elegiste «Tomates». Tomates pasan de cero a seis y dieciséis; aumentan. La condición exige bajar cada mes, y solo lechugas cumple los dos cambios. La alternativa que responde a esta consigna es «Lechugas». ",
+          "Elegiste «Todos aumentaron». Lechugas disminuyen; por eso no aumentan todos los cultivos. La condición exige bajar cada mes, y solo lechugas cumple los dos cambios. La alternativa que responde a esta consigna es «Lechugas». "
+        ],
+        "passage": {
+          "id": "T04",
+          "type": "Discontinuo",
+          "title": "Reporte de un huerto comunitario",
+          "paragraphs": [
+            "Una junta vecinal registró cosechas en tres meses. Los datos corresponden a kilogramos entregados gratuitamente en el comedor del barrio. Tabla: abril, lechugas 18 kg, tomates 0 kg, zanahorias 7 kg; mayo, lechugas 15 kg, tomates 6 kg, zanahorias 8 kg; junio, lechugas 12 kg, tomates 16 kg, zanahorias 10 kg.",
+            "El registro indica cantidades cosechadas, pero no informa cuántas personas participaron ni el costo de producir cada cultivo. La coordinación explicó que los tomates comenzaron a madurar más tarde que las lechugas. Sin embargo, un integrante señaló que el aumento mensual del total cosechado no bastaba para demostrar que el huerto se estaba volviendo más eficiente.",
+            "Para el siguiente trimestre, el grupo decidió añadir horas de trabajo, superficie plantada y cantidad de agua utilizada. Así podría comparar producción y recursos sin dejar de registrar cuánto alimento recibía el comedor."
+          ]
+        }
+      },
+      "result": "sin_error_confirmado",
+      "reason": "En T04, párrafo 1, lechugas baja 18→15→12 kg; tomates sube 0→6→16 y zanahorias 7→8→10. Solo lechugas cumple la disminución cada mes.",
+      "evidence": [
+        "texto propio T04, párrafo 1"
+      ],
+      "quality": "Todos aumentaron contradice la serie de lechugas; no genera ambigüedad."
+    },
+    {
+      "key": "Lectura:LEC-053",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "aecf02698d9bf95215d73c2b96c3b37a4a36bb08abd097264ca4012e72d007d7",
+      "reviewedContent": {
+        "question": "¿Por qué el museo reemplaza 1974 por un intervalo de años?",
+        "options": [
+          "La evidencia solo permite acotar un período, no fijar un año exacto",
+          "El periódico no mencionaba ninguna tienda",
+          "Todas las fotografías se fecharon en 1978",
+          "Un rótulo permite determinar el día de captura"
+        ],
+        "answer": 0,
+        "easy": "Una foto de una esquina no muestra toda la ciudad ni todos los días. Puedes describir lo que ves sin inventar cómo es cada calle del país.\n\nLa conclusión es como una caja: no debe ser más grande que lo que los datos pueden sostener. Reconocer que falta información no niega lo que sí se observó.\n\nEn el párrafo 2 de «El archivo de las fotografías sin fecha» encontramos esta evidencia: «esa tienda utilizó el mismo letrero entre 1972 y 1978».\n\nUn letrero que existió durante varios años no distingue cuál de ellos corresponde a la toma. Mantener solo 1974 fingiría una precisión que esa pista no aporta.\n\nLa respuesta que se justifica es «La evidencia solo permite acotar un período, no fijar un año exacto». Corregir a un intervalo conserva lo que la fuente permite afirmar, sin inventar día ni año único.",
+        "example": "Texto nuevo: «En un curso, veinte estudiantes usaron una guía y subió el promedio. Ese mes también tuvieron clases de apoyo». ¿Podemos afirmar que la guía causó toda la mejora?\n\nSe observó un aumento del promedio en ese curso. Eso es un resultado concreto, no una ley sobre todos los cursos.\n\nTambién cambiaron las clases de apoyo. Sin separar ambos factores, no podemos asignar toda la mejora a la guía.\n\nLa conclusión prudente reconoce la mejora y propone estudiar las causas con comparaciones adicionales. Tampoco podemos concluir que la guía no sirvió: falta aislar su aporte.\n\nConserva los datos observados y distingue lo que sugieren de lo que realmente demuestran; busca variables alternativas y generalizaciones excesivas.",
+        "steps": [
+          "Identifiquemos qué pide la consigna y cómo justificarlo con este pasaje. ¿Por qué el museo reemplaza 1974 por un intervalo de años?",
+          "Un dato observado, una inferencia y una conclusión causal no son lo mismo. Observar que dos cosas cambian juntas puede apoyar una hipótesis, pero no basta para demostrar que una produce todo el cambio de la otra.",
+          "Revisa el alcance: qué personas, lugares y período se estudiaron y qué variables no se controlaron. Palabras como siempre, todas o exclusivamente exigen más evidencia que una observación limitada.",
+          "Inferir conecta datos explícitos mediante un puente que el texto respalda. Suponer agrega condiciones posibles, pero no demostradas. Señala las pistas que sostienen la conclusión y qué parte requeriría información adicional.",
+          "Respeta el grado de certeza: «sugiere» y «demuestra» no son intercambiables. Que dos hechos aparezcan juntos no establece por sí solo causalidad; busca un mecanismo o una comparación que permita descartar otras explicaciones.",
+          "En el párrafo 2 de «El archivo de las fotografías sin fecha» encontramos esta evidencia: «esa tienda utilizó el mismo letrero entre 1972 y 1978».",
+          "Un letrero que existió durante varios años no distingue cuál de ellos corresponde a la toma. Mantener solo 1974 fingiría una precisión que esa pista no aporta.",
+          "La respuesta que se justifica es «La evidencia solo permite acotar un período, no fijar un año exacto». Corregir a un intervalo conserva lo que la fuente permite afirmar, sin inventar día ni año único."
+        ],
+        "explanations": [
+          "¡Cachaste! Corregir a un intervalo conserva lo que la fuente permite afirmar, sin inventar día ni año único.",
+          "Elegiste «El periódico no mencionaba ninguna tienda». El periódico sí aporta información de la tienda y su rótulo. Corregir a un intervalo conserva lo que la fuente permite afirmar, sin inventar día ni año único. La alternativa que responde a esta consigna es «La evidencia solo permite acotar un período, no fijar un año exacto». ",
+          "Elegiste «Todas las fotografías se fecharon en 1978». Corregir una fotografía no fecha todas las imágenes en un solo año. Corregir a un intervalo conserva lo que la fuente permite afirmar, sin inventar día ni año único. La alternativa que responde a esta consigna es «La evidencia solo permite acotar un período, no fijar un año exacto». ",
+          "Elegiste «Un rótulo permite determinar el día de captura». El rótulo acota años, no determina el día exacto. Corregir a un intervalo conserva lo que la fuente permite afirmar, sin inventar día ni año único. La alternativa que responde a esta consigna es «La evidencia solo permite acotar un período, no fijar un año exacto». "
+        ],
+        "passage": {
+          "id": "T11",
+          "type": "Expositivo",
+          "title": "El archivo de las fotografías sin fecha",
+          "paragraphs": [
+            "El museo local recibió cajas de fotografías familiares donadas por distintas personas. La mayoría no tenía fecha, y algunas mostraban calles cuyo nombre había cambiado. Antes de publicar las imágenes, el equipo catalogó detalles visibles: rótulos de locales, modelos de buses y construcciones que todavía existían en planos antiguos.",
+            "Una fotografía de la plaza fue fechada inicialmente en 1974 porque se veía un letrero de una tienda. Luego apareció un aviso de periódico que mostraba que esa tienda utilizó el mismo letrero entre 1972 y 1978. En lugar de mantener una fecha exacta, el museo corrigió su ficha y escribió «entre 1972 y 1978».",
+            "Las descripciones también incluyeron una distinción: una persona podía reconocer un edificio sin que eso probara cuándo se tomó la imagen. El equipo invitó a la comunidad a aportar recuerdos y documentos, pero señaló que las identificaciones debían quedar registradas junto a su grado de certeza."
+          ]
+        }
+      },
+      "result": "sin_error_confirmado",
+      "reason": "T11, párrafo 2, indica que el letrero se utilizó entre 1972 y 1978. Esa pista no identifica 1974 como año único ni fecha todas las fotografías; la clave conserva el alcance de la evidencia.",
+      "evidence": [
+        "texto propio T11, párrafo 2"
+      ],
+      "quality": "La explicación específica es consistente. Los pasos introductorios sobre causalidad son más amplios que esta tarea de datación; su pertinencia puede mejorarse sin cambiar la clave."
+    },
+    {
+      "key": "Lectura:LEC-087",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "cf094df46760abe9e43e94bc8fea422160c36078f62884c6baf772dc88a0d249",
+      "reviewedContent": {
+        "question": "¿Qué advertencia aparecía en algunas anotaciones?",
+        "options": [
+          "No usar redes en invierno",
+          "Cerrar el puerto los lunes",
+          "Viento del sur, no confiarse",
+          "Salir siempre al amanecer"
+        ],
+        "answer": 2,
+        "easy": "Es como buscar una dirección en una invitación: la hora y el lugar están en el mismo papel, pero no se pueden intercambiar. La palabra de la pregunta indica qué casillero necesitas.\n\nPon mentalmente un dedo sobre la frase que responde y otro sobre lo que te preguntan. Si ambos señalan la misma persona, momento y acción, tienes un respaldo; si cambian, mezclaste datos.\n\nEn el párrafo 2 de «El cuaderno de las mareas» encontramos esta evidencia: «viento del sur, no confiarse».\n\nLa advertencia aparece entre los registros que Elisa copiaba. Debe recuperarse esa frase y no inventar prohibiciones generales por estación o día.\n\nLa respuesta que se justifica es «Viento del sur, no confiarse». El aviso expresa cautela por viento del sur; no ordena cerrar el puerto los lunes.",
+        "example": "Texto nuevo: «El taller de cerámica funciona los martes a las 17:00 en la sede vecinal. Las inscripciones se reciben los viernes por correo». ¿Qué día se realiza el taller?\n\nLa pregunta pide el día de la actividad, no el día de inscripción. Buscamos el verbo que describe el funcionamiento del taller.\n\nLa frase «funciona los martes» entrega el dato solicitado. «Los viernes» pertenece a otra acción: recibir inscripciones.\n\nRespondemos martes. La alternativa viernes sería tentadora porque también aparece en el texto, pero cambia el referente. La presencia de una palabra no basta para que responda la pregunta.\n\nVuelve al pasaje e identifica el dato junto con la acción o sujeto al que corresponde, como distinguimos actividad e inscripción.",
+        "steps": [
+          "Identifiquemos qué pide la consigna y cómo justificarlo con este pasaje. ¿Qué advertencia aparecía en algunas anotaciones?",
+          "Localizar es recuperar información que el texto dice directamente. Primero identifica qué se pide: una persona, lugar, tiempo, cantidad o condición. Una alternativa puede mencionar algo verdadero y aun así responder otra pregunta.",
+          "La evidencia es el fragmento que permite justificar una respuesta. Une el dato con su referente: quién hizo qué, dónde y cuándo. Una paráfrasis puede conservar la idea sin usar exactamente las mismas palabras.",
+          "En el párrafo 2 de «El cuaderno de las mareas» encontramos esta evidencia: «viento del sur, no confiarse».",
+          "La advertencia aparece entre los registros que Elisa copiaba. Debe recuperarse esa frase y no inventar prohibiciones generales por estación o día.",
+          "La respuesta que se justifica es «Viento del sur, no confiarse». El aviso expresa cautela por viento del sur; no ordena cerrar el puerto los lunes.",
+          "El aviso expresa cautela por viento del sur; no ordena cerrar el puerto los lunes."
+        ],
+        "explanations": [
+          "Elegiste «No usar redes en invierno». No se prescribe suspender redes durante todo invierno. El aviso expresa cautela por viento del sur; no ordena cerrar el puerto los lunes. La alternativa que responde a esta consigna es «Viento del sur, no confiarse». ",
+          "Elegiste «Cerrar el puerto los lunes». No aparece ese cierre semanal del puerto. El aviso expresa cautela por viento del sur; no ordena cerrar el puerto los lunes. La alternativa que responde a esta consigna es «Viento del sur, no confiarse». ",
+          "¡Cachaste! El aviso expresa cautela por viento del sur; no ordena cerrar el puerto los lunes.",
+          "Elegiste «Salir siempre al amanecer». El aviso advierte del viento; no ordena salir siempre al amanecer. El aviso expresa cautela por viento del sur; no ordena cerrar el puerto los lunes. La alternativa que responde a esta consigna es «Viento del sur, no confiarse». "
+        ],
+        "passage": {
+          "id": "T18",
+          "type": "Narrativo",
+          "title": "El cuaderno de las mareas",
+          "paragraphs": [
+            "Cuando Elisa encontró el cuaderno en el taller de su abuela, pensó que era una colección de recetas. Cada página tenía fechas, números y dibujos de pequeñas lunas. Su abuela, que había trabajado reparando redes en el puerto, le explicó que allí anotaba la altura del agua y el momento en que las embarcaciones podían entrar sin rozar el fondo.",
+            "Elisa quiso convertir las anotaciones en una aplicación para pescadores. Pasó varias tardes copiando números hasta descubrir una dificultad: algunos días estaban incompletos y otros incluían advertencias como «viento del sur, no confiarse». Su primer gráfico mostraba curvas elegantes, pero ocultaba esas observaciones. La abuela le preguntó si una línea bonita podía reemplazar la experiencia de quienes salían al mar.",
+            "La muchacha decidió conservar las notas junto a los datos y marcar claramente los días sin registros. Cuando mostró la nueva versión, su abuela no felicitó los colores ni las animaciones: señaló una advertencia que ahora aparecía al lado de una marea alta. Elisa entendió entonces que ordenar información también significa reconocer lo que no se sabe."
+          ]
+        }
+      },
+      "result": "sin_error_confirmado",
+      "reason": "T18, párrafo 2, contiene la advertencia Viento del sur, no confiarse. Las prohibiciones estacionales y el horario universal de los distractores no aparecen en ese pasaje.",
+      "evidence": [
+        "texto propio T18, párrafo 2"
+      ],
+      "quality": "La negación de un distractor no es por sí misma un error; el contraste debe hacerse con el pasaje."
+    },
+    {
+      "key": "Lectura:LEC-088",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "40ddf55ce2928d6d83cd137ad996417368386c274944c9b3f59045c38bb060df",
+      "reviewedContent": {
+        "question": "¿Qué problema tenía el primer gráfico de Elisa?",
+        "options": [
+          "Había sido dibujado exclusivamente a mano",
+          "Omitía advertencias y vacíos importantes del registro",
+          "Mostraba demasiadas observaciones cualitativas",
+          "No contenía ninguna fecha"
+        ],
+        "answer": 1,
+        "easy": "Una foto de una esquina no muestra toda la ciudad ni todos los días. Puedes describir lo que ves sin inventar cómo es cada calle del país.\n\nLa conclusión es como una caja: no debe ser más grande que lo que los datos pueden sostener. Reconocer que falta información no niega lo que sí se observó.\n\nEn el párrafo 2 de «El cuaderno de las mareas» encontramos esta evidencia: «Su primer gráfico mostraba curvas elegantes, pero ocultaba esas observaciones».\n\nEl problema no es la estética en sí, sino omitir advertencias y días incompletos. Una curva continua puede hacer parecer conocida una parte sin registro.\n\nLa respuesta que se justifica es «Omitía advertencias y vacíos importantes del registro». La representación inicial ocultaba límites importantes; no se afirma que careciera de todas las fechas.",
+        "example": "Texto nuevo: «En un curso, veinte estudiantes usaron una guía y subió el promedio. Ese mes también tuvieron clases de apoyo». ¿Podemos afirmar que la guía causó toda la mejora?\n\nSe observó un aumento del promedio en ese curso. Eso es un resultado concreto, no una ley sobre todos los cursos.\n\nTambién cambiaron las clases de apoyo. Sin separar ambos factores, no podemos asignar toda la mejora a la guía.\n\nLa conclusión prudente reconoce la mejora y propone estudiar las causas con comparaciones adicionales. Tampoco podemos concluir que la guía no sirvió: falta aislar su aporte.\n\nConserva los datos observados y distingue lo que sugieren de lo que realmente demuestran; busca variables alternativas y generalizaciones excesivas.",
+        "steps": [
+          "Identifiquemos qué pide la consigna y cómo justificarlo con este pasaje. ¿Qué problema tenía el primer gráfico de Elisa?",
+          "Un dato observado, una inferencia y una conclusión causal no son lo mismo. Observar que dos cosas cambian juntas puede apoyar una hipótesis, pero no basta para demostrar que una produce todo el cambio de la otra.",
+          "Revisa el alcance: qué personas, lugares y período se estudiaron y qué variables no se controlaron. Palabras como siempre, todas o exclusivamente exigen más evidencia que una observación limitada.",
+          "Inferir conecta datos explícitos mediante un puente que el texto respalda. Suponer agrega condiciones posibles, pero no demostradas. Señala las pistas que sostienen la conclusión y qué parte requeriría información adicional.",
+          "Respeta el grado de certeza: «sugiere» y «demuestra» no son intercambiables. Que dos hechos aparezcan juntos no establece por sí solo causalidad; busca un mecanismo o una comparación que permita descartar otras explicaciones.",
+          "En el párrafo 2 de «El cuaderno de las mareas» encontramos esta evidencia: «Su primer gráfico mostraba curvas elegantes, pero ocultaba esas observaciones».",
+          "El problema no es la estética en sí, sino omitir advertencias y días incompletos. Una curva continua puede hacer parecer conocida una parte sin registro.",
+          "La respuesta que se justifica es «Omitía advertencias y vacíos importantes del registro». La representación inicial ocultaba límites importantes; no se afirma que careciera de todas las fechas."
+        ],
+        "explanations": [
+          "Elegiste «Había sido dibujado exclusivamente a mano». El problema no es que estuviera hecho a mano, sino omitir información relevante. La representación inicial ocultaba límites importantes; no se afirma que careciera de todas las fechas. La alternativa que responde a esta consigna es «Omitía advertencias y vacíos importantes del registro». ",
+          "¡Cachaste! La representación inicial ocultaba límites importantes; no se afirma que careciera de todas las fechas.",
+          "Elegiste «Mostraba demasiadas observaciones cualitativas». El primer gráfico omitía advertencias; no incorporaba demasiadas. La representación inicial ocultaba límites importantes; no se afirma que careciera de todas las fechas. La alternativa que responde a esta consigna es «Omitía advertencias y vacíos importantes del registro». ",
+          "Elegiste «No contenía ninguna fecha». No se afirma ausencia de todas las fechas; faltaban avisos y vacíos importantes. La representación inicial ocultaba límites importantes; no se afirma que careciera de todas las fechas. La alternativa que responde a esta consigna es «Omitía advertencias y vacíos importantes del registro». "
+        ],
+        "passage": {
+          "id": "T18",
+          "type": "Narrativo",
+          "title": "El cuaderno de las mareas",
+          "paragraphs": [
+            "Cuando Elisa encontró el cuaderno en el taller de su abuela, pensó que era una colección de recetas. Cada página tenía fechas, números y dibujos de pequeñas lunas. Su abuela, que había trabajado reparando redes en el puerto, le explicó que allí anotaba la altura del agua y el momento en que las embarcaciones podían entrar sin rozar el fondo.",
+            "Elisa quiso convertir las anotaciones en una aplicación para pescadores. Pasó varias tardes copiando números hasta descubrir una dificultad: algunos días estaban incompletos y otros incluían advertencias como «viento del sur, no confiarse». Su primer gráfico mostraba curvas elegantes, pero ocultaba esas observaciones. La abuela le preguntó si una línea bonita podía reemplazar la experiencia de quienes salían al mar.",
+            "La muchacha decidió conservar las notas junto a los datos y marcar claramente los días sin registros. Cuando mostró la nueva versión, su abuela no felicitó los colores ni las animaciones: señaló una advertencia que ahora aparecía al lado de una marea alta. Elisa entendió entonces que ordenar información también significa reconocer lo que no se sabe."
+          ]
+        }
+      },
+      "result": "sin_error_confirmado",
+      "reason": "T18, párrafo 2, describe días incompletos y advertencias ocultas en el primer gráfico. El tercer párrafo muestra la incorporación posterior de esas notas y vacíos. La clave recoge esa limitación; no se afirma ausencia de todas las fechas.",
+      "evidence": [
+        "texto propio T18, párrafos 2 y 3"
+      ],
+      "quality": "La explicación específica es consistente. Los pasos introductorios sobre causalidad son más amplios que esta tarea de representación; su pertinencia puede mejorarse sin cambiar la clave."
+    },
+    {
+      "key": "M2:M2-011",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "265d0cf8c41d239de9e377750ac332e8f3a42653b9fc14447ae67a469118615b",
+      "reviewedContent": {
+        "question": "¿Cuál es el dominio real de h(x)=√(x-5)?",
+        "options": [
+          "x≥5",
+          "x>0",
+          "x≤5",
+          "Todos los reales"
+        ],
+        "answer": 0,
+        "why": "El dominio es el conjunto de entradas permitidas, no el resultado de una sola cuenta. Debemos encontrar todos los x que hacen que la raíz cuadrada exista como número real.\n\nUna raíz cuadrada real de A es un número cuyo cuadrado vale A. Como ningún cuadrado real es negativo, el radicando —lo que está dentro del signo √— debe ser mayor o igual que cero. Cero sí sirve: √0=0.\n\nEscribe la desigualdad del radicando y despéjala conservando equivalencias. Puedes sumar lo mismo a ambos lados y dividir por un número positivo sin cambiar su sentido. Si dividieras por un negativo tendrías que invertirlo. Al final conserva todo el intervalo de entradas que cumple la condición, incluido el extremo cuando corresponde.\n\nEl radicando x−5 debe ser mayor o igual a cero.\n\nDespeja x−5≥0 sumando 5 a ambos lados.\n\nConcluye x≥5; valores menores producen raíz no real.\n\nx=5 da √0 y está permitido. x=6 da √1; x=4 da raíz de −1 y no es real. Estas pruebas confirman x≥5 y la inclusión del extremo.",
+        "easy": "Piensa en un terreno cuadrado. Su área puede ser cero o positiva, y la raíz cuadrada del área da el largo del lado. Un área de −3 no produce un lado real.\n\nLa expresión dentro de la raíz es como la casilla de área: revisa cuándo permite un número válido. No basta comprobar una entrada que funciona; necesitamos describir todas las entradas que funcionan.\n\nEl radicando x−5 debe ser mayor o igual a cero.\n\nDespeja x−5≥0 sumando 5 a ambos lados.\n\nConcluye x≥5; valores menores producen raíz no real.",
+        "explanations": [
+          "El dominio es el conjunto de entradas permitidas, no el resultado de una sola cuenta. Debemos encontrar todos los x que hacen que la raíz cuadrada exista como número real.\n\nUna raíz cuadrada real de A es un número cuyo cuadrado vale A. Como ningún cuadrado real es negativo, el radicando —lo que está dentro del signo √— debe ser mayor o igual que cero. Cero sí sirve: √0=0.\n\nEscribe la desigualdad del radicando y despéjala conservando equivalencias. Puedes sumar lo mismo a ambos lados y dividir por un número positivo sin cambiar su sentido. Si dividieras por un negativo tendrías que invertirlo. Al final conserva todo el intervalo de entradas que cumple la condición, incluido el extremo cuando corresponde.\n\nEl radicando x−5 debe ser mayor o igual a cero.\n\nDespeja x−5≥0 sumando 5 a ambos lados.\n\nConcluye x≥5; valores menores producen raíz no real.\n\nx=5 da √0 y está permitido. x=6 da √1; x=4 da raíz de −1 y no es real. Estas pruebas confirman x≥5 y la inclusión del extremo.",
+          "x>0 admite valores como 1, cuyo radicando es −4 y no tiene raíz cuadrada real.",
+          "Para x<5 el radicando es negativo. La desigualdad va hacia x≥5.",
+          "Los números menores que 5 dejan un radicando negativo; no pertenecen al dominio real."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "La raíz real requiere x−5 ≥ 0, por lo que el dominio es x ≥ 5 e incluye el extremo. Todos los reales incorpora valores con radicando negativo.",
+      "evidence": [
+        "despeje independiente del dominio"
+      ],
+      "quality": "Todos los reales es un distractor matemático habitual y falso en esta función; no se retira por la palabra Todos."
+    },
+    {
+      "key": "M2:M2-072",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "19f184e8a31f6d7847cac0db324326d732632a8e67b23a4b4667922455332395",
+      "reviewedContent": {
+        "question": "X tiene distribución normal con media 50. ¿Cuál es P(X<50)?",
+        "options": [
+          "0,5",
+          "0,25",
+          "0,95",
+          "No se puede saber sin la desviación estándar"
+        ],
+        "answer": 0,
+        "why": "Distingue una observación, su distancia a la media y la probabilidad de una región. Son objetos diferentes aunque aparezcan en la misma campana normal.\n\nUna distribución normal se representa con una curva simétrica de campana. La media μ está en su centro; la desviación estándar σ>0 describe el ancho. El área total bajo la curva representa probabilidad uno y la simetría deja la mitad a cada lado de la media. Al ser continua, un único valor exacto tiene probabilidad cero.\n\nEl valor estandarizado z=(x−μ)/σ expresa cuántas desviaciones estándar separan una observación del centro. Primero resta la media y después divide; z positivo indica estar encima y negativo debajo. Estandarizar no es calcular una probabilidad por sí mismo: para una región distinta de la mitad central se requiere información adicional de la distribución o sus tablas.\n\nLa distribución normal es simétrica respecto de su media.\n\nLa mitad del área queda a cada lado de 50.\n\nPor tanto P(X<50)=0,5, cualquiera sea su desviación estándar positiva.\n\nLa simetría divide el área total uno en dos partes iguales a ambos lados de cincuenta: 0,5. El ancho cambia con σ, pero no esa división por el centro.",
+        "easy": "Imagina comparar posiciones en dos grupos cuyos resultados están muy juntos o muy separados. Estar diez puntos sobre el promedio puede ser un cambio enorme en el grupo apretado y pequeño en el grupo disperso.\n\nLa desviación estándar funciona como una regla propia de cada grupo. z cuenta cuántas de esas reglas caben entre el promedio y tu dato. Por otra parte, la mitad de una figura simétrica queda a cada lado del centro sin importar lo ancha que sea.\n\nLa distribución normal es simétrica respecto de su media.\n\nLa mitad del área queda a cada lado de 50.\n\nPor tanto P(X<50)=0,5, cualquiera sea su desviación estándar positiva.",
+        "explanations": [
+          "Distingue una observación, su distancia a la media y la probabilidad de una región. Son objetos diferentes aunque aparezcan en la misma campana normal.\n\nUna distribución normal se representa con una curva simétrica de campana. La media μ está en su centro; la desviación estándar σ>0 describe el ancho. El área total bajo la curva representa probabilidad uno y la simetría deja la mitad a cada lado de la media. Al ser continua, un único valor exacto tiene probabilidad cero.\n\nEl valor estandarizado z=(x−μ)/σ expresa cuántas desviaciones estándar separan una observación del centro. Primero resta la media y después divide; z positivo indica estar encima y negativo debajo. Estandarizar no es calcular una probabilidad por sí mismo: para una región distinta de la mitad central se requiere información adicional de la distribución o sus tablas.\n\nLa distribución normal es simétrica respecto de su media.\n\nLa mitad del área queda a cada lado de 50.\n\nPor tanto P(X<50)=0,5, cualquiera sea su desviación estándar positiva.\n\nLa simetría divide el área total uno en dos partes iguales a ambos lados de cincuenta: 0,5. El ancho cambia con σ, pero no esa división por el centro.",
+          "0,25 es un cuarto; la media divide el área en mitades.",
+          "0,95 suele aludir a un intervalo centrado, no al lado izquierdo de la media.",
+          "La desviación cambia el ancho, pero no la mitad de probabilidad a cada lado del centro."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "Una distribución normal no degenerada es continua y simétrica respecto de μ=50. La probabilidad bajo la media es 0,5 sin necesitar el valor de σ>0; el ancho no cambia esa mitad.",
+      "evidence": [
+        "normal"
+      ],
+      "quality": "La frase No se puede saber plantea una necesidad de dato falsa que la explicación refuta."
+    },
+    {
+      "key": "M2:M2-083",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "5ec6aca8e6ad79a6846a03ae56c64ddcdf8c15c621ef2d95a5265148fb3c50df",
+      "reviewedContent": {
+        "question": "¿Cuál es el dominio real de f(x)=√(2x−8)?",
+        "options": [
+          "x≤4",
+          "Todos los reales",
+          "x≥4",
+          "x>4"
+        ],
+        "answer": 2,
+        "why": "El dominio es el conjunto de entradas permitidas, no el resultado de una sola cuenta. Debemos encontrar todos los x que hacen que la raíz cuadrada exista como número real.\n\nUna raíz cuadrada real de A es un número cuyo cuadrado vale A. Como ningún cuadrado real es negativo, el radicando —lo que está dentro del signo √— debe ser mayor o igual que cero. Cero sí sirve: √0=0.\n\nEscribe la desigualdad del radicando y despéjala conservando equivalencias. Puedes sumar lo mismo a ambos lados y dividir por un número positivo sin cambiar su sentido. Si dividieras por un negativo tendrías que invertirlo. Al final conserva todo el intervalo de entradas que cumple la condición, incluido el extremo cuando corresponde.\n\nUna raíz cuadrada real requiere radicando mayor o igual a cero.\n\nPlantea 2x−8≥0 y suma ocho: 2x≥8.\n\nDivide por dos positivo: x≥4, incluyendo el extremo.\n\nCon x=4, 2x−8=0; con x=5 vale dos y con x=3 vale −2. Por tanto se acepta x≥4, incluyendo cuatro.",
+        "easy": "Piensa en un terreno cuadrado. Su área puede ser cero o positiva, y la raíz cuadrada del área da el largo del lado. Un área de −3 no produce un lado real.\n\nLa expresión dentro de la raíz es como la casilla de área: revisa cuándo permite un número válido. No basta comprobar una entrada que funciona; necesitamos describir todas las entradas que funcionan.\n\nUna raíz cuadrada real requiere radicando mayor o igual a cero.\n\nPlantea 2x−8≥0 y suma ocho: 2x≥8.\n\nDivide por dos positivo: x≥4, incluyendo el extremo.",
+        "explanations": [
+          "Para x menor que 4 el radicando resulta negativo.",
+          "Hay entradas que producen radicando negativo, por lo que no se admiten todos los reales.",
+          "El dominio es el conjunto de entradas permitidas, no el resultado de una sola cuenta. Debemos encontrar todos los x que hacen que la raíz cuadrada exista como número real.\n\nUna raíz cuadrada real de A es un número cuyo cuadrado vale A. Como ningún cuadrado real es negativo, el radicando —lo que está dentro del signo √— debe ser mayor o igual que cero. Cero sí sirve: √0=0.\n\nEscribe la desigualdad del radicando y despéjala conservando equivalencias. Puedes sumar lo mismo a ambos lados y dividir por un número positivo sin cambiar su sentido. Si dividieras por un negativo tendrías que invertirlo. Al final conserva todo el intervalo de entradas que cumple la condición, incluido el extremo cuando corresponde.\n\nUna raíz cuadrada real requiere radicando mayor o igual a cero.\n\nPlantea 2x−8≥0 y suma ocho: 2x≥8.\n\nDivide por dos positivo: x≥4, incluyendo el extremo.\n\nCon x=4, 2x−8=0; con x=5 vale dos y con x=3 vale −2. Por tanto se acepta x≥4, incluyendo cuatro.",
+          "x=4 sí está permitido: √0 es real."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "El radicando 2x−8 ≥ 0 exige x ≥ 4. El extremo x=4 produce √0, que está definido; x>4 omite ese valor y Todos los reales admite entradas inválidas.",
+      "evidence": [
+        "despeje independiente del dominio"
+      ],
+      "quality": "El absoluto no crea una segunda respuesta correcta."
+    },
+    {
+      "key": "Historia:HIS-041",
+      "flag": "absolute_distractor",
+      "reviewedContentSha256": "f55f67c0040751dc71f97fbeb54917a9284b27ed6120da10404fa3ff04b3d31b",
+      "reviewedContent": {
+        "question": "¿Qué caracteriza al desempleo en estadísticas laborales?",
+        "options": [
+          "Personas sin trabajo que buscan empleo y están disponibles",
+          "Todas las personas que no reciben sueldo",
+          "Exclusivamente quienes estudian",
+          "Todas las personas jubiladas"
+        ],
+        "answer": 0,
+        "why": "Diferencia no recibir sueldo, no tener una ocupación y estar desocupado según una medición laboral. No son categorías idénticas.\n\nLas estadísticas laborales usan criterios para comparar situaciones, no solo etiquetas como estudiante o jubilado. Una persona ocupada tiene una actividad laboral según las reglas de la medición; puede ser asalariada o trabajar por cuenta propia. No recibir un sueldo de un empleador no significa automáticamente estar sin ocupación.\n\nPara la desocupación se consideran falta de ocupación, búsqueda de empleo y disponibilidad, dentro de los períodos de referencia de la encuesta. La fuerza de trabajo reúne personas ocupadas y desocupadas. Quienes no reúnen condiciones para integrarla no se clasifican automáticamente como desempleados. Un estudiante o jubilado puede tener distintas situaciones laborales: su etiqueta no reemplaza esos criterios.\n\nBusca una definición con las condiciones laborales relevantes, no con un grupo social único.\n\nSin trabajo, búsqueda y disponibilidad es la combinación que describe la opción correcta.\n\nNo basta carecer de sueldo, estudiar o estar jubilado. Hay que preguntar qué actividad se realiza y si se busca empleo y se está disponible.\n\nNo uses desempleado como sinónimo de toda persona sin salario. La tasa compara desocupados con fuerza de trabajo; no con toda la población. Para clasificar casos reales se aplican los criterios completos de la encuesta.",
+        "easy": "Dos personas pueden no recibir un sueldo mensual y estar en situaciones diferentes. Una vende productos por cuenta propia; otra no tiene trabajo y busca uno. Mirar solo la existencia de una liquidación de sueldo las mezclaría.\n\nLa estadística hace preguntas sobre actividad, búsqueda y disponibilidad para distinguirlas. También evita suponer que todos los estudiantes o jubilados hacen lo mismo: una persona puede estudiar y trabajar, por ejemplo.\n\nBusca una definición con las condiciones laborales relevantes, no con un grupo social único.\n\nSin trabajo, búsqueda y disponibilidad es la combinación que describe la opción correcta.\n\nNo basta carecer de sueldo, estudiar o estar jubilado. Hay que preguntar qué actividad se realiza y si se busca empleo y se está disponible.",
+        "explanations": [
+          "Diferencia no recibir sueldo, no tener una ocupación y estar desocupado según una medición laboral. No son categorías idénticas.\n\nLas estadísticas laborales usan criterios para comparar situaciones, no solo etiquetas como estudiante o jubilado. Una persona ocupada tiene una actividad laboral según las reglas de la medición; puede ser asalariada o trabajar por cuenta propia. No recibir un sueldo de un empleador no significa automáticamente estar sin ocupación.\n\nPara la desocupación se consideran falta de ocupación, búsqueda de empleo y disponibilidad, dentro de los períodos de referencia de la encuesta. La fuerza de trabajo reúne personas ocupadas y desocupadas. Quienes no reúnen condiciones para integrarla no se clasifican automáticamente como desempleados. Un estudiante o jubilado puede tener distintas situaciones laborales: su etiqueta no reemplaza esos criterios.\n\nBusca una definición con las condiciones laborales relevantes, no con un grupo social único.\n\nSin trabajo, búsqueda y disponibilidad es la combinación que describe la opción correcta.\n\nNo basta carecer de sueldo, estudiar o estar jubilado. Hay que preguntar qué actividad se realiza y si se busca empleo y se está disponible.\n\nNo uses desempleado como sinónimo de toda persona sin salario. La tasa compara desocupados con fuerza de trabajo; no con toda la población. Para clasificar casos reales se aplican los criterios completos de la encuesta.",
+          "No recibir sueldo no equivale a estar desocupado: existen trabajos por cuenta propia y personas fuera de la fuerza laboral. Corrige el criterio preguntando por ocupación, búsqueda y disponibilidad, no solo por una liquidación de sueldo.",
+          "Estudiar no determina por sí solo la situación laboral. Un estudiante puede trabajar, buscar empleo estando disponible o no integrar la fuerza laboral. La estadística clasifica esas condiciones, no exclusivamente la actividad de estudiar.",
+          "Jubilar no implica automáticamente buscar trabajo ni estar disponible, y tampoco impide toda actividad laboral. La etiqueta jubilado no sustituye los criterios de desocupación. Identifica si hay ocupación, búsqueda y disponibilidad."
+        ]
+      },
+      "result": "sin_error_confirmado",
+      "reason": "La combinación educativa de falta de ocupación, búsqueda y disponibilidad coincide con los criterios generales de desocupación de la ENE. Ser estudiante o jubilado y no recibir sueldo no clasifica por sí solo a una persona como desocupada.",
+      "evidence": [
+        "ene"
+      ],
+      "quality": "La pregunta no solicita clasificar un caso individual ni detallar excepciones y períodos. El tutor sí aclara que una clasificación real exige los criterios completos de la encuesta."
+    }
+  ]
+}

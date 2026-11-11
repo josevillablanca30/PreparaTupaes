@@ -5,9 +5,9 @@ import {loadBanks} from '../scripts/load-banks.mjs';
 const before=JSON.parse(readFileSync(new URL('../pedagogy/m2-before-2026-10-15.json',import.meta.url)));
 const banks=loadBanks(),after=banks.M2;
 test('Tutor: las 106 preguntas, alternativas y claves M2 permanecen idénticas a beta 1.1',()=>{
- assert.equal(after.length,106);
+ assert.equal(after.length,114);
  for(const old of before){const q=after.find(q=>q.id===old.id);assert.ok(q,old.id);assert.equal(q.question,old.question);assert.deepEqual(Array.from(q.options),old.options);assert.equal(q.answer,old.answer);}
- assert.deepEqual(Object.fromEntries(Object.entries(banks).map(([k,v])=>[k,v.length])),{M1:116,Ciencias:206,Lectura:130,M2:106,Historia:65,texts:20});
+ assert.deepEqual(Object.fromEntries(Object.entries(banks).map(([k,v])=>[k,v.length])),{M1:116,Ciencias:206,Lectura:130,M2:114,Historia:65,texts:20});
 });
 test('Tutor: cada clase tiene fundamentos, aplicación propia, comprobación y ejemplo resuelto',()=>{
  for(const q of after.filter(q=>q.teaching)){
@@ -44,7 +44,7 @@ test('Tutor: una explicación corresponde a cada alternativa y se reparan los va
  for(const [subject,bank]of Object.entries(banks)){if(subject==='texts')continue;for(const q of bank)assert.equal(q.explanations.length,q.options.length,subject+' '+q.id);}
  const abs=after.find(q=>q.id==='M2-027');assert.match(abs.explanations[1],/viola x>3/);assert.match(abs.explanations[2],/\|5−3\|=2/);assert.match(abs.explanations[3],/\|3−3\|=0/);
  const q=after.find(q=>q.id==='M2-024');assert.match(q.explanations[1],/3²/);assert.equal(3**2,9);assert.equal(3*2**2,12);
- assert.equal(after.filter(q=>q.teaching).length,106,'M2 completo, sin contar materias pendientes');
+ assert.equal(after.filter(q=>q.teaching).length,114,'M2 completo, sin contar materias pendientes');
 });
 test('Tutor: ejemplos iguales con IDs distintos no certifican aprendizaje nuevo',()=>{
  const source=readFileSync(new URL('../learning-core.js',import.meta.url),'utf8');

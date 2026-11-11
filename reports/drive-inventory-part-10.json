@@ -1,0 +1,162 @@
+{
+ "scanned": "2026-10-16",
+ "root": "Material PAES",
+ "contents": [
+  {
+   "path": "M30M/M1/Ensayos",
+   "id": "1EzVZBr-8NYipm6Pj6cuw-LIa47B6YrSg",
+   "items": [
+    {
+     "id": "1Nvy83Ug6c_irAWbIChHCD69hHSY1D2Jw",
+     "name": "Solucionario ",
+     "type": "application/vnd.google-apps.folder",
+     "bytes": 0
+    },
+    {
+     "id": "15evLtOSYycURBTUNP8mbeA8MNl3LSNxg",
+     "name": "Ensayo m30m 2.pdf",
+     "type": "application/pdf",
+     "bytes": 1518887
+    },
+    {
+     "id": "1JKAUcdaAEYUkBQlZH4faArlymcx2w-CA",
+     "name": "ensayo m30m 1.pdf",
+     "type": "application/pdf",
+     "bytes": 3402081
+    },
+    {
+     "id": "1JdzMf6qM9djlIm11b9uWHRFHQ78MXAau",
+     "name": "Ensayo m30m 8.pdf",
+     "type": "application/pdf",
+     "bytes": 1330265
+    },
+    {
+     "id": "1HBu69I2Mv_pnCjLlKxlkBW2aa3WoDo1B",
+     "name": "Ensayo m30m 3.pdf",
+     "type": "application/pdf",
+     "bytes": 1321778
+    },
+    {
+     "id": "1y_ycXJ7A7m5627oF5_b17iKYW4OcNqfh",
+     "name": "Ensayo m30m 5.pdf",
+     "type": "application/pdf",
+     "bytes": 1476776
+    },
+    {
+     "id": "1J--sFPGTRiXxWhI7-bfN-mF9hOXJq1Ub",
+     "name": "Ensayo m30m 4.pdf",
+     "type": "application/pdf",
+     "bytes": 1271951
+    }
+   ]
+  },
+  {
+   "path": "PDV/Química/Cuadernillos/Solucionario",
+   "id": "1ffsAoYCbfpHW-90m_pyewASr0Icq4go0",
+   "items": [
+    {
+     "id": "19T_YhXOfUWb4lqJ3gPE1p4rcW6VFlrnZ",
+     "name": "Pauta QC - Cuaderno N°1 (P1).pdf",
+     "type": "application/pdf",
+     "bytes": 366117
+    },
+    {
+     "id": "1PrcuPBFFUI6zPP9vlmdWyXOgaEYKSQ15",
+     "name": "Pauta QC - Cuaderno N°2 (P1).pdf",
+     "type": "application/pdf",
+     "bytes": 366646
+    }
+   ]
+  },
+  {
+   "path": "PDV/Lectura/Guias/Solucionario",
+   "id": "1bc6QY3uX_kr8S66anfeFHrP9CJE2uyHW",
+   "items": [
+    {
+     "id": "1SwpdzhXDzQaNIQ0P4oDzu0xCFM3xkjVE",
+     "name": "Claves_LE23_2024.pdf",
+     "type": "application/pdf",
+     "bytes": 358547
+    }
+   ]
+  },
+  {
+   "path": "TESLA/Lectura/Guias/solucionario ",
+   "id": "1AL5JT5qiPM3JU679SEacwqgPErOLavKs",
+   "items": [
+    {
+     "id": "1DQTkamNr5a43pSoxnbwycjk7pWKew-GJ",
+     "name": "Solucionario 8 PAES Lenguaje Tesla 2022.pdf",
+     "type": "application/pdf",
+     "bytes": 213271
+    }
+   ]
+  },
+  {
+   "path": "PDV/Biología/Ejercicios/Solucionario",
+   "id": "17aGMVmiMEbyM_hyw0nNXZNspAh27YSbS",
+   "items": [
+    {
+     "id": "1RgXCsRqQUPNIw71mtyTsIkl1YgbgMqeS",
+     "name": "Pauta Compendio 2.pdf",
+     "type": "application/pdf",
+     "bytes": 144252
+    }
+   ]
+  },
+  {
+   "path": "PDV/Física/Ejercicios/Solucionario",
+   "id": "1Vdsd56t3oOvH8C-Y2nObYZNqRCFhLChq",
+   "items": [
+    {
+     "id": "18z8jku6pNF-PIBABnu2pNrQSp-VvCcbW",
+     "name": "Pauta Compendio 3 (FS).pdf",
+     "type": "application/pdf",
+     "bytes": 364268
+    }
+   ]
+  },
+  {
+   "path": "CPECH/Biología/Guías/Solucionario ",
+   "id": "1bDknE52V4lrPxyFkVxI4RI1MLicZGhIt",
+   "items": [
+    {
+     "id": "1DI_z1lyg2lITuwy98Z4iX9Msl6ilI3w-",
+     "name": "Copia de 2016 Solucionario Guía 14 Fecundación y hormonas del embarazo.pdf",
+     "type": "application/pdf",
+     "bytes": 623235
+    }
+   ]
+  },
+  {
+   "path": "CPECH/Química/Cuadernillos/Solucionario ",
+   "id": "1ZL_MgiWisTB11m2wgygL1IhXHQHUyuG0",
+   "items": [
+    {
+     "id": "1HZ9d4h6Vk825YF9r42DdCynjs_ZlRvjo",
+     "name": "Copia de Solucionario fórmulas qcas (7).pdf",
+     "type": "application/pdf",
+     "bytes": 846549
+    }
+   ]
+  },
+  {
+   "path": "TESLA/Física/Ensayos /solucionario ",
+   "id": "1yQB4nuBGZT36tO4yTtkBRME_BTntIsn8",
+   "items": [
+    {
+     "id": "1FKUqWkzh7P0hWH1zJFG6IzsRY1w4zOH0",
+     "name": "FE 13 Mini ensayo 3 Parte 2 Solucionario.pdf",
+     "type": "application/pdf",
+     "bytes": 113796
+    },
+    {
+     "id": "1KtN17gDooH_ynEEjU6YNKoscZU5Up1lN",
+     "name": "FE 13 Mini ensayo 3 Parte 1 Solucionario.pdf",
+     "type": "application/pdf",
+     "bytes": 114201
+    }
+   ]
+  }
+ ]
+}

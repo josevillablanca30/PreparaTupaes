@@ -38,7 +38,7 @@ test('Lectora: entra desde inicio unificado y los textos son legibles en móvil'
  await expect(page.locator('.passage')).toBeVisible();
  await expect(page.locator('.passage article p')).toHaveCount(3);
  await expect(page.locator('button.option')).toHaveCount(4);
- await expect(page.getByText('¿Qué tan seguro estás?')).toBeVisible();
+ await expect(page.getByText('¿Qué tan seguro estás?')).toHaveCount(0);
  await fit(page);
  await info.attach('lectura-texto-movil',{body:await page.screenshot({fullPage:true}),contentType:'image/png'});
 });
@@ -60,12 +60,12 @@ test('Lectora: diagnóstico completo abre Express, recomendaciones y guardado',a
 test('Lectora: recuperar pregunta y seguridad luego de reiniciar app',async({page})=>{
  await page.goto('./reading.html');
  await page.getByRole('button',{name:'Comenzar diagnóstico de 30'}).tap();
- await page.getByRole('button',{name:'Fue al azar'}).tap();
+
  await page.locator('button.option').first().tap();
  await page.reload();
  await page.getByRole('button',{name:'Continuar práctica'}).tap();
  await expect(page.locator('button.option.chosen')).toHaveCount(1);
- await expect(page.getByRole('button',{name:'Fue al azar'})).toHaveAttribute('aria-pressed','true');
+ await expect(page.getByRole('button',{name:'Fue al azar'})).toHaveCount(0);
  await expect(page.getByText('1 / 30',{exact:true})).toBeVisible();
  await fit(page);
 });

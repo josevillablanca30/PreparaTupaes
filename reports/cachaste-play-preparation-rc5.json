@@ -1,0 +1,104 @@
+{
+  "version": "1.5.0-rc5",
+  "versionCode": 32,
+  "package": "cl.preparatupaes.app",
+  "targetSdk": 36,
+  "purpose": "Carga inicial de configuración en pruebas internas; no está habilitado para ventas ni para la prueba real en dos teléfonos.",
+  "sourceSha": "aecc7f60b08622e442ed69b86fb5ccaf77e25bcd",
+  "androidRun": 40012100792,
+  "integrationRun": 40012100739,
+  "qaRun": 40014589675,
+  "bundleFile": "Cachaste-Play-v1.5.0-rc5-Pruebas-Internas.aab",
+  "bundleSha256": "644adf51eba1c9efae01e7a337f42a053b82ec17acb50e0f7d41cc7a9477832d",
+  "bundleBytes": 12344367,
+  "uploadCertificateSha256": "779713ca68023f881d4d8d807fcdda32182bcda3aba3c802a95cb0344838c562",
+  "originalUploadKeyReused": true,
+  "signedJarVerified": true,
+  "applicationContentPreservedWhenSigning": true,
+  "billingEnabled": false,
+  "publicBillingReady": false,
+  "authReturnUrlConfigured": false,
+  "checks": {
+    "logic": {
+      "passed": 394,
+      "failed": 0
+    },
+    "mobileWeb": {
+      "passed": 410,
+      "failed": 0,
+      "projects": [
+        "Android-Chrome",
+        "mobile-320px"
+      ]
+    },
+    "betaOnlyMobileWeb": {
+      "passed": 12,
+      "failed": 0,
+      "includedInRelease": false
+    },
+    "androidInstalled": {
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "betaPackageTests": 30,
+      "commercialAccessTests": 5
+    },
+    "realHttpAuthPostgrest": {
+      "passed": 17,
+      "failed": 0,
+      "scope": "servidor temporal local de CI; no cuentas alojadas ni teléfonos físicos"
+    },
+    "nativeScreenshots": 68,
+    "selectedStoreCaptures": 8
+  },
+  "hostedCommunityMigration": {
+    "file": "20261023200921_cachaste_community.sql",
+    "applied": true,
+    "version": "20261023200921",
+    "verification": {
+      "privateTables": 22,
+      "tablesWithoutRls": 0,
+      "clientReportsRead": false,
+      "clientRestrictionsWrite": false,
+      "clientOldDispatcher": false,
+      "publicOldDispatcher": false,
+      "newDispatcher": true,
+      "users": 0,
+      "profiles": 0,
+      "reports": 0,
+      "environment": "production"
+    },
+    "initialConnectionErrorsResolved": true
+  },
+  "releaseBlockers": [
+    "Google debe aprobar la identidad enviada; después verificar el teléfono y crear la primera ficha",
+    "Productos, credenciales oficiales de Google y RTDN/PubSub configurados y verificados",
+    "SMTP y retorno HTTPS de confirmación/recuperación comprobados",
+    "Responsable legal, dominio, privacidad y eliminación publicados y enlazados en la app; soporte ya confirmado",
+    "Responsable y proceso de revisión de denuncias operativos",
+    "Siguiente compilación habilitada y firmada con la misma clave",
+    "Compra auténtica de licencia, restauración/ciclo de suscripción y duelo entre dos celulares físicos",
+    "Seguridad de los datos, público, acceso de revisión, IARC y pruebas/cierre de revisión exigidos por la cuenta"
+  ],
+  "publicProductionReleased": false,
+  "registrationPaidByThisSession": false,
+  "artifactDigests": {
+    "unsignedAabZip": "2ebbb3ab45913fc5bc14e82c92f0576dece4e2845edfcb5b650394bcadb0723b",
+    "qaZip": "fd568f349af60195e42f2d7c2e631642c7844dc9be03669517570186922c9a69"
+  },
+  "storeGraphics": "Activos de marca existentes; capturas nativas sin datos de rivales ni resultados de fixtures. Falta captura competitiva con cuentas reales.",
+  "playConsoleAccount": {
+    "createdReportedByOwner": true,
+    "loginEmail": "jose.villablanca.horta@gmail.com",
+    "accountType": "PERSONAL",
+    "identityVerification": "PENDING_GOOGLE_REVIEW",
+    "identityDocumentsUploaded": true,
+    "phoneVerification": "WAITING_FOR_IDENTITY_APPROVAL",
+    "applicationCreated": false,
+    "canCreateApps": false,
+    "verifiedInConsole": true,
+    "observedDate": "2026-10-23",
+    "createAppBlock": "Completa las verificaciones de cuenta para crear apps"
+  },
+  "supportEmail": "jose.villablanca.horta@gmail.com"
+}

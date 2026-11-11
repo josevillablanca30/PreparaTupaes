@@ -1,0 +1,37 @@
+{
+  "sourceCommit": "13ae26d3f752ccc6f3de97086dee07cb938ac3fc",
+  "baselineCommit": "1119aaea88559dfefa8e55bdc0cc2c9fa3506525",
+  "versionCode": 47,
+  "versionName": "1.5.0-rc20",
+  "assessmentCount": 802,
+  "assessmentDigestUnchanged": "71c682244491099641acb8fdba4b2b06",
+  "modifiedFiles": [
+    ".github/workflows/android-play.yml",
+    "android/app/build.gradle",
+    "daily-app.js",
+    "daily-reference.css",
+    "history.html",
+    "index.html",
+    "inicio.html",
+    "m2.html",
+    "reading.html",
+    "reports/night-identity-20261104/README.md",
+    "science.html",
+    "scripts/verify-play-manifest.py",
+    "study-ui.css",
+    "tests/adventure-map.mobile.spec.mjs",
+    "tests/night-identity.mobile.spec.mjs",
+    "tests/night-identity.test.mjs",
+    "tests/reference-ui.mobile.spec.mjs"
+  ],
+  "interfacePortraits": [
+    "assets/competition-cat-book-v4.webp",
+    "assets/competition-cat-point-v4.webp",
+    "assets/competition-cat-crossed-v4.webp"
+  ],
+  "reusedMapArtwork": "assets/competition-reference-mountain-v1.webp",
+  "newGeneratedArtwork": false,
+  "paymentsEnabled": false,
+  "serverChanges": false,
+  "physicalPhoneValidation": "pending"
+}
