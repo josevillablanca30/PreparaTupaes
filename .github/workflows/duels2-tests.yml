@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   isolated-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     services:
       postgres:
@@ -46,7 +46,8 @@ jobs:
           node scripts/verify-duels2-web-build.mjs
       - name: Native candidate from pinned Android source
         run: node scripts/prepare-duels2-android.mjs
-      - run: npx playwright install --with-deps chromium
+      - name: Prepare Chrome for the same browser suite
+        run: bash scripts/install-chromium-qa.sh
       - name: Two browser sessions, mobile layouts and educational review
         run: node scripts/test-duels2-browser.mjs
       - uses: actions/upload-artifact@v4
