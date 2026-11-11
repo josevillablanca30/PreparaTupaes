@@ -7,6 +7,7 @@ const www=process.argv.includes('--www');
 if(www&&!isPublic)throw Error('WWW_REQUIRES_PUBLIC_AUDIT');
 const deployed=JSON.parse(await readFile(isPublic?'web/artifacts/pages-public.json':'web/artifacts/pages-preview.json','utf8'));
 const origin=(isPublic?publicSiteUrl:previewUrl)(www?'https://www.sitecacho.cl':deployed.url);
+const canonicalOrigin=www?'https://sitecacho.cl':origin;
 const artifactDir='web/artifacts/'+(www?'legal-live-www':'legal-live');
 if(deployed.deployment?.id==null||deployed.revision!==process.env.GITHUB_SHA)throw Error('VERIFIED_PREVIEW_REQUIRED');
 const revision=process.env.GITHUB_SHA;
@@ -22,7 +23,7 @@ for(const[name,engine,use]of[['Desktop-Chrome',chromium,{viewport:{width:1365,he
   for(const[slug,title]of pages){
    try{
     const response=await page.goto(origin+'/'+slug+'.html',{waitUntil:'networkidle'});
-    if(response.status()!==200||new URL(page.url()).origin!==origin)throw Error('PUBLIC_HTTPS_200_REQUIRED');
+    if(response.status()!==200||new URL(page.url()).origin!==canonicalOrigin)throw Error('PUBLIC_HTTPS_200_REQUIRED');
     if((await page.locator('h1').textContent()).trim()!==title)throw Error('LEGAL_CONTENT_NOT_LANDING');
     if(!await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1&&Array.from(document.images).every(i=>i.complete&&i.naturalWidth>0)))throw Error('MOBILE_LAYOUT_OR_IMAGE_FAILED');
     if((await context.cookies()).some(c=>c.name==='cachaste_web_session'))throw Error('LEGAL_ACCESS_MUST_BE_ANONYMOUS');
@@ -42,7 +43,7 @@ for(const[name,engine,use]of[['Desktop-Chrome',chromium,{viewport:{width:1365,he
     // PWA installation can keep Chromium's network active after the form is
     // ready. Assert the visible product state rather than global network idle.
     const response=await page.goto(origin+path,{waitUntil:'domcontentloaded'});
-    if(response.status()!==200)throw Error('PUBLIC_HTTPS_REQUIRED');
+    if(response.status()!==200||new URL(page.url()).origin!==canonicalOrigin)throw Error('PUBLIC_HTTPS_REQUIRED');
     await page.getByRole('heading',{name:title,exact:true}).waitFor();
     measurements=await page.evaluate(measureTextContrast,PUBLIC_SURFACE_TEXT);
     if(measurements.length<9||measurements.some(x=>!x.passed))throw Error('PUBLIC_TEXT_CONTRAST_FAILED');
@@ -60,7 +61,7 @@ if(isPublic){
  try{for(const[slug,title]of pages){
   try{
    const r=await page.goto(origin+'/'+slug+'.html',{waitUntil:'networkidle'});
-   if(r.status()!==200||(await page.locator('h1').textContent()).trim()!==title)throw Error('LEGAL_PAGE_REQUIRED_WITHOUT_JAVASCRIPT');
+   if(r.status()!==200||new URL(page.url()).origin!==canonicalOrigin||(await page.locator('h1').textContent()).trim()!==title)throw Error('LEGAL_PAGE_REQUIRED_WITHOUT_JAVASCRIPT');
    if(await page.locator('a[href^="mailto:jose.villablanca.horta@gmail.com"]').count()<1)throw Error('DIRECT_LEGAL_CONTACT_REQUIRED');
    if(slug==='eliminar-cuenta'&&!(await page.getByRole('link',{name:'Solicitar eliminación de mi cuenta',exact:true}).getAttribute('href')).startsWith('mailto:jose.villablanca.horta@gmail.com?subject=Eliminar'))throw Error('DIRECT_DELETION_PATH_REQUIRED');
    await page.screenshot({path:artifactDir+'/no-js-'+slug+'.png',fullPage:true,animations:'disabled'});
@@ -68,7 +69,7 @@ if(isPublic){
   }catch{checks.push({browser:'Desktop-Chrome',javaScriptEnabled:false,path:'/'+slug+'.html',passed:false});}
  }}finally{await context.close();await browser.close();}
 }
-const report={origin,revision,checkedAt:new Date().toISOString(),environment:'real public Cloudflare deployment',physicalPhones:false,authenticatedAccountsUsed:false,requestEmailSent:false,passed:checks.every(x=>x.passed),checks};
+const report={origin,canonicalOrigin,revision,checkedAt:new Date().toISOString(),environment:'real public Cloudflare deployment',physicalPhones:false,authenticatedAccountsUsed:false,requestEmailSent:false,passed:checks.every(x=>x.passed),checks};
 await writeFile(artifactDir+'/report.json',JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({origin,revision,passed:report.passed,checks:checks.length}));
 if(!report.passed)process.exitCode=1;

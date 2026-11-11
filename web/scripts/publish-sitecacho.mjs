@@ -61,6 +61,21 @@ export function matchingPublicDeployment(project,deployments,revision){
   if(!d||project.canonical_deployment?.id!==d.id)throw Error('CANONICAL_PUBLIC_REVISION_REQUIRED');
   return {id:d.id,environment:d.environment,revision,url:publicSiteUrl('https://'+PAGES_PROJECT+'.pages.dev')};
 }
+export async function probeCanonicalWww({revision,fetcher=fetch}){
+  if(!/^[a-f\d]{40}$/.test(revision||''))throw Error('EXACT_REVISION_REQUIRED');
+  const from='https://www.sitecacho.cl',to='https://sitecacho.cl',checks=[];
+  for(const path of['/','/cuenta.html?next=%2Fapp%2Finicio.html','/recuperar?audit=public-domain','/privacidad.html','/version.json','/api/config','/app/daily-catalog.js','/__encrypted/domain-audit.bin']){
+    try{
+      const r=await fetcher(from+path,{redirect:'manual',signal:AbortSignal.timeout(20000)});
+      checks.push({path,status:r.status,passed:r.status===308&&r.headers.get('location')===to+path&&r.headers.get('referrer-policy')==='no-referrer'});
+    }catch{checks.push({path,passed:false});}
+  }
+  try{
+    const r=await fetcher(to+'/api/config',{redirect:'manual',signal:AbortSignal.timeout(20000)}),d=await r.json();
+    checks.push({path:'/api/config',canonicalRevision:true,passed:r.status===200&&d.revision===revision&&d.signupEnabled===false&&d.authReturnReady===false});
+  }catch{checks.push({path:'/api/config',canonicalRevision:true,passed:false});}
+  return{url:from,canonicalOrigin:to,checkedAt:new Date().toISOString(),passed:checks.every(x=>x.passed),checks};
+}
 export async function verifyPublicSite(env,manifest,{client=pagesClient(env),fetcher=fetch,wait=ms=>new Promise(r=>setTimeout(r,ms))}={}){
   const project=await client.getProject();verifyTarget(project,env.GITHUB_REF_NAME);
   if(!reviewedPublicRuntime(project.deployment_configs?.production)||manifest.revision!==env.GITHUB_SHA)throw Error('PUBLIC_BUILD_OR_RUNTIME_MISMATCH');
@@ -77,9 +92,9 @@ export async function verifyPublicSite(env,manifest,{client=pagesClient(env),fet
     probes.push(await probeDeployment({url,revision:env.GITHUB_SHA,protectedFiles:manifest.protectedFiles,encryptedFiles:manifest.encryptedFiles,fetcher,validateUrl:publicSiteUrl}));
   }
   const www=domains.find(d=>d.name==='www.sitecacho.cl');let wwwProbe;
-  if(www?.status==='active')wwwProbe=await probeDeployment({url:'https://www.sitecacho.cl',revision:env.GITHUB_SHA,protectedFiles:manifest.protectedFiles,encryptedFiles:manifest.encryptedFiles,fetcher,validateUrl:publicSiteUrl});
+  if(www?.status==='active')wwwProbe=await probeCanonicalWww({revision:env.GITHUB_SHA,fetcher});
   return {url:'https://sitecacho.cl',checkedAt:new Date().toISOString(),revision:env.GITHUB_SHA,deployment,fullQa:env.VERIFIED_QA_URL,
-    passed:probes.every(p=>p.passed===true),realPayments:false,probes,www:wwwProbe||{url:'https://www.sitecacho.cl',passed:false,status:www?.status||'not_attached',reason:'DNS_ACTIVATION_PENDING'},
+    passed:probes.every(p=>p.passed===true)&&(!wwwProbe||wwwProbe.passed===true),realPayments:false,probes,www:wwwProbe||{url:'https://www.sitecacho.cl',passed:false,status:www?.status||'not_attached',reason:'DNS_ACTIVATION_PENDING'},
     limits:['No habilita pagos, registro nuevo ni Google.','No acredita teléfonos físicos ni la aprobación interactiva del comprador.']};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){

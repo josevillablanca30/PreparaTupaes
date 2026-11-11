@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {preparePublicProject,validatePublicRequest,matchingPublicDeployment,configurePublicDomains} from '../scripts/publish-sitecacho.mjs';
+import {preparePublicProject,validatePublicRequest,matchingPublicDeployment,configurePublicDomains,probeCanonicalWww} from '../scripts/publish-sitecacho.mjs';
 import {prepareProject} from '../scripts/prepare-pages-project.mjs';
 import {PAGES_ACCOUNT_ID,PAGES_PROJECT,PREVIEW_BRANCH,RESERVED_PRODUCTION_BRANCH,REPOSITORY,verifyTarget,publicSiteUrl,reviewedPublicRuntime} from '../scripts/pages-client.mjs';
 const revision='a'.repeat(40);
@@ -55,4 +55,13 @@ test('domain revalidation leaves an already active apex intact and records only 
  const a=api(),r=await configurePublicDomains(env,{client:a.client});
  assert.deepEqual(a.calls,[{retry:'www.sitecacho.cl'}]);assert.equal(r.dnsRecordsModified,false);assert.equal(r.resendModified,false);
  assert.equal(r.domains.find(d=>d.name==='sitecacho.cl').status,'active');assert.equal(r.domains.find(d=>d.name==='www.sitecacho.cl').status,'pending');
+});
+test('the active www host must preserve paths and queries in its HTTPS canonical redirect and reach the reviewed closed revision',async()=>{
+ const fixture=({badLocation=false,badStatus=false,badRevision=false}={})=>async(url,options)=>{
+  assert.equal(options.redirect,'manual');const u=new URL(url);
+  if(u.hostname==='sitecacho.cl')return Response.json({revision:badRevision?'b'.repeat(40):revision,signupEnabled:false,authReturnReady:false});
+  assert.equal(u.hostname,'www.sitecacho.cl');return new Response(null,{status:badStatus?302:308,headers:{location:(badLocation?'https://unrelated.invalid':'https://sitecacho.cl')+u.pathname+u.search,'referrer-policy':'no-referrer'}});
+ };
+ const good=await probeCanonicalWww({revision,fetcher:fixture()});assert.equal(good.passed,true);assert.equal(good.checks.length,9);
+ for(const change of[{badLocation:true},{badStatus:true},{badRevision:true}])assert.equal((await probeCanonicalWww({revision,fetcher:fixture(change)})).passed,false);
 });

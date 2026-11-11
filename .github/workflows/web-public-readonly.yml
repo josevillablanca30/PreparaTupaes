@@ -30,7 +30,7 @@ jobs:
           import {readFile,mkdir,writeFile} from 'node:fs/promises';
           import {createHash} from 'node:crypto';
           import {pagesClient,verifyTarget,reviewedPublicRuntime,publicSiteUrl} from './web/scripts/pages-client.mjs';
-          import {matchingPublicDeployment} from './web/scripts/publish-sitecacho.mjs';
+          import {matchingPublicDeployment,probeCanonicalWww} from './web/scripts/publish-sitecacho.mjs';
           import {probeDeployment} from './web/scripts/verify-pages-preview.mjs';
           const previous=JSON.parse(await readFile('web/reports/mercadopago-20261110/public-site/pages-public.json','utf8'));
           if(previous.passed!==true||!/^[a-f0-9]{40}$/.test(previous.revision||''))throw Error('VERIFIED_PUBLIC_REPORT_REQUIRED');
@@ -42,10 +42,11 @@ jobs:
           const protectedFiles=previous.probes[0].checks.filter(x=>x.name.startsWith('Acceso privado denegado: ')&&x.passed).map(x=>x.name.slice('Acceso privado denegado: '.length));
           if(protectedFiles.length<120||new Set(protectedFiles).size!==protectedFiles.length)throw Error('VERIFIED_PRIVATE_PATHS_REQUIRED');
           const encryptedFiles=Object.fromEntries(protectedFiles.map(x=>[x,'/__encrypted/'+createHash('sha256').update(x).digest('hex')+'.bin']));
-          const probes=await Promise.all(['https://cachaste-sitecacho.pages.dev','https://sitecacho.cl','https://www.sitecacho.cl'].map(url=>probeDeployment({url,revision:previous.revision,protectedFiles,encryptedFiles,validateUrl:publicSiteUrl})));
-          const report={checkedAt:new Date().toISOString(),revision:previous.revision,deployment,domains,realPayments:false,readOnly:true,passed:probes.every(x=>x.passed),probes};
+          const probes=await Promise.all(['https://cachaste-sitecacho.pages.dev','https://sitecacho.cl'].map(url=>probeDeployment({url,revision:previous.revision,protectedFiles,encryptedFiles,validateUrl:publicSiteUrl})));
+          const www=await probeCanonicalWww({revision:previous.revision});
+          const report={checkedAt:new Date().toISOString(),revision:previous.revision,deployment,domains,realPayments:false,readOnly:true,passed:probes.every(x=>x.passed)&&www.passed,probes,www};
           await mkdir('web/artifacts',{recursive:true});await writeFile('web/artifacts/public-http.json',JSON.stringify(report,null,2)+'\n');
-          console.log(JSON.stringify({revision:report.revision,domains,checks:probes.reduce((n,x)=>n+x.checks.length,0),passed:report.passed}));
+          console.log(JSON.stringify({revision:report.revision,domains,checks:probes.reduce((n,x)=>n+x.checks.length,www.checks.length),passed:report.passed}));
           if(!report.passed)process.exitCode=1;
           NODE
       - name: Auditar exclusivamente la revisión pública documentada
