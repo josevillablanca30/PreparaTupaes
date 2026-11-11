@@ -1,0 +1,91 @@
+name: Duelos 2 · isolated integration tests
+on:
+  push:
+    branches: [work/cachaste-duelos-2-20261110, work/cachaste-duels2-integration-20261111]
+    paths: ['duels2/**', 'scripts/*duels2*', 'tests/*duels2*', 'tests/helpers/duels2*', 'web/tests/duels2*', 'web/supabase/migrations/*duels2*', 'web/shared/competition-ui.mjs', '.github/workflows/duels2-tests.yml']
+  pull_request:
+    branches: [work/cachaste-web-unificada-20261106]
+    paths: ['duels2/**', 'scripts/*duels2*', 'tests/*duels2*', 'tests/helpers/duels2*', 'web/tests/duels2*', 'web/supabase/migrations/*duels2*', '.github/workflows/duels2-tests.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: duels2-tests-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  isolated-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: isolated-tests-only
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DUELS2_DATABASE_URL: postgresql://postgres:isolated-tests-only@127.0.0.1:5432/postgres
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Server, payment isolation, privacy, review and legacy compatibility
+        run: node --test web/tests/*.test.mjs tests/duels2-ui-transform.test.mjs tests/duels2-history.test.mjs tests/competition-client.test.mjs
+      - name: Real simultaneous PostgreSQL connections
+        run: node scripts/test-duels2-concurrency.mjs
+      - name: Web build without deployment
+        run: |
+          node web/scripts/build.mjs
+          node web/scripts/verify-private-distribution.mjs --local
+          node scripts/verify-duels2-web-build.mjs
+      - name: Native candidate from pinned Android source
+        run: node scripts/prepare-duels2-android.mjs
+      - run: npx playwright install --with-deps chromium
+      - name: Two browser sessions, mobile layouts and educational review
+        run: node scripts/test-duels2-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cachaste-duels2-isolated-evidence
+          path: test-results/duels2/
+          if-no-files-found: ignore
+          retention-days: 14
+  android-candidate:
+    needs: isolated-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node scripts/prepare-duels2-android.mjs
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - name: Prepare SDK for isolated debug candidate
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0"
+          echo "sdk.dir=$ANDROID_HOME" > dist/duels2-android/android/local.properties
+      - name: Compile Android debug APK without release credentials
+        run: gradle -p dist/duels2-android/android :app:assembleDebug --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cachaste-duels2-android-debug
+          path: dist/duels2-android/android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14

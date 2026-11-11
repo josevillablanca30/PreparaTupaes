@@ -40,6 +40,11 @@ for(const name of pages){
  const file=path.join(out,'app',name);let text=await readFile(file,'utf8');
  if(name==='index.html')text=adaptLegacyActions(text);
  if(name==='competencia.html')text=text.replaceAll('https://work-cachaste-web-comercial.cachaste-sitecacho.pages.dev/','/');
+ if(name==='competencia.html'){
+  const connect="connect-src 'self' https://jmobinmdwrmdqrxtcruj.supabase.co;";
+  if(!text.includes(connect))throw Error('REVIEW_DUELS2_REALTIME_CSP');
+  text=text.replace(connect,"connect-src 'self' https://jmobinmdwrmdqrxtcruj.supabase.co wss://jmobinmdwrmdqrxtcruj.supabase.co;");
+ }
  text=text.replace('</head>','<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"><link rel="stylesheet" href="/web-shell.css"><!--CACHASTE_WEB_BOOTSTRAP--><script src="/web-init.js"></script><script src="/web-legacy.js" defer></script></head>');
  if(name==='competencia.html')text=text.replace('<script src="competition-app.js"></script>','<script src="/web-competition.js"></script><script src="competition-app.js"></script>');
  text=text.replace('</body>','<script src="/web-shell.js" defer></script></body>');

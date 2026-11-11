@@ -1,0 +1,15 @@
+import {readFile,mkdir,writeFile} from 'node:fs/promises';
+import {createDecipheriv} from 'node:crypto';
+import assert from 'node:assert/strict';
+import {policy} from '../web/server/gateway.mjs';
+const file='/app/competencia.html',origin='wss://jmobinmdwrmdqrxtcruj.supabase.co';
+const manifest=JSON.parse(await readFile('web/artifacts/build-manifest.json','utf8'));
+const bindings=JSON.parse(await readFile('web/.local-bindings.json','utf8'));
+const bytes=await readFile('web/dist'+manifest.encryptedFiles[file]);
+const cipher=createDecipheriv('aes-256-gcm',Buffer.from(bindings.BANK_CONTENT_KEY,'base64'),bytes.subarray(0,12));
+cipher.setAAD(Buffer.from(file));cipher.setAuthTag(bytes.subarray(-16));
+const html=Buffer.concat([cipher.update(bytes.subarray(12,-16)),cipher.final()]).toString();
+assert.ok(html.includes("connect-src 'self' https://jmobinmdwrmdqrxtcruj.supabase.co "+origin+';'));
+assert.ok(policy(file,{}).includes(origin));assert.ok(!policy('/cuenta.html',{}).includes(origin));
+const report={checkedAt:new Date().toISOString(),competitionHtmlCsp:true,competitionWorkerCsp:true,otherPagesRemainWithoutWebSocket:true,privateDocumentAuthenticatedAndEncrypted:true,productionDeployment:false};
+await mkdir('test-results/duels2',{recursive:true});await writeFile('test-results/duels2/web-build-csp.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));
