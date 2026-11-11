@@ -20,7 +20,7 @@ async function seed(page,subject,track,kind='lesson'){
   return{xp:e.stats().xp,attempts:e.state.attempts.length};
  },{subject,track,kind});
 }
-async function capture(page,info,name){await page.screenshot({path:info.outputPath(name+'.png'),fullPage:true,animations:'disabled'});}
+async function capture(page,info,name){await page.screenshot({path:info.outputPath(name+'.png'),fullPage:true,animations:'disabled',scale:'css'});}
 for(const width of [320,360,390,430,1280])for(const[subject,track]of subjects){
  test(`${width}px · ${subject} ${track||''}: tutor, mini práctica y alternativas`,async({page},info)=>{
   await page.setViewportSize({width,height:width>600?900:844});await page.emulateMedia({reducedMotion:'reduce',colorScheme:'dark'});

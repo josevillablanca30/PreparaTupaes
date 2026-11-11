@@ -53,8 +53,6 @@ jobs:
       - run: bash scripts/install-chromium-qa.sh
       - name: Probar recuperación recargada, maestro, contraste y avatares en Android
         run: npx playwright test tests/competition.mobile.spec.mjs tests/competition-ux.mobile.spec.mjs tests/rc10-update.mobile.spec.mjs tests/rc11-recovery-arena.mobile.spec.mjs tests/competition-community.mobile.spec.mjs tests/five-subjects.mobile.spec.mjs tests/daily-session-recovery.mobile.spec.mjs tests/subscription-mobile.spec.mjs tests/billing-flow.mobile.spec.mjs tests/legal-links.mobile.spec.mjs tests/content-context.mobile.spec.mjs tests/night-identity.mobile.spec.mjs --project=Android-Chrome --project=mobile-320px
-      - name: Auditar legibilidad real a 320, 360, 390, 430 y escritorio
-        run: npx playwright test tests/work3-visual.mobile.spec.mjs --project=Android-Chrome
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -65,11 +63,36 @@ jobs:
             reports/pedagogical-audit.json
             reports/content-context-20261104/audit.json
           retention-days: 14
+  visual-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: bash scripts/install-chromium-qa.sh
+      - name: Auditar estudio y navegación real a 320, 360, 390, 430 y escritorio
+        run: npx playwright test tests/work3-visual.mobile.spec.mjs tests/work3-journey.mobile.spec.mjs --project=Android-Chrome --output=test-results-work3 --reporter=list,json
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_FILE: test-results-work3/results.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Cachaste-Work3-Visual-48-${{ github.sha }}
+          path: test-results-work3/
+          retention-days: 14
+          if-no-files-found: error
   native:
-    needs: verify
+    needs: [verify, visual-audit]
     uses: ./.github/workflows/android-apk.yml
   signed-bundle:
-    needs: [signing-preflight, verify, integration, native]
+    needs: [signing-preflight, verify, integration, visual-audit, native]
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
@@ -131,6 +154,8 @@ jobs:
           printf '%s\n' "$GITHUB_SHA" > play-delivery/source-commit.txt
           cp android/app/build/outputs/apk/release/app-release.apk play-delivery/Cachaste-1.5.0-rc21-48.apk
           "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs play-delivery/Cachaste-1.5.0-rc21-48.apk > play-delivery/APK-CERTIFICATE.txt
+          apk_fingerprint=$(sed -n 's/^Signer #1 certificate SHA-256 digest: //p' play-delivery/APK-CERTIFICATE.txt)
+          test "$apk_fingerprint" = "$EXPECTED_UPLOAD_SHA256"
           sha256sum play-delivery/*.aab play-delivery/*.apk > play-delivery/SHA256SUMS.txt
       - name: Eliminar clave temporal incluso tras errores
         if: always()

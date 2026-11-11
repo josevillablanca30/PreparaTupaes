@@ -498,5 +498,7 @@ body:has(.reference-courses){--game-purple:#7438df;--game-deep:#4c229b;--game-in
 }
 
 #daily-root .lesson-word-help :is(dt,dd){color:var(--night-ink)}
-#daily-root :is(.lab-model,.math-model,.question-visual) :is(.topic-equation,.lab-formula){background:#f6f0fc;color:#302044!important}
+#daily-root :is(.lab-model,.math-model,.question-visual,.biology-model) :is(.topic-equation,.lab-formula){background:#f6f0fc;color:#302044!important}
 #daily-root :is(.reference-subject,.reference-card-title small,.reference-speech,.trail-status,.world-hud p,.school-position,.reference-stats small){font-size:12px}
+
+#daily-root .express-report .reward-card strong{color:var(--night-gold)}

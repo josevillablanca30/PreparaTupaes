@@ -25,3 +25,5 @@ android/app/src/beta/assets/
 
 # Derived instrumentation-only contrast probe
 android/app/src/androidTest/assets/work3-contrast.js
+
+test-results-work3/
