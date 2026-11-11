@@ -34,10 +34,32 @@ jobs:
           const result=spawnSync(process.execPath,['web/scripts/probe-legal-browsers.mjs','--public'],{stdio:'inherit',env:{...process.env,GITHUB_SHA:report.revision}});
           process.exitCode=result.status??1;
           NODE
+      - name: Verificar Supabase alojado sin activar compras ni crear usuarios
+        if: always()
+        run: node web/scripts/verify-live-billing-evidence.mjs
+      - name: Consultar DNS público sin permisos de escritura
+        if: always()
+        run: |
+          node --input-type=module <<'NODE'
+          import {mkdir,writeFile} from 'node:fs/promises';
+          const checks=[];
+          for(const [name,type] of [['sitecacho.cl','A'],['www.sitecacho.cl','CNAME'],['www.sitecacho.cl','A']]){
+            try{
+              const r=await fetch('https://cloudflare-dns.com/dns-query?name='+name+'&type='+type,{headers:{accept:'application/dns-json'},redirect:'error',signal:AbortSignal.timeout(15000)}),d=await r.json();
+              checks.push({name,type,httpStatus:r.status,status:d.Status,answers:(d.Answer||[]).map(x=>({name:x.name,type:x.type,data:x.data}))});
+            }catch{checks.push({name,type,error:'PUBLIC_DNS_UNAVAILABLE'});}
+          }
+          await mkdir('web/artifacts',{recursive:true});
+          await writeFile('web/artifacts/public-dns.json',JSON.stringify({checkedAt:new Date().toISOString(),readOnly:true,checks},null,2)+'\n');
+          console.log(JSON.stringify(checks));
+          NODE
       - name: Guardar pruebas y capturas públicas sin secretos
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Cachaste-Public-Readonly
-          path: web/artifacts/legal-live/
+          path: |
+            web/artifacts/legal-live/
+            web/artifacts/hosted-live/
+            web/artifacts/public-dns.json
           retention-days: 14

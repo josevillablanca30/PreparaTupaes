@@ -36,7 +36,9 @@ for(const[name,engine,use]of[['Desktop-Chrome',chromium,{viewport:{width:1365,he
   if(isPublic)for(const[path,title]of[['/','Te lo dejamos clarito para un buen resultado.'],['/cuenta.html','Tu preparación comienza aquí.'],['/recuperar','Recupera tu contraseña.']]){
    let measurements=[];
    try{
-    const response=await page.goto(origin+path,{waitUntil:'networkidle'});
+    // PWA installation can keep Chromium's network active after the form is
+    // ready. Assert the visible product state rather than global network idle.
+    const response=await page.goto(origin+path,{waitUntil:'domcontentloaded'});
     if(response.status()!==200)throw Error('PUBLIC_HTTPS_REQUIRED');
     await page.getByRole('heading',{name:title,exact:true}).waitFor();
     measurements=await page.evaluate(measureTextContrast,PUBLIC_SURFACE_TEXT);
