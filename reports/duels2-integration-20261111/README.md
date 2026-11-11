@@ -8,7 +8,7 @@ Esta candidata combina el PR [#7](https://github.com/josevillablanca30/PreparaTu
 - Build de las cinco materias y **124 archivos cifrados autenticados**, sin bancos educativos públicos ni clave dentro del Worker.
 - Permiso `wss://jmobinmdwrmdqrxtcruj.supabase.co` incorporado tanto a la CSP del Worker como a la etiqueta CSP del HTML empaquetado. El Worker lo permite únicamente en `/app/competencia.html`, sin comodines ni permisos WebSocket nuevos en acceso, recuperación o materias.
 - La comprobación descifra y autentica el documento construido, verifica su etiqueta CSP y la contrasta con la política real del gateway. No modifica el HTML Android de referencia.
-- La CI de esta rama repite los tests combinados, PostgreSQL concurrente, dos sesiones móviles de navegador, empaquetado web y APK debug. Sus resultados se documentarán al terminar; no se declaran aprobados anticipadamente.
+- La [CI 42934538098](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42934538098), del código `169f9514`, terminó con ambos jobs aprobados: **189/189 pruebas combinadas**, PostgreSQL 17.11 con 40 RPC simultáneos/reintentados, dos sesiones móviles de navegador a 390/320 px, empaquetado web y **APK debug compilado**. El navegador ejercitó 30 respuestas humanas, bot, reconexión, retención de alternativa, resultado, revancha y los tres modos del tutor. Usa Auth aislado y polling; no acredita Realtime alojado ni Android instalado. Evidencia resumida en [ci-validation.json](ci-validation.json).
 
 ## Requisitos antes de habilitar públicamente
 
