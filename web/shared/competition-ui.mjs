@@ -1,7 +1,8 @@
+import {adaptDuels2Ui} from '../../duels2/ui-transform.mjs';
 import {adaptCurrentCompetitionUi} from './current-competition-ui.mjs';
 // Change platform-specific account copy only. Approved art, layout and competition rules stay identical.
 export function adaptCompetitionUi(source){
- if(source.includes('function historyPage()'))return adaptCurrentCompetitionUi(source);
+ if(source.includes('function historyPage()'))return adaptDuels2Ui(adaptCurrentCompetitionUi(source));
  const changes=[
  ['Los cobros y la prueba de siete días se habilitarán con Google Play.','Los cobros están desactivados durante las pruebas. Revisa tu acceso en Mi cuenta.'],
  ['Se eliminarán tu cuenta y tus datos competitivos. Tu aprendizaje local seguirá en este teléfono. Eliminar la cuenta no cancela una suscripción de Google Play: cancélala allí si no quieres que se renueve. Las compras quedan vinculadas a esta cuenta. Para protegerte, vuelve a confirmar tu contraseña.','Se eliminarán tu cuenta, tu progreso web y tus datos competitivos. Si en el futuro activas una suscripción web, cancela su renovación desde Mi cuenta. Las compras de Google Play se administran allí. Los importes de pagos necesarios para obligaciones contables pueden conservarse sin el vínculo a tu cuenta. Para protegerte, confirma nuevamente tu acceso antes de eliminar.']
@@ -47,5 +48,5 @@ export function adaptCompetitionUi(source){
  source=source.replace(filterAnchor,"if(action==='web-duel-filter'){state.webDuelFilter=b.dataset.filter==='finished'?'finished':'all';render();return;}\n  "+filterAnchor);
  const profileDelete="await api.call('delete_profile')";if(!source.includes(profileDelete))throw Error('REVIEW_WEB_PROFILE_DELETION');
  source=source.replace(profileDelete,"await cachasteRemoveWebProfilePhoto(api);"+profileDelete);
- return "async function cachasteRemoveWebProfilePhoto(api){if(!api.user?.id)throw Error('AUTH_REQUIRED');const{error}=await api.sdk.storage.from('cachaste-profile-photos').remove([api.user.id+'/avatar.webp']);if(error)throw error;}\n"+source;
+ return adaptDuels2Ui("async function cachasteRemoveWebProfilePhoto(api){if(!api.user?.id)throw Error('AUTH_REQUIRED');const{error}=await api.sdk.storage.from('cachaste-profile-photos').remove([api.user.id+'/avatar.webp']);if(error)throw error;}\n"+source);
 }

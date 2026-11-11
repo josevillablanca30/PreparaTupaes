@@ -1,5 +1,6 @@
 // Two real GoTrue identities and two sessions on disposable localhost Supabase. Never hosted.
 import{createClient}from'@supabase/supabase-js';import pg from'pg';import{randomUUID}from'node:crypto';import{readFile,writeFile,mkdir}from'node:fs/promises';import assert from'node:assert/strict';
+import{testDuels2Realtime}from'./test-duels2-realtime.mjs';
 const status=JSON.parse(await readFile(process.argv[2],'utf8'));
 for(const value of[status.API_URL,status.DB_URL])if(!['127.0.0.1','localhost'].includes(new URL(value).hostname))throw Error('Refusing to test against a hosted or production project');
 const db=new pg.Client({connectionString:status.DB_URL}),admin=createClient(status.API_URL,status.SERVICE_ROLE_KEY,{auth:{persistSession:false,autoRefreshToken:false}}),users=[],clients=[],credentials=[],events=[];
@@ -19,6 +20,16 @@ try{
  assert.deepEqual((await rpc(clients[1],'snapshot')).documents,[]);const own=await rpc(clients[1],'put',{...draft,user_id:users[0],value:{subject:'M1'}});assert.equal(own.document.user_id,undefined);assert.equal((await rpc(second,'snapshot')).documents[0].value.subject,'Historia');record('Forged owner fields do not copy or overwrite another student progress');
  const invalid=await clients[0].rpc('cachaste_web_progress',{operation:'put',payload:{key:'premium',baseVersion:0,value:{active:true}}});assert.equal(invalid.error?.message,'INVALID_PROGRESS_KEY');const adminAttempt=await clients[0].rpc('cachaste_web_billing_admin',{operation:'policy'});assert.ok(adminAttempt.error);const direct=await clients[0].schema('cachaste_web').from('learning_documents').select('*');assert.ok(direct.error);record('Private schemas, service billing commands and unapproved storage keys stay denied over PostgREST');
  const trial=await admin.rpc('cachaste_web_billing_admin',{operation:'checkout',payload:{id:randomUUID(),userId:users[0],plan:'mensual',providerPlanId:'qa-never-real',trial:true}});assert.equal(trial.error?.message,'BILLING_NOT_READY');record('A service-side checkout is also closed until merchant and tax readiness are enabled');
+ if(process.env.CACHASTE_REALTIME_QA==='1'){
+  assert.equal((await db.query("select to_regprocedure('public.cachaste_duels2(text,jsonb)') is not null as ready")).rows[0].ready,true);
+  const outsiderAccount={email:'cachaste-realtime-qa-'+randomUUID()+'@example.invalid',password:randomUUID()+randomUUID()};
+  const created=await admin.auth.admin.createUser({...outsiderAccount,email_confirm:true});
+  assert.ifError(created.error);
+  users.push(created.data.user.id);
+  const outsider=client();
+  assert.ifError((await outsider.auth.signInWithPassword(outsiderAccount)).error);
+  await testDuels2Realtime({db,clients,outsider,record});
+ }
  await db.query("update cachaste.settings set environment='production'");assert.equal((await clients[0].rpc('cachaste_access')).data.active,false);assert.equal((await clients[0].rpc('cachaste_web_progress',{operation:'snapshot'})).error?.message,'SUBSCRIPTION_REQUIRED');record('Restoring production mode rejects the same isolated test grants for Android and web');
  const erased=await clients[0].rpc('cachaste_competition',{operation:'delete_account',payload:{confirmation:'ELIMINAR'}});assert.ifError(erased.error);assert.equal((await db.query('select count(*)::int n from cachaste_web.learning_documents where user_id=$1',[users[0]])).rows[0].n,0);assert.ok((await second.rpc('cachaste_web_account')).error);record('Account deletion without Premium removes synchronized progress and revokes the other live session');
  await mkdir('web/artifacts',{recursive:true});await writeFile('web/artifacts/real-http-integration.json',JSON.stringify({scope:'Disposable local Supabase: real GoTrue and PostgREST; no hosted user or real payment',passed:events.length,failed:0,events},null,2)+'\n');

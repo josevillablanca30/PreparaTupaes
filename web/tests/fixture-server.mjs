@@ -7,6 +7,7 @@ const users=[actor.id,opponent.id,'10000000-0000-4000-8000-000000000003'];
 const tokenFor=id=>'eyJhbGciOiJIUzI1NiJ9.'+Buffer.from(JSON.stringify({sub:id,exp:Math.floor(Date.now()/1000)+3600,role:'authenticated',session_id:'20000000-0000-4000-8000-000000000001'})).toString('base64url')+'.qa-signature';
 const tokens=new Map(users.map(id=>[id,tokenFor(id)]));
 let qaQuestion=null;
+let signupPending=false,signupResent=false;
 let qaAdmin=false,complimentary=false,active=true,revoked=false,documents=new Map(),position=0,done=false,calls=[],googleReady=false,oauthChallenge=null,oauthUsed=false,googleAccount=false;
 const keyPair=await crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign','verify']),offlineKey=await crypto.subtle.exportKey('jwk',keyPair.privateKey);
 const accountUser=id=>({...actorUser,id,email:id===users[0]?'student-a@example.invalid':'student-b@example.invalid',app_metadata:{provider:googleAccount&&id===users[0]?'google':'email'}});
@@ -16,6 +17,22 @@ async function backend(url,options={}){
  if(parsed.pathname.endsWith('/functions/v1/cachaste-mp-sandbox-checkout')){const b=JSON.parse(options.body||'{}');return Response.json(b.action==='checkout'?{checkoutUrl:'https://www.mercadopago.cl/subscriptions/checkout?preapproval_id=synthetic-ui-qa',mode:'sandbox'}:{ready:true,webhookConfigured:false,productionEnabled:false,mode:'sandbox',plans:[],subscriptions:[]});}
  if(parsed.pathname.includes('/functions/v1/'))return Response.json({ready:false,trialAvailable:false});
  if(parsed.pathname.endsWith('/auth/v1/settings'))return Response.json({external:{google:googleReady}});
+ if(['/auth/v1/signup','/auth/v1/verify','/auth/v1/resend'].includes(parsed.pathname)){
+  const body=JSON.parse(options.body||'{}');
+  const email=accountUser(users[0]).email;
+  if(env.WEB_SIGNUP_ENABLED!=='true'||body.email!==email)return Response.json({code:'signup_disabled',msg:'Signup unavailable'},{status:400});
+  calls.push({operation:'email_'+op});
+  if(op==='signup'){
+   if(typeof body.password!=='string'||body.password.length<12)return Response.json({code:'weak_password',msg:'Password too short'},{status:400});
+   signupPending=true;signupResent=false;
+   return Response.json(accountUser(users[0]));
+  }
+  if(!signupPending||body.type!=='signup')return Response.json({code:'otp_expired',msg:'Token expired'},{status:403,headers:{'x-supabase-api-version':'2024-01-01'}});
+  if(op==='resend'){signupResent=true;return Response.json({});}
+  if(!signupResent||body.token!=='123456')return Response.json({code:'otp_expired',msg:'Token expired'},{status:403,headers:{'x-supabase-api-version':'2024-01-01'}});
+  signupPending=false;
+  return Response.json({access_token:tokens.get(users[0]),refresh_token:'qa-refresh-'+users[0],token_type:'bearer',expires_in:3600,user:accountUser(users[0])});
+ }
  if(parsed.pathname.endsWith('/auth/v1/token')&&parsed.searchParams.get('grant_type')==='pkce'){
   const body=JSON.parse(options.body||'{}');
   if(oauthUsed||body.auth_code!=='qa-google-single-use'||!oauthChallenge||createHash('sha256').update(body.code_verifier||'').digest('base64url')!==oauthChallenge)return Response.json({error:'invalid_grant',error_description:'Invalid or consumed code'},{status:400});
@@ -32,6 +49,7 @@ async function backend(url,options={}){
  if(op==='cachaste_access')return Response.json(access);
  if(op==='cachaste_web_account')return Response.json({access,subscriptions:[],trialUsed:false,isAdmin:qaAdmin,complimentary:{active:complimentary,validUntil:complimentary?'2027-11-03T17:21:00Z':null,renews:false}});
  if(op==='cachaste_competition_health')return Response.json({apiVersion:1,catalogueReady:true});
+ if(op==='cachaste_duels2')return Response.json({code:'PGRST202',message:'cachaste_duels2 is not installed in the legacy fixture'},{status:404});
  const body=JSON.parse(options.body||'{}');calls.push({userId:id,...body});
  if(op==='cachaste_web_progress'){
   if(!active)return Response.json({message:'SUBSCRIPTION_REQUIRED'},{status:403});const store=documents.get(id)||new Map();documents.set(id,store);
@@ -67,7 +85,7 @@ const env={...local,BANK_CONTENT_KEY:process.env.BANK_CONTENT_KEY||local.BANK_CO
 createServer(async(req,res)=>{try{
  const chunks=[];for await(const chunk of req)chunks.push(chunk);const body=Buffer.concat(chunks),url=new URL(req.url,'http://'+req.headers.host);let response;
  if(url.pathname==='/__qa/session')response=Response.json({users:users.map(id=>({user:accountUser(id),access_token:tokens.get(id),refresh_token:'qa-refresh-'+id,token_type:'bearer',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600}))});
- else if(url.pathname==='/__qa/control'&&req.method==='POST'){const control=JSON.parse(body.toString()||'{}');if(control.reset){qaAdmin=false;complimentary=false;qaQuestion=null;active=true;revoked=false;documents=new Map();position=0;done=false;calls=[];googleReady=false;oauthChallenge=null;oauthUsed=false;googleAccount=false;env.WEB_GOOGLE_AUTH_ENABLED='false';env.WEB_AUTH_RETURN_READY='false';}if('qaAdmin'in control)qaAdmin=control.qaAdmin;if('complimentary'in control)complimentary=control.complimentary;if('question'in control)qaQuestion=control.question;if('active'in control)active=control.active;if('revoked'in control)revoked=control.revoked;if('googleAccount'in control)googleAccount=control.googleAccount;if('googleReady'in control){googleReady=control.googleReady;env.WEB_GOOGLE_AUTH_ENABLED=String(googleReady);env.WEB_AUTH_RETURN_READY=String(googleReady);}if(control.oauthChallenge)oauthChallenge=control.oauthChallenge;response=Response.json({ok:true});}
+ else if(url.pathname==='/__qa/control'&&req.method==='POST'){const control=JSON.parse(body.toString()||'{}');if(control.reset){signupPending=false;signupResent=false;env.WEB_SIGNUP_ENABLED='false';qaAdmin=false;complimentary=false;qaQuestion=null;active=true;revoked=false;documents=new Map();position=0;done=false;calls=[];googleReady=false;oauthChallenge=null;oauthUsed=false;googleAccount=false;env.WEB_GOOGLE_AUTH_ENABLED='false';env.WEB_AUTH_RETURN_READY='false';}if('signupEnabled'in control)env.WEB_SIGNUP_ENABLED=String(control.signupEnabled===true);if('qaAdmin'in control)qaAdmin=control.qaAdmin;if('complimentary'in control)complimentary=control.complimentary;if('question'in control)qaQuestion=control.question;if('active'in control)active=control.active;if('revoked'in control)revoked=control.revoked;if('googleAccount'in control)googleAccount=control.googleAccount;if('googleReady'in control){googleReady=control.googleReady;env.WEB_GOOGLE_AUTH_ENABLED=String(googleReady);env.WEB_AUTH_RETURN_READY=String(googleReady);}if(control.oauthChallenge)oauthChallenge=control.oauthChallenge;response=Response.json({ok:true});}
  else if(url.pathname==='/__qa/state')response=Response.json({calls,documents:[...documents].map(([id,map])=>({userId:id,documents:[...map.values()]}))});
  else if(url.pathname.startsWith('/__qa/supabase/'))response=await backend('https://jmobinmdwrmdqrxtcruj.supabase.co/'+url.pathname.slice('/__qa/supabase/'.length)+url.search,{method:req.method,headers:req.headers,body:body.toString()});
  else if(url.pathname.startsWith('/__android_reference/'))response=await asset(url,androidRoot);

@@ -1,0 +1,13 @@
+{
+  "source": "assets/competition-cat-rank.svg",
+  "sourceSha256": "6efe678c7e9c94c8fc93729c8bf31675ef3c59276af30810fa2310b0711bce2a",
+  "output": "web/public/assets/landing-cat-rank-cutout.png",
+  "size": [
+    408,
+    278
+  ],
+  "rgbPreserved": true,
+  "method": "original SVG crop and edge-connected pale-background mask; no generation",
+  "transparentPixels": 46634,
+  "detachedBackgroundFragmentsRemoved": 9
+}

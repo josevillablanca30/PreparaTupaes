@@ -64,10 +64,13 @@ export function verifyTarget(project, branch) {
   if ((project.domains || []).some(x => !domains.has(x))) throw Error('UNRELATED_DOMAIN_DENIED');
 }
 
-export function reviewedPublicRuntime(config) {
+export function reviewedPublicRuntime(config, expectedSignupEnabled) {
   const v=config?.env_vars||{};
+  const signup=v.WEB_SIGNUP_ENABLED;
   return config?.fail_open===false && v.WEB_PUBLIC_RELEASE?.type==='plain_text' && v.WEB_PUBLIC_RELEASE.value===PUBLIC_RELEASE_MARKER &&
-    ['WEB_PAYMENTS_ENABLED','WEB_SIGNUP_ENABLED','WEB_AUTH_RETURN_READY','WEB_GOOGLE_AUTH_ENABLED'].every(k=>v[k]?.type==='plain_text'&&v[k].value==='false') &&
+    ['WEB_PAYMENTS_ENABLED','WEB_AUTH_RETURN_READY','WEB_GOOGLE_AUTH_ENABLED'].every(k=>v[k]?.type==='plain_text'&&v[k].value==='false') &&
+    signup?.type==='plain_text' && ['true','false'].includes(signup.value) &&
+    (expectedSignupEnabled===undefined||signup.value===String(expectedSignupEnabled)) &&
     ['BANK_CONTENT_KEY','OFFLINE_SIGNING_JWK'].every(k=>v[k]?.type==='secret_text');
 }
 

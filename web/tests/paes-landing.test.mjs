@@ -10,7 +10,8 @@ test('landing shows useful PAES preparation and clearly labels restricted testin
  assert.match(html,/Los cobros no están activos/);
  assert.match(html,/Ya tengo acceso de prueba/);
  assert.match(html,/href="#asignaturas"/);
- assert.match(html,/href="#preparacion-paes"/);
+ assert.match(html,/href="\/cuenta.html">Entrar a mi preparación/);
+ assert.match(html,/href="#como-aprendes" class="secondary-button">Ver el recorrido/);
  assert.doesNotMatch(html,/href="\/cuenta.html">Comenzar mi preparación/);
  assert.match(css,/@media\(max-width:760px\)/);
  assert.match(css,/\.paes-moment-steps/);

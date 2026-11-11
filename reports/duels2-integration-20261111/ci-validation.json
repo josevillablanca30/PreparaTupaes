@@ -1,0 +1,62 @@
+{
+  "sourceRevision": "169f95143a801d265e1099ae3ded658cb848a69b",
+  "run": 42934538098,
+  "url": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42934538098",
+  "allJobsSucceeded": true,
+  "combinedNodeTests": {
+    "tests": 189,
+    "passed": 189,
+    "failed": 0
+  },
+  "localNodeTests": {
+    "tests": 182,
+    "passed": 182,
+    "failed": 0
+  },
+  "postgres": {
+    "version": "17.11",
+    "realTcpConnections": true,
+    "simultaneousAnswerRetryRpc": 40,
+    "oneSettlement": true,
+    "simultaneousRematchAccept": true
+  },
+  "browser": {
+    "webAndAndroidUiSource": true,
+    "widths": [
+      390,
+      320
+    ],
+    "contexts": 2,
+    "humanAnswers": 30,
+    "botPlanExercised": true,
+    "pollingAggregate": true,
+    "selectedAnswerPreserved": true,
+    "tutorTabsExercised": true,
+    "hostedAuth": false,
+    "hostedWebSocket": false,
+    "physicalDevices": false
+  },
+  "build": {
+    "encryptedFiles": 124,
+    "plaintextEducationalFiles": 0,
+    "cspVerifiedInAuthenticatedDecryptedDocument": true,
+    "debugApkCompiled": true,
+    "installedOnAndroid": false
+  },
+  "artifacts": [
+    {
+      "id": 13818450306,
+      "name": "cachaste-duels2-isolated-evidence"
+    },
+    {
+      "id": 13816998977,
+      "name": "cachaste-duels2-android-debug"
+    }
+  ],
+  "production": {
+    "webDeployed": false,
+    "migrationApplied": false,
+    "cronEnabled": false,
+    "realPaymentsEnabled": false
+  }
+}

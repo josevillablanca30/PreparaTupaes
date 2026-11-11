@@ -13,6 +13,7 @@ export function validatePublicRequest(request,env){
   if(env.GITHUB_REPOSITORY!==REPOSITORY||env.GITHUB_REF_NAME!==PREVIEW_BRANCH||!/^[a-f\d]{40}$/.test(env.GITHUB_SHA||'')||
     request.project!==PAGES_PROJECT||request.sourceBranch!==PREVIEW_BRANCH||request.productionBranch!==RESERVED_PRODUCTION_BRANCH||
     request.scope!=='public-web-payments-closed'||request.realPayments!==false||request.requiresSuccessfulQa!==true||request.preserveResend!==true||
+    (request.emailSignup!==undefined&&typeof request.emailSignup!=='boolean')||
     JSON.stringify(request.hosts)!==JSON.stringify(hosts))throw Error('PUBLIC_CLOSED_PAYMENTS_REQUEST_REQUIRED');
   return true;
 }
@@ -23,24 +24,31 @@ export async function requirePaymentsClosed({fetcher=fetch}={}){
   const status=await r.json();
   if(!r.ok||status.ready!==false||status.trialAvailable!==false)throw Error('PUBLIC_RELEASE_REQUIRES_PAYMENTS_CLOSED');
 }
-export async function preparePublicProject(env,{client=pagesClient(env),fetcher=fetch,generate=runtimeSecrets}={}){
+export async function requireHostedEmailSignup({fetcher=fetch}={}){
+  const r=await fetcher(PROJECT_URL+'/auth/v1/settings',{headers:{apikey:PUBLISHABLE_KEY},redirect:'error',signal:AbortSignal.timeout(15000)});
+  const settings=await r.json();
+  if(!r.ok||settings.external?.email!==true||settings.disable_signup!==false||settings.mailer_autoconfirm!==false)throw Error('HOSTED_EMAIL_CONFIRMATION_REQUIRED');
+}
+export async function preparePublicProject(env,{client=pagesClient(env),fetcher=fetch,generate=runtimeSecrets,emailSignup=false}={}){
   credentials(env);
   const before=await client.getProject();verifyTarget(before,env.GITHUB_REF_NAME);
   if(Object.keys(before.deployment_configs?.production?.env_vars||{}).some(k=>!allowedVariables.includes(k)))throw Error('UNREVIEWED_PRODUCTION_BINDING');
   await requirePaymentsClosed({fetcher});
+  if(emailSignup)await requireHostedEmailSignup({fetcher});
   const secrets=generate();
   const config={fail_open:false,compatibility_date:'2026-10-24',env_vars:{
     SUPABASE_URL:plain(PROJECT_URL),SUPABASE_PUBLISHABLE_KEY:plain(PUBLISHABLE_KEY),
-    ...Object.fromEntries(['WEB_SIGNUP_ENABLED','WEB_AUTH_RETURN_READY','WEB_GOOGLE_AUTH_ENABLED','WEB_PAYMENTS_ENABLED'].map(k=>[k,plain('false')])),
+    ...Object.fromEntries(['WEB_AUTH_RETURN_READY','WEB_GOOGLE_AUTH_ENABLED','WEB_PAYMENTS_ENABLED'].map(k=>[k,plain('false')])),
+    WEB_SIGNUP_ENABLED:plain(String(emailSignup)),
     WEB_PUBLIC_RELEASE:plain(PUBLIC_RELEASE_MARKER),
     ...Object.fromEntries(Object.entries(secrets).map(([k,value])=>[k,{type:'secret_text',value}])),
   }};
   // Patch only the existing named project's public runtime. No DNS, zones, account settings or payment credentials.
   await client.configureProject({production:config});
   const after=await client.getProject();verifyTarget(after,env.GITHUB_REF_NAME);
-  if(!reviewedPublicRuntime(after.deployment_configs?.production))throw Error('CLOSED_PUBLIC_RUNTIME_READBACK_FAILED');
+  if(!reviewedPublicRuntime(after.deployment_configs?.production,emailSignup))throw Error('CLOSED_PUBLIC_RUNTIME_READBACK_FAILED');
   if(bindingShape(before.deployment_configs?.preview)!==bindingShape(after.deployment_configs?.preview))throw Error('PREVIEW_RUNTIME_CHANGED');
-  return {secrets,project:PAGES_PROJECT,environment:'production',realPayments:false,previewPreserved:true};
+  return {secrets,project:PAGES_PROJECT,environment:'production',emailSignup,realPayments:false,previewPreserved:true};
 }
 export async function configurePublicDomains(env,{client=pagesClient(env)}={}){
   verifyTarget(await client.getProject(),env.GITHUB_REF_NAME);
@@ -61,7 +69,7 @@ export function matchingPublicDeployment(project,deployments,revision){
   if(!d||project.canonical_deployment?.id!==d.id)throw Error('CANONICAL_PUBLIC_REVISION_REQUIRED');
   return {id:d.id,environment:d.environment,revision,url:publicSiteUrl('https://'+PAGES_PROJECT+'.pages.dev')};
 }
-export async function probeCanonicalWww({revision,fetcher=fetch}){
+export async function probeCanonicalWww({revision,expectedSignupEnabled=false,fetcher=fetch}){
   if(!/^[a-f\d]{40}$/.test(revision||''))throw Error('EXACT_REVISION_REQUIRED');
   const from='https://www.sitecacho.cl',to='https://sitecacho.cl',checks=[];
   for(const path of['/','/cuenta.html?next=%2Fapp%2Finicio.html','/recuperar?audit=public-domain','/privacidad.html','/version.json','/api/config','/app/daily-catalog.js','/__encrypted/domain-audit.bin']){
@@ -72,13 +80,13 @@ export async function probeCanonicalWww({revision,fetcher=fetch}){
   }
   try{
     const r=await fetcher(to+'/api/config',{redirect:'manual',signal:AbortSignal.timeout(20000)}),d=await r.json();
-    checks.push({path:'/api/config',canonicalRevision:true,passed:r.status===200&&d.revision===revision&&d.signupEnabled===false&&d.authReturnReady===false});
+    checks.push({path:'/api/config',canonicalRevision:true,passed:r.status===200&&d.revision===revision&&d.signupEnabled===expectedSignupEnabled&&d.authReturnReady===false});
   }catch{checks.push({path:'/api/config',canonicalRevision:true,passed:false});}
   return{url:from,canonicalOrigin:to,checkedAt:new Date().toISOString(),passed:checks.every(x=>x.passed),checks};
 }
-export async function verifyPublicSite(env,manifest,{client=pagesClient(env),fetcher=fetch,wait=ms=>new Promise(r=>setTimeout(r,ms))}={}){
+export async function verifyPublicSite(env,manifest,{client=pagesClient(env),fetcher=fetch,emailSignup=false,wait=ms=>new Promise(r=>setTimeout(r,ms))}={}){
   const project=await client.getProject();verifyTarget(project,env.GITHUB_REF_NAME);
-  if(!reviewedPublicRuntime(project.deployment_configs?.production)||manifest.revision!==env.GITHUB_SHA)throw Error('PUBLIC_BUILD_OR_RUNTIME_MISMATCH');
+  if(!reviewedPublicRuntime(project.deployment_configs?.production,emailSignup)||manifest.revision!==env.GITHUB_SHA)throw Error('PUBLIC_BUILD_OR_RUNTIME_MISMATCH');
   const deployment=matchingPublicDeployment(project,await client.listPublicDeployments(),env.GITHUB_SHA);
   const probes=[];
   const domains=await client.listDomains();
@@ -89,29 +97,31 @@ export async function verifyPublicSite(env,manifest,{client=pagesClient(env),fet
       await wait(2000);
     }
     if(!available){probes.push({url,passed:false,reason:'PUBLIC_REVISION_NOT_YET_AVAILABLE',checks:[]});continue;}
-    probes.push(await probeDeployment({url,revision:env.GITHUB_SHA,protectedFiles:manifest.protectedFiles,encryptedFiles:manifest.encryptedFiles,fetcher,validateUrl:publicSiteUrl}));
+    probes.push(await probeDeployment({url,revision:env.GITHUB_SHA,protectedFiles:manifest.protectedFiles,encryptedFiles:manifest.encryptedFiles,expectedSignupEnabled:emailSignup,fetcher,validateUrl:publicSiteUrl}));
   }
   const www=domains.find(d=>d.name==='www.sitecacho.cl');let wwwProbe;
-  if(www?.status==='active')wwwProbe=await probeCanonicalWww({revision:env.GITHUB_SHA,fetcher});
+  if(www?.status==='active')wwwProbe=await probeCanonicalWww({revision:env.GITHUB_SHA,expectedSignupEnabled:emailSignup,fetcher});
   return {url:'https://sitecacho.cl',checkedAt:new Date().toISOString(),revision:env.GITHUB_SHA,deployment,fullQa:env.VERIFIED_QA_URL,
     passed:probes.every(p=>p.passed===true)&&(!wwwProbe||wwwProbe.passed===true),realPayments:false,probes,www:wwwProbe||{url:'https://www.sitecacho.cl',passed:false,status:www?.status||'not_attached',reason:'DNS_ACTIVATION_PENDING'},
-    limits:['No habilita pagos, registro nuevo ni Google.','No acredita teléfonos físicos ni la aprobación interactiva del comprador.']};
+    emailSignup,googleAuth:false,limits:['Compras reales deshabilitadas.','La verificación pública usa navegador y HTTP.']};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   try{
-    const env=process.env;validatePublicRequest(JSON.parse(await readFile('web/deploy-public.request','utf8')),env);
+    const env=process.env,request=JSON.parse(await readFile('web/deploy-public.request','utf8'));
+    validatePublicRequest(request,env);
+    const emailSignup=request.emailSignup===true;
     await mkdir('web/artifacts',{recursive:true});
     if(process.argv.includes('--prepare')){
       if(!env.GITHUB_ENV)throw Error('GITHUB_ACTIONS_ENVIRONMENT_REQUIRED');
       const qa=await requireQa(env);await appendFile(env.GITHUB_ENV,'VERIFIED_QA_URL='+qa+'\n');
-      const result=await preparePublicProject(env);
+      const result=await preparePublicProject(env,{emailSignup});
       for(const [key,value]of Object.entries(result.secrets)){console.log('::add-mask::'+value);await appendFile(env.GITHUB_ENV,key+'='+value+'\n',{mode:0o600});}
       const {secrets,...safe}=result;console.log(JSON.stringify(safe));
     }else if(process.argv.includes('--domains')){
       const result=await configurePublicDomains(env);await writeFile('web/artifacts/public-domains.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));
     }else if(process.argv.includes('--verify')){
       const manifest=JSON.parse(await readFile('web/artifacts/build-manifest.json','utf8'));
-      const report=await verifyPublicSite(env,manifest);await writeFile('web/artifacts/pages-public.json',JSON.stringify(report,null,2)+'\n');
+      const report=await verifyPublicSite(env,manifest,{emailSignup});await writeFile('web/artifacts/pages-public.json',JSON.stringify(report,null,2)+'\n');
       console.log(JSON.stringify({url:report.url,revision:report.revision,passed:report.passed,checks:report.probes.reduce((n,p)=>n+p.checks.length,0),www:report.www.passed}));
       if(!report.passed)process.exitCode=1;
     }else throw Error('PUBLIC_RELEASE_OPERATION_REQUIRED');

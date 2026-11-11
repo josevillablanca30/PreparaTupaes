@@ -65,3 +65,18 @@ test('the active www host must preserve paths and queries in its HTTPS canonical
  const good=await probeCanonicalWww({revision,fetcher:fixture()});assert.equal(good.passed,true);assert.equal(good.checks.length,9);
  for(const change of[{badLocation:true},{badStatus:true},{badRevision:true}])assert.equal((await probeCanonicalWww({revision,fetcher:fixture(change)})).passed,false);
 });
+
+test('Explicit email signup requires hosted confirmation while checkout and Google stay closed', async () => {
+ const blocked=api();
+ const settings=enabled=>async url=>url.endsWith('/auth/v1/settings')
+  ?Response.json({external:{email:true,google:false},disable_signup:false,mailer_autoconfirm:!enabled})
+  :closed();
+ await assert.rejects(preparePublicProject(env,{client:blocked.client,fetcher:settings(false),emailSignup:true}),/HOSTED_EMAIL_CONFIRMATION_REQUIRED/);
+ assert.equal(blocked.calls.length,0);
+ const ready=api();
+ const result=await preparePublicProject(env,{client:ready.client,fetcher:settings(true),emailSignup:true});
+ assert.equal(result.emailSignup,true);
+ assert.equal(result.realPayments,false);
+ assert.equal(reviewedPublicRuntime(ready.p.deployment_configs.production,true),true);
+ assert.equal(reviewedPublicRuntime(ready.p.deployment_configs.production,false),false);
+});
