@@ -111,7 +111,7 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
    if(!/^[1-9]\\d{0,18}$/.test(paymentId))throw Error('INVALID_PAYMENT_ID');
    const payment=await mp('/v1/payments/'+encodeURIComponent(paymentId));
    if(String(payment.id)!==paymentId||payment.status!=='approved'||
-      payment.live_mode!==false||Number(payment.transaction_amount)!==MP_PLANS[plan.plan].amount||
+      payment.live_mode!==false||String(payment.payer?.id)!==payerId||Number(payment.transaction_amount)!==MP_PLANS[plan.plan].amount||
       payment.currency_id!=='CLP'||Number(payment.transaction_amount_refunded||0)!==0)
      throw Error('PAYMENT_NOT_VERIFIED');
    const list=await listPlanSubscriptions(plan,payerId);
