@@ -3,6 +3,9 @@
  /*DUELS2_HISTORY*/
  const d2BaseCall=api.call.bind(api),d2OriginalRender=render;
  const d2Operations=new Set(['create_duel','join_code','accept','decline','random','cancel_queue','duel','start','attempt','answer','forfeit','review','rematch']);
+ let d2Available=false;
+ const d2Missing=error=>error?.code==='PGRST202'||(error?.code==='42883'&&/public\.cachaste_duels2\(/.test(error.message||''));
+ const d2ReadUnavailable=error=>/^(PROFILE_REQUIRED|COMMUNITY_REQUIRED|ACCOUNT_RESTRICTED|SUBSCRIPTION_REQUIRED)$/.test(error?.message||'');
  let d2Channel=null,d2ChannelMatch=null,d2Realtime=false,d2Polling=false,d2PendingAction=null,d2QueuePayload=null,d2QueueGeneration=0,d2LastWidth=50,d2LastQuestion=null;
  function d2Rules(){return '<div class="duels2-rules"><h2 id="dialog-title">Así se juega Duelos 2.0</h2><ul><li>Ambos reciben las mismas <strong>10 preguntas</strong>, en distinto orden.</li><li>Importa acertar: <strong>terminar primero no da ventaja</strong>. Tienen 40 minutos desde el inicio del duelo.</li><li>Cada acierto suma un punto de dominio para ti. Cada error le entrega un punto al rival.</li><li>La barra compartida cambia en tiempo real. No muestra las preguntas, respuestas ni avance del rival.</li><li>Buscamos personas primero. Si no aparece nadie tras unos 10 segundos, jugarás con un <strong>rival virtual identificado</strong>.</li><li>Contra personas: victoria <strong>+3 estrellas</strong> y derrota <strong>−3</strong>. Contra bots: <strong>+1 / −1</strong>. Empate: 0. Tu saldo nunca baja de cero.</li><li>Si abandonas o vence tu tiempo sin terminar, pierdes. Tu rival conserva su turno. Si ambos abandonan, no cambia el saldo.</li><li>Al terminar ambos, podrás revisar tu alternativa, la respuesta correcta y el tutor paso a paso.</li></ul><p>Las estrellas competitivas y tu dominio académico se guardan por separado.</p></div>';}
  async function d2Rpc(operation,payload){
@@ -13,12 +16,16 @@
  api.call=async function(operation,payload={}){
   if(operation==='dashboard'||operation==='duel_history'){
    const legacy=await d2BaseCall(operation,payload);
-   const modern=await d2Rpc(operation,payload);
+   if(!api.user||!api.premium||!api.sdk){d2Available=false;return legacy;}
+   let modern;
+   try{modern=await d2Rpc(operation,payload);d2Available=true;}
+   catch(error){if(!d2Missing(error)&&!d2ReadUnavailable(error))throw error;d2Available=false;return legacy;}
    if(operation==='duel_history')return mergeDuelHistory(legacy,modern);
    const rows=[...(modern.duels||[]),...(legacy.duels||[])].sort((a,b)=>Date.parse(b.createdAt)-Date.parse(a.createdAt));
    return {...legacy,...(operation==='dashboard'?{stats:modern.stats,history:modern.history}:{}),duels:rows};
   }
   if(!d2Operations.has(operation))return d2BaseCall(operation,payload);
+  if(!d2Available&&state.duel?.version!==2&&state.attempt?.version!==2)return d2BaseCall(operation,payload);
   const body={...payload};
   if(operation==='random'){d2QueuePayload={subject:body.subject,track:body.track||''};body.requestId=api.request('duels2-random:'+JSON.stringify(d2QueuePayload));}
   try{
@@ -30,7 +37,7 @@
   }catch(error){
    // Only a missing D2 identity falls through. Auth/access/network failures never do.
    if(String(error?.message||'').includes('D2_NOT_FOUND')&&!['random','create_duel','rematch'].includes(operation))return d2BaseCall(operation,payload);
-   if(error?.code==='PGRST202'||String(error?.message||'').includes('cachaste_duels2')&&error?.code==='42883')throw Error('SERVICE_NOT_READY');
+   if(d2Missing(error))throw Error('SERVICE_NOT_READY');
    throw error;
   }
  };
@@ -63,7 +70,7 @@
   }).subscribe(status=>{d2Realtime=status==='SUBSCRIBED';const live=root.querySelector('.duels2-live-label');if(live)live.textContent=d2Realtime?'En vivo':'Actualizando';});
  }
  render=function(...args){d2OriginalRender(...args);d2Paint();d2Subscribe();
-  if(state.route==='duelos'&&!root.querySelector('[data-action="duels2-rules"]')){const node=document.createElement('div');node.innerHTML=btn('duels2-rules','Cómo se juega Duelos 2.0','soft wide');root.querySelector('.duel-actions')?.before(node);}
+  if(d2Available&&state.route==='duelos'&&!root.querySelector('[data-action="duels2-rules"]')){const node=document.createElement('div');node.innerHTML=btn('duels2-rules','Cómo se juega Duelos 2.0','soft wide');root.querySelector('.duel-actions')?.before(node);}
  };
  async function d2Sync(){
   if(d2Polling||state.busy||!state.online||document.hidden||!api.user||!api.premium)return;
@@ -91,7 +98,7 @@
    event.preventDefault();event.stopImmediatePropagation();dialog.innerHTML=d2Rules()+btn('duels2-rules-close','Entendido','primary wide');dialog.showModal();return;
   }
   if(action==='start-duel'&&state.duel?.version!==2)return;
-  if(['random','challenge','join','start-duel'].includes(action)&&api.user&&api.premium&&api.storage.getItem(api.key('duels2-rules'))!=='2026-11-10'){
+  if(d2Available&&['random','challenge','join','start-duel'].includes(action)&&api.user&&api.premium&&api.storage.getItem(api.key('duels2-rules'))!=='2026-11-10'){
    event.preventDefault();event.stopImmediatePropagation();d2PendingAction=action;dialog.innerHTML=d2Rules()+btn('duels2-rules-accept','Entendido, vamos','primary wide')+btn('duels2-rules-close','Volver','soft wide');dialog.showModal();return;
   }
   if(action==='rematch'&&state.duel?.version===2){

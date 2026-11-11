@@ -12,7 +12,7 @@ export function matchingDeployment(deployments, revision) {
   return {id: deployment.id, url: previewUrl(deployment.url), aliases: (deployment.aliases || []).map(previewUrl)};
 }
 
-export async function probeDeployment({url, revision, protectedFiles, encryptedFiles, fetcher = fetch, validateUrl = previewUrl}) {
+export async function probeDeployment({url, revision, protectedFiles, encryptedFiles, expectedSignupEnabled = false, fetcher = fetch, validateUrl = previewUrl}) {
   const origin = validateUrl(url), checks = [];
   async function check(name, pathname, inspect, options = {}) {
     try {
@@ -33,9 +33,9 @@ export async function probeDeployment({url, revision, protectedFiles, encryptedF
   for(const[slug,title]of[['privacidad','Política de privacidad'],['condiciones','Condiciones de uso'],['eliminar-cuenta','Eliminar cuenta y datos']])await check('Documento legal público: '+slug,'/'+slug+'.html',(r,text)=>r.status===200&&/text\/html/.test(r.headers.get('content-type')||'')&&text.includes('<h1>'+title+'</h1>')&&text.includes('2026-11-03')&&text.includes('jose.villablanca.horta@gmail.com'));
 
   await check('PWA instalable', '/manifest.webmanifest', (r, text) => r.status === 200 && parse(text)?.display === 'standalone' && parse(text)?.icons?.some(icon => icon.sizes === '512x512'));
-  await check('Worker real, mismo commit y registro cerrado', '/api/config', (r, text) => {
+  await check('Worker real, mismo commit y registro según solicitud', '/api/config', (r, text) => {
     const config = parse(text);
-    return r.status === 200 && noStore(r) && config?.revision === revision && config.signupEnabled === false && config.authReturnReady === false;
+    return r.status === 200 && noStore(r) && config?.revision === revision && config.signupEnabled === expectedSignupEnabled && config.authReturnReady === false;
   });
   await check('Distribución web, versión y cobros cerrados', '/version.json', (r, text) => {
     const version = parse(text);

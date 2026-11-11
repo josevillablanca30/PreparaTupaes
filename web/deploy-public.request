@@ -1,10 +1,11 @@
 {
-  "request": "sitecacho-public-readable-account-20261110",
+  "request": "sitecacho-launch-and-email-registration-20261111",
   "project": "cachaste-sitecacho",
   "sourceBranch": "work/cachaste-web-unificada-20261106",
   "productionBranch": "production-requires-owner-approval",
   "scope": "public-web-payments-closed",
   "realPayments": false,
+  "emailSignup": true,
   "requiresSuccessfulQa": true,
   "preserveResend": true,
   "hosts": ["sitecacho.cl", "www.sitecacho.cl"]

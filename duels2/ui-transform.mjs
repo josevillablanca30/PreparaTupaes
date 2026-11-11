@@ -9,10 +9,10 @@ export function adaptDuels2Ui(source){
  // Keep every existing avatar/photo renderer, tutor tab and platform Auth path intact.
  source=source.replace(anchor,runtime.replace('/*DUELS2_CSS*/',JSON.stringify(css)).replace('/*DUELS2_HISTORY*/',mergeDuelHistory.toString())+'\n'+anchor);
  source=source.replaceAll("'90 segundos por pregunta · gana quien tenga más aciertos.'","(a.version===2?'40 minutos para las 10 preguntas · los errores favorecen al rival.':'90 segundos por pregunta · gana quien tenga más aciertos.')");
- source=source.replaceAll('<strong>90 segundos</strong> por pregunta','<strong>40 minutos</strong> para resolver');
+ source=source.replaceAll('<strong>90 segundos</strong> por pregunta',"'+(d2Available?'<strong>40 minutos</strong> para resolver':'<strong>90 segundos</strong> por pregunta')+'");
  source=source.replaceAll('Desempate por tiempo',"'+(d.version===2?'Sin carrera de velocidad':'Desempate por tiempo')+'").replaceAll('Desempate<br>por tiempo',"'+(d.version===2?'Sin carrera<br>de velocidad':'Desempate<br>por tiempo')+'").replaceAll('Solo si hay igual cantidad de aciertos.',"'+(d.version===2?'Los empates se conservan.':'Solo si hay igual cantidad de aciertos.')+'");
- source=source.replaceAll('Te emparejaremos con otro estudiante disponible.','Primero buscamos una persona. Tras 10 segundos, un rival virtual.');
- source=source.replaceAll('El encuentro es por turnos. Puedes actualizar las invitaciones; no necesitas permanecer conectado.','Buscamos personas por 10 segundos. Si no hay un rival disponible, jugarás con un bot identificado.');
+ source=source.replaceAll('Te emparejaremos con otro estudiante disponible.',"'+(d2Available?'Primero buscamos una persona. Tras 10 segundos, un rival virtual.':'Te emparejaremos con otro estudiante disponible.')+'");
+ source=source.replaceAll('El encuentro es por turnos. Puedes actualizar las invitaciones; no necesitas permanecer conectado.',"'+(d2Available?'Buscamos personas por 10 segundos. Si no hay un rival disponible, jugarás con un bot identificado.':'El encuentro es por turnos. Puedes actualizar las invitaciones; no necesitas permanecer conectado.')+'");
  source=source.replaceAll("esc(r.creator.correct)","esc(d.version===2?r.creator.mastery:r.creator.correct)").replaceAll("esc(r.opponent.correct)","esc(d.version===2?r.opponent.mastery:r.opponent.correct)");
  source=source.replaceAll('<small> / 10</small>','<small> / \'+(d.version===2?\'20\':\'10\')+\'</small>');
  source=source.replace("r.reason==='correct'?","r.reason==='both_abandoned'?'Ambos dejaron el duelo. No cambian las estrellas.':r.reason==='mastery'?'Se decidió por dominio. Cada acierto suma para ti y cada error suma para tu rival.':r.reason==='correct'?");

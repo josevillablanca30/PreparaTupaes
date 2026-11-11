@@ -3,7 +3,7 @@
 import{execFileSync}from'node:child_process';import{mkdir,readFile,writeFile,rm}from'node:fs/promises';import{fileURLToPath}from'node:url';import path from'node:path';
 import{adaptDuels2Ui}from'../duels2/ui-transform.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
-export const ANDROID_DUELS2_BASE='e3a0434d70042afc40dccdbf6d57307a16c2e16e';
+export const ANDROID_DUELS2_BASE='7589d7aba376f39a3876bf1f484b014af1ed6af1';
 export async function prepareAndroid(out){
  const target=path.resolve(out);if(!target.includes('/dist/')||target===root)throw Error('Use a regenerable directory below dist/');
  await mkdir(target,{recursive:true});const archive=execFileSync('git',['archive',ANDROID_DUELS2_BASE],{cwd:root,maxBuffer:100*1024*1024});execFileSync('tar',['-x','-C',target],{input:archive,maxBuffer:1024*1024});

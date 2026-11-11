@@ -32,6 +32,7 @@ async function backend(url,options={}){
  if(op==='cachaste_access')return Response.json(access);
  if(op==='cachaste_web_account')return Response.json({access,subscriptions:[],trialUsed:false,isAdmin:qaAdmin,complimentary:{active:complimentary,validUntil:complimentary?'2027-11-03T17:21:00Z':null,renews:false}});
  if(op==='cachaste_competition_health')return Response.json({apiVersion:1,catalogueReady:true});
+ if(op==='cachaste_duels2')return Response.json({code:'PGRST202',message:'cachaste_duels2 is not installed in the legacy fixture'},{status:404});
  const body=JSON.parse(options.body||'{}');calls.push({userId:id,...body});
  if(op==='cachaste_web_progress'){
   if(!active)return Response.json({message:'SUBSCRIPTION_REQUIRED'},{status:403});const store=documents.get(id)||new Map();documents.set(id,store);
