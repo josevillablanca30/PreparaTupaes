@@ -57,7 +57,7 @@ root.addEventListener('submit',e=>{e.preventDefault();const values=new FormData(
   if(account?.access?.active)location.assign(nextPage());
  }
  if(e.target.id==='signup-form'){
-  if(!config.signupEnabled){notice('El registro de cuentas nuevas está en preparación.');return;}
+  if(!config.signupEnabled){notice('El registro se habilitará cuando esté disponible la confirmación por correo.');return;}
   emailDraft=String(values.get('email')).trim();
   const {data,error}=await sdk.auth.signUp({email:emailDraft,password:values.get('password'),options:{emailRedirectTo:location.origin+'/cuenta.html'}});
   if(error)throw error;
@@ -85,7 +85,7 @@ root.addEventListener('submit',e=>{e.preventDefault();const values=new FormData(
 async function signout(){await serviceWorkerMessage({type:'PURGE_PRIVATE'});await request(undefined,'/api/session','DELETE');await sdk.auth.signOut({scope:'local'});account=null;}
 root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!b.matches('[data-action],[data-plan],[data-cancel],[data-qa-cancel]'))return;
  if(b.dataset.action==='signup-form'){
-  if(!config.signupEnabled){notice('El registro de cuentas nuevas está en preparación.');return;}
+  if(!config.signupEnabled){notice('El registro se habilitará cuando esté disponible la confirmación por correo.');return;}
   notice('');changeEmailMode('signup');return;
  }
  if(b.dataset.action==='login-form'){notice('');changeEmailMode('login');return;}
