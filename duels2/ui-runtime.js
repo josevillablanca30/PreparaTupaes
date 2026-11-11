@@ -3,6 +3,7 @@
  /*DUELS2_HISTORY*/
  const d2BaseCall=api.call.bind(api),d2OriginalRender=render;
  const d2Operations=new Set(['create_duel','join_code','accept','decline','random','cancel_queue','duel','start','attempt','answer','forfeit','review','rematch']);
+ const d2ExistingOperations=new Set(['join_code','accept','decline','duel','start','attempt','answer','forfeit','review','rematch']);
  let d2Available=false;
  const d2Missing=error=>error?.code==='PGRST202'||(error?.code==='42883'&&/public\.cachaste_duels2\(/.test(error.message||''));
  const d2ReadUnavailable=error=>/^(PROFILE_REQUIRED|COMMUNITY_REQUIRED|ACCOUNT_RESTRICTED|SUBSCRIPTION_REQUIRED)$/.test(error?.message||'');
@@ -25,19 +26,25 @@
    return {...legacy,...(operation==='dashboard'?{stats:modern.stats,history:modern.history}:{}),duels:rows};
   }
   if(!d2Operations.has(operation))return d2BaseCall(operation,payload);
-  if(!d2Available&&state.duel?.version!==2&&state.attempt?.version!==2)return d2BaseCall(operation,payload);
+  const knownD2=state.duel?.version===2||state.attempt?.version===2;
+  // A resumed attempt has an ID before the dashboard or match is hydrated.
+  if(!api.sdk||!api.user||!api.premium||(!d2Available&&!knownD2&&!d2ExistingOperations.has(operation)))return d2BaseCall(operation,payload);
   const body={...payload};
   if(operation==='random'){d2QueuePayload={subject:body.subject,track:body.track||''};body.requestId=api.request('duels2-random:'+JSON.stringify(d2QueuePayload));}
   try{
    const value=await d2Rpc(operation,body);
+   d2Available=true;
    if(operation==='random'&&!value.waiting){api.clearRequest('duels2-random:'+JSON.stringify(d2QueuePayload));d2QueuePayload=null;}
    if(operation==='cancel_queue'){if(d2QueuePayload)api.clearRequest('duels2-random:'+JSON.stringify(d2QueuePayload));d2QueuePayload=null;}
    if(value?.version===2&&value.duelId){if(state.duel?.id!==value.duelId)state.duel=await d2Rpc('duel',{duelId:value.duelId});else state.duel.balance=value.balance;}
    return value;
   }catch(error){
    // Only a missing D2 identity falls through. Auth/access/network failures never do.
-   if(String(error?.message||'').includes('D2_NOT_FOUND')&&!['random','create_duel','rematch'].includes(operation))return d2BaseCall(operation,payload);
-   if(d2Missing(error))throw Error('SERVICE_NOT_READY');
+   if(error?.message==='D2_NOT_FOUND'&&d2ExistingOperations.has(operation))return d2BaseCall(operation,payload);
+   if(d2Missing(error)){
+    if(knownD2)throw Error('SERVICE_NOT_READY');
+    d2Available=false;return d2BaseCall(operation,payload);
+   }
    throw error;
   }
  };
