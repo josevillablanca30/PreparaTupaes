@@ -2,7 +2,7 @@ name: Android Play · AAB firmado permanente
 on:
   workflow_dispatch:
   push:
-    branches: [work/cachaste-motor-duolingo-20261016]
+    branches: [work/cachaste-motor-duolingo-20261016, work/cachaste-android-legibilidad-final-20261110]
     paths: ['tests/**', 'android/app/build.gradle', 'competition-*', 'daily-*', 'assets/**', '.github/workflows/android-play.yml', 'scripts/VerifyPlayBundle.java', 'scripts/verify-play-manifest.py']
 permissions:
   contents: read
@@ -51,6 +51,8 @@ jobs:
       - run: bash scripts/install-chromium-qa.sh
       - name: Probar recuperación recargada, maestro, contraste y avatares en Android
         run: npx playwright test tests/competition.mobile.spec.mjs tests/competition-ux.mobile.spec.mjs tests/rc10-update.mobile.spec.mjs tests/rc11-recovery-arena.mobile.spec.mjs tests/competition-community.mobile.spec.mjs tests/five-subjects.mobile.spec.mjs tests/daily-session-recovery.mobile.spec.mjs tests/subscription-mobile.spec.mjs tests/billing-flow.mobile.spec.mjs tests/legal-links.mobile.spec.mjs tests/content-context.mobile.spec.mjs tests/night-identity.mobile.spec.mjs --project=Android-Chrome --project=mobile-320px
+      - name: Auditar legibilidad real a 320, 360, 390, 430 y escritorio
+        run: npx playwright test tests/work3-visual.mobile.spec.mjs --project=Android-Chrome
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -61,8 +63,11 @@ jobs:
             reports/pedagogical-audit.json
             reports/content-context-20261104/audit.json
           retention-days: 14
+  native:
+    needs: verify
+    uses: ./.github/workflows/android-apk.yml
   signed-bundle:
-    needs: [signing-preflight, verify, integration]
+    needs: [signing-preflight, verify, integration, native]
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
@@ -113,20 +118,22 @@ jobs:
           keytool -exportcert -rfc -keystore "$CACHASTE_RELEASE_KEYSTORE" -storepass:env CACHASTE_RELEASE_STORE_PASSWORD -alias "$CACHASTE_RELEASE_KEY_ALIAS" > play-delivery/upload-certificate.pem
           actual=$(openssl x509 -in play-delivery/upload-certificate.pem -noout -fingerprint -sha256 | cut -d= -f2 | tr -d ':' | tr 'A-F' 'a-f')
           test "$actual" = "$EXPECTED_UPLOAD_SHA256" || { echo '::error::La clave no coincide con el certificado de carga fijado y confirmado por el titular.'; exit 1; }
-          gradle -p android --no-daemon :app:lintRelease :app:bundleRelease
-          cp android/app/build/outputs/bundle/release/app-release.aab play-delivery/Cachaste-1.5.0-rc20-47.aab
-          java scripts/VerifyPlayBundle.java play-delivery/Cachaste-1.5.0-rc20-47.aab "$EXPECTED_UPLOAD_SHA256" > play-delivery/verification.json
-          java -jar "$RUNNER_TEMP/bundletool.jar" validate --bundle=play-delivery/Cachaste-1.5.0-rc20-47.aab
-          java -jar "$RUNNER_TEMP/bundletool.jar" dump manifest --bundle=play-delivery/Cachaste-1.5.0-rc20-47.aab --module=base > play-delivery/AndroidManifest.xml
+          gradle -p android --no-daemon :app:lintRelease :app:bundleRelease :app:assembleRelease
+          cp android/app/build/outputs/bundle/release/app-release.aab play-delivery/Cachaste-1.5.0-rc21-48.aab
+          java scripts/VerifyPlayBundle.java play-delivery/Cachaste-1.5.0-rc21-48.aab "$EXPECTED_UPLOAD_SHA256" > play-delivery/verification.json
+          java -jar "$RUNNER_TEMP/bundletool.jar" validate --bundle=play-delivery/Cachaste-1.5.0-rc21-48.aab
+          java -jar "$RUNNER_TEMP/bundletool.jar" dump manifest --bundle=play-delivery/Cachaste-1.5.0-rc21-48.aab --module=base > play-delivery/AndroidManifest.xml
           python3 scripts/verify-play-manifest.py play-delivery/AndroidManifest.xml > play-delivery/manifest-verification.json
           printf '%s\n' "$GITHUB_SHA" > play-delivery/source-commit.txt
-          sha256sum play-delivery/*.aab > play-delivery/SHA256SUMS.txt
+          cp android/app/build/outputs/apk/release/app-release.apk play-delivery/Cachaste-1.5.0-rc21-48.apk
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs play-delivery/Cachaste-1.5.0-rc21-48.apk > play-delivery/APK-CERTIFICATE.txt
+          sha256sum play-delivery/*.aab play-delivery/*.apk > play-delivery/SHA256SUMS.txt
       - name: Eliminar clave temporal incluso tras errores
         if: always()
         run: rm -f "$RUNNER_TEMP/cachaste-upload.jks"
       - uses: actions/upload-artifact@v4
         with:
-          name: Cachaste-Play-SIGNED-47-${{ github.sha }}
+          name: Cachaste-Play-SIGNED-48-${{ github.sha }}
           path: play-delivery/
           if-no-files-found: error
           retention-days: 30

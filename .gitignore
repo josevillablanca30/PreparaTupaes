@@ -22,3 +22,6 @@ android/app/src/androidTest/assets/competition-fixture.js
 
 # Regenerable assets packaged only in the debug beta
 android/app/src/beta/assets/
+
+# Derived instrumentation-only contrast probe
+android/app/src/androidTest/assets/work3-contrast.js
