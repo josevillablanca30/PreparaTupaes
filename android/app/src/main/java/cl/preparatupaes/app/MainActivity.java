@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Build;
 import android.view.WindowInsets;
 import android.widget.FrameLayout;
+import android.window.OnBackInvokedCallback;
+import android.window.OnBackInvokedDispatcher;
 import android.webkit.RenderProcessGoneDetail;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -25,6 +27,7 @@ public class MainActivity extends Activity {
     private static final String SUBSCRIPTION = ASSETS + "suscripcion.html";
     private static final String PREFS = "cachaste-navigation";
     private WebView webView;
+    private OnBackInvokedCallback systemBack;
     private PlayBillingController playBilling;
     private SubscriptionAccessController subscriptionAccess;
     private final android.os.Handler accessClock=new android.os.Handler(android.os.Looper.getMainLooper());
@@ -144,6 +147,11 @@ public class MainActivity extends Activity {
         });
         setContentView(viewport);
         viewport.requestApplyInsets();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            systemBack = this::onBackPressed;
+            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+                OnBackInvokedDispatcher.PRIORITY_DEFAULT, systemBack);
+        }
         String last = state != null ? state.getString("last-page") : getSharedPreferences(PREFS, MODE_PRIVATE).getString("last-page", HOME);
         if (isApplicationPage(last)) webView.loadUrl(mayOpen(last)?last:SUBSCRIPTION);
         else webView.loadUrl(mayOpen(HOME)?HOME:SUBSCRIPTION);
@@ -168,17 +176,18 @@ public class MainActivity extends Activity {
         }
     }
     @Override public void onBackPressed() {
-        if (webView == null) { super.onBackPressed(); return; }
+        WebView view = webView;
+        if (view == null) { super.onBackPressed(); return; }
         // A locked home must not bounce the Android Back button forever between home and billing.
-        String current=webView.getUrl();
+        String current=view.getUrl();
         if(current!=null&&SUBSCRIPTION.equals(current.split("[?#]",2)[0])&&!mayOpen(HOME)){super.onBackPressed();return;}
-        webView.evaluateJavascript(
+        view.evaluateJavascript(
             "(function(){try{return typeof window.cachasteNativeBack==='function' ? window.cachasteNativeBack() : false}catch(e){return false}})()",
             handled -> {
-                if ("true".equals(handled) || webView == null) return;
-                if (webView.canGoBack()) { webView.goBack(); return; }
-                String url = webView.getUrl();
-                if (url != null && !url.endsWith("/inicio.html")) webView.loadUrl(HOME);
+                if (destroying || view != webView || "true".equals(handled)) return;
+                if (view.canGoBack()) { view.goBack(); return; }
+                String url = view.getUrl();
+                if (url != null && !url.endsWith("/inicio.html")) view.loadUrl(HOME);
                 else MainActivity.super.onBackPressed();
             }
         );
@@ -198,6 +207,10 @@ public class MainActivity extends Activity {
     @Override protected void onDestroy() {
         if(photoSelection!=null){photoSelection.onReceiveValue(null);photoSelection=null;}
         destroying = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && systemBack != null) {
+            getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(systemBack);
+            systemBack = null;
+        }
         accessClock.removeCallbacks(checkAccess);
         if (subscriptionAccess != null) { subscriptionAccess.close(); subscriptionAccess = null; }
         if (playBilling != null) { playBilling.close(); playBilling = null; }

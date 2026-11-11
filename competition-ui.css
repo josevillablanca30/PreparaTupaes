@@ -326,3 +326,6 @@ body.versus-page .comp-nav>a[aria-current=page]{background:linear-gradient(145de
 @media(min-width:600px){.versus-intro{min-height:245px}.versus-guide{height:265px}.versus-title h1{font-size:58px}.versus-title>p:last-child{font-size:18px!important}.versus-players{gap:36px}.versus-player .student-avatar{width:min(80%,210px)}.versus-player .subject-pill{font-size:15px}.duel-rules strong{font-size:16px}#competition-root .duel-rules>div>span{font-size:14px}.duel-rules>div{grid-template-columns:30px minmax(0,1fr)}.duel-rules .icon{width:30px;height:30px}.versus-cat>img{height:205px}.versus-encouragement p+p{font-size:14px}}
 
 .competition-legal-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;margin:24px 16px 100px;font:14px/1.5 system-ui,sans-serif}.competition-legal-links a{display:inline-flex;align-items:center;min-height:44px;color:#d8c5ef;text-decoration:underline}.competition-legal-links a:focus-visible{outline:3px solid #cda0ff;outline-offset:4px}
+
+/* Avatar controls stay on the same readable profile surface in both modes. */
+#competition-root .avatar-collection summary small,#competition-root .avatar-choice legend{color:#e1d2ee}

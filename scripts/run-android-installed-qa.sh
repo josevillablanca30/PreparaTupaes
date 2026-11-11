@@ -4,14 +4,17 @@ task_output=android/app/build/outputs/didactic-screens
 mkdir -p "$task_output"
 adb shell getprop > "$task_output/device-properties.txt"
 "$ANDROID_HOME/emulator/emulator" -version > "$task_output/emulator-version.txt" 2>&1 || true
-adb logcat -c
-adb logcat -v threadtime -s CachasteQa:I AndroidRuntime:E chromium:E DEBUG:F libc:F SurfaceFlinger:E > "$task_output/native-diagnostics.log" 2>&1 &
+adb logcat -b all -c
+adb logcat -b main -b system -b crash -b events -v threadtime -s \
+  CachasteQa:I AndroidRuntime:E chromium:E DEBUG:F libc:F SurfaceFlinger:E \
+  lowmemorykiller:I ActivityManager:W am_crash:I am_proc_died:I \
+  > "$task_output/native-diagnostics.log" 2>&1 &
 task_log_pid=$!
 adb shell settings put secure show_ime_with_hard_keyboard 0
 (while true; do
   date -u
   free -m
-  ps -eo pid,ppid,stat,pcpu,rss,comm | rg 'qemu-system|emulator' || true
+  ps -eo pid,ppid,stat,pcpu,rss,comm | grep -E 'qemu-system|emulator' || true
   for task_memory_file in /sys/fs/cgroup/memory.current /sys/fs/cgroup/memory.max /sys/fs/cgroup/memory.events; do
     if [ -r "$task_memory_file" ]; then
       echo "$task_memory_file"

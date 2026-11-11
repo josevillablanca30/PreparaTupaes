@@ -2,10 +2,11 @@ package cl.preparatupaes.app;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.view.KeyEvent;
 import android.os.ParcelFileDescriptor;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.util.concurrent.atomic.AtomicBoolean;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import androidx.test.core.app.ActivityScenario;
@@ -42,6 +43,36 @@ public class OfflineAppTest {
         NativeWebViewActions.onActivity(scenario,activity -> web(activity).loadUrl("file:///android_asset/"+page));
         waitFor("location.pathname.endsWith('/"+page+"') && document.readyState==='complete' && ("+ready+")");
     }
+    private void pressSystemBack() throws Exception {
+        AtomicBoolean focused = new AtomicBoolean(false);
+        for (int attempt = 0; attempt < 100 && !focused.get(); attempt++) {
+            NativeWebViewActions.onActivity(scenario, activity -> focused.set(activity.hasWindowFocus()));
+            if (!focused.get()) Thread.sleep(100);
+        }
+        assertTrue("The recreated Activity must receive the Android Back event", focused.get());
+        ParcelFileDescriptor event = InstrumentationRegistry.getInstrumentation()
+            .getUiAutomation().executeShellCommand("input keyevent KEYCODE_BACK");
+        try (InputStream result = new ParcelFileDescriptor.AutoCloseInputStream(event)) {
+            while (result.read() != -1) {
+                // Wait until Android's input command completes.
+            }
+        }
+    }
+
+    private void assertOfficialPose(String selector, String pose, int width, int height) throws Exception {
+        String query = "document.querySelector(\"" + selector + "\")";
+        waitFor(query + "?.complete && " + query + ".naturalWidth>0");
+        assertEquals("\"assets/competition-cat-" + pose + "-v4.webp\"", js(query + ".getAttribute('src')"));
+        assertEquals(Integer.toString(width), js(query + ".naturalWidth"));
+        assertEquals(Integer.toString(height), js(query + ".naturalHeight"));
+        assertEquals("The approved portrait fits without clipping or stretching", "true", js(
+            "(()=>{const image=" + query + ", style=getComputedStyle(image);" +
+            "const box=image.getBoundingClientRect(), frame=image.parentElement.getBoundingClientRect();" +
+            "return style.objectFit==='contain' && style.clipPath==='none' && box.width>0 && box.height>0 && " +
+            "box.left>=frame.left-1 && box.top>=frame.top-1 && " +
+            "box.right<=frame.right+1 && box.bottom<=frame.bottom+1;})()"));
+    }
+
     @Before public void launch() {scenario=ActivityScenario.launch(MainActivity.class);}
     @After public void close() {if(scenario!=null)scenario.close();}
 
@@ -90,7 +121,7 @@ public class OfflineAppTest {
         waitFor("typeof resumeMathDiagnosis==='function' && document.readyState==='complete'");
         assertEquals(draft,js("localStorage.getItem('cachaste-m1-diagnostic-draft-v1')"));
         assertEquals("true",js("resumeMathDiagnosis();choice===1 && confidence==='azar' && queue.length===30"));
-        InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
+        pressSystemBack();
         waitFor("document.querySelector('h1') && document.querySelector('h1').textContent.includes('Aprende primero')");
         assertNotEquals("null",js("localStorage.getItem('cachaste-m1-diagnostic-draft-v1')"));
     }
@@ -161,8 +192,11 @@ public class OfflineAppTest {
         js("document.querySelector('[data-action=check]').click();true");
         waitFor("document.querySelector('.tutor')");
         assertEquals("true",js("CachasteDailyApp.engine.state.attempts.length>=1"));
-        InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
-        waitFor("document.querySelector('[data-action=resume]')");
+        pressSystemBack();
+        waitFor("location.hash==='#home' && document.querySelector('[data-action=resume]')");
+        js("document.querySelector('[data-action=resume]').click();true");
+        waitFor("location.hash==='#session' && document.querySelector('.tutor')");
+        assertEquals("true", js("CachasteDailyApp.engine.state.attempts.length>=1"));
     }
     @Test public void adventureMapWorksOfflineAndKeepsItsPlace() throws Exception {
         open("inicio.html", "window.CachasteDailyApp");
@@ -193,8 +227,7 @@ public class OfflineAppTest {
         open("inicio.html", "window.CachasteDailyApp");
         js("CachasteDailyApp.engine.close();CachasteDailyApp.engine.state.foundationDraft=null;CachasteDailyApp.basics.start('cantidad');location.hash='#basic';CachasteDailyApp.render();true");
         waitFor("document.querySelector('.learning-picture')");
-        waitFor("document.querySelector('.wise-cat[data-cat-state=explaining] .cat-frame img')?.naturalWidth===1536");
-        assertEquals("Pointer fits in the original explaining pose", "true",js("(function(){var im=document.querySelector('.wise-cat[data-cat-state=explaining] .cat-frame img'),s=getComputedStyle(im),w=parseFloat(s.width),x=parseFloat(s.left);return -x/w*im.naturalWidth<=560.5 && (im.parentElement.clientWidth-x)/w*im.naturalWidth>=1070.5})()"));
+        assertOfficialPose(".wise-cat[data-cat-state=explaining] .official-master img", "point", 720, 637);
         assertEquals("true",js("document.getElementById('traditional-section').hidden"));
         assertEquals("0",js("document.querySelectorAll('.daily-nav').length"));
         js("document.querySelector('[data-action=basic-forward]').click();true");
@@ -208,7 +241,7 @@ public class OfflineAppTest {
         }
         waitFor("document.querySelector('.celebration-screen')");
         assertEquals("true",js("CachasteDailyApp.basics.status('cantidad').complete"));
-        assertEquals("Both paws fit in the original celebration pose", "true",js("(function(){var im=document.querySelector('.celebration-screen .cat-frame img'),s=getComputedStyle(im),w=parseFloat(s.width),x=parseFloat(s.left);return -x/w*im.naturalWidth<=38.5 && (im.parentElement.clientWidth-x)/w*im.naturalWidth>=545.5})()"));
+        assertOfficialPose(".celebration-screen .official-master img", "crossed", 674, 720);
         captureDidacticScreen("release-celebration");
         assertEquals("true",js("CACHASTE_DAILY_CATALOG.items.length>=641 && new Set(CACHASTE_DAILY_CATALOG.items.map(q=>q.key)).size===CACHASTE_DAILY_CATALOG.items.length"));
     }
@@ -523,6 +556,34 @@ public class OfflineAppTest {
         waitFor("document.querySelector('#profile-form')");
         captureDidacticScreen("competition-fixture-profile");
         // These fixtures test composition/navigation only. Actual scoring/Auth runs in the separate Supabase job.
+    }
+
+    @Test public void installedDuels2UsesTheSharedRulesMeterAndEducationalReview() throws Exception {
+        String fixture;
+        try (InputStream input = InstrumentationRegistry.getInstrumentation().getContext().getAssets().open("competition-fixture.js")) {
+            fixture = new String(input.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+        }
+        assertTrue(androidx.webkit.WebViewFeature.isFeatureSupported(androidx.webkit.WebViewFeature.DOCUMENT_START_SCRIPT));
+        NativeWebViewActions.onActivity(scenario, activity -> {
+            androidx.webkit.WebViewCompat.addDocumentStartJavaScript(web(activity), fixture, java.util.Collections.singleton("https://appassets.androidplatform.net"));
+            web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html?fixture=duels2#duelos");
+        });
+        waitFor("document.querySelector('[data-action=duels2-rules]')");
+        js("document.querySelector('[data-action=random]').click();true");
+        waitFor("document.querySelector('dialog[open] [data-action=duels2-rules-accept]')");
+        js("document.querySelector('[data-action=duels2-rules-accept]').click();true");
+        waitFor("document.querySelector('[data-action=start-duel]') && document.querySelector('[data-duels2-meter]')");
+        assertEquals("true", js("document.querySelector('.duels2-rival-note').textContent.includes('Rival virtual')"));
+        js("document.querySelector('[data-action=start-duel]').click();true");
+        for (int i = 0; i < 10; i++) {
+            waitFor("document.querySelector('.question-meta strong')?.textContent.includes('"+(i+1)+"/10')");
+            js("document.querySelectorAll('input[name=choice]')[1].click();document.querySelector('#competitive-answer button[type=submit]').click();true");
+        }
+        waitFor("document.querySelector('.duels2-result-note')?.textContent.includes('14 / 20')");
+        js("document.querySelector('[data-action=review]').click();true");
+        waitFor("document.querySelector('.tutor-review-card')?.textContent.includes('Tu alternativa:')");
+        js("document.querySelector('[data-action=tutor][data-mode=example]').click();true");
+        assertEquals("true", js("document.querySelector('.tutor-review-card').textContent.includes('Cuatro más uno')"));
     }
 
     @Test public void onlyNetworkAndGooglePlayPermissionsAreRequested() throws Exception {

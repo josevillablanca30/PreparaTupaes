@@ -4,6 +4,7 @@ on:
     branches: [main, work/cachaste-respaldo-2026-10-15, work/cachaste-motor-duolingo-20261016]
     paths: ['beta/**','competition-*','competencia.html','supabase/**','daily-*','assets/**','learning-core.js', 'editorial-revisions.js', 'm1-teaching.js', 'study-app.js', 'study-ui.css', 'index.html', 'inicio.html', 'science.html', 'science-bank.js', 'science-app.js', 'reading.html', 'reading-bank.js', 'reading-app.js', 'm2.html', 'm2-bank.js', 'm2-app.js', 'history.html', 'history-bank.js', 'history-app.js', 'android/**', 'tests/**', 'scripts/**', '!scripts/competition-backup.mjs', '!scripts/competition-restore.mjs', 'package.json', 'package-lock.json', 'playwright.config.mjs', '.github/workflows/android-apk.yml']
   workflow_dispatch:
+  workflow_call:
 concurrency:
   group: cachaste-android-${{ github.ref }}
   cancel-in-progress: true
@@ -132,6 +133,8 @@ jobs:
         run: gradle --no-daemon :app:assembleDebug
       - name: Preparar datos visuales exclusivos del APK de pruebas
         run: node scripts/build-native-competition-fixtures.mjs
+      - name: Preparar medición de contraste para WebView instalado
+        run: node scripts/build-work3-native-fixtures.mjs
       - name: Verificar firma del APK y conservar solo su certificado público
         run: |
           test -s "$CACHASTE_DEBUG_KEYSTORE"
@@ -145,14 +148,14 @@ jobs:
         id: emulator_primary
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          # Google-published stable36.5.11; compare with37.2.13 in the commercial job.
+          # Stable 36.5.11. Leave room for WebView and system services during recreation.
           emulator-build: 15261927
           api-level: 36
           arch: x86_64
           target: google_apis
           profile: pixel_2
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -memory 2048 -no-snapshot -noaudio -no-boot-anim -feature -Vulkan
+          emulator-options: -no-window -gpu swiftshader_indirect -memory 4096 -no-snapshot -noaudio -no-boot-anim -feature -Vulkan
           script: bash scripts/run-android-installed-qa.sh
       - name: Conservar resultados Android
         if: always()

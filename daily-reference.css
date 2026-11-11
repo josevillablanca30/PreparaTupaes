@@ -437,8 +437,8 @@ body:has(.reference-courses){--game-purple:#7438df;--game-deep:#4c229b;--game-in
 #daily-root :is(.world-picker-tile,.curriculum-chapter-evidence,.studio-choice,.course-tile){background:linear-gradient(140deg,#251334,#130c20);border-color:#8250a1;color:var(--night-ink)}
 #daily-root .world-picker-tile.locked{background:#17101f;color:#c9bad5;border-color:#5a426b}
 #daily-root :is(.world-picker-number,.mission-emblem){background:linear-gradient(140deg,#6d249e,#3f1a61);color:#ffdd7f;border-color:#b66edc}
-#daily-root .wise-cat p{background:#241432;color:#f6edff;border-color:#8951a7}
-#daily-root .wise-cat p:before{background:#241432;border-color:#8951a7}
+#daily-root .wise-cat[data-cat-state] p{background:#241432;color:#f6edff;border-color:#8951a7}
+#daily-root .wise-cat[data-cat-state] p:before{background:#241432;border-color:#8951a7}
 #daily-root .cat-frame.official-master{overflow:visible;filter:drop-shadow(0 0 9px #a729e52e)}
 #daily-root .cat-frame.official-master img{position:absolute;width:100%!important;height:100%!important;max-width:100%!important;left:0!important;top:0!important;object-fit:contain!important;object-position:center bottom}
 #daily-root .reference-lesson-hero .cat-frame.official-master{aspect-ratio:1;min-height:150px}
@@ -467,3 +467,43 @@ body:has(.reference-courses){--game-purple:#7438df;--game-deep:#4c229b;--game-in
 #daily-root .lesson-chapters button{white-space:nowrap;overflow-wrap:normal;word-break:normal;font-size:13px!important}
 @media(min-width:640px){#daily-root .lesson-chapters{grid-template-columns:repeat(5,minmax(0,1fr))}}
 @media(max-width:360px){#daily-root :is(.daily-card,.pace-panel,.mission-preview,.studio-card,.studio-panel,.reference-teaching-card,.reference-easy-card,.reference-example-card,.visual-lesson-content.daily-card,.lesson-reader){padding:16px!important}#daily-root .progress-stats p{padding:11px;font-size:13px}#daily-root .adventure-world:not(.support-world){padding-inline:8px}#daily-root .adventure-world:not(.support-world) .trail-stop{max-width:68%}}
+
+/* Work 3: pair teaching surfaces with their text at the theme boundary.
+   Preserve the light scientific plotting areas and their original SVG colours. */
+#daily-root .teacher-step.text-only .lesson-text{background:transparent;color:var(--night-ink)}
+#daily-root .worked-board li{background:transparent}
+#daily-root .worked-board li p{color:var(--night-ink)}
+#daily-root .worked-status{background:transparent;color:var(--night-muted)}
+#daily-root .visual-choices button,
+#daily-root .studio-options .studio-choice{
+  background:#281735;color:var(--night-ink);border-color:#8550a6;
+}
+#daily-root .visual-choices button[aria-pressed=true],
+#daily-root .studio-options .studio-choice[aria-pressed=true]{
+  background:#532071;color:#fff;border-color:#dc86ff;
+}
+#daily-root .visual-choices button.right,
+#daily-root .studio-options .studio-choice.studio-right{
+  background:#12382b!important;color:#d6ffe8!important;border-color:#5cca95!important;
+}
+#daily-root .visual-choices button.try-again,
+#daily-root .studio-options .studio-choice.studio-wrong{
+  background:#3c192a!important;color:#ffe0e7!important;border-color:#e18b9f!important;
+}
+#daily-root .wise-cat[data-cat-state=error] p{background:#281735;color:#f6edff}
+#daily-root .wise-cat[data-cat-state=error] p:before{background:#281735}
+#daily-root button:disabled{opacity:1;cursor:default;border-style:dashed}
+#daily-root button.primary:disabled{
+  background:#352341!important;color:#e4d7ef!important;border-color:#85649b!important;box-shadow:none!important;
+}
+
+#daily-root .lesson-word-help :is(dt,dd){color:var(--night-ink)}
+#daily-root :is(.lab-model,.math-model,.question-visual,.biology-model) :is(.topic-equation,.lab-formula){background:#f6f0fc;color:#302044!important}
+#daily-root :is(.reference-subject,.reference-card-title small,.reference-speech,.trail-status,.world-hud p,.school-position,.reference-stats small){font-size:12px}
+
+#daily-root .express-report .reward-card strong{color:var(--night-gold)}
+
+#daily-root .mode-tile.primary{background:linear-gradient(150deg,#8b20c7,#6811bc)!important}
+#daily-root .mode-tile.primary small{color:#f8f4ff}
+#daily-root .wise-cat[data-cat-state=celebrating] p{background:#12382b;color:#d6ffe8;border-color:#5cca95}
+#daily-root .wise-cat[data-cat-state=celebrating] p:before{background:#12382b;border-color:#5cca95}
