@@ -20,6 +20,34 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
+      - name: Verificar producción y ambos dominios por HTTPS sin publicar
+        env:
+          CLOUDFLARE_ACCOUNT_ID: cfe4b77c0c39bb056306d16133a93642
+          CLOUDFLARE_PAGES_PROJECT: cachaste-sitecacho
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          node --input-type=module <<'NODE'
+          import {readFile,mkdir,writeFile} from 'node:fs/promises';
+          import {createHash} from 'node:crypto';
+          import {pagesClient,verifyTarget,reviewedPublicRuntime,publicSiteUrl} from './web/scripts/pages-client.mjs';
+          import {matchingPublicDeployment} from './web/scripts/publish-sitecacho.mjs';
+          import {probeDeployment} from './web/scripts/verify-pages-preview.mjs';
+          const previous=JSON.parse(await readFile('web/reports/mercadopago-20261110/public-site/pages-public.json','utf8'));
+          if(previous.passed!==true||!/^[a-f0-9]{40}$/.test(previous.revision||''))throw Error('VERIFIED_PUBLIC_REPORT_REQUIRED');
+          const client=pagesClient(process.env),project=await client.getProject();verifyTarget(project,process.env.GITHUB_REF_NAME);
+          if(!reviewedPublicRuntime(project.deployment_configs?.production))throw Error('PUBLIC_RUNTIME_NOT_CLOSED');
+          const deployment=matchingPublicDeployment(project,await client.listPublicDeployments(),previous.revision);
+          const domains=(await client.listDomains()).filter(x=>['sitecacho.cl','www.sitecacho.cl'].includes(x.name)).map(x=>({name:x.name,status:x.status}));
+          if(domains.length!==2||domains.some(x=>x.status!=='active'))throw Error('BOTH_CUSTOM_DOMAINS_MUST_BE_ACTIVE');
+          const protectedFiles=previous.probes[0].checks.filter(x=>x.name.startsWith('Acceso privado denegado: ')&&x.passed).map(x=>x.name.slice('Acceso privado denegado: '.length));
+          if(protectedFiles.length<120||new Set(protectedFiles).size!==protectedFiles.length)throw Error('VERIFIED_PRIVATE_PATHS_REQUIRED');
+          const encryptedFiles=Object.fromEntries(protectedFiles.map(x=>[x,'/__encrypted/'+createHash('sha256').update(x).digest('hex')+'.bin']));
+          const probes=await Promise.all(['https://cachaste-sitecacho.pages.dev','https://sitecacho.cl','https://www.sitecacho.cl'].map(url=>probeDeployment({url,revision:previous.revision,protectedFiles,encryptedFiles,validateUrl:publicSiteUrl})));
+          const report={checkedAt:new Date().toISOString(),revision:previous.revision,deployment,domains,realPayments:false,readOnly:true,passed:probes.every(x=>x.passed),probes};
+          await mkdir('web/artifacts',{recursive:true});await writeFile('web/artifacts/public-http.json',JSON.stringify(report,null,2)+'\n');
+          console.log(JSON.stringify({revision:report.revision,domains,checks:probes.reduce((n,x)=>n+x.checks.length,0),passed:report.passed}));
+          if(!report.passed)process.exitCode=1;
+          NODE
       - name: Auditar exclusivamente la revisión pública documentada
         run: |
           node --input-type=module <<'NODE'
@@ -31,8 +59,12 @@ jobs:
           if(live.revision!==report.revision||live.paymentsEnabledByBuild!==false)throw Error('PUBLIC_REVISION_OR_PAYMENTS_CHANGED');
           await mkdir('web/artifacts',{recursive:true});
           await writeFile('web/artifacts/pages-public.json',JSON.stringify(report));
-          const result=spawnSync(process.execPath,['web/scripts/probe-legal-browsers.mjs','--public'],{stdio:'inherit',env:{...process.env,GITHUB_SHA:report.revision}});
-          process.exitCode=result.status??1;
+          const statuses=[];
+          for(const args of[[],['--www']]){
+            const result=spawnSync(process.execPath,['web/scripts/probe-legal-browsers.mjs','--public',...args],{stdio:'inherit',env:{...process.env,GITHUB_SHA:report.revision}});
+            statuses.push(result.status??1);
+          }
+          process.exitCode=statuses.every(x=>x===0)?0:1;
           NODE
       - name: Verificar Supabase alojado sin activar compras ni crear usuarios
         if: always()
@@ -60,6 +92,8 @@ jobs:
           name: Cachaste-Public-Readonly
           path: |
             web/artifacts/legal-live/
+            web/artifacts/legal-live-www/
             web/artifacts/hosted-live/
             web/artifacts/public-dns.json
+            web/artifacts/public-http.json
           retention-days: 14
