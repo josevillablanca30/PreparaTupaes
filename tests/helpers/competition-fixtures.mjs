@@ -16,6 +16,9 @@ export async function fixturePage(page,{signed=true,premium=true,outcome='win',f
   const url=route.request().url();let data;
   if(url.includes('/auth/v1/user'))data={...user,user_metadata:metadata};
   else if(url.includes('/auth/v1/token'))data=session();
+  else if(url.includes('/rpc/cachaste_duels2')){
+   return route.fulfill({status:404,json:{code:'PGRST202',message:'cachaste_duels2 is not installed in the legacy fixture'},headers:{'access-control-allow-origin':'*'}});
+  }
   else if(url.includes('/rpc/cachaste_competition_health'))data={apiVersion:1,catalogueReady:true};
   else if(url.includes('/rpc/cachaste_competition')){
    const body=route.request().postDataJSON();requests.push(body);const{operation:op,payload:p}=body;

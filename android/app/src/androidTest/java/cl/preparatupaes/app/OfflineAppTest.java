@@ -558,6 +558,34 @@ public class OfflineAppTest {
         // These fixtures test composition/navigation only. Actual scoring/Auth runs in the separate Supabase job.
     }
 
+    @Test public void installedDuels2UsesTheSharedRulesMeterAndEducationalReview() throws Exception {
+        String fixture;
+        try (InputStream input = InstrumentationRegistry.getInstrumentation().getContext().getAssets().open("competition-fixture.js")) {
+            fixture = new String(input.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+        }
+        assertTrue(androidx.webkit.WebViewFeature.isFeatureSupported(androidx.webkit.WebViewFeature.DOCUMENT_START_SCRIPT));
+        NativeWebViewActions.onActivity(scenario, activity -> {
+            androidx.webkit.WebViewCompat.addDocumentStartJavaScript(web(activity), fixture, java.util.Collections.singleton("https://appassets.androidplatform.net"));
+            web(activity).loadUrl("https://appassets.androidplatform.net/assets/competencia.html?fixture=duels2#duelos");
+        });
+        waitFor("document.querySelector('[data-action=duels2-rules]')");
+        js("document.querySelector('[data-action=random]').click();true");
+        waitFor("document.querySelector('dialog[open] [data-action=duels2-rules-accept]')");
+        js("document.querySelector('[data-action=duels2-rules-accept]').click();true");
+        waitFor("document.querySelector('[data-action=start-duel]') && document.querySelector('[data-duels2-meter]')");
+        assertEquals("true", js("document.querySelector('.duels2-rival-note').textContent.includes('Rival virtual')"));
+        js("document.querySelector('[data-action=start-duel]').click();true");
+        for (int i = 0; i < 10; i++) {
+            waitFor("document.querySelector('.question-meta strong')?.textContent.includes('"+(i+1)+"/10')");
+            js("document.querySelectorAll('input[name=choice]')[1].click();document.querySelector('#competitive-answer button[type=submit]').click();true");
+        }
+        waitFor("document.querySelector('.duels2-result-note')?.textContent.includes('14 / 20')");
+        js("document.querySelector('[data-action=review]').click();true");
+        waitFor("document.querySelector('.tutor-review-card')?.textContent.includes('Tu alternativa:')");
+        js("document.querySelector('[data-action=tutor][data-mode=example]').click();true");
+        assertEquals("true", js("document.querySelector('.tutor-review-card').textContent.includes('Cuatro más uno')"));
+    }
+
     @Test public void onlyNetworkAndGooglePlayPermissionsAreRequested() throws Exception {
         android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         PackageInfo info=context.getPackageManager().getPackageInfo(context.getPackageName(),PackageManager.GET_PERMISSIONS);
