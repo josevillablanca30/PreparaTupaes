@@ -44,3 +44,19 @@ La revisión `108a57b00dd510809a8156276fa50a1487492f8f` registra el callback del
 En `42991812837` aprobaron 429 pruebas de lógica, las 188 pruebas de la ejecución original, las 48 de auditoría visual, las 494 de recorrido antes de empaquetar, las 12 de VS local en navegador y las cinco de acceso comercial instalado. La auditoría en Chromium midió 17.642 textos y controles con un mínimo de **4,602:1**. [Evidencia visual](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42991812837/artifacts/13841368960)
 
 La instrumentación se interrumpió al recrear la actividad en el primer caso de VS local. El registro del dispositivo mostró presión de memoria y el XML registró `INSTRUMENTATION_FAILED`, con cero resultados completos de 33 casos previstos. Se reintentó el conjunto completo de pruebas instaladas sobre la misma revisión y se mantuvo el control de firma. [Primer intento instalado](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42991812837/artifacts/13843307929)
+
+El segundo intento aprobó el VS local y la vuelta desde el diagnóstico con el botón Atrás. ADB informó `device offline` con cuatro casos completos de 33. La revisión `db2c8b59cef0fd79ec0ab853a314eb1c8c99b8af` amplió la RAM del emulador de 2 a 4 GiB y agregó diagnóstico del sistema. El producto conserva el código de `108a57b`. [Segundo intento instalado](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42991812837/artifacts/13844148485)
+
+## Verificación final y entrega Android 48
+
+- `42998441211` aprobó 429 pruebas de lógica, las 188 regresiones originales, 48 pruebas de auditoría visual, 494 de recorrido, 12 de VS local en navegador y la integración competitiva con una base aislada. [Ejecución completa](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42998441211)
+- En Chromium se midieron 17.598 textos y controles a 320, 360, 390, 430 y 1280 px. El mínimo fue **4,602:1** y todas las muestras alcanzaron 4,5:1. En la comparación de M1 a 390 px, la alternativa D deshabilitada pasó de 1,032:1 a 15,014:1. [Capturas y mediciones finales](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42998441211/artifacts/13845207249)
+- En el APK de QA instalado en Android 16 aprobaron los **33 casos**, incluidos Atrás, reapertura del borrador, persistencia, modos del tutor y retratos oficiales. El WebView midió 1.345 textos y controles en 32 estados de las cinco asignaturas y rutas de Ciencias. Todos alcanzaron 4,5:1. El paquete de QA con política comercial aprobó sus **cinco casos**. [WebView instalado](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42998441211/artifacts/13846535684) · [Acceso comercial](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42998441211/artifacts/13845442069)
+- AAB y APK 1.5.0-rc21, código 48, paquete `cl.preparatupaes.app`, Android objetivo 36. Pasaron `lintRelease`, `bundletool validate`, la verificación de las 265 entradas firmadas del AAB y la validación de la firma del APK. La huella SHA-256 de ambos certificados coincide con la del AAB 47. Se compararon byte a byte 124 recursos web por paquete con la distribución de la revisión probada. La compilación lleva compras deshabilitadas. [Paquetes firmados y sumas de verificación](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/42998441211/artifacts/13846291935)
+
+| Archivo | SHA-256 |
+| --- | --- |
+| `Cachaste-1.5.0-rc21-48.aab` | `c1fc08749500397809f6e5cdc1b09bbfab6bbc5562147c8d200bc67a16db21e6` |
+| `Cachaste-1.5.0-rc21-48.apk` | `92d5160368ab0460e965ed66d3c33e8a6b42adcf15b3235a78cbbcf399a6d69c` |
+
+La entrega web está en revisión de Work 1. La publicación en Play queda a cargo del responsable del lanzamiento, con la coordinación de Duelos 2.0. [PR web #9](https://github.com/josevillablanca30/PreparaTupaes/pull/9) · [PR #7 de Duelos](https://github.com/josevillablanca30/PreparaTupaes/pull/7)
