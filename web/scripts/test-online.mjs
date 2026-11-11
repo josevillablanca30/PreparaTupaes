@@ -20,7 +20,8 @@ try{
  assert.deepEqual((await rpc(clients[1],'snapshot')).documents,[]);const own=await rpc(clients[1],'put',{...draft,user_id:users[0],value:{subject:'M1'}});assert.equal(own.document.user_id,undefined);assert.equal((await rpc(second,'snapshot')).documents[0].value.subject,'Historia');record('Forged owner fields do not copy or overwrite another student progress');
  const invalid=await clients[0].rpc('cachaste_web_progress',{operation:'put',payload:{key:'premium',baseVersion:0,value:{active:true}}});assert.equal(invalid.error?.message,'INVALID_PROGRESS_KEY');const adminAttempt=await clients[0].rpc('cachaste_web_billing_admin',{operation:'policy'});assert.ok(adminAttempt.error);const direct=await clients[0].schema('cachaste_web').from('learning_documents').select('*');assert.ok(direct.error);record('Private schemas, service billing commands and unapproved storage keys stay denied over PostgREST');
  const trial=await admin.rpc('cachaste_web_billing_admin',{operation:'checkout',payload:{id:randomUUID(),userId:users[0],plan:'mensual',providerPlanId:'qa-never-real',trial:true}});assert.equal(trial.error?.message,'BILLING_NOT_READY');record('A service-side checkout is also closed until merchant and tax readiness are enabled');
- if((await db.query("select to_regprocedure('public.cachaste_duels2(text,jsonb)') is not null as ready")).rows[0].ready){
+ if(process.env.CACHASTE_REALTIME_QA==='1'){
+  assert.equal((await db.query("select to_regprocedure('public.cachaste_duels2(text,jsonb)') is not null as ready")).rows[0].ready,true);
   const outsiderAccount={email:'cachaste-realtime-qa-'+randomUUID()+'@example.invalid',password:randomUUID()+randomUUID()};
   const created=await admin.auth.admin.createUser({...outsiderAccount,email_confirm:true});
   assert.ifError(created.error);

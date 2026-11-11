@@ -56,6 +56,44 @@ jobs:
           path: test-results/duels2/
           if-no-files-found: ignore
           retention-days: 14
+  realtime-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    env:
+      CACHASTE_REALTIME_QA: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Preparar catálogo y Supabase Realtime efímeros
+        run: |
+          node scripts/competition-catalog.mjs supabase/seed.sql
+          npx --yes supabase@2.121.0 start --exclude storage-api,imgproxy,postgres-meta,studio,edge-runtime,logflare,vector,supavisor > /tmp/cachaste-realtime-stack.log 2>&1
+          umask 077
+          npx --yes supabase@2.121.0 status -o json > /tmp/cachaste-realtime.json
+      - name: Comprobar Auth, el WebSocket real, su RLS y el trabajo Cron sin clientes
+        run: |
+          node web/scripts/apply-local-migrations.mjs /tmp/cachaste-realtime.json
+          node web/scripts/test-online.mjs /tmp/cachaste-realtime.json
+      - name: Diagnóstico de replicación local si se interrumpe la prueba
+        if: failure()
+        run: |
+          docker logs supabase_realtime_cachaste-local 2>&1 | grep -Ei 'replication|postgres_changes|publication|wal|slot' | sed -E 's/eyJ[A-Za-z0-9_.-]+/[jwt]/g; s#postgres(ql)?://[^[:space:]]+#[local connection]#g' | tail -n 40 || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cachaste-duels2-realtime-qa
+          path: web/artifacts/real-http-integration.json
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Limpiar el proyecto local efímero
+        if: always()
+        run: |
+          npx --yes supabase@2.121.0 stop --no-backup
+          rm -f /tmp/cachaste-realtime.json /tmp/cachaste-realtime-stack.log
   android-candidate:
     needs: isolated-tests
     runs-on: ubuntu-latest

@@ -35,6 +35,8 @@ async function until(predicate,timeout,label){
 
 export async function testDuels2Realtime({db,clients,outsider,record}){
   assert.ok(['127.0.0.1','localhost'].includes(db.connectionParameters.host));
+  const {rows:published}=await db.query("select tablename from pg_publication_tables where pubname='supabase_realtime' and tablename like '%duels2%' order by tablename");
+  assert.deepEqual(published,[{tablename:projection}]);
   const nicknames=['QaDominioUno','QaDominioDos'];
   await Promise.all(clients.map((client,i)=>call(client,'save_profile',{
     nickname:nicknames[i],communeCode:i?'05109':'05701',publicRanking:true,
@@ -61,9 +63,23 @@ export async function testDuels2Realtime({db,clients,outsider,record}){
     const snapshot=await outsider.from(projection).select('*').eq('id',invitation.id).maybeSingle();
     assert.ifError(snapshot.error);
     assert.equal(snapshot.data,null);
-    const answer=await call(clients[0],'answer',{attemptId:a.id,position:0,choice:0,requestId:randomUUID()});
-    assert.equal(Math.abs(answer.balance),1);
-    await until(()=>received[0].length>0&&received[1].length>0,15000,'Both players must receive the actual WebSocket update');
+    const own=await clients[0].from(projection).select('*').eq('id',invitation.id).single();
+    assert.ifError(own.error);
+    assert.equal(own.data.balance,0);
+    // A fresh Realtime tenant can join the channel before its WAL reader starts.
+    await until(async()=>{
+      const {rows:[state]}=await db.query("select count(*)::int as readers from pg_replication_slots where slot_type='logical'");
+      return state.readers>0;
+    },12000,'Realtime must open a logical replication slot');
+    let answer;
+    for(let position=0;position<3;position++){
+      received[0].length=0;received[1].length=0;
+      answer=await call(clients[0],'answer',{attemptId:a.id,position,choice:0,requestId:randomUUID()});
+      if(position===0)assert.equal(Math.abs(answer.balance),1);
+      for(let probe=0;probe<10&&!(received[0].length&&received[1].length);probe++)await delay(250);
+      if(received[0].length&&received[1].length)break;
+    }
+    assert.ok(received[0].length&&received[1].length,'Both players must receive actual WebSocket updates');
     for(const events of received.slice(0,2)){
       const row=events.at(-1);
       assert.equal(row.id,invitation.id);
