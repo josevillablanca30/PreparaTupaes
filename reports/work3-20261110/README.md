@@ -13,3 +13,14 @@ Estado inicial comprobado el 10 de noviembre de 2026 (Chile).
 No se modifica Supabase de producción, cobros, suscripciones, testers, DNS ni despliegue. No se publica en Google Play. El AAB anterior 47 proviene de `13ae26d3f752ccc6f3de97086dee07cb938ac3fc` y no prueba estas correcciones.
 
 La validación final, comparativas y copia editorial se añadirán aquí con resultados ejecutados.
+
+
+## Primer ciclo real
+
+Run `42935940787`, fuente `1d47211a8b2de496eff5b5191cf2789a78bbe39b`:
+- Las **188 pruebas originales** aprobaron, incluidas las diez que antes fallaban.
+- La auditoría ampliada encontró tres fallos adicionales: fondo claro en alternativas de mini práctica evaluadas (texto claro, ratio 1,128), definiciones de vocabulario oscuras sobre panel oscuro (1,138), y fórmulas oscuras en un recuadro oscuro de un modelo claro (1,2). Se corrigen en la siguiente revisión, sin alterar los umbrales de contraste.
+- La comprobación de cobertura de texto pedía más de diez nodos; en la pregunta inicial sólo se habían seleccionado seis. Se amplían los selectores para medir también instrucciones y acciones reales; se conserva el mínimo de cobertura.
+- La comparativa anterior necesitaba historial git completo; el checkout superficial no incluía `e3a0434`. Se corrige la infraestructura de captura.
+- La firma y el emulador quedaron bloqueados por el control de verificación, como corresponde. No se produjo un AAB que ocultara estas fallas.
+- Copy Android: «Terminar mi ratito» pasa a «Terminar práctica» para describir la acción. El título genérico de respaldo «Cada ratito suma» pasa a «Práctica completada»; no se alteran textos académicos.

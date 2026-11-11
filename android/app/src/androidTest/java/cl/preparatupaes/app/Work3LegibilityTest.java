@@ -30,7 +30,7 @@ public class Work3LegibilityTest {
         fail("Installed WebView not ready: "+expression);
     }
     private void audit(String probe,String state) throws Exception {
-        String selectors=".reference-speech,.didactic-overview *,.reference-easy-card *,.reference-example-card *,.tutor *,.wise-cat p,.answer-feedback,.selected-repair *,.confidence-guide *,.daily-options button,.question-title,.lesson-chapters button";
+        String selectors=".reference-speech,.didactic-overview *,.reference-easy-card *,.reference-example-card *,.tutor *,.wise-cat p,.answer-feedback,.selected-repair *,.confidence-guide *,.daily-options button,.question-title,.lesson-chapters button,.daily-session-head *,.daily-card>.kicker,#daily-root [data-action=check],#daily-root [data-action=hint],#daily-root [data-action=pause]";
         JSONArray rows=new JSONArray(js(probe+"("+JSONObject.quote(selectors)+")"));
         assertTrue(state+" must measure real educational text",rows.length()>10);
         for(int i=0;i<rows.length();i++){

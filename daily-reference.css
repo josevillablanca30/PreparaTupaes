@@ -484,11 +484,11 @@ body:has(.reference-courses){--game-purple:#7438df;--game-deep:#4c229b;--game-in
 }
 #daily-root .visual-choices button.right,
 #daily-root .studio-options .studio-choice.studio-right{
-  background:#12382b;color:#d6ffe8;border-color:#5cca95;
+  background:#12382b!important;color:#d6ffe8!important;border-color:#5cca95!important;
 }
 #daily-root .visual-choices button.try-again,
 #daily-root .studio-options .studio-choice.studio-wrong{
-  background:#3c192a;color:#ffe0e7;border-color:#e18b9f;
+  background:#3c192a!important;color:#ffe0e7!important;border-color:#e18b9f!important;
 }
 #daily-root .wise-cat[data-cat-state=error] p{background:#281735;color:#f6edff}
 #daily-root .wise-cat[data-cat-state=error] p:before{background:#281735}
@@ -496,3 +496,7 @@ body:has(.reference-courses){--game-purple:#7438df;--game-deep:#4c229b;--game-in
 #daily-root button.primary:disabled{
   background:#352341!important;color:#e4d7ef!important;border-color:#85649b!important;box-shadow:none!important;
 }
+
+#daily-root .lesson-word-help :is(dt,dd){color:var(--night-ink)}
+#daily-root :is(.lab-model,.math-model,.question-visual) :is(.topic-equation,.lab-formula){background:#f6f0fc;color:#302044!important}
+#daily-root :is(.reference-subject,.reference-card-title small,.reference-speech,.trail-status,.world-hud p,.school-position,.reference-stats small){font-size:12px}
