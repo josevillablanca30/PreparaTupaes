@@ -94,3 +94,13 @@ body{background:radial-gradient(ellipse at 86% 12%,#3b0c59 0,transparent 35%),#0
 .site-footer{background:#170a24}
 #account-status:not(:empty){background:#2c153c;color:var(--deep);border-color:var(--line)}
 .skip-link{background:#21102e;color:var(--deep)}
+
+/* A cutout uses the original 408 × 278 composition and never stretches. */
+.hero-art>img{aspect-ratio:408/278;object-fit:contain}
+
+/* Readable actions, secondary labels and disabled forms on the approved palette. */
+.primary-button,button:not(.secondary):not(.text-button){background:linear-gradient(135deg,#9424cc,#650cae);color:#fff}
+.eyebrow,.hero-details,.subject-grid a>span,.price-tag,.legal-note,.site-footer small{font-size:12px}
+.account-card button:disabled{opacity:1;background:#352341;color:#e4d7ef;border:1px dashed #85649b;box-shadow:none;cursor:default}
+.account-card input::placeholder{color:#c8b7d5;opacity:1}
+:where(a,button,input,select,summary):focus-visible{outline:3px solid #ffd15b;outline-offset:4px}
