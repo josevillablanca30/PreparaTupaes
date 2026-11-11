@@ -26,7 +26,9 @@ jobs:
       - run: node web/scripts/verify-private-distribution.mjs --local
       - run: bash scripts/install-chromium-qa.sh
       - name: Auditar cinco anchos y cada mención, con estados y tutor
-        run: npx playwright test --config=web/playwright.config.mjs web/tests/work3-study.spec.mjs web/tests/work3-public.spec.mjs --project=Android-Chrome
+        run: npx playwright test --config=web/playwright.config.mjs web/tests/work3-study.spec.mjs web/tests/work3-public.spec.mjs --project=Android-Chrome --output=web/artifacts/work3-visual --reporter=list,json
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_FILE: web/artifacts/work3-visual/results.json
       - name: Conservar regresiones web de acceso, persistencia, perfil y navegación
         run: npx playwright test --config=web/playwright.config.mjs web/tests/web-commercial.spec.mjs web/tests/recovery.spec.mjs web/tests/content-context.spec.mjs --project=Android-Chrome --project=Desktop-Chrome --project=mobile-320px
       - uses: actions/upload-artifact@v4
@@ -34,6 +36,7 @@ jobs:
         with:
           name: Cachaste-Work3-Web-${{ github.sha }}
           path: |
+            web/artifacts/work3-visual/
             web/artifacts/browser/
             web/artifacts/browser-results.json
           retention-days: 14
