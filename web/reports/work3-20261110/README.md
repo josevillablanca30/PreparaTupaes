@@ -35,3 +35,10 @@ Los precios, las condiciones, los planes, los accesos gratuitos y los textos que
 - Pruebas de navegador y comparativas: `.github/workflows/work3-web-qa.yml`, exclusivamente para esta rama, sin permisos de despliegue.
 - Las pruebas nuevas miden el color realmente pintado, incluyendo `-webkit-text-fill-color`, capas translúcidas y extremos de gradiente; usan 4,5:1 en el texto educativo y los controles. Las capturas permiten revisar gráficos y composición.
 - Pendiente completar resultados ejecutados y fijar la revisión Android que supere las validaciones.
+
+
+## Primer ciclo de navegador
+
+Run `42936906512`: aprobaron las seis pruebas públicas (cinco anchos y la captura anterior de portada). En la parte educativa se reprodujeron los mismos tres problemas de contraste de Android, ya corregidos en la revisión fijada posterior. Las pruebas que no alcanzaron a ejecutarse por el límite de fallos quedan pendientes en la revisión siguiente. Los 170 controles de lógica web aprobaron, incluida la comparación de todos los píxeles RGB del personaje.
+
+La rama base se volvió a inspeccionar: `35ac82e94646d16ee552b27cf343b4aada7be318` incorpora informes de lanzamiento de Work 1. Son cambios ajenos al PR y se conservan.

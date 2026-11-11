@@ -33,5 +33,7 @@ jobs:
         if: always()
         with:
           name: Cachaste-Work3-Web-${{ github.sha }}
-          path: web/artifacts/
+          path: |
+            web/artifacts/browser/
+            web/artifacts/browser-results.json
           retention-days: 14

@@ -13,7 +13,7 @@ test.beforeEach(async({page,request})=>{
 });
 
 const subjects=[['M1',null],['M2',null],['Lectura',null],['Historia',null],['Ciencias','Biología'],['Ciencias','Física'],['Ciencias','Química'],['Ciencias','TP']];
-const targets='.reference-speech,.didactic-overview *,.reference-easy-card *,.reference-example-card *,.tutor *,.wise-cat p,.answer-feedback,.selected-repair *,.confidence-guide *,.daily-options button,.question-title,.lesson-chapters button';
+const targets='.reference-speech,.didactic-overview *,.reference-easy-card *,.reference-example-card *,.tutor *,.wise-cat p,.answer-feedback,.selected-repair *,.confidence-guide *,.daily-options button,.question-title,.lesson-chapters button,.daily-session-head *,.daily-card>.kicker,#daily-root [data-action=check],#daily-root [data-action=hint],#daily-root [data-action=pause]';
 async function audit(page,info,label){
  const measurements=await page.evaluate(renderedContrast,targets);
  expect(measurements.length,'Educational text must actually be measured').toBeGreaterThan(10);
@@ -31,7 +31,7 @@ async function seed(page,subject,track,kind='lesson'){
   return{xp:e.stats().xp,attempts:e.state.attempts.length};
  },{subject,track,kind});
 }
-async function capture(page,info,name){await page.screenshot({path:info.outputPath(name+'.png'),fullPage:true,animations:'disabled'});}
+async function capture(page,info,name){await page.screenshot({path:info.outputPath(name+'.png'),fullPage:true,animations:'disabled',scale:'css'});}
 for(const width of [320,360,390,430,1280])for(const[subject,track]of subjects){
  test(`${width}px · ${subject} ${track||''}: tutor, mini práctica y alternativas`,async({page},info)=>{
   await page.setViewportSize({width,height:width>600?900:844});await page.emulateMedia({reducedMotion:'reduce',colorScheme:'dark'});
