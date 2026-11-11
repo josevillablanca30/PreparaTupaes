@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-11-10T18:40:34.132Z",
+  "readOnly": true,
+  "records": [
+    {
+      "name": "www.sitecacho.cl",
+      "type": "CNAME",
+      "httpStatus": 200,
+      "dnsStatus": 3,
+      "answers": []
+    },
+    {
+      "name": "www.sitecacho.cl",
+      "type": "A",
+      "httpStatus": 200,
+      "dnsStatus": 3,
+      "answers": []
+    }
+  ]
+}

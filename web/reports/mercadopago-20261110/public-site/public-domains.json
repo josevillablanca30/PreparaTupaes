@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-11-10T19:03:11.560Z",
+  "domains": [
+    {
+      "name": "sitecacho.cl",
+      "status": "active",
+      "validationStatus": "active",
+      "verificationStatus": "active"
+    },
+    {
+      "name": "www.sitecacho.cl",
+      "status": "pending",
+      "validationStatus": "pending",
+      "verificationStatus": "pending"
+    }
+  ],
+  "attempts": [
+    {
+      "name": "www.sitecacho.cl",
+      "requested": true
+    }
+  ],
+  "dnsRecordsModified": false,
+  "resendModified": false
+}

@@ -1,5 +1,7 @@
 # Mercado Pago — auditoría del 10 de noviembre de 2026
 
+**Actualización posterior:** `sitecacho.cl` ya está activo y tiene una publicación pública comprobada con los cobros cerrados. El estado actual, las correcciones y la evidencia nueva están en la [continuación del dominio público](public-site/README.md). Las secciones siguientes conservan el resultado histórico de la auditoría anterior; sus observaciones sobre el dominio no describen la publicación posterior.
+
 La integración continúa sobre la web existente. Los cobros reales permanecen deshabilitados. Las pruebas sandbox no otorgan acceso de pago en producción.
 
 ## Código y pruebas automatizadas

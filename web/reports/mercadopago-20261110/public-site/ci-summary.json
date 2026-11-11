@@ -1,0 +1,45 @@
+{
+  "deployedRevision": "cd94b9e07d6da02c5bb39cb6a6e1005d3c140e45",
+  "productionDeployment": "https://c0645339.cachaste-sitecacho.pages.dev",
+  "validationRevision": "89b71fbc8f19750afaefd5fe15f068c521179a82",
+  "fullQa": {
+    "run": 42933431371,
+    "logic": 403,
+    "webBackendSecurity": 169,
+    "browsers": {
+      "Desktop-Chrome": 52,
+      "Android-Chrome": 52,
+      "mobile-320px": 52,
+      "iPhone-WebKit": 52
+    },
+    "allJobsSucceeded": true,
+    "hostedAuthBrowserSuiteExecuted": false,
+    "physicalPhones": false
+  },
+  "publicAudit": {
+    "run": 42933431370,
+    "readOnly": true,
+    "productionCanonicalVerified": true,
+    "httpsChecks": 545,
+    "browserChecks": 78,
+    "allSucceeded": true,
+    "realPaymentsEnabled": false
+  },
+  "duels2Review": {
+    "commit": "169f95143a801d265e1099ae3ded658cb848a69b",
+    "branch": "work/cachaste-duels2-integration-20261111",
+    "localTests": 182,
+    "productionDeployed": false,
+    "hostedMigrationApplied": false,
+    "ciRun": 42934538098,
+    "ciStatus": "in_progress"
+  },
+  "previousSandboxEvidence": {
+    "file": "../live-sandbox.json",
+    "checks": 22,
+    "reexecutedAs22InThisContinuation": false,
+    "providerSignedDeliveryVerified": false,
+    "interactiveBuyerVerified": false,
+    "calendarRenewalWaited": false
+  }
+}

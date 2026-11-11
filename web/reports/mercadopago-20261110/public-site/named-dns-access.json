@@ -1,0 +1,44 @@
+{
+  "checkedAt": "2026-11-10T18:43:42.798Z",
+  "readOnly": true,
+  "zoneDerivedFromPagesDomain": true,
+  "zoneTag": "f77b489582c9ab140bde2d7d98874438",
+  "domains": [
+    {
+      "name": "sitecacho.cl",
+      "status": "active",
+      "validationStatus": "active",
+      "verificationStatus": "active",
+      "zoneTag": "f77b489582c9ab140bde2d7d98874438"
+    },
+    {
+      "name": "www.sitecacho.cl",
+      "status": "pending",
+      "validationStatus": "pending",
+      "verificationStatus": "pending",
+      "zoneTag": "f77b489582c9ab140bde2d7d98874438"
+    }
+  ],
+  "namedDnsReads": [
+    {
+      "name": "sitecacho.cl",
+      "httpStatus": 403,
+      "success": false,
+      "errorCodes": [
+        10000
+      ],
+      "records": []
+    },
+    {
+      "name": "www.sitecacho.cl",
+      "httpStatus": 403,
+      "success": false,
+      "errorCodes": [
+        10000
+      ],
+      "records": []
+    }
+  ],
+  "conclusion": "CURRENT_CREDENTIAL_DOES_NOT_AUTHORIZE_THIS_DNS_ZONE",
+  "resendRecordsModified": false
+}

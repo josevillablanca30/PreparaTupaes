@@ -1,0 +1,49 @@
+{
+  "checkedAt": "2026-11-11T00:44:28.415Z",
+  "readOnly": true,
+  "checks": [
+    {
+      "name": "sitecacho.cl",
+      "type": "A",
+      "httpStatus": 200,
+      "status": 0,
+      "answers": [
+        {
+          "name": "sitecacho.cl",
+          "type": 1,
+          "data": "104.21.22.127"
+        },
+        {
+          "name": "sitecacho.cl",
+          "type": 1,
+          "data": "172.67.205.9"
+        }
+      ]
+    },
+    {
+      "name": "www.sitecacho.cl",
+      "type": "CNAME",
+      "httpStatus": 200,
+      "status": 0,
+      "answers": []
+    },
+    {
+      "name": "www.sitecacho.cl",
+      "type": "A",
+      "httpStatus": 200,
+      "status": 0,
+      "answers": [
+        {
+          "name": "www.sitecacho.cl",
+          "type": 1,
+          "data": "104.21.22.127"
+        },
+        {
+          "name": "www.sitecacho.cl",
+          "type": 1,
+          "data": "172.67.205.9"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,279 @@
+{
+  "origin": "https://sitecacho.cl",
+  "revision": "cd94b9e07d6da02c5bb39cb6a6e1005d3c140e45",
+  "checkedAt": "2026-11-10T19:05:17.525Z",
+  "environment": "real public Cloudflare deployment",
+  "physicalPhones": false,
+  "authenticatedAccountsUsed": false,
+  "requestEmailSent": false,
+  "passed": false,
+  "checks": [
+    {
+      "browser": "Desktop-Chrome",
+      "path": "/privacidad.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "path": "/condiciones.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "path": "/eliminar-cuenta.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "entry": "/",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "entry": "/cuenta.html",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "entry": "/recuperar",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "path": "/",
+      "renderedTextContrast": true,
+      "textSamples": 34,
+      "minimumRatio": 5.711,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "path": "/cuenta.html",
+      "renderedTextContrast": true,
+      "passed": false
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "path": "/recuperar",
+      "renderedTextContrast": true,
+      "textSamples": 10,
+      "minimumRatio": 9.348,
+      "passed": true
+    },
+    {
+      "browser": "Android-Chrome",
+      "path": "/privacidad.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "Android-Chrome",
+      "path": "/condiciones.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "Android-Chrome",
+      "path": "/eliminar-cuenta.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "Android-Chrome",
+      "entry": "/",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "Android-Chrome",
+      "entry": "/cuenta.html",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "Android-Chrome",
+      "entry": "/recuperar",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "Android-Chrome",
+      "path": "/",
+      "renderedTextContrast": true,
+      "textSamples": 34,
+      "minimumRatio": 5.711,
+      "passed": true
+    },
+    {
+      "browser": "Android-Chrome",
+      "path": "/cuenta.html",
+      "renderedTextContrast": true,
+      "passed": false
+    },
+    {
+      "browser": "Android-Chrome",
+      "path": "/recuperar",
+      "renderedTextContrast": true,
+      "textSamples": 10,
+      "minimumRatio": 9.348,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "path": "/privacidad.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "path": "/condiciones.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "path": "/eliminar-cuenta.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "entry": "/",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "entry": "/cuenta.html",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "entry": "/recuperar",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "path": "/",
+      "renderedTextContrast": true,
+      "textSamples": 34,
+      "minimumRatio": 5.711,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "path": "/cuenta.html",
+      "renderedTextContrast": true,
+      "textSamples": 36,
+      "minimumRatio": 9.348,
+      "passed": true
+    },
+    {
+      "browser": "iPhone-WebKit",
+      "path": "/recuperar",
+      "renderedTextContrast": true,
+      "textSamples": 10,
+      "minimumRatio": 9.348,
+      "passed": true
+    },
+    {
+      "browser": "mobile-320px",
+      "path": "/privacidad.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "mobile-320px",
+      "path": "/condiciones.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "mobile-320px",
+      "path": "/eliminar-cuenta.html",
+      "status": 200,
+      "anonymous": true,
+      "passed": true
+    },
+    {
+      "browser": "mobile-320px",
+      "entry": "/",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "mobile-320px",
+      "entry": "/cuenta.html",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "mobile-320px",
+      "entry": "/recuperar",
+      "footerNavigation": true,
+      "passed": true
+    },
+    {
+      "browser": "mobile-320px",
+      "path": "/",
+      "renderedTextContrast": true,
+      "textSamples": 34,
+      "minimumRatio": 5.711,
+      "passed": true
+    },
+    {
+      "browser": "mobile-320px",
+      "path": "/cuenta.html",
+      "renderedTextContrast": true,
+      "passed": false
+    },
+    {
+      "browser": "mobile-320px",
+      "path": "/recuperar",
+      "renderedTextContrast": true,
+      "textSamples": 10,
+      "minimumRatio": 9.348,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "javaScriptEnabled": false,
+      "path": "/privacidad.html",
+      "contactIsDirect": true,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "javaScriptEnabled": false,
+      "path": "/condiciones.html",
+      "contactIsDirect": true,
+      "passed": true
+    },
+    {
+      "browser": "Desktop-Chrome",
+      "javaScriptEnabled": false,
+      "path": "/eliminar-cuenta.html",
+      "contactIsDirect": true,
+      "passed": true
+    }
+  ]
+}

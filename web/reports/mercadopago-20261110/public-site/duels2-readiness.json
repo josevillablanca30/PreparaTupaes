@@ -1,0 +1,14 @@
+{
+  "policy": {
+    "id": true,
+    "tax_ready": false,
+    "payments_enabled": false,
+    "allow_test_purchases": false
+  },
+  "checkedAt": "2026-11-11T00:45:48.744636+00:00",
+  "cronEnabled": false,
+  "duels2Installed": false,
+  "annualTesterGrants": 10,
+  "productionPayments": 0,
+  "duels2PublishedTables": []
+}
