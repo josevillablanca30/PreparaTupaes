@@ -4,6 +4,7 @@ import {createSandboxHandlers} from '../../supabase/functions/_shared/mercadopag
 import {canonicalSubscription} from '../../supabase/functions/_shared/mercadopago-core.mjs';
 const userId='10000000-0000-4000-8000-000000000001',requestId='30000000-0000-4000-8000-000000000001',now=Date.now();
 const day=86400000,hostedBuyer='3829500000',hostedId='qa-hosted-sub';
+const invoiceId = '6400000001';
 function harness(){
  const vars={SUPABASE_URL:'https://qa.invalid',SUPABASE_ANON_KEY:'public',SUPABASE_SERVICE_ROLE_KEY:'service',MP_TEST_MODE:'test',MP_TEST_ACCESS_TOKEN:'APP_USR-synthetic-test-seller',MP_TEST_COLLECTOR_ID:'123',MP_TEST_PLAN_MONTHLY_TRIAL:'trial',MP_TEST_PLAN_MONTHLY:'monthly',MP_TEST_PLAN_WEEKLY:'weekly',MP_TEST_PLAN_YEARLY:'yearly',MP_TEST_WEBHOOK_SECRET:'synthetic-qa-secret',MP_ACCESS_TOKEN:'PRODUCTION_MUST_NEVER_BE_USED'};
  const calls=[],rows=new Map(),receipts=new Set();let isAdmin=true,validSession=true,testSeller=true,subStatus='pending',providerFails=false;
@@ -26,6 +27,9 @@ function harness(){
   if(url.includes('/preapproval_plan/')){const id=url.split('/').at(-1),p=id==='weekly'?{transaction_amount:2490,frequency:7,frequency_type:'days'}:id==='yearly'?{transaction_amount:64990,frequency:12,frequency_type:'months'}:{transaction_amount:7990,frequency:1,frequency_type:'months'};return Response.json({id,status:'active',collector_id:123,init_point:id==='weekly'?hostedPlanUrl:undefined,auto_recurring:{currency_id:'CLP',...p,...(id==='trial'?{free_trial:{frequency:7,frequency_type:'days'}}:{})}});}
   if(url.includes('/preapproval/search?'))return Response.json({results:[hosted,{...hosted,id:'other-payer',payer_id:'654'},{...hosted,id:'other-plan',preapproval_plan_id:'monthly'},{...hosted,id:'live',live_mode:true}],paging:{total:4}});
   if(url.endsWith('/preapproval/'+hostedId)){if(options.method==='PUT'){assert.deepEqual(JSON.parse(options.body),{status:'cancelled'});hosted.status='cancelled';hosted.next_payment_date=null;}return Response.json(hosted);}
+  if (url.endsWith('/authorized_payments/' + invoiceId)) {
+   return Response.json({ id: invoiceId, preapproval_id: 'qa-sub', status: 'scheduled' });
+  }
   if(url.includes('/authorized_payments/search?preapproval_id='+hostedId))return Response.json({results:hostedPayments.map(p=>({id:p.id,preapproval_id:hostedId,payment:{id:p.id},status:'processed'}))});
   if(url.includes('/v1/payments/'))return Response.json(hostedPayments.find(p=>String(p.id)===url.split('/').at(-1)));
   if(url.endsWith('/preapproval')&&options.method==='POST')return Response.json({id:'qa-sub',init_point:'https://www.mercadopago.cl/subscriptions/checkout?preapproval_id=qa-sub'});
@@ -37,10 +41,22 @@ function harness(){
  return {...handlers,req,vars,calls,rows,receipts,hosted,setHostedUrl:v=>hostedPlanUrl=v,setHostedPayments:v=>hostedPayments=v,setAdmin:v=>isAdmin=v,revoke:()=>validSession=false,setTestSeller:v=>testSeller=v,setStatus:v=>subStatus=v,setFail:v=>providerFails=v};
 }
 const checkout={action:'checkout',plan:'MONTHLY_TRIAL',payerEmail:'test_user_synthetic@testuser.com',requestId};
-async function notification(secret='synthetic-qa-secret',stamp=now){
- const ts=Math.floor(stamp/1000),manifest=`id:qa-sub;request-id:qa-request;ts:${ts};`,key=await crypto.subtle.importKey('raw',new TextEncoder().encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);
- const sig=Buffer.from(await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(manifest))).toString('hex');
- return new Request('https://qa.invalid/events?data.id=qa-sub',{method:'POST',headers:{'x-request-id':'qa-request','x-signature':`ts=${ts},v1=${sig}`},body:JSON.stringify({type:'subscription_preapproval',data:{id:'qa-sub'}})});
+async function notification(secret = 'synthetic-qa-secret', stamp = now, {
+ id = 'qa-sub', type = 'subscription_preapproval', queryType = type,
+ request = 'qa-request'
+} = {}) {
+ const ts = Math.floor(stamp / 1000);
+ const manifest = `id:${id};request-id:${request};ts:${ts};`;
+ const encoder = new TextEncoder();
+ const key = await crypto.subtle.importKey('raw', encoder.encode(secret),
+  { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+ const signature = Buffer.from(await crypto.subtle.sign('HMAC', key, encoder.encode(manifest))).toString('hex');
+ const query = new URLSearchParams({ 'data.id': id, type: queryType });
+ return new Request(`https://qa.invalid/events?${query}`, {
+  method: 'POST',
+  headers: { 'x-request-id': request, 'x-signature': `ts=${ts},v1=${signature}` },
+  body: JSON.stringify({ type, data: { id } })
+ });
 }
 test('sandbox hosted checkout copies verified recurrence, has no card data and reuses the same provider subscription',async()=>{
  const h=harness();assert.equal((await h.billing(h.req(checkout))).status,200);assert.equal((await h.billing(h.req(checkout))).status,200);
@@ -72,6 +88,26 @@ test('sandbox signed webhooks are retryable, reject forged and stale signatures 
  assert.equal((await h.webhook(await notification('forged'))).status,401);assert.equal((await h.webhook(await notification('synthetic-qa-secret',now-600000))).status,401);
  assert.equal((await h.webhook(await notification())).status,200);const applied=h.calls.filter(c=>c.operation==='apply').length;
  assert.equal((await h.webhook(await notification())).status,200);assert.equal(h.calls.filter(c=>c.operation==='apply').length,applied);assert.equal(h.receipts.size,1);
+});
+test('a signed invoice reconciles only when the notification body identifies an invoice', async () => {
+ const h = harness();
+ assert.equal((await h.billing(h.req(checkout))).status, 200);
+ h.setStatus('authorized');
+ const invoiceType = 'subscription_authorized_payment';
+
+ const simulated = await notification(undefined, now, { id: invoiceId, queryType: invoiceType });
+ assert.equal((await h.webhook(simulated)).status, 200);
+ assert.equal(h.rows.get(requestId).snapshot, undefined);
+ assert.equal(h.receipts.size, 0);
+ assert.equal(h.calls.some(call => call.url?.endsWith('/authorized_payments/' + invoiceId)), false);
+
+ const invoice = await notification(undefined, now, {
+  id: invoiceId, type: invoiceType, request: 'qa-invoice-request'
+ });
+ assert.equal((await h.webhook(invoice)).status, 200);
+ assert.equal(h.rows.get(requestId).snapshot.status, 'authorized');
+ assert.equal(h.rows.get(requestId).snapshot.paidUntil, null);
+ assert.equal(h.receipts.size, 1);
 });
 test('an unassociated checkout still requires exact provider identity, reference, amount and cadence',()=>{
  const row={id:requestId,user_id:userId,provider_id:'qa-sub',provider_plan_id:'catalogue',provider_plan_linked:false,plan:'mensual',created_at:new Date(now).toISOString()};
