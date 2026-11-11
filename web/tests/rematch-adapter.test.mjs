@@ -59,7 +59,7 @@ test('el historial filtra únicamente duelos terminados y muestra conteos reales
 import {androidSource,ANDROID_UI_REFERENCE} from '../shared/android-reference.mjs';
 test('current Android UI preserves real rematches, paginated history, photos and web account protections',()=>{
  const native=androidSource('competition-app.js').toString(),web=adaptCompetitionUi(native);
- assert.equal(ANDROID_UI_REFERENCE,'685e9ecc3d55d353c8c9fdf3e29f9549eaa5fac9');
+ assert.equal(ANDROID_UI_REFERENCE,'8b6ab59f8780c55ecc3dd38d800e34057e40b602');
  assert.doesNotThrow(()=>new Script(web));
  for(const feature of ["api.call('duel_history'","action==='rematch'","field.value=rival.nickname","prepareProfilePhoto","web-duel-filters","cachasteRemoveWebProfilePhoto","provider==='google'"])assert.ok(web.includes(feature),feature);
  assert.ok(web.includes("d.status!=='finished'"));assert.ok(web.includes("!guard()"));
