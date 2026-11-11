@@ -40,9 +40,12 @@ export function validatePlan(remote,name,expectedId,{trial=false,collectorId}={}
  return p;
 }
 export function checkoutUrl(value){const url=new URL(value);if(url.protocol!=='https:'||!['mercadopago.cl','www.mercadopago.cl','mercadopago.com','www.mercadopago.com','www.mercadopago.com.ar'].includes(url.hostname)||!url.pathname.startsWith('/subscriptions/checkout'))throw Error('INVALID_CHECKOUT_URL');return url.href;}
-export function canonicalSubscription(sub,checkout,authorized,payments,{now=Date.now(),collectorId,liveMode=true,existing=null}={}){
+export function canonicalSubscription(sub,checkout,authorized,payments,{now=Date.now(),collectorId,liveMode=true,existing=null,sandboxPayerId}={}){
  const linked=checkout.provider_plan_linked!==false;
- const p=MP_PLANS[checkout.plan];if(!p||String(sub.id)!==String(checkout.provider_id)||sub.external_reference!==checkout.id||(linked?sub.preapproval_plan_id!==checkout.provider_plan_id:!!sub.preapproval_plan_id)||String(sub.collector_id)!==String(collectorId)||(sub.site_id&&sub.site_id!=='MLC'))throw Error('SUBSCRIPTION_MISMATCH');
+ // A hosted test-plan link has no per-checkout reference. Bind its readback to the exact payer instead.
+ const bound=sandboxPayerId===undefined?sub.external_reference===checkout.id:
+  liveMode===false&&(sub.live_mode==null||sub.live_mode===false)&&linked&&typeof sandboxPayerId==='string'&&/^[1-9]\d{0,18}$/.test(sandboxPayerId)&&String(sub.payer_id)===sandboxPayerId;
+ const p=MP_PLANS[checkout.plan];if(!p||String(sub.id)!==String(checkout.provider_id)||!bound||(linked?sub.preapproval_plan_id!==checkout.provider_plan_id:!!sub.preapproval_plan_id)||String(sub.collector_id)!==String(collectorId)||(sub.site_id&&sub.site_id!=='MLC'))throw Error('SUBSCRIPTION_MISMATCH');
  if(sub.auto_recurring?.currency_id!=='CLP'||Number(sub.auto_recurring?.transaction_amount)!==p.amount||Number(sub.auto_recurring?.frequency)!==p.frequency||sub.auto_recurring?.frequency_type!==p.frequency_type)throw Error('SUBSCRIPTION_MISMATCH');
  const approved=[],ledger=[];
  for(const charge of authorized){
