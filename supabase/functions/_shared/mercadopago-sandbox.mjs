@@ -1,6 +1,14 @@
-import {MP_PLANS,validatePlan,checkoutUrl,canonicalSubscription,verifyMpSignature,subscriptionInvoices,subscriptionPayments} from './mercadopago-core.mjs';
+import {MP_PLANS,validatePlan,checkoutUrl,canonicalSubscription,verifyMpSignature,subscriptionInvoices,subscriptionPayments,iso} from './mercadopago-core.mjs';
 const UUID=/^[a-f\d]{8}-[a-f\d]{4}-[1-5][a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i;
+const PROVIDER_ID=/^[a-z\d_-]{1,128}$/i;
 const choices={WEEKLY:{plan:'semanal'},MONTHLY:{plan:'mensual'},YEARLY:{plan:'anual'},MONTHLY_TRIAL:{plan:'mensual',trial:true}};
+function planCheckoutUrl(value,planId){
+ let url;
+ try{url=new URL(checkoutUrl(value));}catch{throw Error('INVALID_PLAN_CHECKOUT_URL');}
+ const plans=url.searchParams.getAll('preapproval_plan_id');
+ if(url.pathname!=='/subscriptions/checkout'||url.username||url.password||url.port||plans.length!==1||plans[0]!==planId||url.searchParams.has('preapproval_id'))throw Error('INVALID_PLAN_CHECKOUT_URL');
+ return url.href;
+}
 export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Date.now()}){
  const client=(key,token)=>createClient(env('SUPABASE_URL'),key,{auth:{persistSession:false,autoRefreshToken:false},...(token?{global:{headers:{Authorization:'Bearer '+token}}}:{})});
  const call=async(operation,payload={})=>{const {data,error}=await client(env('SUPABASE_SERVICE_ROLE_KEY')).rpc('cachaste_mp_sandbox_admin',{operation,payload});if(error)throw Error(error.message);return data;};
@@ -16,7 +24,7 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
  }
  async function mp(path,{method='GET',body,requestId}={}){
   if(!path.startsWith('/'))throw Error('INVALID_PROVIDER_PATH');
-  const response=await fetcher('https://api.mercadopago.com'+path,{method,headers:{authorization:'Bearer '+env('MP_TEST_ACCESS_TOKEN'),'content-type':'application/json',...(requestId?{'X-Idempotency-Key':requestId}:{})},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(12000)});
+  const response=await fetcher('https://api.mercadopago.com'+path,{method,headers:{authorization:'Bearer '+env('MP_TEST_ACCESS_TOKEN'),'content-type':'application/json',...(requestId?{'X-Idempotency-Key':requestId}:{})},...(body?{body:JSON.stringify(body)}:{}),redirect:'error',signal:AbortSignal.timeout(12000)});
   const data=await response.json().catch(()=>({}));
   if(!response.ok){console.error('MP_SANDBOX_PROVIDER_ERROR',JSON.stringify({status:response.status,operation:path.split('?')[0].replace(/\/[a-f0-9]{20,}/g,'/:id')}));throw Object.assign(Error('PROVIDER_CHECKOUT_FAILED'),{providerStatus:response.status});}return data;
  }
@@ -26,7 +34,42 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
  }
  async function catalogue(key){
   const c=choices[key];if(!c)throw Error('INVALID_PLAN');const id=env('MP_TEST_PLAN_'+key);if(!id)throw Error('TEST_CONFIG_MISSING');
-  const remote=await mp('/preapproval_plan/'+encodeURIComponent(id));validatePlan(remote,c.plan,id,{trial:!!c.trial,collectorId:env('MP_TEST_COLLECTOR_ID')});return {...c,id};
+  const remote=await mp('/preapproval_plan/'+encodeURIComponent(id));validatePlan(remote,c.plan,id,{trial:!!c.trial,collectorId:env('MP_TEST_COLLECTOR_ID')});return {...c,id,remote};
+ }
+ function testPayerId(id){
+  if(typeof id!=='string'||!/^[1-9]\d{0,18}$/.test(id)||id===env('MP_TEST_COLLECTOR_ID'))throw Error('INVALID_TEST_PAYER_ID');
+  return id;
+ }
+ async function observePlanSubscription(plan,payerId,id,{cancel=false}={}){
+  if(typeof id!=='string'||!PROVIDER_ID.test(id))throw Error('INVALID_SUBSCRIPTION_ID');
+  const path='/preapproval/'+encodeURIComponent(id);
+  const options={now:now(),collectorId:env('MP_TEST_COLLECTOR_ID'),liveMode:false,sandboxPayerId:payerId};
+  const checkout={id:null,provider_id:id,provider_plan_id:plan.id,plan:plan.plan,trial_offered:!!plan.trial};
+  let remote=await mp(path);
+  if(!['pending','authorized','paused','cancelled','canceled'].includes(remote.status))throw Error('INVALID_SUBSCRIPTION_STATUS');
+  canonicalSubscription(remote,{...checkout,created_at:remote.date_created},[],[],options);
+  const invoices=await subscriptionInvoices(mp,id),payments=await subscriptionPayments(mp,invoices);
+  let snapshot=canonicalSubscription(remote,{...checkout,created_at:remote.date_created},invoices,payments,options);
+  if(cancel&&!['cancelled','canceled'].includes(remote.status)){
+   await mp(path,{method:'PUT',body:{status:'cancelled'}});
+   remote=await mp(path);
+   if(!['cancelled','canceled'].includes(remote.status))throw Error('PROVIDER_CANCELLATION_UNCONFIRMED');
+   snapshot=canonicalSubscription(remote,{...checkout,created_at:remote.date_created},invoices,payments,options);
+  }
+  const processed=new Set(invoices.filter(invoice=>invoice.status==='processed').map(invoice=>String(invoice.payment?.id)));
+  const approvedPayments=payments.filter(payment=>processed.has(String(payment.id))&&payment.status==='approved'&&
+   Number(payment.transaction_amount_refunded||0)===0&&iso(payment.date_approved)&&Date.parse(payment.date_approved)<=options.now+5000).length;
+  return {id,status:snapshot.status,createdAt:iso(remote.date_created),paidUntil:snapshot.paidUntil,trialUntil:snapshot.trialUntil,
+   renews:snapshot.renews,nextPaymentAt:snapshot.nextPaymentAt,approvedPayments,liveMode:false};
+ }
+ async function listPlanSubscriptions(plan,payerId){
+  const query=new URLSearchParams({payer_id:payerId,preapproval_plan_id:plan.id,limit:'10'});
+  const result=await mp('/preapproval/search?'+query);
+  if(!Array.isArray(result.results))throw Error('INVALID_SUBSCRIPTION_SEARCH');
+  const subscriptions=result.results.filter(s=>String(s.payer_id)===payerId&&s.preapproval_plan_id===plan.id&&
+   String(s.collector_id)===env('MP_TEST_COLLECTOR_ID')&&(s.live_mode==null||s.live_mode===false)&&(!s.site_id||s.site_id==='MLC')&&typeof s.id==='string'&&PROVIDER_ID.test(s.id))
+   .map(s=>({id:s.id,status:s.status,createdAt:iso(s.date_created)}));
+  return {subscriptions,hasMore:Number(result.paging?.total)>result.results.length};
  }
  async function reconcile(row){
   const sub=await mp('/preapproval/'+encodeURIComponent(row.provider_id));
@@ -37,14 +80,20 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
  async function billing(req){try{
   cors(req);if(req.method==='OPTIONS')return new Response(null,{status:204,headers:cors(req)});if(req.method!=='POST')return reply(req,{error:'METHOD_NOT_ALLOWED'},405);
   const user=await authenticate(req),text=await req.text();if(text.length>8192)throw Error('PAYLOAD_TOO_LARGE');
-  const body=JSON.parse(text||'{}');if(!['status','checkout','refresh','cancel'].includes(body.action))throw Error('INVALID_ACTION');
+  const body=JSON.parse(text||'{}');if(!['status','checkout','refresh','cancel','plan_status','plan_cancel'].includes(body.action))throw Error('INVALID_ACTION');
   await seller();
   if(body.action==='status'){
    const plans=[];for(const key of Object.keys(choices)){const c=await catalogue(key);plans.push({key,plan:c.plan,...MP_PLANS[c.plan],trialDays:c.trial?7:0});}
    return reply(req,{ready:true,mode:'sandbox',productionEnabled:false,webhookConfigured:!!env('MP_TEST_WEBHOOK_SECRET'),plans,subscriptions:await call('list',{userId:user.id})});
   }
   if(body.action==='checkout'){
-   const c=await catalogue(body.plan),email=String(body.payerEmail||env('MP_TEST_BUYER_EMAIL')||'').trim();
+   const c=await catalogue(body.plan);
+   if(body.payerId!==undefined){
+    if(body.payerEmail)throw Error('AMBIGUOUS_TEST_PAYER');
+    const payerId=testPayerId(body.payerId);
+    return reply(req,{mode:'sandbox',checkoutMode:'hosted_plan',payerId,providerPlanId:c.id,checkoutUrl:planCheckoutUrl(c.remote.init_point,c.id),productionEnabled:false});
+   }
+   const email=String(body.payerEmail||env('MP_TEST_BUYER_EMAIL')||'').trim();
    if(!/^[^\s@]{1,200}@testuser\.(com|cl)$/i.test(email))throw Error('TEST_BUYER_EMAIL_REQUIRED');
    if(!UUID.test(body.requestId||''))throw Error('INVALID_REQUEST_ID');
    const row=await call('reserve',{id:body.requestId,userId:user.id,plan:c.plan,providerPlanId:c.id,trial:!!c.trial});
@@ -54,6 +103,13 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
    let sub;try{sub=await mp('/preapproval',{method:'POST',requestId:row.id,body:{auto_recurring,external_reference:row.id,payer_email:email,reason:'Cachaste QA '+c.plan,back_url:'https://sitecacho.cl/cuenta.html?qa=mp&checkout=return',status:'pending'}});}catch(error){if([400,401,403,404,422].includes(error.providerStatus))await call('checkout_failed',{id:row.id,userId:user.id,status:error.providerStatus});throw error;}
    await call('attach',{id:row.id,userId:user.id,providerId:String(sub.id)});
    return reply(req,{checkoutUrl:checkoutUrl(sub.init_point),id:String(sub.id),mode:'sandbox',notice:'QA_ONLY_NOT_APP_ENTITLEMENT'});
+  }
+  if(body.action==='plan_status'||body.action==='plan_cancel'){
+   const payerId=testPayerId(body.payerId),plan=await catalogue(body.plan);
+   const cancel=body.action==='plan_cancel';
+   if(!cancel&&body.subscriptionId===undefined)return reply(req,{mode:'sandbox',...await listPlanSubscriptions(plan,payerId)});
+   const snapshot=await observePlanSubscription(plan,payerId,body.subscriptionId,{cancel});
+   return reply(req,{mode:'sandbox',snapshot,...(cancel?{cancelled:true}:{})});
   }
   const rows=await call('list',{userId:user.id});
   if(body.action==='cancel'){

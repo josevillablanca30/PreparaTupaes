@@ -3,9 +3,12 @@ import assert from 'node:assert/strict';
 import {createSandboxHandlers} from '../../supabase/functions/_shared/mercadopago-sandbox.mjs';
 import {canonicalSubscription} from '../../supabase/functions/_shared/mercadopago-core.mjs';
 const userId='10000000-0000-4000-8000-000000000001',requestId='30000000-0000-4000-8000-000000000001',now=Date.now();
+const day=86400000,hostedBuyer='3829500000',hostedId='qa-hosted-sub';
 function harness(){
  const vars={SUPABASE_URL:'https://qa.invalid',SUPABASE_ANON_KEY:'public',SUPABASE_SERVICE_ROLE_KEY:'service',MP_TEST_MODE:'test',MP_TEST_ACCESS_TOKEN:'APP_USR-synthetic-test-seller',MP_TEST_COLLECTOR_ID:'123',MP_TEST_PLAN_MONTHLY_TRIAL:'trial',MP_TEST_PLAN_MONTHLY:'monthly',MP_TEST_PLAN_WEEKLY:'weekly',MP_TEST_PLAN_YEARLY:'yearly',MP_TEST_WEBHOOK_SECRET:'synthetic-qa-secret',MP_ACCESS_TOKEN:'PRODUCTION_MUST_NEVER_BE_USED'};
  const calls=[],rows=new Map(),receipts=new Set();let isAdmin=true,validSession=true,testSeller=true,subStatus='pending',providerFails=false;
+ let hostedPlanUrl='https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=weekly',hostedPayments=[];
+ const hosted={id:hostedId,payer_id:hostedBuyer,collector_id:123,site_id:'MLC',preapproval_plan_id:'weekly',status:'authorized',date_created:new Date(now-9*day).toISOString(),next_payment_date:new Date(now+6*day).toISOString(),auto_recurring:{transaction_amount:2490,currency_id:'CLP',frequency:7,frequency_type:'days'}};
  const createClient=(_url,key)=>key==='service'?{rpc:async(name,{operation,payload:p})=>{
   assert.equal(name,'cachaste_mp_sandbox_admin');calls.push({operation,p});let data={};
   if(operation==='reserve'){if(rows.has(p.id))data={...rows.get(p.id),created:false};else {data={id:p.id,user_id:p.userId,plan:p.plan,provider_plan_id:p.providerPlanId,provider_plan_linked:false,trial_offered:p.trial,created_at:new Date(now).toISOString(),created:true};rows.set(p.id,data);}}
@@ -20,14 +23,18 @@ function harness(){
   calls.push({url,options});assert.equal(options.headers.authorization,'Bearer '+vars.MP_TEST_ACCESS_TOKEN);assert.ok(!JSON.stringify(options).includes(vars.MP_ACCESS_TOKEN));
   if(providerFails)return Response.json({message:'provider failure'},{status:503});
   if(url.endsWith('/users/me'))return Response.json({id:123,tags:testSeller?['test_user']:[],site_id:'MLC'});
-  if(url.includes('/preapproval_plan/')){const id=url.split('/').at(-1),p=id==='weekly'?{transaction_amount:2490,frequency:7,frequency_type:'days'}:id==='yearly'?{transaction_amount:64990,frequency:12,frequency_type:'months'}:{transaction_amount:7990,frequency:1,frequency_type:'months'};return Response.json({id,status:'active',collector_id:123,auto_recurring:{currency_id:'CLP',...p,...(id==='trial'?{free_trial:{frequency:7,frequency_type:'days'}}:{})}});}
+  if(url.includes('/preapproval_plan/')){const id=url.split('/').at(-1),p=id==='weekly'?{transaction_amount:2490,frequency:7,frequency_type:'days'}:id==='yearly'?{transaction_amount:64990,frequency:12,frequency_type:'months'}:{transaction_amount:7990,frequency:1,frequency_type:'months'};return Response.json({id,status:'active',collector_id:123,init_point:id==='weekly'?hostedPlanUrl:undefined,auto_recurring:{currency_id:'CLP',...p,...(id==='trial'?{free_trial:{frequency:7,frequency_type:'days'}}:{})}});}
+  if(url.includes('/preapproval/search?'))return Response.json({results:[hosted,{...hosted,id:'other-payer',payer_id:'654'},{...hosted,id:'other-plan',preapproval_plan_id:'monthly'},{...hosted,id:'live',live_mode:true}],paging:{total:4}});
+  if(url.endsWith('/preapproval/'+hostedId)){if(options.method==='PUT'){assert.deepEqual(JSON.parse(options.body),{status:'cancelled'});hosted.status='cancelled';hosted.next_payment_date=null;}return Response.json(hosted);}
+  if(url.includes('/authorized_payments/search?preapproval_id='+hostedId))return Response.json({results:hostedPayments.map(p=>({id:p.id,preapproval_id:hostedId,payment:{id:p.id},status:'processed'}))});
+  if(url.includes('/v1/payments/'))return Response.json(hostedPayments.find(p=>String(p.id)===url.split('/').at(-1)));
   if(url.endsWith('/preapproval')&&options.method==='POST')return Response.json({id:'qa-sub',init_point:'https://www.mercadopago.cl/subscriptions/checkout?preapproval_id=qa-sub'});
   if(url.includes('/preapproval/')){if(options.method==='PUT')subStatus='cancelled';return Response.json({id:'qa-sub',external_reference:requestId,collector_id:123,site_id:'MLC',status:subStatus,date_created:new Date(now).toISOString(),auto_recurring:{transaction_amount:7990,currency_id:'CLP',frequency:1,frequency_type:'months'},init_point:'https://www.mercadopago.cl/subscriptions/checkout?preapproval_id=qa-sub'});}
   if(url.includes('/authorized_payments/search'))return Response.json({results:[]});return Response.json({}, {status:404});
  };
  const handlers=createSandboxHandlers({env:key=>vars[key],createClient,fetcher,now:()=>now});
  const req=body=>new Request('https://qa.invalid/function',{method:'POST',headers:{origin:'https://sitecacho.cl',authorization:'Bearer qa-session'},body:JSON.stringify(body)});
- return {...handlers,req,vars,calls,rows,receipts,setAdmin:v=>isAdmin=v,revoke:()=>validSession=false,setTestSeller:v=>testSeller=v,setStatus:v=>subStatus=v,setFail:v=>providerFails=v};
+ return {...handlers,req,vars,calls,rows,receipts,hosted,setHostedUrl:v=>hostedPlanUrl=v,setHostedPayments:v=>hostedPayments=v,setAdmin:v=>isAdmin=v,revoke:()=>validSession=false,setTestSeller:v=>testSeller=v,setStatus:v=>subStatus=v,setFail:v=>providerFails=v};
 }
 const checkout={action:'checkout',plan:'MONTHLY_TRIAL',payerEmail:'test_user_synthetic@testuser.com',requestId};
 async function notification(secret='synthetic-qa-secret',stamp=now){
@@ -71,4 +78,56 @@ test('an unassociated checkout still requires exact provider identity, reference
  const sub={id:'qa-sub',collector_id:123,external_reference:requestId,status:'pending',auto_recurring:{transaction_amount:7990,currency_id:'CLP',frequency:1,frequency_type:'months'}};
  assert.equal(canonicalSubscription(sub,row,[],[],{now,collectorId:123}).paidUntil,null);
  for(const bad of [{...sub,external_reference:'forged'},{...sub,collector_id:456},{...sub,preapproval_plan_id:'foreign'},{...sub,auto_recurring:{...sub.auto_recurring,transaction_amount:1}}])assert.throws(()=>canonicalSubscription(bad,row,[],[],{now,collectorId:123}),/SUBSCRIPTION_MISMATCH/);
+});
+
+test('the verified test plan opens by payer ID without an email or creation API call',async()=>{
+ const h=harness();
+ const r=await h.billing(h.req({action:'checkout',plan:'WEEKLY',payerId:hostedBuyer}));
+ assert.equal(r.status,200);
+ assert.deepEqual(await r.json(),{mode:'sandbox',checkoutMode:'hosted_plan',payerId:hostedBuyer,providerPlanId:'weekly',checkoutUrl:'https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=weekly',productionEnabled:false});
+ assert.equal(h.rows.size,0);
+ assert.ok(h.calls.every(c=>!c.operation&&c.options.method==='GET'));
+ for(const url of ['https://foreign.invalid/subscriptions/checkout?preapproval_plan_id=weekly','https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=monthly','https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=weekly&preapproval_plan_id=monthly']){
+  h.setHostedUrl(url);
+  const rejected=await h.billing(h.req({action:'checkout',plan:'WEEKLY',payerId:hostedBuyer}));
+  assert.equal((await rejected.json()).error,'INVALID_PLAN_CHECKOUT_URL');
+ }
+ const seller=await h.billing(h.req({action:'checkout',plan:'WEEKLY',payerId:'123'}));
+ assert.equal((await seller.json()).error,'INVALID_TEST_PAYER_ID');
+});
+
+test('the hosted plan search and renewal observation match the provider payer, plan and paid dates',async()=>{
+ const h=harness(),scope={action:'plan_status',plan:'WEEKLY',payerId:hostedBuyer};
+ const search=await h.billing(h.req(scope));
+ assert.equal(search.status,200);
+ assert.deepEqual((await search.json()).subscriptions.map(s=>s.id),[hostedId]);
+ assert.ok(h.calls.some(c=>c.url?.includes('payer_id='+hostedBuyer)&&c.url.includes('preapproval_plan_id=weekly')));
+ const payment=(id,ago)=>({id,collector_id:123,currency_id:'CLP',transaction_amount:2490,live_mode:false,status:'approved',date_approved:new Date(now-ago*day).toISOString()});
+ h.setHostedPayments([payment(101,8),payment(102,1),{...payment(103,0),transaction_amount_refunded:2490}]);
+ const result=await h.billing(h.req({...scope,subscriptionId:hostedId}));
+ assert.equal(result.status,200);
+ const {snapshot}=await result.json();
+ assert.equal(snapshot.approvedPayments,2);
+ assert.equal(snapshot.paidUntil,new Date(now+6*day).toISOString());
+ assert.equal(snapshot.nextPaymentAt,h.hosted.next_payment_date);
+ assert.equal(snapshot.renews,true);
+ assert.equal(snapshot.liveMode,false);
+});
+
+test('a hosted sandbox cancellation rejects foreign and live resources before the write and confirms cancellation',async()=>{
+ const scope={action:'plan_cancel',plan:'WEEKLY',payerId:hostedBuyer,subscriptionId:hostedId};
+ for(const fields of [{payer_id:'456'},{collector_id:456},{preapproval_plan_id:'monthly'},{live_mode:true}]){
+  const h=harness();Object.assign(h.hosted,fields);
+  const rejected=await h.billing(h.req(scope));
+  assert.equal((await rejected.json()).error,'SUBSCRIPTION_MISMATCH');
+  assert.ok(!h.calls.some(c=>c.options?.method==='PUT'));
+ }
+ const livePayment=harness();livePayment.setHostedPayments([{id:101,collector_id:123,currency_id:'CLP',transaction_amount:2490,live_mode:true,status:'approved',date_approved:new Date(now-day).toISOString()}]);
+ assert.equal((await (await livePayment.billing(livePayment.req(scope))).json()).error,'PAYMENT_MISMATCH');
+ assert.ok(!livePayment.calls.some(c=>c.options?.method==='PUT'));
+ const h=harness(),cancel=await h.billing(h.req(scope));
+ assert.equal(cancel.status,200);
+ const reply=await cancel.json();assert.equal(reply.cancelled,true);assert.equal(reply.snapshot.renews,false);assert.equal(reply.snapshot.status,'cancelled');
+ assert.equal((await h.billing(h.req(scope))).status,200);
+ assert.equal(h.calls.filter(c=>c.options?.method==='PUT').length,1);
 });
