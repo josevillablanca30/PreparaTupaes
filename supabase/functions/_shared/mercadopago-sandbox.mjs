@@ -1,6 +1,7 @@
-import {MP_PLANS,validatePlan,checkoutUrl,canonicalSubscription,verifyMpSignature,subscriptionInvoices,subscriptionPayments,iso} from './mercadopago-core.mjs';
+import {MP_PLANS,validatePlan,checkoutUrl,canonicalSubscription,verifyMpSignature,subscriptionInvoices,paymentInvoices,subscriptionPayments,isApprovedPayment,iso} from './mercadopago-core.mjs';
 const UUID=/^[a-f\d]{8}-[a-f\d]{4}-[1-5][a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i;
 const PROVIDER_ID=/^[a-z\d_-]{1,128}$/i;
+const NUMERIC_ID=/^[1-9]\d{0,18}$/;
 const choices={WEEKLY:{plan:'semanal'},MONTHLY:{plan:'mensual'},YEARLY:{plan:'anual'},MONTHLY_TRIAL:{plan:'mensual',trial:true}};
 function planCheckoutUrl(value,planId){
  let url;
@@ -37,28 +38,45 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
   const remote=await mp('/preapproval_plan/'+encodeURIComponent(id));validatePlan(remote,c.plan,id,{trial:!!c.trial,collectorId:env('MP_TEST_COLLECTOR_ID')});return {...c,id,remote};
  }
  function testPayerId(id){
-  if(typeof id!=='string'||!/^[1-9]\d{0,18}$/.test(id)||id===env('MP_TEST_COLLECTOR_ID'))throw Error('INVALID_TEST_PAYER_ID');
+  if(typeof id!=='string'||!NUMERIC_ID.test(id)||id===env('MP_TEST_COLLECTOR_ID'))throw Error('INVALID_TEST_PAYER_ID');
   return id;
  }
- async function observePlanSubscription(plan,payerId,id,{cancel=false}={}){
+ function verifiedPlanPayment(payment,paymentId,payerId,plan,observedAt){
+  return !!payment&&String(payment.id)===paymentId&&payment.live_mode===false&&
+   String(payment.payer?.id)===payerId&&String(payment.collector_id)===env('MP_TEST_COLLECTOR_ID')&&
+   Number(payment.transaction_amount)===MP_PLANS[plan.plan].amount&&payment.currency_id==='CLP'&&
+   isApprovedPayment(payment,observedAt);
+ }
+ function processedPaymentInvoice(invoice,paymentId){
+  return String(invoice.payment?.id)===paymentId&&invoice.status==='processed'&&
+   (invoice.payment?.status==null||invoice.payment.status==='approved');
+ }
+ async function observePlanSubscription(plan,payerId,id,{cancel=false,expectedInvoice}={}){
   if(typeof id!=='string'||!PROVIDER_ID.test(id))throw Error('INVALID_SUBSCRIPTION_ID');
   const path='/preapproval/'+encodeURIComponent(id);
   const options={now:now(),collectorId:env('MP_TEST_COLLECTOR_ID'),liveMode:false,sandboxPayerId:payerId};
   const checkout={id:null,provider_id:id,provider_plan_id:plan.id,plan:plan.plan,trial_offered:!!plan.trial};
   let remote=await mp(path);
   if(!['pending','authorized','paused','cancelled','canceled'].includes(remote.status))throw Error('INVALID_SUBSCRIPTION_STATUS');
+  if(plan.remote.application_id!=null&&remote.application_id!=null&&
+   String(remote.application_id)!==String(plan.remote.application_id))throw Error('SUBSCRIPTION_MISMATCH');
   canonicalSubscription(remote,{...checkout,created_at:remote.date_created},[],[],options);
   const invoices=await subscriptionInvoices(mp,id),payments=await subscriptionPayments(mp,invoices);
+  if(expectedInvoice){
+   const paymentId=String(expectedInvoice.payment.id);
+   const invoice=invoices.find(item=>String(item.id)===String(expectedInvoice.id)&&processedPaymentInvoice(item,paymentId));
+   const payment=payments.find(item=>String(item.id)===paymentId);
+   if(!invoice||!verifiedPlanPayment(payment,paymentId,payerId,plan,options.now))throw Error('PAYMENT_NOT_VERIFIED');
+  }
   let snapshot=canonicalSubscription(remote,{...checkout,created_at:remote.date_created},invoices,payments,options);
   if(cancel&&!['cancelled','canceled'].includes(remote.status)){
    await mp(path,{method:'PUT',body:{status:'cancelled'}});
    remote=await mp(path);
    if(!['cancelled','canceled'].includes(remote.status))throw Error('PROVIDER_CANCELLATION_UNCONFIRMED');
-   snapshot=canonicalSubscription(remote,{...checkout,created_at:remote.date_created},invoices,payments,options);
+   snapshot=canonicalSubscription(remote,{...checkout,created_at:remote.date_created},invoices,payments,{...options,existing:{trial_until:snapshot.trialUntil}});
   }
   const processed=new Set(invoices.filter(invoice=>invoice.status==='processed').map(invoice=>String(invoice.payment?.id)));
-  const approvedPayments=payments.filter(payment=>processed.has(String(payment.id))&&payment.status==='approved'&&
-   Number(payment.transaction_amount_refunded||0)===0&&iso(payment.date_approved)&&Date.parse(payment.date_approved)<=options.now+5000).length;
+  const approvedPayments=payments.filter(payment=>processed.has(String(payment.id))&&isApprovedPayment(payment,options.now)).length;
   return {id,status:snapshot.status,createdAt:iso(remote.date_created),paidUntil:snapshot.paidUntil,trialUntil:snapshot.trialUntil,
    renews:snapshot.renews,nextPaymentAt:snapshot.nextPaymentAt,approvedPayments,liveMode:false};
  }
@@ -105,28 +123,20 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
    return reply(req,{checkoutUrl:checkoutUrl(sub.init_point),id:String(sub.id),mode:'sandbox',notice:'QA_ONLY_NOT_APP_ENTITLEMENT'});
   }
   if(body.action==='plan_payment_lookup'){
-   // Read-only reconciliation of a hosted plan payment; never grants app entitlement.
-   const payerId=testPayerId(body.payerId),plan=await catalogue(body.plan);
-   const paymentId=String(body.paymentId||'');
-   if(!/^[1-9]\\d{0,18}$/.test(paymentId))throw Error('INVALID_PAYMENT_ID');
-   const payment=await mp('/v1/payments/'+encodeURIComponent(paymentId));
-   if(String(payment.id)!==paymentId||payment.status!=='approved'||
-      payment.live_mode!==false||String(payment.payer?.id)!==payerId||Number(payment.transaction_amount)!==MP_PLANS[plan.plan].amount||
-      payment.currency_id!=='CLP'||Number(payment.transaction_amount_refunded||0)!==0)
-     throw Error('PAYMENT_NOT_VERIFIED');
-   const list=await listPlanSubscriptions(plan,payerId);
-   const matches=[];
-   for(const item of list.subscriptions){
-     const invoices=await subscriptionInvoices(mp,item.id);
-     const linked=invoices.some(invoice=>String(invoice.payment?.id)===paymentId&&invoice.status==='processed');
-     if(!linked)continue;
-     const snapshot=await observePlanSubscription(plan,payerId,item.id);
-     if(snapshot.approvedPayments<1)continue;
-     matches.push({subscriptionId:item.id,...snapshot});
+   const payerId=testPayerId(body.payerId);
+   const paymentId=typeof body.paymentId==='string'||Number.isSafeInteger(body.paymentId)?String(body.paymentId):'';
+   if(!NUMERIC_ID.test(paymentId))throw Error('INVALID_PAYMENT_ID');
+   const plan=await catalogue(body.plan);
+   const payment=await mp('/v1/payments/'+paymentId);
+   if(!verifiedPlanPayment(payment,paymentId,payerId,plan,now()))throw Error('PAYMENT_NOT_VERIFIED');
+   const invoices=(await paymentInvoices(mp,paymentId)).filter(invoice=>String(invoice.payment?.id)===paymentId);
+   if(invoices.length!==1||!PROVIDER_ID.test(String(invoices[0].id??''))||!processedPaymentInvoice(invoices[0],paymentId)){
+    throw Error('PAYMENT_SUBSCRIPTION_NOT_MATCHED');
    }
-   if(matches.length!==1)throw Error(list.hasMore?'SUBSCRIPTION_SEARCH_INCOMPLETE':'PAYMENT_SUBSCRIPTION_NOT_MATCHED');
+   const invoice=invoices[0];
+   const snapshot=await observePlanSubscription(plan,payerId,invoice.preapproval_id,{expectedInvoice:invoice});
    return reply(req,{mode:'sandbox',verified:true,productionEnabled:false,
-     buyerId:payerId,plan:plan.plan,paymentId,subscription:matches[0],
+     buyerId:payerId,plan:plan.plan,paymentId,subscription:{subscriptionId:snapshot.id,...snapshot},
      notice:'QA_ONLY_NOT_APP_ENTITLEMENT'});
   }
   if(body.action==='plan_status'||body.action==='plan_cancel'){

@@ -5,11 +5,25 @@ import {canonicalSubscription} from '../../supabase/functions/_shared/mercadopag
 const userId='10000000-0000-4000-8000-000000000001',requestId='30000000-0000-4000-8000-000000000001',now=Date.now();
 const day=86400000,hostedBuyer='3829500000',hostedId='qa-hosted-sub';
 const invoiceId = '6400000001';
+const hostedPaymentId = '188037470295';
+function approvedPayment(id, daysAgo = 0, overrides = {}) {
+ return {
+  id, payer: { id: hostedBuyer }, collector_id: 123, currency_id: 'CLP',
+  transaction_amount: 2490, live_mode: false, status: 'approved',
+  date_approved: new Date(now - daysAgo * day).toISOString(),
+  transaction_amount_refunded: 0, refunds: [], ...overrides
+ };
+}
+function hostedInvoice(paymentId, overrides = {}) {
+ return { id: '6400000002', preapproval_id: hostedId,
+  payment: { id: paymentId, status: 'approved' }, status: 'processed', ...overrides };
+}
 function harness(){
  const vars={SUPABASE_URL:'https://qa.invalid',SUPABASE_ANON_KEY:'public',SUPABASE_SERVICE_ROLE_KEY:'service',MP_TEST_MODE:'test',MP_TEST_ACCESS_TOKEN:'APP_USR-synthetic-test-seller',MP_TEST_COLLECTOR_ID:'123',MP_TEST_PLAN_MONTHLY_TRIAL:'trial',MP_TEST_PLAN_MONTHLY:'monthly',MP_TEST_PLAN_WEEKLY:'weekly',MP_TEST_PLAN_YEARLY:'yearly',MP_TEST_WEBHOOK_SECRET:'synthetic-qa-secret',MP_ACCESS_TOKEN:'PRODUCTION_MUST_NEVER_BE_USED'};
  const calls=[],rows=new Map(),receipts=new Set();let isAdmin=true,validSession=true,testSeller=true,subStatus='pending',providerFails=false;
  let hostedPlanUrl='https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=weekly',hostedPayments=[];
- const hosted={id:hostedId,payer_id:hostedBuyer,collector_id:123,site_id:'MLC',preapproval_plan_id:'weekly',status:'authorized',date_created:new Date(now-9*day).toISOString(),next_payment_date:new Date(now+6*day).toISOString(),auto_recurring:{transaction_amount:2490,currency_id:'CLP',frequency:7,frequency_type:'days'}};
+ let paymentInvoiceResults, subscriptionInvoiceResults, initialPayment;
+ const hosted={id:hostedId,payer_id:hostedBuyer,collector_id:123,site_id:'MLC',application_id:1234,preapproval_plan_id:'weekly',status:'authorized',date_created:new Date(now-9*day).toISOString(),next_payment_date:new Date(now+6*day).toISOString(),auto_recurring:{transaction_amount:2490,currency_id:'CLP',frequency:7,frequency_type:'days'}};
  const createClient=(_url,key)=>key==='service'?{rpc:async(name,{operation,payload:p})=>{
   assert.equal(name,'cachaste_mp_sandbox_admin');calls.push({operation,p});let data={};
   if(operation==='reserve'){if(rows.has(p.id))data={...rows.get(p.id),created:false};else {data={id:p.id,user_id:p.userId,plan:p.plan,provider_plan_id:p.providerPlanId,provider_plan_linked:false,trial_offered:p.trial,created_at:new Date(now).toISOString(),created:true};rows.set(p.id,data);}}
@@ -24,21 +38,41 @@ function harness(){
   calls.push({url,options});assert.equal(options.headers.authorization,'Bearer '+vars.MP_TEST_ACCESS_TOKEN);assert.ok(!JSON.stringify(options).includes(vars.MP_ACCESS_TOKEN));
   if(providerFails)return Response.json({message:'provider failure'},{status:503});
   if(url.endsWith('/users/me'))return Response.json({id:123,tags:testSeller?['test_user']:[],site_id:'MLC'});
-  if(url.includes('/preapproval_plan/')){const id=url.split('/').at(-1),p=id==='weekly'?{transaction_amount:2490,frequency:7,frequency_type:'days'}:id==='yearly'?{transaction_amount:64990,frequency:12,frequency_type:'months'}:{transaction_amount:7990,frequency:1,frequency_type:'months'};return Response.json({id,status:'active',collector_id:123,init_point:id==='weekly'?hostedPlanUrl:undefined,auto_recurring:{currency_id:'CLP',...p,...(id==='trial'?{free_trial:{frequency:7,frequency_type:'days'}}:{})}});}
+  if(url.includes('/preapproval_plan/')){const id=url.split('/').at(-1),p=id==='weekly'?{transaction_amount:2490,frequency:7,frequency_type:'days'}:id==='yearly'?{transaction_amount:64990,frequency:12,frequency_type:'months'}:{transaction_amount:7990,frequency:1,frequency_type:'months'};return Response.json({id,status:'active',collector_id:123,application_id:1234,init_point:id==='weekly'?hostedPlanUrl:undefined,auto_recurring:{currency_id:'CLP',...p,...(id==='trial'?{free_trial:{frequency:7,frequency_type:'days'}}:{})}});}
   if(url.includes('/preapproval/search?'))return Response.json({results:[hosted,{...hosted,id:'other-payer',payer_id:'654'},{...hosted,id:'other-plan',preapproval_plan_id:'monthly'},{...hosted,id:'live',live_mode:true}],paging:{total:4}});
   if(url.endsWith('/preapproval/'+hostedId)){if(options.method==='PUT'){assert.deepEqual(JSON.parse(options.body),{status:'cancelled'});hosted.status='cancelled';hosted.next_payment_date=null;}return Response.json(hosted);}
   if (url.endsWith('/authorized_payments/' + invoiceId)) {
    return Response.json({ id: invoiceId, preapproval_id: 'qa-sub', status: 'scheduled' });
   }
-  if(url.includes('/authorized_payments/search?preapproval_id='+hostedId))return Response.json({results:hostedPayments.map(p=>({id:p.id,preapproval_id:hostedId,payment:{id:p.id},status:'processed'}))});
-  if(url.includes('/v1/payments/'))return Response.json(hostedPayments.find(p=>String(p.id)===url.split('/').at(-1)));
+  if (url.includes('/authorized_payments/search?payment_id=')) {
+   const paymentId = new URL(url).searchParams.get('payment_id');
+   return Response.json({ results: paymentInvoiceResults ??
+    hostedPayments.filter(p => String(p.id) === paymentId).map(p => hostedInvoice(p.id, { id: p.id })) });
+  }
+  if (url.includes('/authorized_payments/search?preapproval_id=' + hostedId)) {
+   return Response.json({ results: subscriptionInvoiceResults ??
+    hostedPayments.map(p => hostedInvoice(p.id, { id: p.id })) });
+  }
+  if (url.includes('/v1/payments/')) {
+   const paymentId = url.split('/').at(-1);
+   if (initialPayment && String(initialPayment.id) === paymentId) {
+    const payment = initialPayment;
+    initialPayment = undefined;
+    return Response.json(payment);
+   }
+   return Response.json(hostedPayments.find(p => String(p.id) === paymentId) ?? {});
+  }
   if(url.endsWith('/preapproval')&&options.method==='POST')return Response.json({id:'qa-sub',init_point:'https://www.mercadopago.cl/subscriptions/checkout?preapproval_id=qa-sub'});
   if(url.includes('/preapproval/')){if(options.method==='PUT')subStatus='cancelled';return Response.json({id:'qa-sub',external_reference:requestId,collector_id:123,site_id:'MLC',status:subStatus,date_created:new Date(now).toISOString(),auto_recurring:{transaction_amount:7990,currency_id:'CLP',frequency:1,frequency_type:'months'},init_point:'https://www.mercadopago.cl/subscriptions/checkout?preapproval_id=qa-sub'});}
   if(url.includes('/authorized_payments/search'))return Response.json({results:[]});return Response.json({}, {status:404});
  };
  const handlers=createSandboxHandlers({env:key=>vars[key],createClient,fetcher,now:()=>now});
  const req=body=>new Request('https://qa.invalid/function',{method:'POST',headers:{origin:'https://sitecacho.cl',authorization:'Bearer qa-session'},body:JSON.stringify(body)});
- return {...handlers,req,vars,calls,rows,receipts,hosted,setHostedUrl:v=>hostedPlanUrl=v,setHostedPayments:v=>hostedPayments=v,setAdmin:v=>isAdmin=v,revoke:()=>validSession=false,setTestSeller:v=>testSeller=v,setStatus:v=>subStatus=v,setFail:v=>providerFails=v};
+ return {...handlers,req,vars,calls,rows,receipts,hosted,setHostedUrl:v=>hostedPlanUrl=v,setHostedPayments:v=>hostedPayments=v,
+  setPaymentInvoices: v => { paymentInvoiceResults = v; },
+  setSubscriptionInvoices: v => { subscriptionInvoiceResults = v; },
+  setInitialPayment: v => { initialPayment = v; },
+  setAdmin:v=>isAdmin=v,revoke:()=>validSession=false,setTestSeller:v=>testSeller=v,setStatus:v=>subStatus=v,setFail:v=>providerFails=v};
 }
 const checkout={action:'checkout',plan:'MONTHLY_TRIAL',payerEmail:'test_user_synthetic@testuser.com',requestId};
 async function notification(secret = 'synthetic-qa-secret', stamp = now, {
@@ -138,8 +172,7 @@ test('the hosted plan search and renewal observation match the provider payer, p
  assert.equal(search.status,200);
  assert.deepEqual((await search.json()).subscriptions.map(s=>s.id),[hostedId]);
  assert.ok(h.calls.some(c=>c.url?.includes('payer_id='+hostedBuyer)&&c.url.includes('preapproval_plan_id=weekly')));
- const payment=(id,ago)=>({id,collector_id:123,currency_id:'CLP',transaction_amount:2490,live_mode:false,status:'approved',date_approved:new Date(now-ago*day).toISOString()});
- h.setHostedPayments([payment(101,8),payment(102,1),{...payment(103,0),transaction_amount_refunded:2490}]);
+ h.setHostedPayments([approvedPayment(101,8),approvedPayment(102,1),approvedPayment(103,0,{transaction_amount_refunded:2490})]);
  const result=await h.billing(h.req({...scope,subscriptionId:hostedId}));
  assert.equal(result.status,200);
  const {snapshot}=await result.json();
@@ -152,15 +185,18 @@ test('the hosted plan search and renewal observation match the provider payer, p
 
 test('a hosted sandbox cancellation rejects foreign and live resources before the write and confirms cancellation',async()=>{
  const scope={action:'plan_cancel',plan:'WEEKLY',payerId:hostedBuyer,subscriptionId:hostedId};
- for(const fields of [{payer_id:'456'},{collector_id:456},{preapproval_plan_id:'monthly'},{live_mode:true}]){
+ for(const fields of [{payer_id:'456'},{collector_id:456},{preapproval_plan_id:'monthly'},{application_id:8765},{live_mode:true}]){
   const h=harness();Object.assign(h.hosted,fields);
   const rejected=await h.billing(h.req(scope));
   assert.equal((await rejected.json()).error,'SUBSCRIPTION_MISMATCH');
   assert.ok(!h.calls.some(c=>c.options?.method==='PUT'));
  }
- const livePayment=harness();livePayment.setHostedPayments([{id:101,collector_id:123,currency_id:'CLP',transaction_amount:2490,live_mode:true,status:'approved',date_approved:new Date(now-day).toISOString()}]);
- assert.equal((await (await livePayment.billing(livePayment.req(scope))).json()).error,'PAYMENT_MISMATCH');
- assert.ok(!livePayment.calls.some(c=>c.options?.method==='PUT'));
+ for (const wrongPayment of [{ live_mode: true }, { payer: { id: '654' } }]) {
+  const h = harness();
+  h.setHostedPayments([approvedPayment(101, 1, wrongPayment)]);
+  assert.equal((await (await h.billing(h.req(scope))).json()).error, 'PAYMENT_MISMATCH');
+  assert.ok(!h.calls.some(call => call.options?.method === 'PUT'));
+ }
  const h=harness(),cancel=await h.billing(h.req(scope));
  assert.equal(cancel.status,200);
  const reply=await cancel.json();assert.equal(reply.cancelled,true);assert.equal(reply.snapshot.renews,false);assert.equal(reply.snapshot.status,'cancelled');
@@ -168,12 +204,98 @@ test('a hosted sandbox cancellation rejects foreign and live resources before th
  assert.equal(h.calls.filter(c=>c.options?.method==='PUT').length,1);
 });
 
-test('hosted payment lookup rejects a mismatched payer before linking a subscription',async()=>{
- const h=harness();
- h.setHostedPayments([{id:188037470295,payer:{id:'999999'},collector_id:123,currency_id:'CLP',transaction_amount:2490,live_mode:false,status:'approved',date_approved:new Date(now).toISOString()}]);
- const response=await h.billing(h.req({action:'plan_payment_lookup',plan:'WEEKLY',payerId:hostedBuyer,paymentId:'188037470295'}));
- assert.equal(response.status,400);
- assert.equal((await response.json()).error,'PAYMENT_NOT_VERIFIED');
- assert.equal(h.rows.size,0);
- assert.equal(h.calls.some(call=>call.operation==='apply'),false);
+const paymentLookup = { action: 'plan_payment_lookup', plan: 'WEEKLY', payerId: hostedBuyer, paymentId: hostedPaymentId };
+
+test('hosted payment lookup requires a current administrator and a numeric payment ID', async () => {
+ const h = harness();
+ h.setAdmin(false);
+ assert.equal((await h.billing(h.req(paymentLookup))).status, 403);
+ assert.equal(h.calls.length, 0);
+ h.setAdmin(true);
+ const invalid = await h.billing(h.req({ ...paymentLookup, paymentId: [hostedPaymentId] }));
+ assert.equal((await invalid.json()).error, 'INVALID_PAYMENT_ID');
+ assert.ok(h.calls.every(call => !call.url?.includes('/v1/payments/')));
+});
+
+test('hosted lookup follows the exact processed invoice and remains read-only on replay', async () => {
+ const h = harness();
+ h.setHostedPayments([approvedPayment(hostedPaymentId, 1), approvedPayment('188037470296', 8)]);
+ const first = await h.billing(h.req(paymentLookup));
+ assert.equal(first.status, 200);
+ const details = await first.json();
+ assert.equal(details.verified, true);
+ assert.equal(details.productionEnabled, false);
+ assert.equal(details.subscription.subscriptionId, hostedId);
+ assert.equal(details.subscription.approvedPayments, 2);
+ assert.equal(details.subscription.paidUntil, new Date(now + 6 * day).toISOString());
+ assert.deepEqual(await (await h.billing(h.req(paymentLookup))).json(), details);
+ assert.ok(h.calls.some(call => call.url?.includes('/authorized_payments/search?payment_id=' + hostedPaymentId)));
+ assert.ok(!h.calls.some(call => call.url?.includes('/preapproval/search')));
+ assert.ok(h.calls.every(call => !call.operation && call.options.method === 'GET'));
+ assert.equal(h.rows.size, 0);
+});
+
+test('hosted lookup rejects foreign, live, rejected and refunded payments before following invoices', async () => {
+ const mismatches = [
+  { payer: { id: '999999' } }, { payer: undefined }, { collector_id: 456 },
+  { live_mode: true }, { live_mode: undefined }, { status: 'rejected' },
+  { transaction_amount_refunded: 100 }, { refunds: [{ id: 'refund-1', amount: 100 }] },
+  { transaction_amount: 2489 }, { currency_id: 'USD' }, { date_approved: new Date(now + day).toISOString() }
+ ];
+ for (const fields of mismatches) {
+  const h = harness();
+  h.setHostedPayments([approvedPayment(hostedPaymentId, 0, fields)]);
+  const response = await h.billing(h.req(paymentLookup));
+  assert.equal(response.status, 400);
+  assert.equal((await response.json()).error, 'PAYMENT_NOT_VERIFIED');
+  assert.ok(h.calls.some(call => call.url?.endsWith('/v1/payments/' + hostedPaymentId)));
+  assert.ok(!h.calls.some(call => call.url?.includes('/authorized_payments/')));
+  assert.equal(h.rows.size, 0);
+ }
+});
+
+test('hosted lookup requires one processed invoice for the requested payment', async () => {
+ for (const invoices of [
+  [hostedInvoice('188037470296')],
+  [hostedInvoice(hostedPaymentId, { status: 'scheduled' })],
+  [hostedInvoice(hostedPaymentId), hostedInvoice(hostedPaymentId, { id: 'duplicate' })]
+ ]) {
+  const h = harness();
+  h.setHostedPayments([approvedPayment(hostedPaymentId)]);
+  h.setPaymentInvoices(invoices);
+  const response = await h.billing(h.req(paymentLookup));
+  assert.equal((await response.json()).error, 'PAYMENT_SUBSCRIPTION_NOT_MATCHED');
+  assert.ok(!h.calls.some(call => call.url?.includes('/preapproval/' + hostedId)));
+ }
+});
+
+test('a different approved payment cannot replace a refunded or absent invoice in hosted lookup', async () => {
+ const approved = approvedPayment(hostedPaymentId);
+ const renewal = approvedPayment('188037470296', 1);
+ const refunded = harness();
+ refunded.setInitialPayment(approved);
+ refunded.setHostedPayments([{ ...approved, transaction_amount_refunded: 100 }, renewal]);
+ const absent = harness();
+ absent.setHostedPayments([approved, renewal]);
+ absent.setSubscriptionInvoices([hostedInvoice(renewal.id, { id: renewal.id })]);
+
+ for (const h of [refunded, absent]) {
+  const response = await h.billing(h.req(paymentLookup));
+  assert.equal((await response.json()).error, 'PAYMENT_NOT_VERIFIED');
+  assert.ok(h.calls.every(call => !call.operation && call.options.method === 'GET'));
+  assert.equal(h.rows.size, 0);
+ }
+});
+
+test('a canceled weekly sandbox subscription retains its original expiry without renewing', async () => {
+ const h = harness();
+ h.setHostedPayments([approvedPayment(hostedPaymentId, 8)]);
+ const result = await h.billing(h.req({
+  action: 'plan_cancel', plan: 'WEEKLY', payerId: hostedBuyer, subscriptionId: hostedId
+ }));
+ assert.equal(result.status, 200);
+ const { snapshot } = await result.json();
+ assert.equal(snapshot.paidUntil, new Date(now - day).toISOString());
+ assert.equal(snapshot.nextPaymentAt, null);
+ assert.equal(snapshot.renews, false);
 });

@@ -3,10 +3,10 @@ const encoder=new TextEncoder();
 export const iso=(value)=>Number.isFinite(Date.parse(value))?new Date(value).toISOString():null;
 // MP currently rejects limit=20 and limit=50 for this endpoint. Follow the
 // provider's default page size and explicit paging metadata instead.
-export async function subscriptionInvoices(mp,id,{maxRecords=1000}={}){
+async function authorizedInvoices(mp,filter,id,maxRecords){
  const records=[],seen=new Set();let offset=0;
  while(true){
-  const page=await mp('/authorized_payments/search?preapproval_id='+encodeURIComponent(id)+(offset?'&offset='+offset:''));
+  const page=await mp('/authorized_payments/search?'+filter+'='+encodeURIComponent(id)+(offset?'&offset='+offset:''));
   if(!Array.isArray(page.results))throw Error('INVALID_PAYMENT_HISTORY');
   const batch=page.results,paging=page.paging,total=paging?.total===undefined?null:Number(paging.total);
   if(paging?.offset!==undefined&&Number(paging.offset)!==offset)throw Error('INCONSISTENT_PAYMENT_HISTORY');
@@ -18,6 +18,12 @@ export async function subscriptionInvoices(mp,id,{maxRecords=1000}={}){
   if(total===null&&(!paging?.limit||batch.length<Number(paging.limit)))return records;
   offset+=batch.length;
  }
+}
+export function subscriptionInvoices(mp,id,{maxRecords=1000}={}){
+ return authorizedInvoices(mp,'preapproval_id',id,maxRecords);
+}
+export function paymentInvoices(mp,id){
+ return authorizedInvoices(mp,'payment_id',id,1000);
 }
 export async function subscriptionPayments(mp,charges){
  const ids=[...new Set(charges.filter(c=>c.payment?.id).map(c=>String(c.payment.id)))];
@@ -40,6 +46,11 @@ export function validatePlan(remote,name,expectedId,{trial=false,collectorId}={}
  return p;
 }
 export function checkoutUrl(value){const url=new URL(value);if(url.protocol!=='https:'||!['mercadopago.cl','www.mercadopago.cl','mercadopago.com','www.mercadopago.com','www.mercadopago.com.ar'].includes(url.hostname)||!url.pathname.startsWith('/subscriptions/checkout'))throw Error('INVALID_CHECKOUT_URL');return url.href;}
+export function isApprovedPayment(payment,now){
+ const paidAt=iso(payment.date_approved);
+ return payment.status==='approved'&&!!paidAt&&Date.parse(paidAt)<=now+5000&&
+  Number(payment.transaction_amount_refunded??0)===0&&!(Array.isArray(payment.refunds)&&payment.refunds.length);
+}
 export function canonicalSubscription(sub,checkout,authorized,payments,{now=Date.now(),collectorId,liveMode=true,existing=null,sandboxPayerId}={}){
  const linked=checkout.provider_plan_linked!==false;
  // A hosted test-plan link has no per-checkout reference. Bind its readback to the exact payer instead.
@@ -51,12 +62,13 @@ export function canonicalSubscription(sub,checkout,authorized,payments,{now=Date
  for(const charge of authorized){
   if(String(charge.preapproval_id)!==String(sub.id))throw Error('CHARGE_MISMATCH');
   const payment=payments.find(x=>String(x.id)===String(charge.payment?.id));if(!payment)continue;
-  if(String(payment.collector_id)!==String(collectorId)||payment.currency_id!=='CLP'||Number(payment.transaction_amount)!==p.amount||payment.live_mode!==liveMode)throw Error('PAYMENT_MISMATCH');
-  const paidAt=iso(payment.date_approved),refunded=Number(payment.transaction_amount_refunded||0)>0;
+  if(String(payment.collector_id)!==String(collectorId)||payment.currency_id!=='CLP'||Number(payment.transaction_amount)!==p.amount||payment.live_mode!==liveMode||
+   (sandboxPayerId!==undefined&&String(payment.payer?.id)!==sandboxPayerId))throw Error('PAYMENT_MISMATCH');
+  const paidAt=iso(payment.date_approved);
   const fee=(payment.fee_details||[]).reduce((n,x)=>n+Number(x.amount||0),0);
   if(!Number.isFinite(fee)||fee<0||fee>p.amount)throw Error('INVALID_FEES');
   ledger.push({id:String(payment.id),status:payment.status,amount:p.amount,fee,net:Number((p.amount-fee-Number(payment.transaction_amount_refunded||0)).toFixed(2)),paidAt,liveMode});
-  if(charge.status==='processed'&&payment.status==='approved'&&!refunded&&paidAt&&Date.parse(paidAt)<=now+5000)approved.push(periodEnd(paidAt,checkout.plan));
+  if(charge.status==='processed'&&isApprovedPayment(payment,now))approved.push(periodEnd(paidAt,checkout.plan));
  }
  let paidUntil=approved.sort().at(-1)||null;
  const created=Date.parse(sub.date_created),checkoutCreated=Date.parse(checkout.created_at);
