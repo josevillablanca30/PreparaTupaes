@@ -80,7 +80,7 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
  async function billing(req){try{
   cors(req);if(req.method==='OPTIONS')return new Response(null,{status:204,headers:cors(req)});if(req.method!=='POST')return reply(req,{error:'METHOD_NOT_ALLOWED'},405);
   const user=await authenticate(req),text=await req.text();if(text.length>8192)throw Error('PAYLOAD_TOO_LARGE');
-  const body=JSON.parse(text||'{}');if(!['status','checkout','refresh','cancel','plan_status','plan_cancel'].includes(body.action))throw Error('INVALID_ACTION');
+  const body=JSON.parse(text||'{}');if(!['status','checkout','refresh','cancel','plan_status','plan_cancel','plan_payment_lookup'].includes(body.action))throw Error('INVALID_ACTION');
   await seller();
   if(body.action==='status'){
    const plans=[];for(const key of Object.keys(choices)){const c=await catalogue(key);plans.push({key,plan:c.plan,...MP_PLANS[c.plan],trialDays:c.trial?7:0});}
@@ -103,6 +103,31 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
    let sub;try{sub=await mp('/preapproval',{method:'POST',requestId:row.id,body:{auto_recurring,external_reference:row.id,payer_email:email,reason:'Cachaste QA '+c.plan,back_url:'https://sitecacho.cl/cuenta.html?qa=mp&checkout=return',status:'pending'}});}catch(error){if([400,401,403,404,422].includes(error.providerStatus))await call('checkout_failed',{id:row.id,userId:user.id,status:error.providerStatus});throw error;}
    await call('attach',{id:row.id,userId:user.id,providerId:String(sub.id)});
    return reply(req,{checkoutUrl:checkoutUrl(sub.init_point),id:String(sub.id),mode:'sandbox',notice:'QA_ONLY_NOT_APP_ENTITLEMENT'});
+  }
+  if(body.action==='plan_payment_lookup'){
+   // Read-only reconciliation of a hosted plan payment; never grants app entitlement.
+   const payerId=testPayerId(body.payerId),plan=await catalogue(body.plan);
+   const paymentId=String(body.paymentId||'');
+   if(!/^[1-9]\\d{0,18}$/.test(paymentId))throw Error('INVALID_PAYMENT_ID');
+   const payment=await mp('/v1/payments/'+encodeURIComponent(paymentId));
+   if(String(payment.id)!==paymentId||payment.status!=='approved'||
+      payment.live_mode!==false||Number(payment.transaction_amount)!==MP_PLANS[plan.plan].amount||
+      payment.currency_id!=='CLP'||Number(payment.transaction_amount_refunded||0)!==0)
+     throw Error('PAYMENT_NOT_VERIFIED');
+   const list=await listPlanSubscriptions(plan,payerId);
+   const matches=[];
+   for(const item of list.subscriptions){
+     const invoices=await subscriptionInvoices(mp,item.id);
+     const linked=invoices.some(invoice=>String(invoice.payment?.id)===paymentId&&invoice.status==='processed');
+     if(!linked)continue;
+     const snapshot=await observePlanSubscription(plan,payerId,item.id);
+     if(snapshot.approvedPayments<1)continue;
+     matches.push({subscriptionId:item.id,...snapshot});
+   }
+   if(matches.length!==1)throw Error(list.hasMore?'SUBSCRIPTION_SEARCH_INCOMPLETE':'PAYMENT_SUBSCRIPTION_NOT_MATCHED');
+   return reply(req,{mode:'sandbox',verified:true,productionEnabled:false,
+     buyerId:payerId,plan:plan.plan,paymentId,subscription:matches[0],
+     notice:'QA_ONLY_NOT_APP_ENTITLEMENT'});
   }
   if(body.action==='plan_status'||body.action==='plan_cancel'){
    const payerId=testPayerId(body.payerId),plan=await catalogue(body.plan);
