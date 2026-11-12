@@ -15,3 +15,17 @@ test('UI no longer advertises a shared 40 minute window',()=>{
  assert.match(runtime,/120 segundos/);
  assert.match(runtime,/90 segundos/);
 });
+
+test('expired questions progress while offline and late answers are safe',()=>{
+ assert.match(upgrade,/create or replace function cachaste_duels2\.sweep\(\)/);
+ assert.match(upgrade,/p\.question_started_at\+make_interval/);
+ assert.match(upgrade,/pos<pl\.position then return cachaste_duels2\.attempt_view/);
+ assert.match(upgrade,/create trigger d2_init_question_clock/);
+});
+test('countdown uses server timestamps and does not reset on rerender',()=>{
+ assert.match(runtime,/function d2QuestionClock\(\)/);
+ assert.match(runtime,/Date\.parse\(a\.serverNow\)/);
+ assert.match(runtime,/Date\.parse\(a\.questionDeadline\)/);
+ assert.match(runtime,/a\._d2ServerStamp!==a\.serverNow/);
+ assert.doesNotMatch(runtime,/render=function\(\.\.\.args\)\{if\(state\.attempt\?\.version===2\)state\.attempt\._d2ReceivedAt=Date\.now\(\)/);
+});
