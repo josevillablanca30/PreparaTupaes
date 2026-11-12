@@ -121,6 +121,21 @@ export async function testDuels2Realtime({db,clients,outsider,record}){
     [a.id,beforeClock.position]);
   assert.equal(unchanged.count,1,'Late submission must not duplicate or replace a timeout');
   record('Real PostgreSQL rejects a stale answer after timeout without overwriting the incorrect result');
+  // The 90-second rule must also be enforced for non-math subjects.
+  // Reuse the disposable match and restore M1 before the rest of the QA.
+  await db.query("update cachaste_duels2.matches set subject='LECTURA' where id=$1",[invitation.id]);
+  const {rows:[readingStart]}=await db.query(
+    'select position from cachaste_duels2.players where id=$1',[a.id]);
+  await db.query(
+    "update cachaste_duels2.players set question_started_at=clock_timestamp()-interval '89 seconds' where id=$1",[a.id]);
+  const readingOpen=await call(clients[0],'attempt',{attemptId:a.id});
+  assert.equal(readingOpen.position,readingStart.position,'Reading must remain open before 90 seconds');
+  await db.query(
+    "update cachaste_duels2.players set question_started_at=clock_timestamp()-interval '91 seconds' where id=$1",[a.id]);
+  const readingExpired=await call(clients[0],'attempt',{attemptId:a.id});
+  assert.equal(readingExpired.position,readingStart.position+1,'Reading must expire after 90 seconds');
+  await db.query("update cachaste_duels2.matches set subject='M1' where id=$1",[invitation.id]);
+  record('Real PostgreSQL enforces the 90-second deadline for non-math questions');
 
   await call(clients[0],'forfeit',{attemptId:a.id});
   await call(clients[1],'forfeit',{attemptId:b.id});
