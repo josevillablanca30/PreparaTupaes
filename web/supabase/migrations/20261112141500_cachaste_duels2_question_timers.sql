@@ -234,13 +234,13 @@ declare u uuid:=cachaste_duels2.require_player();p jsonb:=coalesce(payload,'{}')
    from cachaste_duels2.answers v join cachaste.questions q on q.key=v.question_key where v.player_id=pid and not v.correct;
    return jsonb_build_object('errors',items);
   end if;
-  if operation='start'and pl.status='ready'then update cachaste_duels2.players set status='active',question_started_at=clock_timestamp() where id=pid;end if;
+  if operation='start'and pl.status='ready'and m.status='active'then update cachaste_duels2.players set status='active',question_started_at=clock_timestamp() where id=pid;end if;
   if operation='answer'then
    rid:=(p->>'requestId')::uuid;pos:=(p->>'position')::integer;selected:=(p->>'choice')::integer;
    if rid is null then raise exception 'REQUEST_ID_REQUIRED';end if;
    if exists(select 1 from cachaste_duels2.answers where player_id=pid and request_id=rid)then return cachaste_duels2.attempt_view(pid,u);end if;
    -- Expiration was settled before this branch; do not roll it back on a late answer.
-   if m.status='finished'or pl.status='forfeit'then return cachaste_duels2.attempt_view(pid,u);end if;
+   if m.status='finished'or pl.status in('forfeit','complete')then return cachaste_duels2.attempt_view(pid,u);end if;
    if pos is not null and pos<pl.position then return cachaste_duels2.attempt_view(pid,u);end if;
    if pl.status<>'active'or pos is distinct from pl.position then raise exception 'ANSWER_OUT_OF_ORDER';end if;
    select * into q from cachaste.questions where key=pl.question_keys[pl.position+1];
