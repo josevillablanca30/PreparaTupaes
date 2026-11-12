@@ -37,5 +37,9 @@ jobs:
           assert.ok(!existsSync(root+'app/index.html'),'protected educational content must not be public');
           assert.ok(readFileSync(root+'robots.txt','utf8').includes('Disallow: /'));
           EOF
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run browser checks at 320px, 390px and desktop
+        run: npx playwright test --config playwright.web-commercial.config.mjs
       - name: Check public web commercial safeguards
         run: node --test tests/web-commercial-launch-guard.test.mjs tests/web-gateway-security.test.mjs
