@@ -114,7 +114,7 @@ test('Duelos 2 history counts virtual losses and paginates without repeating res
 });
 
 
-for(const [subject,seconds] of [['M1',120],['Competencia Lectora',90]]){
+for(const [subject,seconds] of [['M1',120],['Lectura',90]]){
  test(`Duelos 2: ${subject} question clock expires offline turns, rejects late scoring and updates meter`,async t=>{
   const db=await setup(t);
   const d=await human(db,subject);
