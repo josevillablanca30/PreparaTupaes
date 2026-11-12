@@ -90,3 +90,20 @@ test('authenticated progress writes cannot claim another student identity',async
  const res=await g.fetch(req('/api/progress',{method:'POST',headers:{origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token},body:JSON.stringify({userId:'student-b',operation:'put',payload:{}})}),env);
  assert.equal(res.status,409);assert.equal((await json(res)).error,'SESSION_CHANGED');assert.equal(seen.length,2);
 });
+
+test('valid student progress reaches the RPC with the authenticated token',async()=>{
+ const token=fakeToken();const calls=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async(url,options)=>{
+  calls.push({url,options});
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',active:true,serverTimeMs:Date.now(),validUntilMs:Date.now()+3600000});
+  if(url.endsWith('/rest/v1/rpc/cachaste_web_progress'))return Response.json({documents:[],revision:2});
+  throw Error('Unexpected backend request');
+ }});
+ const payload={userId:'student-a',operation:'snapshot',payload:{}};
+ const res=await g.fetch(req('/api/progress',{method:'POST',headers:{origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token},body:JSON.stringify(payload)}),env);
+ assert.equal(res.status,200);assert.equal((await json(res)).revision,2);
+ assert.equal(calls.length,3);
+ assert.equal(calls[2].options.headers.authorization,'Bearer '+token);
+ assert.deepEqual(JSON.parse(calls[2].options.body),payload);
+});
