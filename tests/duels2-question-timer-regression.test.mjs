@@ -34,3 +34,24 @@ test('expired countdown tells player the wrong-answer penalty and synchronizes',
  assert.match(runtime,/Tiempo agotado · cuenta como incorrecta \(−1\)\. Actualizando duelo/);
  assert.match(runtime,/setInterval\(\(\)=>\{d2QuestionClock\(\);void d2Sync\(\);\},1000\)/);
 });
+
+test('countdown actually decreases with elapsed time, survives rerenders and expires at zero',async()=>{
+ const {runInNewContext}=await import('node:vm');
+ const start=runtime.indexOf(' function d2QuestionClock(){');
+ const end=runtime.indexOf(' function d2Paint(){',start);
+ assert.ok(start>=0&&end>start,'timer function can be extracted');
+ let now=Date.parse('2026-11-12T20:00:00.000Z');
+ const attempt={version:2,serverNow:'2026-11-12T20:00:00.000Z',questionDeadline:'2026-11-12T20:01:30.000Z'};
+ const clock={textContent:''};
+ const question={querySelector:()=>clock};
+ const root={querySelector:()=>question};
+ const state={route:'pregunta',attempt};
+ class FakeDate extends Date{static now(){return now;}}
+ const tick=runInNewContext('('+runtime.slice(start,end).trim()+')',{state,root,Date:FakeDate,Number,Math,String});
+ tick();assert.equal(clock.textContent,'Tiempo de esta pregunta: 1:30');
+ now+=30000;tick();assert.equal(clock.textContent,'Tiempo de esta pregunta: 1:00');
+ // Same server timestamp on a UI rerender must not reset the countdown.
+ tick();assert.equal(clock.textContent,'Tiempo de esta pregunta: 1:00');
+ now+=60000;tick();assert.match(clock.textContent,/Tiempo agotado/);
+ now+=10000;tick();assert.match(clock.textContent,/Tiempo agotado/);
+});
