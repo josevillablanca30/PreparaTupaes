@@ -50,9 +50,9 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
   set(prefix+'conflict-archive:'+Date.now()+':'+key,JSON.stringify(conflict));
   const latest=parse(get(prefix+key)),merge=mergeDocument(conflict.base,latest,conflict.remote.value);if(choice==='merge'&&merge.conflicts.length)throw Error('CONFLICT_CHANGED');
   const value=choice==='local'?latest:choice==='merge'?merge.value:conflict.remote.value;
-  if(choice!=='remote'){const reply=await rpc('put',{key,value,baseVersion:conflict.remote.version});if(reply.conflict){conflicts[key].remote=reply.document;set(prefix+'conflicts',JSON.stringify(conflicts));throw Error('CONFLICT_CHANGED');}meta[key]={version:reply.document.version,base:value,dirty:false};}
-  else meta[key]={version:conflict.remote.version,base:value,dirty:false};
-  value===null?remove(prefix+key):set(prefix+key,JSON.stringify(value));delete conflicts[key];set(prefix+'conflicts',JSON.stringify(conflicts));persist();status();return true;
+  if(choice!=='remote'){const reply=await rpc('put',{key,value,baseVersion:conflict.remote.version});if(reply.conflict){conflicts[key].remote=reply.document;set(prefix+'conflicts',JSON.stringify(conflicts));throw Error('CONFLICT_CHANGED');}const changed=JSON.stringify(parse(get(prefix+key)))!==JSON.stringify(latest);meta[key]={version:reply.document.version,base:value,dirty:changed};if(!changed){value===null?remove(prefix+key):set(prefix+key,JSON.stringify(value));}else if(!stopped&&!unloading){clearTimeout(timer);timer=setTimeout(flush,1800);}}
+  else {meta[key]={version:conflict.remote.version,base:value,dirty:false};value===null?remove(prefix+key):set(prefix+key,JSON.stringify(value));}
+  delete conflicts[key];set(prefix+'conflicts',JSON.stringify(conflicts));persist();status();return true;
  }
  // Local edits are durable before any network request. Safari can discard a
  // document during navigation; its next page resumes pending writes by user ID.
