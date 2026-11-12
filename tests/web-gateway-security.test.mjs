@@ -35,3 +35,31 @@ test('www redirects to canonical apex without losing the query',async()=>{
  const res=await gateway.fetch(new Request('https://www.sitecacho.cl/cuenta.html?next=%2Fapp%2Finicio.html'),env);
  assert.equal(res.status,308);assert.equal(res.headers.get('location'),'https://sitecacho.cl/cuenta.html?next=%2Fapp%2Finicio.html');
 });
+
+const fakeToken=(exp=Math.floor(Date.now()/1000)+3600)=>'a.'+Buffer.from(JSON.stringify({exp})).toString('base64url')+'.c';
+test('Supabase user identity must match access entitlement user ID',async()=>{
+ const token=fakeToken(),calls=[];
+ const protectedGateway=createGateway({allowDevelopmentHttp:true,protectedFiles:['/app/inicio.html'],fetcher:async url=>{
+  calls.push(url);
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-b',serverTimeMs:Date.now(),active:true,validUntilMs:Date.now()+60000});
+  throw Error('Unexpected backend request');
+ }});
+ const res=await protectedGateway.fetch(req('/app/inicio.html',{headers:{authorization:'Bearer '+token,accept:'application/json'}}),env);
+ assert.equal(res.status,503);assert.equal((await json(res)).error,'INVALID_ACCESS_RESPONSE');
+ assert.equal(calls.length,2);
+});
+test('expired tokens are rejected before contacting Supabase',async()=>{
+ let calls=0;const protectedGateway=createGateway({allowDevelopmentHttp:true,protectedFiles:['/app/inicio.html'],fetcher:async()=>{calls++;throw Error('must not contact backend');}});
+ const res=await protectedGateway.fetch(req('/app/inicio.html',{headers:{authorization:'Bearer '+fakeToken(1),accept:'application/json'}}),env);
+ assert.equal(res.status,401);assert.equal(calls,0);
+});
+test('inactive subscription cannot access protected learning page',async()=>{
+ const token=fakeToken();const protectedGateway=createGateway({allowDevelopmentHttp:true,protectedFiles:['/app/inicio.html'],fetcher:async url=>{
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false,validUntilMs:Date.now()+60000});
+  throw Error('Unexpected backend request');
+ }});
+ const res=await protectedGateway.fetch(req('/app/inicio.html',{headers:{authorization:'Bearer '+token,accept:'application/json'}}),env);
+ assert.equal(res.status,402);assert.equal((await json(res)).error,'SUBSCRIPTION_REQUIRED');
+});
