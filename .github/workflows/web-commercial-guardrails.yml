@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - 'work/cachaste-web-comercial-cierre-20261112'
+      - 'work/cachaste-integracion-duelos-web-20261112'
   pull_request:
     paths:
       - 'web/public/**'

@@ -1,11 +1,11 @@
 name: Duelos 2 · isolated integration tests
 on:
   push:
-    branches: [work/cachaste-duelos-2-20261110, work/cachaste-duels2-integration-20261111, work/cachaste-lanzamiento-final-20261111, work/cachaste-web-unificada-20261106]
-    paths: ['duels2/**', 'scripts/*duels2*', 'tests/*duels2*', 'tests/helpers/duels2*', 'web/tests/duels2*', 'web/supabase/migrations/*duels2*', 'web/shared/competition-ui.mjs', '.github/workflows/duels2-tests.yml']
+    branches: [work/cachaste-duelos-2-20261110, work/cachaste-duels2-integration-20261111, work/cachaste-lanzamiento-final-20261111, work/cachaste-web-unificada-20261106, work/cachaste-integracion-duelos-web-20261112]
+    paths: ['duels2/**', 'scripts/*duels2*', 'web/scripts/test-online.mjs', 'web/scripts/test-duels2-realtime.mjs', 'tests/*duels2*', 'tests/helpers/duels2*', 'web/tests/duels2*', 'web/supabase/migrations/*duels2*', 'web/shared/competition-ui.mjs', '.github/workflows/duels2-tests.yml']
   pull_request:
-    branches: [work/cachaste-web-unificada-20261106]
-    paths: ['duels2/**', 'scripts/*duels2*', 'tests/*duels2*', 'tests/helpers/duels2*', 'web/tests/duels2*', 'web/supabase/migrations/*duels2*', '.github/workflows/duels2-tests.yml']
+    branches: [work/cachaste-web-unificada-20261106, work/cachaste-web-comercial-cierre-20261112]
+    paths: ['duels2/**', 'scripts/*duels2*', 'web/scripts/test-online.mjs', 'web/scripts/test-duels2-realtime.mjs', 'tests/*duels2*', 'tests/helpers/duels2*', 'web/tests/duels2*', 'web/supabase/migrations/*duels2*', '.github/workflows/duels2-tests.yml']
   workflow_dispatch:
 permissions:
   contents: read
