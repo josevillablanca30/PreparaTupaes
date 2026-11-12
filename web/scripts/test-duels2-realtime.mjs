@@ -93,6 +93,25 @@ export async function testDuels2Realtime({db,clients,outsider,record}){
     await Promise.all(audience.map((client,i)=>channels[i]?client.removeChannel(channels[i]):undefined));
   }
 
+  // Exercise the actual SQL deadline logic without waiting two wall-clock minutes.
+  // Rewind only the disposable database clock for this one active player.
+  const {rows:[beforeClock]}=await db.query(
+    'select position from cachaste_duels2.players where id=$1',[a.id]);
+  await db.query(
+    "update cachaste_duels2.players set question_started_at=clock_timestamp()-interval '119 seconds' where id=$1",[a.id]);
+  const stillOpen=await call(clients[0],'attempt',{attemptId:a.id});
+  assert.equal(stillOpen.position,beforeClock.position,'M1 must not expire before 120 seconds');
+  await db.query(
+    "update cachaste_duels2.players set question_started_at=clock_timestamp()-interval '121 seconds' where id=$1",[a.id]);
+  const expired=await call(clients[0],'attempt',{attemptId:a.id});
+  assert.equal(expired.position,beforeClock.position+1,'M1 must expire after 120 seconds');
+  const {rows:[miss]}=await db.query(
+    'select choice,correct from cachaste_duels2.answers where player_id=$1 and position=$2',
+    [a.id,beforeClock.position]);
+  assert.equal(miss.choice,null);
+  assert.equal(miss.correct,false);
+  record('Real PostgreSQL rejects premature M1 expiry and records the 120-second timeout as an incorrect answer');
+
   await call(clients[0],'forfeit',{attemptId:a.id});
   await call(clients[1],'forfeit',{attemptId:b.id});
   const request={subject:'M1',requestId:randomUUID()};
