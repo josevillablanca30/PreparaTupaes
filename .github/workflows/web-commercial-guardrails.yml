@@ -6,6 +6,12 @@ on:
   pull_request:
     paths:
       - 'web/public/**'
+      - 'web/client/**'
+      - 'web/shared/**'
+      - 'web/tests/progress-runtime.test.mjs'
+      - 'tests/web-gateway-security.test.mjs'
+      - 'tests/web-progress-merge.test.mjs'
+      - 'tests/web-auth-return.test.mjs'
       - 'tests/web-commercial-launch-guard.test.mjs'
       - '.github/workflows/web-commercial-guardrails.yml'
 permissions:
