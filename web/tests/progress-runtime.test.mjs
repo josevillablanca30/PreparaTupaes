@@ -66,3 +66,23 @@ test('a temporary server error retries pending progress without navigation',asyn
   if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
  }
 });
+
+test('an expired session stops progress writes without discarding local answers',async()=>{
+ const saved={Storage:globalThis.Storage,document:globalThis.document,addEventListener:globalThis.addEventListener,removeEventListener:globalThis.removeEventListener,navigator:Object.getOwnPropertyDescriptor(globalThis,'navigator')};
+ const storage=new LocalStorage(),events=new Map(),docEvents=new Map(),statuses=[];let calls=0;
+ globalThis.Storage=LocalStorage;globalThis.addEventListener=(name,fn)=>events.set(name,fn);globalThis.removeEventListener=(name)=>events.delete(name);
+ globalThis.document={hidden:false,addEventListener:(name,fn)=>docEvents.set(name,fn),removeEventListener:(name)=>docEvents.delete(name)};
+ Object.defineProperty(globalThis,'navigator',{value:{onLine:true},configurable:true});
+ let runtime;
+ try{
+  runtime=installProgressRuntime({bootstrap:{userId:uid,documents:[{key,value:{subject:'M1'},version:1}]},storage,onStatus:s=>statuses.push(s),fetcher:async()=>{calls++;return Response.json({error:'AUTH_REQUIRED'},{status:401});}});
+  storage.setItem(key,JSON.stringify({subject:'M2',answers:[1,2,3]}));
+  await runtime.flush();assert.equal(calls,1);assert.equal(runtime.pending(),1);assert.equal(statuses.at(-1),'expired');
+  await runtime.flush();assert.equal(calls,1);
+  assert.deepEqual(JSON.parse(storage.getItem(key)).answers,[1,2,3]);
+ }finally{
+  runtime?.restore();
+  for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];
+  if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
+ }
+});
