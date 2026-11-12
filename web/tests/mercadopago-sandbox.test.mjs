@@ -441,3 +441,16 @@ test('a signed subscription can recover a reserved checkout by the exact provide
  assert.equal(h.rows.get(requestId).snapshot.status, 'authorized');
  assert.equal(h.rows.size, 1);
 });
+
+test('webhook signature diagnostics distinguish malformed and mismatched HMAC without accepting either', async () => {
+ const h = harness();
+ const wrongKey = await h.webhook(await notification('incorrect-synthetic-secret'));
+ assert.equal(wrongKey.status, 401);
+ const malformed = new Request('https://qa.invalid/events?data.id=qa-sub&type=subscription_preapproval', {
+  method: 'POST',
+  headers: { 'x-request-id': 'qa-request', 'x-signature': 'ts=invalid,v1=not-a-digest' },
+  body: JSON.stringify({ type: 'subscription_preapproval', data: { id: 'qa-sub' } })
+ });
+ assert.equal((await h.webhook(malformed)).status, 401);
+ assert.equal(h.receipts.size, 0);
+});
