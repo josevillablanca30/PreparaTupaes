@@ -22,6 +22,21 @@ El resultado aparece en el estado del panel de QA. Se puede actualizar con `refr
 
 El registro de sandbox queda en `sandbox_checkouts`. Los accesos de la web y Android siguen usando el estado común de Supabase y los pagos comerciales requieren su propia configuración y autorización.
 
+## Estado del catálogo sandbox
+
+`status` devuelve el vendedor verificado, los IDs de los cuatro planes y sus aplicaciones, y las suscripciones de la cuenta administradora autenticada. `webhookConfigured` indica la presencia de la clave en Supabase. La entrega y la firma se comprueban en los registros del receptor.
+
+A las 10:13 de Chile del 12 de noviembre, una lectura de Mercado Pago desde Supabase confirmó cuatro planes activos y validados para el vendedor chileno de prueba `3829171412` y la aplicación `5643907436179484`.
+
+| Oferta | ID del plan | Recurrencia |
+| --- | --- | --- |
+| Semanal | `d75a0a8983fe499188443d61b15f35ce` | $2.490 CLP cada 7 días |
+| Mensual | `e04f2ff0e5ae45519a9d73b3ce5f52e8` | $7.990 CLP al mes |
+| Anual | `c6b8425ada584e3e916c3460bdc048d5` | $64.990 CLP cada 12 meses |
+| Mensual con prueba | `b7abc97ebc314826aaea022e68efa3ba` | 7 días de prueba y $7.990 CLP al mes |
+
+El webhook de las 09:24 de Chile pasó la firma y registró `provider_mode_or_seller`. En la API coincidieron el ID del pago y el vendedor. La operación devolvió `live_mode=true`, que ahora se registra como `provider_live_mode`. El receptor también distingue discrepancias de ID o vendedor y la ausencia de un modo verificable.
+
 ## Operación del 11 de noviembre de 2026
 
 | Recurso | Resultado de la API |

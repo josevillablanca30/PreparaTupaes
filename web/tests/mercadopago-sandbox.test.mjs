@@ -22,7 +22,7 @@ function harness(){
  const vars={SUPABASE_URL:'https://qa.invalid',SUPABASE_ANON_KEY:'public',SUPABASE_SERVICE_ROLE_KEY:'service',MP_TEST_MODE:'test',MP_TEST_ACCESS_TOKEN:'APP_USR-synthetic-test-seller',MP_TEST_COLLECTOR_ID:'123',MP_TEST_PLAN_MONTHLY_TRIAL:'trial',MP_TEST_PLAN_MONTHLY:'monthly',MP_TEST_PLAN_WEEKLY:'weekly',MP_TEST_PLAN_YEARLY:'yearly',MP_TEST_WEBHOOK_SECRET:'synthetic-qa-secret',MP_ACCESS_TOKEN:'PRODUCTION_MUST_NEVER_BE_USED'};
  const calls=[],rows=new Map(),receipts=new Set();let isAdmin=true,validSession=true,testSeller=true,subStatus='pending',providerFails=false;
  let hostedPlanUrl='https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=weekly',hostedPayments=[];
- let paymentInvoiceResults, subscriptionInvoiceResults, initialPayment, confirmedInvoice, verifiedOwner=false;
+ let paymentInvoiceResults, subscriptionInvoiceResults, initialPayment, initialPaymentLookupId, confirmedInvoice, verifiedOwner=false;
  const hosted={id:hostedId,payer_id:hostedBuyer,collector_id:123,site_id:'MLC',application_id:1234,preapproval_plan_id:'weekly',status:'authorized',date_created:new Date(now-9*day).toISOString(),next_payment_date:new Date(now+6*day).toISOString(),auto_recurring:{transaction_amount:2490,currency_id:'CLP',frequency:7,frequency_type:'days'}};
  const createClient=(_url,key)=>key==='service'?{rpc:async(name,{operation,payload:p})=>{
   if(name==='cachaste_mp_sandbox_link_hosted'){
@@ -73,7 +73,7 @@ function harness(){
   }
   if (url.includes('/v1/payments/')) {
    const paymentId = url.split('/').at(-1);
-   if (initialPayment && String(initialPayment.id) === paymentId) {
+   if (initialPayment && initialPaymentLookupId === paymentId) {
     const payment = initialPayment;
     initialPayment = undefined;
     return Response.json(payment);
@@ -89,7 +89,7 @@ function harness(){
  return {...handlers,req,vars,calls,rows,receipts,hosted,setHostedUrl:v=>hostedPlanUrl=v,setHostedPayments:v=>hostedPayments=v,
   setPaymentInvoices: v => { paymentInvoiceResults = v; },
   setSubscriptionInvoices: v => { subscriptionInvoiceResults = v; },
-  setInitialPayment: v => { initialPayment = v; },
+  setInitialPayment: (v, lookupId = v.id) => { initialPayment = v; initialPaymentLookupId = String(lookupId); },
   setConfirmedInvoice: v => { confirmedInvoice = v; },
   verifyOwner: () => { verifiedOwner = true; },
   setAdmin:v=>isAdmin=v,revoke:()=>validSession=false,setTestSeller:v=>testSeller=v,setStatus:v=>subStatus=v,setFail:v=>providerFails=v};
@@ -127,8 +127,38 @@ test('sandbox refuses real payer emails, client prices, foreign origins and malf
  const other=new Request('https://qa.invalid/function',{method:'POST',headers:{origin:'https://foreign.invalid'},body:'{}'});assert.equal((await h.billing(other)).status,403);
  assert.equal(h.rows.size,0);
 });
-test('sandbox status validates four plans, flags the absent webhook key and never opens production',async()=>{
- const h=harness();delete h.vars.MP_TEST_WEBHOOK_SECRET;const r=await h.billing(h.req({action:'status'}));assert.equal(r.status,200);const status=await r.json();assert.equal(status.plans.length,4);assert.equal(status.productionEnabled,false);assert.equal(status.webhookConfigured,false);
+test('sandbox status reports the verified seller, plan identities and only the current administrator’s subscriptions',async()=>{
+ const h=harness(),own={id:requestId,user_id:userId,provider_id:'qa-sub'};
+ const other={id:'another-checkout',user_id:'another-admin',provider_id:'another-sub'};
+ h.rows.set(own.id,own);
+ h.rows.set(other.id,other);
+ const response=await h.billing(h.req({action:'status'}));
+ assert.equal(response.status,200);
+ const status=await response.json();
+ assert.equal(status.ready,true);
+ assert.deepEqual(status.seller,{id:'123',site:'MLC',testUser:true});
+ assert.deepEqual(status.plans.map(({key,providerPlanId,applicationId,amount,currency,frequency,frequency_type,trialDays})=>
+  [key,providerPlanId,applicationId,amount,currency,frequency,frequency_type,trialDays]),[
+  ['WEEKLY','weekly','1234',2490,'CLP',7,'days',0],
+  ['MONTHLY','monthly','1234',7990,'CLP',1,'months',0],
+  ['YEARLY','yearly','1234',64990,'CLP',12,'months',0],
+  ['MONTHLY_TRIAL','trial','1234',7990,'CLP',1,'months',7]
+ ]);
+ assert.deepEqual(status.subscriptions,[own]);
+ assert.equal(status.productionEnabled,false);
+ assert.equal(status.webhookConfigured,true);
+ assert.ok(h.calls.every(call=>call.url?call.options.method==='GET':call.operation==='list'));
+ delete h.vars.MP_TEST_WEBHOOK_SECRET;
+ assert.equal((await (await h.billing(h.req({action:'status'}))).json()).webhookConfigured,false);
+});
+
+test('sandbox status rejects a revoked session and a regular user before contacting the provider',async()=>{
+ const h=harness();
+ h.setAdmin(false);
+ assert.equal((await h.billing(h.req({action:'status'}))).status,403);
+ h.revoke();
+ assert.equal((await h.billing(h.req({action:'status'}))).status,401);
+ assert.deepEqual(h.calls,[]);
 });
 test('pending never grants sandbox access; authorization records a seven day trial; cancellation preserves its end',async()=>{
  const h=harness();await h.billing(h.req(checkout));await h.billing(h.req({action:'refresh'}));assert.equal(h.rows.get(requestId).snapshot.trialUntil,null);
@@ -373,12 +403,21 @@ test('hosted reconciliation leaves the ledger untouched for live, foreign or unc
  }
 });
 
-test('signed unlinked or live payments are acknowledged without recording a processed receipt', async () => {
+test('signed payment events report the exact provider rejection without recording a receipt', async () => {
  const event = { id: hostedPaymentId, type: 'payment' };
  const h = harness();
- h.setHostedPayments([approvedPayment(hostedPaymentId, 0, { live_mode: true })]);
- const live = await h.webhook(await notification(undefined, now, event));
- assert.deepEqual(await live.json(), { result: 'ignored', reason: 'provider_mode_or_seller' });
+ const failures=[
+  [{id:'188037470296'},'provider_payment_id_mismatch'],
+  [{collector_id:456},'provider_seller_mismatch'],
+  [{live_mode:true},'provider_live_mode'],
+  [{live_mode:undefined},'provider_mode_unverified']
+ ];
+ for(const [fields,reason] of failures){
+  h.setInitialPayment(approvedPayment(hostedPaymentId,0,fields),hostedPaymentId);
+  const ignored=await h.webhook(await notification(undefined,now,event));
+  assert.equal(ignored.status,200);
+  assert.deepEqual(await ignored.json(),{result:'ignored',reason});
+ }
  assert.ok(!h.calls.some(call => call.url?.includes('/authorized_payments/')));
  h.setHostedPayments([approvedPayment(hostedPaymentId)]);
  const unlinked = await h.webhook(await notification(undefined, now, event));

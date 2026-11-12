@@ -82,12 +82,12 @@ export async function sha256(text){return [...new Uint8Array(await crypto.subtle
 export async function verifyMpSignature(request,secret,now=Date.now()){
  const url=new URL(request.url),id=url.searchParams.get('data.id'),requestId=request.headers.get('x-request-id'),header=request.headers.get('x-signature')||'';
  const matches=[...header.matchAll(/(?:^|,)\s*(ts|v1)=([^,]+)/g)],ts=matches.find(x=>x[1]==='ts')?.[2],sigs=matches.filter(x=>x[1]==='v1').map(x=>x[2]);
- if(!secret||!id||!requestId||!/^\d{10,13}$/.test(ts||'')||!sigs.length)throw Error('INVALID_SIGNATURE');
+ if(!secret||!id||!requestId||!/^\d{10,13}$/.test(ts||'')||!sigs.length)throw Error('MALFORMED_SIGNATURE');
  const stamp=Number(ts)*(ts.length<=10?1000:1);if(Math.abs(now-stamp)>300000)throw Error('STALE_SIGNATURE');
  const key=await crypto.subtle.importKey('raw',encoder.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['verify']);
  const manifest=`id:${id.toLowerCase()};request-id:${requestId};ts:${ts};`;
  for(const signature of sigs){if(!/^[a-f\d]{64}$/i.test(signature))continue;const bytes=Uint8Array.from(signature.match(/../g),x=>parseInt(x,16));if(await crypto.subtle.verify('HMAC',key,bytes,encoder.encode(manifest)))return{id,hash:await sha256(manifest+signature)};}
- throw Error('INVALID_SIGNATURE');
+ throw Error('SIGNATURE_MISMATCH');
 }
 export function csvReport(rows){if(rows.length>10000)throw Error('REPORT_TOO_LARGE');const keys=['provider_id','subscription_id','user_id','plan','status','amount_clp','fee_clp','net_clp','paid_at','live_mode'];const cell=x=>'"'+(typeof x==='string'&&/^[\s\uFEFF]*[=+@-]/.test(x)?"'"+x:String(x??'')).replaceAll('"','""')+'"';return '\uFEFF'+[keys.join(','),...rows.map(r=>keys.map(k=>cell(r[k])).join(','))].join('\r\n')+'\r\n';}
 

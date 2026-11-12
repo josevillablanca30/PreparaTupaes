@@ -40,6 +40,7 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
   if(env('MP_TEST_MODE')!=='test'||!env('MP_TEST_ACCESS_TOKEN')||!NUMERIC_ID.test(collector()||''))throw Error('TEST_CONFIG_MISSING');
   const me=await mp('/users/me');
   if(String(me.id)!==collector()||!Array.isArray(me.tags)||!me.tags.includes('test_user')||me.site_id!=='MLC')throw Error('NOT_TEST_SELLER');
+  return {id:String(me.id),site:me.site_id,testUser:true};
  }
  async function catalogue(key){
   const c=choices[key];if(!c)throw Error('INVALID_PLAN');const id=env('MP_TEST_PLAN_'+key);if(!id)throw Error('TEST_CONFIG_MISSING');
@@ -49,11 +50,15 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
   if(typeof id!=='string'||!NUMERIC_ID.test(id)||id===collector())throw Error('INVALID_TEST_PAYER_ID');
   return id;
  }
- function sandboxPayment(payment,id){
-  return !!payment&&String(payment.id)===id&&payment.live_mode===false&&String(payment.collector_id)===collector();
+ function sandboxPaymentIssue(payment,id){
+  if(String(payment?.id)!==id)return 'provider_payment_id_mismatch';
+  if(String(payment.collector_id)!==collector())return 'provider_seller_mismatch';
+  if(payment.live_mode===true)return 'provider_live_mode';
+  if(payment.live_mode!==false)return 'provider_mode_unverified';
+  return null;
  }
  function verifiedPlanPayment(payment,paymentId,payerId,plan,observedAt){
-  return sandboxPayment(payment,paymentId)&&String(payment.payer?.id)===payerId&&
+  return !sandboxPaymentIssue(payment,paymentId)&&String(payment.payer?.id)===payerId&&
    Number(payment.transaction_amount)===MP_PLANS[plan.plan].amount&&payment.currency_id==='CLP'&&
    (payment.application_id==null||String(payment.application_id)===String(plan.remote.application_id))&&
    isApprovedPayment(payment,observedAt);
@@ -188,10 +193,20 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
   cors(req);if(req.method==='OPTIONS')return new Response(null,{status:204,headers:cors(req)});if(req.method!=='POST')return reply(req,{error:'METHOD_NOT_ALLOWED'},405);
   const user=await authenticate(req),text=await req.text();if(text.length>8192)throw Error('PAYLOAD_TOO_LARGE');
   const body=JSON.parse(text||'{}');if(!['status','checkout','refresh','cancel','plan_status','plan_cancel','plan_payment_lookup','plan_payment_reconcile'].includes(body.action))throw Error('INVALID_ACTION');
-  await seller();
+  const verifiedSeller=await seller();
   if(body.action==='status'){
-   const plans=[];for(const key of Object.keys(choices)){const c=await catalogue(key);plans.push({key,plan:c.plan,...MP_PLANS[c.plan],trialDays:c.trial?7:0});}
-   return reply(req,{ready:true,mode:'sandbox',productionEnabled:false,webhookConfigured:!!env('MP_TEST_WEBHOOK_SECRET'),plans,subscriptions:await call('list',{userId:user.id})});
+   const plans=[];
+   for(const key of Object.keys(choices)){
+    const c=await catalogue(key);
+    plans.push({
+     key,plan:c.plan,providerPlanId:c.id,applicationId:c.remote.application_id?.toString()??null,
+     ...MP_PLANS[c.plan],currency:c.remote.auto_recurring.currency_id,trialDays:c.trial?7:0
+    });
+   }
+   const webhookConfigured=!!env('MP_TEST_WEBHOOK_SECRET');
+   const subscriptions=await call('list',{userId:user.id});
+   console.info('MP_SANDBOX_STATUS',JSON.stringify({plans:plans.length,webhookConfigured,subscriptions:subscriptions.length}));
+   return reply(req,{ready:true,mode:'sandbox',productionEnabled:false,seller:verifiedSeller,webhookConfigured,plans,subscriptions});
   }
   if(body.action==='checkout'){
    const c=await catalogue(body.plan);
@@ -250,7 +265,8 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
    return {providerId:invoice.preapproval_id,invoice};
   }
   const payment=await mp('/v1/payments/'+encodeURIComponent(resourceId));
-  if(!sandboxPayment(payment,resourceId))return {ignored:'provider_mode_or_seller'};
+  const issue=sandboxPaymentIssue(payment,resourceId);
+  if(issue)return {ignored:issue};
   const reference=UUID.test(payment.external_reference||'')
    ?await call('lookup',{reference:payment.external_reference}):null;
   const invoice=await invoiceForPayment(resourceId);
