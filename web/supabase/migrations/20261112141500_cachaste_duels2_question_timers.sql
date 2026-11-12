@@ -241,6 +241,7 @@ declare u uuid:=cachaste_duels2.require_player();p jsonb:=coalesce(payload,'{}')
    if exists(select 1 from cachaste_duels2.answers where player_id=pid and request_id=rid)then return cachaste_duels2.attempt_view(pid,u);end if;
    -- Expiration was settled before this branch; do not roll it back on a late answer.
    if m.status='finished'or pl.status='forfeit'then return cachaste_duels2.attempt_view(pid,u);end if;
+   if pos is not null and pos<pl.position then return cachaste_duels2.attempt_view(pid,u);end if;
    if pl.status<>'active'or pos is distinct from pl.position then raise exception 'ANSWER_OUT_OF_ORDER';end if;
    select * into q from cachaste.questions where key=pl.question_keys[pl.position+1];
    if selected is not null and(selected<0 or selected>=jsonb_array_length(q.body->'options'))then raise exception 'INVALID_CHOICE';end if;
