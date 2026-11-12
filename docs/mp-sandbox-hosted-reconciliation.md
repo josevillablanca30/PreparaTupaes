@@ -35,4 +35,12 @@ El registro de sandbox queda en `sandbox_checkouts`. Los accesos de la web y And
 
 La simulación que Supabase recibió el 12 de noviembre a las 00:05 UTC con HTTP 200 se hizo desde la aplicación `48384472675774`. La entrega automática de la suscripción corresponde a la aplicación del vendedor de prueba `5643907436179484`. Mercado Pago tendría que aclarar la clasificación del recurso de pago para poder cerrar la validación con esa operación. La asociación permanece bloqueada por `live_mode=true`.
 
-[Referencia de suscripciones](https://www.mercadopago.cl/developers/es/reference/online-payments/subscriptions/create-preapproval/post) · [Configuración de webhooks](https://www.mercadopago.cl/developers/es/docs/links-and-debts/additional-content/your-integrations/notifications/webhooks?scope=prod)
+## Evidencia del despliegue
+
+- Supabase aplicó la migración `20261112003007`. El RPC de asociación está disponible para el rol de servicio y la tabla de titularidad está protegida con RLS. El rol de servicio carece de permiso para crear pruebas de titularidad.
+- Los receptores `cachaste-mp-sandbox-events` v8 y `cachaste-mp-sandbox-checkout` v14 están activos con el código del PR. El checkout y su pasarela web devolvieron 401 sin sesión.
+- El 12 de noviembre a las 00:32:47 UTC, una prueba controlada del evento `payment.created` obtuvo HTTP 200 y `ignored/provider_mode_or_seller` con HMAC válido. Una firma alterada obtuvo 401. Supabase registró ambas respuestas y mantuvo cero asociaciones sandbox y dos recibos anteriores. La operación de Mercado Pago permaneció en su estado original.
+- Pasaron 197 pruebas web y 407 pruebas de lógica. La base aislada confirmó que web y Android leen el mismo acceso. Los casos de pagos usaron datos de prueba para altas, renovación, cancelación, vencimiento, duplicados, reembolso y errores. Pasó la compilación web.
+- `sitecacho.cl/api/billing` devolvió `ready=false`. El entorno comercial tiene los indicadores de cobros y preparación fiscal desactivados. Queda conectar el vendedor comercial, comprobar sus planes y su webhook, completar la preparación tributaria y obtener autorización explícita para habilitar ventas.
+
+[Referencia de suscripciones](https://www.mercadopago.cl/developers/es/reference/online-payments/subscriptions/create-preapproval/post) · [Pruebas de suscripciones](https://www.mercadopago.cl/developers/es/news/2023/11/16/Questions-on-how-to-test-your-integration--) · [Configuración de webhooks](https://www.mercadopago.cl/developers/es/docs/links-and-debts/additional-content/your-integrations/notifications/webhooks?scope=prod)
