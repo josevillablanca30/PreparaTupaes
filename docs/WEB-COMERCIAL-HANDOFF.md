@@ -101,3 +101,10 @@ Tras cada corrección acotada, ejecuta la prueba pertinente y `git diff --check`
 - [Auditoría web sin pagos](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43308699245): **success**.
 - Pasaron pruebas de registro y recuperación de contraseña mediante el servidor QA simulado, además de todas las pruebas comerciales, educativas, ensayos y sincronización.
 - **No equivale** a prueba real con correo, Supabase de producción o cobros; estos siguen como criterios de publicación pendientes. No desplegar, fusionar ni activar cobros sin aprobación.
+
+### Puerta de integración Duelos 2.0 — verificación del 12 de noviembre
+
+- PR #16, commit `b0460b8b4e252b95f2aecf2d87ee58b21d1142c2`: [Actions 43273490300](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43273490300) confirma **success** en `isolated-tests`, `realtime-qa` y `android-candidate`.
+- PR #17, commit `bb6b219c4c243588ddd57f99f3aa9698c7e9e734`: [guardrails 43310236210](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43310236210), [guardrails 43310243980](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43310243980) y [auditoría 43310236196](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43310236196) **success**.
+- Las validaciones son **por rama**; todavía no prueban una combinación fusionada de #16 y #17. Antes de integrar, validar en rama temporal la compilación web, duelos entre dos cuentas, migración y compatibilidad Android; coordinar despliegue frontend/backend para evitar clientes antiguos con temporizadores nuevos.
+- No aplicar migración a producción, fusionar ni desplegar sin aprobación explícita. Mercado Pago real continúa desactivado.
