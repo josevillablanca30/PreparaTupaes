@@ -8,3 +8,5 @@ Estado: pendientes; NO afirmar resueltos sin pruebas en producción y Android m�
 4. **Duelos 2.0:** la pantalla muestra "40 minutos" para 10 preguntas; reemplazar por **temporizador individual por pregunta**. M1 y M2: **120 segundos por pregunta**. Competencia Lectora, Historia y Ciencias: **90 segundos por pregunta**. Reiniciar al avanzar; definir y probar comportamiento al agotarse, sincronización entre rivales, servidor y reconexiones; eliminar referencias incorrectas a 40 minutos en UI.
 
 Capturas aportadas por el usuario en la conversación el 12/11/2026. Estas correcciones se ejecutan **después** de las pruebas actuales de Mercado Pago. No activar cobros reales sin autorización expresa.
+
+5. **Ventas y comisiones en flujo de suscripción:** capturas de cuenta autenticada muestran módulo "Ventas y comisiones" y "Descargar CSV" dentro de pantalla de suscripciones. Auditar si aparece solo por rol administrador o a usuarios comunes; no asumir exposición pública sin prueba. Mover a panel administrativo separado, validar autorización en backend y evitar exponer métricas financieras o exportación CSV a estudiantes. Captura 12/11/2026.
