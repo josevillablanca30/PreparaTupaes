@@ -146,6 +146,12 @@ export async function testDuels2Realtime({db,clients,outsider,record}){
   await db.query("update cachaste_duels2.queue set joined_at=clock_timestamp()-interval '11 seconds' where user_id=$1",[user.id]);
   const bot=await call(clients[0],'random',request);
   assert.equal(bot.opponentKind,'bot');
+  const botAttempt=await call(clients[0],'start',{attemptId:bot.attemptId});
+  await db.query(
+    "update cachaste_duels2.players set question_started_at=clock_timestamp()-interval '121 seconds' where id=$1",
+    [botAttempt.id]);
+  const {rows:[offlineStart]}=await db.query(
+    'select position from cachaste_duels2.players where id=$1',[botAttempt.id]);
   await db.query("update cachaste_duels2.bot_plan set due_at=clock_timestamp()-interval '1 second' where player_id in (select id from cachaste_duels2.players where match_id=$1 and slot=1)",[bot.id]);
   const operations=await readFile(new URL('../../duels2/operations.sql',import.meta.url),'utf8');
   const setup=operations.slice(operations.indexOf('create extension'),operations.indexOf('-- Verify'));
@@ -158,9 +164,17 @@ export async function testDuels2Realtime({db,clients,outsider,record}){
           where j.jobname=$1 and r.status='succeeded' and r.start_time>=$2) as ran,
           (select position from cachaste_duels2.players where match_id=$3 and slot=1) as position
       `,[jobName,since,bot.id]);
-      return result.ran&&result.position===10;
-    },85000,'Cron must advance the bot with no open channel or client RPC');
-    record('The dedicated Cron job advances a bot without an open client or polling call');
+      if(!result.ran||result.position!==10)return false;
+      const {rows:[human]}=await db.query(
+        'select position from cachaste_duels2.players where id=$1',[botAttempt.id]);
+      return human.position>offlineStart.position;
+    },85000,'Cron must advance bot and expired human question with no client RPC');
+    const {rows:[offlineMiss]}=await db.query(
+      'select choice,correct from cachaste_duels2.answers where player_id=$1 and position=$2',
+      [botAttempt.id,offlineStart.position]);
+    assert.equal(offlineMiss.choice,null);
+    assert.equal(offlineMiss.correct,false);
+    record('Cron advances the bot and expires an offline human question without client polling');
   }finally{
     if((await db.query("select to_regclass('cron.job') is not null as installed")).rows[0].installed)
       await db.query('select cron.unschedule(jobid) from cron.job where jobname=$1',[jobName]);
