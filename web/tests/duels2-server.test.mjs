@@ -112,3 +112,30 @@ test('Duelos 2 history counts virtual losses and paginates without repeating res
  const second=await d2(db,0,'duel_history',{before:first.next});assert.equal(second.duels.length,5);assert.equal(second.next,null);assert.equal(new Set([...first.duels,...second.duels].map(d=>d.id)).size,25);
  await assert.rejects(d2(db,0,'duel_history',{before:{id:first.duels[0].id}}),/INVALID_FILTER/);
 });
+
+
+test('Duelos 2: question clock expires offline turns, rejects late scoring and uses subject-specific limits',async t=>{
+ const db=await setup(t);
+ for(const [subject,seconds] of [['M1',120],['Competencia Lectora',90]]){
+  const d=await human(db,subject);
+  const player=(await db.query('select id from cachaste_duels2.players where match_id=$1 and slot=0',[d.id])).rows[0];
+  let a=await d2(db,0,'start',{attemptId:player.id});
+  assert.ok(a.questionDeadline,'question deadline must be exposed');
+  const delta=(Date.parse(a.questionDeadline)-Date.parse(a.serverNow))/1000;
+  assert.ok(delta>seconds-5&&delta<=seconds+1,`${subject} expected ${seconds}s; got ${delta}`);
+  const stale={attemptId:a.id,position:a.position,choice:0,requestId:randomUUID()};
+  await db.query("update cachaste_duels2.players set question_started_at=clock_timestamp()-make_interval(secs=>$2::int+1) where id=$1",[player.id,seconds]);
+  a=await d2(db,0,'attempt',{attemptId:player.id});
+  assert.equal(a.position,1,'expired question advances without an answer');
+  assert.equal(a.balance,0,'timeout must not award stars');
+  assert.equal((await d2(db,0,'answer',stale)).position,1,'late response must return authoritative state');
+  const missed=(await db.query('select choice,correct from cachaste_duels2.answers where player_id=$1 and position=0',[player.id])).rows[0];
+  assert.equal(missed.choice,null);assert.equal(missed.correct,false);
+  await db.query("update cachaste_duels2.players set question_started_at=clock_timestamp()-make_interval(secs=>$2::int*10+1) where id=$1",[player.id,seconds]);
+  await db.query('select cachaste_duels2.sweep()');
+  a=await d2(db,0,'attempt',{attemptId:player.id});
+  assert.equal(a.position,10,'offline questions must all expire');
+  assert.equal(a.status,'complete');
+  assert.equal((await db.query('select count(*)::int n from cachaste_duels2.answers where player_id=$1',[player.id])).rows[0].n,10);
+ }
+});
