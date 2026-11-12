@@ -50,5 +50,8 @@ jobs:
       - name: Verify lessons and tutors across all PAES subjects plus M1 exams and sync
         run: |
           npx playwright test --config web/playwright.config.mjs --project Desktop-Chrome --grep '390px · |M1: real lesson interaction|M1: full PAES exam|M1: complete Express|two browser contexts synchronize'
+      - name: Verify registration and password recovery in browser QA
+        run: |
+          npx playwright test --config web/playwright.config.mjs --project Desktop-Chrome registration.spec.mjs recovery.spec.mjs
       - name: Check public web commercial safeguards
         run: node --test tests/web-commercial-launch-guard.test.mjs tests/web-gateway-security.test.mjs tests/web-progress-merge.test.mjs tests/web-auth-return.test.mjs web/tests/progress-runtime.test.mjs
