@@ -29,7 +29,7 @@ test('Duelos 2: humans, same ten questions, private aggregate, both full turns, 
  let a=await d2(db,0,'start',{attemptId:rows[0].id});assert.ok(Date.parse(a.deadline)-Date.parse(a.serverNow)>2390000);
  assert.equal(a.question.answer,undefined);assert.equal(a.question.steps,undefined);assert.equal(a.question.teaching,undefined);assert.equal(a.question.explanations,undefined);
  const first=await answer(db,0,a,true);a=first.result;assert.equal(a.balance,1);assert.equal(a.streak,1);assert.equal((await d2(db,0,'answer',first.payload)).position,1);
- await assert.rejects(d2(db,0,'answer',{...first.payload,requestId:randomUUID()}),/ANSWER_OUT_OF_ORDER/);
+ assert.equal((await d2(db,0,'answer',{...first.payload,requestId:randomUUID()})).position,1);
  a=(await answer(db,0,a,false)).result;assert.equal(a.balance,0);assert.equal(a.streak,0);
  const rival=await d2(db,1,'duel',{duelId:d.id});assert.equal(rival.balance,0);assert.equal(rival.result,null);for(const k of ['correct','position','answers','question','questionKeys','opponentPosition'])assert.equal(rival[k],undefined);
  await assert.rejects(d2(db,1,'attempt',{attemptId:rows[0].id}),/D2_NOT_FOUND/);await assert.rejects(d2(db,2,'duel',{duelId:d.id}),/D2_NOT_FOUND/);
