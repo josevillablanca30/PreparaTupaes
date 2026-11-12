@@ -262,7 +262,7 @@ end$$;
 -- Visit matches with an expired human question too, so a disconnected player
 -- is progressed by the scheduled maintenance rather than by their own browser.
 create or replace function cachaste_duels2.sweep()returns integer
-language plpgsql security definer set search_path='' as $
+language plpgsql security definer set search_path='' as $sweep$
 declare m record;n integer:=0;begin
  for m in
   select x.id from cachaste_duels2.matches x
@@ -283,7 +283,7 @@ declare m record;n integer:=0;begin
  end loop;
  delete from cachaste_duels2.queue where expires_at<=clock_timestamp();
  return n;
-end$;
+end$sweep$;
 revoke all on function cachaste_duels2.sweep() from public,anon,authenticated;
 grant execute on function cachaste_duels2.sweep() to service_role;
 
