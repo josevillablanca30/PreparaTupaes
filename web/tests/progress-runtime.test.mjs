@@ -43,3 +43,26 @@ test('an edit during an in-flight save is sent again automatically',async()=>{
   if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
  }
 });
+
+test('a temporary server error retries pending progress without navigation',async()=>{
+ const saved={Storage:globalThis.Storage,document:globalThis.document,addEventListener:globalThis.addEventListener,removeEventListener:globalThis.removeEventListener,navigator:Object.getOwnPropertyDescriptor(globalThis,'navigator')};
+ const storage=new LocalStorage(),events=new Map(),docEvents=new Map();let calls=0;
+ globalThis.Storage=LocalStorage;globalThis.addEventListener=(name,fn)=>events.set(name,fn);globalThis.removeEventListener=(name)=>events.delete(name);
+ globalThis.document={hidden:false,addEventListener:(name,fn)=>docEvents.set(name,fn),removeEventListener:(name)=>docEvents.delete(name)};
+ Object.defineProperty(globalThis,'navigator',{value:{onLine:true},configurable:true});
+ let runtime;
+ try{
+  runtime=installProgressRuntime({bootstrap:{userId:uid,documents:[{key,value:{subject:'M1'},version:1}]},storage,fetcher:async(_url,opts)=>{
+   calls++;if(calls===1)return Response.json({error:'TEMPORARY'},{status:503});
+   const p=JSON.parse(opts.body).payload;return Response.json({conflict:false,document:{key:p.key,value:p.value,version:2}});
+  }});
+  storage.setItem(key,JSON.stringify({subject:'M2'}));await runtime.flush();
+  assert.equal(calls,1);assert.equal(runtime.pending(),1);
+  await new Promise((resolve,reject)=>{const start=Date.now();const check=()=>{if(calls>=2)return resolve();if(Date.now()-start>7000)return reject(Error('Pending progress was never retried'));setTimeout(check,50);};check();});
+  assert.equal(runtime.pending(),0);
+ }finally{
+  runtime?.restore();
+  for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];
+  if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
+ }
+});
