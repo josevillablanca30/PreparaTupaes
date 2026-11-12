@@ -114,9 +114,9 @@ test('Duelos 2 history counts virtual losses and paginates without repeating res
 });
 
 
-test('Duelos 2: question clock expires offline turns, rejects late scoring and uses subject-specific limits',async t=>{
- const db=await setup(t);
- for(const [subject,seconds] of [['M1',120],['Competencia Lectora',90]]){
+for(const [subject,seconds] of [['M1',120],['Competencia Lectora',90]]){
+ test(`Duelos 2: ${subject} question clock expires offline turns, rejects late scoring and updates meter`,async t=>{
+  const db=await setup(t);
   const d=await human(db,subject);
   const player=(await db.query('select id from cachaste_duels2.players where match_id=$1 and slot=0',[d.id])).rows[0];
   let a=await d2(db,0,'start',{attemptId:player.id});
@@ -138,5 +138,5 @@ test('Duelos 2: question clock expires offline turns, rejects late scoring and u
   assert.equal(a.position,10,'offline questions must all expire');
   assert.equal(a.status,'complete');
   assert.equal((await db.query('select count(*)::int n from cachaste_duels2.answers where player_id=$1',[player.id])).rows[0].n,10);
- }
-});
+ });
+}
