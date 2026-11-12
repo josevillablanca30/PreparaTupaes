@@ -4,7 +4,21 @@ begin;
 
 alter table cachaste_duels2.players add column if not exists question_started_at timestamptz;
 
-update cachaste_duels2.players p set question_started_at=coalesce(m.activated_at,clock_timestamp()) from cachaste_duels2.matches m where m.id=p.match_id and p.question_started_at is null and p.position<10 and m.status='active';
+update cachaste_duels2.players p set question_started_at=clock_timestamp() from cachaste_duels2.matches m where m.id=p.match_id and p.question_started_at is null and p.position<10 and p.status='active' and m.status='active';
+
+-- Newly activated duels use the existing activation INSERT. Initialise the clock
+-- without modifying historical migration or resetting a returning player's timer.
+create or replace function cachaste_duels2.init_question_clock()
+returns trigger language plpgsql set search_path='' as $
+begin
+ if new.user_id is not null and new.status='active' and new.question_started_at is null then
+  new.question_started_at:=clock_timestamp();
+ end if;
+ return new;
+end$;
+drop trigger if exists d2_init_question_clock on cachaste_duels2.players;
+create trigger d2_init_question_clock before insert on cachaste_duels2.players
+for each row execute function cachaste_duels2.init_question_clock();
 
 create or replace function cachaste_duels2.advance(mid uuid)returns void language plpgsql set search_path='' as $$
 declare m cachaste_duels2.matches;a cachaste_duels2.players;b cachaste_duels2.players;p cachaste_duels2.players;
