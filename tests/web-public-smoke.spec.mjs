@@ -21,3 +21,16 @@ test('live billing stays disabled in preview',async({request})=>{
  const response=await request.post('/api/billing',{headers:{origin:'http://127.0.0.1:5173','x-cachaste-request':'1'},data:{action:'checkout',plan:'semanal'}});
  expect(response.status()).toBeGreaterThanOrEqual(400);
 });
+
+test('recovery screen renders an accessible email form without submitting a real email',async({page})=>{
+ await page.goto('/recuperar.html');
+ await expect(page.getByRole('heading',{name:'Recupera tu contraseña.'})).toBeVisible();
+ await expect(page.getByRole('textbox',{name:'Correo de tu cuenta'})).toBeVisible();
+ await expect(page.getByRole('button',{name:'Enviar correo de recuperación'})).toBeVisible();
+ await expect(page.locator('html')).toHaveAttribute('lang','es-CL');
+});
+test('public prices stay aligned with approved weekly, monthly and annual plans',async({page})=>{
+ await page.goto('/');
+ const text=await page.locator('body').innerText();
+ for(const price of ['$2.490','$7.990','$64.990'])expect(text).toContain(price);
+});
