@@ -119,3 +119,12 @@ Tras cada corrección acotada, ejecuta la prueba pertinente y `git diff --check`
 - [Guardrails comerciales 43314838552](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43314838552): **success**.
 - **Alcance:** CI de integración sobre una misma rama; no acredita prueba real entre dos cuentas/dispositivos ni despliegue con migración Supabase productiva. No implica aprobación para publicar.
 - **Pendientes:** QA real de duelo (tiempos, desconexión, resultado y revancha), compatibilidad Android antiguo, ensayo de migración en staging, pagos sandbox reales, y autorización de merge/despliegue. Mantener cobros reales desactivados.
+
+
+### Cierre verificado de integración Duelos 2.0 — 12 de noviembre (actualización)
+
+- [PR #18](https://github.com/josevillablanca30/PreparaTupaes/pull/18) **fusionado** con autorización del responsable en la rama comercial. Commit de merge: `17cb2a6927efd283df26ac30ca4805e2775f2f1c`. Esta sección reemplaza el estado histórico de «borrador, sin fusionar» indicado arriba.
+- CI **posterior al merge** del commit `17cb2a69`: [Duelos 2](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43327220066), [guardrails comerciales](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43327220045), [auditoría web sin pagos](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43326994486) y [guardrails push](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43326994478), todos **success**.
+- Pruebas SQL en Supabase local efímero: M1 vence a 120 segundos, Lectura a 90 segundos, respuesta tardía no sobrescribe error y Cron procesa vencimiento sin cliente conectado. Las pruebas automatizadas de Realtime y candidato Android pasaron.
+- [PR #17](https://github.com/josevillablanca30/PreparaTupaes/pull/17) continúa **abierto como borrador** hacia `work/cachaste-web-unificada-20261106`. [PR #14](https://github.com/josevillablanca30/PreparaTupaes/pull/14) de Mercado Pago sigue **separado y sin fusionar**.
+- **No se ha publicado la rama comercial**, no se ha aplicado la migración a Supabase de producción y no se han habilitado cobros reales. Faltan QA manual entre dos usuarios/dispositivos, prueba sandbox de suscripciones y decisión de despliegue coordinado. No confundir CI local con validación de producción.
