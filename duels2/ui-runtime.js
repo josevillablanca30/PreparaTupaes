@@ -62,7 +62,7 @@
   // Use the last authoritative server timestamp; never extend time on reconnect.
   const elapsed=Number.isFinite(serverTime)?Date.now()-(a._d2ReceivedAt||Date.now()):0;
   const remaining=Math.max(0,Math.ceil((deadline-(Number.isFinite(serverTime)?serverTime:Date.now())-Math.max(0,elapsed))/1000));
-  clock.textContent='Tiempo de esta pregunta: '+Math.floor(remaining/60)+':'+String(remaining%60).padStart(2,'0');
+  clock.textContent=remaining===0?'Tiempo agotado · cuenta como incorrecta (−1). Actualizando duelo…':'Tiempo de esta pregunta: '+Math.floor(remaining/60)+':'+String(remaining%60).padStart(2,'0');
  }
  function d2Paint(){
   const d=state.duel;if(d?.version!==2||!['duelo','pregunta','resultado'].includes(state.route))return;
