@@ -52,6 +52,7 @@
  function d2QuestionClock(){
   const a=state.attempt;
   if(state.route!=='pregunta'||a?.version!==2||!a.questionDeadline)return;
+  if(a._d2ServerStamp!==a.serverNow){a._d2ServerStamp=a.serverNow;a._d2ReceivedAt=Date.now();}
   const question=root.querySelector('.competitive-question');
   if(!question)return;
   let clock=question.querySelector('[data-duels2-question-clock]');
@@ -91,7 +92,7 @@
    void d2Sync();
   }).subscribe(status=>{d2Realtime=status==='SUBSCRIBED';const live=root.querySelector('.duels2-live-label');if(live)live.textContent=d2Realtime?'En vivo':'Actualizando';});
  }
- render=function(...args){if(state.attempt?.version===2)state.attempt._d2ReceivedAt=Date.now();d2OriginalRender(...args);d2Paint();d2Subscribe();
+ render=function(...args){d2OriginalRender(...args);d2Paint();d2Subscribe();
   if(d2Available&&state.route==='duelos'&&!root.querySelector('[data-action="duels2-rules"]')){const node=document.createElement('div');node.innerHTML=btn('duels2-rules','Cómo se juega Duelos 2.0','soft wide');root.querySelector('.duel-actions')?.before(node);}
  };
  async function d2Sync(){
