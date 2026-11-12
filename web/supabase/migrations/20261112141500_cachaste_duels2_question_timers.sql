@@ -258,6 +258,35 @@ declare u uuid:=cachaste_duels2.require_player();p jsonb:=coalesce(payload,'{}')
  raise exception 'UNKNOWN_OPERATION';
 end$$;
 
+-- The original sweep only visited bot matches or matches past their global deadline.
+-- Visit matches with an expired human question too, so a disconnected player
+-- is progressed by the scheduled maintenance rather than by their own browser.
+create or replace function cachaste_duels2.sweep()returns integer
+language plpgsql security definer set search_path='' as $
+declare m record;n integer:=0;begin
+ for m in
+  select x.id from cachaste_duels2.matches x
+  where x.status in('active','invited') and (
+   x.expires_at<=clock_timestamp()
+   or (x.status='active' and x.opponent_kind='bot')
+   or exists(
+    select 1 from cachaste_duels2.players p
+    where p.match_id=x.id and p.user_id is not null
+      and p.status='active' and p.position<10
+      and p.question_started_at is not null
+      and p.question_started_at+make_interval(secs=>case when upper(x.subject) in('M1','M2')then 120 else 90 end)<=clock_timestamp()
+   )
+  )
+  order by x.id for update of x skip locked limit 200
+ loop
+  perform cachaste_duels2.advance(m.id);n:=n+1;
+ end loop;
+ delete from cachaste_duels2.queue where expires_at<=clock_timestamp();
+ return n;
+end$;
+revoke all on function cachaste_duels2.sweep() from public,anon,authenticated;
+grant execute on function cachaste_duels2.sweep() to service_role;
+
 notify pgrst,'reload schema';
 
 commit;
