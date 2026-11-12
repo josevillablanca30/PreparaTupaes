@@ -108,3 +108,14 @@ Tras cada corrección acotada, ejecuta la prueba pertinente y `git diff --check`
 - PR #17, commit `bb6b219c4c243588ddd57f99f3aa9698c7e9e734`: [guardrails 43310236210](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43310236210), [guardrails 43310243980](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43310243980) y [auditoría 43310236196](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43310236196) **success**.
 - Las validaciones son **por rama**; todavía no prueban una combinación fusionada de #16 y #17. Antes de integrar, validar en rama temporal la compilación web, duelos entre dos cuentas, migración y compatibilidad Android; coordinar despliegue frontend/backend para evitar clientes antiguos con temporizadores nuevos.
 - No aplicar migración a producción, fusionar ni desplegar sin aprobación explícita. Mercado Pago real continúa desactivado.
+
+
+### Integración web comercial + Duelos 2.0 — PR #18 (12 de noviembre)
+
+- Rama: `work/cachaste-integracion-duelos-web-20261112`, basada en PR #17 (`c4866bad816d74719611c71de0b11b298d658c46`), con cuatro archivos de temporizadores y QA provenientes del PR #16.
+- [PR #18](https://github.com/josevillablanca30/PreparaTupaes/pull/18): **borrador, sin fusionar**; GitHub informó `mergeable_state: clean` antes del último commit de documentación.
+- [Duelos 2 CI 43311886050](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43311886050): **success** en `isolated-tests`, `realtime-qa`, `android-candidate` y APK debug generado (artifact `cachaste-duels2-android-debug`, vence 2026-11-26).
+- [Guardrails comerciales 43314852783](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43314852783): **success**.
+- [Guardrails comerciales 43314838552](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43314838552): **success**.
+- **Alcance:** CI de integración sobre una misma rama; no acredita prueba real entre dos cuentas/dispositivos ni despliegue con migración Supabase productiva. No implica aprobación para publicar.
+- **Pendientes:** QA real de duelo (tiempos, desconexión, resultado y revancha), compatibilidad Android antiguo, ensayo de migración en staging, pagos sandbox reales, y autorización de merge/despliegue. Mantener cobros reales desactivados.
