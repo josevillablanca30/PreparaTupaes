@@ -144,3 +144,33 @@ test('concurrent device histories remain available for explicit merge without si
   if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
  }
 });
+
+test('a new answer during conflict resolution is preserved and synchronized afterward',async()=>{
+ const saved={Storage:globalThis.Storage,document:globalThis.document,addEventListener:globalThis.addEventListener,removeEventListener:globalThis.removeEventListener,navigator:Object.getOwnPropertyDescriptor(globalThis,'navigator')};
+ const storage=new LocalStorage(),events=new Map(),docEvents=new Map(),writes=[];let release,started;
+ const waiting=new Promise(resolve=>started=resolve),held=new Promise(resolve=>release=resolve);
+ globalThis.Storage=LocalStorage;globalThis.addEventListener=(name,fn)=>events.set(name,fn);globalThis.removeEventListener=(name)=>events.delete(name);
+ globalThis.document={hidden:false,addEventListener:(name,fn)=>docEvents.set(name,fn),removeEventListener:(name)=>docEvents.delete(name)};
+ Object.defineProperty(globalThis,'navigator',{value:{onLine:true},configurable:true});
+ let runtime;
+ try{
+  runtime=installProgressRuntime({bootstrap:{userId:uid,documents:[{key,value:{attempts:[]},version:1}]},storage,fetcher:async(_url,opts)=>{
+   const p=JSON.parse(opts.body).payload;writes.push(p);
+   if(writes.length===1)return Response.json({conflict:true,document:{key,value:{attempts:[{eventId:'remote'}]},version:2}});
+   if(writes.length===2){started();await held;}
+   return Response.json({conflict:false,document:{key,value:p.value,version:writes.length+1}});
+  }});
+  storage.setItem(key,JSON.stringify({attempts:[{eventId:'local'}]}));await runtime.flush();
+  const resolving=runtime.resolve(key,'merge');await waiting;
+  storage.setItem(key,JSON.stringify({attempts:[{eventId:'local'},{eventId:'newer'}]}));
+  release();assert.equal(await resolving,true);assert.equal(runtime.pending(),1);
+  assert.equal(JSON.parse(storage.getItem(key)).attempts.at(-1).eventId,'newer');
+  await new Promise((resolve,reject)=>{const start=Date.now();const check=()=>{if(writes.length>=3)return resolve();if(Date.now()-start>3500)return reject(Error('Newer answer was not retried'));setTimeout(check,40);};check();});
+  assert.equal(writes[2].baseVersion,3);assert.equal(writes[2].value.attempts.at(-1).eventId,'newer');
+  assert.equal(runtime.pending(),0);
+ }finally{
+  release?.();runtime?.restore();
+  for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];
+  if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
+ }
+});
