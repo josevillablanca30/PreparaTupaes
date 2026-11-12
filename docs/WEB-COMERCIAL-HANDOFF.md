@@ -70,3 +70,12 @@ npx playwright test registration.spec.mjs recovery.spec.mjs web-commercial.spec.
 ```
 
 Tras cada corrección acotada, ejecuta la prueba pertinente y `git diff --check`. Guarda un commit, haz push a la rama del PR #17 y verifica el CI del nuevo SHA. Mantén los cambios de los PR #14 y #16 en sus ramas.
+
+## Actualización de cierre — 12 noviembre 2026
+
+- PR #17 permanece abierto en borrador; no se ha fusionado ni desplegado esta rama a producción.
+- CI `Web commercial guardrails` #73 aprobado en `49d3c5fc0265c124b142c697e93fae262c6f8ce6`.
+- Sincronización: pruebas de guardado durante solicitudes, reintentos de 503, expiración 401, conflictos entre dispositivos, resolución sin perder respuestas nuevas y recuperación local al reabrir; CI #71 y #73 aprobados.
+- `f729bec36c7b66e4e4b9ebb23aaa55017d607ff1` añade al CI la prueba Playwright existente de M1 (lección, tutor, alternativas y recarga). **Comprobar su CI #75 antes de declararla aprobada.**
+- Recuperación de contraseña: el usuario confirmó una recuperación real exitosa en el sitio; no equivale a verificación de registro nuevo o autenticación completa de QA.
+- **Bloqueos externos pendientes:** flujo completo real de lección/ensayo con cuenta de QA, persistencia entre dos dispositivos reales, Auth nuevo, Duelos 2.0 PR #16, sandbox Mercado Pago PR #14 y autorización expresa de despliegue. No habilitar pagos reales ni quitar `noindex`.
