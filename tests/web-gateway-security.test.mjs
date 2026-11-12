@@ -2,13 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createGateway} from '../web/server/gateway.mjs';
 const env={WEB_PAYMENTS_ENABLED:'false',ASSETS:{fetch:async()=>new Response('<html>OK</html>',{headers:{'content-type':'text/html'}})}};
-const gateway=createGateway({fetcher:async()=>{throw Error('Backend must not be called for denied requests')},allowDevelopmentHttp:true});
+const gateway=createGateway({fetcher:async()=>{throw Error('Backend must not be called for denied requests')},allowDevelopmentHttp:true,protectedFiles:['/app/inicio.html']});
 const req=(path,options={})=>new Request('https://sitecacho.cl'+path,options);
 const json=async res=>res.json();
 test('no access to protected learning content without authentication',async()=>{
  for(const path of ['/app/inicio.html','/app/science-bank.js','/app/reading-bank.js','/app/competition-client.js']){
   const res=await gateway.fetch(req(path,{headers:{accept:'application/json'}}),env);
-  assert.equal(res.status,404,path);
+  assert.equal(res.status,path==='/app/inicio.html'?401:404,path);
  }
 });
 test('unknown API paths fail closed',async()=>{
