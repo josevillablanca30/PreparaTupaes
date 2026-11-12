@@ -29,3 +29,8 @@ test('countdown uses server timestamps and does not reset on rerender',()=>{
  assert.match(runtime,/a\._d2ServerStamp!==a\.serverNow/);
  assert.doesNotMatch(runtime,/render=function\(\.\.\.args\)\{if\(state\.attempt\?\.version===2\)state\.attempt\._d2ReceivedAt=Date\.now\(\)/);
 });
+
+test('expired countdown tells player the wrong-answer penalty and synchronizes',()=>{
+ assert.match(runtime,/Tiempo agotado · cuenta como incorrecta \(−1\)\. Actualizando duelo/);
+ assert.match(runtime,/setInterval\(\(\)=>\{d2QuestionClock\(\);void d2Sync\(\);\},1000\)/);
+});
