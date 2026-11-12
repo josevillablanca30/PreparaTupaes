@@ -111,6 +111,16 @@ export async function testDuels2Realtime({db,clients,outsider,record}){
   assert.equal(miss.choice,null);
   assert.equal(miss.correct,false);
   record('Real PostgreSQL rejects premature M1 expiry and records the 120-second timeout as an incorrect answer');
+  // A stale client must not be able to submit an answer for the expired question.
+  const late=await call(clients[0],'answer',{
+    attemptId:a.id,position:beforeClock.position,choice:0,requestId:randomUUID()
+  });
+  assert.equal(late.position,expired.position);
+  const {rows:[unchanged]}=await db.query(
+    'select count(*)::int as count from cachaste_duels2.answers where player_id=$1 and position=$2',
+    [a.id,beforeClock.position]);
+  assert.equal(unchanged.count,1,'Late submission must not duplicate or replace a timeout');
+  record('Real PostgreSQL rejects a stale answer after timeout without overwriting the incorrect result');
 
   await call(clients[0],'forfeit',{attemptId:a.id});
   await call(clients[1],'forfeit',{attemptId:b.id});
