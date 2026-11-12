@@ -26,7 +26,7 @@ declare m cachaste_duels2.matches;a cachaste_duels2.players;b cachaste_duels2.pl
   end loop;
  end if;
  -- Server-controlled per-question expiration, including while a client is offline.
- for p in select * from cachaste_duels2.players where match_id=mid and user_id is not null and status in('ready','active') order by slot for update loop
+ for p in select * from cachaste_duels2.players where match_id=mid and user_id is not null and status='active' order by slot for update loop
   while p.position<10 and p.question_started_at is not null and
    p.question_started_at+make_interval(secs=>case when upper(m.subject) in('M1','M2')then 120 else 90 end)<=clock_timestamp() loop
    insert into cachaste_duels2.answers(player_id,position,question_key,choice,correct,request_id,received_at)
@@ -220,7 +220,7 @@ declare u uuid:=cachaste_duels2.require_player();p jsonb:=coalesce(payload,'{}')
    from cachaste_duels2.answers v join cachaste.questions q on q.key=v.question_key where v.player_id=pid and not v.correct;
    return jsonb_build_object('errors',items);
   end if;
-  if operation='start'and pl.status='ready'then update cachaste_duels2.players set status='active'where id=pid;end if;
+  if operation='start'and pl.status='ready'then update cachaste_duels2.players set status='active',question_started_at=clock_timestamp() where id=pid;end if;
   if operation='answer'then
    rid:=(p->>'requestId')::uuid;pos:=(p->>'position')::integer;selected:=(p->>'choice')::integer;
    if rid is null then raise exception 'REQUEST_ID_REQUIRED';end if;
