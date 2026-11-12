@@ -38,7 +38,7 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
    // A student may keep answering while the request is in flight. The first
    // response only acknowledges the earlier snapshot; queue the newer edit.
    if(changed&&!stopped&&!unloading){clearTimeout(timer);timer=setTimeout(flush,1800);}
-  }}catch(e){if(e.message!=='ACCESS_EXPIRED')onStatus('pending');}
+  }}catch(e){if(e.message!=='ACCESS_EXPIRED'){onStatus('pending');if(!stopped&&!unloading){clearTimeout(timer);timer=setTimeout(flush,5000);}}}
   finally{running=false;status();}
  }
  async function resolve(key,choice){
