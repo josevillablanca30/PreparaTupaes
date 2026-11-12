@@ -33,6 +33,6 @@ jobs:
           assert.equal(v.paymentsEnabledByBuild,false);
           for(const file of ['index.html','cuenta.html','recuperar.html','_worker.js','_routes.json','robots.txt','web.css','account.js','web-shell.js','web-init.js','version.json'])assert.ok(existsSync(root+file),file);
           assert.ok(!existsSync(root+'app/index.html'),'Educational HTML must remain protected by worker');
-          assert.match(readFileSync(root+'robots.txt','utf8'),/Disallow: \\//);
+          assert.ok(readFileSync(root+'robots.txt','utf8').includes('Disallow: /'));
           console.log('Commercial web distribution checks passed.');
           EOF
