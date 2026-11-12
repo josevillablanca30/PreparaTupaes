@@ -32,7 +32,7 @@ create table if not exists cachaste_duels2.players(
  id uuid primary key default gen_random_uuid(),match_id uuid not null references cachaste_duels2.matches(id) on delete cascade,
  user_id uuid references auth.users(id) on delete cascade,slot smallint not null check(slot in(0,1)),
  question_keys text[] not null check(cardinality(question_keys)=10),
- position integer not null default 0 check(position between 0 and 10),question_started_at timestamptz,correct integer not null default 0 check(correct between 0 and position),
+ position integer not null default 0 check(position between 0 and 10),correct integer not null default 0 check(correct between 0 and position),
  streak integer not null default 0,status text not null default 'ready' check(status in('ready','active','complete','forfeit')),
  released boolean not null default false,unique(match_id,slot),unique(match_id,user_id)
 );
@@ -140,10 +140,10 @@ declare m cachaste_duels2.matches;keys text[];second_keys text[];pid uuid;q cach
  level_value:=case when coalesce((select stars from cachaste.stats where user_id=m.creator and subject=m.subject and track=m.track and season='all'),0)>=30 then 'advanced'
   when coalesce((select wins from cachaste.stats where user_id=m.creator and subject=m.subject and track=m.track and season='all'),0)>=3 then 'intermediate' else 'initial' end;
  update cachaste_duels2.matches set status='active',question_keys=keys,activated_at=clock_timestamp(),
-  expires_at=clock_timestamp()+interval '25 minutes',bot_level=case when opponent_kind='bot'then level_value end where id=mid returning * into m;
- insert into cachaste_duels2.players(match_id,user_id,slot,question_keys,question_started_at)values(mid,m.creator,0,keys,clock_timestamp());
- insert into cachaste_duels2.players(match_id,user_id,slot,question_keys,status,question_started_at)
- values(mid,m.opponent,1,second_keys,case when m.opponent_kind='bot'then 'active'else 'ready'end,clock_timestamp())returning id into pid;
+  expires_at=clock_timestamp()+interval '40 minutes',bot_level=case when opponent_kind='bot'then level_value end where id=mid returning * into m;
+ insert into cachaste_duels2.players(match_id,user_id,slot,question_keys)values(mid,m.creator,0,keys);
+ insert into cachaste_duels2.players(match_id,user_id,slot,question_keys,status)
+ values(mid,m.opponent,1,second_keys,case when m.opponent_kind='bot'then 'active'else 'ready'end)returning id into pid;
  insert into cachaste.seen(user_id,question_key)
  select u,k from unnest(array[m.creator,m.opponent])u cross join unnest(keys)k where u is not null
  on conflict(user_id,question_key)do update set last_seen=clock_timestamp();
@@ -181,19 +181,6 @@ declare m cachaste_duels2.matches;a cachaste_duels2.players;b cachaste_duels2.pl
     status=case when plan.position=9 then 'complete'else 'active'end where id=b.id;
   end loop;
  end if;
- -- Server-controlled per-question expiration, including while a client is offline.
- for p in select * from cachaste_duels2.players where match_id=mid and user_id is not null and status in('ready','active') order by slot for update loop
-  while p.position<10 and p.question_started_at is not null and
-   p.question_started_at+make_interval(secs=>case when upper(m.subject) in('M1','M2')then 120 else 90 end)<=clock_timestamp() loop
-   insert into cachaste_duels2.answers(player_id,position,question_key,choice,correct,request_id,received_at)
-    values(p.id,p.position,p.question_keys[p.position+1],null,false,gen_random_uuid(),
-     p.question_started_at+make_interval(secs=>case when upper(m.subject) in('M1','M2')then 120 else 90 end))
-    on conflict do nothing;
-   update cachaste_duels2.players set position=position+1,streak=0,
-    question_started_at=question_started_at+make_interval(secs=>case when upper(m.subject) in('M1','M2')then 120 else 90 end),
-    status=case when position=9 then 'complete'else 'active'end where id=p.id returning * into p;
-  end loop;
- end loop;
  if m.expires_at<=clock_timestamp()then
   -- Missing responses count as errors. A disconnect never pauses the shared deadline.
   for p in select * from cachaste_duels2.players where match_id=mid and status in('ready','active') order by slot loop
@@ -261,7 +248,7 @@ declare p cachaste_duels2.players;m cachaste_duels2.matches;q cachaste.questions
   safe:=jsonb_build_object('key',q.key,'question',q.body->'question','options',q.body->'options','visual',q.body->'visual','passage',q.body->'passage','concept',q.concept);
  end if;
  return jsonb_build_object('version',2,'id',p.id,'duelId',p.match_id,'kind','duel','subject',m.subject,'track',m.track,
-  'status',p.status,'position',p.position,'total',10,'streak',p.streak,'deadline',m.expires_at,'questionDeadline',case when p.question_started_at is null then m.expires_at else p.question_started_at+make_interval(secs=>case when upper(m.subject) in('M1','M2')then 120 else 90 end)end,
+  'status',p.status,'position',p.position,'total',10,'streak',p.streak,'deadline',m.expires_at,'questionDeadline',m.expires_at,
   'serverNow',clock_timestamp(),'question',safe,'balance',m.balance,'correct',null);
 end$$;
 
@@ -271,7 +258,7 @@ declare u uuid:=cachaste_duels2.require_player();p jsonb:=coalesce(payload,'{}')
  mid uuid;pid uuid;rid uuid;other uuid;m cachaste_duels2.matches;parent cachaste_duels2.matches;pl cachaste_duels2.players;
  queue_row cachaste_duels2.queue;own_queue cachaste_duels2.queue;q cachaste.questions;pos integer;selected integer;ok boolean;items jsonb;before_time timestamptz;before_id uuid;rival uuid;cursor_value jsonb;summary jsonb;begin
  if octet_length(p::text)>16384 then raise exception 'PAYLOAD_TOO_LARGE';end if;
- if operation='health'then return jsonb_build_object('apiVersion',2,'waitSeconds',10,'durationSeconds',case when upper(s) in('M1','M2')then 120 else 90 end);end if;
+ if operation='health'then return jsonb_build_object('apiVersion',2,'waitSeconds',10,'durationSeconds',2400);end if;
  if operation in('random','create_duel','join_code','accept','rematch','cancel_queue')then
   -- One short matchmaking lock avoids queue/accept races across subjects and devices.
   perform pg_advisory_xact_lock(hashtextextended('cachaste-duels2-matchmaking',0));
@@ -402,7 +389,7 @@ declare u uuid:=cachaste_duels2.require_player();p jsonb:=coalesce(payload,'{}')
    ok:=coalesce(selected=q.answer,false);
    insert into cachaste_duels2.answers(player_id,position,question_key,choice,correct,request_id)values(pid,pos,q.key,selected,ok,rid);
    update cachaste_duels2.players set position=position+1,correct=correct+case when ok then 1 else 0 end,
-    streak=case when ok then streak+1 else 0 end,question_started_at=clock_timestamp(),status=case when position=9 then 'complete'else 'active'end where id=pid;
+    streak=case when ok then streak+1 else 0 end,status=case when position=9 then 'complete'else 'active'end where id=pid;
   elsif operation='forfeit'and pl.status in('ready','active')then
    insert into cachaste_duels2.answers(player_id,position,question_key,choice,correct,request_id)
    select pid,n,pl.question_keys[n+1],null,false,gen_random_uuid()from generate_series(pl.position,9)n;
