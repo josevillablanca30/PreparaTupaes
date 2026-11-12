@@ -114,3 +114,33 @@ test('server conflict matching submitted answer rebases a newer local answer',as
   if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
  }
 });
+
+test('concurrent device histories remain available for explicit merge without silent overwrite',async()=>{
+ const saved={Storage:globalThis.Storage,document:globalThis.document,addEventListener:globalThis.addEventListener,removeEventListener:globalThis.removeEventListener,navigator:Object.getOwnPropertyDescriptor(globalThis,'navigator')};
+ const storage=new LocalStorage(),events=new Map(),docEvents=new Map(),writes=[];
+ globalThis.Storage=LocalStorage;globalThis.addEventListener=(name,fn)=>events.set(name,fn);globalThis.removeEventListener=(name)=>events.delete(name);
+ globalThis.document={hidden:false,addEventListener:(name,fn)=>docEvents.set(name,fn),removeEventListener:(name)=>docEvents.delete(name)};
+ Object.defineProperty(globalThis,'navigator',{value:{onLine:true},configurable:true});
+ const base={attempts:[]},remote={attempts:[{eventId:'phone-answer',correct:true}]},local={attempts:[{eventId:'web-answer',correct:false}]};
+ let runtime;
+ try{
+  runtime=installProgressRuntime({bootstrap:{userId:uid,documents:[{key,value:base,version:1}]},storage,fetcher:async(_url,opts)=>{
+   const payload=JSON.parse(opts.body).payload;writes.push(payload);
+   if(writes.length===1)return Response.json({conflict:true,document:{key,value:remote,version:2}});
+   return Response.json({conflict:false,document:{key,value:payload.value,version:3}});
+  }});
+  storage.setItem(key,JSON.stringify(local));await runtime.flush();
+  assert.equal(writes.length,1);assert.equal(runtime.pending(),1);
+  assert.deepEqual(JSON.parse(storage.getItem(key)),local);
+  assert.equal(runtime.conflicts[key].canMerge,true);
+  assert.deepEqual(runtime.conflicts[key].remote.value,remote);
+  assert.equal(await runtime.resolve(key,'merge'),true);
+  assert.equal(writes.length,2);assert.equal(writes[1].baseVersion,2);
+  assert.deepEqual(new Set(writes[1].value.attempts.map(a=>a.eventId)),new Set(['phone-answer','web-answer']));
+  assert.equal(runtime.pending(),0);
+ }finally{
+  runtime?.restore();
+  for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];
+  if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
+ }
+});
