@@ -30,3 +30,7 @@ test('account form and pricing remain usable at narrow phone widths',()=>{
  assert.match(account,/id="account-status" role="status" aria-live="polite"/);
  assert.match(account,/id="account-root" aria-busy="true"/);
 });
+
+test('hero mascot retains its original source, dimensions and nonblocking decoding',()=>{
+ assert.match(landing,/<img src="\/assets\/landing-cat-rank-cutout\.png" alt="El gatito sabio original de ¿Cachaste\?" width="408" height="278" fetchpriority="high" decoding="async">/);
+});
