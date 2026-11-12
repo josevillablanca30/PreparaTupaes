@@ -9,13 +9,13 @@ update cachaste_duels2.players p set question_started_at=clock_timestamp() from 
 -- Newly activated duels use the existing activation INSERT. Initialise the clock
 -- without modifying historical migration or resetting a returning player's timer.
 create or replace function cachaste_duels2.init_question_clock()
-returns trigger language plpgsql set search_path='' as $
+returns trigger language plpgsql set search_path='' as $clock$
 begin
  if new.user_id is not null and new.status='active' and new.question_started_at is null then
   new.question_started_at:=clock_timestamp();
  end if;
  return new;
-end$;
+end$clock$;
 drop trigger if exists d2_init_question_clock on cachaste_duels2.players;
 create trigger d2_init_question_clock before insert on cachaste_duels2.players
 for each row execute function cachaste_duels2.init_question_clock();
