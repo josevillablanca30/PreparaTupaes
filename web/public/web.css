@@ -114,3 +114,13 @@ body{background:radial-gradient(ellipse at 86% 12%,#3b0c59 0,transparent 35%),#0
  .hero-copy>p,.feature-parity-grid p{overflow-wrap:anywhere}
 }
 @media(max-width:350px){.hero-copy h1{font-size:clamp(30px,8.5vw,36px);letter-spacing:-.035em}}
+
+/* Account and pricing keyboard/mobile usability, without changing approved artwork. */
+@media(max-width:480px){
+ .account-main,.account-card,.account-subscriptions,.price-grid,.price-card{min-width:0;max-width:100%}
+ .account-card h1,.price-card h3,.price-card p{overflow-wrap:anywhere}
+ .account-card input,.account-card select,.account-card button{max-width:100%}
+ .account-card input,.account-card select{font-size:16px}
+ .account-footer{flex-wrap:wrap;gap:12px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
