@@ -22,3 +22,11 @@ test('landing exposes account, plan prices and essential disclosures',()=>{
  assert.match(landing,/id="preguntas"/);
  assert.match(landing,/¿Puedo cancelar mi suscripción\?/);
 });
+
+test('account form and pricing remain usable at narrow phone widths',()=>{
+ assert.match(css,/\.account-card input,\.account-card select\{font-size:16px\}/);
+ assert.match(css,/\.account-main,\.account-card,\.account-subscriptions,\.price-grid,\.price-card\{min-width:0;max-width:100%\}/);
+ assert.match(css,/\.account-card h1,\.price-card h3,\.price-card p\{overflow-wrap:anywhere\}/);
+ assert.match(account,/id="account-status" role="status" aria-live="polite"/);
+ assert.match(account,/id="account-root" aria-busy="true"/);
+});
