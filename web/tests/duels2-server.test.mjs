@@ -127,7 +127,8 @@ test('Duelos 2: question clock expires offline turns, rejects late scoring and u
   await db.query("update cachaste_duels2.players set question_started_at=clock_timestamp()-make_interval(secs=>$2::int+1) where id=$1",[player.id,seconds]);
   a=await d2(db,0,'attempt',{attemptId:player.id});
   assert.equal(a.position,1,'expired question advances without an answer');
-  assert.equal(a.balance,0,'timeout must not award stars');
+  assert.equal(a.balance,-1,'timeout is a wrong answer and moves the meter toward the opponent');
+  assert.equal((await d2(db,0,'duel',{duelId:d.id})).balance,-1,'shared duel meter reflects the missed question');
   assert.equal((await d2(db,0,'answer',stale)).position,1,'late response must return authoritative state');
   const missed=(await db.query('select choice,correct from cachaste_duels2.answers where player_id=$1 and position=0',[player.id])).rows[0];
   assert.equal(missed.choice,null);assert.equal(missed.correct,false);
