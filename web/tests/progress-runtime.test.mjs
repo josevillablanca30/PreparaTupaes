@@ -174,3 +174,26 @@ test('a new answer during conflict resolution is preserved and synchronized afte
   if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
  }
 });
+
+test('reopening a lesson restores unsent local answers rather than overwriting them with stale bootstrap',async()=>{
+ const saved={Storage:globalThis.Storage,document:globalThis.document,addEventListener:globalThis.addEventListener,removeEventListener:globalThis.removeEventListener,navigator:Object.getOwnPropertyDescriptor(globalThis,'navigator')};
+ const storage=new LocalStorage(),events=new Map(),docEvents=new Map(),raw=LocalStorage.prototype.getItem;
+ globalThis.Storage=LocalStorage;globalThis.addEventListener=(name,fn)=>events.set(name,fn);globalThis.removeEventListener=(name)=>events.delete(name);
+ globalThis.document={hidden:false,addEventListener:(name,fn)=>docEvents.set(name,fn),removeEventListener:(name)=>docEvents.delete(name)};
+ Object.defineProperty(globalThis,'navigator',{value:{onLine:false},configurable:true});
+ const bootstrap={userId:uid,documents:[{key,value:{subject:'M1',answers:[]},version:4}]};
+ let runtime;
+ try{
+  runtime=installProgressRuntime({bootstrap,storage,fetcher:async()=>{throw Error('offline')}});
+  storage.setItem(key,JSON.stringify({subject:'M1',answers:[{eventId:'lesson-1',correct:true}]}));
+  assert.equal(runtime.pending(),1);runtime.restore();
+  runtime=installProgressRuntime({bootstrap,storage,fetcher:async()=>{throw Error('offline')}});
+  assert.equal(runtime.pending(),1);
+  assert.deepEqual(JSON.parse(storage.getItem(key)).answers,[{eventId:'lesson-1',correct:true}]);
+  assert.equal(JSON.parse(raw.call(storage,'cachaste-web:'+uid+':sync'))[key].version,4);
+ }finally{
+  runtime?.restore();
+  for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];
+  if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
+ }
+});
