@@ -1,0 +1,23 @@
+name: Web commercial guardrails
+on:
+  push:
+    branches:
+      - 'work/cachaste-web-comercial-cierre-20261112'
+  pull_request:
+    paths:
+      - 'web/public/**'
+      - 'tests/web-commercial-launch-guard.test.mjs'
+      - '.github/workflows/web-commercial-guardrails.yml'
+permissions:
+  contents: read
+jobs:
+  commercial-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check public web commercial safeguards
+        run: node --test tests/web-commercial-launch-guard.test.mjs
