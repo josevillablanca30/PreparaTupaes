@@ -37,6 +37,21 @@ A las 10:13 de Chile del 12 de noviembre, una lectura de Mercado Pago desde Supa
 
 El webhook de las 09:24 de Chile pasó la firma y registró `provider_mode_or_seller`. En la API coincidieron el ID del pago y el vendedor. La operación devolvió `live_mode=true`, que ahora se registra como `provider_live_mode`. El receptor también distingue discrepancias de ID o vendedor y la ausencia de un modo verificable.
 
+### Prueba con sesión administradora y webhooks desplegados
+
+El 12 de noviembre a las 10:30:50 de Chile, el panel de ¿Cachaste? ejecutó `status` con la sesión administradora. Supabase registró HTTP 200, cuatro planes, clave de webhook configurada y cero suscripciones asociadas a la cuenta.
+
+A las 10:34 se enviaron notificaciones controladas al receptor sandbox con los recursos existentes.
+
+| Evento | Respuesta comprobada |
+| --- | --- |
+| `payment`, pago `188037470295` | 200 `ignored/provider_live_mode` |
+| `subscription_authorized_payment`, factura `7033905407` | 200 `ignored/not_linked` |
+| `subscription_preapproval`, suscripción `bec750fc3fdc4e15844e040ba495b993` | 200 `ignored/not_linked` |
+| Pago con firma alterada | 401 `SIGNATURE_MISMATCH` |
+
+La prueba de ciclo completo combina los manejadores y las RPC reales con una base PostgreSQL aislada y datos simulados del proveedor. Comprueba titularidad, asociación idempotente, renovación firmada, duplicado, cancelación, reembolso y el estado de acceso que leen web y Android. Para la prueba de activación con una notificación automática del proveedor queda pendiente una operación elegible con `live_mode=false`.
+
 ## Operación del 11 de noviembre de 2026
 
 | Recurso | Resultado de la API |

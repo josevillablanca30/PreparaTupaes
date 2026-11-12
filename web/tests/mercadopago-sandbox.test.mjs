@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createSandboxHandlers} from '../../supabase/functions/_shared/mercadopago-sandbox.mjs';
 import {canonicalSubscription} from '../../supabase/functions/_shared/mercadopago-core.mjs';
+import {database,sessions} from './database.mjs';
 const userId='10000000-0000-4000-8000-000000000001',requestId='30000000-0000-4000-8000-000000000001',now=Date.now();
 const day=86400000,hostedBuyer='3829500000',hostedId='qa-hosted-sub';
 const invoiceId = '6400000001';
@@ -18,7 +19,7 @@ function hostedInvoice(paymentId, overrides = {}) {
  return { id: '6400000002', preapproval_id: hostedId,
   payment: { id: paymentId, status: 'approved' }, status: 'processed', ...overrides };
 }
-function harness(){
+function harness({databaseClient}={}){
  const vars={SUPABASE_URL:'https://qa.invalid',SUPABASE_ANON_KEY:'public',SUPABASE_SERVICE_ROLE_KEY:'service',MP_TEST_MODE:'test',MP_TEST_ACCESS_TOKEN:'APP_USR-synthetic-test-seller',MP_TEST_COLLECTOR_ID:'123',MP_TEST_PLAN_MONTHLY_TRIAL:'trial',MP_TEST_PLAN_MONTHLY:'monthly',MP_TEST_PLAN_WEEKLY:'weekly',MP_TEST_PLAN_YEARLY:'yearly',MP_TEST_WEBHOOK_SECRET:'synthetic-qa-secret',MP_ACCESS_TOKEN:'PRODUCTION_MUST_NEVER_BE_USED'};
  const calls=[],rows=new Map(),receipts=new Set();let isAdmin=true,validSession=true,testSeller=true,subStatus='pending',providerFails=false;
  let hostedPlanUrl='https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=weekly',hostedPayments=[];
@@ -84,7 +85,7 @@ function harness(){
   if(url.includes('/preapproval/')){if(options.method==='PUT')subStatus='cancelled';return Response.json({id:'qa-sub',external_reference:requestId,collector_id:123,site_id:'MLC',status:subStatus,date_created:new Date(now).toISOString(),auto_recurring:{transaction_amount:7990,currency_id:'CLP',frequency:1,frequency_type:'months'},init_point:'https://www.mercadopago.cl/subscriptions/checkout?preapproval_id=qa-sub'});}
   if(url.includes('/authorized_payments/search'))return Response.json({results:[]});return Response.json({}, {status:404});
  };
- const handlers=createSandboxHandlers({env:key=>vars[key],createClient,fetcher,now:()=>now});
+ const handlers=createSandboxHandlers({env:key=>vars[key],createClient:databaseClient??createClient,fetcher,now:()=>now});
  const req=body=>new Request('https://qa.invalid/function',{method:'POST',headers:{origin:'https://sitecacho.cl',authorization:'Bearer qa-session'},body:JSON.stringify(body)});
  return {...handlers,req,vars,calls,rows,receipts,hosted,setHostedUrl:v=>hostedPlanUrl=v,setHostedPayments:v=>hostedPayments=v,
   setPaymentInvoices: v => { paymentInvoiceResults = v; },
@@ -479,4 +480,83 @@ test('a signed subscription can recover a reserved checkout by the exact provide
  assert.equal(h.rows.get(requestId).provider_id, 'qa-sub');
  assert.equal(h.rows.get(requestId).snapshot.status, 'authorized');
  assert.equal(h.rows.size, 1);
+});
+
+test('signed sandbox lifecycle persists through the actual Supabase RPCs in an isolated database',async t=>{
+ const db=await database();
+ t.after(()=>db.close());
+ await db.query("update auth.users set raw_app_meta_data=jsonb_build_object('role','admin') where id=$1",[userId]);
+ await db.query("select set_config('request.jwt.claims',$1,false)",[
+  JSON.stringify({sub:userId,session_id:sessions[0],role:'authenticated'})
+ ]);
+ async function queryAs(role,sql,params=[]){
+  await db.exec('set role '+role);
+  try{return (await db.query(sql,params)).rows[0];}
+  finally{await db.exec('reset role');}
+ }
+ const databaseClient=(_url,key)=>({
+  auth:{getUser:async token=>token==='qa-session'?{data:{user:{id:userId}}}:{error:{message:'AUTH_REQUIRED'}}},
+  async rpc(name,{operation,payload}={}){
+   try{
+    if(key==='public'&&name==='cachaste_web_account'){
+     return await queryAs('authenticated','select public.cachaste_web_account() data');
+    }
+    assert.equal(key,'service');
+    if(name==='cachaste_mp_sandbox_link_hosted'){
+     return await queryAs('service_role','select public.cachaste_mp_sandbox_link_hosted($1::jsonb) data',[JSON.stringify(payload)]);
+    }
+    assert.equal(name,'cachaste_mp_sandbox_admin');
+    return await queryAs('service_role','select public.cachaste_mp_sandbox_admin($1,$2::jsonb) data',[operation,JSON.stringify(payload)]);
+   }catch(error){return {error:{message:error.message}};}
+  }
+ });
+ const h=harness({databaseClient});
+ const first=approvedPayment('900000012301',8),renewal=approvedPayment('900000012302',1);
+ const claim={...paymentReconcile,paymentId:first.id};
+ h.setHostedPayments([first]);
+ assert.equal((await h.billing(h.req(claim))).status,403);
+ await db.query(`insert into cachaste_web.sandbox_hosted_ownership
+  (provider_id,user_id,payer_id,collector_id,application_id,evidence_ref)
+  values($1,$2,$3,'123','1234','isolated lifecycle fixture')`,[hostedId,userId,hostedBuyer]);
+ const linked=await h.billing(h.req(claim));
+ assert.equal(linked.status,200);
+ const {snapshot}=await linked.json();
+ assert.equal(snapshot.paidUntil,new Date(now-day).toISOString());
+ assert.equal((await (await h.billing(h.req(claim))).json()).snapshot.checkoutId,snapshot.checkoutId);
+
+ const status=async()=>{
+  const response=await h.billing(h.req({action:'status'}));
+  assert.equal(response.status,200);
+  const {subscriptions}=await response.json();
+  assert.equal(subscriptions.length,1);
+  return subscriptions[0].snapshot;
+ };
+ h.setHostedPayments([first,renewal]);
+ const invoiceEvent={id:renewal.id,type:'subscription_authorized_payment',request:'db-renewal'};
+ const paid=await h.webhook(await notification(undefined,now,invoiceEvent));
+ assert.deepEqual(await paid.json(),{result:'processed'});
+ const replay=await h.webhook(await notification(undefined,now,invoiceEvent));
+ assert.deepEqual(await replay.json(),{result:'duplicate'});
+ const renewedUntil=new Date(now+6*day).toISOString();
+ assert.equal((await status()).paidUntil,renewedUntil);
+
+ const cancel=await h.billing(h.req({action:'cancel',subscriptionId:hostedId}));
+ assert.equal(cancel.status,200);
+ const cancelled=await status();
+ assert.equal(cancelled.renews,false);
+ assert.equal(cancelled.paidUntil,renewedUntil);
+ h.setHostedPayments([first,{...renewal,status:'refunded',transaction_amount_refunded:2490}]);
+ const refund=await h.webhook(await notification(undefined,now,{id:renewal.id,type:'payment',request:'db-refund'}));
+ assert.deepEqual(await refund.json(),{result:'processed'});
+ assert.equal((await status()).paidUntil,snapshot.paidUntil);
+
+ const {web,android}=await queryAs('authenticated','select public.cachaste_web_account() web,public.cachaste_access() android');
+ assert.deepEqual(web.access,android);
+ assert.equal(android.active,false);
+ assert.deepEqual(web.subscriptions,[]);
+ assert.deepEqual((await db.query(`select
+  (select count(*)::int from cachaste_web.sandbox_checkouts) checkouts,
+  (select count(*)::int from cachaste_web.sandbox_receipts) receipts,
+  (select count(*)::int from cachaste_web.payments) commercial_payments`)).rows[0],
+ {checkouts:1,receipts:2,commercial_payments:0});
 });
