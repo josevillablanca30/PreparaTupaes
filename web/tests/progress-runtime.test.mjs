@@ -86,3 +86,31 @@ test('an expired session stops progress writes without discarding local answers'
   if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
  }
 });
+
+test('server conflict matching submitted answer rebases a newer local answer',async()=>{
+ const saved={Storage:globalThis.Storage,document:globalThis.document,addEventListener:globalThis.addEventListener,removeEventListener:globalThis.removeEventListener,navigator:Object.getOwnPropertyDescriptor(globalThis,'navigator')};
+ const storage=new LocalStorage(),events=new Map(),docEvents=new Map();let started,release,calls=0;
+ const waiting=new Promise(resolve=>started=resolve),reply=new Promise(resolve=>release=resolve);
+ globalThis.Storage=LocalStorage;globalThis.addEventListener=(name,fn)=>events.set(name,fn);globalThis.removeEventListener=(name)=>events.delete(name);
+ globalThis.document={hidden:false,addEventListener:(name,fn)=>docEvents.set(name,fn),removeEventListener:(name)=>docEvents.delete(name)};
+ Object.defineProperty(globalThis,'navigator',{value:{onLine:true},configurable:true});
+ let runtime;
+ try{
+  runtime=installProgressRuntime({bootstrap:{userId:uid,documents:[{key,value:{subject:'M1'},version:1}]},storage,fetcher:async(_url,opts)=>{
+   calls++;const p=JSON.parse(opts.body).payload;
+   if(calls===1){started();await reply;return Response.json({conflict:true,document:{key,value:p.value,version:2}});}
+   assert.equal(p.baseVersion,2);return Response.json({conflict:false,document:{key,value:p.value,version:3}});
+  }});
+  storage.setItem(key,JSON.stringify({subject:'M2'}));
+  const first=runtime.flush();await waiting;
+  storage.setItem(key,JSON.stringify({subject:'Ciencias'}));
+  release();await first;
+  assert.equal(runtime.pending(),1);assert.equal(Object.keys(runtime.conflicts).length,0);
+  await new Promise((resolve,reject)=>{const start=Date.now();const check=()=>{if(calls===2)return resolve();if(Date.now()-start>3500)return reject(Error('Rebased answer not synchronized'));setTimeout(check,40);};check();});
+  assert.equal(runtime.pending(),0);assert.equal(JSON.parse(storage.getItem(key)).subject,'Ciencias');
+ }finally{
+  release?.();runtime?.restore();
+  for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];
+  if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
+ }
+});
