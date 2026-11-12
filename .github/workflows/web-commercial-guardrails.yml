@@ -57,4 +57,4 @@ jobs:
         run: |
           npx playwright test --config web/playwright.config.mjs --project Desktop-Chrome --grep 'approved (rankings|duelos|duelo|resultado) UI|four independent rankings|a server-expired subscription|complimentary testers'
       - name: Check public web commercial safeguards
-        run: node --test tests/web-commercial-launch-guard.test.mjs tests/web-gateway-security.test.mjs tests/web-progress-merge.test.mjs tests/web-auth-return.test.mjs web/tests/progress-runtime.test.mjs
+        run: node --test tests/web-commercial-launch-guard.test.mjs tests/web-gateway-security.test.mjs tests/web-progress-merge.test.mjs tests/web-auth-return.test.mjs web/tests/progress-runtime.test.mjs web/tests/duels2-integration.test.mjs
