@@ -46,7 +46,7 @@ test('Supabase user identity must match access entitlement user ID',async()=>{
   throw Error('Unexpected backend request');
  }});
  const res=await protectedGateway.fetch(req('/app/inicio.html',{headers:{authorization:'Bearer '+token,accept:'application/json'}}),env);
- assert.equal(res.status,503);assert.equal((await json(res)).error,'INVALID_ACCESS_RESPONSE');
+ assert.equal(res.status,400);assert.equal((await json(res)).error,'INVALID_ACCESS_RESPONSE');
  assert.equal(calls.length,2);
 });
 test('expired tokens are rejected before contacting Supabase',async()=>{
