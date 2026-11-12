@@ -54,4 +54,10 @@ test('countdown actually decreases with elapsed time, survives rerenders and exp
  tick();assert.equal(clock.textContent,'Tiempo de esta pregunta: 1:00');
  now+=60000;tick();assert.match(clock.textContent,/Tiempo agotado/);
  now+=10000;tick();assert.match(clock.textContent,/Tiempo agotado/);
+ // New authoritative timestamps may update a countdown but must not revive an expired question.
+ attempt.serverNow='2026-11-12T20:01:40.000Z';tick();assert.match(clock.textContent,/Tiempo agotado/);
+ // M1/M2 have a 120-second server deadline rather than the 90-second standard.
+ state.attempt={version:2,serverNow:'2026-11-12T20:01:40.000Z',questionDeadline:'2026-11-12T20:03:40.000Z'};
+ tick();assert.equal(clock.textContent,'Tiempo de esta pregunta: 2:00');
+ now+=60000;tick();assert.equal(clock.textContent,'Tiempo de esta pregunta: 1:00');
 });
