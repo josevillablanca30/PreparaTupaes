@@ -14,3 +14,32 @@ test('browser lifecycle saves its own queue without firing unload requests, then
   const remote={key,value:{subject:'Lectura',attempts:[{eventId:'b',correct:false}]},version:3};runtime=installProgressRuntime({bootstrap:{userId:uid,documents:[]},storage,fetcher:async()=>Response.json({conflict:true,document:remote})});storage.setItem(key,JSON.stringify({subject:'Ciencias',attempts:[{eventId:'a',correct:true}]}));await runtime.flush();assert.equal(runtime.conflicts[key].local.subject,'Ciencias');assert.equal(JSON.parse(storage.getItem(key)).subject,'Ciencias');await runtime.resolve(key,'remote');assert.equal(JSON.parse(storage.getItem(key)).subject,'Lectura');const archive=Object.keys(storage).find(k=>k.includes('conflict-archive:'));assert.ok(archive);assert.equal(JSON.parse(rawGet.call(storage,archive)).local.subject,'Ciencias');runtime.erase();assert.equal(Object.keys(storage).some(k=>k.startsWith('cachaste-web:'+uid+':')),false);assert.equal(storage.getItem('cachaste-auth-v1'),'session-secret-qa');assert.equal(storage.getItem('cachaste-web:other:'+key),'another-student');
  }finally{runtime?.restore();for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;}
 });
+
+test('an edit during an in-flight save is sent again automatically',async()=>{
+ const saved={Storage:globalThis.Storage,document:globalThis.document,addEventListener:globalThis.addEventListener,removeEventListener:globalThis.removeEventListener,navigator:Object.getOwnPropertyDescriptor(globalThis,'navigator')};
+ const storage=new LocalStorage(),events=new Map(),docEvents=new Map();
+ globalThis.Storage=LocalStorage;globalThis.addEventListener=(name,fn)=>events.set(name,fn);globalThis.removeEventListener=(name,fn)=>events.delete(name);
+ globalThis.document={hidden:false,addEventListener:(name,fn)=>docEvents.set(name,fn),removeEventListener:(name,fn)=>docEvents.delete(name)};
+ Object.defineProperty(globalThis,'navigator',{value:{onLine:true},configurable:true});
+ let release,started;const startedPromise=new Promise(resolve=>started=resolve),firstReply=new Promise(resolve=>release=resolve),writes=[];
+ const fetcher=async(_url,opts)=>{
+  const body=JSON.parse(opts.body);writes.push(body.payload.value);
+  if(writes.length===1){started();await firstReply;}
+  return Response.json({conflict:false,document:{key,value:body.payload.value,version:writes.length+1}});
+ };
+ let runtime;
+ try{
+  runtime=installProgressRuntime({bootstrap:{userId:uid,documents:[{key,value:{subject:'M1'},version:1}]},storage,fetcher});
+  storage.setItem(key,JSON.stringify({subject:'M2'}));
+  const flushing=runtime.flush();await startedPromise;
+  storage.setItem(key,JSON.stringify({subject:'Ciencias'}));
+  release();await flushing;assert.equal(runtime.pending(),1);
+  await new Promise((resolve,reject)=>{const startedAt=Date.now();const check=()=>{if(writes.length===2)return resolve();if(Date.now()-startedAt>3500)return reject(Error('Newer edit was not retried'));setTimeout(check,40);};check();});
+  assert.equal(writes[0].subject,'M2');assert.equal(writes[1].subject,'Ciencias');
+  assert.equal(runtime.pending(),0);
+ }finally{
+  release?.();runtime?.restore();
+  for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];
+  if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
+ }
+});
