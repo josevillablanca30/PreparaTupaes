@@ -85,3 +85,11 @@ Tras cada corrección acotada, ejecuta la prueba pertinente y `git diff --check`
 - Commit `f00adc70e293e7723737cc1bb61a53381cf6ea4b`: [GitHub Actions #80](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43305603858) terminó **success**.
 - Pasaron compilación, protección de recursos educativos privados, pruebas responsive 320/390/escritorio, controles Node y los casos Playwright seleccionados de M1: tutor y lección, Ensayo PAES completo, Express y sincronización entre contextos de navegador con aislamiento de otra identidad.
 - La evidencia corresponde al servidor QA simulado del repositorio, **no** a una prueba end-to-end de producción con Supabase y Mercado Pago reales. Se mantienen pendientes Auth QA real, sandbox de pagos y duelos reales antes de lanzamiento.
+
+### Validación transversal PAES — CI de `3a06fba`
+
+- [Web commercial guardrails #82](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43307237386): **success**.
+- [Web commercial guardrails #83](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43307252312): **success**.
+- [Web unified non-payment audit](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43307237385): **success**.
+- El flujo comercial ejecuta pruebas Playwright de tutor, mini práctica, alternativas y recarga a 390 px en M1, M2, Lectura, Historia y Ciencias (Biología, Física, Química, TP), junto con M1 completo, Express y sincronización entre navegadores.
+- PR #14 (pagos), #16 (duelos) y #17 (web) permanecen abiertos y sin conflictos de fusión según GitHub; esto **no** acredita integración funcional entre los tres. No fusionar ni activar cobros sin autorización.
