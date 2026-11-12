@@ -93,3 +93,11 @@ Tras cada corrección acotada, ejecuta la prueba pertinente y `git diff --check`
 - [Web unified non-payment audit](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43307237385): **success**.
 - El flujo comercial ejecuta pruebas Playwright de tutor, mini práctica, alternativas y recarga a 390 px en M1, M2, Lectura, Historia y Ciencias (Biología, Física, Química, TP), junto con M1 completo, Express y sincronización entre navegadores.
 - PR #14 (pagos), #16 (duelos) y #17 (web) permanecen abiertos y sin conflictos de fusión según GitHub; esto **no** acredita integración funcional entre los tres. No fusionar ni activar cobros sin autorización.
+
+### Autenticación QA validada — commit `ee593198`
+
+- [Guardrails #85](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43308699171): **success**.
+- [Guardrails #86](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43308709002): **success**.
+- [Auditoría web sin pagos](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43308699245): **success**.
+- Pasaron pruebas de registro y recuperación de contraseña mediante el servidor QA simulado, además de todas las pruebas comerciales, educativas, ensayos y sincronización.
+- **No equivale** a prueba real con correo, Supabase de producción o cobros; estos siguen como criterios de publicación pendientes. No desplegar, fusionar ni activar cobros sin aprobación.
