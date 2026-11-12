@@ -76,7 +76,7 @@
   if(state.route==='pregunta'&&state.attempt?.version===2){
    d2QuestionClock();
    const a=state.attempt,question=root.querySelector('.competitive-question');question?.classList.add('duels2-question-in');
-   if(!root.querySelector('.duels2-personal-streak')){const node=document.createElement('p');node.className='duels2-personal-streak';node.textContent=a.streak>1?'Tu racha: '+a.streak+' aciertos seguidos':'Tómate tu tiempo. Ambos pueden responder las diez.';question?.querySelector('.question-rules')?.after(node);}
+   if(!root.querySelector('.duels2-personal-streak')){const node=document.createElement('p');node.className='duels2-personal-streak';node.textContent=a.streak>1?'Tu racha: '+a.streak+' aciertos seguidos':'Cada pregunta tiene su propio tiempo límite.';question?.querySelector('.question-rules')?.after(node);}
    if(d2LastQuestion!==null&&d2LastQuestion!==a.question?.key)root.querySelector('.duels2-meter')?.classList.add('duels2-registered');d2LastQuestion=a.question?.key;
   }
   if(!root.querySelector('.duels2-rival-note')){const node=document.createElement('p');node.className='duels2-rival-note';node.textContent=d.opponentKind==='bot'?'Rival virtual · '+({initial:'nivel inicial',intermediate:'nivel intermedio',advanced:'nivel avanzado'}[d.opponent?.level]||'entrenamiento')+' · +1 / −1 estrella':'Rival humano · +3 / −3 estrellas';root.querySelector('.duels2-meter')?.after(node);}
