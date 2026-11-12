@@ -79,3 +79,9 @@ Tras cada corrección acotada, ejecuta la prueba pertinente y `git diff --check`
 - `f729bec36c7b66e4e4b9ebb23aaa55017d607ff1` añade al CI la prueba Playwright existente de M1 (lección, tutor, alternativas y recarga). **Comprobar su CI #75 antes de declararla aprobada.**
 - Recuperación de contraseña: el usuario confirmó una recuperación real exitosa en el sitio; no equivale a verificación de registro nuevo o autenticación completa de QA.
 - **Bloqueos externos pendientes:** flujo completo real de lección/ensayo con cuenta de QA, persistencia entre dos dispositivos reales, Auth nuevo, Duelos 2.0 PR #16, sandbox Mercado Pago PR #14 y autorización expresa de despliegue. No habilitar pagos reales ni quitar `noindex`.
+
+### Evidencia nueva — CI #80 aprobado
+
+- Commit `f00adc70e293e7723737cc1bb61a53381cf6ea4b`: [GitHub Actions #80](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/43305603858) terminó **success**.
+- Pasaron compilación, protección de recursos educativos privados, pruebas responsive 320/390/escritorio, controles Node y los casos Playwright seleccionados de M1: tutor y lección, Ensayo PAES completo, Express y sincronización entre contextos de navegador con aislamiento de otra identidad.
+- La evidencia corresponde al servidor QA simulado del repositorio, **no** a una prueba end-to-end de producción con Supabase y Mercado Pago reales. Se mantienen pendientes Auth QA real, sandbox de pagos y duelos reales antes de lanzamiento.
