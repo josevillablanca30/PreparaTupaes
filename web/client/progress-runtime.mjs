@@ -30,6 +30,9 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
    if(reply.conflict){
     const remote=reply.document||{version:0,value:null},latest=parse(get(prefix+key)),merged=mergeDocument(record.base,latest,remote.value);
     if(JSON.stringify(latest)===JSON.stringify(remote.value)){meta[key]={version:remote.version,base:remote.value,dirty:false};persist();continue;}
+    // If the remote matches the submitted snapshot, a newer local answer is
+    // still pending. Rebase it instead of treating it as a user conflict.
+    if(JSON.stringify(local)===JSON.stringify(remote.value)){meta[key]={version:remote.version,base:remote.value,dirty:true};persist();clearTimeout(timer);timer=setTimeout(flush,1800);continue;}
     conflicts[key]={local:latest,remote,base:record.base,fields:merged.conflicts,canMerge:merged.conflicts.length===0};
     set(prefix+'conflicts',JSON.stringify(conflicts));onConflict({key,...conflicts[key]});continue;
    }
