@@ -63,3 +63,30 @@ test('inactive subscription cannot access protected learning page',async()=>{
  const res=await protectedGateway.fetch(req('/app/inicio.html',{headers:{authorization:'Bearer '+token,accept:'application/json'}}),env);
  assert.equal(res.status,402);assert.equal((await json(res)).error,'SUBSCRIPTION_REQUIRED');
 });
+
+test('authenticated account endpoint returns the verified student and access',async()=>{
+ const token=fakeToken();const seen=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async (url,options)=>{
+  seen.push({url,method:options.method,auth:options.headers.authorization});
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a',email:'student@example.invalid'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',active:true,serverTimeMs:Date.now(),validUntilMs:Date.now()+3600000});
+  if(url.endsWith('/rest/v1/rpc/cachaste_web_account'))return Response.json({access:{active:true},subscriptions:[],trialUsed:false,isAdmin:false});
+  throw Error('Unexpected backend request');
+ }});
+ const res=await g.fetch(req('/api/session',{headers:{authorization:'Bearer '+token}}),env);
+ assert.equal(res.status,200);const data=await json(res);
+ assert.equal(data.user.id,'student-a');assert.equal(data.user.email,'student@example.invalid');
+ assert.equal(data.isAdmin,false);assert.equal(seen.length,3);
+ assert.ok(seen.every(call=>call.auth==='Bearer '+token));
+});
+test('authenticated progress writes cannot claim another student identity',async()=>{
+ const token=fakeToken();const seen=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async (url)=>{
+  seen.push(url);
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',active:true,serverTimeMs:Date.now(),validUntilMs:Date.now()+3600000});
+  throw Error('Progress RPC must not be invoked for mismatched user');
+ }});
+ const res=await g.fetch(req('/api/progress',{method:'POST',headers:{origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token},body:JSON.stringify({userId:'student-b',operation:'put',payload:{}})}),env);
+ assert.equal(res.status,409);assert.equal((await json(res)).error,'SESSION_CHANGED');assert.equal(seen.length,2);
+});
