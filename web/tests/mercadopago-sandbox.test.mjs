@@ -22,14 +22,25 @@ function harness(){
  const vars={SUPABASE_URL:'https://qa.invalid',SUPABASE_ANON_KEY:'public',SUPABASE_SERVICE_ROLE_KEY:'service',MP_TEST_MODE:'test',MP_TEST_ACCESS_TOKEN:'APP_USR-synthetic-test-seller',MP_TEST_COLLECTOR_ID:'123',MP_TEST_PLAN_MONTHLY_TRIAL:'trial',MP_TEST_PLAN_MONTHLY:'monthly',MP_TEST_PLAN_WEEKLY:'weekly',MP_TEST_PLAN_YEARLY:'yearly',MP_TEST_WEBHOOK_SECRET:'synthetic-qa-secret',MP_ACCESS_TOKEN:'PRODUCTION_MUST_NEVER_BE_USED'};
  const calls=[],rows=new Map(),receipts=new Set();let isAdmin=true,validSession=true,testSeller=true,subStatus='pending',providerFails=false;
  let hostedPlanUrl='https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=weekly',hostedPayments=[];
- let paymentInvoiceResults, subscriptionInvoiceResults, initialPayment;
+ let paymentInvoiceResults, subscriptionInvoiceResults, initialPayment, confirmedInvoice, verifiedOwner=false;
  const hosted={id:hostedId,payer_id:hostedBuyer,collector_id:123,site_id:'MLC',application_id:1234,preapproval_plan_id:'weekly',status:'authorized',date_created:new Date(now-9*day).toISOString(),next_payment_date:new Date(now+6*day).toISOString(),auto_recurring:{transaction_amount:2490,currency_id:'CLP',frequency:7,frequency_type:'days'}};
  const createClient=(_url,key)=>key==='service'?{rpc:async(name,{operation,payload:p})=>{
+  if(name==='cachaste_mp_sandbox_link_hosted'){
+   calls.push({operation:'link_hosted',p});
+   if(!verifiedOwner)return {error:{message:'OWNERSHIP_REQUIRED'}};
+   const id='40000000-0000-4000-8000-000000000001';
+   const snapshot={...p.snapshot,checkoutId:id,userId:p.userId};
+   rows.set(id,{id,user_id:p.userId,provider_id:p.providerId,provider_plan_id:p.providerPlanId,
+    provider_plan_linked:true,plan:p.plan,created_at:p.createdAt,trial_offered:p.trial,
+    hosted_payer_id:p.payerId,hosted_collector_id:p.collectorId,hosted_application_id:p.applicationId,
+    hosted_payment_id:p.paymentId,snapshot});
+   return {data:snapshot};
+  }
   assert.equal(name,'cachaste_mp_sandbox_admin');calls.push({operation,p});let data={};
   if(operation==='reserve'){if(rows.has(p.id))data={...rows.get(p.id),created:false};else {data={id:p.id,user_id:p.userId,plan:p.plan,provider_plan_id:p.providerPlanId,provider_plan_linked:false,trial_offered:p.trial,created_at:new Date(now).toISOString(),created:true};rows.set(p.id,data);}}
   if(operation==='attach'){rows.get(p.id).provider_id=p.providerId;data=rows.get(p.id);}
   if(operation==='list')data=[...rows.values()].filter(r=>r.user_id===p.userId);
-  if(operation==='lookup')data=[...rows.values()].find(r=>r.provider_id===p.providerId||r.id===p.reference)||null;
+  if(operation==='lookup')data=[...rows.values()].find(r=>(p.providerId&&r.provider_id===p.providerId)||(p.reference&&r.id===p.reference))||null;
   if(operation==='apply'){rows.get(p.id).snapshot=p.snapshot;data={stored:true,productionAccess:false};}
   if(operation==='seen'){if(p.record)receipts.add(p.hash);data={seen:receipts.has(p.hash)};}
   return {data};
@@ -43,6 +54,13 @@ function harness(){
   if(url.endsWith('/preapproval/'+hostedId)){if(options.method==='PUT'){assert.deepEqual(JSON.parse(options.body),{status:'cancelled'});hosted.status='cancelled';hosted.next_payment_date=null;}return Response.json(hosted);}
   if (url.endsWith('/authorized_payments/' + invoiceId)) {
    return Response.json({ id: invoiceId, preapproval_id: 'qa-sub', status: 'scheduled' });
+  }
+  const invoicePath = new URL(url).pathname.match(/^\/authorized_payments\/([0-9]+)$/);
+  if (invoicePath) {
+   const payment = hostedPayments.find(p => String(p.id) === invoicePath[1]);
+   return payment
+    ? Response.json(confirmedInvoice ?? hostedInvoice(payment.id, { id: payment.id }))
+    : Response.json({}, { status: 404 });
   }
   if (url.includes('/authorized_payments/search?payment_id=')) {
    const paymentId = new URL(url).searchParams.get('payment_id');
@@ -72,6 +90,8 @@ function harness(){
   setPaymentInvoices: v => { paymentInvoiceResults = v; },
   setSubscriptionInvoices: v => { subscriptionInvoiceResults = v; },
   setInitialPayment: v => { initialPayment = v; },
+  setConfirmedInvoice: v => { confirmedInvoice = v; },
+  verifyOwner: () => { verifiedOwner = true; },
   setAdmin:v=>isAdmin=v,revoke:()=>validSession=false,setTestSeller:v=>testSeller=v,setStatus:v=>subStatus=v,setFail:v=>providerFails=v};
 }
 const checkout={action:'checkout',plan:'MONTHLY_TRIAL',payerEmail:'test_user_synthetic@testuser.com',requestId};
@@ -205,6 +225,7 @@ test('a hosted sandbox cancellation rejects foreign and live resources before th
 });
 
 const paymentLookup = { action: 'plan_payment_lookup', plan: 'WEEKLY', payerId: hostedBuyer, paymentId: hostedPaymentId };
+const paymentReconcile = { ...paymentLookup, action: 'plan_payment_reconcile' };
 
 test('hosted payment lookup requires a current administrator and a numeric payment ID', async () => {
  const h = harness();
@@ -298,4 +319,125 @@ test('a canceled weekly sandbox subscription retains its original expiry without
  assert.equal(snapshot.paidUntil, new Date(now - day).toISOString());
  assert.equal(snapshot.nextPaymentAt, null);
  assert.equal(snapshot.renews, false);
+});
+
+test('hosted reconciliation uses the authenticated account and requires independent ownership', async () => {
+ const h = harness();
+ h.setHostedPayments([approvedPayment(hostedPaymentId, 1)]);
+ const body = { ...paymentReconcile, userId: 'supplied-by-client', applicationId: 'supplied-by-client' };
+ const unverified = await h.billing(h.req(body));
+ assert.equal(unverified.status, 403);
+ assert.equal((await unverified.json()).error, 'OWNERSHIP_REQUIRED');
+ assert.equal(h.rows.size, 0);
+
+ h.verifyOwner();
+ const linked = await h.billing(h.req(body));
+ assert.equal(linked.status, 200);
+ const result = await linked.json();
+ assert.equal(result.reconciled, true);
+ assert.equal(result.productionEnabled, false);
+ assert.equal(result.snapshot.userId, userId);
+ assert.equal(result.snapshot.paidUntil, new Date(now + 6 * day).toISOString());
+ const { p } = h.calls.find(call => call.operation === 'link_hosted');
+ assert.equal(p.userId, userId);
+ assert.equal(p.applicationId, '1234');
+ assert.equal(p.collectorId, '123');
+ assert.equal(p.providerId, hostedId);
+ assert.equal(p.paymentId, hostedPaymentId);
+ assert.ok(h.calls.some(call => call.url?.endsWith('/authorized_payments/' + hostedPaymentId)));
+ assert.ok(h.calls.every(call => !call.url || call.options.method === 'GET'));
+});
+
+test('hosted reconciliation leaves the ledger untouched for live, foreign or unconfirmed resources', async () => {
+ const cases = [
+  { payment: { live_mode: true }, error: 'PAYMENT_NOT_VERIFIED' },
+  { payment: { application_id: 5678 }, error: 'PAYMENT_NOT_VERIFIED' },
+  { subscription: { application_id: null }, error: 'SUBSCRIPTION_MISMATCH' },
+  { subscription: { live_mode: true }, error: 'SUBSCRIPTION_MISMATCH' },
+  { subscription: { external_reference: requestId }, error: 'CHECKOUT_REFERENCE_PRESENT' },
+  { invoice: { preapproval_id: 'other-subscription' }, error: 'PAYMENT_SUBSCRIPTION_NOT_MATCHED' },
+  { invoice: { live_mode: true }, error: 'PAYMENT_SUBSCRIPTION_NOT_MATCHED' }
+ ];
+ for (const scenario of cases) {
+  const h = harness();
+  h.verifyOwner();
+  Object.assign(h.hosted, scenario.subscription);
+  h.setHostedPayments([approvedPayment(hostedPaymentId, 0, scenario.payment)]);
+  if (scenario.invoice) {
+   h.setConfirmedInvoice(hostedInvoice(hostedPaymentId, { id: hostedPaymentId, ...scenario.invoice }));
+  }
+  const response = await h.billing(h.req(paymentReconcile));
+  assert.equal((await response.json()).error, scenario.error);
+  assert.equal(h.rows.size, 0);
+  assert.ok(!h.calls.some(call => call.operation === 'link_hosted'));
+ }
+});
+
+test('signed unlinked or live payments are acknowledged without recording a processed receipt', async () => {
+ const event = { id: hostedPaymentId, type: 'payment' };
+ const h = harness();
+ h.setHostedPayments([approvedPayment(hostedPaymentId, 0, { live_mode: true })]);
+ const live = await h.webhook(await notification(undefined, now, event));
+ assert.deepEqual(await live.json(), { result: 'ignored', reason: 'provider_mode_or_seller' });
+ assert.ok(!h.calls.some(call => call.url?.includes('/authorized_payments/')));
+ h.setHostedPayments([approvedPayment(hostedPaymentId)]);
+ const unlinked = await h.webhook(await notification(undefined, now, event));
+ assert.deepEqual(await unlinked.json(), { result: 'ignored', reason: 'not_linked' });
+ assert.equal(h.rows.size, 0);
+ assert.equal(h.receipts.size, 0);
+});
+
+test('signed hosted renewals, rejected payments, refunds and cancellation update the linked checkout', async () => {
+ const h = harness();
+ const first = approvedPayment(hostedPaymentId, 8), renewal = approvedPayment('188037470296', 1);
+ const rejected = approvedPayment('188037470297', 0, { status: 'rejected', date_approved: null });
+ h.setHostedPayments([first]);
+ h.verifyOwner();
+ const linked = await h.billing(h.req(paymentReconcile));
+ assert.equal(linked.status, 200);
+ const row = [...h.rows.values()][0];
+ assert.equal(row.snapshot.paidUntil, new Date(now - day).toISOString());
+
+ h.setHostedPayments([first, renewal, rejected]);
+ h.setSubscriptionInvoices([hostedInvoice(first.id, { id: first.id })]);
+ const renewalEvent = { id: renewal.id, type: 'payment', request: 'renewal' };
+ assert.equal((await h.webhook(await notification(undefined, now, renewalEvent))).status, 503);
+ assert.equal(h.receipts.size, 0);
+ h.setSubscriptionInvoices(undefined);
+ const retried = await h.webhook(await notification(undefined, now, renewalEvent));
+ assert.deepEqual(await retried.json(), { result: 'processed' });
+ assert.equal(row.snapshot.paidUntil, new Date(now + 6 * day).toISOString());
+ assert.equal(row.snapshot.payments.find(payment => payment.id === rejected.id).status, 'rejected');
+ const duplicate = await h.webhook(await notification(undefined, now, renewalEvent));
+ assert.deepEqual(await duplicate.json(), { result: 'duplicate' });
+ assert.equal(h.receipts.size, 1);
+
+ const refunded = { ...renewal, status: 'refunded', transaction_amount_refunded: 2490 };
+ h.setHostedPayments([first, refunded, rejected]);
+ const refund = await h.webhook(await notification(undefined, now, {
+  id: renewal.id, type: 'payment', request: 'refund'
+ }));
+ assert.deepEqual(await refund.json(), { result: 'processed' });
+ assert.equal(row.snapshot.payments.find(payment => payment.id === renewal.id).status, 'refunded');
+ assert.equal(row.snapshot.paidUntil, new Date(now - day).toISOString());
+
+ const cancelled = await h.billing(h.req({ action: 'cancel', subscriptionId: hostedId }));
+ assert.equal(cancelled.status, 200);
+ assert.equal((await cancelled.json()).cancelled, true);
+ assert.equal(row.snapshot.status, 'cancelled');
+ assert.equal(row.snapshot.renews, false);
+ assert.equal(row.snapshot.paidUntil, new Date(now - day).toISOString());
+ assert.equal(h.rows.size, 1);
+});
+
+test('a signed subscription can recover a reserved checkout by the exact provider reference', async () => {
+ const h = harness();
+ assert.equal((await h.billing(h.req(checkout))).status, 200);
+ delete h.rows.get(requestId).provider_id;
+ h.setStatus('authorized');
+ const restored = await h.webhook(await notification());
+ assert.deepEqual(await restored.json(), { result: 'processed' });
+ assert.equal(h.rows.get(requestId).provider_id, 'qa-sub');
+ assert.equal(h.rows.get(requestId).snapshot.status, 'authorized');
+ assert.equal(h.rows.size, 1);
 });
