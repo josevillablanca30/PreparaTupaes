@@ -35,6 +35,9 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
    }
    const saved=reply.document;const changed=JSON.stringify(parse(get(prefix+key)))!==JSON.stringify(local);
    meta[key]={version:saved.version,base:saved.value,dirty:changed};persist();
+   // A student may keep answering while the request is in flight. The first
+   // response only acknowledges the earlier snapshot; queue the newer edit.
+   if(changed&&!stopped&&!unloading){clearTimeout(timer);timer=setTimeout(flush,1800);}
   }}catch(e){if(e.message!=='ACCESS_EXPIRED')onStatus('pending');}
   finally{running=false;status();}
  }
