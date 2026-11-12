@@ -42,4 +42,4 @@ jobs:
       - name: Run browser checks at 320px, 390px and desktop
         run: npx playwright test --config playwright.web-commercial.config.mjs
       - name: Check public web commercial safeguards
-        run: node --test tests/web-commercial-launch-guard.test.mjs tests/web-gateway-security.test.mjs
+        run: node --test tests/web-commercial-launch-guard.test.mjs tests/web-gateway-security.test.mjs tests/web-progress-merge.test.mjs
