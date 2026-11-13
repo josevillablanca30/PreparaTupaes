@@ -3,6 +3,7 @@ export const PAGES_PROJECT = 'cachaste-sitecacho';
 // Public resource identifier confirmed in the owner's Cloudflare screenshot; not an API credential.
 export const PAGES_ACCOUNT_ID = 'cfe4b77c0c39bb056306d16133a93642';
 export const PREVIEW_BRANCH = 'work/cachaste-web-unificada-20261106';
+export const PUBLIC_SOURCE_BRANCH = 'work/cachaste-web-comercial-cierre-20261112';
 export const RESERVED_PRODUCTION_BRANCH = 'production-requires-owner-approval';
 // The owner requested the public website on 2026-11-10; payment activation remains separate.
 export const PUBLIC_RELEASE_MARKER = 'sitecacho-payments-closed-v1';
@@ -45,7 +46,7 @@ function apiDiagnostic(method, suffix, status, data) {
 }
 
 export function credentials(env) {
-  if (env.GITHUB_REF_NAME !== PREVIEW_BRANCH) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
+  if (![PREVIEW_BRANCH, PUBLIC_SOURCE_BRANCH].includes(env.GITHUB_REF_NAME)) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
   if (env.CLOUDFLARE_PAGES_PROJECT && env.CLOUDFLARE_PAGES_PROJECT !== PAGES_PROJECT) throw Error('UNRELATED_PROJECT_DENIED');
   if (env.CLOUDFLARE_ACCOUNT_ID !== PAGES_ACCOUNT_ID) throw Error('UNRELATED_ACCOUNT_DENIED');
   return {account: env.CLOUDFLARE_ACCOUNT_ID, token: normalizeApiToken(env.CLOUDFLARE_API_TOKEN)};
@@ -53,7 +54,7 @@ export function credentials(env) {
 
 export function verifyTarget(project, branch) {
   if (project?.name !== PAGES_PROJECT) throw Error('UNRELATED_PROJECT_DENIED');
-  if (branch !== PREVIEW_BRANCH || project.production_branch !== RESERVED_PRODUCTION_BRANCH) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
+  if (![PREVIEW_BRANCH, PUBLIC_SOURCE_BRANCH].includes(branch) || project.production_branch !== RESERVED_PRODUCTION_BRANCH) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
   if (project.source) throw Error('DIRECT_UPLOAD_PROJECT_REQUIRED');
   if (project.canonical_deployment) {
     const release=project.canonical_deployment;
