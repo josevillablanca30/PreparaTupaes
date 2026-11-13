@@ -1,12 +1,15 @@
 {
-  "request": "sitecacho-launch-and-email-registration-20261111",
+  "request": "sitecacho-commercial-duels2-release-20261112",
   "project": "cachaste-sitecacho",
-  "sourceBranch": "work/cachaste-web-unificada-20261106",
+  "sourceBranch": "work/cachaste-web-comercial-cierre-20261112",
   "productionBranch": "production-requires-owner-approval",
   "scope": "public-web-payments-closed",
   "realPayments": false,
   "emailSignup": true,
   "requiresSuccessfulQa": true,
   "preserveResend": true,
-  "hosts": ["sitecacho.cl", "www.sitecacho.cl"]
+  "hosts": [
+    "sitecacho.cl",
+    "www.sitecacho.cl"
+  ]
 }
