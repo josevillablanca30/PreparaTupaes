@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 test('landing loads with preserved branding and no horizontal overflow',async({page})=>{
  await page.goto('/');await expect(page.locator('h1').first()).toBeVisible();
- await expect(page.locator('img[src="/assets/landing-cat-rank-cutout.png"]')).toBeVisible();
+ await expect(page.locator('img[src="/assets/gatito-sabio-oficial.png"]')).toBeVisible();
  const sizes=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
  expect(sizes.scroll).toBeLessThanOrEqual(sizes.client+1);
  await expect(page.getByText(/Los cobros todavía no están habilitados/i).first()).toBeVisible();
