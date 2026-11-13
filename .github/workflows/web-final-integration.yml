@@ -33,7 +33,7 @@ jobs:
       - name: Preparar Chromium
         run: bash scripts/install-chromium-qa.sh
       - name: Comprobar el retorno y el acceso en la cuenta
-        run: npx playwright test --config web/playwright.config.mjs --project Desktop-Chrome --grep 'the account stays usable when payment reconciliation is delayed|a checkout return waits for server-confirmed access'
+        run: npx playwright test --config web/playwright.config.mjs --project Desktop-Chrome --grep 'the account stays usable when payment reconciliation is delayed|a checkout return waits for server-confirmed access|complimentary testers see their expiry|the admin can obtain and review a sandbox plan link by payer ID|the sandbox panel verifies the new payment'
       - name: Leer el estado de Pages sin modificarlo
         env:
           CLOUDFLARE_ACCOUNT_ID: cfe4b77c0c39bb056306d16133a93642

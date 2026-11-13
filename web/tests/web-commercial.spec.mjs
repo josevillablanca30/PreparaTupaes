@@ -204,3 +204,71 @@ test('complimentary testers see their expiry and cannot start a subscription; sa
  const payload=(await posted).postDataJSON();expect(payload.plan).toBe('MONTHLY_TRIAL');expect(payload.payerEmail).toBe('test_user_synthetic@testuser.com');expect(payload.requestId).toMatch(/^[a-f0-9-]{36}$/);
  await expect(page.getByRole('heading',{name:'Destino de checkout simulado para QA de interfaz'})).toBeVisible();
 });
+
+test('the admin can obtain and review a sandbox plan link by payer ID',async({page,request})=>{
+ await request.post('/__qa/control',{data:{qaAdmin:true}});
+ const session=await identity(page);
+ const checkoutUrl='https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=synthetic-weekly';
+ const payerId='1234567890';
+ await page.goto('/cuenta.html?qa=mp');
+ const buyer=page.getByLabel('ID de la cuenta compradora de prueba');
+ const plan=page.getByLabel('Plan de prueba');
+ const link=page.getByRole('link',{name:'Abrir enlace sandbox del plan'});
+ const button=page.getByRole('button',{name:'Obtener enlace por ID'});
+ await plan.selectOption('WEEKLY');
+ await buyer.fill(payerId);
+ const posted=page.waitForRequest(r=>r.url().endsWith('/api/billing/sandbox')&&r.method()==='POST');
+ await button.click();
+ const checkout=await posted;
+ expect(checkout.postDataJSON()).toEqual({action:'checkout',plan:'WEEKLY',payerId});
+ expect(await checkout.headerValue('authorization')).toBe('Bearer '+session.access_token);
+ expect(await checkout.headerValue('x-cachaste-request')).toBe('1');
+ await expect(link).toHaveAttribute('href',checkoutUrl);
+ await expect(link).toHaveAttribute('target','_blank');
+ await expect(page).toHaveURL(/\/cuenta\.html\?qa=mp$/);
+ expect(page.context().pages()).toEqual([page]);
+ await expect(plan).toHaveValue('WEEKLY');
+ await expect(buyer).toHaveValue(payerId);
+
+ await buyer.fill('1234567891');
+ await expect(link).toHaveCount(0);
+ await page.route('**/api/billing/sandbox',async route=>{
+  const response=await route.fetch();
+  await route.fulfill({response,json:{...await response.json(),productionEnabled:true}});
+ });
+ await button.click();
+ await expect(page.locator('#account-status')).toContainText('El servidor no devolvió un enlace válido');
+ await expect(link).toHaveCount(0);
+});
+
+test('the sandbox panel verifies the new payment before allowing reconciliation',async({page,request})=>{
+ await request.post('/__qa/control',{data:{qaAdmin:true}});
+ await identity(page);
+ const payerId='1234567890',paymentId='9876543210';
+ await page.goto('/cuenta.html?qa=mp');
+ await page.getByLabel('Plan de prueba').selectOption('WEEKLY');
+ await page.getByLabel('ID de la cuenta compradora de prueba').fill(payerId);
+ await page.getByLabel('ID del pago de prueba').fill(paymentId);
+ const lookup=page.getByRole('button',{name:'Verificar pago de prueba'});
+ const reconcile=page.getByRole('button',{name:'Conciliar pago de prueba'});
+ const sandboxPost=()=>page.waitForRequest(r=>r.url().endsWith('/api/billing/sandbox')&&r.method()==='POST');
+ await expect(reconcile).toHaveCount(0);
+ const lookedUp=sandboxPost();
+ await lookup.click();
+ expect((await lookedUp).postDataJSON()).toEqual({action:'plan_payment_lookup',plan:'WEEKLY',payerId,paymentId});
+ await expect(page.locator('#mp-qa-payment')).toContainText('synthetic-qa-subscription');
+ const reconciled=sandboxPost();
+ await reconcile.click();
+ expect((await reconciled).postDataJSON()).toEqual({action:'plan_payment_reconcile',plan:'WEEKLY',payerId,paymentId});
+ await expect(page.locator('#mp-qa-payment')).toContainText('Conciliación sandbox registrada.');
+
+ await page.getByLabel('ID del pago de prueba').fill('9876543211');
+ await page.route('**/api/billing/sandbox',async route=>{
+  const response=await route.fetch();
+  const data=await response.json();
+  await route.fulfill({response,json:{...data,subscription:{...data.subscription,liveMode:true}}});
+ });
+ await lookup.click();
+ await expect(page.locator('#account-status')).toContainText('Mercado Pago no confirmó un pago sandbox elegible');
+ await expect(reconcile).toHaveCount(0);
+});

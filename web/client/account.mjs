@@ -10,7 +10,16 @@ const root=document.getElementById('account-root'),status=document.getElementByI
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=x=>new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',maximumFractionDigits:0}).format(x);
 const messages={COMPLIMENTARY_ACCESS:'Tu acceso de tester es gratuito. No necesitas contratar una suscripción ni ingresar una tarjeta.',TEST_BUYER_EMAIL_REQUIRED:'Ingresa el correo exacto de una cuenta de prueba entregado por Mercado Pago.',NOT_TEST_SELLER:'La cuenta vendedora no pudo verificarse como cuenta de prueba.',CHECKOUT_ALREADY_FINISHED:'Esta solicitud ya fue completada. Actualiza los resultados de prueba.',GOOGLE_NOT_READY:'El acceso con Google está preparado, pero aún falta autorizar el proveedor y su retorno seguro. No se ha creado una cuenta.',AUTH_RETURN_CANCELLED:'El acceso fue cancelado. Puedes volver a intentarlo.',AUTH_RETURN_INVALID:'El enlace de acceso venció o se abrió en otro navegador. Vuelve a iniciar sesión desde aquí.',AUTH_REDIRECT_DENIED:'No pudimos validar el destino de acceso. Vuelve a intentarlo.',AUTH_REQUIRED:'Inicia sesión para continuar.',BILLING_NOT_READY:'Las suscripciones todavía están en preparación. Los cobros siguen desactivados.',CHECKOUT_PENDING:'Tu solicitud anterior sigue en revisión. Actualiza el acceso antes de crear otra.',TRIAL_ALREADY_USED:'La prueba gratuita ya fue utilizada o reservada para esta cuenta. Puedes elegir el plan mensual sin prueba.',PLAN_NOT_READY:'Este plan todavía no está habilitado por el responsable.',SERVICE_UNAVAILABLE:'No logramos conectar. Vuelve a intentarlo cuando tengas conexión.',SYNC_UNAVAILABLE:'No logramos sincronizar. Conservamos el avance de este dispositivo.',QA_ADMIN_REQUIRED:'Tu cuenta aún no está autorizada para pruebas de Mercado Pago.',ORIGIN_NOT_ALLOWED:'Abre la prueba desde el sitio oficial de ¿Cachaste?.',PROVIDER_CHECKOUT_FAILED:'Mercado Pago no pudo iniciar la suscripción de prueba.',TEST_CONFIG_MISSING:'Falta completar la configuración del entorno de prueba.'};
-let config,sdk,account=null,billing={ready:false,trialAvailable:false},busy=false,qaState=null,qaEmail='',recovering=location.search.includes('recovery=1');
+let config,sdk,account=null,billing={ready:false,trialAvailable:false},busy=false,qaState=null,qaCheckout=null,qaPayment=null,recovering=location.search.includes('recovery=1');
+const qaDraft={email:'',payerId:'',plan:'MONTHLY_TRIAL',paymentId:''};
+const qaPlans={MONTHLY_TRIAL:'Mensual · 7 días gratis',WEEKLY:'Semanal · $2.490',MONTHLY:'Mensual · $7.990',YEARLY:'Anual · $64.990'};
+const qaSandboxPath='/api/billing/sandbox';
+const qaNumericId=/^[1-9]\d{0,18}$/;
+const canUseQa=()=>account?.isAdmin===true&&new URLSearchParams(location.search).get('qa')==='mp';
+messages.INVALID_PLAN_CHECKOUT_URL='El servidor no devolvió un enlace válido para el plan de prueba.';
+messages.PAYMENT_NOT_VERIFIED='Mercado Pago no confirmó un pago sandbox elegible para este comprador y plan.';
+messages.PAYMENT_SUBSCRIPTION_NOT_MATCHED='Mercado Pago todavía no confirmó la factura de este pago en la suscripción.';
+messages.SANDBOX_OWNERSHIP_UNVERIFIED='Falta registrar la evidencia de titularidad del comprador de prueba.';
 const checkoutReturned=new URLSearchParams(location.search).get('checkout')==='return';
 let emailMode='login',emailDraft='';
 async function request(body,url='/api/billing',method='POST',signal){
@@ -34,6 +43,40 @@ async function connect(verifyPayments=false){
  else if(verifyPayments&&checkoutReturned&&!account?.access?.active)notice('Estamos esperando la confirmación del pago. Puedes consultar el estado en Actualizar mi acceso.');
 }
 function notice(text){status.textContent=text;}
+function verifiedQaLink(result,payerId){
+ const invalid=()=>Error('INVALID_PLAN_CHECKOUT_URL');
+ if(result?.mode!=='sandbox'||result.productionEnabled!==false||result.checkoutMode!=='hosted_plan'||
+    result.payerId!==payerId||!result.providerPlanId||typeof result.checkoutUrl!=='string')throw invalid();
+ let url;
+ try{url=new URL(result.checkoutUrl);}catch{throw invalid();}
+ if(url.protocol!=='https:'||url.username||url.password||url.port||
+    !['mercadopago.cl','www.mercadopago.cl','mercadopago.com','www.mercadopago.com','www.mercadopago.com.ar'].includes(url.hostname)||
+    url.pathname!=='/subscriptions/checkout'||url.searchParams.has('preapproval_id'))throw invalid();
+ const plans=url.searchParams.getAll('preapproval_plan_id');
+ if(plans.length!==1||plans[0]!==result.providerPlanId)throw invalid();
+ return result.checkoutUrl;
+}
+function qaPanel(){
+ const options=Object.entries(qaPlans).map(([id,label])=>'<option value="'+id+'" '+(id===qaDraft.plan?'selected':'')+'>'+label+'</option>').join('');
+ const link=qaCheckout?.adminId===account.user.id
+  ?'<p id="mp-qa-link"><a class="text-link" href="'+esc(qaCheckout.url)+'" target="_blank" rel="noopener noreferrer">Abrir enlace sandbox del plan</a><br>Completa la prueba con la cuenta compradora QA.</p>':'';
+ const payment=qaPayment?.adminId===account.user.id
+  ?'<div id="mp-qa-payment"><p>Pago sandbox '+esc(qaPayment.paymentId)+' verificado. Suscripción '+esc(qaPayment.subscriptionId)+'.</p>'+
+   (qaPayment.reconciled?'<p>Conciliación sandbox registrada.</p>':'<button type="button" class="secondary" data-action="mp-qa-reconcile">Conciliar pago de prueba</button>')+'</div>':'';
+ const results=qaState?'<p>Vendedor y planes de prueba verificados. '+(qaState.webhookConfigured?'Webhooks configurados.':'Falta la firma de webhooks de la aplicación de prueba.')+'</p>'+
+  qaState.subscriptions.filter(s=>s.provider_id).map(s=>'<article><p>'+esc(s.plan)+' · '+esc(s.snapshot?.status||'pendiente')+'</p><button type="button" class="secondary" data-qa-cancel="'+esc(s.provider_id)+'">Cancelar suscripción de prueba</button></article>').join('')+
+  '<button type="button" class="secondary" data-action="mp-qa-refresh">Actualizar resultados de prueba</button>':'';
+ return '<section class="account-card" id="mp-qa"><span class="eyebrow">Solo administración · Pruebas</span><h2>Checkout Mercado Pago QA</h2>'+
+  '<p>Solo cuentas de prueba. Los resultados se guardan separados del acceso real de estudiantes.</p>'+
+  '<button type="button" class="secondary" data-action="mp-qa-status">Verificar configuración y suscripciones</button>'+
+  '<label>Plan de prueba<select id="mp-qa-plan" data-qa-field="plan">'+options+'</select></label>'+
+  '<label>ID de la cuenta compradora de prueba<input data-qa-field="payerId" inputmode="numeric" maxlength="19" autocomplete="off" value="'+esc(qaDraft.payerId)+'"></label>'+
+  '<button type="button" data-action="mp-qa-link">Obtener enlace por ID</button>'+link+
+  '<label>ID del pago de prueba<input data-qa-field="paymentId" inputmode="numeric" maxlength="19" autocomplete="off" value="'+esc(qaDraft.paymentId)+'"></label>'+
+  '<button type="button" class="secondary" data-action="mp-qa-lookup">Verificar pago de prueba</button>'+payment+
+  '<label>Correo real de la cuenta compradora de prueba<input id="mp-qa-email" data-qa-field="email" type="email" autocomplete="off" value="'+esc(qaDraft.email)+'" placeholder="Correo entregado por Mercado Pago" required></label>'+
+  '<button type="button" data-action="mp-qa">Abrir checkout de prueba</button>'+results+'</section>';
+}
 function emailForm(){
  const email='<label>Correo electrónico<input name="email" type="email" autocomplete="email" maxlength="254" value="'+esc(emailDraft)+'" required></label>';
  const back='<button type="button" class="text-button" data-action="login-form">Volver a iniciar sesión</button>';
@@ -54,9 +97,23 @@ function render(){if(!config)return;
  const freeNotice=account?.complimentary?.active?'<section class="account-card"><h2>Tu año gratuito de tester</h2><p>Tu acceso es gratuito hasta '+esc(new Date(account.complimentary.validUntil).toLocaleDateString('es-CL'))+'. No tiene renovación automática ni requiere tarjeta.</p></section>':'';
  root.innerHTML=(user&&new URLSearchParams(location.search).get('reauth')==='google'?'<section class="account-card"><h2>Confirma tu acceso con Google</h2><p>Vuelve a elegir tu cuenta y después abre Perfil para confirmar la eliminación. Tu progreso y tu suscripción no cambian al confirmar el acceso.</p><button type="button" class="google-signin" data-action="google">Confirmar con Google</button></section>':'')+(recovering&&user?'<section class="account-card"><span class="eyebrow">Recupera tu acceso</span><h1>Elige tu nueva contraseña.</h1><form id="recovery-form"><label>Nueva contraseña<input name="password" type="password" minlength="12" autocomplete="new-password" required></label><label>Repite tu contraseña<input name="repeat" type="password" minlength="12" autocomplete="new-password" required></label><button type="submit">Guardar contraseña</button></form></section>':user?'<section class="account-card"><span class="eyebrow">Tu cuenta de ¿Cachaste?</span><h1>Sigamos desde donde quedaste.</h1><p class="account-email">'+esc(user.email)+'</p><p class="access-state">'+(active?'Tu acceso está verificado.':'Tu cuenta está lista. Necesitas una suscripción vigente para abrir tu preparación.')+'</p><div class="account-actions">'+(active?'<a class="primary-button" href="'+nextPage()+'">Continuar mi preparación <span>→</span></a>':'<a class="primary-button" href="#planes">Ver suscripciones</a>')+'<button type="button" class="secondary" data-action="refresh">Actualizar mi acceso</button>'+ '<a class="text-link" href="/app/competencia.html#perfil">Perfil, privacidad y eliminación</a>'+'<button class="text-button" data-action="signout" type="button">Cerrar sesión</button></div></section>':'<section class="account-card"><span class="eyebrow">Un ratito a la vez</span><h1>Tu preparación comienza aquí.</h1><p>Una misma cuenta para tu aprendizaje y competencia. Tu progreso educativo web se guarda en tu cuenta.</p><button type="button" class="google-signin" data-action="google" aria-describedby="google-status"><img src="/icons/google-g.png" alt="" width="20" height="20"> Continuar con Google</button><p id="google-status" class="legal-note">'+(config.googleAuthEnabled&&config.authReturnReady?'Usa tu cuenta de Google para entrar o registrarte.':'Acceso con Google en preparación. Aún no está habilitado.')+'</p><div class="auth-divider"><span>o entra con tu correo</span></div>'+emailForm()+'<p class="legal-note">El acceso educativo y competitivo requiere una suscripción vigente. <a href="/privacidad.html">Privacidad</a> · <a href="/condiciones.html">Condiciones</a></p></section>')+
  (user?'<section class="account-subscriptions">'+(account.subscriptions||[]).map(s=>'<article><h2>Plan '+esc(s.plan)+'</h2><p>Estado: '+esc({authorized:'activo',pending:'pendiente',paused:'pausado',cancelled:'renovación cancelada',canceled:'renovación cancelada'}[s.status]||s.status)+'</p>'+(s.paidUntil?'<p>Período pagado hasta '+esc(new Date(s.paidUntil).toLocaleDateString('es-CL'))+'</p>':'')+(s.renews?'<button class="secondary" type="button" data-cancel="'+esc(s.id)+'">Cancelar renovación</button>':'')+'</article>').join('')+'</section>':'')+freeNotice+plans()+(account?.isAdmin?'<section class="account-card"><h2>Ventas y comisiones</h2><p>Exporta el registro verificado por días de Chile. Este reporte no reemplaza los documentos tributarios.</p><form id="sales-form"><label>Desde<input name="from" type="date" required></label><label>Hasta<input name="to" type="date" required></label><button type="submit">Descargar CSV</button></form></section>':'');
- if(user&&account?.isAdmin&&new URLSearchParams(location.search).get('qa')==='mp')root.innerHTML+='<section class="account-card" id="mp-qa"><span class="eyebrow">Solo administración · Pruebas</span><h2>Checkout Mercado Pago QA</h2><p>Solo cuentas de prueba. Los resultados se guardan separados del acceso real de estudiantes.</p><button type="button" class="secondary" data-action="mp-qa-status">Verificar configuración y suscripciones</button><label>Correo real de la cuenta compradora de prueba<input id="mp-qa-email" type="email" autocomplete="off" value="'+esc(qaEmail)+'" placeholder="Correo entregado por Mercado Pago" required></label><label>Plan de prueba<select id="mp-qa-plan"><option value="MONTHLY_TRIAL">Mensual · 7 días gratis</option><option value="WEEKLY">Semanal · $2.490</option><option value="MONTHLY">Mensual · $7.990</option><option value="YEARLY">Anual · $64.990</option></select></label><button type="button" data-action="mp-qa">Abrir checkout de prueba</button>'+(qaState?'<p>Vendedor y planes de prueba verificados. '+(qaState.webhookConfigured?'Webhooks configurados.':'Falta la firma de webhooks de la aplicación de prueba.')+'</p>'+qaState.subscriptions.filter(s=>s.provider_id).map(s=>'<article><p>'+esc(s.plan)+' · '+esc(s.snapshot?.status||'pendiente')+'</p><button type="button" class="secondary" data-qa-cancel="'+esc(s.provider_id)+'">Cancelar suscripción de prueba</button></article>').join('')+'<button type="button" class="secondary" data-action="mp-qa-refresh">Actualizar resultados de prueba</button>':'')+'</section>'; root.setAttribute('aria-busy','false');
+ if(user&&canUseQa())root.innerHTML+=qaPanel();
+ root.setAttribute('aria-busy','false');
 }
 function nextPage(){return nextLearningPage(location.search);}
+root.addEventListener('input',e=>{
+ const field=e.target.dataset.qaField;
+ if(!field)return;
+ qaDraft[field]=e.target.value;
+ if(field!=='email'){
+  qaPayment=null;
+  root.querySelector('#mp-qa-payment')?.remove();
+ }
+ if(field==='plan'||field==='payerId'){
+  qaCheckout=null;
+  root.querySelector('#mp-qa-link')?.remove();
+ }
+});
 root.addEventListener('submit',e=>{e.preventDefault();const values=new FormData(e.target);work(async()=>{
  if(e.target.id==='login-form'){
   emailDraft=String(values.get('email')).trim();
@@ -117,17 +174,43 @@ root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!b.m
  if(b.dataset.action==='refresh'){await request({action:'refresh'});await connect();notice(account?.access?.active?'Tu acceso está verificado.':'Todavía no hay un pago o prueba verificados.');}
  if(b.dataset.action==='reset'){location.assign('/recuperar');return;}
  if(b.dataset.action==='mp-qa-status'||b.dataset.action==='mp-qa-refresh'||b.dataset.qaCancel){
-  qaEmail=root.querySelector('#mp-qa-email')?.value.trim()||qaEmail;
-  if(b.dataset.qaCancel)await request({action:'cancel',subscriptionId:b.dataset.qaCancel},'/api/billing/sandbox');
-  if(b.dataset.action==='mp-qa-refresh')await request({action:'refresh'},'/api/billing/sandbox');
-  qaState=await request({action:'status'},'/api/billing/sandbox');notice('Estado sandbox verificado. Los cobros reales siguen desactivados.');return;
+  if(b.dataset.qaCancel)await request({action:'cancel',subscriptionId:b.dataset.qaCancel},qaSandboxPath);
+  if(b.dataset.action==='mp-qa-refresh')await request({action:'refresh'},qaSandboxPath);
+  qaState=await request({action:'status'},qaSandboxPath);notice('Estado sandbox verificado. Los cobros reales siguen desactivados.');return;
+ }
+ if(b.dataset.action==='mp-qa-link'){
+  if(!canUseQa())throw Error('AUTH_REQUIRED');
+  qaCheckout=null;
+  const payerId=qaDraft.payerId.trim(),plan=qaDraft.plan,adminId=account.user.id;
+  if(!qaNumericId.test(payerId)){notice('Ingresa el ID numérico de la cuenta compradora de prueba.');return;}
+  const result=await request({action:'checkout',plan,payerId},qaSandboxPath);
+  const url=verifiedQaLink(result,payerId);
+  if(qaDraft.plan!==plan||qaDraft.payerId.trim()!==payerId)return;
+  qaCheckout={adminId,url};
+  notice('Enlace sandbox verificado.');return;
+ }
+ if(b.dataset.action==='mp-qa-lookup'||b.dataset.action==='mp-qa-reconcile'){
+  if(!canUseQa())throw Error('AUTH_REQUIRED');
+  const adminId=account.user.id,plan=qaDraft.plan,payerId=qaDraft.payerId.trim(),paymentId=qaDraft.paymentId.trim();
+  const reconcile=b.dataset.action==='mp-qa-reconcile';
+  if(!qaNumericId.test(payerId)||!qaNumericId.test(paymentId)){notice('Ingresa los IDs numéricos del comprador y del pago de prueba.');return;}
+  if(reconcile&&(qaPayment?.adminId!==adminId||qaPayment.paymentId!==paymentId))throw Error('PAYMENT_NOT_VERIFIED');
+  qaPayment=null;
+  const action=reconcile?'plan_payment_reconcile':'plan_payment_lookup';
+  const result=await request({action,plan,payerId,paymentId},qaSandboxPath);
+  const subscriptionId=result?.subscription?.subscriptionId;
+  if(result?.mode!=='sandbox'||result.productionEnabled!==false||result.verified!==true||
+     result.buyerId!==payerId||result.paymentId!==paymentId||result.subscription?.liveMode!==false||
+     typeof subscriptionId!=='string'||!subscriptionId||(reconcile&&result.reconciled!==true))throw Error('PAYMENT_NOT_VERIFIED');
+  if(plan!==qaDraft.plan||payerId!==qaDraft.payerId.trim()||paymentId!==qaDraft.paymentId.trim())return;
+  qaPayment={adminId,paymentId,subscriptionId,reconciled:reconcile};
+  notice(reconcile?'Pago de prueba conciliado.':'Pago de prueba y suscripción verificados.');return;
  }
  if(b.dataset.action==='mp-qa'){
-  if(!account?.isAdmin||new URLSearchParams(location.search).get('qa')!=='mp')throw Error('AUTH_REQUIRED');
-  qaEmail=root.querySelector('#mp-qa-email')?.value.trim()||'';
-  const plan=root.querySelector('#mp-qa-plan').value,key='cachaste-sandbox-checkout:'+account.user.id+':'+plan;
+  if(!canUseQa())throw Error('AUTH_REQUIRED');
+  const plan=qaDraft.plan,key='cachaste-sandbox-checkout:'+account.user.id+':'+plan;
   let requestId=sessionStorage.getItem(key);if(!requestId){requestId=crypto.randomUUID();sessionStorage.setItem(key,requestId);}
-  const result=await request({action:'checkout',plan,payerEmail:qaEmail,requestId},'/api/billing/sandbox');
+  const result=await request({action:'checkout',plan,payerEmail:qaDraft.email.trim(),requestId},qaSandboxPath);
   if(!result.checkoutUrl)throw Error('SERVICE_UNAVAILABLE');location.assign(result.checkoutUrl);return;
  }
  if(b.dataset.plan){if(!billing.ready){notice(messages.BILLING_NOT_READY);return;}if(!account){root.querySelector('[name=email]')?.focus();notice('Primero entra a tu cuenta para vincular la suscripción.');return;}const key='cachaste-checkout:'+account.user.id+':'+b.dataset.plan;let id=localStorage.getItem(key);if(!id){id=crypto.randomUUID();localStorage.setItem(key,id);}const response=await request({action:'checkout',plan:b.dataset.plan,requestId:id});location.assign(response.checkoutUrl);}
