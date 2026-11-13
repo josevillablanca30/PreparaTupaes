@@ -124,3 +124,6 @@ body{background:radial-gradient(ellipse at 86% 12%,#3b0c59 0,transparent 35%),#0
  .account-footer{flex-wrap:wrap;gap:12px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Landing mascot: soften the hard lower edge of the original cutout on all viewports. */
+.landing-hero .hero-art>img{-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%)}
