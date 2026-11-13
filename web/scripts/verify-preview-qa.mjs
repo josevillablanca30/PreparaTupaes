@@ -1,16 +1,16 @@
 import {appendFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
-import {REPOSITORY, PREVIEW_BRANCH} from './pages-client.mjs';
+import {REPOSITORY, PREVIEW_BRANCH, PUBLIC_SOURCE_BRANCH} from './pages-client.mjs';
 
 export function matchingQaRun(runs, revision) {
-  return runs.filter(run => run.path === '.github/workflows/web-commercial.yml' && run.head_sha === revision &&
-    run.head_branch === PREVIEW_BRANCH && ['push', 'workflow_dispatch'].includes(run.event))
+  return runs.filter(run => ((run.path === '.github/workflows/web-commercial.yml' && run.head_branch === PREVIEW_BRANCH) ||
+      (run.path === '.github/workflows/web-commercial-guardrails.yml' && run.head_branch === PUBLIC_SOURCE_BRANCH)) && run.head_sha === revision && ['push', 'workflow_dispatch'].includes(run.event))
     .sort((a, b) => b.run_number - a.run_number || b.run_attempt - a.run_attempt || b.id - a.id)[0];
 }
 
 export async function requireQa(env, {fetcher = fetch, wait = ms => new Promise(resolve => setTimeout(resolve, ms)), now = Date.now, timeoutMs = 20 * 60000} = {}) {
-  if (env.GITHUB_REPOSITORY !== REPOSITORY || env.GITHUB_REF_NAME !== PREVIEW_BRANCH || !/^[a-f\d]{40}$/.test(env.GITHUB_SHA || '') || !env.GH_TOKEN) throw Error('QA_CONTEXT_INVALID');
+  if (env.GITHUB_REPOSITORY !== REPOSITORY || ![PREVIEW_BRANCH, PUBLIC_SOURCE_BRANCH].includes(env.GITHUB_REF_NAME) || !/^[a-f\d]{40}$/.test(env.GITHUB_SHA || '') || !env.GH_TOKEN) throw Error('QA_CONTEXT_INVALID');
   const endpoint = 'https://api.github.com/repos/' + REPOSITORY + '/actions/runs?head_sha=' + env.GITHUB_SHA + '&per_page=100';
   const deadline = now() + timeoutMs;
   while (now() < deadline) {
