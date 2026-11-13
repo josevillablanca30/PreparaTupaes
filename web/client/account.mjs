@@ -19,7 +19,7 @@ const canUseQa=()=>account?.isAdmin===true&&new URLSearchParams(location.search)
 messages.INVALID_PLAN_CHECKOUT_URL='El servidor no devolvió un enlace válido para el plan de prueba.';
 messages.PAYMENT_NOT_VERIFIED='Mercado Pago no confirmó un pago sandbox elegible para este comprador y plan.';
 messages.PAYMENT_SUBSCRIPTION_NOT_MATCHED='Mercado Pago todavía no confirmó la factura de este pago en la suscripción.';
-messages.SANDBOX_OWNERSHIP_UNVERIFIED='Falta registrar la evidencia de titularidad del comprador de prueba.';
+messages.OWNERSHIP_REQUIRED='Falta registrar la evidencia de titularidad del comprador de prueba.';
 const checkoutReturned=new URLSearchParams(location.search).get('checkout')==='return';
 let emailMode='login',emailDraft='';
 async function request(body,url='/api/billing',method='POST',signal){
@@ -153,7 +153,13 @@ root.addEventListener('submit',e=>{e.preventDefault();const values=new FormData(
   const{data:{session}}=await sdk.auth.getSession();const res=await fetch('/api/billing',{method:'POST',headers:{'content-type':'application/json','x-cachaste-request':'1',authorization:'Bearer '+session.access_token},body:JSON.stringify({action:'sales',fromDate:values.get('from'),toDate:values.get('to')})});if(!res.ok)throw Error('REPORT_UNAVAILABLE');const url=URL.createObjectURL(await res.blob()),a=document.createElement('a');a.href=url;a.download='cachaste-ventas-comisiones.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
  }
 });});
-async function signout(){await serviceWorkerMessage({type:'PURGE_PRIVATE'});await request(undefined,'/api/session','DELETE');await sdk.auth.signOut({scope:'local'});account=null;}
+async function signout(){
+ await serviceWorkerMessage({type:'PURGE_PRIVATE'});
+ await request(undefined,'/api/session','DELETE');
+ await sdk.auth.signOut({scope:'local'});
+ account=null;qaState=null;qaCheckout=null;qaPayment=null;
+ Object.assign(qaDraft,{email:'',payerId:'',plan:'MONTHLY_TRIAL',paymentId:''});
+}
 root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!b.matches('[data-action],[data-plan],[data-cancel],[data-qa-cancel]'))return;
  if(b.dataset.action==='signup-form'){
   if(!config.signupEnabled){notice('El registro se habilitará cuando esté disponible la confirmación por correo.');return;}

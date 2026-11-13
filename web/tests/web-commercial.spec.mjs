@@ -257,13 +257,20 @@ test('the sandbox panel verifies the new payment before allowing reconciliation'
  await lookup.click();
  expect((await lookedUp).postDataJSON()).toEqual({action:'plan_payment_lookup',plan:'WEEKLY',payerId,paymentId});
  await expect(page.locator('#mp-qa-payment')).toContainText('synthetic-qa-subscription');
+ const sandboxPath='**/api/billing/sandbox';
+ await page.route(sandboxPath,route=>route.fulfill({status:403,json:{error:'OWNERSHIP_REQUIRED'}}),{times:1});
+ await reconcile.click();
+ await expect(page.locator('#account-status')).toContainText('Falta registrar la evidencia de titularidad');
+ await expect(reconcile).toHaveCount(0);
+ await lookup.click();
+ await expect(reconcile).toBeVisible();
  const reconciled=sandboxPost();
  await reconcile.click();
  expect((await reconciled).postDataJSON()).toEqual({action:'plan_payment_reconcile',plan:'WEEKLY',payerId,paymentId});
  await expect(page.locator('#mp-qa-payment')).toContainText('Conciliación sandbox registrada.');
 
  await page.getByLabel('ID del pago de prueba').fill('9876543211');
- await page.route('**/api/billing/sandbox',async route=>{
+ await page.route(sandboxPath,async route=>{
   const response=await route.fetch();
   const data=await response.json();
   await route.fulfill({response,json:{...data,subscription:{...data.subscription,liveMode:true}}});
