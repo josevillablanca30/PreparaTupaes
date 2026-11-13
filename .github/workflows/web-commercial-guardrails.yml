@@ -19,6 +19,12 @@ permissions:
   contents: read
 jobs:
   commercial-smoke:
+    if: >-
+      github.event_name == 'push' ||
+      (github.head_ref != 'work/cachaste-lanzamiento-final-20261113' &&
+      (github.event.pull_request.head.repo.full_name != github.repository ||
+      (github.head_ref != 'work/cachaste-web-comercial-cierre-20261112' &&
+      github.head_ref != 'work/cachaste-integracion-duelos-web-20261112')))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -59,11 +65,3 @@ jobs:
           npx playwright test --config web/playwright.config.mjs --project Desktop-Chrome --grep 'approved (rankings|duelos|duelo|resultado) UI|four independent rankings|a server-expired subscription|complimentary testers'
       - name: Check public web commercial safeguards
         run: node --test tests/web-commercial-launch-guard.test.mjs tests/web-gateway-security.test.mjs tests/web-progress-merge.test.mjs tests/web-auth-return.test.mjs web/tests/progress-runtime.test.mjs web/tests/duels2-integration.test.mjs
-      - name: Archive validated preview candidate (not deployed)
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cachaste-web-commercial-preview-${{ github.sha }}
-          path: web/dist/
-          if-no-files-found: error
-          retention-days: 7
