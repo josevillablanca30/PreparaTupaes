@@ -1,6 +1,7 @@
 import{MP_PLANS,validatePlan,checkoutUrl,canonicalSubscription,verifyMpSignature,csvReport,chileDateRange,subscriptionInvoices,subscriptionPayments,paymentInvoices}from'./mercadopago-core.mjs';
 const UUID=/^[a-f\d]{8}-[a-f\d]{4}-[1-5][a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i;
 const PROVIDER_ID=/^[a-zA-Z0-9_-]{1,100}$/;
+const PLAN_KEYS={semanal:'WEEKLY',mensual:'MONTHLY',anual:'YEARLY'};
 export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()=>Date.now()}){
  const supabaseUrl=()=>env('SUPABASE_URL'),anon=()=>env('SUPABASE_ANON_KEY')||env('SUPABASE_PUBLISHABLE_KEY');
  const configured=()=>!!env('MP_COLLECTOR_ID')&&((env('CACHASTE_MP_MODE')==='production'&&/^APP_USR-/.test(env('MP_ACCESS_TOKEN')||''))||(env('CACHASTE_MP_MODE')==='test'&&/^(TEST-|APP_USR-)/.test(env('MP_ACCESS_TOKEN')||'')&&!!env('MP_TEST_COLLECTOR_ID')&&String(env('MP_COLLECTOR_ID'))===String(env('MP_TEST_COLLECTOR_ID'))&&!!env('MP_TEST_ACCESS_TOKEN')&&env('MP_ACCESS_TOKEN')===env('MP_TEST_ACCESS_TOKEN')));
@@ -12,7 +13,43 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
  const admin=()=>createClient(supabaseUrl(),env('SUPABASE_SERVICE_ROLE_KEY'),{auth:{persistSession:false,autoRefreshToken:false}});
  const call=async(op,payload={})=>{const{data,error}=await admin().rpc('cachaste_web_billing_admin',{operation:op,payload});if(error)throw error;return data;};
  async function auth(req){const token=req.headers.get('authorization')?.replace(/^Bearer /i,'');if(!token)throw Error('AUTH_REQUIRED');const sdk=createClient(supabaseUrl(),anon(),{global:{headers:{Authorization:'Bearer '+token}},auth:{persistSession:false,autoRefreshToken:false}});const{data,error}=await sdk.auth.getUser(token);if(error||!data?.user)throw Error('AUTH_REQUIRED');const state=await sdk.rpc('cachaste_web_account');if(state.error)throw Error('AUTH_REQUIRED');return{user:data.user,state:state.data};}
- async function mp(path,options={}){if(!path.startsWith('/'))throw Error('INVALID_PROVIDER_PATH');const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);try{const res=await fetcher('https://api.mercadopago.com'+path,{...options,signal:controller.signal,headers:{authorization:'Bearer '+env('MP_ACCESS_TOKEN'),'content-type':'application/json',...options.headers}});if(!res.ok)throw Object.assign(Error('PAYMENT_PROVIDER_UNAVAILABLE'),{providerStatus:res.status});return await res.json();}finally{clearTimeout(timer);}}
+ async function mp(path,options={}){if(!path.startsWith('/'))throw Error('INVALID_PROVIDER_PATH');const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);try{const res=await fetcher('https://api.mercadopago.com'+path,{...options,redirect:'error',signal:controller.signal,headers:{authorization:'Bearer '+env('MP_ACCESS_TOKEN'),'content-type':'application/json',...options.headers}});if(!res.ok)throw Object.assign(Error('PAYMENT_PROVIDER_UNAVAILABLE'),{providerStatus:res.status});return await res.json();}finally{clearTimeout(timer);}}
+ async function providerPlan(plan,planId,trial=false){
+  if(!planId)throw Error('PLAN_NOT_READY');
+  const remote=await mp('/preapproval_plan/'+encodeURIComponent(planId));
+  validatePlan(remote,plan,planId,{trial,collectorId:env('MP_COLLECTOR_ID')});
+  if(live()&&(remote.live_mode===false||(remote.site_id&&remote.site_id!=='MLC')))throw Error('COMMERCIAL_PLAN_MISMATCH');
+  return remote;
+ }
+ async function commercialSeller(){
+  if(!live()||!configured())throw Error('COMMERCIAL_CREDENTIALS_NOT_CONFIGURED');
+  const collectorId=String(env('MP_COLLECTOR_ID')),seller=await mp('/users/me');
+  if(!/^\d+$/.test(collectorId)||String(seller.id)!==collectorId||
+     collectorId===String(env('MP_TEST_COLLECTOR_ID'))||seller.site_id!=='MLC'||
+     !Array.isArray(seller.tags)||seller.tags.includes('test_user'))throw Error('COMMERCIAL_SELLER_MISMATCH');
+  return {id:collectorId,site:seller.site_id};
+ }
+ async function commercialReadiness(){
+  const seller=await commercialSeller();
+  if(webOrigin()!=='https://sitecacho.cl')throw Error('COMMERCIAL_RETURN_ORIGIN_MISMATCH');
+  const trial=env('CACHASTE_MP_TRIAL_ENABLED')==='true';
+  const catalogue=Object.entries(PLAN_KEYS).map(([plan,key])=>({plan,key,trial:false}));
+  if(trial)catalogue.push({plan:'mensual',key:'MONTHLY_TRIAL',trial:true});
+  const ids=catalogue.map(({key})=>env('MP_PLAN_'+key));
+  const sandboxIds=new Set([...Object.values(PLAN_KEYS),'MONTHLY_TRIAL'].map(key=>env('MP_TEST_PLAN_'+key)));
+  if(ids.some(id=>!id))throw Error('COMMERCIAL_PLAN_IDS_MISSING');
+  if(ids.some(id=>sandboxIds.has(id))||new Set(ids).size!==ids.length)throw Error('COMMERCIAL_PLAN_IDS_MISMATCH');
+  const plans=await Promise.all(catalogue.map(async({plan,key,trial},index)=>{
+   const id=ids[index],remote=await providerPlan(plan,id,trial);
+   return {key,id,applicationId:remote.application_id==null?null:String(remote.application_id),...MP_PLANS[plan],trialDays:trial?7:0};
+  }));
+  const policy=await call('policy');
+  return {
+   seller,plans,webhookSecretConfigured:!!env('MP_WEBHOOK_SECRET'),
+   checkoutEnabled:env('CACHASTE_MP_ENABLED')==='true',taxReady:env('CACHASTE_MP_TAX_READY')==='true',
+   databaseReady:policy.enabled===true,ready:ready()&&policy.enabled===true
+  };
+ }
  async function reconcile(id,requiredPaymentId=null){
   if(typeof id!=='string'||!PROVIDER_ID.test(id))throw Error('INVALID_PROVIDER_ID');
   const sub=await mp('/preapproval/'+id);
@@ -34,8 +71,12 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   if(req.method!=='POST')return json(req,{error:'METHOD_NOT_ALLOWED'},405);
   if(Number(req.headers.get('content-length')||0)>8192)return json(req,{error:'PAYLOAD_TOO_LARGE'},413);
   const text=await req.text();if(text.length>8192)return json(req,{error:'PAYLOAD_TOO_LARGE'},413);const body=JSON.parse(text||'{}');
-  if(body.action==='status'){const enabled=ready()&&(await call('policy')).enabled===true;let trialAvailable=false;if(enabled&&env('CACHASTE_MP_TRIAL_ENABLED')==='true'&&env('MP_PLAN_MONTHLY_TRIAL')){try{const planId=env('MP_PLAN_MONTHLY_TRIAL');validatePlan(await mp('/preapproval_plan/'+encodeURIComponent(planId)),'mensual',planId,{trial:true,collectorId:env('MP_COLLECTOR_ID')});trialAvailable=true;}catch{}}return json(req,{ready:enabled,trialAvailable,managementReady:configured()});}
+  if(body.action==='status'){const enabled=ready()&&(await call('policy')).enabled===true;let trialAvailable=false;if(enabled&&env('CACHASTE_MP_TRIAL_ENABLED')==='true'&&env('MP_PLAN_MONTHLY_TRIAL')){try{await providerPlan('mensual',env('MP_PLAN_MONTHLY_TRIAL'),true);trialAvailable=true;}catch{}}return json(req,{ready:enabled,trialAvailable,managementReady:configured()});}
   const{user,state}=await auth(req);
+  if(body.action==='commercial_readiness'){
+   if(state.isAdmin!==true)throw Error('FORBIDDEN');
+   return json(req,await commercialReadiness());
+  }
   if(body.action==='sales'){
    if(state.isAdmin!==true)throw Error('FORBIDDEN');
    const range=body.fromDate||body.toDate?chileDateRange(body.fromDate,body.toDate):body;const from=Date.parse(range.from),to=Date.parse(range.to);if(!Number.isFinite(from)||!Number.isFinite(to)||to<=from||to-from>367*86400000)throw Error('INVALID_REPORT_RANGE');
@@ -48,14 +89,15 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   if(!live()&&env('CACHASTE_MP_ALLOW_TEST_PURCHASES')!=='true')throw Error('TEST_PURCHASES_DISABLED');
   if(body.action==='checkout'){
    if(state.complimentary?.active===true)return json(req,{error:'COMPLIMENTARY_ACCESS'},409);
-   if(!MP_PLANS[body.plan]||!UUID.test(body.requestId||''))throw Error('INVALID_PLAN');await call('rate',{userId:user.id});
+   if(!Object.hasOwn(PLAN_KEYS,body.plan)||!UUID.test(body.requestId||''))throw Error('INVALID_PLAN');await call('rate',{userId:user.id});
+   if(live())await commercialSeller();
    const trial=body.plan==='mensual'&&!state.trialUsed&&env('CACHASTE_MP_TRIAL_ENABLED')==='true'&&!!env('MP_PLAN_MONTHLY_TRIAL');
-   const planId=env(trial?'MP_PLAN_MONTHLY_TRIAL':'MP_PLAN_'+{semanal:'WEEKLY',mensual:'MONTHLY',anual:'YEARLY'}[body.plan]);
-   const plan=await mp('/preapproval_plan/'+encodeURIComponent(planId));validatePlan(plan,body.plan,planId,{trial,collectorId:env('MP_COLLECTOR_ID')});
+   const planId=env(trial?'MP_PLAN_MONTHLY_TRIAL':'MP_PLAN_'+PLAN_KEYS[body.plan]);
+   await providerPlan(body.plan,planId,trial);
    const checkout=await call('checkout',{id:body.requestId,userId:user.id,plan:body.plan,providerPlanId:planId,trial,linkedPlan:false});
    if(checkout.provider_id){const current=await mp('/preapproval/'+checkout.provider_id);return json(req,{checkoutUrl:checkoutUrl(current.init_point),id:checkout.provider_id});}
    if(!checkout.created)return json(req,{error:'CHECKOUT_PENDING'},409);
-   if(checkout.provider_plan_id!==planId)validatePlan(await mp('/preapproval_plan/'+encodeURIComponent(checkout.provider_plan_id)),body.plan,checkout.provider_plan_id,{trial:checkout.trial_offered,collectorId:env('MP_COLLECTOR_ID')});
+   if(checkout.provider_plan_id!==planId)await providerPlan(body.plan,checkout.provider_plan_id,checkout.trial_offered);
    // Associated plans require a card token. A hosted pending checkout instead
    // copies the verified server catalogue recurrence, keeping card data at MP.
    const p=MP_PLANS[body.plan],auto_recurring={frequency:p.frequency,frequency_type:p.frequency_type,transaction_amount:p.amount,currency_id:'CLP',...(checkout.trial_offered?{start_date:new Date(now()+7*86400000).toISOString()}:{})};
@@ -100,5 +142,5 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   else return new Response(null,{status:200});
   await reconcile(id,paymentId);await call('webhook',{hash:signature.hash});return new Response(null,{status:200});
  }catch(e){const code=String(e?.message||'UNKNOWN_ERROR');console.error('MP_WEBHOOK_PROCESSING_ERROR',/^[A-Z_]+$/.test(code)?code:'INTERNAL_ERROR');return new Response(/SIGNATURE|EVENT_ID/.test(code)?'Invalid notification':'Notification not processed',{status:/SIGNATURE|EVENT_ID/.test(code)?401:503});}}
- return{billing,webhook};
+ return{billing,webhook,commercialReadiness};
 }

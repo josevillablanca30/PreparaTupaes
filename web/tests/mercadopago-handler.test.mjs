@@ -64,6 +64,48 @@ test('a closed database launch policy blocks checkout even when Mercado Pago cre
  assert.equal(h.applied.length,0);
 });
 
+test('commercial readiness verifies the existing Chilean seller and plans without creating a checkout',async()=>{
+ const h=harness();
+ Object.assign(h.vars,{
+  CACHASTE_MP_MODE:'production',MP_ACCESS_TOKEN:'APP_USR-fixture-never-real',MP_TEST_COLLECTOR_ID:'456',
+  CACHASTE_WEB_ORIGIN:'https://sitecacho.cl',CACHASTE_MP_ENABLED:'false',CACHASTE_MP_TAX_READY:'false'
+ });
+ h.setPolicy(false);
+ const request=()=>new Request('https://sitecacho.cl/api/billing',{method:'POST',headers:{
+  origin:'https://sitecacho.cl',authorization:'Bearer qa-token'
+ },body:JSON.stringify({action:'commercial_readiness'})});
+ assert.equal((await h.billing(request())).status,403);
+ assert.equal(h.calls.length,0);
+ h.vars.QA_IS_ADMIN='true';
+ const plans={
+  weekly:{transaction_amount:2490,frequency:7,frequency_type:'days'},
+  monthly:{transaction_amount:7990,frequency:1,frequency_type:'months'},
+  yearly:{transaction_amount:64990,frequency:12,frequency_type:'months'}
+ };
+ let tags=[];
+ h.vars.QA_PAYMENT_FIXTURE=url=>{
+  if(url.endsWith('/users/me'))return {id:123,site_id:'MLC',tags};
+  const id=url.split('/').at(-1);
+  return {id,status:'active',collector_id:123,site_id:'MLC',auto_recurring:{currency_id:'CLP',...plans[id]}};
+ };
+ const result=await h.billing(request());
+ assert.equal(result.status,200);
+ const state=await result.json();
+ assert.deepEqual(state.seller,{id:'123',site:'MLC'});
+ assert.deepEqual(state.plans.map(p=>p.id),Object.keys(plans));
+ assert.equal(state.webhookSecretConfigured,true);
+ assert.equal(state.ready,false);
+ assert.equal(h.checkouts.size,0);
+ assert.ok(h.calls.filter(c=>c.url).every(c=>c.method==='GET'));
+ tags=['test_user'];
+ const wrongSeller=await h.billing(request());
+ assert.equal((await wrongSeller.json()).error,'COMMERCIAL_SELLER_MISMATCH');
+ tags=[];
+ h.vars.MP_TEST_PLAN_WEEKLY='weekly';
+ const wrongPlan=await h.billing(request());
+ assert.equal((await wrongPlan.json()).error,'COMMERCIAL_PLAN_IDS_MISMATCH');
+});
+
 
 test('a definitive checkout rejection can retry its original seven day trial without silently switching to immediate billing',async()=>{
  const h=harness();h.vars.CACHASTE_MP_TRIAL_ENABLED='true';h.vars.MP_PLAN_MONTHLY_TRIAL='monthly-trial';h.vars.QA_VALID_TRIAL='true';h.setReject(400);

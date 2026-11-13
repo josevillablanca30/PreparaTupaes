@@ -11,7 +11,7 @@ function planCheckoutUrl(value,planId){
  if(url.pathname!=='/subscriptions/checkout'||url.username||url.password||url.port||plans.length!==1||plans[0]!==planId||url.searchParams.has('preapproval_id'))throw Error('INVALID_PLAN_CHECKOUT_URL');
  return url.href;
 }
-export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Date.now()}){
+export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Date.now(),inspectCommercial}){
  const client=(key,token)=>createClient(env('SUPABASE_URL'),key,{auth:{persistSession:false,autoRefreshToken:false},...(token?{global:{headers:{Authorization:'Bearer '+token}}}:{})});
  const collector=()=>env('MP_TEST_COLLECTOR_ID');
  async function serviceRpc(name,params){
@@ -165,7 +165,17 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
   if(!NUMERIC_ID.test(paymentId))throw Error('INVALID_PAYMENT_ID');
   const observedAt=now(),plan=await catalogue(body.plan);
   const payment=await mp('/v1/payments/'+paymentId);
-  if(!verifiedPlanPayment(payment,paymentId,payerId,plan,observedAt))throw Error('PAYMENT_NOT_VERIFIED');
+  if(!verifiedPlanPayment(payment,paymentId,payerId,plan,observedAt)){
+   console.info('MP_SANDBOX_PAYMENT_VERIFICATION',JSON.stringify({
+    paymentId,reason:sandboxPaymentIssue(payment,paymentId)||'provider_payment_not_eligible',
+    sellerMatches:String(payment?.collector_id)===collector(),buyerMatches:String(payment?.payer?.id)===payerId,
+    liveMode:typeof payment?.live_mode==='boolean'?payment.live_mode:null,
+    approved:payment?.status==='approved',
+    amountMatches:Number(payment?.transaction_amount)===MP_PLANS[plan.plan].amount&&payment?.currency_id==='CLP',
+    applicationMatches:payment?.application_id==null||String(payment.application_id)===String(plan.remote.application_id)
+   }));
+   throw Error('PAYMENT_NOT_VERIFIED');
+  }
   const invoice=await invoiceForPayment(paymentId);
   if(!invoice||!processedPaymentInvoice(invoice,paymentId))throw Error('PAYMENT_SUBSCRIPTION_NOT_MATCHED');
   const observation=await observePlanSubscription(plan,payerId,invoice.preapproval_id,{expectedInvoice:invoice,observedAt});
@@ -195,6 +205,7 @@ export function createSandboxHandlers({env,createClient,fetcher=fetch,now=()=>Da
   const body=JSON.parse(text||'{}');if(!['status','checkout','refresh','cancel','plan_status','plan_cancel','plan_payment_lookup','plan_payment_reconcile'].includes(body.action))throw Error('INVALID_ACTION');
   const verifiedSeller=await seller();
   if(body.action==='status'){
+   inspectCommercial?.();
    const plans=[];
    for(const key of Object.keys(choices)){
     const c=await catalogue(key);
