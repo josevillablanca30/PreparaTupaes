@@ -1,0 +1,24 @@
+name: Limpiar compilaciones web temporales de Cachaste
+on:
+  push:
+    branches: [work/cachaste-limpieza-actions-20261113]
+    paths: [.github/workflows/cachaste-actions-cleanup.yml]
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: cachaste-actions-cleanup-20261113
+  cancel-in-progress: false
+jobs:
+  remove-temporary-builds:
+    if: github.repository == 'josevillablanca30/PreparaTupaes' && github.ref == 'refs/heads/work/cachaste-limpieza-actions-20261113'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Eliminar únicamente las compilaciones web revisadas
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node .github/cachaste-actions-cleanup.mjs
