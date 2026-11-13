@@ -79,7 +79,7 @@ body{background:radial-gradient(ellipse at 86% 12%,#3b0c59 0,transparent 35%),#0
 @media(prefers-reduced-motion:reduce){.subject-grid a{transition:none}}
 
 /* The original Android cat artwork has a nonrectangular cutout: no framed image tile. */
-.hero-art>img{aspect-ratio:408/278;object-fit:contain;border:0;border-radius:0;box-shadow:none;background:transparent;filter:drop-shadow(0 0 24px #a329e15c)}
+.hero-art>img{aspect-ratio:408/278;object-fit:contain;border:0;border-radius:0;box-shadow:none;background:transparent;filter:drop-shadow(0 0 16px #a329e133)}
 .hero-art{background:transparent}
 @media(max-width:760px){.hero-art>img{max-height:310px;object-position:center}}
 
@@ -94,9 +94,6 @@ body{background:radial-gradient(ellipse at 86% 12%,#3b0c59 0,transparent 35%),#0
 .site-footer{background:#170a24}
 #account-status:not(:empty){background:#2c153c;color:var(--deep);border-color:var(--line)}
 .skip-link{background:#21102e;color:var(--deep)}
-
-/* A cutout uses the original 408 × 278 composition and never stretches. */
-.hero-art>img{aspect-ratio:408/278;object-fit:contain}
 
 /* Readable actions, secondary labels and disabled forms on the approved palette. */
 .primary-button,button:not(.secondary):not(.text-button){background:linear-gradient(135deg,#9424cc,#650cae);color:#fff}
@@ -124,14 +121,3 @@ body{background:radial-gradient(ellipse at 86% 12%,#3b0c59 0,transparent 35%),#0
  .account-footer{flex-wrap:wrap;gap:12px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-
-/* Landing mascot: soften the hard lower edge of the original cutout on all viewports. */
-.landing-hero .hero-art>img{-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%)}
-
-/* Official mascot replaces the clipped rank artwork: show the complete source. */
-.landing-hero .hero-art>img[src$='gatito-sabio-oficial.png']{aspect-ratio:auto;max-height:440px;width:100%;object-fit:contain;object-position:center;-webkit-mask-image:none;mask-image:none;filter:none;border:0;box-shadow:none;background:transparent}
-@media(max-width:760px){.landing-hero .hero-art>img[src$='gatito-sabio-oficial.png']{max-height:310px;width:auto;max-width:100%;margin-inline:auto}}
-
-/* Original landing mascot: retain transparent cutout, soften only the lower matte. */
-.landing-hero .hero-art>img[src$='landing-cat-rank-cutout.png']{display:block;width:100%;height:auto;max-height:none;aspect-ratio:408/278;object-fit:contain;object-position:center;background:transparent;border:0;border-radius:0;box-shadow:none;filter:drop-shadow(0 0 16px #a329e133);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 80%,transparent 99%);mask-image:linear-gradient(to bottom,#000 0%,#000 80%,transparent 99%)}
-@media(max-width:760px){.landing-hero .hero-art>img[src$='landing-cat-rank-cutout.png']{max-height:310px;width:100%;object-fit:contain}}

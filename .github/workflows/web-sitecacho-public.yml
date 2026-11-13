@@ -42,11 +42,6 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           GH_TOKEN: ${{ github.token }}
         run: node web/scripts/publish-sitecacho.mjs --prepare
-      - name: Conservar mascotas originales y corregir transparencia real del gato de portada
-        run: |
-          python3 -m pip install --break-system-packages Pillow==11.3.0
-          python3 web/scripts/cutout-landing-cat.py
-          cp assets/gatito-sabio-oficial.png web/public/assets/gatito-sabio-oficial.png
       - name: Construir y verificar las cinco materias cifradas
         run: |
           node web/scripts/build.mjs
