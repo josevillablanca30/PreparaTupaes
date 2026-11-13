@@ -60,8 +60,8 @@ jobs:
         run: node web/scripts/publish-sitecacho.mjs --verify
       - name: Verificar la web pública en cuatro navegadores
         run: node web/scripts/probe-legal-browsers.mjs --public
-      - name: Comprobar nuevamente Supabase alojado y los límites de cobertura
-        run: node web/scripts/verify-live-billing-evidence.mjs
+      - name: Verificar nuevamente que los pagos reales siguen cerrados
+        run: node --input-type=module -e "import {requirePaymentsClosed} from './web/scripts/publish-sitecacho.mjs'; await requirePaymentsClosed(); console.log('Production payments remain closed')"
       - name: Guardar resultados y capturas sin secretos
         if: always()
         uses: actions/upload-artifact@v4
