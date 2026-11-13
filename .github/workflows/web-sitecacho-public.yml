@@ -44,7 +44,7 @@ jobs:
         run: node web/scripts/publish-sitecacho.mjs --prepare
       - name: Limpiar halo blanco del PNG original de la mascota
         run: |
-          python3 -m pip install --break-system-packages Pillow==11.3.0
+          apt-get update -qq && apt-get install -y -qq python3-pil
           python3 web/scripts/cutout-landing-cat.py
       - name: Construir y verificar las cinco materias cifradas
         run: |
