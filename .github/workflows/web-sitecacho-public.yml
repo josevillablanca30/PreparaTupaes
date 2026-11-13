@@ -42,10 +42,8 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           GH_TOKEN: ${{ github.token }}
         run: node web/scripts/publish-sitecacho.mjs --prepare
-      - name: Limpiar halo blanco del PNG original de la mascota
-        run: |
-          apt-get update -qq && apt-get install -y -qq python3-pil
-          python3 web/scripts/cutout-landing-cat.py
+      - name: Usar la mascota oficial existente sin recortes
+        run: cp assets/gatito-sabio-oficial.png web/public/assets/gatito-sabio-oficial.png
       - name: Construir y verificar las cinco materias cifradas
         run: |
           node web/scripts/build.mjs
