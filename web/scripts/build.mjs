@@ -7,6 +7,7 @@ import{build}from'esbuild';
 import{adaptCompetitionUi}from'../shared/competition-ui.mjs';
 import{adaptCompetitionClient}from'../shared/competition-client.mjs';
 import{adaptLegacyActions}from'../shared/legacy-actions.mjs';
+import{RELEASE_CONTENT_KEY}from'./pages-client.mjs';
 import path from'node:path';
 import{fileURLToPath}from'node:url';
 const root=fileURLToPath(new URL('../../',import.meta.url)),out=path.join(root,'web/dist');
@@ -63,17 +64,19 @@ const protectedFiles=[];async function walk(dir,rel=''){for(const name of await 
 const accountFiles=protectedFiles.filter(p=>['/app/competencia.html','/app/competition-client.js','/app/competition-config.js','/app/competition-app.js','/app/competition-ui.css','/app/daily-visuals.js','/app/competition-geography.json'].includes(p)||p.startsWith('/app/assets/competition-')||p==='/app/assets/gatito-sabio-poses-v2.webp');
 // No clear educational bank is ever placed in public Pages storage, including quota fallback.
 let contentKey=process.env.BANK_CONTENT_KEY;
-if(!contentKey){if(process.env.CF_PAGES)throw Error('Configure BANK_CONTENT_KEY as a build AND runtime secret before deploying');contentKey=randomBytes(32).toString('base64');await writeFile(path.join(root,'web/.local-bindings.json'),JSON.stringify({BANK_CONTENT_KEY:contentKey}),{mode:0o600});}
+const contentKeyBinding=process.env.BANK_CONTENT_KEY_BINDING;
+if(contentKeyBinding&&!RELEASE_CONTENT_KEY.test(contentKeyBinding))throw Error('INVALID_RELEASE_CONTENT_KEY_BINDING');
+if(!contentKey){if(process.env.CF_PAGES||contentKeyBinding)throw Error('Configure BANK_CONTENT_KEY as a build AND runtime secret before deploying');contentKey=randomBytes(32).toString('base64');await writeFile(path.join(root,'web/.local-bindings.json'),JSON.stringify({BANK_CONTENT_KEY:contentKey}),{mode:0o600});}
 if(Buffer.from(contentKey,'base64').length!==32)throw Error('BANK_CONTENT_KEY must contain exactly 32 random bytes encoded as base64');
 const encryptedFiles={};await mkdir(path.join(out,'__encrypted'),{recursive:true});
 for(const name of protectedFiles){const plain=await readFile(path.join(out,name)),nonce=randomBytes(12),cipher=createCipheriv('aes-256-gcm',Buffer.from(contentKey,'base64'),nonce);cipher.setAAD(Buffer.from(name));const sealed=Buffer.concat([nonce,cipher.update(plain),cipher.final(),cipher.getAuthTag()]),asset='/__encrypted/'+createHash('sha256').update(name).digest('hex')+'.bin';encryptedFiles[name]=asset;await writeFile(path.join(out,asset),sealed);}
-const workerEntry=`import{createGateway}from'./server/gateway.mjs';export default createGateway(${JSON.stringify({revision,pagePolicies,protectedFiles,accountFiles,encryptedFiles})});`;
+const workerEntry=`import{createGateway}from'./server/gateway.mjs';export default createGateway(${JSON.stringify({revision,pagePolicies,protectedFiles,accountFiles,encryptedFiles,contentKeyBinding})});`;
 await build({stdin:{contents:workerEntry,resolveDir:path.join(root,'web'),sourcefile:'worker-entry.mjs'},outfile:path.join(out,'_worker.js'),bundle:true,minify:true,format:'esm',platform:'browser',target:'es2022',legalComments:'eof'});
 await writeFile(path.join(out,'_routes.json'),JSON.stringify({version:1,include:['/*'],exclude:[]}));
 await writeFile(path.join(out,'version.json'),JSON.stringify({revision,androidBase:'add8a5979d28cb1f7598767bb4bf1ad7b8328937',androidUiReference:ANDROID_UI_REFERENCE,contentBase:CONTENT_BASE,distribution:'web-commercial',paymentsEnabledByBuild:false})+'\n');
 await writeFile(path.join(out,'robots.txt'),'User-agent: *\nDisallow: /\n');
 await writeFile(path.join(out,'_headers'),'/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: no-referrer\n  X-Frame-Options: DENY\n/recuperar*\n  Cache-Control: private, no-store\n  X-Robots-Tag: noindex, nofollow, noarchive\n');
-await mkdir(path.join(root,'web/artifacts'),{recursive:true});await writeFile(path.join(root,'web/artifacts/build-manifest.json'),JSON.stringify({revision,pagePolicies,protectedFiles,accountFiles,encryptedFiles},null,2)+'\n');
+await mkdir(path.join(root,'web/artifacts'),{recursive:true});await writeFile(path.join(root,'web/artifacts/build-manifest.json'),JSON.stringify({revision,pagePolicies,protectedFiles,accountFiles,encryptedFiles,contentKeyBinding},null,2)+'\n');
 for(const required of['/app/daily-catalog.js','/app/index.html','/app/science-bank.js','/app/reading-bank.js','/app/m2-bank.js','/app/history-bank.js'])if(!protectedFiles.includes(required))throw Error('Missing protected subject: '+required);
 for(const file of ['daily-core.js','daily-app.js','daily-lessons.js','learning-core.js','competition-app.js','competition-ui.css'])if(!Buffer.from(await readFile(path.join(out,'app',file))).equals(Buffer.from(file==='competition-app.js'?adaptCompetitionUi(androidSource(file).toString()):ANDROID_UI_FILES.includes(file)?androidSource(file):await readFile(path.join(root,file)))))throw Error('Educational source changed during web packaging: '+file);
 await rm(path.join(out,'app'),{recursive:true});

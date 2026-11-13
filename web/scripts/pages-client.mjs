@@ -4,10 +4,13 @@ export const PAGES_PROJECT = 'cachaste-sitecacho';
 export const PAGES_ACCOUNT_ID = 'cfe4b77c0c39bb056306d16133a93642';
 export const PREVIEW_BRANCH = 'work/cachaste-web-unificada-20261106';
 export const PUBLIC_SOURCE_BRANCH = 'work/cachaste-web-comercial-cierre-20261112';
+export const FINAL_RELEASE_BRANCH = 'work/cachaste-lanzamiento-final-20261113';
 export const RESERVED_PRODUCTION_BRANCH = 'production-requires-owner-approval';
 // The owner requested the public website on 2026-11-10; payment activation remains separate.
 export const PUBLIC_RELEASE_MARKER = 'sitecacho-payments-closed-v1';
 export const REPOSITORY = 'josevillablanca30/PreparaTupaes';
+export const RELEASE_CONTENT_KEY = /^BANK_CONTENT_KEY_RELEASE_[1-9]\d{0,19}_[1-9]\d{0,5}$/;
+const allowedBranches = [PREVIEW_BRANCH, PUBLIC_SOURCE_BRANCH, FINAL_RELEASE_BRANCH];
 
 export function normalizeApiToken(value) {
   if (typeof value !== 'string' || !value.trim()) throw Error('CLOUDFLARE_API_TOKEN_REQUIRED_IN_GITHUB_SECRETS');
@@ -46,7 +49,7 @@ function apiDiagnostic(method, suffix, status, data) {
 }
 
 export function credentials(env) {
-  if (![PREVIEW_BRANCH, PUBLIC_SOURCE_BRANCH].includes(env.GITHUB_REF_NAME)) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
+  if (!allowedBranches.includes(env.GITHUB_REF_NAME)) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
   if (env.CLOUDFLARE_PAGES_PROJECT && env.CLOUDFLARE_PAGES_PROJECT !== PAGES_PROJECT) throw Error('UNRELATED_PROJECT_DENIED');
   if (env.CLOUDFLARE_ACCOUNT_ID !== PAGES_ACCOUNT_ID) throw Error('UNRELATED_ACCOUNT_DENIED');
   return {account: env.CLOUDFLARE_ACCOUNT_ID, token: normalizeApiToken(env.CLOUDFLARE_API_TOKEN)};
@@ -54,7 +57,7 @@ export function credentials(env) {
 
 export function verifyTarget(project, branch) {
   if (project?.name !== PAGES_PROJECT) throw Error('UNRELATED_PROJECT_DENIED');
-  if (![PREVIEW_BRANCH, PUBLIC_SOURCE_BRANCH].includes(branch) || project.production_branch !== RESERVED_PRODUCTION_BRANCH) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
+  if (!allowedBranches.includes(branch) || project.production_branch !== RESERVED_PRODUCTION_BRANCH) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
   if (project.source) throw Error('DIRECT_UPLOAD_PROJECT_REQUIRED');
   if (project.canonical_deployment) {
     const release=project.canonical_deployment;
@@ -114,6 +117,13 @@ export function pagesClient(env, {fetcher = fetch} = {}) {
     configureProject: deployment_configs => {
       if(Object.values(deployment_configs).some(c=>c?.fail_open===true))throw Error('PAGES_FAIL_CLOSED_REQUIRED');
       return request('PATCH','/'+PAGES_PROJECT,{deployment_configs:{preview:{fail_open:false,...deployment_configs.preview},production:{fail_open:false,...deployment_configs.production}}});
+    },
+    addReleaseContentKey: (name, value, configHash) => {
+      if (!RELEASE_CONTENT_KEY.test(name) || !/^[A-Za-z0-9+/]{43}=$/.test(value)) throw Error('INVALID_RELEASE_CONTENT_KEY');
+      return request('PATCH', '/' + PAGES_PROJECT, {deployment_configs: {production: {
+        env_vars: {[name]: {type: 'secret_text', value}},
+        ...(configHash ? {wrangler_config_hash: configHash} : {}),
+      }}});
     },
     listDeployments: () => request('GET', '/' + PAGES_PROJECT + '/deployments?env=preview&per_page=25'),
     listPublicDeployments: () => request('GET', '/' + PAGES_PROJECT + '/deployments?env=production&per_page=25'),

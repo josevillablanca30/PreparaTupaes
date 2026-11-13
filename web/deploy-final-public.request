@@ -1,0 +1,14 @@
+{
+  "project": "cachaste-sitecacho",
+  "sourceBranch": "work/cachaste-lanzamiento-final-20261113",
+  "productionBranch": "production-requires-owner-approval",
+  "scope": "public-web-payments-closed",
+  "enabled": false,
+  "reviewedRevision": null,
+  "realPayments": false,
+  "indexing": false,
+  "emailSignup": true,
+  "requiresSuccessfulQa": true,
+  "preserveResend": true,
+  "hosts": ["sitecacho.cl", "www.sitecacho.cl"]
+}

@@ -1,8 +1,9 @@
 import {readFile,writeFile,mkdir,appendFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
+import {randomBytes} from 'node:crypto';
 import path from 'node:path';
 import {PROJECT_URL,PUBLISHABLE_KEY} from '../shared/config.mjs';
-import {credentials,pagesClient,verifyTarget,reviewedPublicRuntime,publicSiteUrl,PAGES_PROJECT,PUBLIC_SOURCE_BRANCH,RESERVED_PRODUCTION_BRANCH,PUBLIC_RELEASE_MARKER,REPOSITORY} from './pages-client.mjs';
+import {credentials,pagesClient,verifyTarget,reviewedPublicRuntime,publicSiteUrl,PAGES_PROJECT,PUBLIC_SOURCE_BRANCH,FINAL_RELEASE_BRANCH,RELEASE_CONTENT_KEY,RESERVED_PRODUCTION_BRANCH,PUBLIC_RELEASE_MARKER,REPOSITORY} from './pages-client.mjs';
 import {runtimeSecrets} from './prepare-pages-project.mjs';
 import {requireQa} from './verify-preview-qa.mjs';
 import {probeDeployment} from './verify-pages-preview.mjs';
@@ -10,11 +11,19 @@ import {probeDeployment} from './verify-pages-preview.mjs';
 const hosts=['sitecacho.cl','www.sitecacho.cl'];
 const allowedVariables=['SUPABASE_URL','SUPABASE_PUBLISHABLE_KEY','WEB_SIGNUP_ENABLED','WEB_AUTH_RETURN_READY','WEB_GOOGLE_AUTH_ENABLED','WEB_PAYMENTS_ENABLED','WEB_PUBLIC_RELEASE','BANK_CONTENT_KEY','OFFLINE_SIGNING_JWK'];
 export function validatePublicRequest(request,env){
-  if(env.GITHUB_REPOSITORY!==REPOSITORY||env.GITHUB_REF_NAME!==PUBLIC_SOURCE_BRANCH||!/^[a-f\d]{40}$/.test(env.GITHUB_SHA||'')||
-    request.project!==PAGES_PROJECT||request.sourceBranch!==PUBLIC_SOURCE_BRANCH||request.productionBranch!==RESERVED_PRODUCTION_BRANCH||
+  if(env.GITHUB_REPOSITORY!==REPOSITORY||![PUBLIC_SOURCE_BRANCH,FINAL_RELEASE_BRANCH].includes(env.GITHUB_REF_NAME)||!/^[a-f\d]{40}$/.test(env.GITHUB_SHA||'')||
+    request.project!==PAGES_PROJECT||request.sourceBranch!==env.GITHUB_REF_NAME||request.productionBranch!==RESERVED_PRODUCTION_BRANCH||
     request.scope!=='public-web-payments-closed'||request.realPayments!==false||request.requiresSuccessfulQa!==true||request.preserveResend!==true||
     (request.emailSignup!==undefined&&typeof request.emailSignup!=='boolean')||
     JSON.stringify(request.hosts)!==JSON.stringify(hosts))throw Error('PUBLIC_CLOSED_PAYMENTS_REQUEST_REQUIRED');
+  return true;
+}
+export function validateFinalRelease(request,env){
+  validatePublicRequest(request,env);
+  if(env.GITHUB_REF_NAME!==FINAL_RELEASE_BRANCH||request.enabled!==true||
+     request.indexing!==false||request.emailSignup!==true||
+     !/^[a-f\d]{40}$/.test(env.REVIEWED_RELEASE_SHA||'')||
+     request.reviewedRevision!==env.REVIEWED_RELEASE_SHA)throw Error('FINAL_RELEASE_REQUEST_REQUIRED');
   return true;
 }
 const plain=value=>({type:'plain_text',value});
@@ -32,7 +41,7 @@ export async function requireHostedEmailSignup({fetcher=fetch}={}){
 export async function preparePublicProject(env,{client=pagesClient(env),fetcher=fetch,generate=runtimeSecrets,emailSignup=false}={}){
   credentials(env);
   const before=await client.getProject();verifyTarget(before,env.GITHUB_REF_NAME);
-  if(Object.keys(before.deployment_configs?.production?.env_vars||{}).some(k=>!allowedVariables.includes(k)))throw Error('UNREVIEWED_PRODUCTION_BINDING');
+  if(Object.keys(before.deployment_configs?.production?.env_vars||{}).some(k=>!allowedVariables.includes(k)&&!RELEASE_CONTENT_KEY.test(k)))throw Error('UNREVIEWED_PRODUCTION_BINDING');
   await requirePaymentsClosed({fetcher});
   if(emailSignup)await requireHostedEmailSignup({fetcher});
   const secrets=generate();
@@ -49,6 +58,35 @@ export async function preparePublicProject(env,{client=pagesClient(env),fetcher=
   if(!reviewedPublicRuntime(after.deployment_configs?.production,emailSignup))throw Error('CLOSED_PUBLIC_RUNTIME_READBACK_FAILED');
   if(bindingShape(before.deployment_configs?.preview)!==bindingShape(after.deployment_configs?.preview))throw Error('PREVIEW_RUNTIME_CHANGED');
   return {secrets,project:PAGES_PROJECT,environment:'production',emailSignup,realPayments:false,previewPreserved:true};
+}
+export async function checkFinalRelease(env,{client=pagesClient(env),fetcher=fetch}={}){
+  const project=await client.getProject();
+  verifyTarget(project,env.GITHUB_REF_NAME);
+  if(!project.canonical_deployment||!reviewedPublicRuntime(project.deployment_configs?.production,true))throw Error('EXISTING_CLOSED_RUNTIME_REQUIRED');
+  const domains=await client.listDomains();
+  if(!hosts.every(name=>domains.some(domain=>domain.name===name&&domain.status==='active')))throw Error('BOTH_PUBLIC_DOMAINS_MUST_BE_ACTIVE');
+  await requirePaymentsClosed({fetcher});
+  await requireHostedEmailSignup({fetcher});
+  return project;
+}
+export function finalReleaseKey(env,generate=randomBytes){
+  const binding='BANK_CONTENT_KEY_RELEASE_'+env.GITHUB_RUN_ID+'_'+env.GITHUB_RUN_ATTEMPT;
+  if(!RELEASE_CONTENT_KEY.test(binding))throw Error('EXACT_RELEASE_RUN_REQUIRED');
+  return {binding,value:generate(32).toString('base64')};
+}
+export async function registerFinalReleaseKey(env,{binding,value},{client=pagesClient(env)}={}){
+  const before=await client.getProject();
+  verifyTarget(before,env.GITHUB_REF_NAME);
+  const config=before.deployment_configs?.production;
+  if(!before.canonical_deployment||!reviewedPublicRuntime(config,true)||Object.hasOwn(config.env_vars,binding))throw Error('NEW_RELEASE_CONTENT_BINDING_REQUIRED');
+  await client.addReleaseContentKey(binding,value,config.wrangler_config_hash);
+  const after=await client.getProject();
+  verifyTarget(after,env.GITHUB_REF_NAME);
+  const { [binding]: added, ...existing }=after.deployment_configs.production.env_vars;
+  if(added?.type!=='secret_text'||
+     before.canonical_deployment.id!==after.canonical_deployment?.id||
+     bindingShape(config)!==bindingShape({...after.deployment_configs.production,env_vars:existing})||
+     bindingShape(before.deployment_configs?.preview)!==bindingShape(after.deployment_configs?.preview))throw Error('EXISTING_PAGES_BINDINGS_CHANGED');
 }
 export async function configurePublicDomains(env,{client=pagesClient(env)}={}){
   verifyTarget(await client.getProject(),env.GITHUB_REF_NAME);
@@ -87,6 +125,9 @@ export async function probeCanonicalWww({revision,expectedSignupEnabled=false,fe
 export async function verifyPublicSite(env,manifest,{client=pagesClient(env),fetcher=fetch,emailSignup=false,wait=ms=>new Promise(r=>setTimeout(r,ms))}={}){
   const project=await client.getProject();verifyTarget(project,env.GITHUB_REF_NAME);
   if(!reviewedPublicRuntime(project.deployment_configs?.production,emailSignup)||manifest.revision!==env.GITHUB_SHA)throw Error('PUBLIC_BUILD_OR_RUNTIME_MISMATCH');
+  if(env.GITHUB_REF_NAME===FINAL_RELEASE_BRANCH&&
+     (!RELEASE_CONTENT_KEY.test(manifest.contentKeyBinding||'')||
+      project.deployment_configs.production.env_vars[manifest.contentKeyBinding]?.type!=='secret_text'))throw Error('PUBLIC_BUILD_OR_RUNTIME_MISMATCH');
   const deployment=matchingPublicDeployment(project,await client.listPublicDeployments(),env.GITHUB_SHA);
   const probes=[];
   const domains=await client.listDomains();
@@ -107,11 +148,23 @@ export async function verifyPublicSite(env,manifest,{client=pagesClient(env),fet
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   try{
-    const env=process.env,request=JSON.parse(await readFile('web/deploy-public.request','utf8'));
+    const final=process.env.GITHUB_REF_NAME===FINAL_RELEASE_BRANCH;
+    const env=final?{...process.env,GITHUB_SHA:process.env.REVIEWED_RELEASE_SHA}:process.env;
+    const request=JSON.parse(await readFile(final?'web/deploy-final-public.request':'web/deploy-public.request','utf8'));
     validatePublicRequest(request,env);
+    if(final)validateFinalRelease(request,env);
     const emailSignup=request.emailSignup===true;
     await mkdir('web/artifacts',{recursive:true});
-    if(process.argv.includes('--prepare')){
+    if(final&&process.argv.includes('--prepare-final')){
+      if(!env.GITHUB_ENV)throw Error('GITHUB_ACTIONS_ENVIRONMENT_REQUIRED');
+      const qa=await requireQa({...env,GITHUB_SHA:request.reviewedRevision});
+      await checkFinalRelease(env);
+      const {binding,value}=finalReleaseKey(env);
+      console.log('::add-mask::'+value);
+      await appendFile(env.GITHUB_ENV,'VERIFIED_QA_URL='+qa+'\nBANK_CONTENT_KEY_BINDING='+binding+'\nBANK_CONTENT_KEY='+value+'\n',{mode:0o600});
+    }else if(final&&process.argv.includes('--register-final-key')){
+      await registerFinalReleaseKey(env,{binding:env.BANK_CONTENT_KEY_BINDING,value:env.BANK_CONTENT_KEY});
+    }else if(!final&&process.argv.includes('--prepare')){
       if(!env.GITHUB_ENV)throw Error('GITHUB_ACTIONS_ENVIRONMENT_REQUIRED');
       const qa=await requireQa(env);await appendFile(env.GITHUB_ENV,'VERIFIED_QA_URL='+qa+'\n');
       const result=await preparePublicProject(env,{emailSignup});

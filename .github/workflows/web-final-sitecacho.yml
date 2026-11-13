@@ -1,0 +1,75 @@
+name: Cachaste · Publicación final sin cobros
+on:
+  push:
+    branches: [work/cachaste-lanzamiento-final-20261113]
+    paths: [web/deploy-final-public.request]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cachaste-pages-preview
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.repository == 'josevillablanca30/PreparaTupaes'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CLOUDFLARE_ACCOUNT_ID: cfe4b77c0c39bb056306d16133a93642
+      CLOUDFLARE_PAGES_PROJECT: cachaste-sitecacho
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Confirmar la revisión autorizada
+        id: request
+        run: |
+          node --input-type=module <<'NODE'
+          import {appendFileSync,readFileSync} from 'node:fs';
+          import {execFileSync} from 'node:child_process';
+          import {validateFinalRelease} from './web/scripts/publish-sitecacho.mjs';
+          const file='web/deploy-final-public.request';
+          const request=JSON.parse(readFileSync(file,'utf8'));
+          if(request.enabled===false)process.exit(0);
+          const reviewed=execFileSync('git',['rev-parse','HEAD^1'],{encoding:'utf8'}).trim();
+          validateFinalRelease(request,{...process.env,REVIEWED_RELEASE_SHA:reviewed});
+          const files=execFileSync('git',['diff','--name-only',reviewed,'HEAD'],{encoding:'utf8'}).trim();
+          if(files!==file)throw Error('RELEASE_REQUEST_MUST_BE_THE_ONLY_CHANGE');
+          appendFileSync(process.env.GITHUB_ENV,'REVIEWED_RELEASE_SHA='+reviewed+'\n');
+          appendFileSync(process.env.GITHUB_OUTPUT,'enabled=true\n');
+          NODE
+      - uses: actions/setup-node@v4
+        if: steps.request.outputs.enabled == 'true'
+        with:
+          node-version: '22'
+      - run: npm ci
+        if: steps.request.outputs.enabled == 'true'
+      - name: Confirmar CI, dominios, registro y cobros cerrados
+        if: steps.request.outputs.enabled == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        run: node web/scripts/publish-sitecacho.mjs --prepare-final
+      - name: Construir la revisión con los recursos privados cifrados
+        if: steps.request.outputs.enabled == 'true'
+        run: |
+          GITHUB_SHA="$REVIEWED_RELEASE_SHA" node web/scripts/build.mjs
+          node web/scripts/verify-private-distribution.mjs
+      - name: Registrar la clave del nuevo paquete
+        if: steps.request.outputs.enabled == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node web/scripts/publish-sitecacho.mjs --register-final-key
+      - name: Publicar la revisión autorizada
+        if: steps.request.outputs.enabled == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: npx --yes wrangler@4.45.0 pages deploy web/dist --project-name=cachaste-sitecacho --branch=production-requires-owner-approval --commit-hash="$REVIEWED_RELEASE_SHA" --commit-dirty=false
+      - name: Verificar la revisión publicada y dejar evidencia en el registro
+        if: steps.request.outputs.enabled == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          node web/scripts/publish-sitecacho.mjs --verify
+          node --input-type=module -e "import {requirePaymentsClosed} from './web/scripts/publish-sitecacho.mjs'; await requirePaymentsClosed()"

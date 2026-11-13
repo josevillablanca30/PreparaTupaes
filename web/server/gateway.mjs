@@ -8,7 +8,7 @@ const json=(data,status=200,headers={})=>new Response(JSON.stringify(data),{stat
 const jwtExpires=token=>{try{const s=token.split('.')[1];return JSON.parse(atob(s.replaceAll('-','+').replaceAll('_','/'))).exp*1000;}catch{return 0;}};
 const bearer=req=>req.headers.get('authorization')?.match(/^Bearer ([A-Za-z0-9_.-]+)$/)?.[1];
 const cookie=req=>req.headers.get('cookie')?.split(';').map(x=>x.trim()).find(x=>x.startsWith(COOKIE+'='))?.slice(COOKIE.length+1);
-export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local',pagePolicies={},protectedFiles=[],accountFiles=[],encryptedFiles={},allowDevelopmentHttp=false}={}){
+export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local',pagePolicies={},protectedFiles=[],accountFiles=[],encryptedFiles={},contentKeyBinding,allowDevelopmentHttp=false}={}){
  const allowed=new Set(protectedFiles),accountAllowed=new Set(accountFiles),grants=new Map();
  async function backend(env,path,token,{body,method='GET'}={}){
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
@@ -100,7 +100,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
      if(path.endsWith('.html')&&req.headers.get('accept')?.includes('text/html'))return Response.redirect(url.origin+'/cuenta.html?next='+encodeURIComponent(path),302);
      throw e;
     }
-    const response=await privateAsset(req,env,encryptedFiles);if(!response.ok)return response;
+    const response=await privateAsset(req,env,encryptedFiles,contentKeyBinding);if(!response.ok)return response;
     const headers=new Headers(response.headers);for(const[k,v]of Object.entries(ACCESS_HEADERS))headers.set(k,v);
     headers.set('x-cachaste-user',auth.user.id);headers.set('content-security-policy',policy(path,pagePolicies));
     if(path.endsWith('.html')){
