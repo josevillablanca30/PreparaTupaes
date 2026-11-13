@@ -59,7 +59,7 @@ export function verifyTarget(project, branch) {
   if (project.canonical_deployment) {
     const release=project.canonical_deployment;
     if (!reviewedPublicRuntime(project.deployment_configs?.production) || release.project_name!==PAGES_PROJECT || release.environment!=='production' ||
-      ![RESERVED_PRODUCTION_BRANCH, PUBLIC_SOURCE_BRANCH].includes(release.deployment_trigger?.metadata?.branch) || !/^[a-f\d]{40}$/.test(release.deployment_trigger?.metadata?.commit_hash||'')) throw Error('EXISTING_PRODUCTION_DEPLOYMENT_DENIED');
+      ![RESERVED_PRODUCTION_BRANCH, PREVIEW_BRANCH, PUBLIC_SOURCE_BRANCH].includes(release.deployment_trigger?.metadata?.branch) || !/^[a-f\d]{40}$/.test(release.deployment_trigger?.metadata?.commit_hash||'')) throw Error('EXISTING_PRODUCTION_DEPLOYMENT_DENIED');
   }
   const domains = new Set([PAGES_PROJECT + '.pages.dev', 'sitecacho.cl', 'www.sitecacho.cl']);
   if ((project.domains || []).some(x => !domains.has(x))) throw Error('UNRELATED_DOMAIN_DENIED');
