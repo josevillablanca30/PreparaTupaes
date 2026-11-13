@@ -1,4 +1,4 @@
-name: Cachaste · Publicación final sin cobros
+name: Cachaste · Publicación web autorizada
 on:
   push:
     branches: [work/cachaste-lanzamiento-final-20261113]
@@ -37,6 +37,7 @@ jobs:
           const files=execFileSync('git',['diff','--name-only',reviewed,'HEAD'],{encoding:'utf8'}).trim();
           if(files!==file)throw Error('RELEASE_REQUEST_MUST_BE_THE_ONLY_CHANGE');
           appendFileSync(process.env.GITHUB_ENV,'REVIEWED_RELEASE_SHA='+reviewed+'\n');
+          appendFileSync(process.env.GITHUB_ENV,'CACHASTE_COMMERCIAL_RELEASE='+request.realPayments+'\n');
           appendFileSync(process.env.GITHUB_OUTPUT,'enabled=true\n');
           NODE
       - uses: actions/setup-node@v4
@@ -45,7 +46,7 @@ jobs:
           node-version: '22'
       - run: npm ci
         if: steps.request.outputs.enabled == 'true'
-      - name: Confirmar CI, dominios, registro y cobros cerrados
+      - name: Confirmar CI, dominios, registro y estado de cobros
         if: steps.request.outputs.enabled == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -72,4 +73,3 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           node web/scripts/publish-sitecacho.mjs --verify
-          node --input-type=module -e "import {requirePaymentsClosed} from './web/scripts/publish-sitecacho.mjs'; await requirePaymentsClosed()"

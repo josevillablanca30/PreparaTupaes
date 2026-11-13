@@ -36,6 +36,32 @@ test('www redirects to canonical apex without losing the query',async()=>{
  assert.equal(res.status,308);assert.equal(res.headers.get('location'),'https://sitecacho.cl/cuenta.html?next=%2Fapp%2Finicio.html');
 });
 
+test('commercial indexing publishes only canonical public pages after explicit activation',async()=>{
+ const page='<html><head><meta name="robots" content="noindex,nofollow"><link rel="canonical" href="https://preview.example/"></head></html>';
+ const bindings={WEB_INDEXING_ENABLED:'true',ASSETS:{fetch:async()=>new Response(page,{headers:{'content-type':'text/html'}})}};
+ const ready=createGateway({commercial:true});
+ const dormant=await gateway.fetch(req('/robots.txt'),bindings);
+ assert.match(await dormant.text(),/^Disallow: \/$/m);
+ assert.equal((await gateway.fetch(req('/sitemap.xml'),bindings)).status,404);
+ const robot=await ready.fetch(req('/robots.txt'),bindings);
+ assert.match(await robot.text(),/Sitemap: https:\/\/sitecacho\.cl\/sitemap\.xml/);
+ const sitemap=await ready.fetch(req('/sitemap.xml'),bindings);
+ assert.equal(sitemap.status,200);
+ assert.deepEqual([...((await sitemap.text()).matchAll(/<loc>(.*?)<\/loc>/g))].map(m=>m[1]),[
+  'https://sitecacho.cl/','https://sitecacho.cl/privacidad.html',
+  'https://sitecacho.cl/condiciones.html','https://sitecacho.cl/eliminar-cuenta.html'
+ ]);
+ const publicPage=await ready.fetch(req('/privacidad'),bindings);
+ const published=await publicPage.text();
+ assert.match(published,/rel="canonical" href="https:\/\/sitecacho\.cl\/privacidad\.html"/);
+ assert.doesNotMatch(published,/noindex|preview\.example/);
+ assert.equal(publicPage.headers.get('x-robots-tag'),null);
+ for(const url of ['https://sitecacho.cl/cuenta.html','https://cachaste-sitecacho.pages.dev/']){
+  const response=await ready.fetch(new Request(url),bindings);
+  assert.match(response.headers.get('x-robots-tag'),/noindex/);
+ }
+});
+
 const fakeToken=(exp=Math.floor(Date.now()/1000)+3600)=>'a.'+Buffer.from(JSON.stringify({exp})).toString('base64url')+'.c';
 test('Supabase user identity must match access entitlement user ID',async()=>{
  const token=fakeToken(),calls=[];

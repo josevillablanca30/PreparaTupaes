@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {preparePublicProject,validatePublicRequest,matchingPublicDeployment,configurePublicDomains,probeCanonicalWww,validateFinalRelease,checkFinalRelease,finalReleaseKey,registerFinalReleaseKey} from '../scripts/publish-sitecacho.mjs';
 import {prepareProject} from '../scripts/prepare-pages-project.mjs';
-import {PAGES_ACCOUNT_ID,PAGES_PROJECT,PREVIEW_BRANCH,PUBLIC_SOURCE_BRANCH,FINAL_RELEASE_BRANCH,RESERVED_PRODUCTION_BRANCH,REPOSITORY,verifyTarget,publicSiteUrl,reviewedPublicRuntime,pagesClient} from '../scripts/pages-client.mjs';
+import {PAGES_ACCOUNT_ID,PAGES_PROJECT,PREVIEW_BRANCH,PUBLIC_SOURCE_BRANCH,FINAL_RELEASE_BRANCH,RESERVED_PRODUCTION_BRANCH,REPOSITORY,COMMERCIAL_RELEASE_MARKER,verifyTarget,publicSiteUrl,reviewedPublicRuntime,pagesClient} from '../scripts/pages-client.mjs';
+import {readFile} from 'node:fs/promises';
+import {renderCommercialTerms,renderCommercialPrivacy} from '../shared/commercial-terms.mjs';
 import {requireQa} from '../scripts/verify-preview-qa.mjs';
 const revision='a'.repeat(40);
 const env={GITHUB_REPOSITORY:REPOSITORY,GITHUB_REF_NAME:PUBLIC_SOURCE_BRANCH,GITHUB_SHA:revision,CLOUDFLARE_ACCOUNT_ID:PAGES_ACCOUNT_ID,CLOUDFLARE_API_TOKEN:'fixture-public-no-real-token-123456789'};
@@ -17,12 +19,56 @@ function api(){
 const closed=async()=>Response.json({ready:false,trialAvailable:false});
 const finalEnv={...env,GITHUB_REF_NAME:FINAL_RELEASE_BRANCH,GITHUB_SHA:'b'.repeat(40),REVIEWED_RELEASE_SHA:revision,GITHUB_RUN_ID:'123',GITHUB_RUN_ATTEMPT:'1'};
 const finalRequest={...request,sourceBranch:FINAL_RELEASE_BRANCH,enabled:true,reviewedRevision:revision,indexing:false,emailSignup:true};
+const seller={name:'Aconcanino SpA',taxId:'00.000.000-0',legalAddress:'Dirección de prueba',
+ representative:'Representante de prueba',contactEmail:'soporte@example.invalid',
+ refundTerms:'Solicitudes de prueba <sin HTML>.',taxDocumentTerms:'Documento tributario de prueba.'};
 test('final release requires an enabled request for the exact reviewed revision with sales and indexing off',()=>{
  assert.equal(validateFinalRelease(finalRequest,finalEnv),true);
  for(const change of [{enabled:false},{reviewedRevision:'c'.repeat(40)},{realPayments:true},{indexing:true},{emailSignup:false}]){
   assert.throws(()=>validateFinalRelease({...finalRequest,...change},finalEnv));
  }
  assert.throws(()=>validateFinalRelease({...finalRequest,reviewedRevision:undefined},{...finalEnv,REVIEWED_RELEASE_SHA:undefined}));
+});
+test('final commercial release requires approved terms and changes only the three Pages launch flags',async()=>{
+ const request={...finalRequest,scope:'public-web-commercial',realPayments:true,indexing:true,seller,termsDate:'2026-11-13'};
+ assert.equal(validateFinalRelease(request,finalEnv),true);
+ for(const change of [{seller:null},{termsDate:'2026-02-30'},{indexing:false},{realPayments:false},{scope:'public-web-payments-closed'}]){
+  assert.throws(()=>validateFinalRelease({...request,...change},finalEnv));
+ }
+ const a=api();
+ const authSettings=()=>Response.json({external:{email:true},disable_signup:false,mailer_autoconfirm:false});
+ await preparePublicProject(env,{client:a.client,fetcher:url=>url.endsWith('/auth/v1/settings')?authSettings():closed(),emailSignup:true});
+ a.p.canonical_deployment=deployment();
+ const before=structuredClone(a.p.deployment_configs);
+ const client=pagesClient(finalEnv,{fetcher:async(url,options)=>{
+  if(options.method==='PATCH')Object.assign(a.p.deployment_configs.production.env_vars,
+    JSON.parse(options.body).deployment_configs.production.env_vars);
+  return Response.json({success:true,result:a.p});
+ }});
+ const domains=[{name:'sitecacho.cl',status:'active'},{name:'www.sitecacho.cl',status:'active'}];
+ const options={client:{...client,listDomains:async()=>domains},commercial:true};
+ await assert.rejects(checkFinalRelease(finalEnv,{...options,fetcher:closed}),/COMMERCIAL_PAYMENT_BACKEND_NOT_READY/);
+ await checkFinalRelease(finalEnv,{...options,fetcher:async url=>url.endsWith('/auth/v1/settings')?authSettings():
+   Response.json({ready:true,managementReady:true,mode:'production'})});
+ const key=finalReleaseKey(finalEnv);
+ await registerFinalReleaseKey(finalEnv,key,options);
+ assert.equal(reviewedPublicRuntime(a.p.deployment_configs.production,true,{commercial:true}),true);
+ assert.equal(a.p.deployment_configs.production.env_vars.WEB_PUBLIC_RELEASE.value,COMMERCIAL_RELEASE_MARKER);
+ const after=structuredClone(a.p.deployment_configs),variables=after.production.env_vars;
+ delete variables[key.binding];delete variables.WEB_INDEXING_ENABLED;
+ for(const key of ['WEB_PUBLIC_RELEASE','WEB_PAYMENTS_ENABLED'])variables[key]=before.production.env_vars[key];
+ assert.deepEqual(after,before);
+});
+test('final commercial release renders verified seller terms without HTML injection',async()=>{
+ const terms=await readFile(new URL('../public/condiciones.html',import.meta.url),'utf8');
+ const privacy=await readFile(new URL('../public/privacidad.html',import.meta.url),'utf8');
+ const output=renderCommercialTerms(terms,seller,'2026-11-13');
+ assert.match(output,/Vendedor y soporte.*Aconcanino SpA/);
+ assert.match(output,/datetime="2026-11-13"/);
+ assert.match(output,/&lt;sin HTML&gt;/);
+ assert.doesNotMatch(output,/todavía sin contratación|etapa actual de prueba/);
+ assert.match(renderCommercialPrivacy(privacy,seller,'2026-11-13'),/Datos de suscripciones.*Mercado Pago/);
+ assert.throws(()=>renderCommercialTerms(terms,{...seller,legalAddress:''},'2026-11-13'));
 });
 test('final release accepts only the integration workflow for its branch and reviewed SHA',async()=>{
  const run={id:123,head_sha:revision,head_branch:FINAL_RELEASE_BRANCH,path:'.github/workflows/web-final-integration.yml',event:'push',status:'completed',conclusion:'success'};

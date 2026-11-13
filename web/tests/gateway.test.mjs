@@ -105,6 +105,20 @@ test('billing status cannot advertise checkout when the web launch switch is off
  assert.equal(calls,1);
 });
 
+test('commercial billing stays closed on preview hosts and on builds without the release request',async()=>{
+ const statusRequest=origin=>new Request(origin+'/api/billing',{method:'POST',headers:{
+  origin,'x-cachaste-request':'1','content-type':'application/json'
+ },body:'{"action":"status"}'});
+ const fetcher=async()=>Response.json({ready:true,trialAvailable:true,managementReady:true,mode:'production'});
+ const publicOrigin='https://sitecacho.cl',preview='https://cachaste-sitecacho.pages.dev';
+ const candidate=createGateway({commercial:true,fetcher});
+ const settings={WEB_PAYMENTS_ENABLED:'true'};
+ assert.equal((await (await candidate.fetch(statusRequest(publicOrigin),settings)).json()).ready,true);
+ assert.equal((await (await candidate.fetch(statusRequest(preview),settings)).json()).ready,false);
+ const dormant=createGateway({fetcher});
+ assert.equal((await (await dormant.fetch(statusRequest(publicOrigin),settings)).json()).ready,false);
+});
+
 test('sandbox proxy uses the current account authority and validates origin before provider traffic',async()=>{
  let admin=false,providerCalls=0;const t=token(),uid='10000000-0000-4000-8000-000000000001';
  const gateway=createGateway({fetcher:async(url,options)=>{

@@ -6,8 +6,11 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
  const supabaseUrl=()=>env('SUPABASE_URL'),anon=()=>env('SUPABASE_ANON_KEY')||env('SUPABASE_PUBLISHABLE_KEY');
  const configured=()=>!!env('MP_COLLECTOR_ID')&&((env('CACHASTE_MP_MODE')==='production'&&/^APP_USR-/.test(env('MP_ACCESS_TOKEN')||''))||(env('CACHASTE_MP_MODE')==='test'&&/^(TEST-|APP_USR-)/.test(env('MP_ACCESS_TOKEN')||'')&&!!env('MP_TEST_COLLECTOR_ID')&&String(env('MP_COLLECTOR_ID'))===String(env('MP_TEST_COLLECTOR_ID'))&&!!env('MP_TEST_ACCESS_TOKEN')&&env('MP_ACCESS_TOKEN')===env('MP_TEST_ACCESS_TOKEN')));
  const webOrigin=()=>{try{const value=new URL(env('CACHASTE_WEB_ORIGIN'));return value.protocol==='https:'&&value.pathname==='/'&&!value.search&&!value.hash?value.origin:null;}catch{return null;}};
- const ready=()=>configured()&&env('CACHASTE_MP_ENABLED')==='true'&&env('CACHASTE_MP_TAX_READY')==='true'&&!!env('MP_WEBHOOK_SECRET')&&!!webOrigin()&&(env('CACHASTE_MP_MODE')!=='production'||new URL(webOrigin()).hostname.endsWith('.cl'))&&['WEEKLY','MONTHLY','YEARLY'].every(x=>!!env('MP_PLAN_'+x));
  const live=()=>env('CACHASTE_MP_MODE')==='production';
+ const separateCredentials=()=>env('MP_ACCESS_TOKEN')!==env('MP_TEST_ACCESS_TOKEN')&&String(env('MP_COLLECTOR_ID'))!==String(env('MP_TEST_COLLECTOR_ID'))&&
+  env('MP_WEBHOOK_SECRET')!==env('MP_TEST_WEBHOOK_SECRET');
+ const ready=()=>configured()&&env('CACHASTE_MP_ENABLED')==='true'&&env('CACHASTE_MP_TAX_READY')==='true'&&!!env('MP_WEBHOOK_SECRET')&&!!webOrigin()&&
+  (!live()||(separateCredentials()&&webOrigin()==='https://sitecacho.cl'))&&Object.values(PLAN_KEYS).every(key=>!!env('MP_PLAN_'+key));
  function cors(req){const origin=req.headers.get('origin'),allowed=webOrigin();if(origin&&origin!==allowed)throw Error('ORIGIN_DENIED');return{...(origin?{'access-control-allow-origin':origin,'vary':'Origin'}:{}),'access-control-allow-headers':'authorization,apikey,content-type,x-client-info','access-control-allow-methods':'POST,OPTIONS','cache-control':'no-store'};}
  const json=(req,data,status=200)=>new Response(JSON.stringify(data),{status,headers:{...cors(req),'content-type':'application/json'}});
  const admin=()=>createClient(supabaseUrl(),env('SUPABASE_SERVICE_ROLE_KEY'),{auth:{persistSession:false,autoRefreshToken:false}});
@@ -45,7 +48,7 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   }));
   const policy=await call('policy');
   return {
-   seller,plans,webhookSecretConfigured:!!env('MP_WEBHOOK_SECRET'),
+   seller,plans,webhookSecretConfigured:!!env('MP_WEBHOOK_SECRET'),separateCredentials:separateCredentials(),
    checkoutEnabled:env('CACHASTE_MP_ENABLED')==='true',taxReady:env('CACHASTE_MP_TAX_READY')==='true',
    databaseReady:policy.enabled===true,ready:ready()&&policy.enabled===true
   };
@@ -71,7 +74,14 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   if(req.method!=='POST')return json(req,{error:'METHOD_NOT_ALLOWED'},405);
   if(Number(req.headers.get('content-length')||0)>8192)return json(req,{error:'PAYLOAD_TOO_LARGE'},413);
   const text=await req.text();if(text.length>8192)return json(req,{error:'PAYLOAD_TOO_LARGE'},413);const body=JSON.parse(text||'{}');
-  if(body.action==='status'){const enabled=ready()&&(await call('policy')).enabled===true;let trialAvailable=false;if(enabled&&env('CACHASTE_MP_TRIAL_ENABLED')==='true'&&env('MP_PLAN_MONTHLY_TRIAL')){try{await providerPlan('mensual',env('MP_PLAN_MONTHLY_TRIAL'),true);trialAvailable=true;}catch{}}return json(req,{ready:enabled,trialAvailable,managementReady:configured()});}
+  if(body.action==='status'){
+   const enabled=ready()&&(await call('policy')).enabled===true;
+   let trialAvailable=false;
+   if(enabled&&env('CACHASTE_MP_TRIAL_ENABLED')==='true'&&env('MP_PLAN_MONTHLY_TRIAL')){
+    try{await providerPlan('mensual',env('MP_PLAN_MONTHLY_TRIAL'),true);trialAvailable=true;}catch{}
+   }
+   return json(req,{ready:enabled,trialAvailable,managementReady:configured(),mode:live()?'production':env('CACHASTE_MP_MODE')==='test'?'test':null});
+  }
   const{user,state}=await auth(req);
   if(body.action==='commercial_readiness'){
    if(state.isAdmin!==true)throw Error('FORBIDDEN');

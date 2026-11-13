@@ -24,6 +24,7 @@ function inspectCommercial() {
       mode: mode === 'production' || mode === 'test' ? mode : null,
       credentialsPresent: !!env('MP_ACCESS_TOKEN') && !!env('MP_COLLECTOR_ID'),
       credentialsMatchSandbox: !!env('MP_TEST_ACCESS_TOKEN') && env('MP_ACCESS_TOKEN') === env('MP_TEST_ACCESS_TOKEN'),
+      webhookMatchesSandbox: !!env('MP_TEST_WEBHOOK_SECRET') && env('MP_WEBHOOK_SECRET') === env('MP_TEST_WEBHOOK_SECRET'),
       configuredPlans: ['WEEKLY', 'MONTHLY', 'YEARLY', 'MONTHLY_TRIAL'].filter(key => !!env('MP_PLAN_'+key)),
       webhookSecretConfigured: !!env('MP_WEBHOOK_SECRET'),
     }));

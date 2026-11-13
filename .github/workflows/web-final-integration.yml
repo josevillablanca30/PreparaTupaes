@@ -29,7 +29,7 @@ jobs:
           node web/scripts/verify-final-integration.mjs
       - name: Probar las rutas nuevas de pagos y publicación
         run: |
-          node --test --test-name-pattern='a payment webhook uses|signed webhook deduplicates|forged notification|closed database launch policy|final release|release content' web/tests/mercadopago-handler.test.mjs web/tests/public-site.test.mjs web/tests/content.test.mjs
+          node --test --test-name-pattern='a payment webhook uses|signed webhook deduplicates|forged notification|closed database launch policy|commercial readiness|commercial indexing|commercial billing stays closed|final release|final commercial release|release content' web/tests/mercadopago-handler.test.mjs web/tests/public-site.test.mjs web/tests/content.test.mjs web/tests/gateway.test.mjs tests/web-gateway-security.test.mjs
       - name: Preparar Chromium
         run: bash scripts/install-chromium-qa.sh
       - name: Comprobar el retorno y el acceso en la cuenta
@@ -44,7 +44,7 @@ jobs:
             echo 'La credencial de Pages no está disponible en GitHub Actions.'
             exit 1
           fi
-          node --input-type=module -e "import {checkFinalRelease} from './web/scripts/publish-sitecacho.mjs'; const project=await checkFinalRelease(process.env); console.log('Pages listo para la publicación sin cobros. Revisión actual:',project.canonical_deployment.deployment_trigger.metadata.commit_hash)"
+          node --input-type=module -e "import {checkFinalRelease} from './web/scripts/publish-sitecacho.mjs'; const project=await checkFinalRelease(process.env); console.log('Pages verificado. Revisión actual:',project.canonical_deployment.deployment_trigger.metadata.commit_hash)"
       - name: Leer disponibilidad de la configuración comercial
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}

@@ -12,8 +12,9 @@ export function matchingDeployment(deployments, revision) {
   return {id: deployment.id, url: previewUrl(deployment.url), aliases: (deployment.aliases || []).map(previewUrl)};
 }
 
-export async function probeDeployment({url, revision, protectedFiles, encryptedFiles, expectedSignupEnabled = false, fetcher = fetch, validateUrl = previewUrl}) {
+export async function probeDeployment({url, revision, protectedFiles, encryptedFiles, expectedSignupEnabled = false, commercial = false, fetcher = fetch, validateUrl = previewUrl}) {
   const origin = validateUrl(url), checks = [];
+  const commercialOrigin=commercial&&origin==='https://sitecacho.cl';
   async function check(name, pathname, inspect, options = {}) {
     try {
       const response = await fetcher(origin + pathname, {
@@ -30,25 +31,43 @@ export async function probeDeployment({url, revision, protectedFiles, encryptedF
   await check('Cuenta pública', '/cuenta.html', (r, text) => r.status === 200 && text.includes('cuenta'));
   await check('Recuperación pública HTTPS, privada en caché y sin referrer', '/recuperar', (r,text)=>r.status===200&&text.includes('id=\"recovery-root\"')&&noStore(r)&&r.headers.get('referrer-policy')==='no-referrer');
   await check('Cliente oficial de recuperación disponible', '/recovery.js', (r,text)=>r.status===200&&text.length>1000);
-  for(const[slug,title]of[['privacidad','Política de privacidad'],['condiciones','Condiciones de uso'],['eliminar-cuenta','Eliminar cuenta y datos']])await check('Documento legal público: '+slug,'/'+slug+'.html',(r,text)=>r.status===200&&/text\/html/.test(r.headers.get('content-type')||'')&&text.includes('<h1>'+title+'</h1>')&&text.includes('2026-11-03')&&text.includes('jose.villablanca.horta@gmail.com'));
+  for(const[slug,title]of[['privacidad','Política de privacidad'],['condiciones','Condiciones de uso'],['eliminar-cuenta','Eliminar cuenta y datos']]){
+    await check('Documento legal público: '+slug,'/'+slug+'.html',(r,text)=>{
+      if(r.status!==200||!/text\/html/.test(r.headers.get('content-type')||'')||!text.includes('<h1>'+title+'</h1>'))return false;
+      if(commercial&&slug==='condiciones')return text.includes('Aconcanino SpA')&&text.includes('Domicilio legal');
+      if(commercial&&slug==='privacidad')return text.includes('Datos de suscripciones')&&text.includes('Mercado Pago');
+      return text.includes('2026-11-03')&&text.includes('jose.villablanca.horta@gmail.com');
+    });
+  }
 
   await check('PWA instalable', '/manifest.webmanifest', (r, text) => r.status === 200 && parse(text)?.display === 'standalone' && parse(text)?.icons?.some(icon => icon.sizes === '512x512'));
   await check('Worker real, mismo commit y registro según solicitud', '/api/config', (r, text) => {
     const config = parse(text);
     return r.status === 200 && noStore(r) && config?.revision === revision && config.signupEnabled === expectedSignupEnabled && config.authReturnReady === false;
   });
-  await check('Distribución web, versión y cobros cerrados', '/version.json', (r, text) => {
+  await check('Distribución web y revisión', '/version.json', (r, text) => {
     const version = parse(text);
-    return r.status === 200 && version?.revision === revision && version.distribution === 'web-commercial' && version.paymentsEnabledByBuild === false;
+    return r.status === 200 && version?.revision === revision && version.distribution === 'web-commercial' && version.paymentsEnabledByBuild === commercial;
   });
   await check('Sesión anónima rechazada', '/api/session', (r, text) => r.status === 401 && noStore(r) && parse(text)?.error === 'AUTH_REQUIRED');
   const post = value => ({method: 'POST', headers: {origin, 'x-cachaste-request': '1', 'content-type': 'application/json'}, body: JSON.stringify(value)});
   await check('Progreso anónimo rechazado', '/api/progress', r => r.status === 401, post({operation: 'snapshot'}));
   await check('Checkout anónimo rechazado sin crear compra', '/api/billing', r => r.status === 401, post({action: 'checkout', plan: 'mensual'}));
-  await check('Mercado Pago realmente deshabilitado', '/api/billing', (r, text) => {
+  await check('Estado de Mercado Pago en el dominio revisado', '/api/billing', (r, text) => {
     const billing = parse(text);
-    return r.status === 200 && billing?.ready === false && billing.trialAvailable === false;
+    return r.status === 200 && billing?.ready === commercialOrigin &&
+      (commercialOrigin?billing.managementReady===true:billing.trialAvailable===false);
   }, post({action: 'status'}));
+  if(commercial){
+    await check('Robots respeta el dominio canónico','/robots.txt',(r,text)=>r.status===200&&
+      (commercialOrigin?text.includes('Sitemap: https://sitecacho.cl/sitemap.xml'):/^Disallow: \/$/m.test(text)));
+    await check('Mapa público de páginas','/sitemap.xml',(r,text)=>commercialOrigin?
+      r.status===200&&text.includes('<loc>https://sitecacho.cl/</loc>')&&!text.includes('/cuenta.html'):r.status===404);
+    await check('Indexación de portada y URL canónica','/',(r,text)=>r.status===200&&
+      text.includes('<link rel="canonical" href="https://sitecacho.cl/">')&&
+      /<meta name="robots"[^>]*noindex/i.test(text)===!commercialOrigin&&
+      /noindex/i.test(r.headers.get('x-robots-tag')||'')===!commercialOrigin);
+  }
   await check('Escritura desde otro sitio rechazada', '/api/session', r => r.status === 403, {...post({}), headers: {origin: 'https://example.invalid', 'x-cachaste-request': '1'}});
   const forged = Buffer.from(JSON.stringify({alg: 'none'})).toString('base64url') + '.' + Buffer.from(JSON.stringify({sub: '00000000-0000-4000-8000-000000000001', exp: Math.floor(Date.now() / 1000) + 3600})).toString('base64url') + '.forged';
   await check('Token fabricado no concede Premium', '/app/daily-catalog.js', r => r.status === 401, {headers: {authorization: 'Bearer ' + forged}});
