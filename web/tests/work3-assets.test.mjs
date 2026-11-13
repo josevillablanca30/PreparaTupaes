@@ -13,4 +13,8 @@ test('landing cutout preserves every source RGB pixel, resolution, eyes and bear
  assert.ok(transparent>40000);
  for(const[x,y]of[[165,123],[249,152],[205,226]])assert.equal(cutout.data[(y*408+x)*4+3],255,'Preserve face and beard');
  for(const[x,y]of[[0,0],[407,0],[407,180]])assert.equal(cutout.data[(y*408+x)*4+3],0,'Remove exterior background');
+ const alphaAt=(x,y)=>cutout.data[(y*cutout.width+x)*4+3];
+ assert.equal(alphaAt(180,245),255,'Keep the original robe above the fade');
+ assert.ok(alphaAt(180,260)>alphaAt(180,270)&&alphaAt(180,270)>0,'Feather the lower edge in the asset');
+ for(let y=275;y<cutout.height;y++)for(let x=0;x<cutout.width;x++)assert.equal(alphaAt(x,y),0,'No opaque bottom edge');
 });

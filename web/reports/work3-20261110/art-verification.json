@@ -7,7 +7,7 @@
     278
   ],
   "rgbPreserved": true,
-  "method": "original SVG crop and edge-connected pale-background mask; no generation",
-  "transparentPixels": 46634,
+  "method": "original SVG crop, edge-connected pale-background mask, 1px inset and lower-edge alpha fade",
+  "transparentPixels": 46224,
   "detachedBackgroundFragmentsRemoved": 9
 }

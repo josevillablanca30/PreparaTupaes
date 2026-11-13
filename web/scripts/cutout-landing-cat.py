@@ -4,7 +4,7 @@ No synthesis, resampling, or RGB edits. The original crop path is retained.
 from pathlib import Path
 from collections import deque
 import base64,io,json,hashlib,xml.etree.ElementTree as ET
-from PIL import Image,ImageDraw
+from PIL import Image,ImageChops,ImageDraw,ImageFilter
 source=Path('assets/competition-cat-rank.svg');root=ET.parse(source).getroot()
 embedded=root.find('{http://www.w3.org/2000/svg}image').get('href')
 raw=base64.b64decode(embedded.split(',',1)[1]);original=Image.open(io.BytesIO(raw)).convert('RGB');w,h=original.size
@@ -41,10 +41,20 @@ character=max(components,key=len)
 for part in components:
     if part is not character:
         for x,y in part:alpha[x,y]=0
-result=original.copy().convert('RGBA');result.putalpha(clip)
+# Remove the one-pixel pale matte fringe from the original screenshot edge.
+alpha=clip.filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.65))
+# The source crops the robe and tail at the bottom. Fade that edge in the
+# alpha channel so it stays soft at every display size and in every build.
+fade_start,fade_end=h-32,h-3
+fade=Image.new('L',(1,h),255)
+for y in range(fade_start,h):
+    opacity=max(0,(fade_end-y)/(fade_end-fade_start))
+    fade.putpixel((0,y),round(255*opacity**2*(3-2*opacity)))
+alpha=ImageChops.multiply(alpha,fade.resize((w,h),Image.Resampling.NEAREST))
+result=original.copy().convert('RGBA');result.putalpha(alpha)
 out=Path('web/public/assets/landing-cat-rank-cutout.png');out.parent.mkdir(parents=True,exist_ok=True);result.save(out,optimize=True)
 assert result.convert('RGB').tobytes()==original.tobytes(),'Original RGB must remain bit-for-bit identical'
-proof={'source':str(source),'sourceSha256':hashlib.sha256(source.read_bytes()).hexdigest(),'output':str(out),'size':[w,h],'rgbPreserved':True,'method':'original SVG crop and edge-connected pale-background mask; no generation','transparentPixels':sum(a==0 for a in clip.getdata()),'detachedBackgroundFragmentsRemoved':len(components)-1}
+proof={'source':str(source),'sourceSha256':hashlib.sha256(source.read_bytes()).hexdigest(),'output':str(out),'size':[w,h],'rgbPreserved':True,'method':'original SVG crop, edge-connected pale-background mask, 1px inset and lower-edge alpha fade','transparentPixels':alpha.histogram()[0],'detachedBackgroundFragmentsRemoved':len(components)-1}
 Path('web/reports/work3-20261110/art-verification.json').write_text(json.dumps(proof,indent=2)+'\n')
 
 print(json.dumps(proof))

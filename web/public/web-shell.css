@@ -78,3 +78,25 @@ body.web-learning .web-appbar{background:#160d24;border-color:#68418a;color:#f7e
  .web-learning #competition-root .web-duel-filters button{width:100%;min-width:0}
  .web-learning #competition-root .duel-row-actions{flex-wrap:wrap;justify-content:flex-end}
 }
+
+/* Mobile release fix: remove the oversized purple mentor panel from the
+   learning home and duels header. Preserve all navigation and game controls. */
+@media(max-width:760px){
+ .web-learning #competition-root .comp-hero{display:block;min-height:0;padding:14px 16px 18px}
+ .web-learning #competition-root .comp-hero>aside{display:flex!important}
+ .web-learning #competition-root .comp-hero>div{padding:0}
+ .web-learning #daily-root .reference-guide{display:block!important}
+}
+
+/* Restore the original interactive maestro. Feather only the rectangular
+   artwork perimeter; do not redraw the character or remove his control. */
+@media(max-width:760px){
+ .web-learning #daily-root .reference-welcome{display:grid;grid-template-columns:minmax(0,1fr) 44%;align-items:center;gap:5px}
+ .web-learning #daily-root .reference-guide{min-width:0;overflow:visible}
+ .web-learning #daily-root .home-mentor-control{background:transparent!important;box-shadow:none!important;border:0!important;overflow:visible}
+ .web-learning #daily-root .home-mentor-control .mentor-welcome{height:190px!important;width:100%!important;object-fit:contain;mix-blend-mode:screen;mask-image:radial-gradient(ellipse 69% 76% at 50% 51%,#000 49%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 69% 76% at 50% 51%,#000 49%,transparent 100%)}
+ .web-learning #competition-root .comp-hero{display:grid;grid-template-columns:minmax(0,1fr) 42%;align-items:center;gap:5px}
+ .web-learning #competition-root .comp-hero>aside{min-width:0;align-items:center}
+ .web-learning #competition-root .mentor-control{background:transparent!important;border:0!important;box-shadow:none!important}
+ .web-learning #competition-root .mentor-control .hero-cat{mask-image:radial-gradient(ellipse 69% 76% at 50% 51%,#000 49%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 69% 76% at 50% 51%,#000 49%,transparent 100%)}
+}

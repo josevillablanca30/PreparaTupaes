@@ -2,10 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {preparePublicProject,validatePublicRequest,matchingPublicDeployment,configurePublicDomains,probeCanonicalWww} from '../scripts/publish-sitecacho.mjs';
 import {prepareProject} from '../scripts/prepare-pages-project.mjs';
-import {PAGES_ACCOUNT_ID,PAGES_PROJECT,PREVIEW_BRANCH,RESERVED_PRODUCTION_BRANCH,REPOSITORY,verifyTarget,publicSiteUrl,reviewedPublicRuntime} from '../scripts/pages-client.mjs';
+import {PAGES_ACCOUNT_ID,PAGES_PROJECT,PREVIEW_BRANCH,PUBLIC_SOURCE_BRANCH,RESERVED_PRODUCTION_BRANCH,REPOSITORY,verifyTarget,publicSiteUrl,reviewedPublicRuntime} from '../scripts/pages-client.mjs';
 const revision='a'.repeat(40);
-const env={GITHUB_REPOSITORY:REPOSITORY,GITHUB_REF_NAME:PREVIEW_BRANCH,GITHUB_SHA:revision,CLOUDFLARE_ACCOUNT_ID:PAGES_ACCOUNT_ID,CLOUDFLARE_API_TOKEN:'fixture-public-no-real-token-123456789'};
-const request={project:PAGES_PROJECT,sourceBranch:PREVIEW_BRANCH,productionBranch:RESERVED_PRODUCTION_BRANCH,scope:'public-web-payments-closed',realPayments:false,requiresSuccessfulQa:true,preserveResend:true,hosts:['sitecacho.cl','www.sitecacho.cl']};
+const env={GITHUB_REPOSITORY:REPOSITORY,GITHUB_REF_NAME:PUBLIC_SOURCE_BRANCH,GITHUB_SHA:revision,CLOUDFLARE_ACCOUNT_ID:PAGES_ACCOUNT_ID,CLOUDFLARE_API_TOKEN:'fixture-public-no-real-token-123456789'};
+const request={project:PAGES_PROJECT,sourceBranch:PUBLIC_SOURCE_BRANCH,productionBranch:RESERVED_PRODUCTION_BRANCH,scope:'public-web-payments-closed',realPayments:false,requiresSuccessfulQa:true,preserveResend:true,hosts:['sitecacho.cl','www.sitecacho.cl']};
 const deployment=()=>({id:'reviewed-production',project_name:PAGES_PROJECT,environment:'production',is_skipped:false,latest_stage:{name:'deploy',status:'success'},deployment_trigger:{metadata:{branch:RESERVED_PRODUCTION_BRANCH,commit_hash:revision}}});
 function api(){
  const calls=[];let domains=[{name:'sitecacho.cl',status:'active'},{name:'www.sitecacho.cl',status:'deactivated'}];

@@ -2,7 +2,7 @@ import {readFile,writeFile,mkdir,appendFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import {PROJECT_URL,PUBLISHABLE_KEY} from '../shared/config.mjs';
-import {credentials,pagesClient,verifyTarget,reviewedPublicRuntime,publicSiteUrl,PAGES_PROJECT,PREVIEW_BRANCH,RESERVED_PRODUCTION_BRANCH,PUBLIC_RELEASE_MARKER,REPOSITORY} from './pages-client.mjs';
+import {credentials,pagesClient,verifyTarget,reviewedPublicRuntime,publicSiteUrl,PAGES_PROJECT,PUBLIC_SOURCE_BRANCH,RESERVED_PRODUCTION_BRANCH,PUBLIC_RELEASE_MARKER,REPOSITORY} from './pages-client.mjs';
 import {runtimeSecrets} from './prepare-pages-project.mjs';
 import {requireQa} from './verify-preview-qa.mjs';
 import {probeDeployment} from './verify-pages-preview.mjs';
@@ -10,8 +10,8 @@ import {probeDeployment} from './verify-pages-preview.mjs';
 const hosts=['sitecacho.cl','www.sitecacho.cl'];
 const allowedVariables=['SUPABASE_URL','SUPABASE_PUBLISHABLE_KEY','WEB_SIGNUP_ENABLED','WEB_AUTH_RETURN_READY','WEB_GOOGLE_AUTH_ENABLED','WEB_PAYMENTS_ENABLED','WEB_PUBLIC_RELEASE','BANK_CONTENT_KEY','OFFLINE_SIGNING_JWK'];
 export function validatePublicRequest(request,env){
-  if(env.GITHUB_REPOSITORY!==REPOSITORY||env.GITHUB_REF_NAME!==PREVIEW_BRANCH||!/^[a-f\d]{40}$/.test(env.GITHUB_SHA||'')||
-    request.project!==PAGES_PROJECT||request.sourceBranch!==PREVIEW_BRANCH||request.productionBranch!==RESERVED_PRODUCTION_BRANCH||
+  if(env.GITHUB_REPOSITORY!==REPOSITORY||env.GITHUB_REF_NAME!==PUBLIC_SOURCE_BRANCH||!/^[a-f\d]{40}$/.test(env.GITHUB_SHA||'')||
+    request.project!==PAGES_PROJECT||request.sourceBranch!==PUBLIC_SOURCE_BRANCH||request.productionBranch!==RESERVED_PRODUCTION_BRANCH||
     request.scope!=='public-web-payments-closed'||request.realPayments!==false||request.requiresSuccessfulQa!==true||request.preserveResend!==true||
     (request.emailSignup!==undefined&&typeof request.emailSignup!=='boolean')||
     JSON.stringify(request.hosts)!==JSON.stringify(hosts))throw Error('PUBLIC_CLOSED_PAYMENTS_REQUEST_REQUIRED');
