@@ -42,6 +42,10 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           GH_TOKEN: ${{ github.token }}
         run: node web/scripts/publish-sitecacho.mjs --prepare
+      - name: Limpiar halo blanco del PNG original de la mascota
+        run: |
+          python3 -m pip install --break-system-packages Pillow==11.3.0
+          python3 web/scripts/cutout-landing-cat.py
       - name: Construir y verificar las cinco materias cifradas
         run: |
           node web/scripts/build.mjs
