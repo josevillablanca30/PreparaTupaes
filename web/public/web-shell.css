@@ -78,3 +78,12 @@ body.web-learning .web-appbar{background:#160d24;border-color:#68418a;color:#f7e
  .web-learning #competition-root .web-duel-filters button{width:100%;min-width:0}
  .web-learning #competition-root .duel-row-actions{flex-wrap:wrap;justify-content:flex-end}
 }
+
+/* Mobile release fix: remove the oversized purple mentor panel from the
+   learning home and duels header. Preserve all navigation and game controls. */
+@media(max-width:760px){
+ .web-learning #competition-root .comp-hero{display:block;min-height:0;padding:14px 16px 18px}
+ .web-learning #competition-root .comp-hero>aside{display:none!important}
+ .web-learning #competition-root .comp-hero>div{padding:0}
+ .web-learning #daily-root .reference-guide{display:none!important}
+}
