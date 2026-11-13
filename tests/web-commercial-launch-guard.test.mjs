@@ -32,5 +32,5 @@ test('account form and pricing remain usable at narrow phone widths',()=>{
 });
 
 test('hero mascot retains its original source, dimensions and nonblocking decoding',()=>{
- assert.match(landing,/<img src="\/assets\/landing-cat-rank-cutout\.png" alt="El gatito sabio original de ¿Cachaste\?" width="512" height="512" fetchpriority="high" decoding="async">/);
+ assert.match(landing,/<img src="\\/assets\\/gatito-sabio-oficial\\.png" alt="El gatito sabio oficial de ¿Cachaste\\?" width="512" height="512" fetchpriority="high" decoding="async">/);
 });
