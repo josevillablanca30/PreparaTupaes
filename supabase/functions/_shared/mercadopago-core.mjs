@@ -3,10 +3,10 @@ const encoder=new TextEncoder();
 export const iso=(value)=>Number.isFinite(Date.parse(value))?new Date(value).toISOString():null;
 // MP currently rejects limit=20 and limit=50 for this endpoint. Follow the
 // provider's default page size and explicit paging metadata instead.
-export async function subscriptionInvoices(mp,id,{maxRecords=1000}={}){
+async function authorizedInvoices(mp,filter,id,maxRecords){
  const records=[],seen=new Set();let offset=0;
  while(true){
-  const page=await mp('/authorized_payments/search?preapproval_id='+encodeURIComponent(id)+(offset?'&offset='+offset:''));
+  const page=await mp('/authorized_payments/search?'+filter+'='+encodeURIComponent(id)+(offset?'&offset='+offset:''));
   if(!Array.isArray(page.results))throw Error('INVALID_PAYMENT_HISTORY');
   const batch=page.results,paging=page.paging,total=paging?.total===undefined?null:Number(paging.total);
   if(paging?.offset!==undefined&&Number(paging.offset)!==offset)throw Error('INCONSISTENT_PAYMENT_HISTORY');
@@ -18,6 +18,12 @@ export async function subscriptionInvoices(mp,id,{maxRecords=1000}={}){
   if(total===null&&(!paging?.limit||batch.length<Number(paging.limit)))return records;
   offset+=batch.length;
  }
+}
+export function subscriptionInvoices(mp,id,{maxRecords=1000}={}){
+ return authorizedInvoices(mp,'preapproval_id',id,maxRecords);
+}
+export function paymentInvoices(mp,id){
+ return authorizedInvoices(mp,'payment_id',id,1000);
 }
 export async function subscriptionPayments(mp,charges){
  const ids=[...new Set(charges.filter(c=>c.payment?.id).map(c=>String(c.payment.id)))];
@@ -40,20 +46,29 @@ export function validatePlan(remote,name,expectedId,{trial=false,collectorId}={}
  return p;
 }
 export function checkoutUrl(value){const url=new URL(value);if(url.protocol!=='https:'||!['mercadopago.cl','www.mercadopago.cl','mercadopago.com','www.mercadopago.com','www.mercadopago.com.ar'].includes(url.hostname)||!url.pathname.startsWith('/subscriptions/checkout'))throw Error('INVALID_CHECKOUT_URL');return url.href;}
-export function canonicalSubscription(sub,checkout,authorized,payments,{now=Date.now(),collectorId,liveMode=true,existing=null}={}){
+export function isApprovedPayment(payment,now){
+ const paidAt=iso(payment.date_approved);
+ return payment.status==='approved'&&!!paidAt&&Date.parse(paidAt)<=now+5000&&
+  Number(payment.transaction_amount_refunded??0)===0&&!(Array.isArray(payment.refunds)&&payment.refunds.length);
+}
+export function canonicalSubscription(sub,checkout,authorized,payments,{now=Date.now(),collectorId,liveMode=true,existing=null,sandboxPayerId}={}){
  const linked=checkout.provider_plan_linked!==false;
- const p=MP_PLANS[checkout.plan];if(!p||String(sub.id)!==String(checkout.provider_id)||sub.external_reference!==checkout.id||(linked?sub.preapproval_plan_id!==checkout.provider_plan_id:!!sub.preapproval_plan_id)||String(sub.collector_id)!==String(collectorId)||(sub.site_id&&sub.site_id!=='MLC'))throw Error('SUBSCRIPTION_MISMATCH');
+ // A hosted test-plan link has no per-checkout reference. Bind its readback to the exact payer instead.
+ const bound=sandboxPayerId===undefined?sub.external_reference===checkout.id:
+  liveMode===false&&(sub.live_mode==null||sub.live_mode===false)&&linked&&typeof sandboxPayerId==='string'&&/^[1-9]\d{0,18}$/.test(sandboxPayerId)&&String(sub.payer_id)===sandboxPayerId;
+ const p=MP_PLANS[checkout.plan];if(!p||String(sub.id)!==String(checkout.provider_id)||!bound||(linked?sub.preapproval_plan_id!==checkout.provider_plan_id:!!sub.preapproval_plan_id)||String(sub.collector_id)!==String(collectorId)||(sub.site_id&&sub.site_id!=='MLC'))throw Error('SUBSCRIPTION_MISMATCH');
  if(sub.auto_recurring?.currency_id!=='CLP'||Number(sub.auto_recurring?.transaction_amount)!==p.amount||Number(sub.auto_recurring?.frequency)!==p.frequency||sub.auto_recurring?.frequency_type!==p.frequency_type)throw Error('SUBSCRIPTION_MISMATCH');
  const approved=[],ledger=[];
  for(const charge of authorized){
   if(String(charge.preapproval_id)!==String(sub.id))throw Error('CHARGE_MISMATCH');
   const payment=payments.find(x=>String(x.id)===String(charge.payment?.id));if(!payment)continue;
-  if(String(payment.collector_id)!==String(collectorId)||payment.currency_id!=='CLP'||Number(payment.transaction_amount)!==p.amount||payment.live_mode!==liveMode)throw Error('PAYMENT_MISMATCH');
-  const paidAt=iso(payment.date_approved),refunded=Number(payment.transaction_amount_refunded||0)>0;
+  if(String(payment.collector_id)!==String(collectorId)||payment.currency_id!=='CLP'||Number(payment.transaction_amount)!==p.amount||payment.live_mode!==liveMode||
+   (sandboxPayerId!==undefined&&String(payment.payer?.id)!==sandboxPayerId))throw Error('PAYMENT_MISMATCH');
+  const paidAt=iso(payment.date_approved);
   const fee=(payment.fee_details||[]).reduce((n,x)=>n+Number(x.amount||0),0);
   if(!Number.isFinite(fee)||fee<0||fee>p.amount)throw Error('INVALID_FEES');
   ledger.push({id:String(payment.id),status:payment.status,amount:p.amount,fee,net:Number((p.amount-fee-Number(payment.transaction_amount_refunded||0)).toFixed(2)),paidAt,liveMode});
-  if(charge.status==='processed'&&payment.status==='approved'&&!refunded&&paidAt&&Date.parse(paidAt)<=now+5000)approved.push(periodEnd(paidAt,checkout.plan));
+  if(charge.status==='processed'&&isApprovedPayment(payment,now))approved.push(periodEnd(paidAt,checkout.plan));
  }
  let paidUntil=approved.sort().at(-1)||null;
  const created=Date.parse(sub.date_created),checkoutCreated=Date.parse(checkout.created_at);
@@ -67,12 +82,12 @@ export async function sha256(text){return [...new Uint8Array(await crypto.subtle
 export async function verifyMpSignature(request,secret,now=Date.now()){
  const url=new URL(request.url),id=url.searchParams.get('data.id'),requestId=request.headers.get('x-request-id'),header=request.headers.get('x-signature')||'';
  const matches=[...header.matchAll(/(?:^|,)\s*(ts|v1)=([^,]+)/g)],ts=matches.find(x=>x[1]==='ts')?.[2],sigs=matches.filter(x=>x[1]==='v1').map(x=>x[2]);
- if(!secret||!id||!requestId||!/^\d{10,13}$/.test(ts||'')||!sigs.length)throw Error('INVALID_SIGNATURE');
+ if(!secret||!id||!requestId||!/^\d{10,13}$/.test(ts||'')||!sigs.length)throw Error('MALFORMED_SIGNATURE');
  const stamp=Number(ts)*(ts.length<=10?1000:1);if(Math.abs(now-stamp)>300000)throw Error('STALE_SIGNATURE');
  const key=await crypto.subtle.importKey('raw',encoder.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['verify']);
  const manifest=`id:${id.toLowerCase()};request-id:${requestId};ts:${ts};`;
  for(const signature of sigs){if(!/^[a-f\d]{64}$/i.test(signature))continue;const bytes=Uint8Array.from(signature.match(/../g),x=>parseInt(x,16));if(await crypto.subtle.verify('HMAC',key,bytes,encoder.encode(manifest)))return{id,hash:await sha256(manifest+signature)};}
- throw Error('INVALID_SIGNATURE');
+ throw Error('SIGNATURE_MISMATCH');
 }
 export function csvReport(rows){if(rows.length>10000)throw Error('REPORT_TOO_LARGE');const keys=['provider_id','subscription_id','user_id','plan','status','amount_clp','fee_clp','net_clp','paid_at','live_mode'];const cell=x=>'"'+(typeof x==='string'&&/^[\s\uFEFF]*[=+@-]/.test(x)?"'"+x:String(x??'')).replaceAll('"','""')+'"';return '\uFEFF'+[keys.join(','),...rows.map(r=>keys.map(k=>cell(r[k])).join(','))].join('\r\n')+'\r\n';}
 
