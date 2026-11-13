@@ -127,3 +127,7 @@ body{background:radial-gradient(ellipse at 86% 12%,#3b0c59 0,transparent 35%),#0
 
 /* Landing mascot: soften the hard lower edge of the original cutout on all viewports. */
 .landing-hero .hero-art>img{-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%)}
+
+/* Official mascot replaces the clipped rank artwork: show the complete source. */
+.landing-hero .hero-art>img[src$='gatito-sabio-oficial.png']{aspect-ratio:auto;max-height:440px;width:100%;object-fit:contain;object-position:center;-webkit-mask-image:none;mask-image:none;filter:none;border:0;box-shadow:none;background:transparent}
+@media(max-width:760px){.landing-hero .hero-art>img[src$='gatito-sabio-oficial.png']{max-height:310px;width:auto;max-width:100%;margin-inline:auto}}
