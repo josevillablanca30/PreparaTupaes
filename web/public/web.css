@@ -131,3 +131,7 @@ body{background:radial-gradient(ellipse at 86% 12%,#3b0c59 0,transparent 35%),#0
 /* Official mascot replaces the clipped rank artwork: show the complete source. */
 .landing-hero .hero-art>img[src$='gatito-sabio-oficial.png']{aspect-ratio:auto;max-height:440px;width:100%;object-fit:contain;object-position:center;-webkit-mask-image:none;mask-image:none;filter:none;border:0;box-shadow:none;background:transparent}
 @media(max-width:760px){.landing-hero .hero-art>img[src$='gatito-sabio-oficial.png']{max-height:310px;width:auto;max-width:100%;margin-inline:auto}}
+
+/* Original landing mascot: retain transparent cutout, soften only the lower matte. */
+.landing-hero .hero-art>img[src$='landing-cat-rank-cutout.png']{display:block;width:100%;height:auto;max-height:none;aspect-ratio:408/278;object-fit:contain;object-position:center;background:transparent;border:0;border-radius:0;box-shadow:none;filter:drop-shadow(0 0 16px #a329e133);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 80%,transparent 99%);mask-image:linear-gradient(to bottom,#000 0%,#000 80%,transparent 99%)}
+@media(max-width:760px){.landing-hero .hero-art>img[src$='landing-cat-rank-cutout.png']{max-height:310px;width:100%;object-fit:contain}}
