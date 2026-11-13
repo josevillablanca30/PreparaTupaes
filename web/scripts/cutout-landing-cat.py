@@ -42,11 +42,11 @@ for part in components:
     if part is not character:
         for x,y in part:alpha[x,y]=0
 # Remove the one-pixel pale matte fringe from the original screenshot edge.
-clip=clip.filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.65))
-result=original.copy().convert('RGBA');result.putalpha(clip)
+alpha=clip.filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.65))
+result=original.copy().convert('RGBA');result.putalpha(alpha)
 out=Path('web/public/assets/landing-cat-rank-cutout.png');out.parent.mkdir(parents=True,exist_ok=True);result.save(out,optimize=True)
 assert result.convert('RGB').tobytes()==original.tobytes(),'Original RGB must remain bit-for-bit identical'
-proof={'source':str(source),'sourceSha256':hashlib.sha256(source.read_bytes()).hexdigest(),'output':str(out),'size':[w,h],'rgbPreserved':True,'method':'original SVG crop and edge-connected pale-background mask, 1px inset and feather; no generation','transparentPixels':sum(a==0 for a in clip.getdata()),'detachedBackgroundFragmentsRemoved':len(components)-1}
+proof={'source':str(source),'sourceSha256':hashlib.sha256(source.read_bytes()).hexdigest(),'output':str(out),'size':[w,h],'rgbPreserved':True,'method':'original SVG crop and edge-connected pale-background mask, 1px inset and feather; no generation','transparentPixels':sum(a==0 for a in alpha.getdata()),'detachedBackgroundFragmentsRemoved':len(components)-1}
 Path('web/reports/work3-20261110/art-verification.json').write_text(json.dumps(proof,indent=2)+'\n')
 
 print(json.dumps(proof))
