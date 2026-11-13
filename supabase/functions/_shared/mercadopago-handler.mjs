@@ -1,5 +1,6 @@
-import{MP_PLANS,validatePlan,checkoutUrl,canonicalSubscription,verifyMpSignature,csvReport,chileDateRange,subscriptionInvoices,subscriptionPayments}from'./mercadopago-core.mjs';
+import{MP_PLANS,validatePlan,checkoutUrl,canonicalSubscription,verifyMpSignature,csvReport,chileDateRange,subscriptionInvoices,subscriptionPayments,paymentInvoices}from'./mercadopago-core.mjs';
 const UUID=/^[a-f\d]{8}-[a-f\d]{4}-[1-5][a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i;
+const PROVIDER_ID=/^[a-zA-Z0-9_-]{1,100}$/;
 export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()=>Date.now()}){
  const supabaseUrl=()=>env('SUPABASE_URL'),anon=()=>env('SUPABASE_ANON_KEY')||env('SUPABASE_PUBLISHABLE_KEY');
  const configured=()=>!!env('MP_COLLECTOR_ID')&&((env('CACHASTE_MP_MODE')==='production'&&/^APP_USR-/.test(env('MP_ACCESS_TOKEN')||''))||(env('CACHASTE_MP_MODE')==='test'&&/^(TEST-|APP_USR-)/.test(env('MP_ACCESS_TOKEN')||'')&&!!env('MP_TEST_COLLECTOR_ID')&&String(env('MP_COLLECTOR_ID'))===String(env('MP_TEST_COLLECTOR_ID'))&&!!env('MP_TEST_ACCESS_TOKEN')&&env('MP_ACCESS_TOKEN')===env('MP_TEST_ACCESS_TOKEN')));
@@ -12,13 +13,20 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
  const call=async(op,payload={})=>{const{data,error}=await admin().rpc('cachaste_web_billing_admin',{operation:op,payload});if(error)throw error;return data;};
  async function auth(req){const token=req.headers.get('authorization')?.replace(/^Bearer /i,'');if(!token)throw Error('AUTH_REQUIRED');const sdk=createClient(supabaseUrl(),anon(),{global:{headers:{Authorization:'Bearer '+token}},auth:{persistSession:false,autoRefreshToken:false}});const{data,error}=await sdk.auth.getUser(token);if(error||!data?.user)throw Error('AUTH_REQUIRED');const state=await sdk.rpc('cachaste_web_account');if(state.error)throw Error('AUTH_REQUIRED');return{user:data.user,state:state.data};}
  async function mp(path,options={}){if(!path.startsWith('/'))throw Error('INVALID_PROVIDER_PATH');const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);try{const res=await fetcher('https://api.mercadopago.com'+path,{...options,signal:controller.signal,headers:{authorization:'Bearer '+env('MP_ACCESS_TOKEN'),'content-type':'application/json',...options.headers}});if(!res.ok)throw Object.assign(Error('PAYMENT_PROVIDER_UNAVAILABLE'),{providerStatus:res.status});return await res.json();}finally{clearTimeout(timer);}}
- async function reconcile(id,reference=null){
-  if(!/^[a-zA-Z0-9_-]{1,100}$/.test(id))throw Error('INVALID_PROVIDER_ID');
-  const sub=await mp('/preapproval/'+id),checkout=await call('lookup',{providerId:id,reference:reference||sub.external_reference});if(!checkout)throw Error('UNKNOWN_CHECKOUT');
-  if(!checkout.provider_id){await call('attach',{id:checkout.id,userId:checkout.user_id,providerId:id});checkout.provider_id=id;}
+ async function reconcile(id,requiredPaymentId=null){
+  if(typeof id!=='string'||!PROVIDER_ID.test(id))throw Error('INVALID_PROVIDER_ID');
+  const sub=await mp('/preapproval/'+id);
+  if(sub.live_mode!=null&&sub.live_mode!==live())throw Error('SUBSCRIPTION_MISMATCH');
+  if(!UUID.test(sub.external_reference||''))throw Error('UNKNOWN_CHECKOUT');
+  const checkout=await call('lookup',{reference:sub.external_reference});
+  if(!checkout)throw Error('UNKNOWN_CHECKOUT');
+  if(checkout.provider_id&&checkout.provider_id!==id)throw Error('SUBSCRIPTION_MISMATCH');
   const existing=(await call('subscriptions',{userId:checkout.user_id})).find(s=>s.provider_id===id);
-  const records=await subscriptionInvoices(mp,id),payments=await subscriptionPayments(mp,records);
-  const canonical=canonicalSubscription(sub,checkout,records,payments,{now:now(),collectorId:env('MP_COLLECTOR_ID'),liveMode:live(),existing});
+  const records=await subscriptionInvoices(mp,id);
+  if(requiredPaymentId&&!records.some(record=>String(record.payment?.id)===requiredPaymentId))throw Error('INCOMPLETE_PAYMENT_HISTORY');
+  const payments=await subscriptionPayments(mp,records);
+  const canonical=canonicalSubscription(sub,{...checkout,provider_id:id},records,payments,{now:now(),collectorId:env('MP_COLLECTOR_ID'),liveMode:live(),existing});
+  if(!checkout.provider_id)await call('attach',{id:checkout.id,userId:checkout.user_id,providerId:id});
   return call('apply',canonical);
  }
  async function billing(req){try{
@@ -68,11 +76,29 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   if((await call('webhook_seen',{hash:signature.hash})).seen)return new Response(null,{status:200});
   const text=await req.text();if(text.length>16384)throw Error('PAYLOAD_TOO_LARGE');const body=JSON.parse(text);
   if(String(body.data?.id)!==signature.id)throw Error('EVENT_ID_MISMATCH');
-  let id;if(body.type==='subscription_preapproval')id=signature.id;
-  else if(body.type==='subscription_authorized_payment'){const charge=await mp('/authorized_payments/'+signature.id);id=String(charge.preapproval_id);}
-  else if(body.type==='payment'){const payment=await mp('/v1/payments/'+signature.id);if(!payment.external_reference)throw Error('UNKNOWN_CHECKOUT');const checkout=await call('lookup',{reference:payment.external_reference});id=checkout?.provider_id;if(!id)throw Error('UNKNOWN_CHECKOUT');}
+  const queryType=new URL(req.url).searchParams.get('type');
+  if(queryType&&queryType!==body.type)throw Error('EVENT_ID_MISMATCH');
+  let id,paymentId=null;
+  if(body.type==='subscription_preapproval')id=signature.id;
+  else if(body.type==='subscription_authorized_payment'){
+   if(!/^\d+$/.test(signature.id))throw Error('EVENT_ID_MISMATCH');
+   const charge=await mp('/authorized_payments/'+signature.id);
+   if(String(charge.id)!==signature.id)throw Error('EVENT_ID_MISMATCH');
+   if(charge.live_mode!=null&&charge.live_mode!==live())return new Response(null,{status:200});
+   id=charge.preapproval_id;
+   if(charge.payment?.id!=null)paymentId=String(charge.payment.id);
+  }else if(body.type==='payment'){
+   if(!/^\d+$/.test(signature.id))throw Error('EVENT_ID_MISMATCH');
+   const payment=await mp('/v1/payments/'+signature.id);
+   if(String(payment.id)!==signature.id)throw Error('EVENT_ID_MISMATCH');
+   if(payment.live_mode!==live()||String(payment.collector_id)!==String(env('MP_COLLECTOR_ID')))return new Response(null,{status:200});
+   const invoices=(await paymentInvoices(mp,signature.id)).filter(invoice=>String(invoice.payment?.id)===signature.id);
+   if(invoices.length!==1||typeof invoices[0].preapproval_id!=='string')throw Error('PAYMENT_SUBSCRIPTION_NOT_MATCHED');
+   id=invoices[0].preapproval_id;
+   paymentId=signature.id;
+  }
   else return new Response(null,{status:200});
-  await reconcile(id);await call('webhook',{hash:signature.hash});return new Response(null,{status:200});
+  await reconcile(id,paymentId);await call('webhook',{hash:signature.hash});return new Response(null,{status:200});
  }catch(e){const code=String(e?.message||'UNKNOWN_ERROR');console.error('MP_WEBHOOK_PROCESSING_ERROR',/^[A-Z_]+$/.test(code)?code:'INTERNAL_ERROR');return new Response(/SIGNATURE|EVENT_ID/.test(code)?'Invalid notification':'Notification not processed',{status:/SIGNATURE|EVENT_ID/.test(code)?401:503});}}
  return{billing,webhook};
 }

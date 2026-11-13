@@ -31,6 +31,30 @@ test('anonymous bank request, forged JWT and Premium URL flags all fail closed',
 test('login crosses real browser UI and cookie gate; disabled registration and billing stay honest',async({page})=>{
  await identity(page);await page.goto('/cuenta.html');await page.getByRole('button',{name:'Cerrar sesión',exact:true}).click();await expect(page.getByRole('heading',{name:'Tu preparación comienza aquí.'})).toBeVisible();await page.getByLabel('Correo electrónico',{exact:true}).fill('student-a@example.invalid');await page.getByLabel('Contraseña',{exact:true}).fill('Isolated-qa-password-2026');await page.getByRole('button',{name:'Crear mi cuenta',exact:true}).click();await expect(page.locator('#account-status')).toContainText('El registro se habilitará');await page.getByRole('button',{name:'Entrar a mi cuenta',exact:false}).click();await expect(page.locator('[data-action=pick-course]')).toHaveCount(5);
 });
+test('the account stays usable when payment reconciliation is delayed',async({page})=>{
+ await identity(page);
+ let refreshes=0;
+ await page.route('**/api/billing',async route=>{
+  const {action}=route.request().postDataJSON();
+  if(action==='status')return route.fulfill({json:{ready:false,trialAvailable:false,managementReady:true}});
+  expect(action).toBe('refresh');
+  refreshes++;
+  await route.fulfill({status:503,json:{error:'PAYMENT_PROVIDER_UNAVAILABLE'}});
+ });
+ await page.goto('/cuenta.html?checkout=return');
+ await expect(page.getByRole('link',{name:'Continuar mi preparación',exact:false})).toBeVisible();
+ await expect(page.locator('#account-status')).toContainText('Mercado Pago aún no responde');
+ await expect(page.getByRole('button',{name:'Ver estado de apertura'})).toHaveCount(3);
+ expect(refreshes).toBe(1);
+});
+test('a checkout return waits for server-confirmed access',async({page,request})=>{
+ await identity(page);
+ await request.post('/__qa/control',{data:{active:false}});
+ await page.goto('/cuenta.html?checkout=return&status=approved');
+ await expect(page.locator('#account-status')).toContainText('esperando la confirmación del pago');
+ await expect(page.getByRole('link',{name:'Continuar mi preparación',exact:false})).toHaveCount(0);
+ await expect(page.locator('.access-state')).toContainText('Necesitas una suscripción vigente');
+});
 test('Google opens only a configured S256 flow and the real SDK exchanges its one-time callback before entering the five subjects',async({page,request,baseURL},info)=>{
  await request.post('/__qa/control',{data:{googleReady:true}});
  // Isolated provider transport: no Google account, consent or production grant

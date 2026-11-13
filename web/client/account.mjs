@@ -11,14 +11,28 @@ const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const money=x=>new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',maximumFractionDigits:0}).format(x);
 const messages={COMPLIMENTARY_ACCESS:'Tu acceso de tester es gratuito. No necesitas contratar una suscripción ni ingresar una tarjeta.',TEST_BUYER_EMAIL_REQUIRED:'Ingresa el correo exacto de una cuenta de prueba entregado por Mercado Pago.',NOT_TEST_SELLER:'La cuenta vendedora no pudo verificarse como cuenta de prueba.',CHECKOUT_ALREADY_FINISHED:'Esta solicitud ya fue completada. Actualiza los resultados de prueba.',GOOGLE_NOT_READY:'El acceso con Google está preparado, pero aún falta autorizar el proveedor y su retorno seguro. No se ha creado una cuenta.',AUTH_RETURN_CANCELLED:'El acceso fue cancelado. Puedes volver a intentarlo.',AUTH_RETURN_INVALID:'El enlace de acceso venció o se abrió en otro navegador. Vuelve a iniciar sesión desde aquí.',AUTH_REDIRECT_DENIED:'No pudimos validar el destino de acceso. Vuelve a intentarlo.',AUTH_REQUIRED:'Inicia sesión para continuar.',BILLING_NOT_READY:'Las suscripciones todavía están en preparación. Los cobros siguen desactivados.',CHECKOUT_PENDING:'Tu solicitud anterior sigue en revisión. Actualiza el acceso antes de crear otra.',TRIAL_ALREADY_USED:'La prueba gratuita ya fue utilizada o reservada para esta cuenta. Puedes elegir el plan mensual sin prueba.',PLAN_NOT_READY:'Este plan todavía no está habilitado por el responsable.',SERVICE_UNAVAILABLE:'No logramos conectar. Vuelve a intentarlo cuando tengas conexión.',SYNC_UNAVAILABLE:'No logramos sincronizar. Conservamos el avance de este dispositivo.',QA_ADMIN_REQUIRED:'Tu cuenta aún no está autorizada para pruebas de Mercado Pago.',ORIGIN_NOT_ALLOWED:'Abre la prueba desde el sitio oficial de ¿Cachaste?.',PROVIDER_CHECKOUT_FAILED:'Mercado Pago no pudo iniciar la suscripción de prueba.',TEST_CONFIG_MISSING:'Falta completar la configuración del entorno de prueba.'};
 let config,sdk,account=null,billing={ready:false,trialAvailable:false},busy=false,qaState=null,qaEmail='',recovering=location.search.includes('recovery=1');
+const checkoutReturned=new URLSearchParams(location.search).get('checkout')==='return';
 let emailMode='login',emailDraft='';
-async function request(body,url='/api/billing',method='POST'){
+async function request(body,url='/api/billing',method='POST',signal){
  const{data:{session}}=sdk?await sdk.auth.getSession():{data:{session:null}};
- const res=await fetch(url,{method,headers:{'content-type':'application/json','x-cachaste-request':'1',...(session?{authorization:'Bearer '+session.access_token}:{})},...(body!==undefined?{body:JSON.stringify(body)}:{})});
+ const res=await fetch(url,{method,signal,headers:{'content-type':'application/json','x-cachaste-request':'1',...(session?{authorization:'Bearer '+session.access_token}:{})},...(body!==undefined?{body:JSON.stringify(body)}:{})});
  const data=await res.json();if(!res.ok)throw Error(data.error||'SERVICE_UNAVAILABLE');return data;
 }
 async function clearBrowserAccess(){await serviceWorkerMessage({type:'PURGE_PRIVATE'});const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);try{await fetch('/api/session',{method:'DELETE',headers:{'x-cachaste-request':'1'},signal:controller.signal});}catch{}finally{clearTimeout(timer);}}
-async function connect(verifyPayments=false){const{data:{session},error}=await sdk.auth.getSession();if(error)throw error;if(!session){account=null;if(navigator.onLine!==false)await clearBrowserAccess();return;}if(verifyPayments&&(billing.managementReady||billing.ready))await request({action:'refresh'});const checked=await request({},'/api/session');if(!checked.offlineLicense)await serviceWorkerMessage({type:'PURGE_PRIVATE'});await initPwa(checked.offlineLicense);account=await request(undefined,'/api/session','GET');}
+async function connect(verifyPayments=false){
+ const{data:{session},error}=await sdk.auth.getSession();if(error)throw error;
+ if(!session){account=null;if(navigator.onLine!==false)await clearBrowserAccess();return;}
+ let reconciliationDelayed=false;
+ if(verifyPayments&&(billing.managementReady||billing.ready)){
+  try{await request({action:'refresh'},'/api/billing','POST',AbortSignal.timeout(8000));}catch{reconciliationDelayed=true;}
+ }
+ const checked=await request({},'/api/session');
+ if(!checked.offlineLicense)await serviceWorkerMessage({type:'PURGE_PRIVATE'});
+ await initPwa(checked.offlineLicense);
+ account=await request(undefined,'/api/session','GET');
+ if(reconciliationDelayed)notice('Tu cuenta está disponible. Mercado Pago aún no responde. Puedes actualizar tu acceso más tarde.');
+ else if(verifyPayments&&checkoutReturned&&!account?.access?.active)notice('Estamos esperando la confirmación del pago. Puedes consultar el estado en Actualizar mi acceso.');
+}
 function notice(text){status.textContent=text;}
 function emailForm(){
  const email='<label>Correo electrónico<input name="email" type="email" autocomplete="email" maxlength="254" value="'+esc(emailDraft)+'" required></label>';
