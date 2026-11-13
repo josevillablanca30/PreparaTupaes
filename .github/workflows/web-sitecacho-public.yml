@@ -2,7 +2,7 @@ name: ¿Cachaste? · Web pública con cobros cerrados
 on:
   workflow_dispatch:
   push:
-    branches: [work/cachaste-web-unificada-20261106]
+    branches: [work/cachaste-web-comercial-cierre-20261112]
     paths: [web/deploy-public.request]
 permissions:
   contents: read
@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   public-site:
-    if: github.ref_name == 'work/cachaste-web-unificada-20261106'
+    if: github.ref_name == 'work/cachaste-web-comercial-cierre-20261112'
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     container:
