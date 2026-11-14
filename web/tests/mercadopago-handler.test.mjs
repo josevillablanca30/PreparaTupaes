@@ -67,7 +67,14 @@ test('the landing never promises a trial until the actual provider plan validate
 });
 
 test('pausing new sales never prevents a customer cancellation, reconciliation or an accounting export',async()=>{const h=harness();await h.billing(h.req({action:'checkout',plan:'mensual',requestId:rid}));h.vars.CACHASTE_MP_ENABLED='false';h.vars.CACHASTE_MP_TAX_READY='false';assert.equal((await h.billing(h.req({action:'checkout',plan:'mensual',requestId:rid}))).status,503);assert.equal((await h.billing(h.req({action:'cancel',subscriptionId:'qa-sub'}))).status,200);assert.equal(h.applied.at(-1).renews,false);assert.equal((await h.webhook(await signature())).status,200);h.vars.QA_IS_ADMIN='true';h.vars.MP_ACCESS_TOKEN=undefined;const report=await h.billing(h.req({action:'sales',fromDate:'2026-07-15',toDate:'2026-07-15'}));assert.equal(report.status,200);assert.ok((await report.text()).includes('fee_clp'));const range=h.calls.filter(c=>c.op==='sales').at(-1).p;assert.equal(range.from,'2026-07-15T04:00:00.000Z');assert.equal(range.to,'2026-07-16T04:00:00.000Z');});
-test('production checkouts require a confirmed HTTPS .cl origin; IDN is normalized to its DNS origin',async()=>{const h=harness();h.vars.CACHASTE_MP_MODE='production';h.vars.MP_ACCESS_TOKEN='APP_USR-isolated-never-real';h.vars.CACHASTE_WEB_ORIGIN='https://preview.example';const status=await h.billing(new Request('https://qa.example/billing',{method:'POST',body:'{"action":"status"}'}));assert.equal((await status.json()).ready,false);});
+test('production checkout accepts the sitecacho.cl origin and rejects a stale preview origin',async()=>{
+ const h=harness();
+ Object.assign(h.vars,{CACHASTE_MP_MODE:'production',MP_ACCESS_TOKEN:'APP_USR-fixture-never-real',
+  CACHASTE_WEB_ORIGIN:'https://preview.example',CACHASTE_MP_ENABLED:'false'});
+ const status=origin=>h.billing(new Request('https://qa.example/billing',{method:'POST',headers:{origin},body:'{"action":"status"}'}));
+ assert.equal((await status('https://preview.example')).status,403);
+ assert.equal((await status('https://sitecacho.cl')).status,200);
+});
 
 test('a closed database launch policy blocks checkout even when Mercado Pago credentials are configured',async()=>{
  const h=harness();h.setPolicy(false);
@@ -125,7 +132,7 @@ test('commercial readiness resolves existing plans by exact seller and recurrenc
  const h=harness();
  Object.assign(h.vars,{
   CACHASTE_MP_MODE:'production',MP_ACCESS_TOKEN:'APP_USR-fixture-never-real',
-  MP_TEST_COLLECTOR_ID:'456',MP_COLLECTOR_ID:'456',CACHASTE_WEB_ORIGIN:'https://sitecacho.cl',
+  MP_TEST_COLLECTOR_ID:'456',MP_COLLECTOR_ID:'456',CACHASTE_WEB_ORIGIN:'https://preview.example',
   MP_PLAN_WEEKLY:undefined,MP_PLAN_MONTHLY:undefined,MP_PLAN_YEARLY:undefined,
   MP_TEST_PLAN_WEEKLY:'test-weekly',CACHASTE_MP_ENABLED:'false'
  });
@@ -145,6 +152,7 @@ test('commercial readiness resolves existing plans by exact seller and recurrenc
  };
  const state=await h.commercialReadiness();
  assert.deepEqual(state.seller,{id:'123',site:'MLC'});
+ assert.equal(state.webOrigin,'https://sitecacho.cl');
  assert.deepEqual(state.plans.map(plan=>plan.id),['weekly-verified','monthly-verified','yearly-verified']);
  assert.equal(state.ready,false);
  assert.ok(h.calls.filter(call=>call.url).every(call=>call.method==='GET'));

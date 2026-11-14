@@ -3,17 +3,18 @@ const UUID=/^[a-f\d]{8}-[a-f\d]{4}-[1-5][a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$
 const PROVIDER_ID=/^[a-zA-Z0-9_-]{1,100}$/;
 const PLAN_KEYS={semanal:'WEEKLY',mensual:'MONTHLY',anual:'YEARLY'};
 const CATALOGUE_CACHE_MS=60000;
+const COMMERCIAL_ORIGIN='https://sitecacho.cl';
 export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()=>Date.now()}){
  const supabaseUrl=()=>env('SUPABASE_URL'),anon=()=>env('SUPABASE_ANON_KEY')||env('SUPABASE_PUBLISHABLE_KEY');
- const webOrigin=()=>{try{const value=new URL(env('CACHASTE_WEB_ORIGIN'));return value.protocol==='https:'&&value.pathname==='/'&&!value.search&&!value.hash?value.origin:null;}catch{return null;}};
  const live=()=>env('CACHASTE_MP_MODE')==='production';
+ const webOrigin=()=>{if(live())return COMMERCIAL_ORIGIN;try{const value=new URL(env('CACHASTE_WEB_ORIGIN'));return value.protocol==='https:'&&value.pathname==='/'&&!value.search&&!value.hash?value.origin:null;}catch{return null;}};
  const productionToken=()=>/^APP_USR-/.test(env('MP_ACCESS_TOKEN')||'')&&env('MP_ACCESS_TOKEN')!==env('MP_TEST_ACCESS_TOKEN');
  const testToken=()=>env('CACHASTE_MP_MODE')==='test'&&/^(TEST-|APP_USR-)/.test(env('MP_ACCESS_TOKEN')||'')&&
   !!env('MP_TEST_COLLECTOR_ID')&&String(env('MP_COLLECTOR_ID'))===String(env('MP_TEST_COLLECTOR_ID'))&&env('MP_ACCESS_TOKEN')===env('MP_TEST_ACCESS_TOKEN');
  const configured=()=>live()?productionToken():testToken();
  const signingReady=()=>!!env('MP_WEBHOOK_SECRET')&&(!live()||env('MP_WEBHOOK_SECRET')!==env('MP_TEST_WEBHOOK_SECRET'));
  const ready=()=>configured()&&env('CACHASTE_MP_ENABLED')==='true'&&env('CACHASTE_MP_TAX_READY')==='true'&&signingReady()&&
-  (live()?webOrigin()==='https://sitecacho.cl':!!webOrigin()&&Object.values(PLAN_KEYS).every(key=>!!env('MP_PLAN_'+key)));
+  (live()||!!webOrigin()&&Object.values(PLAN_KEYS).every(key=>!!env('MP_PLAN_'+key)));
  let sellerCheck,catalogueCheck;
  function cached(check,key,load){
   if(check?.key===key&&check.expires>now())return check;
@@ -68,7 +69,7 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
  async function commercialCatalogue({refresh=false}={}){
   const planKeys=[...Object.values(PLAN_KEYS),'MONTHLY_TRIAL'];
   const variables=['MP_ACCESS_TOKEN','MP_TEST_ACCESS_TOKEN','MP_COLLECTOR_ID','MP_TEST_COLLECTOR_ID','CACHASTE_MP_MODE',
-   'CACHASTE_WEB_ORIGIN','CACHASTE_MP_TRIAL_ENABLED',...planKeys.flatMap(key=>['MP_PLAN_'+key,'MP_TEST_PLAN_'+key])];
+   'CACHASTE_MP_TRIAL_ENABLED',...planKeys.flatMap(key=>['MP_PLAN_'+key,'MP_TEST_PLAN_'+key])];
   if(refresh){sellerCheck=null;catalogueCheck=null;}
   const key=JSON.stringify(variables.map(env));
   catalogueCheck=cached(catalogueCheck,key,loadCommercialCatalogue);
@@ -76,7 +77,6 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
  }
  async function loadCommercialCatalogue(){
   const seller=await commercialSeller();
-  if(webOrigin()!=='https://sitecacho.cl')throw Error('COMMERCIAL_RETURN_ORIGIN_MISMATCH');
   const catalogue=Object.entries(PLAN_KEYS).map(([plan,key])=>({plan,key,trial:false}));
   if(env('CACHASTE_MP_TRIAL_ENABLED')==='true'&&env('MP_PLAN_MONTHLY_TRIAL'))catalogue.push({plan:'mensual',key:'MONTHLY_TRIAL',trial:true});
   const sandboxIds=new Set([...Object.values(PLAN_KEYS),'MONTHLY_TRIAL'].map(key=>env('MP_TEST_PLAN_'+key)));
@@ -103,7 +103,7 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   const {seller,plans}=await commercialCatalogue({refresh:true});
   const policy=await call('policy');
   return {
-   seller,plans,webhookSecretConfigured:signingReady(),separateCredentials:true,
+   seller,plans,webOrigin:webOrigin(),webhookSecretConfigured:signingReady(),separateCredentials:true,
    checkoutEnabled:env('CACHASTE_MP_ENABLED')==='true',taxReady:env('CACHASTE_MP_TAX_READY')==='true',
    databaseReady:policy.enabled===true,ready:ready()&&policy.enabled===true
   };
