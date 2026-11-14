@@ -14,7 +14,7 @@ function inspectCommercial() {
   lastCommercialCheck = now;
   EdgeRuntime.waitUntil(commercialReadiness().then(({seller, plans, ...state}) => {
     console.info('MP_COMMERCIAL_READINESS', JSON.stringify({
-      seller, plans: plans.map(({key, applicationId}) => ({key, applicationId})), ...state,
+      seller, plans: plans.map(({key, id, applicationId}) => ({key, id, applicationId})), ...state,
     }));
   }).catch((error: Error) => {
     const mode = env('CACHASTE_MP_MODE');

@@ -28,10 +28,14 @@ test('a payment webhook uses the exact invoice and the subscription reference be
  const reservation={id:rid,user_id:uid,plan:'mensual',provider_plan_linked:false,trial_offered:false,created_at:new Date(now).toISOString()};
  h.checkouts.set(rid,reservation);
  h.vars.CACHASTE_MP_MODE='production';h.vars.MP_ACCESS_TOKEN='APP_USR-fixture-never-real';
- const payment={id:1,collector_id:123,currency_id:'CLP',transaction_amount:7990,live_mode:true,status:'approved',date_approved:new Date(now).toISOString()};
+ h.vars.MP_TEST_COLLECTOR_ID='456';
+ const payment={id:1,collector_id:123,payer:{id:987},currency_id:'CLP',transaction_amount:7990,live_mode:true,status:'approved',date_approved:new Date(now).toISOString()};
  const invoice={id:2,preapproval_id:'qa-sub',status:'processed',payment:{id:1}};
  let current=payment, invoices=[], history=[];
  h.vars.QA_PAYMENT_FIXTURE=url=>{
+  if(url.endsWith('/users/me'))return {id:123,site_id:'MLC',tags:[]};
+  if(url.endsWith('/preapproval/qa-sub'))return {id:'qa-sub',external_reference:rid,collector_id:123,payer_id:987,site_id:'MLC',
+   auto_recurring:{currency_id:'CLP',transaction_amount:7990,frequency:1,frequency_type:'months'},date_created:new Date(now).toISOString(),status:'authorized'};
   if(url.endsWith('/v1/payments/1'))return current;
   if(url.endsWith('/authorized_payments/search?payment_id=1'))return {results:invoices};
   if(url.endsWith('/authorized_payments/search?preapproval_id=qa-sub'))return {results:history};
@@ -42,6 +46,7 @@ test('a payment webhook uses the exact invoice and the subscription reference be
  current=payment;invoices=[invoice,{...invoice,id:3}];assert.equal((await h.webhook(await event())).status,503);
  invoices=[invoice];assert.equal((await h.webhook(await event())).status,503);
  history=[invoice];current={...payment,transaction_amount:1};assert.equal((await h.webhook(await event())).status,503);
+ current={...payment,payer:{id:654}};assert.equal((await h.webhook(await event())).status,503);
  assert.equal(reservation.provider_id,undefined);assert.equal(h.applied.length,0);assert.equal(h.seen.size,0);
  current=payment;assert.equal((await h.webhook(await event())).status,200);
  assert.equal(reservation.provider_id,'qa-sub');assert.ok(h.applied[0].paidUntil);
@@ -49,7 +54,17 @@ test('a payment webhook uses the exact invoice and the subscription reference be
  assert.equal(h.applied.length,1);
 });
 
-test('the landing never promises a trial until the actual provider plan validates seven free days',async()=>{const h=harness();h.vars.CACHASTE_MP_TRIAL_ENABLED='true';h.vars.MP_PLAN_MONTHLY_TRIAL='monthly-trial';const response=await h.billing(h.req({action:'status'}));assert.deepEqual(await response.json(),{ready:true,trialAvailable:false,managementReady:true});assert.ok(h.calls.some(c=>c.url?.includes('/preapproval_plan/monthly-trial')));});
+test('the landing never promises a trial until the actual provider plan validates seven free days',async()=>{
+ const h=harness();
+ h.vars.CACHASTE_MP_TRIAL_ENABLED='true';
+ h.vars.MP_PLAN_MONTHLY_TRIAL='monthly-trial';
+ const status=()=>h.billing(h.req({action:'status'}));
+ const ready={ready:true,managementReady:true,mode:'test'};
+ assert.deepEqual(await(await status()).json(),{...ready,trialAvailable:false});
+ assert.ok(h.calls.some(c=>c.url?.includes('/preapproval_plan/monthly-trial')));
+ h.vars.QA_VALID_TRIAL='true';
+ assert.deepEqual(await(await status()).json(),{...ready,trialAvailable:true});
+});
 
 test('pausing new sales never prevents a customer cancellation, reconciliation or an accounting export',async()=>{const h=harness();await h.billing(h.req({action:'checkout',plan:'mensual',requestId:rid}));h.vars.CACHASTE_MP_ENABLED='false';h.vars.CACHASTE_MP_TAX_READY='false';assert.equal((await h.billing(h.req({action:'checkout',plan:'mensual',requestId:rid}))).status,503);assert.equal((await h.billing(h.req({action:'cancel',subscriptionId:'qa-sub'}))).status,200);assert.equal(h.applied.at(-1).renews,false);assert.equal((await h.webhook(await signature())).status,200);h.vars.QA_IS_ADMIN='true';h.vars.MP_ACCESS_TOKEN=undefined;const report=await h.billing(h.req({action:'sales',fromDate:'2026-07-15',toDate:'2026-07-15'}));assert.equal(report.status,200);assert.ok((await report.text()).includes('fee_clp'));const range=h.calls.filter(c=>c.op==='sales').at(-1).p;assert.equal(range.from,'2026-07-15T04:00:00.000Z');assert.equal(range.to,'2026-07-16T04:00:00.000Z');});
 test('production checkouts require a confirmed HTTPS .cl origin; IDN is normalized to its DNS origin',async()=>{const h=harness();h.vars.CACHASTE_MP_MODE='production';h.vars.MP_ACCESS_TOKEN='APP_USR-isolated-never-real';h.vars.CACHASTE_WEB_ORIGIN='https://preview.example';const status=await h.billing(new Request('https://qa.example/billing',{method:'POST',body:'{"action":"status"}'}));assert.equal((await status.json()).ready,false);});
@@ -104,6 +119,38 @@ test('commercial readiness verifies the existing Chilean seller and plans withou
  h.vars.MP_TEST_PLAN_WEEKLY='weekly';
  const wrongPlan=await h.billing(request());
  assert.equal((await wrongPlan.json()).error,'COMMERCIAL_PLAN_IDS_MISMATCH');
+});
+
+test('commercial readiness resolves existing plans by exact seller and recurrence and rejects ambiguity',async()=>{
+ const h=harness();
+ Object.assign(h.vars,{
+  CACHASTE_MP_MODE:'production',MP_ACCESS_TOKEN:'APP_USR-fixture-never-real',
+  MP_TEST_COLLECTOR_ID:'456',MP_COLLECTOR_ID:'456',CACHASTE_WEB_ORIGIN:'https://sitecacho.cl',
+  MP_PLAN_WEEKLY:undefined,MP_PLAN_MONTHLY:undefined,MP_PLAN_YEARLY:undefined,
+  MP_TEST_PLAN_WEEKLY:'test-weekly',CACHASTE_MP_ENABLED:'false'
+ });
+ const weekly={id:'weekly-verified',status:'active',collector_id:123,auto_recurring:{currency_id:'CLP',transaction_amount:2490,frequency:7,frequency_type:'days'}};
+ const monthly={...weekly,id:'monthly-verified',auto_recurring:{currency_id:'CLP',transaction_amount:7990,frequency:1,frequency_type:'months'}};
+ const yearly={...weekly,id:'yearly-verified',auto_recurring:{currency_id:'CLP',transaction_amount:64990,frequency:12,frequency_type:'months'}};
+ const plans=[{...weekly,id:'test-weekly'},{...weekly,id:'foreign-weekly',collector_id:999},weekly,monthly,yearly];
+ let ambiguous=false;
+ h.vars.QA_PAYMENT_FIXTURE=url=>{
+  if(url.endsWith('/users/me'))return {id:123,site_id:'MLC',tags:[]};
+  if(url.includes('/preapproval_plan/search')){
+   const offset=Number(new URL(url).searchParams.get('offset')||0);
+   const results=ambiguous?[...plans,{...weekly,id:'other-weekly'}]:plans;
+   return {paging:{offset,total:results.length},results:results.slice(offset,offset+2)};
+  }
+  return plans.find(plan=>url.endsWith('/'+plan.id));
+ };
+ const state=await h.commercialReadiness();
+ assert.deepEqual(state.seller,{id:'123',site:'MLC'});
+ assert.deepEqual(state.plans.map(plan=>plan.id),['weekly-verified','monthly-verified','yearly-verified']);
+ assert.equal(state.ready,false);
+ assert.ok(h.calls.filter(call=>call.url).every(call=>call.method==='GET'));
+ assert.equal(h.checkouts.size,0);
+ ambiguous=true;
+ await assert.rejects(h.commercialReadiness(),/COMMERCIAL_PLAN_WEEKLY_AMBIGUOUS/);
 });
 
 
