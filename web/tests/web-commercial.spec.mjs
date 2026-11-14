@@ -55,6 +55,48 @@ test('a checkout return waits for server-confirmed access',async({page,request})
  await expect(page.getByRole('link',{name:'Continuar mi preparación',exact:false})).toHaveCount(0);
  await expect(page.locator('.access-state')).toContainText('Necesitas una suscripción vigente');
 });
+test('an unpaid student signs in, chooses a plan and enters only after server confirmation',async({page,request})=>{
+ await identity(page);
+ await page.goto('/cuenta.html');
+ await page.getByRole('button',{name:'Cerrar sesión',exact:true}).click();
+ await request.post('/__qa/control',{data:{active:false}});
+ await expect(page.getByRole('heading',{name:'Tu preparación comienza aquí.'})).toBeVisible();
+ await expect(page.locator('[data-plan]')).toHaveCount(0);
+ await page.route('**/api/billing',async route=>{
+  const {action,plan}=route.request().postDataJSON();
+  if(action==='status')return route.fulfill({json:{ready:true,managementReady:true,trialAvailable:true}});
+  if(action==='refresh')return route.fulfill({json:{refreshed:true}});
+  expect({action,plan}).toEqual({action:'checkout',plan:'semanal'});
+  return route.fulfill({json:{checkoutUrl:new URL('/cuenta.html?checkout=return',route.request().url()).href}});
+ });
+ await page.reload();
+ await page.getByLabel('Correo electrónico',{exact:true}).fill('student-a@example.invalid');
+ await page.getByLabel('Contraseña',{exact:true}).fill('Isolated-qa-password-2026');
+ await page.getByRole('button',{name:'Entrar a mi cuenta',exact:false}).click();
+ await expect(page.getByRole('heading',{name:'Elige tu plan',exact:true})).toBeFocused();
+ await expect(page.getByRole('button',{name:'Elegir semanal',exact:true})).toBeVisible();
+ await expect(page.getByRole('link',{name:'Continuar mi preparación',exact:false})).toHaveCount(0);
+ await page.goto('/app/competencia.html#rankings');
+ await expect(page).toHaveURL(/\/cuenta\.html\?.*#planes$/);
+ await page.getByRole('link',{name:'Perfil, privacidad y eliminación',exact:true}).click();
+ await expect(page.getByRole('button',{name:'Eliminar mi cuenta',exact:false})).toBeVisible();
+ await expect(page.getByRole('link',{name:'Rankings',exact:true})).toHaveCount(0);
+ await expect(page.getByRole('link',{name:'Abrir duelos y rankings',exact:true})).toHaveCount(0);
+ await page.evaluate(()=>new Promise(resolve=>{
+  addEventListener('hashchange',()=>requestAnimationFrame(resolve),{once:true});
+  location.hash='duelos';
+ }));
+ await expect(page.getByRole('heading',{name:'Duelos',exact:true})).toHaveCount(0);
+ await expect(page.getByRole('heading',{name:'Mi perfil público',exact:true})).toBeVisible();
+ await page.getByRole('link',{name:'Volver a Mi cuenta',exact:true}).click();
+ await page.getByRole('button',{name:'Elegir semanal',exact:true}).click();
+ await expect(page.locator('#account-status')).toContainText('esperando la confirmación del pago');
+ await expect(page.getByRole('link',{name:'Continuar mi preparación',exact:false})).toHaveCount(0);
+ await request.post('/__qa/control',{data:{active:true}});
+ await page.getByRole('button',{name:'Actualizar mi acceso',exact:true}).click();
+ await page.getByRole('link',{name:'Continuar mi preparación',exact:false}).click();
+ await expect(page.locator('[data-action=pick-course]')).toHaveCount(5);
+});
 test('Google opens only a configured S256 flow and the real SDK exchanges its one-time callback before entering the five subjects',async({page,request,baseURL},info)=>{
  await request.post('/__qa/control',{data:{googleReady:true}});
  // Isolated provider transport: no Google account, consent or production grant
@@ -92,12 +134,12 @@ test('switching from Mi cuenta to a student without Premium removes the previous
  await request.post('/__qa/control',{data:{active:false}});await page.evaluate(async other=>{await globalThis[Symbol.for('cachaste.web.auth')].client.auth.setSession({access_token:other.access_token,refresh_token:other.refresh_token});},sessions.users[1]);await expect(page.locator('.account-email')).toContainText('student-b@example.invalid');await expect(page.locator('.access-state')).toContainText('Necesitas una suscripción');await expect.poll(()=>page.evaluate(async()=>[...await caches.keys()].filter(k=>k.startsWith('cachaste-private-')||k.startsWith('cachaste-license-')).length)).toBe(0);
 });
 test('a Google-only student can administer and delete the account after Premium expires without inventing a password',async({page,request})=>{
- await enter(page);await expect.poll(()=>page.evaluate(()=>!!window.CachasteWebSession)).toBe(true);await page.evaluate(()=>CachasteWebSession.reconnect());await request.post('/__qa/control',{data:{active:false,googleAccount:true}});await page.goto('/app/competencia.html#perfil');await expect(page.getByRole('heading',{name:'Mi perfil público',exact:true})).toBeVisible();await page.getByRole('button',{name:'Eliminar mi cuenta',exact:false}).click();await expect(page.locator('#delete-account-form')).toBeVisible();await expect(page.locator('#delete-account-form input[name=password]')).toHaveCount(0);await expect(page.locator('a[href="/cuenta.html?reauth=google&next=%2Fapp%2Fcompetencia.html"]')).toBeVisible();
+ await enter(page);await expect.poll(()=>page.evaluate(()=>!!window.CachasteWebSession)).toBe(true);await page.evaluate(()=>CachasteWebSession.reconnect());await request.post('/__qa/control',{data:{active:false,googleAccount:true}});await page.goto('/app/competencia.html?manage=profile#perfil');await expect(page.getByRole('heading',{name:'Mi perfil público',exact:true})).toBeVisible();await page.getByRole('button',{name:'Eliminar mi cuenta',exact:false}).click();await expect(page.locator('#delete-account-form')).toBeVisible();await expect(page.locator('#delete-account-form input[name=password]')).toHaveCount(0);await expect(page.locator('a[href="/cuenta.html?reauth=google&next=%2Fapp%2Fcompetencia.html"]')).toBeVisible();
  await page.getByLabel('Escribe ELIMINAR',{exact:true}).fill('ELIMINAR');await page.getByRole('button',{name:'Eliminar definitivamente mi cuenta',exact:true}).click();await expect(page).toHaveURL(/cuenta.html/);await expect(page.getByRole('heading',{name:'Tu preparación comienza aquí.'})).toBeVisible();expect(await page.evaluate(()=>Object.keys(localStorage).filter(k=>k.startsWith('cachaste-web:')).length)).toBe(0);
  const state=await(await request.get('/__qa/state')).json(),remove=state.calls.findIndex(x=>x.operation==='photo_storage_remove'),deletion=state.calls.findIndex(x=>x.operation==='delete_account');expect(remove).toBeGreaterThanOrEqual(0);expect(deletion).toBeGreaterThan(remove);
 });
 test('web profile deletion removes its Storage thumbnail first even after educational access expires',async({page,request})=>{
- await enter(page);await request.post('/__qa/control',{data:{active:false}});await page.goto('/app/competencia.html#perfil');await page.getByRole('button',{name:'Borrar mi perfil público',exact:true}).click();await page.getByRole('button',{name:'Borrar perfil',exact:true}).click();
+ await enter(page);await request.post('/__qa/control',{data:{active:false}});await page.goto('/app/competencia.html?manage=profile#perfil');await page.getByRole('button',{name:'Borrar mi perfil público',exact:true}).click();await page.getByRole('button',{name:'Borrar perfil',exact:true}).click();
  await expect.poll(async()=>{const state=await(await request.get('/__qa/state')).json();return state.calls.filter(x=>['photo_storage_remove','delete_profile'].includes(x.operation)).map(x=>x.operation);}).toEqual(['photo_storage_remove','delete_profile']);
 });
 test('five subjects and all science tracks retain the full educational engine',async({page},info)=>{

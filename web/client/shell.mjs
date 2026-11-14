@@ -18,6 +18,7 @@ export async function installPwa(){if(installPrompt){await installPrompt.prompt(
 if(typeof window!=='undefined'&&location.pathname.startsWith('/app/')&&!window.CachasteWebShellInstalled){
  window.CachasteWebShellInstalled=true;
  const legal=document.createElement('footer');legal.className='web-legal-links';legal.setAttribute('aria-label','Información legal');legal.innerHTML='<a href="/privacidad.html">Privacidad</a><a href="/condiciones.html">Condiciones</a><a href="/eliminar-cuenta.html">Eliminar cuenta</a>';document.body.append(legal);
+ if(!window.CachasteWebBootstrap?.accountOnly){
  document.body.classList.add('web-learning');const bar=document.createElement('div');bar.className='web-appbar';bar.innerHTML='<a href="/cuenta.html" aria-label="Mi cuenta de Cachaste"><img src="/assets/cachaste-icon.svg" alt="" width="28" height="28"><span>Mi cuenta</span></a><a class="web-duels-link" href="/app/competencia.html" aria-label="Abrir duelos y rankings">Duelos y rankings</a><button data-sync-open aria-label="Estado de sincronización"><span data-sync-label>Guardando…</span></button><button data-install>Instalar</button>';document.body.prepend(bar);
  const labels={saved:'Guardado en tu cuenta',pending:'Guardado aquí · por sincronizar',conflict:'Hay dos sesiones guardadas',expired:'Renueva tu acceso',reload:'Progreso combinado · vuelve a abrir'};
  const duelLink=bar.querySelector('.web-duels-link');
@@ -40,13 +41,15 @@ if(typeof window!=='undefined'&&location.pathname.startsWith('/app/')&&!window.C
   dialog.showModal();
  };
  initPwa(window.CachasteWebBootstrap?.offlineLicense);
+ }
 }
 if(typeof window!=='undefined'&&location.pathname.startsWith('/app/')&&window.CachasteWebBootstrap&&!window.CachasteWebSession){
+ const accountOnly=window.CachasteWebBootstrap.accountOnly===true;
  const sdk=getWebClient({supabaseUrl:PROJECT_URL,publishableKey:PUBLISHABLE_KEY});
- const lifecycle=installSessionLifecycle({sdk,userId:window.CachasteWebBootstrap.userId,progress:window.CachasteWebProgress,requireAccess:location.pathname!=='/app/competencia.html',onLicense:license=>initPwa(license),onState:state=>{if(['offline','reconnecting'].includes(state)){window.CachasteWebSyncStatus='pending';dispatchEvent(new Event('cachaste-sync'));}},onEnd:async()=>{
+ const lifecycle=installSessionLifecycle({sdk,userId:window.CachasteWebBootstrap.userId,progress:window.CachasteWebProgress,requireAccess:!accountOnly,onLicense:license=>accountOnly?undefined:initPwa(license),onState:state=>{if(['offline','reconnecting'].includes(state)){window.CachasteWebSyncStatus='pending';dispatchEvent(new Event('cachaste-sync'));}},onEnd:async reason=>{
   await serviceWorkerMessage({type:'PURGE_PRIVATE'});
   try{await fetch('/api/session',{method:'DELETE',headers:{'x-cachaste-request':'1'},signal:AbortSignal.timeout(8000)});}catch{}
-  location.replace('/cuenta.html?next='+encodeURIComponent(location.pathname));
+  location.replace(accountOnly?'/cuenta.html?manage=profile':'/cuenta.html?next='+encodeURIComponent(location.pathname)+(reason==='access-expired'?'#planes':''));
  }});
  window.CachasteWebSession=lifecycle;
  addEventListener('online',()=>lifecycle.reconnect());

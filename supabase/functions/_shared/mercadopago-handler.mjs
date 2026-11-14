@@ -4,6 +4,18 @@ const PROVIDER_ID=/^[a-zA-Z0-9_-]{1,100}$/;
 const PLAN_KEYS={semanal:'WEEKLY',mensual:'MONTHLY',anual:'YEARLY'};
 const CATALOGUE_CACHE_MS=60000;
 const COMMERCIAL_ORIGIN='https://sitecacho.cl';
+function checkoutRejection(problem){
+ const message=String(problem?.message??'').toLowerCase();
+ if(/payer.*collector|collector.*payer|own account/.test(message))return 'PAYER_COLLECTOR_CONFLICT';
+ if(/payer.*email|email.*payer/.test(message))return 'PAYER_EMAIL_REJECTED';
+ if(/transaction.?amount|amount.*minimum|minimum.*amount/.test(message))return 'AMOUNT_REJECTED';
+ if(/recurr|frequency|billing cycle/.test(message))return 'RECURRENCE_REJECTED';
+ if(/back.?url/.test(message))return 'RETURN_URL_REJECTED';
+ if(/card.?token/.test(message))return 'CARD_TOKEN_REQUIRED';
+ if(/start.?date|end.?date/.test(message))return 'DATE_REJECTED';
+ if(/not allowed|not authorized|permission|credential/.test(message))return 'PROVIDER_PERMISSION_REJECTED';
+ return 'UNCLASSIFIED_REJECTION';
+}
 const ACONCANINO={sellerId:'3113741347',checkoutAppId:'48384472675774',catalogueAppId:'3489525217856496',plans:{
  WEEKLY:'f895a7dc01bc4c72a0591730d2bd3216',
  MONTHLY:'34744f64fd05415da55bbd416828576a',
@@ -38,7 +50,23 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
  const admin=()=>createClient(supabaseUrl(),env('SUPABASE_SERVICE_ROLE_KEY'),{auth:{persistSession:false,autoRefreshToken:false}});
  const call=async(op,payload={})=>{const{data,error}=await admin().rpc('cachaste_web_billing_admin',{operation:op,payload});if(error)throw error;return data;};
  async function auth(req){const token=req.headers.get('authorization')?.replace(/^Bearer /i,'');if(!token)throw Error('AUTH_REQUIRED');const sdk=createClient(supabaseUrl(),anon(),{global:{headers:{Authorization:'Bearer '+token}},auth:{persistSession:false,autoRefreshToken:false}});const{data,error}=await sdk.auth.getUser(token);if(error||!data?.user)throw Error('AUTH_REQUIRED');const state=await sdk.rpc('cachaste_web_account');if(state.error)throw Error('AUTH_REQUIRED');return{user:data.user,state:state.data};}
- async function mp(path,options={}){if(!path.startsWith('/'))throw Error('INVALID_PROVIDER_PATH');const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);try{const res=await fetcher('https://api.mercadopago.com'+path,{...options,redirect:'error',signal:controller.signal,headers:{authorization:'Bearer '+env('MP_ACCESS_TOKEN'),'content-type':'application/json',...options.headers}});if(!res.ok)throw Object.assign(Error('PAYMENT_PROVIDER_UNAVAILABLE'),{providerStatus:res.status});return await res.json();}finally{clearTimeout(timer);}}
+ async function mp(path,options={}){
+  if(!path.startsWith('/'))throw Error('INVALID_PROVIDER_PATH');
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+  try{
+   const response=await fetcher('https://api.mercadopago.com'+path,{
+    ...options,redirect:'error',signal:controller.signal,
+    headers:{authorization:'Bearer '+env('MP_ACCESS_TOKEN'),'content-type':'application/json',...options.headers}
+   });
+   if(!response.ok){
+    const error=Object.assign(Error('PAYMENT_PROVIDER_UNAVAILABLE'),{providerStatus:response.status});
+    if(live()&&path==='/preapproval'&&options.method==='POST')
+     error.providerReason=checkoutRejection(await response.json().catch(()=>null));
+    throw error;
+   }
+   return await response.json();
+  }finally{clearTimeout(timer);}
+ }
  function checkPlan(remote,plan,planId,collectorId,trial){
   validatePlan(remote,plan,planId,{trial:trial??(Number(remote?.auto_recurring?.free_trial?.frequency)>0),collectorId});
   if(live()&&(remote.live_mode===false||(remote.site_id&&remote.site_id!=='MLC')))throw Error('COMMERCIAL_PLAN_MISMATCH');
@@ -169,8 +197,14 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
     back_url:webOrigin()+'/cuenta.html?checkout=return',status:'pending'
    })});
   }catch(error){
+   if(live()&&error.providerStatus){
+    console.info('MP_COMMERCIAL_CHECKOUT_REJECTED',JSON.stringify({
+     status:error.providerStatus,reason:error.providerReason??null
+    }));
+   }
    if([400,401,403,404,422].includes(error.providerStatus))
     await call('checkout_failed',{id:requestId,userId:checkout.user_id,status:error.providerStatus});
+   if(error.providerReason==='PAYER_COLLECTOR_CONFLICT')throw Error('PAYER_COLLECTOR_CONFLICT');
    throw error;
   }
   checkSubscriptionApplication(sub,seller);

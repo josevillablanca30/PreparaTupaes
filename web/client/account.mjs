@@ -20,8 +20,11 @@ messages.INVALID_PLAN_CHECKOUT_URL='El servidor no devolvió un enlace válido p
 messages.PAYMENT_NOT_VERIFIED='Mercado Pago no confirmó un pago sandbox elegible para este comprador y plan.';
 messages.PAYMENT_SUBSCRIPTION_NOT_MATCHED='Mercado Pago todavía no confirmó la factura de este pago en la suscripción.';
 messages.SUBSCRIPTION_ALREADY_ACTIVE='Ya tienes acceso vigente o una suscripción que se renueva. Revisa su estado en Mi cuenta.';
+messages.PAYER_COLLECTOR_CONFLICT='Mercado Pago rechazó el correo del vendedor como comprador. Usa una cuenta de ¿Cachaste? con otro correo para suscribirte.';
 messages.OWNERSHIP_REQUIRED='Falta registrar la evidencia de titularidad del comprador de prueba.';
-const checkoutReturned=new URLSearchParams(location.search).get('checkout')==='return';
+const accountQuery=()=>new URLSearchParams(location.search);
+const checkoutReturned=accountQuery().get('checkout')==='return';
+const profilePath='/app/competencia.html?manage=profile#perfil';
 let emailMode='login',emailDraft='';
 async function request(body,url='/api/billing',method='POST',signal){
  const{data:{session}}=sdk?await sdk.auth.getSession():{data:{session:null}};
@@ -92,16 +95,75 @@ function changeEmailMode(mode){
  root.querySelector('#signup-form input, #login-form input, #verify-signup-form input')?.focus();
 }
 async function work(fn){if(busy)return;const loginDraft=Array.from(root.querySelectorAll('#login-form input'),x=>[x.name,x.value]);busy=true;root.setAttribute('aria-busy','true');root.querySelectorAll('button').forEach(b=>b.disabled=true);try{notice('');await fn();}catch(e){notice(messages[e.message]||(/Invalid login credentials/i.test(e.message)?'Revisa tu correo y contraseña.':/rate.limit/i.test(e.message)?'Espera unos minutos antes de volver a intentarlo.':'No pudimos completar la operación. Reinténtalo.'));}finally{busy=false;render();if(!account)for(const[name,value]of loginDraft){const input=root.querySelector('#login-form input[name="'+name+'"]');if(input)input.value=value;}}}
-const plans=()=>'<section class="account-plans" id="planes"><div class="section-heading"><span class="eyebrow">Tu preparación completa</span><h2>Elige tu ritmo.</h2><p>Una sola suscripción para aprender y competir. Sin vidas limitadas.</p></div><div class="price-grid">'+Object.entries(PLANS).map(([id,p])=>'<article class="price-card '+(id==='mensual'?'featured':'')+'">'+(id==='mensual'?'<span class="price-tag">Elige tu mes de preparación</span>':'')+'<h3>'+p.name+'</h3><p class="price">'+money(p.amount)+'<small> / '+{semanal:'semana',mensual:'mes',anual:'año'}[id]+'</small></p><p>'+esc(id==='mensual'&&billing.trialAvailable&&!account?.trialUsed?'7 días gratis y luego $7.990 al mes. Sujeto a elegibilidad.':id==='semanal'?'Para una semana de práctica enfocada.':id==='mensual'?'Avanza a tu ritmo, un ratito cada día.':'Tu preparación durante todo un año.')+'</p><ul><li>Las cinco asignaturas</li><li>Lecciones, tutor y ensayos</li><li>Rankings y duelos</li></ul><button type="button" data-plan="'+id+'" '+(account?.complimentary?.active?'disabled':'')+'>'+(account?.complimentary?.active?'Acceso gratuito vigente':billing.ready?(account?'Elegir '+p.name.toLowerCase():'Iniciar sesión para suscribirme'):'Ver estado de apertura')+'</button></article>').join('')+'</div>'+(!billing.ready?'<p class="opening-note">Estamos preparando la apertura. La contratación todavía no está habilitada y no se realizarán cobros.</p>':'<p class="legal-note">La suscripción se renueva hasta que la canceles. Revisa el monto y las condiciones en el checkout oficial de Mercado Pago.</p>')+'</section>';
+function plans({required=false,pending=false}={}){
+ const complimentary=account?.complimentary?.active===true;
+ const heading=required
+  ?'<h1 id="plans-title" tabindex="-1">'+(pending?'Tu suscripción está en revisión':'Elige tu plan')+'</h1><p class="access-state">Necesitas una suscripción vigente para entrar a tu preparación.</p>'
+  :'<span class="eyebrow">Tu preparación completa</span><h2>Elige tu ritmo.</h2><p>Una sola suscripción para aprender y competir. Sin vidas limitadas.</p>';
+ const cards=Object.entries(PLANS).map(([id,plan])=>{
+  const cadence={semanal:'semana',mensual:'mes',anual:'año'}[id];
+  const label=complimentary?'Acceso gratuito vigente':pending?'Esperando confirmación':billing.ready?'Elegir '+plan.name.toLowerCase():'Ver estado de apertura';
+  const description=id==='mensual'&&billing.trialAvailable&&!account?.trialUsed
+   ?'7 días gratis y luego $7.990 al mes. Sujeto a elegibilidad.'
+   :{semanal:'Para una semana de práctica enfocada.',mensual:'Avanza a tu ritmo, un ratito cada día.',anual:'Tu preparación durante todo un año.'}[id];
+  return '<article class="price-card '+(id==='mensual'?'featured':'')+'">'+(id==='mensual'?'<span class="price-tag">Elige tu mes de preparación</span>':'')+
+   '<h3>'+plan.name+'</h3><p class="price">'+money(plan.amount)+'<small> / '+cadence+'</small></p><p>'+esc(description)+
+   '</p><ul><li>Las cinco asignaturas</li><li>Lecciones, tutor y ensayos</li><li>Rankings y duelos</li></ul><button type="button" data-plan="'+id+'" '+
+   (complimentary||pending?'disabled':'')+'>'+label+'</button></article>';
+ }).join('');
+ const status=!billing.ready?'<p class="opening-note">Estamos preparando la apertura. La contratación todavía no está habilitada y no se realizarán cobros.</p>':
+  '<p class="legal-note">La suscripción se renueva hasta que la canceles. Revisa el monto y las condiciones en el checkout oficial de Mercado Pago.</p>';
+ return '<section class="account-plans" id="planes"><div class="section-heading">'+heading+'</div><div class="price-grid">'+cards+'</div>'+status+'</section>';
+}
+function subscriptionRows(){
+ return (account?.subscriptions||[]).map(s=>'<article><h2>Plan '+esc(s.plan)+'</h2><p>Estado: '+
+  esc({authorized:account.access?.active?'activo':'pendiente de confirmación',pending:'pendiente',paused:'pausado',cancelled:'renovación cancelada',canceled:'renovación cancelada'}[s.status]||s.status)+
+  '</p>'+(s.paidUntil?'<p>Período pagado hasta '+esc(new Date(s.paidUntil).toLocaleDateString('es-CL'))+'</p>':'')+
+  (s.renews?'<button class="secondary" type="button" data-cancel="'+esc(s.id)+'">Cancelar renovación</button>':'')+'</article>').join('');
+}
+const accountActions=()=>'<button type="button" class="secondary" data-action="refresh">Actualizar mi acceso</button>'+
+ '<a class="text-link" href="'+profilePath+'">Perfil, privacidad y eliminación</a><button type="button" class="text-button" data-action="signout">Cerrar sesión</button>';
 function render(){if(!config)return;
- const user=account?.user,active=account?.access?.active;
- const freeNotice=account?.complimentary?.active?'<section class="account-card"><h2>Tu año gratuito de tester</h2><p>Tu acceso es gratuito hasta '+esc(new Date(account.complimentary.validUntil).toLocaleDateString('es-CL'))+'. No tiene renovación automática ni requiere tarjeta.</p></section>':'';
- root.innerHTML=(user&&new URLSearchParams(location.search).get('reauth')==='google'?'<section class="account-card"><h2>Confirma tu acceso con Google</h2><p>Vuelve a elegir tu cuenta y después abre Perfil para confirmar la eliminación. Tu progreso y tu suscripción no cambian al confirmar el acceso.</p><button type="button" class="google-signin" data-action="google">Confirmar con Google</button></section>':'')+(recovering&&user?'<section class="account-card"><span class="eyebrow">Recupera tu acceso</span><h1>Elige tu nueva contraseña.</h1><form id="recovery-form"><label>Nueva contraseña<input name="password" type="password" minlength="12" autocomplete="new-password" required></label><label>Repite tu contraseña<input name="repeat" type="password" minlength="12" autocomplete="new-password" required></label><button type="submit">Guardar contraseña</button></form></section>':user?'<section class="account-card"><span class="eyebrow">Tu cuenta de ¿Cachaste?</span><h1>Sigamos desde donde quedaste.</h1><p class="account-email">'+esc(user.email)+'</p><p class="access-state">'+(active?'Tu acceso está verificado.':'Tu cuenta está lista. Necesitas una suscripción vigente para abrir tu preparación.')+'</p><div class="account-actions">'+(active?'<a class="primary-button" href="'+nextPage()+'">Continuar mi preparación <span>→</span></a>':'<a class="primary-button" href="#planes">Ver suscripciones</a>')+'<button type="button" class="secondary" data-action="refresh">Actualizar mi acceso</button>'+ '<a class="text-link" href="/app/competencia.html#perfil">Perfil, privacidad y eliminación</a>'+'<button class="text-button" data-action="signout" type="button">Cerrar sesión</button></div></section>':'<section class="account-card"><span class="eyebrow">Un ratito a la vez</span><h1>Tu preparación comienza aquí.</h1><p>Una misma cuenta para tu aprendizaje y competencia. Tu progreso educativo web se guarda en tu cuenta.</p><button type="button" class="google-signin" data-action="google" aria-describedby="google-status"><img src="/icons/google-g.png" alt="" width="20" height="20"> Continuar con Google</button><p id="google-status" class="legal-note">'+(config.googleAuthEnabled&&config.authReturnReady?'Usa tu cuenta de Google para entrar o registrarte.':'Acceso con Google en preparación. Aún no está habilitado.')+'</p><div class="auth-divider"><span>o entra con tu correo</span></div>'+emailForm()+'<p class="legal-note">El acceso educativo y competitivo requiere una suscripción vigente. <a href="/privacidad.html">Privacidad</a> · <a href="/condiciones.html">Condiciones</a></p></section>')+
- (user?'<section class="account-subscriptions">'+(account.subscriptions||[]).map(s=>'<article><h2>Plan '+esc(s.plan)+'</h2><p>Estado: '+esc({authorized:'activo',pending:'pendiente',paused:'pausado',cancelled:'renovación cancelada',canceled:'renovación cancelada'}[s.status]||s.status)+'</p>'+(s.paidUntil?'<p>Período pagado hasta '+esc(new Date(s.paidUntil).toLocaleDateString('es-CL'))+'</p>':'')+(s.renews?'<button class="secondary" type="button" data-cancel="'+esc(s.id)+'">Cancelar renovación</button>':'')+'</article>').join('')+'</section>':'')+freeNotice+plans()+(account?.isAdmin?'<section class="account-card"><h2>Ventas y comisiones</h2><p>Exporta el registro verificado por días de Chile. Este reporte no reemplaza los documentos tributarios.</p><form id="sales-form"><label>Desde<input name="from" type="date" required></label><label>Hasta<input name="to" type="date" required></label><button type="submit">Descargar CSV</button></form></section>':'');
- if(user&&canUseQa())root.innerHTML+=qaPanel();
+ const active=account?.access?.active===true,user=account?.user;
+ const email=user?'<p class="account-email">'+esc(user.email)+'</p>':'';
+ if(recovering&&user){
+  root.innerHTML='<section class="account-card"><h1>Elige tu nueva contraseña.</h1><form id="recovery-form"><label>Nueva contraseña<input name="password" type="password" minlength="12" autocomplete="new-password" required></label><label>Repite tu contraseña<input name="repeat" type="password" minlength="12" autocomplete="new-password" required></label><button type="submit">Guardar contraseña</button></form></section>';
+ }else if(user&&accountQuery().get('reauth')==='google'){
+  root.innerHTML='<section class="account-card"><h1>Confirma tu acceso con Google</h1><p>Vuelve a elegir tu cuenta para confirmar la eliminación.</p><button type="button" class="google-signin" data-action="google">Confirmar con Google</button></section>';
+ }else if(!user){
+  root.innerHTML='<section class="account-card"><span class="eyebrow">Un ratito a la vez</span><h1>Tu preparación comienza aquí.</h1><p>Una misma cuenta para tu aprendizaje y competencia. Tu progreso educativo web se guarda en tu cuenta.</p><button type="button" class="google-signin" data-action="google" aria-describedby="google-status"><img src="/icons/google-g.png" alt="" width="20" height="20"> Continuar con Google</button><p id="google-status" class="legal-note">'+
+   (config.googleAuthEnabled&&config.authReturnReady?'Usa tu cuenta de Google para entrar o registrarte.':'Acceso con Google en preparación. Aún no está habilitado.')+
+   '</p><div class="auth-divider"><span>o entra con tu correo</span></div>'+emailForm()+'<p class="legal-note">El acceso educativo y competitivo requiere una suscripción vigente. <a href="/privacidad.html">Privacidad</a> · <a href="/condiciones.html">Condiciones</a></p></section>';
+ }else{
+  const rows=subscriptionRows();
+  const subscriptions=rows?'<section class="account-subscriptions" aria-label="Mis suscripciones">'+rows+'</section>':'';
+  if(active){
+   const complimentary=account.complimentary?.active
+    ?'<section class="account-card"><h2>Tu año gratuito de tester</h2><p>Tu acceso es gratuito hasta '+esc(new Date(account.complimentary.validUntil).toLocaleDateString('es-CL'))+'. No tiene renovación automática ni requiere tarjeta.</p></section>':'';
+   root.innerHTML='<section class="account-card"><span class="eyebrow">Tu cuenta de ¿Cachaste?</span><h1>Sigamos desde donde quedaste.</h1>'+email+
+    '<p class="access-state">Tu acceso está verificado.</p><div class="account-actions"><a class="primary-button" href="'+nextPage()+'">Continuar mi preparación <span>→</span></a>'+accountActions()+'</div></section>'+subscriptions+complimentary+plans();
+  }else{
+   const pending=account.subscriptions?.some(s=>s.renews===true);
+   root.innerHTML=plans({required:true,pending})+subscriptions+'<section class="account-card"><h2>Tu cuenta</h2>'+email+
+    '<div class="account-actions">'+accountActions()+'</div></section>';
+  }
+  if(account.isAdmin===true)root.insertAdjacentHTML('beforeend','<section class="account-card"><h2>Ventas y comisiones</h2><p>Exporta el registro verificado por días de Chile. Este reporte no reemplaza los documentos tributarios.</p><form id="sales-form"><label>Desde<input name="from" type="date" required></label><label>Hasta<input name="to" type="date" required></label><button type="submit">Descargar CSV</button></form></section>');
+  if(canUseQa())root.insertAdjacentHTML('beforeend',qaPanel());
+ }
  root.setAttribute('aria-busy','false');
 }
 function nextPage(){return nextLearningPage(location.search);}
+function openProfile(){
+ if(!account?.user||accountQuery().get('manage')!=='profile')return false;
+ location.assign(profilePath);
+ return true;
+}
+function enterAccount(){
+ if(!account?.user||openProfile())return;
+ if(account.access?.active){location.assign(nextPage());return;}
+ history.replaceState(null,'',location.pathname+location.search+'#planes');
+ requestAnimationFrame(()=>document.getElementById('plans-title')?.focus());
+}
 root.addEventListener('input',e=>{
  const field=e.target.dataset.qaField;
  if(!field)return;
@@ -126,7 +188,7 @@ root.addEventListener('submit',e=>{e.preventDefault();const values=new FormData(
   }
   if(error)throw error;
   await connect(true);
-  if(account?.access?.active)location.assign(nextPage());
+  enterAccount();
  }
  if(e.target.id==='signup-form'){
   if(!config.signupEnabled){notice('El registro se habilitará cuando esté disponible la confirmación por correo.');return;}
@@ -136,7 +198,7 @@ root.addEventListener('submit',e=>{e.preventDefault();const values=new FormData(
   if(!data.session){emailMode='confirm';notice('Revisa tu bandeja de entrada y spam.');return;}
   emailMode='login';
   await connect(true);
-  if(account?.access?.active)location.assign(nextPage());
+  enterAccount();
  }
  if(e.target.id==='verify-signup-form'){
   const token=String(values.get('code')).trim();
@@ -146,8 +208,8 @@ root.addEventListener('submit',e=>{e.preventDefault();const values=new FormData(
   if(error)throw error;
   emailMode='login';
   await connect(true);
-  if(account?.access?.active)location.assign(nextPage());
-  else notice('Correo confirmado. Tu cuenta está lista.');
+  if(!account?.access?.active)notice('Correo confirmado. Elige un plan para comenzar.');
+  enterAccount();
  }
  if(e.target.id==='recovery-form'){if(values.get('password')!==values.get('repeat')){notice('Las contraseñas deben coincidir.');return;}const{error}=await sdk.auth.updateUser({password:values.get('password')});if(error)throw error;await signout();recovering=false;notice('Contraseña actualizada. Vuelve a iniciar sesión.');}
  if(e.target.id==='sales-form'){
@@ -240,6 +302,25 @@ root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!b.m
  if(b.dataset.cancel){const id=b.dataset.cancel,dialog=document.createElement('dialog');dialog.className='web-dialog';dialog.innerHTML='<h2>Cancelar la renovación</h2><p>Conservarás el período pagado vigente. No se cobrarán renovaciones posteriores a la cancelación confirmada por Mercado Pago.</p><button data-confirm>Confirmar cancelación</button><button data-close class="secondary">Conservar mi plan</button>';document.body.append(dialog);dialog.querySelector('[data-close]').onclick=()=>{dialog.close();dialog.remove();};dialog.querySelector('[data-confirm]').onclick=()=>work(async()=>{await request({action:'cancel',subscriptionId:id});dialog.close();dialog.remove();await connect();notice('Renovación cancelada.');});dialog.showModal();}
 });});
 document.querySelectorAll('[data-install]').forEach(b=>b.addEventListener('click',installPwa));
-(async()=>{try{config=await(await fetch('/api/config')).json();sdk=getWebClient(config);sdk.auth.onAuthStateChange(event=>{if(event==='PASSWORD_RECOVERY')recovering=true;if(['PASSWORD_RECOVERY','TOKEN_REFRESHED','SIGNED_IN','SIGNED_OUT'].includes(event))setTimeout(()=>{if(!busy)work(connect);},0);});try{await finishAuthReturn({sdk});}catch(e){notice(messages[e.message]||messages.AUTH_RETURN_INVALID);}try{billing=await request({action:'status'});}catch{}await connect(true);render();await initPwa();}catch{notice('No logramos conectar tu cuenta. Revisa la conexión y vuelve a intentarlo.');root.innerHTML='<section class="account-card"><h1>Volvamos a intentarlo</h1><p>Conservamos el progreso que ya guardaste en este dispositivo.</p><button data-action="retry" type="button">Reintentar conexión</button></section>';}})();
+(async()=>{
+ try{
+  config=await(await fetch('/api/config')).json();
+  sdk=getWebClient(config);
+  sdk.auth.onAuthStateChange(event=>{
+   if(event==='PASSWORD_RECOVERY')recovering=true;
+   if(['PASSWORD_RECOVERY','TOKEN_REFRESHED','SIGNED_IN','SIGNED_OUT'].includes(event))
+    setTimeout(()=>{if(!busy)work(connect);},0);
+  });
+  try{await finishAuthReturn({sdk});}catch(error){notice(messages[error.message]||messages.AUTH_RETURN_INVALID);}
+  try{billing=await request({action:'status'});}catch{}
+  await connect(true);
+  if(!recovering&&openProfile())return;
+  render();
+  await initPwa();
+ }catch{
+  notice('No logramos conectar tu cuenta. Revisa la conexión y vuelve a intentarlo.');
+  root.innerHTML='<section class="account-card"><h1>Volvamos a intentarlo</h1><p>Conservamos el progreso que ya guardaste en este dispositivo.</p><button data-action="retry" type="button">Reintentar conexión</button></section>';
+ }
+})();
 
 }

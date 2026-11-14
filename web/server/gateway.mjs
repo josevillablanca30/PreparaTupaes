@@ -5,6 +5,7 @@ const COOKIE='cachaste_web_session';
 const PUBLIC_HTML_ALIASES=new Map([['/index.html','/'],...['cuenta','recuperar','privacidad','condiciones','eliminar-cuenta','offline'].map(name=>['/'+name+'.html','/'+name])]);
 const SEARCH_ORIGIN='https://sitecacho.cl';
 const SEARCH_PAGES=['/','/privacidad.html','/condiciones.html','/eliminar-cuenta.html'];
+const COMPETITION_PAGE='/app/competencia.html';
 const SEARCH_ALIASES=new Map([['/index.html','/'],...SEARCH_PAGES.slice(1).map(path=>[path.slice(0,-5),path])]);
 const ACCESS_HEADERS={'cache-control':'private, no-store','vary':'Cookie','x-content-type-options':'nosniff','referrer-policy':'no-referrer','x-frame-options':'DENY','permissions-policy':'camera=(), microphone=(), geolocation=(), payment=()'};
 const json=(data,status=200,headers={})=>new Response(JSON.stringify(data),{status,headers:{...ACCESS_HEADERS,'content-type':'application/json; charset=utf-8',...headers}});
@@ -112,8 +113,14 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
    if(path==='/app/suscripcion.html')return Response.redirect(url.origin+'/cuenta.html#planes',302);
    if(path.startsWith('/app/')){
     if(!allowed.has(path))return json({error:'NOT_FOUND'},404);
-    let auth;try{auth=await identity(req,env,{active:!accountAllowed.has(path),fresh:path.endsWith('.html')});}catch(e){
-     if(path.endsWith('.html')&&req.headers.get('accept')?.includes('text/html'))return Response.redirect(url.origin+'/cuenta.html?next='+encodeURIComponent(path),302);
+    const accountOnly=path===COMPETITION_PAGE&&url.searchParams.get('manage')==='profile';
+    const accountAsset=accountAllowed.has(path)&&(path!==COMPETITION_PAGE||accountOnly);
+    let auth;try{auth=await identity(req,env,{active:!accountAsset,fresh:path.endsWith('.html')});}catch(e){
+     if(path.endsWith('.html')&&req.headers.get('accept')?.includes('text/html')){
+      const next=encodeURIComponent(path),plans=e.message==='SUBSCRIPTION_REQUIRED'?'#planes':'';
+      const accountPath=accountOnly?'/cuenta.html?manage=profile':'/cuenta.html?next='+next+plans;
+      return new Response(null,{status:302,headers:{...ACCESS_HEADERS,location:url.origin+accountPath}});
+     }
      throw e;
     }
     const response=await privateAsset(req,env,encryptedFiles,contentKeyBinding);if(!response.ok)return response;
@@ -121,9 +128,10 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     headers.set('x-robots-tag','noindex, nofollow, noarchive');
     headers.set('x-cachaste-user',auth.user.id);headers.set('content-security-policy',policy(path,pagePolicies));
     if(path.endsWith('.html')){
-     const snapshot=auth.access.active?await backend(env,'/rest/v1/rpc/cachaste_web_progress',auth.token,{method:'POST',body:{operation:'snapshot',payload:{}}}):{documents:[]};
-     const lease=auth.access.active?await offlineLicense(env,auth.user.id,auth.access.validUntilMs,url.origin,revision,now()):null;
-     const bootstrap={userId:auth.user.id,documents:snapshot.documents,offlineLicense:lease,revision,accessUntil:auth.access.validUntilMs};
+     const learning=auth.access.active&&!accountOnly;
+     const snapshot=learning?await backend(env,'/rest/v1/rpc/cachaste_web_progress',auth.token,{method:'POST',body:{operation:'snapshot',payload:{}}}):{documents:[]};
+     const lease=learning?await offlineLicense(env,auth.user.id,auth.access.validUntilMs,url.origin,revision,now()):null;
+     const bootstrap={userId:auth.user.id,documents:snapshot.documents,offlineLicense:lease,revision,accessUntil:auth.access.validUntilMs,accountOnly};
      return new Response((await response.text()).replace('<!--CACHASTE_WEB_BOOTSTRAP-->','<script id="cachaste-web-bootstrap" type="application/json">'+safeJson(bootstrap)+'</script>'),{status:response.status,headers});
     }
     return new Response(response.body,{status:response.status,headers});

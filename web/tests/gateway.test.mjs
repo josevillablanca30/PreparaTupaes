@@ -2,14 +2,14 @@ import test from'node:test';import assert from'node:assert/strict';
 import{createGateway}from'../server/gateway.mjs';import{offlineLicense,publicOfflineKey,safeJson}from'../server/offline.mjs';
 const uid='10000000-0000-4000-8000-000000000001';
 const token=()=>['eyJhbGciOiJIUzI1NiJ9',Buffer.from(JSON.stringify({sub:uid,exp:Math.floor(Date.now()/1000)+3600})).toString('base64url'),'isolated-test-signature'].join('.');
-function harness(options={}){let active=true,revoked=false;const t=token(),calls=[];const gateway=createGateway({...options,protectedFiles:['/app/index.html','/app/daily-catalog.js'],revision:'qa-build',fetcher:async(url,options)=>{
+function harness(options={}){let active=true,revoked=false;const t=token(),calls=[];const gateway=createGateway({protectedFiles:['/app/index.html','/app/daily-catalog.js'],...options,revision:'qa-build',fetcher:async(url,options)=>{
  calls.push({url,options});if(options.headers.authorization!=='Bearer '+t||revoked)return Response.json({message:'AUTH_REQUIRED'},{status:401});
  if(url.endsWith('/auth/v1/user'))return Response.json({id:uid,email:'student@example.invalid'});
  if(url.endsWith('/rpc/cachaste_access'))return Response.json({userId:uid,active,serverTimeMs:Date.now(),validUntilMs:active?Date.now()+3600000:null});
  if(url.endsWith('/rpc/cachaste_web_account'))return Response.json({access:{userId:uid,active},subscriptions:[],trialUsed:false});
  if(url.endsWith('/rpc/cachaste_web_progress'))return Response.json({documents:[]});
  return Response.json({error:'NOT_FOUND'},{status:404});
- }}),env={ASSETS:{async fetch(req){const p=new URL(req.url).pathname;if(p==='/app/index.html')return new Response('<html><head><!--CACHASTE_WEB_BOOTSTRAP--></head></html>',{headers:{'content-type':'text/html'}});if(p==='/app/daily-catalog.js')return new Response('PRIVATE_BANK_ANSWERS',{headers:{'content-type':'text/javascript'}});if(p==='/')return new Response('PUBLIC_LANDING');if(['/recuperar','/recuperar.html'].includes(p))return new Response('<div id=\"recovery-root\"></div>');return new Response('Not found',{status:404});}}};
+ }}),env={ASSETS:{async fetch(req){const p=new URL(req.url).pathname;if(['/app/index.html','/app/competencia.html'].includes(p))return new Response('<html><head><!--CACHASTE_WEB_BOOTSTRAP--></head></html>',{headers:{'content-type':'text/html'}});if(p==='/app/daily-catalog.js')return new Response('PRIVATE_BANK_ANSWERS',{headers:{'content-type':'text/javascript'}});if(p==='/')return new Response('PUBLIC_LANDING');if(['/recuperar','/recuperar.html'].includes(p))return new Response('<div id=\"recovery-root\"></div>');return new Response('Not found',{status:404});}}};
  const req=(path,options={})=>new Request('https://qa.example'+path,options);
  return{gateway,env,token:t,calls,req,setActive:v=>active=v,revoke:()=>revoked=true};}
 test('the complete answer bank is denied without a verified server entitlement',async()=>{const h=harness();const r=await h.gateway.fetch(h.req('/app/daily-catalog.js'),h.env);assert.equal(r.status,401);assert.ok(!(await r.text()).includes('PRIVATE_BANK_ANSWERS'));h.setActive(false);const n=await h.gateway.fetch(h.req('/app/daily-catalog.js',{headers:{authorization:'Bearer '+h.token}}),h.env);assert.equal(n.status,402);assert.equal((await h.gateway.fetch(h.req('/'),h.env)).status,200);});
@@ -38,6 +38,31 @@ test('offline license is signed with server-owned EC key, audience and bounded e
 test('student-controlled progress cannot close the bootstrap script tag',()=>{assert.ok(!safeJson({session:'</script><script>alert(1)</script>'}).includes('<'));});
 
 test('account administration works after expiry while the educational bank remains locked',async()=>{const h=harness({accountFiles:['/app/index.html']});h.setActive(false);const account=await h.gateway.fetch(h.req('/app/index.html',{headers:{authorization:'Bearer '+h.token}}),h.env);assert.equal(account.status,200);assert.ok(!(await account.text()).includes('PRIVATE_BANK_ANSWERS'));assert.equal((await h.gateway.fetch(h.req('/app/daily-catalog.js',{headers:{authorization:'Bearer '+h.token}}),h.env)).status,402);});
+test('unpaid users land on plans and may open only the competition profile for account management',async()=>{
+ const path='/app/competencia.html';
+ const h=harness({protectedFiles:[path,'/app/daily-catalog.js'],accountFiles:[path]});
+ h.setActive(false);
+ const session={authorization:'Bearer '+h.token,accept:'text/html'};
+ const open=(url,headers=session)=>h.gateway.fetch(h.req(url,{headers}),h.env);
+ const blocked=await open(path);
+ assert.equal(blocked.status,302);
+ assert.equal(blocked.headers.get('location'),'https://qa.example/cuenta.html?next=%2Fapp%2Fcompetencia.html#planes');
+ assert.match(blocked.headers.get('cache-control'),/no-store/);
+ const signIn=await open(path+'?manage=profile',{accept:'text/html'});
+ assert.equal(signIn.headers.get('location'),'https://qa.example/cuenta.html?manage=profile');
+ const profile=await open(path+'?manage=profile');
+ assert.equal(profile.status,200);
+ assert.match(await profile.text(),/"offlineLicense":null.*"accountOnly":true/);
+ assert.equal(h.calls.some(c=>c.url.endsWith('/rpc/cachaste_web_progress')),false);
+ assert.equal((await open('/app/daily-catalog.js')).status,402);
+ h.setActive(true);
+ const accountProfile=await open(path+'?manage=profile');
+ assert.match(await accountProfile.text(),/"offlineLicense":null.*"accountOnly":true/);
+ assert.equal(h.calls.some(c=>c.url.endsWith('/rpc/cachaste_web_progress')),false);
+ const competition=await open(path);
+ assert.equal(competition.status,200);
+ assert.match(await competition.text(),/"accountOnly":false/);
+});
 test('an access grant cached before expiry cannot prevent profile administration or request an expired learning snapshot',async()=>{
  const h=harness({accountFiles:['/app/index.html']});await h.gateway.fetch(h.req('/api/session',{method:'POST',headers:{origin:'https://qa.example','x-cachaste-request':'1',authorization:'Bearer '+h.token}}),h.env);h.setActive(false);const start=h.calls.length;
  const page=await h.gateway.fetch(h.req('/app/index.html',{headers:{authorization:'Bearer '+h.token,accept:'text/html'}}),h.env);assert.equal(page.status,200);const html=await page.text();assert.match(html,/"documents":\[\]/);assert.match(html,/"offlineLicense":null/);assert.equal(h.calls.slice(start).some(c=>c.url.endsWith('/rpc/cachaste_web_progress')),false);assert.ok(h.calls.slice(start).some(c=>c.url.endsWith('/rpc/cachaste_access')));

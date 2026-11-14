@@ -8,7 +8,7 @@ function harness(){
  const handlers=createMercadoPagoHandlers({env:k=>vars[k],createClient,fetcher:async(url,options)=>{
   if(vars.QA_PAYMENT_FIXTURE){
    const response=vars.QA_PAYMENT_FIXTURE(url);
-   if(response!==undefined){calls.push({url,method:options?.method||'GET'});return Response.json(response);}
+   if(response!==undefined){calls.push({url,method:options?.method||'GET'});return response instanceof Response?response:Response.json(response);}
   }
   return fetcher(url,options);
  },now:()=>now});
@@ -244,4 +244,28 @@ test('a definitive checkout rejection can retry its original seven day trial wit
  const posts=h.calls.filter(c=>c.url?.endsWith('/preapproval')&&c.method==='POST');assert.equal(posts.length,2);
  for(const post of posts)assert.equal(post.body.auto_recurring.start_date,new Date(now+7*86400000).toISOString());
  assert.equal(h.checkouts.get(rid).provider_plan_id,'monthly-trial');
+});
+
+test('commercial readiness reports a merchant email rejected as the buyer without leaking provider details',async()=>{
+ const h=harness();
+ Object.assign(h.vars,{CACHASTE_MP_MODE:'production',MP_ACCESS_TOKEN:'APP_USR-local-test',MP_TEST_COLLECTOR_ID:'456'});
+ const offers={weekly:[2490,7,'days'],monthly:[7990,1,'months'],yearly:[64990,12,'months']};
+ h.vars.QA_PAYMENT_FIXTURE=url=>{
+  if(url.endsWith('/users/me'))return {id:123,site_id:'MLC',tags:[]};
+  if(url.endsWith('/preapproval'))return Response.json({
+   message:'Payer and collector are the same buyer@example.invalid.'
+  },{status:400});
+  const id=url.split('/').at(-1),row=offers[id];
+  if(row)return {id,status:'active',collector_id:123,auto_recurring:{
+   currency_id:'CLP',transaction_amount:row[0],frequency:row[1],frequency_type:row[2]
+  }};
+ };
+ const response=await h.billing(new Request('https://sitecacho.cl/api/billing',{
+  method:'POST',headers:{origin:'https://sitecacho.cl',authorization:'Bearer qa-token'},
+  body:JSON.stringify({action:'checkout',plan:'semanal',requestId:rid})
+ }));
+ assert.equal(response.status,400);
+ assert.deepEqual(await response.json(),{error:'PAYER_COLLECTOR_CONFLICT'});
+ assert.equal(h.checkouts.get(rid).retryable,true);
+ assert.equal(h.checkouts.get(rid).provider_id,undefined);
 });

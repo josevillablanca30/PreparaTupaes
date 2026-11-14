@@ -29,7 +29,11 @@ jobs:
           node web/scripts/verify-final-integration.mjs
       - name: Probar las rutas nuevas de pagos y publicación
         run: |
-          node --test --test-name-pattern='a payment webhook uses|signed webhook deduplicates|forged notification|closed database launch policy|commercial readiness|commercial payment and scheduled renewal|commercial indexing|commercial billing stays closed|final release|final commercial release|release content' web/tests/mercadopago-handler.test.mjs web/tests/mercadopago-commercial-db.test.mjs web/tests/public-site.test.mjs web/tests/content.test.mjs web/tests/gateway.test.mjs tests/web-gateway-security.test.mjs
+          node --test --test-name-pattern='a payment webhook uses|signed webhook deduplicates|forged notification|closed database launch policy|commercial readiness|commercial payment and scheduled renewal|commercial indexing|commercial billing stays closed|unpaid users land on plans|final release|final commercial release|release content' web/tests/mercadopago-handler.test.mjs web/tests/mercadopago-commercial-db.test.mjs web/tests/public-site.test.mjs web/tests/content.test.mjs web/tests/gateway.test.mjs tests/web-gateway-security.test.mjs
+      - name: Verificar el acceso a planes y los permisos en Chromium
+        run: |
+          npx playwright install --with-deps --only-shell chromium
+          npx playwright test --config web/playwright.config.mjs --project=Desktop-Chrome --grep 'unpaid student signs in|a checkout return waits|after Premium expires|after educational access expires' web-commercial.spec.mjs
       - name: Leer el estado de Pages sin modificarlo
         env:
           CLOUDFLARE_ACCOUNT_ID: cfe4b77c0c39bb056306d16133a93642
