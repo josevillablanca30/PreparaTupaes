@@ -1,0 +1,70 @@
+name: Cachaste · Integración final sin publicación
+on:
+  push:
+    branches: [work/cachaste-lanzamiento-final-20261113]
+    paths-ignore: [web/deploy-final-public.request]
+permissions:
+  contents: read
+concurrency:
+  group: cachaste-final-integration-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  focused:
+    if: github.repository == 'josevillablanca30/PreparaTupaes'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - name: Compilar una vez y comprobar los recursos privados
+        run: |
+          node web/scripts/build.mjs
+          node web/scripts/verify-private-distribution.mjs --local
+          node web/scripts/verify-final-integration.mjs
+      - name: Probar las rutas nuevas de pagos y publicación
+        run: |
+          node --test --test-name-pattern='a payment webhook uses|signed webhook deduplicates|forged notification|closed database launch policy|commercial readiness|commercial payment and scheduled renewal|commercial indexing|commercial billing stays closed|unpaid users land on plans|final release|final commercial release|release content' web/tests/mercadopago-handler.test.mjs web/tests/mercadopago-commercial-db.test.mjs web/tests/public-site.test.mjs web/tests/content.test.mjs web/tests/gateway.test.mjs tests/web-gateway-security.test.mjs
+      - name: Verificar el acceso a planes y los permisos en Chromium
+        run: |
+          npx playwright install --with-deps --only-shell chromium
+          npx playwright test --config web/playwright.config.mjs --project=Desktop-Chrome --grep 'unpaid student signs in|a checkout return waits|after Premium expires|after educational access expires' web-commercial.spec.mjs
+      - name: Leer el estado de Pages sin modificarlo
+        env:
+          CLOUDFLARE_ACCOUNT_ID: cfe4b77c0c39bb056306d16133a93642
+          CLOUDFLARE_PAGES_PROJECT: cachaste-sitecacho
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo 'La credencial de Pages no está disponible en GitHub Actions.'
+            exit 1
+          fi
+          node --input-type=module -e "import {checkFinalRelease} from './web/scripts/publish-sitecacho.mjs'; const project=await checkFinalRelease(process.env); console.log('Pages verificado. Revisión actual:',project.canonical_deployment.deployment_trigger.metadata.commit_hash)"
+      - name: Leer disponibilidad de la configuración comercial
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          node --input-type=module <<'NODE'
+          if (!process.env.SUPABASE_ACCESS_TOKEN) {
+            console.log('Sin acceso a los metadatos de secretos comerciales de Supabase.');
+            process.exit(0);
+          }
+          const response = await fetch('https://api.supabase.com/v1/projects/jmobinmdwrmdqrxtcruj/secrets', {
+            headers: {authorization: 'Bearer ' + process.env.SUPABASE_ACCESS_TOKEN},
+            redirect: 'error', signal: AbortSignal.timeout(15000)
+          }).catch(() => null);
+          if (!response?.ok) {
+            console.log('Metadatos comerciales no disponibles.', response?.status ?? 'red');
+            process.exit(0);
+          }
+          const inventory = await response.json();
+          if (!Array.isArray(inventory)) throw Error('SECRET_INVENTORY_UNAVAILABLE');
+          const names = new Set(inventory.map(item => item.name));
+          const required = ['MP_ACCESS_TOKEN','MP_COLLECTOR_ID','MP_WEBHOOK_SECRET','MP_PLAN_WEEKLY','MP_PLAN_MONTHLY','MP_PLAN_YEARLY','MP_PLAN_MONTHLY_TRIAL','CACHASTE_MP_MODE','CACHASTE_WEB_ORIGIN'];
+          console.log(JSON.stringify(Object.fromEntries(required.map(name => [name, names.has(name)]))));
+          NODE

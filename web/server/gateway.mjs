@@ -3,12 +3,16 @@ import{privateAsset}from'./content.mjs';
 import{publicOfflineKey,offlineLicense,safeJson}from'./offline.mjs';
 const COOKIE='cachaste_web_session';
 const PUBLIC_HTML_ALIASES=new Map([['/index.html','/'],...['cuenta','recuperar','privacidad','condiciones','eliminar-cuenta','offline'].map(name=>['/'+name+'.html','/'+name])]);
+const SEARCH_ORIGIN='https://sitecacho.cl';
+const SEARCH_PAGES=['/','/privacidad.html','/condiciones.html','/eliminar-cuenta.html'];
+const COMPETITION_PAGE='/app/competencia.html';
+const SEARCH_ALIASES=new Map([['/index.html','/'],...SEARCH_PAGES.slice(1).map(path=>[path.slice(0,-5),path])]);
 const ACCESS_HEADERS={'cache-control':'private, no-store','vary':'Cookie','x-content-type-options':'nosniff','referrer-policy':'no-referrer','x-frame-options':'DENY','permissions-policy':'camera=(), microphone=(), geolocation=(), payment=()'};
 const json=(data,status=200,headers={})=>new Response(JSON.stringify(data),{status,headers:{...ACCESS_HEADERS,'content-type':'application/json; charset=utf-8',...headers}});
 const jwtExpires=token=>{try{const s=token.split('.')[1];return JSON.parse(atob(s.replaceAll('-','+').replaceAll('_','/'))).exp*1000;}catch{return 0;}};
 const bearer=req=>req.headers.get('authorization')?.match(/^Bearer ([A-Za-z0-9_.-]+)$/)?.[1];
 const cookie=req=>req.headers.get('cookie')?.split(';').map(x=>x.trim()).find(x=>x.startsWith(COOKIE+'='))?.slice(COOKIE.length+1);
-export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local',pagePolicies={},protectedFiles=[],accountFiles=[],encryptedFiles={},allowDevelopmentHttp=false}={}){
+export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local',pagePolicies={},protectedFiles=[],accountFiles=[],encryptedFiles={},contentKeyBinding,commercial=false,allowDevelopmentHttp=false}={}){
  const allowed=new Set(protectedFiles),accountAllowed=new Set(accountFiles),grants=new Map();
  async function backend(env,path,token,{body,method='GET'}={}){
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
@@ -32,7 +36,20 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
   if(!allowDevelopmentHttp&&url.protocol!=='https:'&&!['127.0.0.1','localhost','[::1]'].includes(url.hostname)){url.protocol='https:';return Response.redirect(url.href,308);}
   if(url.hostname==='www.sitecacho.cl'){url.hostname='sitecacho.cl';return new Response(null,{status:308,headers:{location:url.href,'referrer-policy':'no-referrer'}});}
   if(path.includes('..')||path.includes('\\')||path.includes('\0')||/%[a-f\d]{2}/i.test(path))return json({error:'BAD_PATH'},400);
+  const commercialHost=commercial&&url.origin===SEARCH_ORIGIN;
+  const indexing=commercialHost&&env.WEB_INDEXING_ENABLED==='true';
+  const payments=commercialHost&&env.WEB_PAYMENTS_ENABLED==='true';
+  const searchPage=SEARCH_ALIASES.get(path)||path;
   try{
+   if(path==='/robots.txt'){
+    const body=indexing?'User-agent: *\nAllow: /\nSitemap: '+SEARCH_ORIGIN+'/sitemap.xml\n':'User-agent: *\nDisallow: /\n';
+    return new Response(body,{headers:{'content-type':'text/plain; charset=utf-8','cache-control':'no-cache'}});
+   }
+   if(path==='/sitemap.xml'){
+    if(!indexing)return new Response('Not found',{status:404});
+    const entries=SEARCH_PAGES.map(page=>'<url><loc>'+SEARCH_ORIGIN+page+'</loc></url>').join('');
+    return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+entries+'</urlset>',{headers:{'content-type':'application/xml; charset=utf-8','cache-control':'no-cache'}});
+   }
    if(path==='/api/config')return json({supabaseUrl:env.SUPABASE_URL||PROJECT_URL,publishableKey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,signupEnabled:env.WEB_SIGNUP_ENABLED==='true',authReturnReady:env.WEB_AUTH_RETURN_READY==='true',googleAuthEnabled:env.WEB_GOOGLE_AUTH_ENABLED==='true',revision});
    if(path==='/api/auth/status'&&req.method==='GET'){
     if(env.WEB_GOOGLE_AUTH_ENABLED!=='true'||env.WEB_AUTH_RETURN_READY!=='true')return json({googleReady:false});
@@ -77,10 +94,10 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     // Checkout stays explicitly disabled until the owner approves live web payments.
     // Status/refresh may still reconcile existing access without initiating a charge.
     if(body.action!=='status')await identity(req,env,{active:false,fresh:true});
-    if(!['status','refresh','cancel','sales'].includes(body.action)&&env.WEB_PAYMENTS_ENABLED!=='true')return json({error:'BILLING_NOT_READY'},503);
+    if(!['status','refresh','cancel','sales','commercial_readiness'].includes(body.action)&&!payments)return json({error:'BILLING_NOT_READY'},503);
     const res=await fetcher((env.SUPABASE_URL||PROJECT_URL)+'/functions/v1/cachaste-mercadopago',{method:'POST',headers:{apikey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,'content-type':'application/json',...(body.action!=='status'?{authorization:'Bearer '+(bearer(req)||cookie(req))}:{})},body:JSON.stringify(body)});
     const headers=new Headers(ACCESS_HEADERS);for(const name of['content-type','content-disposition'])if(res.headers.has(name))headers.set(name,res.headers.get(name));
-    if(body.action==='status'&&env.WEB_PAYMENTS_ENABLED!=='true'&&res.ok){
+    if(body.action==='status'&&!payments&&res.ok){
      const provider=await res.json();
      return json({...provider,ready:false,trialAvailable:false,managementReady:provider.managementReady===true});
     }
@@ -96,17 +113,25 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
    if(path==='/app/suscripcion.html')return Response.redirect(url.origin+'/cuenta.html#planes',302);
    if(path.startsWith('/app/')){
     if(!allowed.has(path))return json({error:'NOT_FOUND'},404);
-    let auth;try{auth=await identity(req,env,{active:!accountAllowed.has(path),fresh:path.endsWith('.html')});}catch(e){
-     if(path.endsWith('.html')&&req.headers.get('accept')?.includes('text/html'))return Response.redirect(url.origin+'/cuenta.html?next='+encodeURIComponent(path),302);
+    const accountOnly=path===COMPETITION_PAGE&&url.searchParams.get('manage')==='profile';
+    const accountAsset=accountAllowed.has(path)&&(path!==COMPETITION_PAGE||accountOnly);
+    let auth;try{auth=await identity(req,env,{active:!accountAsset,fresh:path.endsWith('.html')});}catch(e){
+     if(path.endsWith('.html')&&req.headers.get('accept')?.includes('text/html')){
+      const next=encodeURIComponent(path),plans=e.message==='SUBSCRIPTION_REQUIRED'?'#planes':'';
+      const accountPath=accountOnly?'/cuenta.html?manage=profile':'/cuenta.html?next='+next+plans;
+      return new Response(null,{status:302,headers:{...ACCESS_HEADERS,location:url.origin+accountPath}});
+     }
      throw e;
     }
-    const response=await privateAsset(req,env,encryptedFiles);if(!response.ok)return response;
+    const response=await privateAsset(req,env,encryptedFiles,contentKeyBinding);if(!response.ok)return response;
     const headers=new Headers(response.headers);for(const[k,v]of Object.entries(ACCESS_HEADERS))headers.set(k,v);
+    headers.set('x-robots-tag','noindex, nofollow, noarchive');
     headers.set('x-cachaste-user',auth.user.id);headers.set('content-security-policy',policy(path,pagePolicies));
     if(path.endsWith('.html')){
-     const snapshot=auth.access.active?await backend(env,'/rest/v1/rpc/cachaste_web_progress',auth.token,{method:'POST',body:{operation:'snapshot',payload:{}}}):{documents:[]};
-     const lease=auth.access.active?await offlineLicense(env,auth.user.id,auth.access.validUntilMs,url.origin,revision,now()):null;
-     const bootstrap={userId:auth.user.id,documents:snapshot.documents,offlineLicense:lease,revision,accessUntil:auth.access.validUntilMs};
+     const learning=auth.access.active&&!accountOnly;
+     const snapshot=learning?await backend(env,'/rest/v1/rpc/cachaste_web_progress',auth.token,{method:'POST',body:{operation:'snapshot',payload:{}}}):{documents:[]};
+     const lease=learning?await offlineLicense(env,auth.user.id,auth.access.validUntilMs,url.origin,revision,now()):null;
+     const bootstrap={userId:auth.user.id,documents:snapshot.documents,offlineLicense:lease,revision,accessUntil:auth.access.validUntilMs,accountOnly};
      return new Response((await response.text()).replace('<!--CACHASTE_WEB_BOOTSTRAP-->','<script id="cachaste-web-bootstrap" type="application/json">'+safeJson(bootstrap)+'</script>'),{status:response.status,headers});
     }
     return new Response(response.body,{status:response.status,headers});
@@ -125,6 +150,18 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
    // same privacy headers as /recuperar for old Android/default-template links.
    const authPage=['/','/index.html','/cuenta.html','/cuenta','/recuperar.html','/recuperar','/recuperar/'].includes(path);
    const headers=new Headers(response.headers);headers.set('content-security-policy',policy(path,pagePolicies));headers.set('x-content-type-options','nosniff');headers.set('referrer-policy',authPage?'no-referrer':'strict-origin-when-cross-origin');if(authPage)headers.set('cache-control','private, no-store');headers.set('x-frame-options','DENY');headers.set('permissions-policy','camera=(), microphone=(), geolocation=()');
+   if(response.ok&&/text\/html/i.test(headers.get('content-type')||'')){
+    const mayIndex=indexing&&SEARCH_PAGES.includes(searchPage);
+    if(!mayIndex)headers.set('x-robots-tag','noindex, nofollow, noarchive');
+    if(SEARCH_PAGES.includes(searchPage)&&req.method==='GET'){
+     const html=(await response.text())
+      .replace(/<meta name="robots"[^>]*>/,mayIndex?'':'<meta name="robots" content="noindex,nofollow">')
+      .replace(/<link rel="canonical"[^>]*>/,'')
+      .replace('</head>','<link rel="canonical" href="'+SEARCH_ORIGIN+searchPage+'"></head>');
+     headers.delete('content-length');headers.delete('content-encoding');headers.delete('etag');
+     return new Response(html,{status:response.status,headers});
+    }
+   }
    return new Response(response.body,{status:response.status,headers});
   }catch(e){const raw=String(e?.message||''),status=e.status||(/AUTH_REQUIRED/.test(raw)?401:/SUBSCRIPTION_REQUIRED/.test(raw)?402:/INVALID|JSON|Unexpected/.test(raw)?400:503);return json({error:/^[A-Z_]+$/.test(raw)?raw:'SERVICE_UNAVAILABLE'},status);}
  }

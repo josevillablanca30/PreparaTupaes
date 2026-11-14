@@ -4,6 +4,11 @@ on:
     branches: [work/cachaste-web-comercial-20261024, work/cachaste-web-unificada-20261106, work/cachaste-lanzamiento-final-20261111]
     paths: ['web/**','supabase/functions/_shared/mercadopago-*','supabase/functions/_shared/play-*','supabase/functions/cachaste-play/**','supabase/functions/cachaste-play-events/**','supabase/functions/cachaste-mercadopago/**','supabase/functions/cachaste-mp-events/**','.github/workflows/web-commercial.yml','.github/workflows/web-pages-preview.yml','.github/workflows/web-sitecacho-public.yml']
   workflow_dispatch:
+    inputs:
+      save_diagnostics:
+        description: Conservar diagnósticos de navegador por un día
+        type: boolean
+        default: false
 permissions:
   contents: read
 env:
@@ -36,11 +41,6 @@ jobs:
         run: node web/scripts/build.mjs
       - name: Verificar integridad del cifrado y ausencia de bancos públicos
         run: node web/scripts/verify-private-distribution.mjs --local
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Cachaste-Web-Pages-${{ github.sha }}
-          path: web/dist/
-          retention-days: 14
   browsers:
     needs: core
     name: Navegador · ${{ matrix.browser }}
@@ -65,13 +65,16 @@ jobs:
         run: bash scripts/install-chromium-qa.sh
       - name: Navegación, cinco materias, persistencia, PWA y comparación visual
         run: npx playwright test --config=web/playwright.config.mjs --project="${{ matrix.browser }}"
-      - name: Conservar evidencia real de navegador
-        if: always()
+      - name: Conservar diagnósticos de navegador solicitados
+        if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.save_diagnostics }}
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: Cachaste-Web-QA-${{ matrix.browser }}-${{ github.run_id }}
-          path: web/artifacts/
-          retention-days: 14
+          path: |
+            web/artifacts/browser/
+            web/artifacts/browser-results.json
+          retention-days: 1
   webkit:
     needs: core
     name: Navegador · iPhone-WebKit
@@ -98,13 +101,16 @@ jobs:
         run: node -e "const fs=require('node:fs');const {webkit}=require('@playwright/test');if(!fs.existsSync(webkit.executablePath()))throw Error('MATCHING_WEBKIT_REQUIRED')"
       - name: Navegación, cinco materias, persistencia, PWA y comparación visual
         run: npx playwright test --config=web/playwright.config.mjs --project=iPhone-WebKit
-      - name: Conservar evidencia real de iPhone
-        if: always()
+      - name: Conservar diagnósticos de iPhone solicitados
+        if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.save_diagnostics }}
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: Cachaste-Web-QA-iPhone-WebKit-${{ github.run_id }}
-          path: web/artifacts/
-          retention-days: 14
+          path: |
+            web/artifacts/browser/
+            web/artifacts/browser-results.json
+          retention-days: 1
   http-auth-and-duels:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
@@ -129,13 +135,14 @@ jobs:
       - name: Dos sesiones web, conflictos, RLS y persistencia HTTP reales
         run: node web/scripts/test-online.mjs /tmp/cachaste-web-supabase.json
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.save_diagnostics }}
+        continue-on-error: true
         with:
           name: Cachaste-Web-HTTP-QA-${{ github.run_id }}
           path: |
             web/artifacts/real-http-integration.json
             reports/competition-online-integration.json
-          retention-days: 14
+          retention-days: 1
       - name: Eliminar cuentas y contenedores de prueba
         if: always()
         run: |

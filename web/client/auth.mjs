@@ -47,7 +47,9 @@ export async function startGoogleSignIn({sdk, config, location = globalThis.loca
   const response = await fetcher('/api/auth/status', {cache: 'no-store'});
   if (!response.ok || (await response.json()).googleReady !== true) throw Error('GOOGLE_NOT_READY');
   const redirect = new URL('/cuenta.html', location.origin);
-  redirect.searchParams.set('next', nextLearningPage(location.search));
+  const query = new URLSearchParams(location.search);
+  if(query.get('manage')==='profile'||query.get('reauth')==='google')redirect.searchParams.set('manage','profile');
+  else redirect.searchParams.set('next', nextLearningPage(location.search));
   const {data, error} = await sdk.auth.signInWithOAuth({provider: 'google', options: {redirectTo: redirect.href, scopes: 'openid email profile', queryParams: {prompt: 'select_account'}, skipBrowserRedirect: true}});
   if (error) throw error;
   const target = new URL(data?.url || '', location.origin);
@@ -64,6 +66,7 @@ export async function finishAuthReturn({sdk, location = globalThis.location, his
   // text must not remain in history, links, referrers or screenshots.
   const clean = new URL('/cuenta.html', url.origin);
   if (url.searchParams.has('next')) clean.searchParams.set('next', nextLearningPage(url.search));
+  if (url.searchParams.get('manage')==='profile') clean.searchParams.set('manage','profile');
   if (url.searchParams.get('recovery') === '1') clean.searchParams.set('recovery', '1');
   history.replaceState(null, '', clean.pathname + clean.search);
   if (failed) throw Error('AUTH_RETURN_CANCELLED');

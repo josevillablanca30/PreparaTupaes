@@ -1,0 +1,67 @@
+name: Web commercial guardrails
+on:
+  push:
+    branches:
+      - 'work/cachaste-web-comercial-cierre-20261112'
+      - 'work/cachaste-integracion-duelos-web-20261112'
+  pull_request:
+    paths:
+      - 'web/public/**'
+      - 'web/client/**'
+      - 'web/shared/**'
+      - 'web/tests/progress-runtime.test.mjs'
+      - 'tests/web-gateway-security.test.mjs'
+      - 'tests/web-progress-merge.test.mjs'
+      - 'tests/web-auth-return.test.mjs'
+      - 'tests/web-commercial-launch-guard.test.mjs'
+      - '.github/workflows/web-commercial-guardrails.yml'
+permissions:
+  contents: read
+jobs:
+  commercial-smoke:
+    if: >-
+      github.event_name == 'push' ||
+      (github.head_ref != 'work/cachaste-lanzamiento-final-20261113' &&
+      (github.event.pull_request.head.repo.full_name != github.repository ||
+      (github.head_ref != 'work/cachaste-web-comercial-cierre-20261112' &&
+      github.head_ref != 'work/cachaste-integracion-duelos-web-20261112')))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build unified educational web distribution
+        run: node web/scripts/build.mjs
+      - name: Verify private educational assets remain behind worker
+        run: |
+          node --input-type=module <<'EOF'
+          import {readFileSync,existsSync} from 'node:fs';
+          import assert from 'node:assert/strict';
+          const root='web/dist/';
+          const version=JSON.parse(readFileSync(root+'version.json','utf8'));
+          assert.equal(version.paymentsEnabledByBuild,false);
+          for(const f of ['index.html','cuenta.html','_worker.js','_routes.json','robots.txt','account.js'])assert.ok(existsSync(root+f),f);
+          assert.ok(!existsSync(root+'app/index.html'),'protected educational content must not be public');
+          assert.ok(readFileSync(root+'robots.txt','utf8').includes('Disallow: /'));
+          EOF
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run browser checks at 320px, 390px and desktop
+        run: npx playwright test --config playwright.web-commercial.config.mjs
+      - name: Verify lessons and tutors across all PAES subjects plus M1 exams and sync
+        run: |
+          npx playwright test --config web/playwright.config.mjs --project Desktop-Chrome --grep '390px · |M1: real lesson interaction|M1: full PAES exam|M1: complete Express|two browser contexts synchronize'
+      - name: Verify registration and password recovery in browser QA
+        run: |
+          npx playwright test --config web/playwright.config.mjs --project Desktop-Chrome --grep 'A closed registration|Email signup|recovery|Recovery|expired|Expired|legacy|Legacy|Connection errors|signed-in session'
+      - name: Verify rankings, duel result and expired access in browser QA
+        run: |
+          npx playwright test --config web/playwright.config.mjs --project Desktop-Chrome --grep 'approved (rankings|duelos|duelo|resultado) UI|four independent rankings|a server-expired subscription|complimentary testers'
+      - name: Check public web commercial safeguards
+        run: node --test tests/web-commercial-launch-guard.test.mjs tests/web-gateway-security.test.mjs tests/web-progress-merge.test.mjs tests/web-auth-return.test.mjs web/tests/progress-runtime.test.mjs web/tests/duels2-integration.test.mjs

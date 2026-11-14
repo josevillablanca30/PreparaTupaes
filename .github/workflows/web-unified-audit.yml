@@ -1,0 +1,40 @@
+name: Web unified non-payment audit
+on:
+  push:
+    branches:
+      - 'work/cachaste-web-comercial-cierre-20261112'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unified-web-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Build all five subjects and protected web distribution
+        run: node web/scripts/build.mjs
+      - name: Check web commercial safeguards
+        run: node --test tests/web-commercial-launch-guard.test.mjs
+      - name: Inspect generated distribution and protected content
+        run: |
+          node --input-type=module <<'EOF'
+          import {readFileSync,existsSync} from 'node:fs';
+          import assert from 'node:assert/strict';
+          const root='web/dist/';
+          const v=JSON.parse(readFileSync(root+'version.json','utf8'));
+          assert.equal(v.distribution,'web-commercial');
+          assert.equal(v.paymentsEnabledByBuild,false);
+          for(const file of ['index.html','cuenta.html','recuperar.html','_worker.js','_routes.json','robots.txt','web.css','account.js','web-shell.js','web-init.js','version.json'])assert.ok(existsSync(root+file),file);
+          assert.ok(!existsSync(root+'app/index.html'),'Educational HTML must remain protected by worker');
+          assert.ok(readFileSync(root+'robots.txt','utf8').includes('Disallow: /'));
+          console.log('Commercial web distribution checks passed.');
+          EOF

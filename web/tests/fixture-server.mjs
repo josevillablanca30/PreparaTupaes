@@ -14,7 +14,24 @@ const accountUser=id=>({...actorUser,id,email:id===users[0]?'student-a@example.i
 const auth=header=>[...tokens].find(([,token])=>header==='Bearer '+token)?.[0];
 async function backend(url,options={}){
  const parsed=new URL(url),op=parsed.pathname.split('/').at(-1),headers=new Headers(options.headers),id=auth(headers.get('authorization'));
- if(parsed.pathname.endsWith('/functions/v1/cachaste-mp-sandbox-checkout')){const b=JSON.parse(options.body||'{}');return Response.json(b.action==='checkout'?{checkoutUrl:'https://www.mercadopago.cl/subscriptions/checkout?preapproval_id=synthetic-ui-qa',mode:'sandbox'}:{ready:true,webhookConfigured:false,productionEnabled:false,mode:'sandbox',plans:[],subscriptions:[]});}
+ if(parsed.pathname.endsWith('/functions/v1/cachaste-mp-sandbox-checkout')){
+  const b=JSON.parse(options.body||'{}');
+  if(b.action==='checkout'&&b.payerId){
+   const providerPlanId='synthetic-weekly';
+   return Response.json({
+    mode:'sandbox',checkoutMode:'hosted_plan',payerId:b.payerId,providerPlanId,productionEnabled:false,
+    checkoutUrl:'https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id='+providerPlanId
+   });
+  }
+  if(b.action==='plan_payment_lookup'||b.action==='plan_payment_reconcile'){
+   return Response.json({
+    mode:'sandbox',verified:true,productionEnabled:false,buyerId:b.payerId,paymentId:b.paymentId,
+    subscription:{subscriptionId:'synthetic-qa-subscription',liveMode:false},
+    ...(b.action==='plan_payment_reconcile'?{reconciled:true}:{})
+   });
+  }
+  return Response.json(b.action==='checkout'?{checkoutUrl:'https://www.mercadopago.cl/subscriptions/checkout?preapproval_id=synthetic-ui-qa',mode:'sandbox'}:{ready:true,webhookConfigured:false,productionEnabled:false,mode:'sandbox',plans:[],subscriptions:[]});
+ }
  if(parsed.pathname.includes('/functions/v1/'))return Response.json({ready:false,trialAvailable:false});
  if(parsed.pathname.endsWith('/auth/v1/settings'))return Response.json({external:{google:googleReady}});
  if(['/auth/v1/signup','/auth/v1/verify','/auth/v1/resend'].includes(parsed.pathname)){

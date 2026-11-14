@@ -80,7 +80,13 @@ Secretos **solo Supabase Edge**: `MP_ACCESS_TOKEN`, `MP_COLLECTOR_ID`, `MP_WEBHO
 
 Gates: `CACHASTE_MP_ENABLED=false`, `CACHASTE_MP_TAX_READY=false` por defecto. La base exige además `payments_enabled` y `tax_ready`; ningún cliente puede escribirlos. `CACHASTE_MP_MODE=production` exige token `APP_USR-`; `test` exige `TEST-`, permiso explícito de compras de prueba y entorno de base `test`. **Nunca poner la base compartida con Android en test**: usar localhost o un entorno de ensayo independiente para credenciales sandbox.
 
-Los nuevos checkouts de producción exigen además un origen HTTPS `.cl`. Pausar nuevas ventas no debe impedir cancelar renovaciones, reconciliar pagos existentes o recibir webhooks firmados: esas operaciones continúan si las credenciales ya están configuradas. Los reportes administrativos siguen disponibles aunque no existan credenciales del proveedor. Actualmente no hay credenciales MP configuradas ni suscripciones reales.
+Los nuevos checkouts de producción exigen `https://sitecacho.cl` y credenciales del vendedor comercial distintas de las de QA. Pausar las ventas conserva la cancelación, la conciliación y los webhooks firmados de suscripciones existentes. Los reportes administrativos están disponibles con la autorización de la cuenta.
+
+El panel de Aconcanino SpA identifica la integración **Cachaste - Suscripciones** con el número `48384472675774` y al vendedor con el ID `3113741347`. El valor `3489525217856496` procede del campo `application_id` de los tres planes existentes y se valida como parte del catálogo. Las nuevas suscripciones vinculadas a cuentas se crean con el token de la integración del panel.
+
+La **Clave secreta** se obtiene en **Cachaste - Suscripciones → Webhooks → Configurar notificaciones → Modo productivo**. Se guarda en `MP_WEBHOOK_SECRET` en Supabase. Una aplicación puede compartir su clave de firma entre sus URLs de prueba y producción. El servidor admite que las firmas coincidan únicamente cuando el token comercial identifica la aplicación del panel y es distinto del token sandbox. El diagnóstico consulta el vendedor y los planes mediante lecturas. Para verificar el origen de las notificaciones, comprobar en `cachaste-mp-events` una entrega firmada del simulador de esa aplicación. Una notificación de plan verifica la firma sin modificar suscripciones ni generar un cobro.
+
+El flujo de publicación lee `web/deploy-final-public.request` en la rama `work/cachaste-lanzamiento-final-20261113`. El alcance `public-web-commercial` requiere la aprobación del titular, una revisión con CI aprobado, los datos públicos de Aconcanino SpA, la fecha de vigencia y los textos confirmados de devolución y documentación tributaria. La publicación comercial configura el checkout y la indexación del dominio canónico. El mapa incluye la portada y las rutas legales. Las páginas de cuenta y los recursos de aprendizaje conservan sus controles de acceso y exclusión de buscadores.
 
 El acceso pagado deriva de pagos reales aprobados consultados a la API: importe, CLP, receptor, modo, referencia, suscripción y período deben coincidir. Una URL de retorno, un estado `authorized` sin pago, un campo Premium, un pago pendiente o reembolsado no bastan. La prueba de siete días se enlaza una sola vez por identidad y solo se ofrece cuando su plan está verificado. El acceso se revisa al entrar a la cuenta y por webhooks; una validación con más de 12 horas requiere renovarse contra el proveedor.
 
@@ -88,9 +94,9 @@ Configurar notificaciones oficiales de `subscription_preapproval`, `subscription
 
 Cancelar cambia el estado del proveedor y vuelve a verificar; conserva el tiempo pagado confirmado. Al eliminar una cuenta se borran progreso y vínculos personales, y el ledger contable privado conserva pagos sin usuario ni suscripción. La interfaz exige cancelar primero la renovación.
 
-## Tributación persona natural
+## Documentación tributaria
 
-El titular venderá como persona natural; no se usa una empresa ajena. No se han ingresado RUT, credenciales tributarias ni un giro supuesto.
+La salida comercial se prepara para Aconcanino SpA. Confirmar el domicilio legal que se publicará y la emisión del documento tributario que corresponda a la suscripción.
 
 Antes de cambiar los gates: verificar Inicio de Actividades y giro con SII/contador; determinar si esta prestación concreta está afecta o exenta de IVA; definir documentación de ventas y notas de crédito que correspondan; configurar el emisor y conciliación. Que el contenido sea educativo no prueba por sí solo que esta suscripción califique para una exención. Los precios previstos no autorizan agregar IVA sorpresivamente en el checkout.
 

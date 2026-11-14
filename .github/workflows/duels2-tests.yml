@@ -1,12 +1,17 @@
 name: Duelos 2 · isolated integration tests
 on:
   push:
-    branches: [work/cachaste-duelos-2-20261110, work/cachaste-duels2-integration-20261111, work/cachaste-lanzamiento-final-20261111, work/cachaste-web-unificada-20261106]
-    paths: ['duels2/**', 'scripts/*duels2*', 'tests/*duels2*', 'tests/helpers/duels2*', 'web/tests/duels2*', 'web/supabase/migrations/*duels2*', 'web/shared/competition-ui.mjs', '.github/workflows/duels2-tests.yml']
+    branches: [work/cachaste-duelos-2-20261110, work/cachaste-duels2-integration-20261111, work/cachaste-lanzamiento-final-20261111, work/cachaste-web-unificada-20261106, work/cachaste-integracion-duelos-web-20261112]
+    paths: ['duels2/**', 'scripts/*duels2*', 'web/scripts/test-online.mjs', 'web/scripts/test-duels2-realtime.mjs', 'tests/*duels2*', 'tests/helpers/duels2*', 'web/tests/duels2*', 'web/supabase/migrations/*duels2*', 'web/shared/competition-ui.mjs', '.github/workflows/duels2-tests.yml']
   pull_request:
-    branches: [work/cachaste-web-unificada-20261106]
-    paths: ['duels2/**', 'scripts/*duels2*', 'tests/*duels2*', 'tests/helpers/duels2*', 'web/tests/duels2*', 'web/supabase/migrations/*duels2*', '.github/workflows/duels2-tests.yml']
+    branches: [work/cachaste-web-unificada-20261106, work/cachaste-web-comercial-cierre-20261112]
+    paths: ['duels2/**', 'scripts/*duels2*', 'web/scripts/test-online.mjs', 'web/scripts/test-duels2-realtime.mjs', 'tests/*duels2*', 'tests/helpers/duels2*', 'web/tests/duels2*', 'web/supabase/migrations/*duels2*', '.github/workflows/duels2-tests.yml']
   workflow_dispatch:
+    inputs:
+      save_diagnostics:
+        description: Conservar diagnósticos y APK de prueba por un día
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -14,6 +19,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   isolated-tests:
+    if: github.head_ref != 'work/cachaste-lanzamiento-final-20261113'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     services:
@@ -51,13 +57,15 @@ jobs:
       - name: Two browser sessions, mobile layouts and educational review
         run: node scripts/test-duels2-browser.mjs
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.save_diagnostics }}
+        continue-on-error: true
         with:
           name: cachaste-duels2-isolated-evidence
           path: test-results/duels2/
           if-no-files-found: ignore
-          retention-days: 14
+          retention-days: 1
   realtime-qa:
+    if: github.head_ref != 'work/cachaste-lanzamiento-final-20261113'
     runs-on: ubuntu-24.04
     timeout-minutes: 18
     env:
@@ -84,18 +92,20 @@ jobs:
         run: |
           docker logs supabase_realtime_cachaste-local 2>&1 | grep -Ei 'replication|postgres_changes|publication|wal|slot' | sed -E 's/eyJ[A-Za-z0-9_.-]+/[jwt]/g; s#postgres(ql)?://[^[:space:]]+#[local connection]#g' | tail -n 40 || true
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.save_diagnostics }}
+        continue-on-error: true
         with:
           name: cachaste-duels2-realtime-qa
           path: web/artifacts/real-http-integration.json
           if-no-files-found: ignore
-          retention-days: 14
+          retention-days: 1
       - name: Limpiar el proyecto local efímero
         if: always()
         run: |
           npx --yes supabase@2.121.0 stop --no-backup
           rm -f /tmp/cachaste-realtime.json /tmp/cachaste-realtime-stack.log
   android-candidate:
+    if: github.head_ref != 'work/cachaste-lanzamiento-final-20261113'
     needs: isolated-tests
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -123,8 +133,10 @@ jobs:
       - name: Compile Android debug APK without release credentials
         run: gradle -p dist/duels2-android/android :app:assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.save_diagnostics }}
+        continue-on-error: true
         with:
           name: cachaste-duels2-android-debug
           path: dist/duels2-android/android/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 1
