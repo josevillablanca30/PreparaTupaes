@@ -4,6 +4,67 @@ import {createHmac,randomUUID} from 'node:crypto';
 import {createMercadoPagoHandlers} from '../../supabase/functions/_shared/mercadopago-handler.mjs';
 import {billing,database,sessions,users} from './database.mjs';
 
+test('commercial readiness keeps public sales closed while a single controlled checkout is issued',async t=>{
+ const db=await database();
+ t.after(()=>db.close());
+ const sellerId='3113741347',appId='48384472675774',planId='f895a7dc01bc4c72a0591730d2bd3216';
+ const email='buyer@example.invalid',reference=randomUUID(),ticket=randomUUID(),providerId='pending-locally';
+ const checkoutUrl='https://www.mercadopago.cl/subscriptions/checkout?preapproval_id='+providerId;
+ const recurrence={currency_id:'CLP',transaction_amount:2490,frequency:7,frequency_type:'days'};
+ const vars={
+  CACHASTE_MP_MODE:'production',MP_COLLECTOR_ID:sellerId,MP_ACCESS_TOKEN:'APP_USR-'+appId+'-fixture',
+  MP_WEBHOOK_SECRET:'local-fixture-signing-key'
+ };
+ await db.query('update auth.users set email=$1 where id=$2',[email,users[0]]);
+ await db.query("insert into cachaste_web.checkouts(id,user_id,plan,provider_plan_id,provider_plan_linked) values($1,$2,'semanal',$3,false)",[reference,users[0],planId]);
+ const issueTicket=()=>db.query("insert into cachaste_web.mp_controlled_checkout_tickets values(sha256(convert_to($1,'UTF8')),$2,now()+interval '3 minutes')",[ticket,reference]);
+ const providerRequests=[];
+ const handlers=createMercadoPagoHandlers({env:key=>vars[key],createClient:()=>({
+  rpc:async(name,{operation,payload,ticket})=>{
+   if(name==='cachaste_web_billing_admin')return {data:await billing(db,operation,payload)};
+   assert.equal(name,'cachaste_mp_controlled_checkout_claim');
+   await db.exec('set role service_role');
+   try{
+    return {data:(await db.query('select public.cachaste_mp_controlled_checkout_claim($1) claim',[ticket])).rows[0].claim};
+   }finally{await db.exec('reset role');}
+  }
+ }),fetcher:async(value,options)=>{
+  const {pathname}=new URL(value);
+  providerRequests.push(pathname);
+  if(pathname==='/users/me')return Response.json({id:sellerId,site_id:'MLC',tags:[]});
+  if(pathname==='/preapproval_plan/'+planId)return Response.json({
+   id:planId,collector_id:sellerId,application_id:'3489525217856496',status:'active',auto_recurring:recurrence
+  });
+  assert.equal(pathname,'/preapproval');
+  assert.equal(options.method,'POST');
+  assert.equal(options.headers['X-Idempotency-Key'],reference);
+  assert.deepEqual(JSON.parse(options.body),{
+   auto_recurring:recurrence,external_reference:reference,payer_email:email,reason:'¿Cachaste? · semanal',
+   back_url:'https://sitecacho.cl/cuenta.html?checkout=return',status:'pending'
+  });
+  return Response.json({id:providerId,external_reference:reference,collector_id:sellerId,application_id:appId,
+   status:'pending',init_point:checkoutUrl});
+ }});
+ const invoke=(action,ticket)=>handlers.billing(new Request('https://local.invalid/billing',{
+  method:'POST',body:JSON.stringify({action,ticket,plan:'anual',payer_email:'ignored@example.invalid'})
+ }));
+ await issueTicket();
+ assert.equal((await invoke('checkout_controlled',ticket)).status,401);
+ assert.deepEqual(providerRequests,[]);
+ await db.query('update auth.users set email_confirmed_at=now() where id=$1',[users[0]]);
+ await issueTicket();
+ assert.equal((await invoke('checkout_controlled',randomUUID())).status,401);
+ const response=await invoke('checkout_controlled',ticket);
+ assert.equal(response.status,200);
+ assert.deepEqual(await response.json(),{checkoutUrl,id:providerId});
+ assert.equal((await invoke('checkout_controlled',ticket)).status,401);
+ assert.equal(providerRequests.filter(path=>path==='/preapproval').length,1);
+ assert.equal((await(await invoke('status')).json()).ready,false);
+ assert.deepEqual((await db.query('select provider_id from cachaste_web.checkouts')).rows,[{provider_id:providerId}]);
+ assert.deepEqual((await db.query('select count(*)::int total from cachaste_web.payments')).rows,[{total:0}]);
+ assert.deepEqual((await db.query('select cachaste.premium($1) active',[users[0]])).rows,[{active:false}]);
+});
+
 test('commercial payment and scheduled renewal update only the owner’s web and Android access',async t=>{
  const db=await database();
  t.after(()=>db.close());

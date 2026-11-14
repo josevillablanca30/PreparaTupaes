@@ -157,6 +157,42 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   if(live()&&seller===ACONCANINO.sellerId&&String(sub.application_id)!==ACONCANINO.checkoutAppId)
    throw Error('SUBSCRIPTION_APPLICATION_MISMATCH');
  }
+ async function pendingCheckout(req,checkout,seller,email){
+  const plan=checkout.plan,requestId=checkout.id,p=MP_PLANS[plan];
+  // A pending hosted checkout keeps the payment method at Mercado Pago.
+  const auto_recurring={frequency:p.frequency,frequency_type:p.frequency_type,transaction_amount:p.amount,currency_id:'CLP',
+   ...(checkout.trial_offered?{start_date:new Date(now()+7*86400000).toISOString()}:{})};
+  let sub;
+  try{
+   sub=await mp('/preapproval',{method:'POST',headers:{'X-Idempotency-Key':requestId},body:JSON.stringify({
+    auto_recurring,external_reference:requestId,payer_email:email,reason:'¿Cachaste? · '+plan,
+    back_url:webOrigin()+'/cuenta.html?checkout=return',status:'pending'
+   })});
+  }catch(error){
+   if([400,401,403,404,422].includes(error.providerStatus))
+    await call('checkout_failed',{id:requestId,userId:checkout.user_id,status:error.providerStatus});
+   throw error;
+  }
+  checkSubscriptionApplication(sub,seller);
+  if(live()&&seller===ACONCANINO.sellerId&&
+     (sub.status!=='pending'||sub.external_reference!==requestId||String(sub.collector_id)!==seller||sub.live_mode===false))
+   throw Error('SUBSCRIPTION_MISMATCH');
+  const url=pendingCheckoutUrl(sub),id=String(sub.id);
+  await call('attach',{id:requestId,userId:checkout.user_id,providerId:id});
+  return json(req,{checkoutUrl:url,id});
+ }
+ async function controlledCheckout(req,ticket){
+  if(typeof ticket!=='string'||!UUID.test(ticket))throw Error('AUTH_REQUIRED');
+  if(!live()||!ready()||!productionAppMatches())return json(req,{error:'BILLING_NOT_READY'},503);
+  const {data:reservation,error}=await admin().rpc('cachaste_mp_controlled_checkout_claim',{ticket});
+  if(error)throw error;
+  if(!reservation)throw Error('AUTH_REQUIRED');
+  const {id,userId,email,providerPlanId}=reservation;
+  if(providerPlanId!==ACONCANINO.plans.WEEKLY)throw Error('INVALID_PLAN');
+  const seller=await collectorId();
+  await providerPlan('semanal',providerPlanId,seller);
+  return pendingCheckout(req,{id,user_id:userId,plan:'semanal',trial_offered:false},seller,email);
+ }
  async function reconcile(id,requiredPaymentId=null,verifiedSeller){
   if(typeof id!=='string'||!PROVIDER_ID.test(id))throw Error('INVALID_PROVIDER_ID');
   const observedAt=now(),seller=verifiedSeller??await collectorId();
@@ -206,6 +242,7 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   if(Number(req.headers.get('content-length')||0)>8192)return json(req,{error:'PAYLOAD_TOO_LARGE'},413);
   const text=await req.text();if(text.length>8192)return json(req,{error:'PAYLOAD_TOO_LARGE'},413);const body=JSON.parse(text||'{}');
   if(body.action==='reconcile_scheduled')return await reconcileScheduled(req,body.ticket);
+  if(body.action==='checkout_controlled')return await controlledCheckout(req,body.ticket);
   if(body.action==='status'){
    let enabled=ready()&&(await call('policy')).enabled===true;
    let trialAvailable=false;
@@ -264,14 +301,7 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
     const priorTrial=live()&&body.plan==='mensual'&&!checkout.trial_offered?null:checkout.trial_offered;
     await providerPlan(body.plan,checkout.provider_plan_id,seller,priorTrial);
    }
-   // Associated plans require a card token. A hosted pending checkout instead
-   // copies the verified server catalogue recurrence, keeping card data at MP.
-   const p=MP_PLANS[body.plan],auto_recurring={frequency:p.frequency,frequency_type:p.frequency_type,transaction_amount:p.amount,currency_id:'CLP',...(checkout.trial_offered?{start_date:new Date(now()+7*86400000).toISOString()}:{})};
-   let sub;try{sub=await mp('/preapproval',{method:'POST',headers:{'X-Idempotency-Key':body.requestId},body:JSON.stringify({auto_recurring,external_reference:body.requestId,payer_email:user.email,reason:'¿Cachaste? · '+body.plan,back_url:webOrigin()+'/cuenta.html?checkout=return',status:'pending'})});}catch(error){if([400,401,403,404,422].includes(error.providerStatus))await call('checkout_failed',{id:body.requestId,userId:user.id,status:error.providerStatus});throw error;}
-   checkSubscriptionApplication(sub,seller);
-   const url=pendingCheckoutUrl(sub),id=String(sub.id);
-   await call('attach',{id:body.requestId,userId:user.id,providerId:id});
-   return json(req,{checkoutUrl:url,id});
+   return await pendingCheckout(req,checkout,seller,user.email);
   }
   if(body.action==='refresh'){await call('rate',{userId:user.id});const rows=await call('subscriptions',{userId:user.id});for(const sub of rows)await reconcile(sub.provider_id);return json(req,{refreshed:true});}
   if(body.action==='cancel'){
