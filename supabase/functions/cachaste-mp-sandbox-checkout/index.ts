@@ -21,6 +21,7 @@ function inspectCommercial() {
     console.info('MP_COMMERCIAL_READINESS', JSON.stringify({
       error: /^[A-Z_]+$/.test(error.message) ? error.message : 'PROVIDER_READ_UNAVAILABLE',
       status: 'providerStatus' in error ? error.providerStatus : undefined,
+      catalogue: 'catalogue' in error ? error.catalogue : undefined,
       mode: mode === 'production' || mode === 'test' ? mode : null,
       credentialsPresent: !!env('MP_ACCESS_TOKEN') && !!env('MP_COLLECTOR_ID'),
       credentialsMatchSandbox: !!env('MP_TEST_ACCESS_TOKEN') && env('MP_ACCESS_TOKEN') === env('MP_TEST_ACCESS_TOKEN'),

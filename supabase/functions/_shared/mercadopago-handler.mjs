@@ -56,7 +56,7 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
  async function findCommercialPlans(){
   const plans=[];
   for(let offset=0;;){
-   const page=await mp('/preapproval_plan/search?status=active'+(offset?'&offset='+offset:''));
+   const page=await mp('/preapproval_plan/search'+(offset?'?offset='+offset:''));
    const total=Number(page.paging?.total);
    if(!Array.isArray(page.results)||Number(page.paging?.offset)!==offset||
       !Number.isSafeInteger(total)||total<offset||offset+page.results.length>total)throw Error('COMMERCIAL_PLAN_SEARCH_INCOMPLETE');
@@ -89,7 +89,22 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
     if(!PROVIDER_ID.test(remote?.id||'')||sandboxIds.has(remote.id))return false;
     try{checkPlan(remote,plan,remote.id,seller.id,trial);return true;}catch{return false;}
    }).map(remote=>remote.id));
-   if(matches.size!==1)throw Error('COMMERCIAL_PLAN_'+key+(matches.size?'_AMBIGUOUS':'_MISSING'));
+   if(matches.size!==1){
+    const observations=candidates.filter(remote=>String(remote?.collector_id)===seller.id&&
+     PROVIDER_ID.test(remote?.id||'')&&!sandboxIds.has(remote.id)).map(remote=>{
+     const period=remote.auto_recurring??{};
+     return {
+      id:remote.id,status:remote.status,amount:period.transaction_amount,currency:period.currency_id,
+      frequency:period.frequency,frequencyType:period.frequency_type,
+      trialFrequency:period.free_trial?.frequency,trialFrequencyType:period.free_trial?.frequency_type,
+      applicationId:remote.application_id,liveMode:remote.live_mode,
+      cachaste:/cachaste/i.test(String(remote.reason||''))
+     };
+    });
+    throw Object.assign(Error('COMMERCIAL_PLAN_'+key+(matches.size?'_AMBIGUOUS':'_MISSING')),{
+     catalogue:{seller,plans:observations.slice(0,30),count:observations.length}
+    });
+   }
    return [...matches][0];
   });
   if(new Set(ids).size!==ids.length)throw Error('COMMERCIAL_PLAN_IDS_MISMATCH');
