@@ -23,6 +23,44 @@ test('refresh reconciles the actual payment and cancellation keeps the existing 
 test('revoked sessions, foreign origins, unapproved test mode and non-admin reports are denied',async()=>{const h=harness();assert.equal((await h.billing(h.req({action:'sales',from:new Date(now).toISOString(),to:new Date(now+10000).toISOString()}))).status,403);const foreign=new Request('https://qa.example/billing',{method:'POST',headers:{origin:'https://evil.example'},body:'{"action":"status"}'});assert.equal((await h.billing(foreign)).status,403);h.revoke();assert.equal((await h.billing(h.req({action:'checkout',plan:'mensual',requestId:rid}))).status,401);const other=harness();other.vars.CACHASTE_MP_ALLOW_TEST_PURCHASES='false';assert.equal((await other.billing(other.req({action:'refresh'}))).status,400);});
 test('signed webhook deduplicates only after successful canonical payment processing; failures remain retryable',async()=>{const h=harness();await h.billing(h.req({action:'checkout',plan:'mensual',requestId:rid}));h.setFail(true);assert.equal((await h.webhook(await signature())).status,503);assert.equal(h.seen.size,0);h.setFail(false);assert.equal((await h.webhook(await signature())).status,200);assert.equal(h.applied.length,1);assert.equal(h.seen.size,1);assert.equal((await h.webhook(await signature())).status,200);assert.equal(h.applied.length,1);});
 test('forged notification and body/query mismatch fail before contacting Mercado Pago',async()=>{const h=harness();assert.equal((await h.webhook(await signature('wrong'))).status,401);assert.equal((await h.webhook(await signature('qa-signing-only','other'))).status,401);assert.equal(h.calls.filter(c=>c.url).length,0);assert.equal(h.applied.length,0);});
+test('commercial readiness separates the panel application from the catalogue and validates the existing webhook key',async()=>{
+ const h=harness(),sellerId='3113741347',panelApp='48384472675774',catalogueApp='3489525217856496';
+ Object.assign(h.vars,{
+  CACHASTE_MP_MODE:'production',MP_COLLECTOR_ID:sellerId,MP_TEST_COLLECTOR_ID:'456',
+  MP_ACCESS_TOKEN:'APP_USR-'+panelApp+'-local-fixture',MP_TEST_WEBHOOK_SECRET:'qa-signing-only'
+ });
+ const offers={
+  weekly:{transaction_amount:2490,frequency:7,frequency_type:'days'},
+  monthly:{transaction_amount:7990,frequency:1,frequency_type:'months'},
+  yearly:{transaction_amount:64990,frequency:1,frequency_type:'years'}
+ };
+ h.vars.QA_PAYMENT_FIXTURE=url=>{
+  if(url.endsWith('/users/me'))return {id:sellerId,site_id:'MLC',tags:[]};
+  const id=url.split('/').at(-1);
+  return {id,status:'active',collector_id:sellerId,application_id:catalogueApp,
+   auto_recurring:{currency_id:'CLP',...offers[id]}};
+ };
+ h.setPolicy(false);
+ const readiness=await h.commercialReadiness();
+ assert.equal(readiness.checkoutApplicationId,panelApp);
+ assert.equal(readiness.productionTokenApplicationId,panelApp);
+ assert.equal(readiness.webhookUsesSameKeyAsSandbox,true);
+ assert.equal(readiness.webhookSecretConfigured,true);
+ assert.equal(readiness.ready,false);
+ assert.ok(readiness.plans.every(offer=>offer.applicationId===catalogueApp));
+ const callback=secret=>signature(secret,'qa-plan','qa-plan','subscription_preapproval_plan');
+ assert.equal((await h.webhook(await callback('wrong'))).status,401);
+ assert.equal((await h.webhook(await callback('qa-signing-only'))).status,200);
+ assert.equal(h.applied.length,0);
+ assert.equal(h.checkouts.size,0);
+ h.vars.MP_ACCESS_TOKEN='APP_USR-'+catalogueApp+'-local-fixture';
+ assert.equal((await h.webhook(await callback('qa-signing-only'))).status,503);
+ h.vars.MP_WEBHOOK_SECRET='other-key';
+ h.setPolicy(true);
+ const mismatch=await h.commercialReadiness();
+ assert.equal(mismatch.productionTokenApplicationId,catalogueApp);
+ assert.equal(mismatch.ready,false);
+});
 test('a payment webhook uses the exact invoice and the subscription reference before attaching an existing reservation',async()=>{
  const h=harness();
  const reservation={id:rid,user_id:uid,plan:'mensual',provider_plan_linked:false,trial_offered:false,created_at:new Date(now).toISOString()};
