@@ -2,13 +2,26 @@
   "project": "cachaste-sitecacho",
   "sourceBranch": "work/cachaste-lanzamiento-final-20261113",
   "productionBranch": "production-requires-owner-approval",
-  "scope": "public-web-payments-closed",
+  "scope": "public-web-commercial",
   "enabled": true,
-  "reviewedRevision": "6fba4b0a4274925eca5288e120b2a33ab36bb5d3",
-  "realPayments": false,
-  "indexing": false,
+  "reviewedRevision": "69e632f2890087a096fd1ecaadd3f704fee743e1",
+  "realPayments": true,
+  "indexing": true,
   "emailSignup": true,
   "requiresSuccessfulQa": true,
   "preserveResend": true,
-  "hosts": ["sitecacho.cl", "www.sitecacho.cl"]
+  "hosts": [
+    "sitecacho.cl",
+    "www.sitecacho.cl"
+  ],
+  "seller": {
+    "name": "Aconcanino SpA",
+    "taxId": "78.323.603-6",
+    "legalAddress": "Parcela San Luis n.º 5, Santa María, Región de Valparaíso",
+    "representative": "José Rubén Villablanca Horta",
+    "contactEmail": "jose.villablanca.horta@gmail.com",
+    "refundTerms": "Para ejercer el derecho a retracto cuando corresponda o solicitar una devolución, escribe al correo de soporte e indica el identificador de pago.",
+    "taxDocumentTerms": "Si necesitas ayuda con el documento tributario de tu compra, escribe al correo de soporte con el identificador de pago."
+  },
+  "termsDate": "2026-11-14"
 }
