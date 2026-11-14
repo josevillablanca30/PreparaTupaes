@@ -38,9 +38,15 @@ export function periodEnd(start,plan){
  else{const day=d.getUTCDate();d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()+p.frequency);const last=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,0)).getUTCDate();d.setUTCDate(Math.min(day,last));}
  return d.toISOString();
 }
+function matchesRecurrence(remote,plan){
+ if(remote?.currency_id!=='CLP'||Number(remote.transaction_amount)!==plan.amount)return false;
+ const frequency=Number(remote.frequency),type=remote.frequency_type;
+ return (frequency===plan.frequency&&type===plan.frequency_type)||
+  (plan.frequency===12&&plan.frequency_type==='months'&&frequency===1&&type==='years');
+}
 export function validatePlan(remote,name,expectedId,{trial=false,collectorId}={}){
  const p=MP_PLANS[name];if(!p||remote?.id!==expectedId||remote.status!=='active'||String(remote.collector_id)!==String(collectorId))throw Error('PLAN_NOT_READY');
- const r=remote.auto_recurring;if(r?.currency_id!=='CLP'||Number(r.transaction_amount)!==p.amount||Number(r.frequency)!==p.frequency||r.frequency_type!==p.frequency_type)throw Error('PLAN_MISMATCH');
+ const r=remote.auto_recurring;if(!matchesRecurrence(r,p))throw Error('PLAN_MISMATCH');
  const hasTrial=Number(r.free_trial?.frequency)>0;
  if(trial?(name!=='mensual'||Number(r.free_trial?.frequency)!==7||r.free_trial?.frequency_type!=='days'):hasTrial)throw Error('TRIAL_NOT_CONFIGURED');
  return p;
@@ -57,7 +63,7 @@ export function canonicalSubscription(sub,checkout,authorized,payments,{now=Date
  const bound=sandboxPayerId===undefined?sub.external_reference===checkout.id:
   liveMode===false&&(sub.live_mode==null||sub.live_mode===false)&&linked&&typeof sandboxPayerId==='string'&&/^[1-9]\d{0,18}$/.test(sandboxPayerId)&&String(sub.payer_id)===sandboxPayerId;
  const p=MP_PLANS[checkout.plan];if(!p||String(sub.id)!==String(checkout.provider_id)||!bound||(linked?sub.preapproval_plan_id!==checkout.provider_plan_id:!!sub.preapproval_plan_id)||String(sub.collector_id)!==String(collectorId)||(sub.site_id&&sub.site_id!=='MLC'))throw Error('SUBSCRIPTION_MISMATCH');
- if(sub.auto_recurring?.currency_id!=='CLP'||Number(sub.auto_recurring?.transaction_amount)!==p.amount||Number(sub.auto_recurring?.frequency)!==p.frequency||sub.auto_recurring?.frequency_type!==p.frequency_type)throw Error('SUBSCRIPTION_MISMATCH');
+ if(!matchesRecurrence(sub.auto_recurring,p))throw Error('SUBSCRIPTION_MISMATCH');
  const approved=[],ledger=[];
  for(const charge of authorized){
   if(String(charge.preapproval_id)!==String(sub.id))throw Error('CHARGE_MISMATCH');

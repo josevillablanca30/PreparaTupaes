@@ -132,13 +132,14 @@ test('commercial readiness resolves existing plans by exact seller and recurrenc
  const h=harness();
  Object.assign(h.vars,{
   CACHASTE_MP_MODE:'production',MP_ACCESS_TOKEN:'APP_USR-fixture-never-real',
-  MP_TEST_COLLECTOR_ID:'456',MP_COLLECTOR_ID:'456',CACHASTE_WEB_ORIGIN:'https://preview.example',
+  MP_TEST_COLLECTOR_ID:'456',MP_COLLECTOR_ID:'123',CACHASTE_WEB_ORIGIN:'https://preview.example',
   MP_PLAN_WEEKLY:undefined,MP_PLAN_MONTHLY:undefined,MP_PLAN_YEARLY:undefined,
   MP_TEST_PLAN_WEEKLY:'test-weekly',CACHASTE_MP_ENABLED:'false'
  });
+ h.setPolicy(false);
  const weekly={id:'weekly-verified',status:'active',collector_id:123,auto_recurring:{currency_id:'CLP',transaction_amount:2490,frequency:7,frequency_type:'days'}};
- const monthly={...weekly,id:'monthly-verified',auto_recurring:{currency_id:'CLP',transaction_amount:7990,frequency:1,frequency_type:'months'}};
- const yearly={...weekly,id:'yearly-verified',auto_recurring:{currency_id:'CLP',transaction_amount:64990,frequency:12,frequency_type:'months'}};
+ const monthly={...weekly,id:'monthly-verified',auto_recurring:{currency_id:'CLP',transaction_amount:7990,frequency:1,frequency_type:'months',free_trial:{frequency:7,frequency_type:'days'}}};
+ const yearly={...weekly,id:'yearly-verified',auto_recurring:{currency_id:'CLP',transaction_amount:64990,frequency:1,frequency_type:'years'}};
  const plans=[{...weekly,id:'test-weekly'},{...weekly,id:'foreign-weekly',collector_id:999},weekly,monthly,yearly];
  let ambiguous=false;
  h.vars.QA_PAYMENT_FIXTURE=url=>{
@@ -154,11 +155,31 @@ test('commercial readiness resolves existing plans by exact seller and recurrenc
  assert.deepEqual(state.seller,{id:'123',site:'MLC'});
  assert.equal(state.webOrigin,'https://sitecacho.cl');
  assert.deepEqual(state.plans.map(plan=>plan.id),['weekly-verified','monthly-verified','yearly-verified']);
+ assert.deepEqual(state.plans.map(plan=>plan.trialDays),[0,7,0]);
  assert.equal(state.ready,false);
  assert.ok(h.calls.filter(call=>call.url).every(call=>call.method==='GET'));
  assert.equal(h.checkouts.size,0);
  ambiguous=true;
  await assert.rejects(h.commercialReadiness(),/COMMERCIAL_PLAN_WEEKLY_AMBIGUOUS/);
+ ambiguous=false;
+ const checkout=requestId=>new Request('https://sitecacho.cl/api/billing',{method:'POST',headers:{
+  origin:'https://sitecacho.cl',authorization:'Bearer qa-token'
+ },body:JSON.stringify({action:'checkout',plan:'mensual',requestId})});
+ assert.equal((await h.billing(checkout(rid))).status,503);
+ h.setPolicy(true);
+ assert.equal((await h.billing(checkout(rid))).status,200);
+ const nextId='30000000-0000-4000-8000-000000000002';
+ assert.equal((await h.billing(checkout(nextId))).status,200);
+ const pending=h.calls.filter(call=>call.method==='POST'&&call.url?.endsWith('/preapproval'));
+ assert.equal(pending.length,2);
+ assert.equal(pending[0].body.auto_recurring.start_date,new Date(now+7*86400000).toISOString());
+ assert.equal(pending[1].body.auto_recurring.start_date,undefined);
+ for(const call of pending){
+  assert.equal(call.body.status,'pending');
+  assert.equal(call.body.back_url,'https://sitecacho.cl/cuenta.html?checkout=return');
+  assert.equal(call.body.auto_recurring.transaction_amount,7990);
+ }
+ assert.equal(h.checkouts.get(nextId).trial_offered,false);
 });
 
 

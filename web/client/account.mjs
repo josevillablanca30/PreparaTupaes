@@ -19,6 +19,7 @@ const canUseQa=()=>account?.isAdmin===true&&new URLSearchParams(location.search)
 messages.INVALID_PLAN_CHECKOUT_URL='El servidor no devolvió un enlace válido para el plan de prueba.';
 messages.PAYMENT_NOT_VERIFIED='Mercado Pago no confirmó un pago sandbox elegible para este comprador y plan.';
 messages.PAYMENT_SUBSCRIPTION_NOT_MATCHED='Mercado Pago todavía no confirmó la factura de este pago en la suscripción.';
+messages.SUBSCRIPTION_ALREADY_ACTIVE='Ya tienes acceso vigente o una suscripción que se renueva. Revisa su estado en Mi cuenta.';
 messages.OWNERSHIP_REQUIRED='Falta registrar la evidencia de titularidad del comprador de prueba.';
 const checkoutReturned=new URLSearchParams(location.search).get('checkout')==='return';
 let emailMode='login',emailDraft='';
@@ -219,7 +220,23 @@ root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!b.m
   const result=await request({action:'checkout',plan,payerEmail:qaDraft.email.trim(),requestId},qaSandboxPath);
   if(!result.checkoutUrl)throw Error('SERVICE_UNAVAILABLE');location.assign(result.checkoutUrl);return;
  }
- if(b.dataset.plan){if(!billing.ready){notice(messages.BILLING_NOT_READY);return;}if(!account){root.querySelector('[name=email]')?.focus();notice('Primero entra a tu cuenta para vincular la suscripción.');return;}const key='cachaste-checkout:'+account.user.id+':'+b.dataset.plan;let id=localStorage.getItem(key);if(!id){id=crypto.randomUUID();localStorage.setItem(key,id);}const response=await request({action:'checkout',plan:b.dataset.plan,requestId:id});location.assign(response.checkoutUrl);}
+ if(b.dataset.plan){
+  if(!billing.ready){notice(messages.BILLING_NOT_READY);return;}
+  if(!account){root.querySelector('[name=email]')?.focus();notice('Primero entra a tu cuenta para vincular la suscripción.');return;}
+  const key='cachaste-checkout:'+account.user.id+':'+b.dataset.plan;
+  let id=localStorage.getItem(key);
+  if(!id){id=crypto.randomUUID();localStorage.setItem(key,id);}
+  try{
+   const response=await request({action:'checkout',plan:b.dataset.plan,requestId:id});
+   location.assign(response.checkoutUrl);
+  }catch(error){
+   if(error.message!=='CHECKOUT_ALREADY_FINISHED')throw error;
+   await connect(true);
+   const prior=account?.subscriptions?.find(sub=>sub.plan===b.dataset.plan&&sub.status==='authorized');
+   if(!prior&&!account?.access?.active)localStorage.removeItem(key);
+   notice(prior?'Ya tienes este plan asociado a tu cuenta. Revisa su estado en Mi cuenta.':'La solicitud anterior terminó. Revisa tu acceso antes de elegir un plan.');
+  }
+ }
  if(b.dataset.cancel){const id=b.dataset.cancel,dialog=document.createElement('dialog');dialog.className='web-dialog';dialog.innerHTML='<h2>Cancelar la renovación</h2><p>Conservarás el período pagado vigente. No se cobrarán renovaciones posteriores a la cancelación confirmada por Mercado Pago.</p><button data-confirm>Confirmar cancelación</button><button data-close class="secondary">Conservar mi plan</button>';document.body.append(dialog);dialog.querySelector('[data-close]').onclick=()=>{dialog.close();dialog.remove();};dialog.querySelector('[data-confirm]').onclick=()=>work(async()=>{await request({action:'cancel',subscriptionId:id});dialog.close();dialog.remove();await connect();notice('Renovación cancelada.');});dialog.showModal();}
 });});
 document.querySelectorAll('[data-install]').forEach(b=>b.addEventListener('click',installPwa));
