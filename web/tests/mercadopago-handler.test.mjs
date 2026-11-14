@@ -15,8 +15,12 @@ function harness(){
  const req=body=>new Request('https://qa.example/billing',{method:'POST',headers:{origin:'https://web.example',authorization:'Bearer qa-token'},body:JSON.stringify(body)});
  return{...handlers,req,vars,calls,checkouts,applied,seen,setReject:v=>rejectNext=v,setFail:v=>fail=v,revoke:()=>revoked=true,setPolicy:v=>policyEnabled=v};
 }
-async function signature(secret='qa-signing-only',bodyId='qa-sub',eventId='qa-sub',type='subscription_preapproval'){
- const ts=Math.floor(now/1000),manifest=`id:${eventId};request-id:qa-request;ts:${ts};`,key=await crypto.subtle.importKey('raw',new TextEncoder().encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']),sig=Buffer.from(await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(manifest))).toString('hex');return new Request('https://qa.example/events?data.id='+eventId,{method:'POST',headers:{'x-request-id':'qa-request','x-signature':`ts=${ts},v1=${sig}`},body:JSON.stringify({type,data:{id:bodyId}})});
+async function signature(secret='qa-signing-only',bodyId='qa-sub',eventId='qa-sub',type='subscription_preapproval',{queryType,applicationId}={}){
+ const ts=Math.floor(now/1000),manifest=`id:${eventId};request-id:qa-request;ts:${ts};`,key=await crypto.subtle.importKey('raw',new TextEncoder().encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']),sig=Buffer.from(await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(manifest))).toString('hex');
+ const url=new URL('https://qa.example/events');
+ url.searchParams.set('data.id',eventId);
+ if(queryType)url.searchParams.set('type',queryType);
+ return new Request(url,{method:'POST',headers:{'x-request-id':'qa-request','x-signature':`ts=${ts},v1=${sig}`},body:JSON.stringify({type,application_id:applicationId,data:{id:bodyId}})});
 }
 test('checkout uses server price and plan, binds identity and reuses a request without a second subscription',async()=>{const h=harness(),body={action:'checkout',plan:'mensual',requestId:rid,amount:1,premium:true,userId:'other'};assert.equal((await h.billing(h.req(body))).status,200);assert.equal((await h.billing(h.req(body))).status,200);const posts=h.calls.filter(c=>c.method==='POST'&&c.url.endsWith('/preapproval'));assert.equal(posts.length,1);assert.equal(posts[0].body.payer_email,'student@example.invalid');assert.equal(posts[0].body.preapproval_plan_id,undefined);assert.equal(posts[0].body.auto_recurring.transaction_amount,7990);assert.equal(posts[0].body.auto_recurring.currency_id,'CLP');assert.equal(posts[0].body.transaction_amount,undefined);assert.equal(h.checkouts.get(rid).user_id,uid);assert.equal(h.applied.length,0);});
 test('refresh reconciles the actual payment and cancellation keeps the existing paid period',async()=>{const h=harness();await h.billing(h.req({action:'checkout',plan:'mensual',requestId:rid}));assert.equal((await h.billing(h.req({action:'refresh'}))).status,200);assert.ok(h.applied[0].paidUntil);assert.equal(h.applied[0].liveMode,false);assert.equal((await h.billing(h.req({action:'cancel',subscriptionId:'qa-sub'}))).status,200);assert.equal(h.applied.at(-1).renews,false);assert.equal(h.applied.at(-1).paidUntil,h.applied[0].paidUntil);assert.equal((await h.billing(h.req({action:'cancel',subscriptionId:'someone-elses-sub'}))).status,400);});
@@ -51,6 +55,16 @@ test('commercial readiness separates the panel application from the catalogue an
  const callback=secret=>signature(secret,'qa-plan','qa-plan','subscription_preapproval_plan');
  assert.equal((await h.webhook(await callback('wrong'))).status,401);
  assert.equal((await h.webhook(await callback('qa-signing-only'))).status,200);
+ const planId='f895a7dc01bc4c72a0591730d2bd3216';
+ const simulator=({secret='qa-signing-only',id=planId,applicationId=panelApp,bodyId=id}={})=>
+  signature(secret,bodyId,id,'subscription_preapproval',{queryType:'subscription_authorized_payment',applicationId});
+ const beforeSimulation=h.calls.length;
+ assert.equal((await h.webhook(await simulator())).status,200);
+ assert.equal((await h.webhook(await simulator({secret:'wrong'}))).status,401);
+ assert.equal((await h.webhook(await simulator({applicationId:catalogueApp}))).status,401);
+ assert.equal((await h.webhook(await simulator({id:'other-resource'}))).status,401);
+ assert.equal((await h.webhook(await simulator({bodyId:'other-resource'}))).status,401);
+ assert.ok(h.calls.slice(beforeSimulation).every(call=>call.op==='webhook_seen'));
  assert.equal(h.applied.length,0);
  assert.equal(h.checkouts.size,0);
  h.vars.MP_ACCESS_TOKEN='APP_USR-'+catalogueApp+'-local-fixture';

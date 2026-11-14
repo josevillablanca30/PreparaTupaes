@@ -289,9 +289,14 @@ export function createMercadoPagoHandlers({env,createClient,fetcher=fetch,now=()
   const text=await req.text();if(text.length>16384)throw Error('PAYLOAD_TOO_LARGE');const body=JSON.parse(text);
   if(String(body.data?.id)!==signature.id)throw Error('EVENT_ID_MISMATCH');
   const queryType=new URL(req.url).searchParams.get('type');
-  if(queryType&&queryType!==body.type)throw Error('EVENT_ID_MISMATCH');
-  if(live()&&body.type==='subscription_preapproval_plan'){
-   console.info('MP_COMMERCIAL_WEBHOOK_SIGNATURE_VERIFIED',body.type);
+  // The dashboard simulator can send a plan ID with two different subscription topics.
+  // A signed, known catalogue ID can only acknowledge the simulation.
+  const planSimulation=live()&&queryType==='subscription_authorized_payment'&&
+   body.type==='subscription_preapproval'&&String(body.application_id)===ACONCANINO.checkoutAppId&&
+   Object.values(ACONCANINO.plans).includes(signature.id);
+  if(queryType&&queryType!==body.type&&!planSimulation)throw Error('EVENT_ID_MISMATCH');
+  if(live()&&(body.type==='subscription_preapproval_plan'||planSimulation)){
+   console.info('MP_COMMERCIAL_WEBHOOK_SIGNATURE_VERIFIED','subscription_preapproval_plan');
    return new Response(null,{status:200});
   }
   if(!['subscription_preapproval','subscription_authorized_payment','payment'].includes(body.type))return new Response(null,{status:200});
