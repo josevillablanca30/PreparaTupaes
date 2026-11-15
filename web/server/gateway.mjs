@@ -50,8 +50,9 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     const entries=SEARCH_PAGES.map(page=>'<url><loc>'+SEARCH_ORIGIN+page+'</loc></url>').join('');
     return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+entries+'</urlset>',{headers:{'content-type':'application/xml; charset=utf-8','cache-control':'no-cache'}});
    }
-   if(path==='/api/config')return json({supabaseUrl:env.SUPABASE_URL||PROJECT_URL,publishableKey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,signupEnabled:env.WEB_SIGNUP_ENABLED==='true',authReturnReady:true,googleAuthEnabled:true,revision});
+   if(path==='/api/config')return json({supabaseUrl:env.SUPABASE_URL||PROJECT_URL,publishableKey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,signupEnabled:env.WEB_SIGNUP_ENABLED==='true',authReturnReady:commercialHost,googleAuthEnabled:commercialHost,revision});
    if(path==='/api/auth/status'&&req.method==='GET'){
+    if(!commercialHost)return json({googleReady:false});
     // The provider status is verified against Supabase below; no separate Cloudflare launch flags are required.
     const settings=await backend(env,'/auth/v1/settings');
     return json({googleReady:settings.external?.google===true});

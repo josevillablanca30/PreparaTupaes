@@ -43,7 +43,7 @@ export async function probeDeployment({url, revision, protectedFiles, encryptedF
   await check('PWA instalable', '/manifest.webmanifest', (r, text) => r.status === 200 && parse(text)?.display === 'standalone' && parse(text)?.icons?.some(icon => icon.sizes === '512x512'));
   await check('Worker real, mismo commit y registro según solicitud', '/api/config', (r, text) => {
     const config = parse(text);
-    return r.status === 200 && noStore(r) && config?.revision === revision && config.signupEnabled === expectedSignupEnabled && config.authReturnReady === false;
+    return r.status === 200 && noStore(r) && config?.revision === revision && config.signupEnabled === expectedSignupEnabled && config.authReturnReady === commercial && config.googleAuthEnabled === commercial;
   });
   await check('Distribución web y revisión', '/version.json', (r, text) => {
     const version = parse(text);
