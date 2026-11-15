@@ -141,7 +141,7 @@ export async function probeCanonicalWww({revision,expectedSignupEnabled=false,fe
   }
   try{
     const r=await fetcher(to+'/api/config',{redirect:'manual',signal:AbortSignal.timeout(20000)}),d=await r.json();
-    checks.push({path:'/api/config',canonicalRevision:true,passed:r.status===200&&d.revision===revision&&d.signupEnabled===expectedSignupEnabled&&d.authReturnReady===false});
+    checks.push({path:'/api/config',canonicalRevision:true,passed:r.status===200&&d.revision===revision&&d.signupEnabled===expectedSignupEnabled&&d.authReturnReady===true&&d.googleAuthEnabled===true});
   }catch{checks.push({path:'/api/config',canonicalRevision:true,passed:false});}
   return{url:from,canonicalOrigin:to,checkedAt:new Date().toISOString(),passed:checks.every(x=>x.passed),checks};
 }
