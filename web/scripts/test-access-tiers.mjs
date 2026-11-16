@@ -101,3 +101,11 @@ assert.equal(quotaRequest.url,'/api/basic/quota');
 assert.equal(quotaRequest.options.headers.authorization,'Bearer example-session-token');
 assert.equal(quotaRequest.options.headers['x-cachaste-request'],'1');
 await assert.rejects(()=>basicQuotaGateway({kind:'lesson',subject:'m1',accessToken:'short',fetcher:async()=>{throw Error('MUST_NOT_FETCH');}}),/INVALID_AUTH_TOKEN/);
+
+const completionSql=readFileSync(new URL('../supabase/migrations/20261116211000_cachaste_basic_server_consumption.sql',import.meta.url),'utf8');
+assert.match(completionSql,/auth\.role\(\) is distinct from 'service_role'/);
+assert.match(completionSql,/pg_advisory_xact_lock/);
+assert.match(completionSql,/EVENT_ID_REUSED/);
+assert.match(completionSql,/replayed',true/);
+assert.match(completionSql,/revoke all on function public\.cachaste_basic_record_verified_completion\(uuid,text,text,uuid\) from public,anon,authenticated/);
+assert.match(completionSql,/grant execute on function public\.cachaste_basic_record_verified_completion\(uuid,text,text,uuid\) to service_role/);
