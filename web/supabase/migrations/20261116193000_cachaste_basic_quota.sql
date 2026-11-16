@@ -35,9 +35,9 @@ declare
 begin
  if u is null or (auth.jwt()->>'is_anonymous')='true'
  then raise exception 'AUTH_REQUIRED' using errcode='42501';end if;
- if operation not in ('check','consume') or kind not in ('lesson','diagnostic','expressExam','duel')
+ if operation is null or kind is null or operation not in ('check','consume') or kind not in ('lesson','diagnostic','expressExam','duel')
  then raise exception 'INVALID_OPERATION' using errcode='22023';end if;
- if (kind in ('lesson','diagnostic') and subject not in ('m1','m2','lectora','ciencias','historia'))
+ if subject is null or (kind in ('lesson','diagnostic') and subject not in ('m1','m2','lectora','ciencias','historia'))
  or (kind in ('expressExam','duel') and subject<>'all')
  then raise exception 'INVALID_SUBJECT' using errcode='22023';end if;
  if operation='consume' and event_id is null
@@ -47,7 +47,7 @@ begin
  quota:=case kind when 'lesson' then 3 when 'diagnostic' then 1 when 'expressExam' then 1 when 'duel' then 2 end;
  perform pg_advisory_xact_lock(hashtextextended('basic-quota:'||u::text,0));
  if operation='consume' and event_id is not null then
-   select * into prior from cachaste_web.basic_usage where user_id=u and basic_usage.event_id=basic_quota.event_id;
+   select * into prior from cachaste_web.basic_usage q where q.user_id=u and q.event_id=basic_quota.event_id;
    if found then
      if prior.kind<>kind or prior.subject<>subject then raise exception 'EVENT_REUSED' using errcode='22023';end if;
      return jsonb_build_object('allowed',true,'tier','basica','replayed',true,'day',prior.usage_day);
