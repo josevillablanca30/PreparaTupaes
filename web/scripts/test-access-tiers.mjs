@@ -43,3 +43,12 @@ await assert.rejects(()=>basicQuotaGateway({kind:'duel',fetcher:async()=>({ok:tr
 await assert.rejects(()=>basicQuotaGateway({kind:'duel',fetcher:async()=>({ok:true,json:async()=>({allowed:true,tier:'basica',remaining:-1})})}),/INVALID_QUOTA_RESPONSE/);
 await assert.rejects(()=>basicQuotaGateway({kind:'duel',fetcher:async()=>({ok:true,json:async()=>({allowed:true,tier:'basica',remaining:'2'})})}),/INVALID_QUOTA_RESPONSE/);
 assert.equal((await basicQuotaGateway({kind:'duel',fetcher:async()=>({ok:true,json:async()=>({allowed:true,tier:'basica',replayed:true})})})).replayed,true);
+
+import {readFileSync} from 'node:fs';
+const migration=readFileSync(new URL('../supabase/migrations/20261116193000_cachaste_basic_quota.sql',import.meta.url),'utf8');
+assert.match(migration,/if operation='consume' then raise exception 'COMPLETION_ATTESTATION_REQUIRED'/);
+assert.doesNotMatch(migration,/insert into cachaste_web\.basic_usage\s*\(/i);
+assert.match(migration,/create unique index if not exists basic_diagnostic_once_idx/);
+const gatewaySource=readFileSync(new URL('../server/gateway.mjs',import.meta.url),'utf8');
+assert.match(gatewaySource,/WEB_BASIC_EDUCATIONAL_GUARDS_READY/);
+assert.match(gatewaySource,/WEB_BASIC_COMPLETION_ATTESTATION_READY/);
