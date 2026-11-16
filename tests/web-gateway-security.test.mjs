@@ -149,3 +149,25 @@ test('basic quota does not appear enabled in public configuration',async()=>{
  assert.equal(res.status,200);
  assert.equal((await json(res)).basicEnabled,false);
 });
+
+test('basic quota gateway requires a verified identity and forwards only validated fields',async()=>{
+ const token=fakeToken(),calls=[];
+ const quotaGateway=createGateway({allowDevelopmentHttp:true,fetcher:async(url,options={})=>{
+  calls.push({url,options});
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false,validUntilMs:null});
+  if(url.endsWith('/rest/v1/rpc/cachaste_basic_quota'))return Response.json({allowed:true,tier:'basica',remaining:2});
+  throw Error('Unexpected backend request');
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ const enabled={...env,WEB_BASIC_ACCESS_ENABLED:'true'};
+ const eventId='ad4d7f88-7f50-4d5c-a833-111111111111';
+ const response=await quotaGateway.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'consume',kind:'lesson',subject:'m1',eventId,ignored:'secret'})}),enabled);
+ assert.equal(response.status,200);
+ assert.equal((await json(response)).remaining,2);
+ assert.equal(calls.length,3);
+ assert.deepEqual(JSON.parse(calls[2].options.body),{operation:'consume',kind:'lesson',subject:'m1',event_id:eventId});
+ const invalid=await quotaGateway.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'consume',kind:'lesson',subject:'all',eventId})}),enabled);
+ assert.equal(invalid.status,400);
+ assert.equal(calls.length,5);
+});
