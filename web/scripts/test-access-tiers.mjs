@@ -82,3 +82,8 @@ assert.match(rendered,/Competencia Lectora/);
 assert.match(rendered,/Ensayos PAES completos: solo Premium/);
 assert.match(renderBasicQuotaSummary({tier:'premium',unlimited:true}),/acceso Premium/);
 assert.throws(()=>renderBasicQuotaSummary({...sample,duelsRemaining:3}),/INVALID_QUOTA_RESPONSE/);
+
+const accountSource=readFileSync(new URL('../client/account.mjs',import.meta.url),'utf8');
+assert.match(accountSource,/config\?\.basicEnabled===true&&account\?\.access\?\.active!==true/);
+assert.match(accountSource,/renderBasicQuotaSummary\(basicSummary\)/);
+assert.match(accountSource,/basicSummary=null;account=null/);
