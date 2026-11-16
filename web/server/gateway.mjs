@@ -76,7 +76,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
    if(path==='/api/basic/quota'&&req.method==='POST'){
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
     // Closed until the educational engines enforce quotas and the basic content route is isolated.
-    if(env.WEB_BASIC_ACCESS_ENABLED!=='true')return json({error:'BASIC_NOT_READY'},503);
+    if(env.WEB_BASIC_ACCESS_ENABLED!=='true'||env.WEB_BASIC_EDUCATIONAL_GUARDS_READY!=='true')return json({error:'BASIC_NOT_READY'},503);
     const auth=await identity(req,env,{active:false,fresh:true});
     const raw=await req.text();if(raw.length>1024)return json({error:'PAYLOAD_TOO_LARGE'},413);
     const body=JSON.parse(raw);
