@@ -55,7 +55,7 @@ begin
  end if;
  select count(*) into used from cachaste_web.basic_usage q
  where q.user_id=u and q.kind=basic_quota.kind and q.subject=basic_quota.subject
- and (kind='diagnostic' or q.usage_day=today_chile);
+ and (basic_quota.kind='diagnostic' or q.usage_day=today_chile);
  if used>=quota then return jsonb_build_object('allowed',false,'tier','basica','remaining',0,'day',today_chile);end if;
  if operation='consume' then
    insert into cachaste_web.basic_usage(user_id,kind,subject,usage_day,event_id)
