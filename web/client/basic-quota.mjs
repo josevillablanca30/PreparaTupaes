@@ -34,8 +34,9 @@ export async function basicQuotaGateway({kind,subject='all',operation='check',ev
  * Server-sourced dashboard. Never derive authorization from this display-only snapshot.
  * An invalid response fails closed rather than displaying fabricated remaining attempts.
  */
-export async function basicQuotaSummary({fetcher=fetch}={}){
- const response=await fetcher('/api/basic/summary',{method:'GET',credentials:'same-origin'});
+export async function basicQuotaSummary({fetcher=fetch,accessToken=null}={}){
+ if(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10))throw Error('INVALID_AUTH_TOKEN');
+ const response=await fetcher('/api/basic/summary',{method:'GET',credentials:'same-origin',headers:accessToken?{authorization:'Bearer '+accessToken}:{}});
  if(!response.ok)throw Error(response.status===503?'BASIC_NOT_READY':'BASIC_QUOTA_UNAVAILABLE');
  const result=await response.json();
  if(result?.tier==='premium'&&result.unlimited===true)return result;
