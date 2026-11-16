@@ -170,3 +170,7 @@ assert.match(basicDuelAdmissionSql,/cachaste\.premium\(u\) or cachaste_web\.basi
 assert.match(basicDuelAdmissionSql,/cachaste\.community_restrictions/);
 assert.match(basicDuelAdmissionSql,/COMMUNITY_REQUIRED/);
 assert.equal(basicDuelAdmissionSql.includes(String.raw`\\n`),false);
+
+assert.match(basicDuelAdmissionSql,/basic_used>=2/);
+assert.match(basicDuelAdmissionSql,/BASIC_DUEL_LIMIT_REACHED/);
+assert.match(basicDuelAdmissionSql,/America\/Santiago/);
