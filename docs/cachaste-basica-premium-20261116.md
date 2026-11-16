@@ -16,3 +16,12 @@ El registro no obliga a ingresar tarjeta. Tras iniciar sesión se presentan **B�
 El modelo de cuotas en web/shared/access-tiers.mjs es declarativo, **no una autorización**. Falta integrar los controles con la base de datos y los motores de estudio y duelos antes de ofrecer Básica en producción. Las cuotas deben consumirse atómicamente en servidor y estar asociadas a auth.uid(), con fecha local America/Santiago y protección frente a reintentos, doble clic y sesiones simultáneas. Los diagnósticos se registran de manera permanente. El usuario Premium o tester conserva el acceso completo sin restricciones; las suscripciones y cobros existentes no se alteran.
 
 No abrir /app/ ni mostrar CTA de Básica como funcional hasta que la RPC de cuotas, el acceso de contenido y los flujos web/Android estén integrados y probados. No cambiar la suscripción ni activar cobros nuevos por esta rama.
+
+
+## Bloqueo de seguridad detectado — consumo directo por RPC
+
+El navegador Android/web puede invocar la función pública de Supabase directamente con un JWT válido, sin pasar por el gateway de Cloudflare. Por eso **un flag del gateway no es una prueba de actividad completada**. La migración SQL bloquea temporalmente `operation='consume'` con `COMPLETION_ATTESTATION_REQUIRED` incluso si alguien llama el RPC directamente. El endpoint web también bloquea consumo sin `WEB_BASIC_COMPLETION_ATTESTATION_READY`.
+
+**No activar las flags ni aplicar la migración a producción todavía.** Para habilitar Básica hay que registrar finalizaciones confiables dentro de transacciones servidor/BD, asignar el identificador de evento desde el servidor, validar tipo/materia y aplicar el límite en la misma transacción que guarda progreso o resultado. Los clientes no deben poder autoacreditar etapas, diagnósticos, ensayos ni duelos. El RPC de lectura `check` es solo informativo; no autoriza acceso a material Premium.
+
+Android tiene un guardarraíl `web/scripts/verify-android.mjs` que impide cambios en el baseline aprobado; no introducir archivos Java aislados hasta preparar la actualización coordinada de aplicación y pruebas Android.
