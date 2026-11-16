@@ -32,7 +32,7 @@ console.log('Básica/Premium: reglas y cliente RPC verificados');
 
 const {basicQuotaGateway}=await import('../client/basic-quota.mjs');
 let sent;
-const fetcher=async(path,options)=>{sent={path,options};return {ok:true,json:async()=>({allowed:true,remaining:2})};};
+const fetcher=async(path,options)=>{sent={path,options};return {ok:true,json:async()=>({allowed:true,tier:'basica',remaining:2})};};
 assert.equal((await basicQuotaGateway({kind:'lesson',subject:'m1',fetcher})).remaining,2);
 assert.equal(sent.path,'/api/basic/quota');
 assert.equal(sent.options.headers['x-cachaste-request'],'1');
