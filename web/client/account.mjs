@@ -143,7 +143,7 @@ function render(){if(!config)return;
  }else if(!user){
   root.innerHTML='<section class="account-card"><span class="eyebrow">Un ratito a la vez</span><h1>Tu preparación comienza aquí.</h1><p>Una misma cuenta para tu aprendizaje y competencia. Tu progreso educativo web se guarda en tu cuenta.</p><button type="button" class="google-signin" data-action="google" aria-describedby="google-status"><img src="/icons/google-g.png" alt="" width="20" height="20"> Continuar con Google</button><p id="google-status" class="legal-note">'+
    (config.googleAuthEnabled&&config.authReturnReady?'Usa tu cuenta de Google para entrar o registrarte.':'Acceso con Google en preparación. Aún no está habilitado.')+
-   '</p><div class="auth-divider"><span>o entra con tu correo</span></div>'+emailForm()+'<p class="legal-note">El acceso educativo y competitivo requiere una suscripción vigente. <a href="/privacidad.html">Privacidad</a> · <a href="/condiciones.html">Condiciones</a></p></section>';
+   '</p><div class="auth-divider"><span>o entra con tu correo</span></div>'+emailForm()+'<p class="legal-note">'+(config.basicEnabled===true?'Puedes empezar con Básica sin tarjeta y contratar Premium cuando quieras.':'El acceso educativo y competitivo requiere una suscripción vigente.')+' <a href="/privacidad.html">Privacidad</a> · <a href="/condiciones.html">Condiciones</a></p></section>';
  }else{
   const rows=subscriptionRows();
   const subscriptions=rows?'<section class="account-subscriptions" aria-label="Mis suscripciones">'+rows+'</section>':'';
