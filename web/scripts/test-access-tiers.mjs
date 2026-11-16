@@ -29,3 +29,13 @@ await assert.rejects(()=>remoteQuota({sdk,kind:'lesson',subject:'all'}),/INVALID
 await assert.rejects(()=>remoteQuota({sdk,kind:'duel',operation:'consume'}),/EVENT_ID_REQUIRED/);
 await assert.rejects(()=>remoteQuota({sdk:{rpc:async()=>({error:Error('DATABASE_DOWN')})},kind:'duel'}),/DATABASE_DOWN/);
 console.log('Básica/Premium: reglas y cliente RPC verificados');
+
+const {basicQuotaGateway}=await import('../client/basic-quota.mjs');
+let sent;
+const fetcher=async(path,options)=>{sent={path,options};return {ok:true,json:async()=>({allowed:true,remaining:2})};};
+assert.equal((await basicQuotaGateway({kind:'lesson',subject:'m1',fetcher})).remaining,2);
+assert.equal(sent.path,'/api/basic/quota');
+assert.equal(sent.options.headers['x-cachaste-request'],'1');
+assert.deepEqual(JSON.parse(sent.options.body),{operation:'check',kind:'lesson',subject:'m1',eventId:null});
+await assert.rejects(()=>basicQuotaGateway({kind:'duel',fetcher:async()=>({ok:false,status:503})}),/BASIC_NOT_READY/);
+await assert.rejects(()=>basicQuotaGateway({kind:'duel',fetcher:async()=>({ok:true,json:async()=>({})})}),/INVALID_QUOTA_RESPONSE/);
