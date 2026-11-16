@@ -7,7 +7,7 @@ export async function basicQuota({sdk,kind,subject='all',operation='check',event
  if(operation==='consume'&&!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(eventId||''))throw Error('EVENT_ID_REQUIRED');
  const {data,error}=await sdk.rpc('cachaste_basic_quota',{operation,kind,subject,event_id:eventId});
  if(error)throw error;
- if(typeof data?.allowed!=='boolean')throw Error('INVALID_QUOTA_RESPONSE');
+ if(typeof data?.allowed!=='boolean'||!['premium','basica'].includes(data.tier))throw Error('INVALID_QUOTA_RESPONSE');
  return data;
 }
 
@@ -26,6 +26,6 @@ export async function basicQuotaGateway({kind,subject='all',operation='check',ev
  });
  if(!response.ok)throw Error(response.status===503?'BASIC_NOT_READY':'BASIC_QUOTA_UNAVAILABLE');
  const result=await response.json();
- if(typeof result?.allowed!=='boolean')throw Error('INVALID_QUOTA_RESPONSE');
+ if(typeof result?.allowed!=='boolean'||!['premium','basica'].includes(result.tier))throw Error('INVALID_QUOTA_RESPONSE');
  return result;
 }
