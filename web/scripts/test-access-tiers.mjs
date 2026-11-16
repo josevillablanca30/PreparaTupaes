@@ -30,7 +30,6 @@ await assert.rejects(()=>remoteQuota({sdk,kind:'duel',operation:'consume'}),/EVE
 await assert.rejects(()=>remoteQuota({sdk:{rpc:async()=>({error:Error('DATABASE_DOWN')})},kind:'duel'}),/DATABASE_DOWN/);
 console.log('Básica/Premium: reglas y cliente RPC verificados');
 
-const {basicQuotaGateway}=await import('../client/basic-quota.mjs');
 let sent;
 const fetcher=async(path,options)=>{sent={path,options};return {ok:true,json:async()=>({allowed:true,tier:'basica',remaining:2})};};
 assert.equal((await basicQuotaGateway({kind:'lesson',subject:'m1',fetcher})).remaining,2);
