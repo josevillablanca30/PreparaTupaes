@@ -74,3 +74,11 @@ for(const invalid of [
  await assert.rejects(()=>basicQuotaSummary({fetcher:summaryFetch(invalid)}),/INVALID_QUOTA_RESPONSE/);
 }
 await assert.rejects(()=>basicQuotaSummary({fetcher:async()=>Response.json({error:'BASIC_NOT_READY'},{status:503})}),/BASIC_NOT_READY/);
+
+const {renderBasicQuotaSummary}=await import('../client/basic-quota-view.mjs');
+const rendered=renderBasicQuotaSummary(sample);
+assert.match(rendered,/Matemática M1/);
+assert.match(rendered,/Competencia Lectora/);
+assert.match(rendered,/Ensayos PAES completos: solo Premium/);
+assert.match(renderBasicQuotaSummary({tier:'premium',unlimited:true}),/acceso Premium/);
+assert.throws(()=>renderBasicQuotaSummary({...sample,duelsRemaining:3}),/INVALID_QUOTA_RESPONSE/);
