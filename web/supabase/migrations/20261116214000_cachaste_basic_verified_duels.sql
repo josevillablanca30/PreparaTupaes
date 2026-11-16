@@ -15,10 +15,10 @@ begin
   raise exception 'INVALID_DUEL' using errcode='22023';
  end if;
  select * into m from cachaste_duels2.matches where id=p_match_id;
- if not found or m.status<>'finished' then
+ if not found or m.status<>'finished' or m.result is null or\n    jsonb_typeof(m.result)<>'object' or not (m.result ? 'reason') then
   raise exception 'DUEL_NOT_FINISHED' using errcode='42501';
  end if;
- -- A participant must have a completed or forfeited authoritative player record.
+ -- A participant must have a completed or forfeited authoritative player record.\n -- The match result must have been written by the authoritative finalizer.
  select p.status into player_status from cachaste_duels2.players p
  where p.match_id=p_match_id and p.user_id=p_user_id;
  if player_status is null or player_status not in ('complete','forfeit') then
