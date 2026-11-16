@@ -88,8 +88,8 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     if(!body||typeof body!=='object'||Array.isArray(body))return json({error:'INVALID_OPERATION'},400);
     if(!['check','consume'].includes(body.operation)||!['lesson','diagnostic','expressExam','duel'].includes(body.kind))
       return json({error:'INVALID_OPERATION'},400);
-    // Consumption is forbidden until the activity completion is independently attested server-side.
-    if(body.operation==='consume'&&env.WEB_BASIC_COMPLETION_ATTESTATION_READY!=='true')return json({error:'BASIC_CONSUMPTION_NOT_READY'},503);
+    // Browser quota requests are read-only. Only a separately verified server-side\n    // activity transaction may call the service-role completion ledger.
+    if(body.operation==='consume')return json({error:'SERVER_VERIFIED_COMPLETION_REQUIRED'},403);
     const subject=body.subject||'all';
     if(!((['lesson','diagnostic'].includes(body.kind)&&['m1','m2','lectora','ciencias','historia'].includes(subject))||
        (['expressExam','duel'].includes(body.kind)&&subject==='all')))
