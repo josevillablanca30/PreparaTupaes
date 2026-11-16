@@ -175,3 +175,11 @@ assert.equal(basicDuelAdmissionSql.includes(String.raw`\\n`),false);
 // The activation trigger is the authoritative place that rejects new matches.
 assert.doesNotMatch(basicDuelAdmissionSql,/basic_used>=2/);
 assert.match(duelReservationSql,/BASIC_DUEL_LIMIT_REACHED/);
+
+const basicReadonlyProgressSql=readFileSync(new URL('../supabase/migrations/20261116230000_cachaste_basic_readonly_progress.sql',import.meta.url),'utf8');
+assert.match(basicReadonlyProgressSql,/progress_snapshot_enabled boolean not null default false/);
+assert.match(basicReadonlyProgressSql,/operation<>'snapshot' or not cachaste_web\.basic_progress_snapshot_enabled\(\)/);
+assert.match(basicReadonlyProgressSql,/if operation<>'put'then raise exception 'INVALID_OPERATION'/);
+assert.match(basicReadonlyProgressSql,/pg_advisory_xact_lock/);
+assert.match(basicReadonlyProgressSql,/cachaste\.premium\(u\)/);
+assert.equal(basicReadonlyProgressSql.includes(String.raw`\\n`),false);
