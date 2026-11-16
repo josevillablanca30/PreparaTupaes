@@ -26,14 +26,12 @@ create or replace function cachaste_web.basic_quota(
 language plpgsql security definer set search_path=''
 as $$
 declare
- u uuid:=auth.uid();
+ u uuid:=cachaste.require_user();
  today_chile date:=(now() at time zone 'America/Santiago')::date;
  quota integer;
  used integer;
  premium boolean;
 begin
- if u is null or (auth.jwt()->>'is_anonymous')='true'
- then raise exception 'AUTH_REQUIRED' using errcode='42501';end if;
  if operation is null or kind is null or operation not in ('check','consume') or kind not in ('lesson','diagnostic','expressExam','duel')
  then raise exception 'INVALID_OPERATION' using errcode='22023';end if;
  if subject is null or (kind in ('lesson','diagnostic') and subject not in ('m1','m2','lectora','ciencias','historia'))
