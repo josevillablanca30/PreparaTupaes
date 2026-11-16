@@ -99,7 +99,7 @@ function plans({required=false,pending=false}={}){
  const complimentary=account?.complimentary?.active===true;
  const basicReady=config?.basicEnabled===true;
  const heading=required
-  ?'<h1 id="plans-title" tabindex="-1">'+(pending?'Tu suscripción está en revisión':'Elige cómo quieres preparar tu PAES')+'</h1><p class="access-state">'+(basicReady?'Comienza con Básica sin tarjeta o elige Premium con todos sus beneficios.':'Conoce los planes disponibles para tu preparación.')+'</p>'
+  ?'<h1 id="plans-title" tabindex="-1">'+(pending?'Tu suscripción está en revisión':'Elige cómo quieres preparar tu PAES')+'</h1><p class="access-state">'+(basicReady?'Comienza con Básica sin tarjeta o elige Premium con todos sus beneficios.':'Necesitas una suscripción vigente para entrar a tu preparación. Conoce los planes disponibles.')+'</p>'
   :'<span class="eyebrow">Tu preparación</span><h2>Básica o Premium: tú eliges.</h2><p>Conoce todos los planes y recuerda que tienes 7 días de prueba Premium disponibles si cumples los requisitos.</p>';
  const cards=Object.entries(PLANS).map(([id,plan])=>{
   const cadence={semanal:'semana',mensual:'mes',anual:'año'}[id];
