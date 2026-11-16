@@ -9,7 +9,7 @@ declare
  used_count integer;
  existing cachaste_web.basic_usage%rowtype;
 begin
- if new.status is distinct from 'active' or old.status is not distinct from 'invited' then
+ if new.status is distinct from 'active' or old.status is distinct from 'invited' then
   return new;
  end if;
  if new.id is null or new.creator is null or new.opponent_kind not in ('human','bot') then
