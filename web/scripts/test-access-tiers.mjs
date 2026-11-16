@@ -150,3 +150,14 @@ const legacyDuelsSource=readFileSync(new URL('../supabase/migrations/20261110130
 assert.match(legacyDuelsSource,/cachaste\.premium\(u\)/);
 const legacyProgressSource=readFileSync(new URL('../supabase/migrations/20261024144927_cachaste_web_commercial.sql',import.meta.url),'utf8');
 assert.match(legacyProgressSource,/cachaste\.premium\(u\)/);
+
+const duelReservationSql=readFileSync(new URL('../supabase/migrations/20261116220000_cachaste_basic_duel_activation_reservations.sql',import.meta.url),'utf8');
+assert.match(duelReservationSql,/before update of status on cachaste_duels2\.matches/);
+assert.match(duelReservationSql,/old\.status is distinct from 'invited'/);
+assert.match(duelReservationSql,/new\.status='active'/);
+assert.match(duelReservationSql,/pg_advisory_xact_lock/);
+assert.match(duelReservationSql,/order by x\.user_id/);
+assert.match(duelReservationSql,/if used_count>=2/);
+assert.match(duelReservationSql,/not cachaste\.premium\(u\)/);
+assert.match(duelReservationSql,/new\.opponent_kind='human'/);
+assert.equal(duelReservationSql.includes(String.raw`\\n`),false);
