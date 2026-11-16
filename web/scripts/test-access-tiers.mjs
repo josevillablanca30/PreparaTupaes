@@ -133,7 +133,7 @@ assert.match(verifiedDuelsSql,/m\.result is null/);
 assert.match(verifiedDuelsSql,/jsonb_typeof\(m\.result\)<>'object'/);
 assert.match(verifiedDuelsSql,/coalesce\(m\.result->>'reason',''\) not in/);
 
-assert.match(verifiedDuelsSql,/p_user_id not in \(m\.creator,m\.opponent\)/);
+assert.match(verifiedDuelsSql,/not \(p_user_id=m\.creator or \(m\.opponent is not null and p_user_id=m\.opponent\)\)/);
 
 assert.match(verifiedDuelsSql,/coalesce\(m\.result->'creator'->>'status',''\) not in/);
 assert.match(verifiedDuelsSql,/coalesce\(m\.result->'opponent'->>'status',''\) not in/);
