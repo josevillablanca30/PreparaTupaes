@@ -93,3 +93,11 @@ await basicQuotaSummary({accessToken:'example-session-token',fetcher:async(url,o
 assert.equal(summaryRequest.url,'/api/basic/summary');
 assert.equal(summaryRequest.options.headers.authorization,'Bearer example-session-token');
 assert.match(readFileSync(new URL('../client/account.mjs',import.meta.url),'utf8'),/basicQuotaSummary\(\{accessToken:session\.access_token\}\)/);
+
+let quotaRequest;
+const {basicQuotaGateway}=await import('../client/basic-quota.mjs');
+await basicQuotaGateway({kind:'lesson',subject:'m1',accessToken:'example-session-token',fetcher:async(url,options)=>{quotaRequest={url,options};return Response.json({allowed:true,tier:'basica',remaining:3});}});
+assert.equal(quotaRequest.url,'/api/basic/quota');
+assert.equal(quotaRequest.options.headers.authorization,'Bearer example-session-token');
+assert.equal(quotaRequest.options.headers['x-cachaste-request'],'1');
+await assert.rejects(()=>basicQuotaGateway({kind:'lesson',subject:'m1',accessToken:'short',fetcher:async()=>{throw Error('MUST_NOT_FETCH');}}),/INVALID_AUTH_TOKEN/);
