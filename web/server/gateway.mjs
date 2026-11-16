@@ -86,7 +86,8 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     const raw=await req.text();if(raw.length>1024)return json({error:'PAYLOAD_TOO_LARGE'},413);
     let body;try{body=JSON.parse(raw);}catch{return json({error:'INVALID_JSON'},400);}
     if(!body||typeof body!=='object'||Array.isArray(body))return json({error:'INVALID_OPERATION'},400);
-    if(body.operation==='consume')return json({error:'SERVER_VERIFIED_COMPLETION_REQUIRED'},403);\n    if(body.operation!=='check'||!['lesson','diagnostic','expressExam','duel'].includes(body.kind))
+    if(body.operation==='consume')return json({error:'SERVER_VERIFIED_COMPLETION_REQUIRED'},403);
+    if(body.operation!=='check'||!['lesson','diagnostic','expressExam','duel'].includes(body.kind))
       return json({error:'INVALID_OPERATION'},400);
     // Browser quota requests are read-only. Only a separately verified server-side\n    // activity transaction may call the service-role completion ledger.
     if(body.operation==='consume')return json({error:'SERVER_VERIFIED_COMPLETION_REQUIRED'},403);
