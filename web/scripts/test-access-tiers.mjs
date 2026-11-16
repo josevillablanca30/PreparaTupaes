@@ -161,3 +161,12 @@ assert.match(duelReservationSql,/if used_count>=2/);
 assert.match(duelReservationSql,/not cachaste\.premium\(u\)/);
 assert.match(duelReservationSql,/new\.opponent_kind='human'/);
 assert.equal(duelReservationSql.includes(String.raw`\\n`),false);
+
+const basicDuelAdmissionSql=readFileSync(new URL('../supabase/migrations/20261116223000_cachaste_basic_duel_admission.sql',import.meta.url),'utf8');
+assert.match(basicDuelAdmissionSql,/duel_admission_enabled boolean not null default false/);
+assert.match(basicDuelAdmissionSql,/values\(true,false\)/);
+assert.match(basicDuelAdmissionSql,/revoke all on cachaste_web\.basic_feature_flags from public,anon,authenticated/);
+assert.match(basicDuelAdmissionSql,/cachaste\.premium\(u\) or cachaste_web\.basic_duels_enabled\(\)/);
+assert.match(basicDuelAdmissionSql,/cachaste\.community_restrictions/);
+assert.match(basicDuelAdmissionSql,/COMMUNITY_REQUIRED/);
+assert.equal(basicDuelAdmissionSql.includes(String.raw`\\n`),false);
