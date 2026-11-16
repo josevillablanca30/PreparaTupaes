@@ -46,7 +46,7 @@ begin
  if premium then return jsonb_build_object('allowed',true,'tier','premium','remaining',null,'day',today_chile);end if;
  quota:=case kind when 'lesson' then 3 when 'diagnostic' then 1 when 'expressExam' then 1 when 'duel' then 2 end;
  perform pg_advisory_xact_lock(hashtextextended('basic-quota:'||u::text,0));
- if event_id is not null then
+ if operation='consume' and event_id is not null then
    select * into prior from cachaste_web.basic_usage where user_id=u and basic_usage.event_id=basic_quota.event_id;
    if found then
      if prior.kind<>kind or prior.subject<>subject then raise exception 'EVENT_REUSED' using errcode='22023';end if;
