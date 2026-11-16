@@ -97,9 +97,10 @@ function changeEmailMode(mode){
 async function work(fn){if(busy)return;const loginDraft=Array.from(root.querySelectorAll('#login-form input'),x=>[x.name,x.value]);busy=true;root.setAttribute('aria-busy','true');root.querySelectorAll('button').forEach(b=>b.disabled=true);try{notice('');await fn();}catch(e){notice(messages[e.message]||(/Invalid login credentials/i.test(e.message)?'Revisa tu correo y contraseña.':/rate.limit/i.test(e.message)?'Espera unos minutos antes de volver a intentarlo.':'No pudimos completar la operación. Reinténtalo.'));}finally{busy=false;render();if(!account)for(const[name,value]of loginDraft){const input=root.querySelector('#login-form input[name="'+name+'"]');if(input)input.value=value;}}}
 function plans({required=false,pending=false}={}){
  const complimentary=account?.complimentary?.active===true;
+ const basicReady=config?.basicEnabled===true;
  const heading=required
-  ?'<h1 id="plans-title" tabindex="-1">'+(pending?'Tu suscripción está en revisión':'Elige tu plan')+'</h1><p class="access-state">Necesitas una suscripción vigente para entrar a tu preparación.</p>'
-  :'<span class="eyebrow">Tu preparación completa</span><h2>Elige tu ritmo.</h2><p>Una sola suscripción para aprender y competir. Sin vidas limitadas.</p>';
+  ?'<h1 id="plans-title" tabindex="-1">'+(pending?'Tu suscripción está en revisión':'Elige cómo quieres preparar tu PAES')+'</h1><p class="access-state">'+(basicReady?'Comienza con Básica sin tarjeta o elige Premium con todos sus beneficios.':'Conoce los planes disponibles para tu preparación.')+'</p>'
+  :'<span class="eyebrow">Tu preparación</span><h2>Básica o Premium: tú eliges.</h2><p>Conoce todos los planes y recuerda que tienes 7 días de prueba Premium disponibles si cumples los requisitos.</p>';
  const cards=Object.entries(PLANS).map(([id,plan])=>{
   const cadence={semanal:'semana',mensual:'mes',anual:'año'}[id];
   const label=complimentary?'Acceso gratuito vigente':pending?'Esperando confirmación':billing.ready?'Elegir '+plan.name.toLowerCase():'Ver estado de apertura';
@@ -113,7 +114,9 @@ function plans({required=false,pending=false}={}){
  }).join('');
  const status=!billing.ready?'<p class="opening-note">Estamos preparando la apertura. La contratación todavía no está habilitada y no se realizarán cobros.</p>':
   '<p class="legal-note">La suscripción se renueva hasta que la canceles. Revisa el monto y las condiciones en el checkout oficial de Mercado Pago.</p>';
- return '<section class="account-plans" id="planes"><div class="section-heading">'+heading+'</div><div class="price-grid">'+cards+'</div>'+status+'</section>';
+ const basic=basicReady?'<article class="price-card"><h3>Básica</h3><p class="price">$0</p><p>Sin tarjeta. Aprende y comprueba cómo funciona ¿Cachaste?.</p><ul><li>3 etapas al día por materia</li><li>1 diagnóstico por materia</li><li>1 ensayo Express diario</li><li>2 duelos diarios</li><li>Progreso y rankings</li></ul><button type="button" data-action="basic">Continuar con Básica</button></article>':'';
+ const trial=billing.trialAvailable&&!account?.trialUsed?'<p class="legal-note"><strong>Recuerda: tienes 7 días de Premium gratis.</strong> Requiere tarjeta. Al terminar la prueba comienza el plan mensual de $7.990, salvo que canceles antes. Los planes semanal y anual también están disponibles para contratación directa.</p>':'';
+ return '<section class="account-plans" id="planes"><div class="section-heading">'+heading+'</div><div class="price-grid">'+basic+cards+'</div>'+trial+status+'</section>';
 }
 function subscriptionRows(){
  return (account?.subscriptions||[]).map(s=>'<article><h2>Plan '+esc(s.plan)+'</h2><p>Estado: '+
@@ -240,6 +243,7 @@ root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!b.m
  if(b.dataset.action==='retry'){location.reload();return;}
  if(b.dataset.action==='google'){await startGoogleSignIn({sdk,config});return;}
  if(b.dataset.action==='signout')await signout();
+ if(b.dataset.action==='basic'){notice('Estamos habilitando el acceso Básico. Aún no está disponible en esta versión.');return;}
  if(b.dataset.action==='refresh'){await request({action:'refresh'});await connect();notice(account?.access?.active?'Tu acceso está verificado.':'Todavía no hay un pago o prueba verificados.');}
  if(b.dataset.action==='reset'){location.assign('/recuperar');return;}
  if(b.dataset.action==='mp-qa-status'||b.dataset.action==='mp-qa-refresh'||b.dataset.qaCancel){
