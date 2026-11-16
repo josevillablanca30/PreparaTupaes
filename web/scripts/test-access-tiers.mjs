@@ -120,3 +120,11 @@ assert.equal(classifyDailyCompletion({mode:'lesson',subject:'invalid'}),null);
 assert.deepEqual(classifyDuelCompletion({finished:true,matchId:'ad4d7f88-7f50-4d5c-a833-111111111111'}),{kind:'duel',subject:'all',eventId:'ad4d7f88-7f50-4d5c-a833-111111111111'});
 assert.equal(classifyDuelCompletion({finished:false,matchId:'ad4d7f88-7f50-4d5c-a833-111111111111'}),null);
 assert.equal(classifyDuelCompletion({finished:true,matchId:'not-a-uuid'}),null);
+
+const verifiedDuelsSql=readFileSync(new URL('../supabase/migrations/20261116214000_cachaste_basic_verified_duels.sql',import.meta.url),'utf8');
+assert.match(verifiedDuelsSql,/auth\.role\(\) is distinct from 'service_role'/);
+assert.match(verifiedDuelsSql,/m\.status<>'finished'/);
+assert.match(verifiedDuelsSql,/p\.match_id=p_match_id and p\.user_id=p_user_id/);
+assert.match(verifiedDuelsSql,/player_status not in \('complete','forfeit'\)/);
+assert.match(verifiedDuelsSql,/basic_record_verified_completion\(p_user_id,'duel','all',p_match_id\)/);
+assert.match(verifiedDuelsSql,/revoke all on function public\.cachaste_basic_record_finished_duel\(uuid,uuid\) from public,anon,authenticated/);
