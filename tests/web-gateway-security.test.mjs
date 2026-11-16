@@ -160,7 +160,7 @@ test('basic quota gateway requires a verified identity and forwards only validat
   throw Error('Unexpected backend request');
  }});
  const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
- const enabled={...env,WEB_BASIC_ACCESS_ENABLED:'true'};
+ const enabled={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true'};
  const eventId='ad4d7f88-7f50-4d5c-a833-111111111111';
  const response=await quotaGateway.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'consume',kind:'lesson',subject:'m1',eventId,ignored:'secret'})}),enabled);
  assert.equal(response.status,200);
@@ -170,4 +170,14 @@ test('basic quota gateway requires a verified identity and forwards only validat
  const invalid=await quotaGateway.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'consume',kind:'lesson',subject:'all',eventId})}),enabled);
  assert.equal(invalid.status,400);
  assert.equal(calls.length,5);
+});
+
+test('basic quota requires both release and educational enforcement flags',async()=>{
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json'};
+ const body=JSON.stringify({operation:'check',kind:'lesson',subject:'m1'});
+ for(const bindings of [{...env,WEB_BASIC_ACCESS_ENABLED:'true'},{...env,WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true'}]){
+  const res=await gateway.fetch(req('/api/basic/quota',{method:'POST',headers,body}),bindings);
+  assert.equal(res.status,503);
+  assert.equal((await json(res)).error,'BASIC_NOT_READY');
+ }
 });
