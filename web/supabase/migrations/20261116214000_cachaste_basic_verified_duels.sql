@@ -21,7 +21,7 @@ begin
  -- A participant must have a completed or forfeited authoritative player record.\n -- The match result must have been written by the authoritative finalizer.
  select p.status into player_status from cachaste_duels2.players p
  where p.match_id=p_match_id and p.user_id=p_user_id;
- if player_status is null or player_status not in ('complete','forfeit') then
+ if p_user_id not in (m.creator,m.opponent) or\n    player_status is null or player_status not in ('complete','forfeit') then
   raise exception 'DUEL_PARTICIPATION_NOT_VERIFIED' using errcode='42501';
  end if;
  return cachaste_web.basic_record_verified_completion(p_user_id,'duel','all',p_match_id);
