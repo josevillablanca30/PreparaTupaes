@@ -39,3 +39,7 @@ assert.equal(sent.options.headers['x-cachaste-request'],'1');
 assert.deepEqual(JSON.parse(sent.options.body),{operation:'check',kind:'lesson',subject:'m1',eventId:null});
 await assert.rejects(()=>basicQuotaGateway({kind:'duel',fetcher:async()=>({ok:false,status:503})}),/BASIC_NOT_READY/);
 await assert.rejects(()=>basicQuotaGateway({kind:'duel',fetcher:async()=>({ok:true,json:async()=>({})})}),/INVALID_QUOTA_RESPONSE/);
+
+await assert.rejects(()=>basicQuotaGateway({kind:'duel',fetcher:async()=>({ok:true,json:async()=>({allowed:true,tier:'basica',remaining:-1})})}),/INVALID_QUOTA_RESPONSE/);
+await assert.rejects(()=>basicQuotaGateway({kind:'duel',fetcher:async()=>({ok:true,json:async()=>({allowed:true,tier:'basica',remaining:'2'})})}),/INVALID_QUOTA_RESPONSE/);
+assert.equal((await basicQuotaGateway({kind:'duel',fetcher:async()=>({ok:true,json:async()=>({allowed:true,tier:'basica',replayed:true})})})).replayed,true);
