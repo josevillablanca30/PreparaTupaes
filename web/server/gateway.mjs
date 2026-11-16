@@ -79,7 +79,8 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     if(env.WEB_BASIC_ACCESS_ENABLED!=='true'||env.WEB_BASIC_EDUCATIONAL_GUARDS_READY!=='true')return json({error:'BASIC_NOT_READY'},503);
     const auth=await identity(req,env,{active:false,fresh:true});
     const raw=await req.text();if(raw.length>1024)return json({error:'PAYLOAD_TOO_LARGE'},413);
-    const body=JSON.parse(raw);
+    let body;try{body=JSON.parse(raw);}catch{return json({error:'INVALID_JSON'},400);}
+    if(!body||typeof body!=='object'||Array.isArray(body))return json({error:'INVALID_OPERATION'},400);
     if(!['check','consume'].includes(body.operation)||!['lesson','diagnostic','expressExam','duel'].includes(body.kind))
       return json({error:'INVALID_OPERATION'},400);
     const subject=body.subject||'all';
