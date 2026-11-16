@@ -133,3 +133,19 @@ test('valid student progress reaches the RPC with the authenticated token',async
  assert.equal(calls[2].options.headers.authorization,'Bearer '+token);
  assert.deepEqual(JSON.parse(calls[2].options.body),payload);
 });
+
+test('basic quota remains closed without a complete educational release',async()=>{
+ const res=await gateway.fetch(req('/api/basic/quota',{method:'POST',headers:{origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json'},body:JSON.stringify({operation:'consume',kind:'lesson',subject:'m1',eventId:'ad4d7f88-7f50-4d5c-a833-111111111111'})}),env);
+ assert.equal(res.status,503);
+ assert.equal((await json(res)).error,'BASIC_NOT_READY');
+});
+test('basic quota rejects cross-origin calls before checking release flag',async()=>{
+ const res=await gateway.fetch(req('/api/basic/quota',{method:'POST',headers:{origin:'https://attacker.invalid','x-cachaste-request':'1','content-type':'application/json'},body:'{}'}),env);
+ assert.equal(res.status,403);
+ assert.equal((await json(res)).error,'ORIGIN_DENIED');
+});
+test('basic quota does not appear enabled in public configuration',async()=>{
+ const res=await gateway.fetch(req('/api/config'),{...env,WEB_BASIC_ACCESS_ENABLED:'true'});
+ assert.equal(res.status,200);
+ assert.equal((await json(res)).basicEnabled,false);
+});
