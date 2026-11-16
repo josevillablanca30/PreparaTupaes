@@ -52,3 +52,6 @@ assert.match(migration,/create unique index if not exists basic_diagnostic_once_
 const gatewaySource=readFileSync(new URL('../server/gateway.mjs',import.meta.url),'utf8');
 assert.match(gatewaySource,/WEB_BASIC_EDUCATIONAL_GUARDS_READY/);
 assert.match(gatewaySource,/WEB_BASIC_COMPLETION_ATTESTATION_READY/);
+
+assert.match(migration,/u uuid:=cachaste\.require_user\(\)/);
+assert.doesNotMatch(migration,/u uuid:=auth\.uid\(\)/);
