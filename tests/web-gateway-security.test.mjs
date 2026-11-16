@@ -162,12 +162,12 @@ test('basic quota gateway requires a verified identity and forwards only validat
  const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
  const enabled={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true',WEB_BASIC_COMPLETION_ATTESTATION_READY:'true'};
  const eventId='ad4d7f88-7f50-4d5c-a833-111111111111';
- const response=await quotaGateway.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'consume',kind:'lesson',subject:'m1',eventId,ignored:'secret'})}),enabled);
+ const response=await quotaGateway.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'check',kind:'lesson',subject:'m1',ignored:'secret'})}),enabled);
  assert.equal(response.status,200);
  assert.equal((await json(response)).remaining,2);
  assert.equal(calls.length,3);
- assert.deepEqual(JSON.parse(calls[2].options.body),{operation:'consume',kind:'lesson',subject:'m1',event_id:eventId});
- const invalid=await quotaGateway.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'consume',kind:'lesson',subject:'all',eventId})}),enabled);
+ assert.deepEqual(JSON.parse(calls[2].options.body),{operation:'check',kind:'lesson',subject:'m1',event_id:null});
+ const invalid=await quotaGateway.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'check',kind:'lesson',subject:'all'})}),enabled);
  assert.equal(invalid.status,400);
  assert.equal(calls.length,5);
 });
@@ -209,8 +209,8 @@ test('basic consumption remains closed without server-side completion attestatio
  const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
  const flags={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true'};
  const response=await g.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'consume',kind:'lesson',subject:'m1',eventId:'ad4d7f88-7f50-4d5c-a833-111111111111'})}),flags);
- assert.equal(response.status,503);
- assert.equal((await json(response)).error,'BASIC_CONSUMPTION_NOT_READY');
+ assert.equal(response.status,403);
+ assert.equal((await json(response)).error,'SERVER_VERIFIED_COMPLETION_REQUIRED');
  assert.equal(calls.length,2);
 });
 
@@ -234,4 +234,20 @@ test('basic quota summary requires both flags and an authenticated user',async()
  assert.equal(body.fullExamsRemaining,0);
  assert.equal(calls.length,3);
  assert.equal(calls[2].options.method,'POST');
+});
+
+test('browser cannot consume Basic quota even if all release flags are enabled',async()=>{
+ const token=fakeToken(),calls=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async(url)=>{
+  calls.push(url);
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false});
+  throw Error('MUST_NOT_WRITE_QUOTA');
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ const flags={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true',WEB_BASIC_COMPLETION_ATTESTATION_READY:'true'};
+ const response=await g.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'consume',kind:'lesson',subject:'m1',eventId:'ad4d7f88-7f50-4d5c-a833-111111111111'})}),flags);
+ assert.equal(response.status,403);
+ assert.equal((await json(response)).error,'SERVER_VERIFIED_COMPLETION_REQUIRED');
+ assert.equal(calls.length,2);
 });
