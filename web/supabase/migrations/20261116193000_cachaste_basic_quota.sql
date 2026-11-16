@@ -61,3 +61,50 @@ create or replace function public.cachaste_basic_quota(
 as $$select cachaste_web.basic_quota(operation,kind,subject,event_id)$$;
 revoke all on function public.cachaste_basic_quota(text,text,text,uuid) from public,anon;
 grant execute on function public.cachaste_basic_quota(text,text,text,uuid) to authenticated;
+
+-- Read-only, single-round-trip quota dashboard for web and Android.
+-- Premium status is checked server-side; all Basic counters are derived from stored rows.
+create or replace function cachaste_web.basic_quota_summary()
+returns jsonb language plpgsql security definer set search_path='' as $$
+declare
+ u uuid:=cachaste.require_user();
+ today_chile date:=(now() at time zone 'America/Santiago')::date;
+ premium boolean:=cachaste.premium(u);
+ lessons jsonb;
+ diagnostics jsonb;
+ express_used integer;
+ duels_used integer;
+begin
+ if premium then
+  return jsonb_build_object('tier','premium','day',today_chile,'unlimited',true);
+ end if;
+ select coalesce(jsonb_object_agg(s.subject, greatest(0,3-coalesce(v.used,0))),'{}'::jsonb)
+ into lessons
+ from (values('m1'),('m2'),('lectora'),('ciencias'),('historia')) s(subject)
+ left join lateral (
+  select count(*)::integer as used from cachaste_web.basic_usage q
+  where q.user_id=u and q.kind='lesson' and q.subject=s.subject and q.usage_day=today_chile
+ ) v on true;
+ select coalesce(jsonb_object_agg(s.subject, greatest(0,1-coalesce(v.used,0))),'{}'::jsonb)
+ into diagnostics
+ from (values('m1'),('m2'),('lectora'),('ciencias'),('historia')) s(subject)
+ left join lateral (
+  select count(*)::integer as used from cachaste_web.basic_usage q
+  where q.user_id=u and q.kind='diagnostic' and q.subject=s.subject
+ ) v on true;
+ select count(*)::integer into express_used from cachaste_web.basic_usage q
+ where q.user_id=u and q.kind='expressExam' and q.usage_day=today_chile;
+ select count(*)::integer into duels_used from cachaste_web.basic_usage q
+ where q.user_id=u and q.kind='duel' and q.usage_day=today_chile;
+ return jsonb_build_object('tier','basica','day',today_chile,
+  'lessonsRemaining',lessons,'diagnosticsRemaining',diagnostics,
+  'expressExamsRemaining',greatest(0,1-express_used),
+  'duelsRemaining',greatest(0,2-duels_used),'fullExamsRemaining',0);
+end$$;
+revoke all on function cachaste_web.basic_quota_summary() from public,anon,authenticated;
+grant execute on function cachaste_web.basic_quota_summary() to authenticated;
+create or replace function public.cachaste_basic_quota_summary()
+returns jsonb language sql security invoker set search_path=''
+as $$select cachaste_web.basic_quota_summary()$$;
+revoke all on function public.cachaste_basic_quota_summary() from public,anon;
+grant execute on function public.cachaste_basic_quota_summary() to authenticated;
