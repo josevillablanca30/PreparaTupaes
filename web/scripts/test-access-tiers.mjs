@@ -128,3 +128,7 @@ assert.match(verifiedDuelsSql,/p\.match_id=p_match_id and p\.user_id=p_user_id/)
 assert.match(verifiedDuelsSql,/player_status not in \('complete','forfeit'\)/);
 assert.match(verifiedDuelsSql,/basic_record_verified_completion\(p_user_id,'duel','all',p_match_id\)/);
 assert.match(verifiedDuelsSql,/revoke all on function public\.cachaste_basic_record_finished_duel\(uuid,uuid\) from public,anon,authenticated/);
+
+assert.match(verifiedDuelsSql,/m\.result is null/);
+assert.match(verifiedDuelsSql,/jsonb_typeof\(m\.result\)<>'object'/);
+assert.match(verifiedDuelsSql,/m\.result \? 'reason'/);
