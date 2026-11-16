@@ -109,3 +109,14 @@ assert.match(completionSql,/EVENT_ID_REUSED/);
 assert.match(completionSql,/replayed',true/);
 assert.match(completionSql,/revoke all on function public\.cachaste_basic_record_verified_completion\(uuid,text,text,uuid\) from public,anon,authenticated/);
 assert.match(completionSql,/grant execute on function public\.cachaste_basic_record_verified_completion\(uuid,text,text,uuid\) to service_role/);
+
+const {classifyDailyCompletion,classifyDuelCompletion}=await import('../shared/basic-completion-contract.mjs');
+assert.deepEqual(classifyDailyCompletion({mode:'lesson',subject:'M1'}),{kind:'lesson',subject:'m1'});
+assert.deepEqual(classifyDailyCompletion({mode:'lesson',subject:'Ciencias'}),{kind:'lesson',subject:'ciencias'});
+assert.deepEqual(classifyDailyCompletion({mode:'diagnostic',subject:'Historia'}),{kind:'diagnostic',subject:'historia'});
+assert.deepEqual(classifyDailyCompletion({mode:'express-exam',subject:'Lectora'}),{kind:'expressExam',subject:'all'});
+for(const mode of ['free','smart','unit-exam','full-exam','unknown'])assert.equal(classifyDailyCompletion({mode,subject:'M1'}),null);
+assert.equal(classifyDailyCompletion({mode:'lesson',subject:'invalid'}),null);
+assert.deepEqual(classifyDuelCompletion({finished:true,matchId:'ad4d7f88-7f50-4d5c-a833-111111111111'}),{kind:'duel',subject:'all',eventId:'ad4d7f88-7f50-4d5c-a833-111111111111'});
+assert.equal(classifyDuelCompletion({finished:false,matchId:'ad4d7f88-7f50-4d5c-a833-111111111111'}),null);
+assert.equal(classifyDuelCompletion({finished:true,matchId:'not-a-uuid'}),null);
