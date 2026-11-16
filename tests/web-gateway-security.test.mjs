@@ -160,7 +160,7 @@ test('basic quota gateway requires a verified identity and forwards only validat
   throw Error('Unexpected backend request');
  }});
  const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
- const enabled={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true'};
+ const enabled={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true',WEB_BASIC_COMPLETION_ATTESTATION_READY:'true'};
  const eventId='ad4d7f88-7f50-4d5c-a833-111111111111';
  const response=await quotaGateway.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'consume',kind:'lesson',subject:'m1',eventId,ignored:'secret'})}),enabled);
  assert.equal(response.status,200);
@@ -196,4 +196,20 @@ test('basic quota rejects malformed JSON without reaching the database',async()=
   assert.equal(res.status,400,body);
  }
  assert.equal(quotaCalls,0);
+});
+
+test('basic consumption remains closed without server-side completion attestation',async()=>{
+ const token=fakeToken(),calls=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async url=>{
+  calls.push(url);
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false,validUntilMs:null});
+  throw Error('No quota RPC expected');
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ const flags={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true'};
+ const response=await g.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'consume',kind:'lesson',subject:'m1',eventId:'ad4d7f88-7f50-4d5c-a833-111111111111'})}),flags);
+ assert.equal(response.status,503);
+ assert.equal((await json(response)).error,'BASIC_CONSUMPTION_NOT_READY');
+ assert.equal(calls.length,2);
 });
