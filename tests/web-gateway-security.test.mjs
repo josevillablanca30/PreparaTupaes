@@ -181,3 +181,19 @@ test('basic quota requires both release and educational enforcement flags',async
   assert.equal((await json(res)).error,'BASIC_NOT_READY');
  }
 });
+
+test('basic quota rejects malformed JSON without reaching the database',async()=>{
+ const token=fakeToken();let quotaCalls=0;
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async url=>{
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false,validUntilMs:null});
+  quotaCalls++;throw Error('Unexpected quota database request');
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ const flags={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true'};
+ for(const body of ['{invalid','null','[]']){
+  const res=await g.fetch(req('/api/basic/quota',{method:'POST',headers,body}),flags);
+  assert.equal(res.status,400,body);
+ }
+ assert.equal(quotaCalls,0);
+});
