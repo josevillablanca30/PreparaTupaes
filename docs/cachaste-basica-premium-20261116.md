@@ -25,3 +25,10 @@ El navegador Android/web puede invocar la función pública de Supabase directam
 **No activar las flags ni aplicar la migración a producción todavía.** Para habilitar Básica hay que registrar finalizaciones confiables dentro de transacciones servidor/BD, asignar el identificador de evento desde el servidor, validar tipo/materia y aplicar el límite en la misma transacción que guarda progreso o resultado. Los clientes no deben poder autoacreditar etapas, diagnósticos, ensayos ni duelos. El RPC de lectura `check` es solo informativo; no autoriza acceso a material Premium.
 
 Android tiene un guardarraíl `web/scripts/verify-android.mjs` que impide cambios en el baseline aprobado; no introducir archivos Java aislados hasta preparar la actualización coordinada de aplicación y pruebas Android.
+
+
+## Duelos: reserva obligatoria al inicio (bloqueo de lanzamiento)
+
+No habilitar `cachaste_duels2.eligible` ni `require_player` para Básica hasta que la admisión de cada enfrentamiento reserve **atómicamente** uno de los dos cupos diarios de cada jugador Básica, usando el mismo bloqueo por usuario que el registro de uso. La reserva debe identificarse con el UUID del enfrentamiento y ser idempotente. Un enfrentamiento contra bot consume solo el cupo del jugador humano. La cola de búsqueda y una invitación pendiente **no** consumen cupo: reservar en la transición real a duelo activo. Definir explícitamente qué ocurre con una cancelación o desconexión después de la activación; no reembolsar automáticamente sin una regla verificable.
+
+La función actual `basic_record_finished_duel` valida el resultado final, pero **no sustituye** esta reserva: registrar solo al finalizar permite iniciar simultáneamente más duelos que el límite. Los duelos Premium no consumen cupos Básica. Mantener `basicEnabled:false` hasta que el flujo completo esté probado, incluyendo concurrencia, bots y dos usuarios Básica.
