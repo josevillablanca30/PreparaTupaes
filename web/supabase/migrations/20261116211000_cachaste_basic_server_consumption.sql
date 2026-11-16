@@ -19,6 +19,8 @@ begin
     (p_kind in ('expressExam','duel') and p_subject<>'all') then
   raise exception 'INVALID_COMPLETION' using errcode='22023';
  end if;
+ -- Caller must independently verify a completed lesson, diagnostic, exam or duel.
+ -- A UUID supplied by the client is never sufficient proof of completion.
  -- Serialize all Basic activity consumption per student, including parallel devices.
  perform pg_advisory_xact_lock(hashtextextended('basic-completion:'||p_user_id::text,0));
  select * into existing from cachaste_web.basic_usage q
@@ -29,6 +31,7 @@ begin
   end if;
   return jsonb_build_object('allowed',true,'tier','basica','replayed',true,'day',existing.usage_day);
  end if;
+ -- Paid users must not create Basic ledger rows; their entitlements are unchanged.
  if cachaste.premium(p_user_id) then
   return jsonb_build_object('allowed',true,'tier','premium','unlimited',true);
  end if;
