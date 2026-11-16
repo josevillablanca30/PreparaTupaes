@@ -73,6 +73,11 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     const token=bearer(req)||cookie(req);if(token){const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(token))),x=>x.toString(16).padStart(2,'0')).join('');grants.delete(hash);}
     return json({signedOut:true},200,{'set-cookie':`${COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${url.protocol==='https:'?'; Secure':''}`});
    }
+   if(path==='/api/basic/summary'&&req.method==='GET'){
+    if(env.WEB_BASIC_ACCESS_ENABLED!=='true'||env.WEB_BASIC_EDUCATIONAL_GUARDS_READY!=='true')return json({error:'BASIC_NOT_READY'},503);
+    const auth=await identity(req,env,{active:false,fresh:true});
+    return json(await backend(env,'/rest/v1/rpc/cachaste_basic_quota_summary',auth.token,{method:'POST',body:{}}));
+   }
    if(path==='/api/basic/quota'&&req.method==='POST'){
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
     // Closed until the educational engines enforce quotas and the basic content route is isolated.
