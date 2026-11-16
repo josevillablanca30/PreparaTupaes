@@ -137,3 +137,6 @@ assert.match(verifiedDuelsSql,/p_user_id not in \(m\.creator,m\.opponent\)/);
 
 assert.match(verifiedDuelsSql,/coalesce\(m\.result->'creator'->>'status',''\) not in/);
 assert.match(verifiedDuelsSql,/coalesce\(m\.result->'opponent'->>'status',''\) not in/);
+
+// Literal escaped newlines in SQL are syntax errors, not formatting.
+assert.equal(verifiedDuelsSql.includes(String.raw`\n`),false,'SQL migration must not contain literal backslash-n tokens');
