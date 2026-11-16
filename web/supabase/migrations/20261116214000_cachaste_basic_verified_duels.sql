@@ -15,13 +15,19 @@ begin
   raise exception 'INVALID_DUEL' using errcode='22023';
  end if;
  select * into m from cachaste_duels2.matches where id=p_match_id;
- if not found or m.status<>'finished' or m.result is null or\n    jsonb_typeof(m.result)<>'object' or\n    coalesce(m.result->>'reason','') not in ('mastery','draw','abandonment','both_abandoned') or\n    coalesce(m.result->'creator'->>'status','') not in ('complete','forfeit') or\n    coalesce(m.result->'opponent'->>'status','') not in ('complete','forfeit') then
+ if not found or m.status<>'finished' or m.result is null or
+    jsonb_typeof(m.result)<>'object' or
+    coalesce(m.result->>'reason','') not in ('mastery','draw','abandonment','both_abandoned') or
+    coalesce(m.result->'creator'->>'status','') not in ('complete','forfeit') or
+    coalesce(m.result->'opponent'->>'status','') not in ('complete','forfeit') then
   raise exception 'DUEL_NOT_FINISHED' using errcode='42501';
  end if;
- -- A participant must have a completed or forfeited authoritative player record.\n -- The match result must have been written by the authoritative finalizer.
+ -- A participant must have a completed or forfeited authoritative player record.
+ -- The match result must have been written by the authoritative finalizer.
  select p.status into player_status from cachaste_duels2.players p
  where p.match_id=p_match_id and p.user_id=p_user_id;
- if p_user_id not in (m.creator,m.opponent) or\n    player_status is null or player_status not in ('complete','forfeit') then
+ if p_user_id not in (m.creator,m.opponent) or
+    player_status is null or player_status not in ('complete','forfeit') then
   raise exception 'DUEL_PARTICIPATION_NOT_VERIFIED' using errcode='42501';
  end if;
  return cachaste_web.basic_record_verified_completion(p_user_id,'duel','all',p_match_id);
