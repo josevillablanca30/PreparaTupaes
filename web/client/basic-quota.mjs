@@ -29,3 +29,25 @@ export async function basicQuotaGateway({kind,subject='all',operation='check',ev
  if(typeof result?.allowed!=='boolean'||!['premium','basica'].includes(result.tier)||result.tier==='basica'&&(!Number.isInteger(result.remaining)&&result.replayed!==true||result.remaining<0))throw Error('INVALID_QUOTA_RESPONSE');
  return result;
 }
+
+/**
+ * Server-sourced dashboard. Never derive authorization from this display-only snapshot.
+ * An invalid response fails closed rather than displaying fabricated remaining attempts.
+ */
+export async function basicQuotaSummary({fetcher=fetch}={}){
+ const response=await fetcher('/api/basic/summary',{method:'GET',credentials:'same-origin'});
+ if(!response.ok)throw Error(response.status===503?'BASIC_NOT_READY':'BASIC_QUOTA_UNAVAILABLE');
+ const result=await response.json();
+ if(result?.tier==='premium'&&result.unlimited===true)return result;
+ if(result?.tier!=='basica'||!/^\\d{4}-\\d{2}-\\d{2}$/.test(result.day||''))throw Error('INVALID_QUOTA_RESPONSE');
+ const validRemaining=n=>Number.isInteger(n)&&n>=0;
+ for(const subject of PAES_SUBJECTS){
+  if(!validRemaining(result.lessonsRemaining?.[subject])||result.lessonsRemaining[subject]>3||
+     !validRemaining(result.diagnosticsRemaining?.[subject])||result.diagnosticsRemaining[subject]>1)
+   throw Error('INVALID_QUOTA_RESPONSE');
+ }
+ if(!validRemaining(result.expressExamsRemaining)||result.expressExamsRemaining>1||
+    !validRemaining(result.duelsRemaining)||result.duelsRemaining>2||
+    result.fullExamsRemaining!==0)throw Error('INVALID_QUOTA_RESPONSE');
+ return result;
+}
