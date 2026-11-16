@@ -87,3 +87,9 @@ const accountSource=readFileSync(new URL('../client/account.mjs',import.meta.url
 assert.match(accountSource,/config\?\.basicEnabled===true&&account\?\.access\?\.active!==true/);
 assert.match(accountSource,/renderBasicQuotaSummary\(basicSummary\)/);
 assert.match(accountSource,/basicSummary=null;account=null/);
+
+let summaryRequest;
+await basicQuotaSummary({accessToken:'example-session-token',fetcher:async(url,options)=>{summaryRequest={url,options};return Response.json(sample);}});
+assert.equal(summaryRequest.url,'/api/basic/summary');
+assert.equal(summaryRequest.options.headers.authorization,'Bearer example-session-token');
+assert.match(readFileSync(new URL('../client/account.mjs',import.meta.url),'utf8'),/basicQuotaSummary\(\{accessToken:session\.access_token\}\)/);
