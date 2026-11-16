@@ -213,3 +213,25 @@ test('basic consumption remains closed without server-side completion attestatio
  assert.equal((await json(response)).error,'BASIC_CONSUMPTION_NOT_READY');
  assert.equal(calls.length,2);
 });
+
+test('basic quota summary requires both flags and an authenticated user',async()=>{
+ const token=fakeToken(),calls=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async(url,options={})=>{
+  calls.push({url,options});
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false,validUntilMs:null});
+  if(url.endsWith('/rest/v1/rpc/cachaste_basic_quota_summary'))return Response.json({tier:'basica',day:'2026-11-16',lessonsRemaining:{m1:3,m2:3,lectora:3,ciencias:3,historia:3},diagnosticsRemaining:{m1:1,m2:1,lectora:1,ciencias:1,historia:1},expressExamsRemaining:1,duelsRemaining:2,fullExamsRemaining:0});
+  throw Error('Unexpected backend request');
+ }});
+ const path='/api/basic/summary';
+ assert.equal((await g.fetch(req(path),env)).status,503);
+ const flags={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true'};
+ assert.equal((await g.fetch(req(path),flags)).status,401);
+ const response=await g.fetch(req(path,{headers:{authorization:'Bearer '+token}}),flags);
+ assert.equal(response.status,200);
+ const body=await json(response);
+ assert.equal(body.lessonsRemaining.m1,3);
+ assert.equal(body.fullExamsRemaining,0);
+ assert.equal(calls.length,3);
+ assert.equal(calls[2].options.method,'POST');
+});
