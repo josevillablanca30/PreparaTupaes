@@ -26,7 +26,7 @@ begin
  -- The match result must have been written by the authoritative finalizer.
  select p.status into player_status from cachaste_duels2.players p
  where p.match_id=p_match_id and p.user_id=p_user_id;
- if p_user_id not in (m.creator,m.opponent) or
+ if not (p_user_id=m.creator or (m.opponent is not null and p_user_id=m.opponent)) or
     player_status is null or player_status not in ('complete','forfeit') then
   raise exception 'DUEL_PARTICIPATION_NOT_VERIFIED' using errcode='42501';
  end if;
