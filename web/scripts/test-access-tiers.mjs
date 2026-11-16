@@ -140,3 +140,14 @@ assert.match(verifiedDuelsSql,/coalesce\(m\.result->'opponent'->>'status',''\) n
 
 // Literal escaped newlines in SQL are syntax errors, not formatting.
 assert.equal(verifiedDuelsSql.includes(String.raw`\n`),false,'SQL migration must not contain literal backslash-n tokens');
+
+// Release blocker: do not accidentally enable Basic while educational activity
+// verification, progress authorization and duel admission remain premium-only.
+const gatewaySource=readFileSync(new URL('../server/gateway.mjs',import.meta.url),'utf8');
+assert.match(gatewaySource,/basicEnabled:false/);
+assert.match(gatewaySource,/WEB_BASIC_EDUCATIONAL_GUARDS_READY/);
+assert.match(gatewaySource,/SERVER_VERIFIED_COMPLETION_REQUIRED/);
+const legacyDuelsSource=readFileSync(new URL('../supabase/migrations/20261110130920_cachaste_duels2_isolated.sql',import.meta.url),'utf8');
+assert.match(legacyDuelsSource,/cachaste\.premium\(u\)/);
+const legacyProgressSource=readFileSync(new URL('../supabase/migrations/20261024144927_cachaste_web_commercial.sql',import.meta.url),'utf8');
+assert.match(legacyProgressSource,/cachaste\.premium\(u\)/);
