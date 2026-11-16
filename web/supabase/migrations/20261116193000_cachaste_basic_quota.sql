@@ -30,7 +30,6 @@ declare
  today_chile date:=(now() at time zone 'America/Santiago')::date;
  quota integer;
  used integer;
- prior cachaste_web.basic_usage%rowtype;
  premium boolean;
 begin
  if u is null or (auth.jwt()->>'is_anonymous')='true'
@@ -44,28 +43,15 @@ begin
  -- No client-supplied event UUID is proof of a completed lesson or duel.
  -- Consumption must be moved to a server-attested transaction before release.
  if operation='consume' then raise exception 'COMPLETION_ATTESTATION_REQUIRED' using errcode='42501';end if;
- if operation='consume' and event_id is null
- then raise exception 'EVENT_ID_REQUIRED' using errcode='22023';end if;
+ -- Read-only quota check. A future server-attested completion transaction must
+ -- perform idempotent consumption and write progress/results atomically.
  premium:=cachaste.premium(u);
  if premium then return jsonb_build_object('allowed',true,'tier','premium','remaining',null,'day',today_chile);end if;
  quota:=case kind when 'lesson' then 3 when 'diagnostic' then 1 when 'expressExam' then 1 when 'duel' then 2 end;
- perform pg_advisory_xact_lock(hashtextextended('basic-quota:'||u::text,0));
- if operation='consume' and event_id is not null then
-   select * into prior from cachaste_web.basic_usage q where q.user_id=u and q.event_id=basic_quota.event_id;
-   if found then
-     if prior.kind<>kind or prior.subject<>subject then raise exception 'EVENT_REUSED' using errcode='22023';end if;
-     return jsonb_build_object('allowed',true,'tier','basica','replayed',true,'day',prior.usage_day);
-   end if;
- end if;
  select count(*) into used from cachaste_web.basic_usage q
  where q.user_id=u and q.kind=basic_quota.kind and q.subject=basic_quota.subject
  and (basic_quota.kind='diagnostic' or q.usage_day=today_chile);
  if used>=quota then return jsonb_build_object('allowed',false,'tier','basica','remaining',0,'day',today_chile);end if;
- if operation='consume' then
-   insert into cachaste_web.basic_usage(user_id,kind,subject,usage_day,event_id)
-   values(u,kind,subject,today_chile,event_id);
-   used:=used+1;
- end if;
  return jsonb_build_object('allowed',true,'tier','basica','remaining',quota-used,'day',today_chile);
 end$$;
 revoke all on function cachaste_web.basic_quota(text,text,text,uuid) from public,anon,authenticated;
