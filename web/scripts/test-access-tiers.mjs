@@ -171,6 +171,7 @@ assert.match(basicDuelAdmissionSql,/cachaste\.community_restrictions/);
 assert.match(basicDuelAdmissionSql,/COMMUNITY_REQUIRED/);
 assert.equal(basicDuelAdmissionSql.includes(String.raw`\\n`),false);
 
-assert.match(basicDuelAdmissionSql,/basic_used>=2/);
-assert.match(basicDuelAdmissionSql,/BASIC_DUEL_LIMIT_REACHED/);
-assert.match(basicDuelAdmissionSql,/America\/Santiago/);
+// Match admission remains available for review/in-progress actions even after quota exhaustion.
+// The activation trigger is the authoritative place that rejects new matches.
+assert.doesNotMatch(basicDuelAdmissionSql,/basic_used>=2/);
+assert.match(duelReservationSql,/BASIC_DUEL_LIMIT_REACHED/);
