@@ -143,7 +143,6 @@ assert.equal(verifiedDuelsSql.includes(String.raw`\n`),false,'SQL migration must
 
 // Release blocker: do not accidentally enable Basic while educational activity
 // verification, progress authorization and duel admission remain premium-only.
-const gatewaySource=readFileSync(new URL('../server/gateway.mjs',import.meta.url),'utf8');
 assert.match(gatewaySource,/basicEnabled:false/);
 assert.match(gatewaySource,/WEB_BASIC_EDUCATIONAL_GUARDS_READY/);
 assert.match(gatewaySource,/SERVER_VERIFIED_COMPLETION_REQUIRED/);
