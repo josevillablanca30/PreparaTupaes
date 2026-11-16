@@ -55,3 +55,22 @@ assert.match(gatewaySource,/WEB_BASIC_COMPLETION_ATTESTATION_READY/);
 
 assert.match(migration,/u uuid:=cachaste\.require_user\(\)/);
 assert.doesNotMatch(migration,/u uuid:=auth\.uid\(\)/);
+
+const {basicQuotaSummary}=await import('../client/basic-quota.mjs');
+const sample={tier:'basica',day:'2026-11-16',
+ lessonsRemaining:Object.fromEntries(PAES_SUBJECTS.map(x=>[x,3])),
+ diagnosticsRemaining:Object.fromEntries(PAES_SUBJECTS.map(x=>[x,1])),
+ expressExamsRemaining:1,duelsRemaining:2,fullExamsRemaining:0};
+const summaryFetch=data=>async()=>Response.json(data);
+assert.equal((await basicQuotaSummary({fetcher:summaryFetch(sample)})).lessonsRemaining.m1,3);
+assert.equal((await basicQuotaSummary({fetcher:summaryFetch({tier:'premium',unlimited:true})})).tier,'premium');
+for(const invalid of [
+ {...sample,lessonsRemaining:{...sample.lessonsRemaining,m1:4}},
+ {...sample,diagnosticsRemaining:{...sample.diagnosticsRemaining,m2:-1}},
+ {...sample,expressExamsRemaining:2},
+ {...sample,fullExamsRemaining:1},
+ {...sample,day:'not-a-date'}
+]){
+ await assert.rejects(()=>basicQuotaSummary({fetcher:summaryFetch(invalid)}),/INVALID_QUOTA_RESPONSE/);
+}
+await assert.rejects(()=>basicQuotaSummary({fetcher:async()=>Response.json({error:'BASIC_NOT_READY'},{status:503})}),/BASIC_NOT_READY/);
