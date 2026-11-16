@@ -48,7 +48,7 @@ async function connect(verifyPayments=false){
  account=await request(undefined,'/api/session','GET');
  basicSummary=null;
  if(config?.basicEnabled===true&&account?.access?.active!==true){
-  try{basicSummary=await basicQuotaSummary();}catch{basicSummary=null;}
+  try{basicSummary=await basicQuotaSummary({accessToken:session.access_token});}catch{basicSummary=null;}
  }
  if(reconciliationDelayed)notice('Tu cuenta está disponible. Mercado Pago aún no responde. Puedes actualizar tu acceso más tarde.');
  else if(verifyPayments&&checkoutReturned&&!account?.access?.active)notice('Estamos esperando la confirmación del pago. Puedes consultar el estado en Actualizar mi acceso.');
