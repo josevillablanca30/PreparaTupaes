@@ -132,3 +132,5 @@ assert.match(verifiedDuelsSql,/revoke all on function public\.cachaste_basic_rec
 assert.match(verifiedDuelsSql,/m\.result is null/);
 assert.match(verifiedDuelsSql,/jsonb_typeof\(m\.result\)<>'object'/);
 assert.match(verifiedDuelsSql,/m\.result \? 'reason'/);
+
+assert.match(verifiedDuelsSql,/p_user_id not in \(m\.creator,m\.opponent\)/);
