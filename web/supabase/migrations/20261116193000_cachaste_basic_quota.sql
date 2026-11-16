@@ -40,6 +40,10 @@ begin
  if subject is null or (kind in ('lesson','diagnostic') and subject not in ('m1','m2','lectora','ciencias','historia'))
  or (kind in ('expressExam','duel') and subject<>'all')
  then raise exception 'INVALID_SUBJECT' using errcode='22023';end if;
+ -- An authenticated browser can call public RPC directly, bypassing the web gateway.
+ -- No client-supplied event UUID is proof of a completed lesson or duel.
+ -- Consumption must be moved to a server-attested transaction before release.
+ if operation='consume' then raise exception 'COMPLETION_ATTESTATION_REQUIRED' using errcode='42501';end if;
  if operation='consume' and event_id is null
  then raise exception 'EVENT_ID_REQUIRED' using errcode='22023';end if;
  premium:=cachaste.premium(u);
