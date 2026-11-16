@@ -50,7 +50,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     const entries=SEARCH_PAGES.map(page=>'<url><loc>'+SEARCH_ORIGIN+page+'</loc></url>').join('');
     return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+entries+'</urlset>',{headers:{'content-type':'application/xml; charset=utf-8','cache-control':'no-cache'}});
    }
-   if(path==='/api/config')return json({supabaseUrl:env.SUPABASE_URL||PROJECT_URL,publishableKey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,signupEnabled:env.WEB_SIGNUP_ENABLED==='true',authReturnReady:commercialHost,googleAuthEnabled:commercialHost,revision});
+   if(path==='/api/config')return json({supabaseUrl:env.SUPABASE_URL||PROJECT_URL,publishableKey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,signupEnabled:env.WEB_SIGNUP_ENABLED==='true',basicEnabled:false,authReturnReady:commercialHost,googleAuthEnabled:commercialHost,revision});
    if(path==='/api/auth/status'&&req.method==='GET'){
     if(!commercialHost)return json({googleReady:false});
     // The provider status is verified against Supabase below; no separate Cloudflare launch flags are required.
@@ -72,6 +72,23 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
     const token=bearer(req)||cookie(req);if(token){const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(token))),x=>x.toString(16).padStart(2,'0')).join('');grants.delete(hash);}
     return json({signedOut:true},200,{'set-cookie':`${COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${url.protocol==='https:'?'; Secure':''}`});
+   }
+   if(path==='/api/basic/quota'&&req.method==='POST'){
+    if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
+    // Closed until the educational engines enforce quotas and the basic content route is isolated.
+    if(env.WEB_BASIC_ACCESS_ENABLED!=='true')return json({error:'BASIC_NOT_READY'},503);
+    const auth=await identity(req,env,{active:false,fresh:true});
+    const raw=await req.text();if(raw.length>1024)return json({error:'PAYLOAD_TOO_LARGE'},413);
+    const body=JSON.parse(raw);
+    if(!['check','consume'].includes(body.operation)||!['lesson','diagnostic','expressExam','duel'].includes(body.kind))
+      return json({error:'INVALID_OPERATION'},400);
+    const subject=body.subject||'all';
+    if(!((['lesson','diagnostic'].includes(body.kind)&&['m1','m2','lectora','ciencias','historia'].includes(subject))||
+       (['expressExam','duel'].includes(body.kind)&&subject==='all')))
+      return json({error:'INVALID_SUBJECT'},400);
+    if(body.operation==='consume'&&!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(body.eventId||''))
+      return json({error:'INVALID_EVENT_ID'},400);
+    return json(await backend(env,'/rest/v1/rpc/cachaste_basic_quota',auth.token,{method:'POST',body:{operation:body.operation,kind:body.kind,subject,event_id:body.eventId||null}}));
    }
    if(path==='/api/progress'&&req.method==='POST'){
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
