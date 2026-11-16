@@ -26,6 +26,6 @@ export async function basicQuotaGateway({kind,subject='all',operation='check',ev
  });
  if(!response.ok)throw Error(response.status===503?'BASIC_NOT_READY':'BASIC_QUOTA_UNAVAILABLE');
  const result=await response.json();
- if(typeof result?.allowed!=='boolean'||!['premium','basica'].includes(result.tier))throw Error('INVALID_QUOTA_RESPONSE');
+ if(typeof result?.allowed!=='boolean'||!['premium','basica'].includes(result.tier)||result.tier==='basica'&&(!Number.isInteger(result.remaining)&&result.replayed!==true||result.remaining<0))throw Error('INVALID_QUOTA_RESPONSE');
  return result;
 }
