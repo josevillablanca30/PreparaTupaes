@@ -1,3 +1,4 @@
+import {issueBasicQuestions} from '../shared/basic-question-issuance.mjs';
 import {verifyBasicAnswers} from '../shared/basic-answer-verification.mjs';
 import {basicQuotaGateway} from '../client/basic-quota.mjs';
 import assert from 'node:assert/strict';
@@ -288,3 +289,10 @@ assert.throws(()=>verifyBasicAnswers({attemptId:gradingId,issuedQuestions:truste
 
 assert.throws(()=>verifyBasicAnswers({attemptId:gradingId,issuedQuestions:trustedQuestions,answers:[{questionId:'q1',selectedIndex:1,answerIndex:1},{questionId:'q2',selectedIndex:0}]}),/INVALID_ANSWER/);
 assert.throws(()=>verifyBasicAnswers({attemptId:gradingId,issuedQuestions:[{id:'q1',options:['a',''],answerIndex:0}],answers:[{questionId:'q1',selectedIndex:0}]}),/INVALID_TRUSTED_QUESTION/);
+
+const issued=issueBasicQuestions({attemptId:gradingId,questions:[{id:'q1',prompt:'Pregunta 1',options:['A','B'],answerIndex:1}]});
+assert.deepEqual(issued.publicQuestions,[{id:'q1',prompt:'Pregunta 1',options:['A','B']}]);
+assert.equal(JSON.stringify(issued.publicQuestions).includes('answerIndex'),false);
+assert.equal(issued.answerKey[0].answerIndex,1);
+assert.equal(verifyBasicAnswers({attemptId:gradingId,issuedQuestions:issued.answerKey,answers:[{questionId:'q1',selectedIndex:1}]}).correct,1);
+assert.throws(()=>issueBasicQuestions({attemptId:gradingId,questions:[{id:'q1',prompt:'',options:['A','B'],answerIndex:1}]}),/INVALID_TRUSTED_QUESTION/);
