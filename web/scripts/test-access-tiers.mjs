@@ -305,3 +305,10 @@ assert.equal(completionCalls.length,1);
 assert.equal(completionCalls[0].grading.correct,1);
 await assert.rejects(()=>completeVerifiedBasicAttempt({userId:'student',attemptId:gradingId,answers:[{questionId:'q1',selectedIndex:1}],loadIssuedAttempt:async()=>({userId:'other',attemptId:gradingId,status:'reserved',answerKey:issued.answerKey}),commitCompletion:async()=>{throw Error('MUST_NOT_COMMIT');}}),/ATTEMPT_NOT_ELIGIBLE/);
 await assert.rejects(()=>completeVerifiedBasicAttempt({userId:'student',attemptId:gradingId,answers:[{questionId:'q1',selectedIndex:1}],loadIssuedAttempt:async()=>({userId:'student',attemptId:gradingId,status:'completed',answerKey:issued.answerKey}),commitCompletion:async()=>({completed:true})}),/ATTEMPT_NOT_ELIGIBLE/);
+
+const issuedKeySql=readFileSync('web/supabase/migrations/20261116235000_cachaste_basic_issued_questions.sql','utf8');
+assert.match(issuedKeySql,/basic_issued_questions enable row level security/);
+assert.match(issuedKeySql,/revoke all on cachaste_web\.basic_issued_questions from public,anon,authenticated/);
+assert.match(issuedKeySql,/grant execute on function cachaste_web\.issue_basic_question_key\(uuid,uuid,jsonb\) to service_role/);
+assert.match(issuedKeySql,/on conflict\(attempt_id\) do nothing/);
+assert.match(issuedKeySql,/target\.status<>'reserved'/);
