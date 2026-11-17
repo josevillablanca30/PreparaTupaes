@@ -94,3 +94,13 @@ begin
  where id=a.id;
  return jsonb_build_object('allowed',true,'tier','basica','attemptId',a.id,'completed',true);
 end$complete$;
+
+-- PostgREST exposes public RPC wrappers, not the private cachaste_web schema.
+-- This wrapper retains the service-only gate enforced by the inner function.
+create or replace function public.cachaste_issue_basic_question_key(
+ p_user_id uuid,p_attempt_id uuid,p_answer_key jsonb
+) returns boolean language sql security invoker set search_path='' as $wrapper$
+ select cachaste_web.issue_basic_question_key(p_user_id,p_attempt_id,p_answer_key)
+$wrapper$;
+revoke all on function public.cachaste_issue_basic_question_key(uuid,uuid,jsonb) from public,anon,authenticated;
+grant execute on function public.cachaste_issue_basic_question_key(uuid,uuid,jsonb) to service_role;
