@@ -322,3 +322,13 @@ assert.match(issuedKeySql,/not between 2 and 8/);
 
 assert.match(issuedKeySql,/QUESTIONS_NOT_ISSUED/);
 assert.match(issuedKeySql,/from cachaste_web\.basic_issued_questions q/);
+
+const verifiedCompletionSql=readFileSync('web/supabase/migrations/20261116236000_cachaste_basic_verified_answer_completion.sql','utf8');
+assert.match(verifiedCompletionSql,/drop function if exists public\.cachaste_complete_basic_learning_attempt\(uuid,uuid\)/);
+assert.match(verifiedCompletionSql,/drop function if exists cachaste_web\.complete_basic_learning_attempt\(uuid,uuid\)/);
+assert.match(verifiedCompletionSql,/jsonb_array_elements\(issued\) with ordinality/);
+assert.match(verifiedCompletionSql,/jsonb_array_elements\(p_answers\) with ordinality/);
+assert.match(verifiedCompletionSql,/INCOMPLETE_ANSWERS/);
+assert.match(verifiedCompletionSql,/INVALID_ANSWERS/);
+assert.match(verifiedCompletionSql,/grant execute on function public\.cachaste_complete_basic_learning_attempt\(uuid,uuid,jsonb\) to service_role/);
+assert.ok(verifiedCompletionSql.indexOf('INVALID_ANSWERS')<verifiedCompletionSql.indexOf('insert into cachaste_web.basic_usage'));
