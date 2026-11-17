@@ -332,3 +332,6 @@ assert.match(verifiedCompletionSql,/INCOMPLETE_ANSWERS/);
 assert.match(verifiedCompletionSql,/INVALID_ANSWERS/);
 assert.match(verifiedCompletionSql,/grant execute on function public\.cachaste_complete_basic_learning_attempt\(uuid,uuid,jsonb\) to service_role/);
 assert.ok(verifiedCompletionSql.indexOf('INVALID_ANSWERS')<verifiedCompletionSql.indexOf('insert into cachaste_web.basic_usage'));
+
+assert.match(verifiedCompletionSql,/ATTEMPT_ALREADY_COMPLETED/);
+assert.doesNotMatch(verifiedCompletionSql,/replayed',true/);
