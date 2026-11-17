@@ -110,7 +110,7 @@ export async function basicReserveActivity({mode,subject,fetcher=fetch,accessTok
  if(result?.tier!=='basica'||typeof result.allowed!=='boolean'||
   !Number.isInteger(result.remaining)||result.remaining<0||result.remaining>3||
   (result.allowed&&(!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(result.attemptId||'')||
-  !/^\\d{4}-\\d{2}-\\d{2}$/.test(result.day||'')))||
+  !/^\d{4}-\d{2}-\d{2}$/.test(result.day||'')))||
   (!result.allowed&&result.remaining!==0))
   throw Error('INVALID_RESERVATION_RESPONSE');
  return result;
