@@ -1,5 +1,6 @@
 import{PROJECT_URL,PUBLISHABLE_KEY}from'../shared/config.mjs';
 import{privateAsset}from'./content.mjs';
+import{classifyDailyAdmission}from'../shared/basic-completion-contract.mjs';
 import{publicOfflineKey,offlineLicense,safeJson}from'./offline.mjs';
 const COOKIE='cachaste_web_session';
 const PUBLIC_HTML_ALIASES=new Map([['/index.html','/'],...['cuenta','recuperar','privacidad','condiciones','eliminar-cuenta','offline'].map(name=>['/'+name+'.html','/'+name])]);
@@ -72,6 +73,20 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
     const token=bearer(req)||cookie(req);if(token){const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(token))),x=>x.toString(16).padStart(2,'0')).join('');grants.delete(hash);}
     return json({signedOut:true},200,{'set-cookie':`${COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${url.protocol==='https:'?'; Secure':''}`});
+   }
+   if(path==='/api/basic/admission'&&req.method==='POST'){
+    if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
+    if(env.WEB_BASIC_ACCESS_ENABLED!=='true'||env.WEB_BASIC_EDUCATIONAL_GUARDS_READY!=='true')return json({error:'BASIC_NOT_READY'},503);
+    const auth=await identity(req,env,{active:false,fresh:true});
+    const raw=await req.text();if(raw.length>1024)return json({error:'PAYLOAD_TOO_LARGE'},413);
+    let body;try{body=JSON.parse(raw);}catch{return json({error:'INVALID_JSON'},400);}
+    if(!body||typeof body!=='object'||Array.isArray(body))return json({error:'INVALID_ACTIVITY'},400);
+    const admission=classifyDailyAdmission({mode:body.mode,subject:body.subject});
+    if(!admission.allowed)return json({allowed:false,reason:admission.reason},403);
+    const quota=await backend(env,'/rest/v1/rpc/cachaste_basic_quota',auth.token,{method:'POST',body:{operation:'check',kind:admission.kind,subject:admission.subject,event_id:null}});
+    // Preflight only. An authoritative attempt reservation must still occur at start.
+    if(typeof quota?.allowed!=='boolean')return json({error:'INVALID_QUOTA_RESPONSE'},502);
+    return json({allowed:quota.allowed,kind:admission.kind,subject:admission.subject,tier:quota.tier,remaining:quota.remaining??null,preflightOnly:true});
    }
    if(path==='/api/basic/summary'&&req.method==='GET'){
     if(env.WEB_BASIC_ACCESS_ENABLED!=='true'||env.WEB_BASIC_EDUCATIONAL_GUARDS_READY!=='true')return json({error:'BASIC_NOT_READY'},503);
