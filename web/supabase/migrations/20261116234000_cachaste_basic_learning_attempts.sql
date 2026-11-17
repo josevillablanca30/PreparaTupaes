@@ -70,16 +70,18 @@ begin
   if prior.status='completed' then
    raise exception 'ATTEMPT_ALREADY_COMPLETED' using errcode='22023';
   end if;
-  -- A retry returns the current authoritative quota, not an unknown/null counter.
+  -- Reservation availability counts both completed and still-reserved attempts.
+  -- Completed attempts must later be attested by a trusted server.
+  -- A retry returns the current authoritative admission quota.
   max_count:=case p_kind when 'lesson' then 3 when 'diagnostic' then 1 else 1 end;
-  select count(*)::integer into used_count from cachaste_web.basic_usage a
+  select count(*)::integer into used_count from cachaste_web.basic_learning_attempts a
   where a.user_id=u and a.kind=p_kind and a.subject=p_subject
   and (p_kind='diagnostic' or a.usage_day=today_chile);
   return jsonb_build_object('allowed',true,'tier','basica','attemptId',prior.id,
    'remaining',greatest(0,max_count-used_count),'day',prior.usage_day,'replayed',true);
  end if;
  max_count:=case p_kind when 'lesson' then 3 when 'diagnostic' then 1 else 1 end;
- select count(*)::integer into used_count from cachaste_web.basic_usage a
+ select count(*)::integer into used_count from cachaste_web.basic_learning_attempts a
  where a.user_id=u and a.kind=p_kind and a.subject=p_subject
  and (p_kind='diagnostic' or a.usage_day=today_chile);
  if used_count>=max_count then
@@ -100,23 +102,8 @@ $$;
 revoke all on function public.cachaste_reserve_basic_learning_attempt(text,text,uuid) from public,anon;
 grant execute on function public.cachaste_reserve_basic_learning_attempt(text,text,uuid) to authenticated;
 
--- Reservation and visible quota counters must share one authoritative ledger.
--- Trigger runs in the same transaction as the attempt insertion; failures roll back both.
-create or replace function cachaste_web.record_basic_learning_reservation()
-returns trigger language plpgsql security definer set search_path='' as $$
-begin
- if auth.role() is distinct from 'authenticated' and auth.role() is distinct from 'service_role' then
-  raise exception 'AUTH_REQUIRED' using errcode='42501';
- end if;
- if new.user_id is distinct from auth.uid() and auth.role() is distinct from 'service_role' then
-  raise exception 'USER_MISMATCH' using errcode='42501';
- end if;
- insert into cachaste_web.basic_usage(user_id,kind,subject,usage_day,event_id)
- values(new.user_id,new.kind,new.subject,new.usage_day,new.id);
- return new;
-end$$;
-revoke all on function cachaste_web.record_basic_learning_reservation() from public,anon,authenticated;
-drop trigger if exists cachaste_basic_learning_reservation on cachaste_web.basic_learning_attempts;
-create trigger cachaste_basic_learning_reservation
-after insert on cachaste_web.basic_learning_attempts
-for each row execute function cachaste_web.record_basic_learning_reservation();
+-- IMPORTANT: reservations do not write to basic_usage. Only trusted, independently
+-- verified completions may be recorded there. The reservation table counts
+-- in-flight slots to prevent concurrent devices overbooking the daily quota.
+-- A completion attestation endpoint and abandoned-attempt recovery are still
+-- required before enabling any Basic learning feature flags.
