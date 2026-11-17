@@ -109,7 +109,7 @@ export async function basicReserveActivity({mode,subject,requestKey,fetcher=fetc
  const result=await response.json();
  if(result?.tier==='premium'&&result.allowed===true&&result.unlimited===true)return result;
  if(result?.tier!=='basica'||typeof result.allowed!=='boolean'||
-  (result.replayed===true?result.remaining!==null:(!Number.isInteger(result.remaining)||result.remaining<0||result.remaining>3))||
+  (!Number.isInteger(result.remaining)||result.remaining<0||result.remaining>3)||
   (result.allowed&&(!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(result.attemptId||'')||
   !/^\d{4}-\d{2}-\d{2}$/.test(result.day||'')))||
   (!result.allowed&&result.remaining!==0))
