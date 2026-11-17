@@ -27,7 +27,8 @@ begin
  where id=p_attempt_id and user_id=p_user_id for update;
  if not found then raise exception 'ATTEMPT_NOT_FOUND' using errcode='22023'; end if;
  if a.status='completed' then
-  return jsonb_build_object('allowed',true,'tier','basica','replayed',true,'attemptId',a.id);
+  -- Do not return success for a replay with different or unverified answers.
+  raise exception 'ATTEMPT_ALREADY_COMPLETED' using errcode='22023';
  end if;
  if a.status<>'reserved' or a.created_at<now()-interval '90 minutes' or
     (a.kind<>'diagnostic' and a.usage_day<>today_chile) then
