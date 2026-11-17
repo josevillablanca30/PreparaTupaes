@@ -32,13 +32,14 @@ begin
  select * into target from cachaste_web.basic_learning_attempts
  where id=p_attempt_id and user_id=p_user_id for update;
  if not found or target.status<>'reserved' or
-    target.created_at<now()-interval '90 minutes' then
+    target.created_at<now()-interval '90 minutes' or
+    (target.kind<>'diagnostic' and target.usage_day<>(now() at time zone 'America/Santiago')::date) then
   raise exception 'ATTEMPT_NOT_ELIGIBLE' using errcode='42501';
  end if;
  insert into cachaste_web.basic_issued_questions(attempt_id,user_id,answer_key)
  values(p_attempt_id,p_user_id,p_answer_key)
  on conflict(attempt_id) do nothing;
- -- A replay must not overwrite an existing key.
+ -- A replay must not overwrite an existing key; return true only for insertion.
  return found;
 end$$;
 revoke all on function cachaste_web.issue_basic_question_key(uuid,uuid,jsonb) from public,anon,authenticated;
