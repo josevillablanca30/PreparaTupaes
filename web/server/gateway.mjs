@@ -17,7 +17,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
  const allowed=new Set(protectedFiles),accountAllowed=new Set(accountFiles),grants=new Map();
  async function backend(env,path,token,{body,method='GET'}={}){
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
-  try{const res=await fetcher((env.SUPABASE_URL||PROJECT_URL)+path,{method,signal:controller.signal,headers:{apikey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,...(token?{authorization:'Bearer '+token}:{}),...(body!==undefined?{'content-type':'application/json'}:{})},...(body!==undefined?{body:JSON.stringify(body)}:{})});const value=await res.json().catch(()=>({}));if(!res.ok){const e=Error(value.message||value.error||'BACKEND_UNAVAILABLE');e.status=res.status;throw e;}return value;}finally{clearTimeout(timer);}
+  try{const res=await fetcher((env.SUPABASE_URL||PROJECT_URL)+path,{method,signal:controller.signal,headers:{apikey:(env.SUPABASE_SERVICE_ROLE_KEY&&token===env.SUPABASE_SERVICE_ROLE_KEY)?env.SUPABASE_SERVICE_ROLE_KEY:(env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY),...(token?{authorization:'Bearer '+token}:{}),...(body!==undefined?{'content-type':'application/json'}:{})},...(body!==undefined?{body:JSON.stringify(body)}:{})});const value=await res.json().catch(()=>({}));if(!res.ok){const e=Error(value.message||value.error||'BACKEND_UNAVAILABLE');e.status=res.status;throw e;}return value;}finally{clearTimeout(timer);}
  }
  async function identity(req,env,{active=true,fresh=false}={}){
   const token=bearer(req)||cookie(req);if(!token||token.length>10000||jwtExpires(token)<=now())throw Object.assign(Error('AUTH_REQUIRED'),{status:401});
