@@ -335,3 +335,7 @@ assert.ok(verifiedCompletionSql.indexOf('INVALID_ANSWERS')<verifiedCompletionSql
 
 assert.match(verifiedCompletionSql,/ATTEMPT_ALREADY_COMPLETED/);
 assert.doesNotMatch(verifiedCompletionSql,/replayed',true/);
+
+assert.match(issuedKeySql,/create or replace function public\.cachaste_issue_basic_question_key/);
+assert.match(issuedKeySql,/grant execute on function public\.cachaste_issue_basic_question_key\(uuid,uuid,jsonb\) to service_role/);
+assert.match(issuedKeySql,/revoke all on function public\.cachaste_issue_basic_question_key\(uuid,uuid,jsonb\) from public,anon,authenticated/);
