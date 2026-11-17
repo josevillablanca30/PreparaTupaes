@@ -226,7 +226,7 @@ assert.match(learningAttemptSql,/create trigger cachaste_basic_learning_reservat
 assert.match(learningAttemptSql,/insert into cachaste_web.basic_usage\(user_id,kind,subject,usage_day,event_id\)/);
 assert.match(learningAttemptSql,/BASIC_ATTEMPTS_NOT_READY/);
 assert.match(learningAttemptSql,/alter table cachaste_web.basic_learning_attempts enable row level security/);
-assert.match(learningAttemptSql,/grant execute on function public.cachaste_reserve_basic_learning_attempt\(text,text\) to authenticated/);
+assert.match(learningAttemptSql,/grant execute on function public.cachaste_reserve_basic_learning_attempt\(text,text,uuid\) to authenticated/);
 
 const {basicReserveActivity}=await import('../client/basic-quota.mjs');
 const validAttempt={allowed:true,tier:'basica',attemptId:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a',remaining:2,day:'2026-11-16'};
