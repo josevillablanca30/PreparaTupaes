@@ -38,7 +38,7 @@ declare
  used_count integer;
  max_count integer;
  attempt_id uuid;
- prior cachaste_web.basic_learning_attempts;
+ prior cachaste_web.basic_learning_attempts%rowtype;
 begin
  if p_kind is null or p_subject is null or
   p_kind not in ('lesson','diagnostic','expressExam') or
