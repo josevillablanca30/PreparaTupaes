@@ -91,3 +91,27 @@ export async function withBasicAdmission({mode,subject,accessToken=null,fetcher=
  // before this can be wired to production Basic learning activities.
  return Object.freeze({started:false,reason:'BASIC_ATTEMPT_RESERVATION_NOT_READY',decision});
 }
+
+/**
+ * Atomic reservation client, deliberately separate from the read-only preflight.
+ * A successful reservation is not a verified completion.
+ */
+export async function basicReserveActivity({mode,subject,fetcher=fetch,accessToken=null}={}){
+ if(typeof mode!=='string'||typeof subject!=='string'||mode.length>32||subject.length>32)throw Error('INVALID_ACTIVITY');
+ if(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10))throw Error('INVALID_AUTH_TOKEN');
+ const response=await fetcher('/api/basic/reserve',{
+  method:'POST',credentials:'same-origin',
+  headers:{'content-type':'application/json','x-cachaste-request':'1',...(accessToken?{authorization:'Bearer '+accessToken}:{})},
+  body:JSON.stringify({mode,subject})
+ });
+ if(!response.ok)throw Error(response.status===503?'BASIC_NOT_READY':response.status===403?'PREMIUM_OR_BASIC_RESTRICTION':'BASIC_RESERVATION_UNAVAILABLE');
+ const result=await response.json();
+ if(result?.tier==='premium'&&result.allowed===true&&result.unlimited===true)return result;
+ if(result?.tier!=='basica'||typeof result.allowed!=='boolean'||
+  !Number.isInteger(result.remaining)||result.remaining<0||result.remaining>3||
+  (result.allowed&&(!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(result.attemptId||'')||
+  !/^\\d{4}-\\d{2}-\\d{2}$/.test(result.day||'')))||
+  (!result.allowed&&result.remaining!==0))
+  throw Error('INVALID_RESERVATION_RESPONSE');
+ return result;
+}
