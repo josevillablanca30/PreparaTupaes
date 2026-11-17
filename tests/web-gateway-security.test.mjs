@@ -271,3 +271,19 @@ test('Basic progress snapshot is opt-in and cannot be used for client writes',as
  assert.equal((await post('snapshot',ready)).status,200);
  assert.equal(calls.filter(x=>x.url.endsWith('/rest/v1/rpc/cachaste_web_progress')).length,1);
 });
+
+test('progress endpoint rejects malformed and non-object payloads without writing',async()=>{
+ const token=fakeToken();let progressCalls=0;
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async url=>{
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false});
+  if(url.endsWith('/rest/v1/rpc/cachaste_web_progress'))progressCalls++;
+  throw Error('Unexpected backend request');
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ for(const body of ['{broken','null','[]']){
+  const response=await g.fetch(req('/api/progress',{method:'POST',headers,body}),env);
+  assert.equal(response.status,400,body);
+ }
+ assert.equal(progressCalls,0);
+});
