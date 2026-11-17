@@ -51,7 +51,7 @@ begin
  -- Same lock namespace as completion ledger and duel activation.
  perform pg_advisory_xact_lock(hashtextextended('basic-completion:'||u::text,0));
  max_count:=case p_kind when 'lesson' then 3 when 'diagnostic' then 1 else 1 end;
- select count(*)::integer into used_count from cachaste_web.basic_learning_attempts a
+ select count(*)::integer into used_count from cachaste_web.basic_usage a
  where a.user_id=u and a.kind=p_kind and a.subject=p_subject
  and (p_kind='diagnostic' or a.usage_day=today_chile);
  if used_count>=max_count then
@@ -71,3 +71,24 @@ create or replace function public.cachaste_reserve_basic_learning_attempt(
 $$;
 revoke all on function public.cachaste_reserve_basic_learning_attempt(text,text) from public,anon;
 grant execute on function public.cachaste_reserve_basic_learning_attempt(text,text) to authenticated;
+
+-- Reservation and visible quota counters must share one authoritative ledger.
+-- Trigger runs in the same transaction as the attempt insertion; failures roll back both.
+create or replace function cachaste_web.record_basic_learning_reservation()
+returns trigger language plpgsql security definer set search_path='' as $$
+begin
+ if auth.role() is distinct from 'authenticated' and auth.role() is distinct from 'service_role' then
+  raise exception 'AUTH_REQUIRED' using errcode='42501';
+ end if;
+ if new.user_id is distinct from auth.uid() and auth.role() is distinct from 'service_role' then
+  raise exception 'USER_MISMATCH' using errcode='42501';
+ end if;
+ insert into cachaste_web.basic_usage(user_id,kind,subject,usage_day,event_id)
+ values(new.user_id,new.kind,new.subject,new.usage_day,new.id);
+ return new;
+end$$;
+revoke all on function cachaste_web.record_basic_learning_reservation() from public,anon,authenticated;
+drop trigger if exists cachaste_basic_learning_reservation on cachaste_web.basic_learning_attempts;
+create trigger cachaste_basic_learning_reservation
+after insert on cachaste_web.basic_learning_attempts
+for each row execute function cachaste_web.record_basic_learning_reservation();
