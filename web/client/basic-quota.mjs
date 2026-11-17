@@ -115,3 +115,17 @@ export async function basicReserveActivity({mode,subject,fetcher=fetch,accessTok
   throw Error('INVALID_RESERVATION_RESPONSE');
  return result;
 }
+
+/**
+ * Launches a Basic activity only after the server has atomically reserved a slot.
+ * The callback receives the opaque attempt ID for future server attestation.
+ * A reservation is spent even if the caller later fails; no client-side refund.
+ */
+export async function withBasicReservation({mode,subject,fetcher=fetch,accessToken=null,start}={}){
+ if(typeof start!=='function')throw Error('ACTIVITY_START_REQUIRED');
+ const decision=await basicReserveActivity({mode,subject,fetcher,accessToken});
+ if(!decision.allowed)return Object.freeze({started:false,reason:'BASIC_QUOTA_EXHAUSTED',decision});
+ if(decision.tier==='premium')return Object.freeze({started:true,decision,value:await start({tier:'premium',attemptId:null})});
+ const value=await start({tier:'basica',attemptId:decision.attemptId});
+ return Object.freeze({started:true,decision,value});
+}
