@@ -1,3 +1,4 @@
+import {completeVerifiedBasicAttempt} from '../shared/basic-verified-completion.mjs';
 import {issueBasicQuestions} from '../shared/basic-question-issuance.mjs';
 import {verifyBasicAnswers} from '../shared/basic-answer-verification.mjs';
 import {basicQuotaGateway} from '../client/basic-quota.mjs';
@@ -296,3 +297,11 @@ assert.equal(JSON.stringify(issued.publicQuestions).includes('answerIndex'),fals
 assert.equal(issued.answerKey[0].answerIndex,1);
 assert.equal(verifyBasicAnswers({attemptId:gradingId,issuedQuestions:issued.answerKey,answers:[{questionId:'q1',selectedIndex:1}]}).correct,1);
 assert.throws(()=>issueBasicQuestions({attemptId:gradingId,questions:[{id:'q1',prompt:'',options:['A','B'],answerIndex:1}]}),/INVALID_TRUSTED_QUESTION/);
+
+const completionCalls=[];
+const completed=await completeVerifiedBasicAttempt({userId:'student',attemptId:gradingId,answers:[{questionId:'q1',selectedIndex:1}],loadIssuedAttempt:async ({userId,attemptId})=>({userId,attemptId,status:'reserved',answerKey:issued.answerKey}),commitCompletion:async payload=>{completionCalls.push(payload);return {completed:true};}});
+assert.deepEqual(completed,{attemptId:gradingId,correct:1,total:1,completed:true});
+assert.equal(completionCalls.length,1);
+assert.equal(completionCalls[0].grading.correct,1);
+await assert.rejects(()=>completeVerifiedBasicAttempt({userId:'student',attemptId:gradingId,answers:[{questionId:'q1',selectedIndex:1}],loadIssuedAttempt:async()=>({userId:'other',attemptId:gradingId,status:'reserved',answerKey:issued.answerKey}),commitCompletion:async()=>{throw Error('MUST_NOT_COMMIT');}}),/ATTEMPT_NOT_ELIGIBLE/);
+await assert.rejects(()=>completeVerifiedBasicAttempt({userId:'student',attemptId:gradingId,answers:[{questionId:'q1',selectedIndex:1}],loadIssuedAttempt:async()=>({userId:'student',attemptId:gradingId,status:'completed',answerKey:issued.answerKey}),commitCompletion:async()=>({completed:true})}),/ATTEMPT_NOT_ELIGIBLE/);
