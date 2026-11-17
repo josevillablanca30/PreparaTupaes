@@ -316,3 +316,6 @@ assert.match(issuedKeySql,/target\.status<>'reserved'/);
 assert.match(issuedKeySql,/target\.usage_day<>\(now\(\) at time zone 'America\/Santiago'\)::date/);
 assert.match(issuedKeySql,/jsonb_array_elements\(p_answer_key\)/);
 assert.match(issuedKeySql,/jsonb_typeof\(q->'answerIndex'\)/);
+
+assert.match(issuedKeySql,/count\(distinct q->>'id'\)/);
+assert.match(issuedKeySql,/not between 2 and 8/);
