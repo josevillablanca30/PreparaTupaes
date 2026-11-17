@@ -26,7 +26,32 @@ begin
  end if;
  if p_user_id is null or p_attempt_id is null or
     jsonb_typeof(p_answer_key) is distinct from 'array' or
-    jsonb_array_length(p_answer_key) not between 1 and 80 then
+    jsonb_array_length(p_answer_key) not between 1 and 80 or
+    exists(select 1 from jsonb_array_elements(p_answer_key) q
+      where jsonb_typeof(q)<>'object' or
+       jsonb_typeof(q->'id')<>'string' or
+       jsonb_typeof(q->'options')<>'array' or
+       jsonb_typeof(q->'answerIndex')<>'number' or
+       (q->>'answerIndex')!~'^[0-9]+
+  raise exception 'INVALID_ISSUANCE' using errcode='22023';
+ end if;
+ select * into target from cachaste_web.basic_learning_attempts
+ where id=p_attempt_id and user_id=p_user_id for update;
+ if not found or target.status<>'reserved' or
+    target.created_at<now()-interval '90 minutes' or
+    (target.kind<>'diagnostic' and target.usage_day<>(now() at time zone 'America/Santiago')::date) then
+  raise exception 'ATTEMPT_NOT_ELIGIBLE' using errcode='42501';
+ end if;
+ insert into cachaste_web.basic_issued_questions(attempt_id,user_id,answer_key)
+ values(p_attempt_id,p_user_id,p_answer_key)
+ on conflict(attempt_id) do nothing;
+ -- A replay must not overwrite an existing key; return true only for insertion.
+ return found;
+end$$;
+revoke all on function cachaste_web.issue_basic_question_key(uuid,uuid,jsonb) from public,anon,authenticated;
+grant execute on function cachaste_web.issue_basic_question_key(uuid,uuid,jsonb) to service_role;
+ or
+       (q->>'answerIndex')::integer>=jsonb_array_length(q->'options')) then
   raise exception 'INVALID_ISSUANCE' using errcode='22023';
  end if;
  select * into target from cachaste_web.basic_learning_attempts
