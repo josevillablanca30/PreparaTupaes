@@ -111,6 +111,50 @@ $$;
 revoke all on function public.cachaste_reserve_basic_learning_attempt(text,text,uuid) from public,anon;
 grant execute on function public.cachaste_reserve_basic_learning_attempt(text,text,uuid) to authenticated;
 
+-- Server-only transition. This is deliberately NOT a client-callable completion API.
+-- The trusted caller must independently attest the issued questions and answers.
+create or replace function cachaste_web.complete_basic_learning_attempt(
+ p_user_id uuid,p_attempt_id uuid
+) returns jsonb language plpgsql security definer set search_path='' as $
+declare
+ a cachaste_web.basic_learning_attempts%rowtype;
+ today_chile date:=(now() at time zone 'America/Santiago')::date;
+begin
+ if auth.role() is distinct from 'service_role' then
+  raise exception 'SERVER_ONLY' using errcode='42501';
+ end if;
+ if p_user_id is null or p_attempt_id is null then
+  raise exception 'INVALID_COMPLETION' using errcode='22023';
+ end if;
+ perform pg_advisory_xact_lock(hashtextextended('basic-completion:'||p_user_id::text,0));
+ select * into a from cachaste_web.basic_learning_attempts
+ where id=p_attempt_id and user_id=p_user_id for update;
+ if not found then raise exception 'ATTEMPT_NOT_FOUND' using errcode='22023'; end if;
+ if a.status='completed' then
+  return jsonb_build_object('allowed',true,'tier','basica','replayed',true,'attemptId',a.id);
+ end if;
+ if a.status<>'reserved' or a.created_at<now()-interval '90 minutes' or
+  (a.kind<>'diagnostic' and a.usage_day<>today_chile) then
+  raise exception 'ATTEMPT_EXPIRED' using errcode='22023';
+ end if;
+ -- Do not call a generic quota-consuming RPC: the slot was already reserved.
+ -- The same transaction atomically transitions the attempt and writes its completion.
+ insert into cachaste_web.basic_usage(user_id,kind,subject,usage_day,event_id)
+ values(a.user_id,a.kind,a.subject,a.usage_day,a.id);
+ update cachaste_web.basic_learning_attempts set status='completed',completed_at=now()
+ where id=a.id;
+ return jsonb_build_object('allowed',true,'tier','basica','attemptId',a.id,'completed',true);
+end$;
+revoke all on function cachaste_web.complete_basic_learning_attempt(uuid,uuid) from public,anon,authenticated;
+grant execute on function cachaste_web.complete_basic_learning_attempt(uuid,uuid) to service_role;
+create or replace function public.cachaste_complete_basic_learning_attempt(
+ p_user_id uuid,p_attempt_id uuid
+) returns jsonb language sql security invoker set search_path='' as $
+ select cachaste_web.complete_basic_learning_attempt(p_user_id,p_attempt_id)
+$;
+revoke all on function public.cachaste_complete_basic_learning_attempt(uuid,uuid) from public,anon,authenticated;
+grant execute on function public.cachaste_complete_basic_learning_attempt(uuid,uuid) to service_role;
+
 -- IMPORTANT: reservations do not write to basic_usage. Only trusted, independently
 -- verified completions may be recorded there. The reservation table counts
 -- in-flight slots to prevent concurrent devices overbooking the daily quota.
