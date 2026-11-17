@@ -227,3 +227,11 @@ assert.match(learningAttemptSql,/insert into cachaste_web.basic_usage\(user_id,k
 assert.match(learningAttemptSql,/BASIC_ATTEMPTS_NOT_READY/);
 assert.match(learningAttemptSql,/alter table cachaste_web.basic_learning_attempts enable row level security/);
 assert.match(learningAttemptSql,/grant execute on function public.cachaste_reserve_basic_learning_attempt\(text,text\) to authenticated/);
+
+const {basicReserveActivity}=await import('../client/basic-quota.mjs');
+const validAttempt={allowed:true,tier:'basica',attemptId:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a',remaining:2,day:'2026-11-16'};
+const reservation=await basicReserveActivity({mode:'lesson',subject:'M1',fetcher:async()=>Response.json(validAttempt)});
+assert.equal(reservation.attemptId,validAttempt.attemptId);
+await assert.rejects(()=>basicReserveActivity({mode:'lesson',subject:'M1',fetcher:async()=>Response.json({...validAttempt,day:'invalid'})}),/INVALID_RESERVATION_RESPONSE/);
+await assert.rejects(()=>basicReserveActivity({mode:'lesson',subject:'M1',fetcher:async()=>Response.json({...validAttempt,attemptId:'invalid'})}),/INVALID_RESERVATION_RESPONSE/);
+await assert.rejects(()=>basicReserveActivity({mode:'lesson',subject:'M1',fetcher:async()=>Response.json({error:'BASIC_NOT_READY'},{status:503})}),/BASIC_NOT_READY/);
