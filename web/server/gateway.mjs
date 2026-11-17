@@ -89,8 +89,8 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     if(body.operation==='consume')return json({error:'SERVER_VERIFIED_COMPLETION_REQUIRED'},403);
     if(body.operation!=='check'||!['lesson','diagnostic','expressExam','duel'].includes(body.kind))
       return json({error:'INVALID_OPERATION'},400);
-    // Browser quota requests are read-only. Only a separately verified server-side\n    // activity transaction may call the service-role completion ledger.
-    if(body.operation==='consume')return json({error:'SERVER_VERIFIED_COMPLETION_REQUIRED'},403);
+    // Browser quota requests are read-only. Only a verified server-side
+    // activity transaction may call the service-role completion ledger.
     const subject=body.subject||'all';
     if(!((['lesson','diagnostic'].includes(body.kind)&&['m1','m2','lectora','ciencias','historia'].includes(subject))||
        (['expressExam','duel'].includes(body.kind)&&subject==='all')))
@@ -100,7 +100,9 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
    if(path==='/api/progress'&&req.method==='POST'){
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
     const auth=await identity(req,env,{active:false,fresh:true});const text=await req.text();if(new TextEncoder().encode(text).length>1050000)return json({error:'PROGRESS_TOO_LARGE'},413);
-    const body=JSON.parse(text);if(body.userId!==undefined&&body.userId!==auth.user.id)return json({error:'SESSION_CHANGED'},409);if(!['snapshot','put'].includes(body.operation))return json({error:'INVALID_OPERATION'},400);
+    let body;try{body=JSON.parse(text);}catch{return json({error:'INVALID_JSON'},400);}
+    if(!body||typeof body!=='object'||Array.isArray(body))return json({error:'INVALID_OPERATION'},400);
+    if(body.userId!==undefined&&body.userId!==auth.user.id)return json({error:'SESSION_CHANGED'},409);if(!['snapshot','put'].includes(body.operation))return json({error:'INVALID_OPERATION'},400);
     if(auth.access.active!==true){
      // Non-premium accounts can only read existing progress, never write it.
      // Both gateway and database opt-in flags are required before Basic release.
