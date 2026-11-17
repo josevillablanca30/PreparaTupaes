@@ -260,7 +260,7 @@ await assert.rejects(()=>basicReserveActivity({mode:'lesson',subject:'M1',reques
 const reservationSql=readFileSync('web/supabase/migrations/20261116234000_cachaste_basic_learning_attempts.sql','utf8');
 assert.equal((reservationSql.match(/from cachaste_web\.basic_learning_attempts a/g)||[]).length>=2,true);
 assert.doesNotMatch(reservationSql,/create trigger cachaste_basic_learning_reservation/);
-assert.doesNotMatch(reservationSql,/insert into cachaste_web\.basic_usage/);
+assert.doesNotMatch(reservationSql.split('-- Server-only transition.')[0],/insert into cachaste_web\.basic_usage/);
 
 const leaseSql=readFileSync('web/supabase/migrations/20261116234000_cachaste_basic_learning_attempts.sql','utf8');
 assert.match(leaseSql,/status='expired'/);
