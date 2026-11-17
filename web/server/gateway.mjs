@@ -92,6 +92,33 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
      method:'POST',body:{p_kind:admission.kind,p_subject:admission.subject,p_request_key:body.requestKey}
     }));
    }
+   if(path==='/api/basic/complete'&&req.method==='POST'){
+    if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
+    if(env.WEB_BASIC_ACCESS_ENABLED!=='true'||env.WEB_BASIC_EDUCATIONAL_GUARDS_READY!=='true'||
+       env.WEB_BASIC_ATTEMPT_RESERVATIONS_READY!=='true'||env.WEB_BASIC_COMPLETION_ATTESTATION_READY!=='true'||
+       env.WEB_BASIC_SERVER_ISSUANCE_READY!=='true')return json({error:'BASIC_NOT_READY'},503);
+    const auth=await identity(req,env,{active:false,fresh:true});
+    if(!env.SUPABASE_SERVICE_ROLE_KEY)return json({error:'BASIC_NOT_READY'},503);
+    const raw=await req.text();if(raw.length>16000)return json({error:'PAYLOAD_TOO_LARGE'},413);
+    let body;try{body=JSON.parse(raw);}catch{return json({error:'INVALID_JSON'},400);}
+    if(!body||typeof body!=='object'||Array.isArray(body)||
+       typeof body.attemptId!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(body.attemptId)||
+       !Array.isArray(body.answers)||body.answers.length<1||body.answers.length>80)
+      return json({error:'INVALID_COMPLETION'},400);
+    for(const answer of body.answers){
+     if(!answer||typeof answer!=='object'||Array.isArray(answer)||
+        Object.keys(answer).some(key=>!['questionId','selectedIndex'].includes(key))||
+        typeof answer.questionId!=='string'||answer.questionId.length>128||
+        !Number.isInteger(answer.selectedIndex)||answer.selectedIndex<0||answer.selectedIndex>7)
+       return json({error:'INVALID_ANSWERS'},400);
+    }
+    // Service key stays exclusively in the Worker environment; identity is
+    // freshly verified and user ID is never accepted from the browser.
+    return json(await backend(env,'/rest/v1/rpc/cachaste_complete_basic_learning_attempt',
+      env.SUPABASE_SERVICE_ROLE_KEY,{method:'POST',body:{
+       p_user_id:auth.user.id,p_attempt_id:body.attemptId,p_answers:body.answers
+      }}));
+   }
    if(path==='/api/basic/admission'&&req.method==='POST'){
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
     if(env.WEB_BASIC_ACCESS_ENABLED!=='true'||env.WEB_BASIC_EDUCATIONAL_GUARDS_READY!=='true')return json({error:'BASIC_NOT_READY'},503);
