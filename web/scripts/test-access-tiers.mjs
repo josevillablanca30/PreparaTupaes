@@ -268,3 +268,12 @@ assert.match(leaseSql,/interval '90 minutes'/);
 assert.match(leaseSql,/ATTEMPT_EXPIRED/);
 assert.match(leaseSql,/where kind='diagnostic' and status<>'expired'/);
 assert.ok(leaseSql.indexOf("pg_advisory_xact_lock(hashtextextended('basic-completion:'")<leaseSql.indexOf("update cachaste_web.basic_learning_attempts a set status='expired'"));
+
+const completionSql=readFileSync('web/supabase/migrations/20261116234000_cachaste_basic_learning_attempts.sql','utf8');
+assert.match(completionSql,/function cachaste_web\.complete_basic_learning_attempt/);
+assert.match(completionSql,/auth\.role\(\) is distinct from 'service_role'/);
+assert.match(completionSql,/a\.created_at<now\(\)-interval '90 minutes'/);
+assert.match(completionSql,/ATTEMPT_EXPIRED/);
+assert.match(completionSql,/insert into cachaste_web\.basic_usage\(user_id,kind,subject,usage_day,event_id\)/);
+assert.match(completionSql,/set status='completed',completed_at=now\(\)/);
+assert.match(completionSql,/grant execute on function public\.cachaste_complete_basic_learning_attempt\(uuid,uuid\) to service_role/);
