@@ -261,3 +261,10 @@ const reservationSql=readFileSync('web/supabase/migrations/20261116234000_cachas
 assert.equal((reservationSql.match(/from cachaste_web\.basic_learning_attempts a/g)||[]).length>=2,true);
 assert.doesNotMatch(reservationSql,/create trigger cachaste_basic_learning_reservation/);
 assert.doesNotMatch(reservationSql,/insert into cachaste_web\.basic_usage/);
+
+const leaseSql=readFileSync('web/supabase/migrations/20261116234000_cachaste_basic_learning_attempts.sql','utf8');
+assert.match(leaseSql,/status='expired'/);
+assert.match(leaseSql,/interval '90 minutes'/);
+assert.match(leaseSql,/ATTEMPT_EXPIRED/);
+assert.match(leaseSql,/where kind='diagnostic' and status<>'expired'/);
+assert.ok(leaseSql.indexOf("pg_advisory_xact_lock(hashtextextended('basic-completion:'")<leaseSql.indexOf("update cachaste_web.basic_learning_attempts a set status='expired'"));
