@@ -11,6 +11,7 @@ create table if not exists cachaste_web.basic_learning_attempts(
  kind text not null check(kind in ('lesson','diagnostic','expressExam')),
  subject text not null check(subject in ('m1','m2','lectora','ciencias','historia','all')),
  usage_day date not null,
+ request_key uuid not null,
  status text not null default 'reserved' check(status in ('reserved','completed')),
  created_at timestamptz not null default now(),
  completed_at timestamptz,
@@ -19,6 +20,8 @@ create table if not exists cachaste_web.basic_learning_attempts(
   (kind='expressExam' and subject='all')
  )
 );
+create unique index if not exists basic_learning_attempt_request_idx
+ on cachaste_web.basic_learning_attempts(user_id,request_key);
 create index if not exists basic_learning_attempt_quota_idx
  on cachaste_web.basic_learning_attempts(user_id,kind,subject,usage_day);
 create unique index if not exists basic_learning_diagnostic_once_idx
@@ -27,7 +30,7 @@ alter table cachaste_web.basic_learning_attempts enable row level security;
 revoke all on cachaste_web.basic_learning_attempts from public,anon,authenticated;
 
 create or replace function cachaste_web.reserve_basic_learning_attempt(
- p_kind text,p_subject text
+ p_kind text,p_subject text,p_request_key uuid
 ) returns jsonb language plpgsql security definer set search_path='' as $$
 declare
  u uuid:=cachaste.require_user();
@@ -35,6 +38,7 @@ declare
  used_count integer;
  max_count integer;
  attempt_id uuid;
+ prior cachaste_web.basic_learning_attempts;
 begin
  if p_kind is null or p_subject is null or
   p_kind not in ('lesson','diagnostic','expressExam') or
@@ -42,6 +46,7 @@ begin
   (p_kind='expressExam' and p_subject<>'all') then
   raise exception 'INVALID_ACTIVITY' using errcode='22023';
  end if;
+ if p_request_key is null then raise exception 'REQUEST_KEY_REQUIRED' using errcode='22023';end if;
  if not coalesce((select learning_attempts_enabled from cachaste_web.basic_feature_flags where id=true),false) then
   raise exception 'BASIC_ATTEMPTS_NOT_READY' using errcode='42501';
  end if;
@@ -50,6 +55,15 @@ begin
  end if;
  -- Same lock namespace as completion ledger and duel activation.
  perform pg_advisory_xact_lock(hashtextextended('basic-completion:'||u::text,0));
+ select * into prior from cachaste_web.basic_learning_attempts a
+ where a.user_id=u and a.request_key=p_request_key;
+ if found then
+  if prior.kind is distinct from p_kind or prior.subject is distinct from p_subject then
+   raise exception 'REQUEST_KEY_CONFLICT' using errcode='22023';
+  end if;
+  return jsonb_build_object('allowed',true,'tier','basica','attemptId',prior.id,
+   'remaining',null,'day',prior.usage_day,'replayed',true);
+ end if;
  max_count:=case p_kind when 'lesson' then 3 when 'diagnostic' then 1 else 1 end;
  select count(*)::integer into used_count from cachaste_web.basic_usage a
  where a.user_id=u and a.kind=p_kind and a.subject=p_subject
@@ -57,20 +71,20 @@ begin
  if used_count>=max_count then
   return jsonb_build_object('allowed',false,'tier','basica','remaining',0);
  end if;
- insert into cachaste_web.basic_learning_attempts(user_id,kind,subject,usage_day)
- values(u,p_kind,p_subject,today_chile) returning id into attempt_id;
+ insert into cachaste_web.basic_learning_attempts(user_id,kind,subject,usage_day,request_key)
+ values(u,p_kind,p_subject,today_chile,p_request_key) returning id into attempt_id;
  return jsonb_build_object('allowed',true,'tier','basica','attemptId',attempt_id,
   'remaining',max_count-used_count-1,'day',today_chile);
 end$$;
-revoke all on function cachaste_web.reserve_basic_learning_attempt(text,text) from public,anon,authenticated;
-grant execute on function cachaste_web.reserve_basic_learning_attempt(text,text) to authenticated;
+revoke all on function cachaste_web.reserve_basic_learning_attempt(text,text,uuid) from public,anon,authenticated;
+grant execute on function cachaste_web.reserve_basic_learning_attempt(text,text,uuid) to authenticated;
 create or replace function public.cachaste_reserve_basic_learning_attempt(
- p_kind text,p_subject text
+ p_kind text,p_subject text,p_request_key uuid
 ) returns jsonb language sql security invoker set search_path='' as $$
- select cachaste_web.reserve_basic_learning_attempt(p_kind,p_subject)
+ select cachaste_web.reserve_basic_learning_attempt(p_kind,p_subject,p_request_key)
 $$;
-revoke all on function public.cachaste_reserve_basic_learning_attempt(text,text) from public,anon;
-grant execute on function public.cachaste_reserve_basic_learning_attempt(text,text) to authenticated;
+revoke all on function public.cachaste_reserve_basic_learning_attempt(text,text,uuid) from public,anon;
+grant execute on function public.cachaste_reserve_basic_learning_attempt(text,text,uuid) to authenticated;
 
 -- Reservation and visible quota counters must share one authoritative ledger.
 -- Trigger runs in the same transaction as the attempt insertion; failures roll back both.
