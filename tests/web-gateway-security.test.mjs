@@ -335,3 +335,11 @@ test('Basic reservation endpoint stays closed until completion attestation is re
  const reservation=calls.find(x=>x.url.endsWith('/rest/v1/rpc/cachaste_reserve_basic_learning_attempt'));
  assert.deepEqual(JSON.parse(reservation.options.body),{p_kind:'lesson',p_subject:'m1',p_request_key:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'});
 });
+
+test('Basic completion is denied without activation and without leaking server credentials',async()=>{
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json'};
+ const res=await gateway.fetch(req('/api/basic/complete',{method:'POST',headers,body:JSON.stringify({attemptId:'123e4567-e89b-42d3-a456-426614174000',answers:[{questionId:'q1',selectedIndex:0}]})}),env);
+ assert.equal(res.status,503);assert.equal((await json(res)).error,'BASIC_NOT_READY');
+ const bad=await gateway.fetch(req('/api/basic/complete',{method:'POST',headers:{...headers,origin:'https://attacker.invalid'},body:'{}'}),env);
+ assert.equal(bad.status,403);
+});
