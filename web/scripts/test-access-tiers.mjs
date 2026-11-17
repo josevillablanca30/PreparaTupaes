@@ -204,3 +204,14 @@ assert.equal(admissionCalls[0].url,'/api/basic/admission');
 assert.equal(admissionCalls[0].options.headers.authorization,'Bearer test-token-123456');
 await assert.rejects(()=>basicActivityAdmission({mode:'lesson',subject:'M1',fetcher:async()=>Response.json({allowed:true,kind:'lesson',subject:'m1',tier:'basica',remaining:-1,preflightOnly:true})}),/INVALID_ADMISSION_RESPONSE/);
 await assert.rejects(()=>basicActivityAdmission({mode:'full-exam',subject:'M1',fetcher:async()=>Response.json({reason:'PREMIUM_REQUIRED'},{status:403})}),/PREMIUM_OR_BASIC_RESTRICTION/);
+
+const {withBasicAdmission}=await import('../client/basic-quota.mjs');
+let startInvocations=0;
+const noStart=()=>{startInvocations++;};
+const basicExhausted=await withBasicAdmission({mode:'lesson',subject:'M1',start:noStart,fetcher:async()=>Response.json({allowed:false,kind:'lesson',subject:'m1',tier:'basica',remaining:0,preflightOnly:true})});
+assert.equal(basicExhausted.started,false);
+assert.equal(basicExhausted.reason,'BASIC_QUOTA_EXHAUSTED');
+const basicPreflight=await withBasicAdmission({mode:'lesson',subject:'M1',start:noStart,fetcher:async()=>Response.json({allowed:true,kind:'lesson',subject:'m1',tier:'basica',remaining:3,preflightOnly:true})});
+assert.equal(basicPreflight.started,false);
+assert.equal(basicPreflight.reason,'BASIC_ATTEMPT_RESERVATION_NOT_READY');
+assert.equal(startInvocations,0);
