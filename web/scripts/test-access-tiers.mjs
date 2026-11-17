@@ -215,3 +215,12 @@ const basicPreflight=await withBasicAdmission({mode:'lesson',subject:'M1',start:
 assert.equal(basicPreflight.started,false);
 assert.equal(basicPreflight.reason,'BASIC_ATTEMPT_RESERVATION_NOT_READY');
 assert.equal(startInvocations,0);
+
+const learningAttemptSql=readFileSync(new URL('../supabase/migrations/20261116234000_cachaste_basic_learning_attempts.sql',import.meta.url),'utf8');
+assert.match(learningAttemptSql,/learning_attempts_enabled boolean not null default false/);
+assert.match(learningAttemptSql,/pg_advisory_xact_lock/);
+assert.match(learningAttemptSql,/basic_learning_diagnostic_once_idx/);
+assert.match(learningAttemptSql,/p_kind='diagnostic' or a.usage_day=today_chile/);
+assert.match(learningAttemptSql,/BASIC_ATTEMPTS_NOT_READY/);
+assert.match(learningAttemptSql,/alter table cachaste_web.basic_learning_attempts enable row level security/);
+assert.match(learningAttemptSql,/grant execute on function public.cachaste_reserve_basic_learning_attempt\(text,text\) to authenticated/);
