@@ -319,3 +319,6 @@ assert.match(issuedKeySql,/jsonb_typeof\(q->'answerIndex'\)/);
 
 assert.match(issuedKeySql,/count\(distinct q->>'id'\)/);
 assert.match(issuedKeySql,/not between 2 and 8/);
+
+assert.match(issuedKeySql,/QUESTIONS_NOT_ISSUED/);
+assert.match(issuedKeySql,/from cachaste_web\.basic_issued_questions q/);
