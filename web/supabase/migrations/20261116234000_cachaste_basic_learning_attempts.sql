@@ -53,13 +53,14 @@ begin
  if cachaste.premium(u) then
   return jsonb_build_object('allowed',true,'tier','premium','unlimited',true);
  end if;
+ -- Same lock namespace as completion ledger and duel activation.
+ perform pg_advisory_xact_lock(hashtextextended('basic-completion:'||u::text,0));
  -- Reclaim abandoned reservations only after a conservative 90-minute lease.
  -- This is safe for admission, but trusted completion must reject expired attempts.
  update cachaste_web.basic_learning_attempts a set status='expired'
  where a.user_id=u and a.status='reserved'
  and a.created_at < now()-interval '90 minutes';
- -- Same lock namespace as completion ledger and duel activation.
- perform pg_advisory_xact_lock(hashtextextended('basic-completion:'||u::text,0));
+
  select * into prior from cachaste_web.basic_learning_attempts a
  where a.user_id=u and a.request_key=p_request_key;
  if found then
