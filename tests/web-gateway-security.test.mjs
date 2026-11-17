@@ -301,7 +301,7 @@ test('Basic activity admission checks server quota and denies Premium-only modes
  const post=(body,flags)=>g.fetch(req('/api/basic/admission',{method:'POST',headers,body:JSON.stringify(body)}),flags);
  const ready={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true'};
  assert.equal((await post({mode:'lesson',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'},env)).status,503);
- const premiumOnly=await post({mode:'full-exam',subject:'M1'},ready);
+ const premiumOnly=await post({mode:'full-exam',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'},ready);
  assert.equal(premiumOnly.status,403);
  assert.equal((await json(premiumOnly)).reason,'PREMIUM_REQUIRED');
  assert.equal(calls.filter(c=>c.url.endsWith('/rest/v1/rpc/cachaste_basic_quota')).length,0);
