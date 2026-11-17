@@ -1,3 +1,4 @@
+import {verifyBasicAnswers} from '../shared/basic-answer-verification.mjs';
 import {basicQuotaGateway} from '../client/basic-quota.mjs';
 import assert from 'node:assert/strict';
 import {BASIC_LIMITS,MONTHLY_TRIAL,PAES_SUBJECTS,accessTier,basicQuota} from '../shared/access-tiers.mjs';
@@ -277,3 +278,10 @@ assert.match(attemptCompletionSql,/ATTEMPT_EXPIRED/);
 assert.match(attemptCompletionSql,/insert into cachaste_web\.basic_usage\(user_id,kind,subject,usage_day,event_id\)/);
 assert.match(attemptCompletionSql,/set status='completed',completed_at=now\(\)/);
 assert.match(attemptCompletionSql,/grant execute on function public\.cachaste_complete_basic_learning_attempt\(uuid,uuid\) to service_role/);
+
+const gradingId='a2f817ca-a0e1-4d83-a6d1-99319124ab7a';
+const trustedQuestions=[{id:'q1',options:['a','b','c'],answerIndex:1},{id:'q2',options:['x','y'],answerIndex:0}];
+assert.deepEqual(verifyBasicAnswers({attemptId:gradingId,issuedQuestions:trustedQuestions,answers:[{questionId:'q1',selectedIndex:1},{questionId:'q2',selectedIndex:1}]}),{attemptId:gradingId,answered:2,correct:1,total:2,complete:true});
+assert.throws(()=>verifyBasicAnswers({attemptId:gradingId,issuedQuestions:trustedQuestions,answers:[{questionId:'q2',selectedIndex:1},{questionId:'q1',selectedIndex:0}]}),/INVALID_ANSWER/);
+assert.throws(()=>verifyBasicAnswers({attemptId:gradingId,issuedQuestions:[trustedQuestions[0],trustedQuestions[0]],answers:[{questionId:'q1',selectedIndex:1},{questionId:'q1',selectedIndex:1}]}),/INVALID_TRUSTED_QUESTION/);
+assert.throws(()=>verifyBasicAnswers({attemptId:gradingId,issuedQuestions:trustedQuestions,answers:[{questionId:'q1',selectedIndex:1}]}),/INVALID_QUESTION_SET/);
