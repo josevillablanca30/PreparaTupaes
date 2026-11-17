@@ -258,3 +258,8 @@ assert.equal(replayed.replayed,true);
 assert.equal(replayed.attemptId,validAttempt.attemptId);
 await assert.rejects(()=>basicReserveActivity({mode:'lesson',subject:'M1',requestKey:'invalid',fetcher:async()=>Response.json(validAttempt)}),/INVALID_REQUEST_KEY/);
 await assert.rejects(()=>basicReserveActivity({mode:'lesson',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a',fetcher:async()=>Response.json({...replayedAttempt,remaining:null})}),/INVALID_RESERVATION_RESPONSE/);
+
+const reservationSql=readFileSync('web/supabase/migrations/20261116234000_cachaste_basic_learning_attempts.sql','utf8');
+assert.equal((reservationSql.match(/from cachaste_web\.basic_learning_attempts a/g)||[]).length>=2,true);
+assert.doesNotMatch(reservationSql,/create trigger cachaste_basic_learning_reservation/);
+assert.doesNotMatch(reservationSql,/insert into cachaste_web\.basic_usage/);
