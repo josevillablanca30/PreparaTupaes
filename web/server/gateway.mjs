@@ -85,10 +85,11 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     const raw=await req.text();if(raw.length>1024)return json({error:'PAYLOAD_TOO_LARGE'},413);
     let body;try{body=JSON.parse(raw);}catch{return json({error:'INVALID_JSON'},400);}
     if(!body||typeof body!=='object'||Array.isArray(body))return json({error:'INVALID_ACTIVITY'},400);
+    if(typeof body.requestKey!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(body.requestKey))return json({error:'INVALID_REQUEST_KEY'},400);
     const admission=classifyDailyAdmission({mode:body.mode,subject:body.subject});
     if(!admission.allowed)return json({allowed:false,reason:admission.reason},403);
     return json(await backend(env,'/rest/v1/rpc/cachaste_reserve_basic_learning_attempt',auth.token,{
-     method:'POST',body:{p_kind:admission.kind,p_subject:admission.subject}
+     method:'POST',body:{p_kind:admission.kind,p_subject:admission.subject,p_request_key:body.requestKey}
     }));
    }
    if(path==='/api/basic/admission'&&req.method==='POST'){
