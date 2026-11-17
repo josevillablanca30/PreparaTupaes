@@ -287,3 +287,27 @@ test('progress endpoint rejects malformed and non-object payloads without writin
  }
  assert.equal(progressCalls,0);
 });
+
+test('Basic activity admission checks server quota and denies Premium-only modes',async()=>{
+ const token=fakeToken(),calls=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async(url,options={})=>{
+  calls.push({url,options});
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false});
+  if(url.endsWith('/rest/v1/rpc/cachaste_basic_quota'))return Response.json({allowed:false,tier:'basica',remaining:0});
+  throw Error('Unexpected request '+url);
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ const post=(body,flags)=>g.fetch(req('/api/basic/admission',{method:'POST',headers,body:JSON.stringify(body)}),flags);
+ const ready={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true'};
+ assert.equal((await post({mode:'lesson',subject:'M1'},env)).status,503);
+ const premiumOnly=await post({mode:'full-exam',subject:'M1'},ready);
+ assert.equal(premiumOnly.status,403);
+ assert.equal((await json(premiumOnly)).reason,'PREMIUM_REQUIRED');
+ assert.equal(calls.filter(c=>c.url.endsWith('/rest/v1/rpc/cachaste_basic_quota')).length,0);
+ const exhausted=await post({mode:'lesson',subject:'M1'},ready);
+ assert.equal(exhausted.status,200);
+ assert.deepEqual(await json(exhausted),{allowed:false,kind:'lesson',subject:'m1',tier:'basica',remaining:0,preflightOnly:true});
+ const call=calls.find(c=>c.url.endsWith('/rest/v1/rpc/cachaste_basic_quota'));
+ assert.deepEqual(JSON.parse(call.options.body),{operation:'check',kind:'lesson',subject:'m1',event_id:null});
+});
