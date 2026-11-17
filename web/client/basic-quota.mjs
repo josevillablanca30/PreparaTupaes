@@ -78,3 +78,16 @@ export async function basicActivityAdmission({mode,subject,fetcher=fetch,accessT
   throw Error('INVALID_ADMISSION_RESPONSE');
  return result;
 }
+
+/**
+ * UI admission guard. It never invokes the learning engine when a server check
+ * fails, and does not pretend that preflight reserves a quota slot.
+ */
+export async function withBasicAdmission({mode,subject,accessToken=null,fetcher=fetch,start}={}){
+ if(typeof start!=='function')throw Error('ACTIVITY_START_REQUIRED');
+ const decision=await basicActivityAdmission({mode,subject,accessToken,fetcher});
+ if(!decision.allowed)return Object.freeze({started:false,reason:'BASIC_QUOTA_EXHAUSTED',decision});
+ // Server-side attempt reservation and completion attestation are still required
+ // before this can be wired to production Basic learning activities.
+ return Object.freeze({started:false,reason:'BASIC_ATTEMPT_RESERVATION_NOT_READY',decision});
+}
