@@ -312,3 +312,7 @@ assert.match(issuedKeySql,/revoke all on cachaste_web\.basic_issued_questions fr
 assert.match(issuedKeySql,/grant execute on function cachaste_web\.issue_basic_question_key\(uuid,uuid,jsonb\) to service_role/);
 assert.match(issuedKeySql,/on conflict\(attempt_id\) do nothing/);
 assert.match(issuedKeySql,/target\.status<>'reserved'/);
+
+assert.match(issuedKeySql,/target\.usage_day<>\(now\(\) at time zone 'America\/Santiago'\)::date/);
+assert.match(issuedKeySql,/jsonb_array_elements\(p_answer_key\)/);
+assert.match(issuedKeySql,/jsonb_typeof\(q->'answerIndex'\)/);
