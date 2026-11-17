@@ -53,3 +53,28 @@ export async function basicQuotaSummary({fetcher=fetch,accessToken=null}={}){
     result.fullExamsRemaining!==0)throw Error('INVALID_QUOTA_RESPONSE');
  return result;
 }
+
+/**
+ * Admission preflight for the actual daily-app mode/subject vocabulary.
+ * This is NOT an activity start token or proof of completion.
+ * Fail closed on malformed responses and exhausted quota.
+ */
+export async function basicActivityAdmission({mode,subject,fetcher=fetch,accessToken=null}={}){
+ if(typeof mode!=='string'||typeof subject!=='string'||mode.length>32||subject.length>32)throw Error('INVALID_ACTIVITY');
+ if(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10))throw Error('INVALID_AUTH_TOKEN');
+ const response=await fetcher('/api/basic/admission',{
+  method:'POST',credentials:'same-origin',
+  headers:{'content-type':'application/json','x-cachaste-request':'1',...(accessToken?{authorization:'Bearer '+accessToken}:{})},
+  body:JSON.stringify({mode,subject})
+ });
+ if(!response.ok)throw Error(response.status===503?'BASIC_NOT_READY':response.status===403?'PREMIUM_OR_BASIC_RESTRICTION':'BASIC_ADMISSION_UNAVAILABLE');
+ const result=await response.json();
+ if(result?.preflightOnly!==true||typeof result.allowed!=='boolean'||!['premium','basica'].includes(result.tier)||
+  !['lesson','diagnostic','expressExam'].includes(result.kind)||
+  !['m1','m2','lectora','ciencias','historia','all'].includes(result.subject)||
+  (result.kind==='expressExam')!==(result.subject==='all')||
+  (result.tier==='basica'&&(!Number.isInteger(result.remaining)||result.remaining<0))||
+  (result.allowed===false&&result.tier==='basica'&&result.remaining!==0))
+  throw Error('INVALID_ADMISSION_RESPONSE');
+ return result;
+}
