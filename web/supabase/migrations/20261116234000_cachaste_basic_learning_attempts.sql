@@ -115,7 +115,7 @@ grant execute on function public.cachaste_reserve_basic_learning_attempt(text,te
 -- The trusted caller must independently attest the issued questions and answers.
 create or replace function cachaste_web.complete_basic_learning_attempt(
  p_user_id uuid,p_attempt_id uuid
-) returns jsonb language plpgsql security definer set search_path='' as $
+) returns jsonb language plpgsql security definer set search_path='' as $complete$
 declare
  a cachaste_web.basic_learning_attempts%rowtype;
  today_chile date:=(now() at time zone 'America/Santiago')::date;
@@ -144,14 +144,14 @@ begin
  update cachaste_web.basic_learning_attempts set status='completed',completed_at=now()
  where id=a.id;
  return jsonb_build_object('allowed',true,'tier','basica','attemptId',a.id,'completed',true);
-end$;
+end$complete$;
 revoke all on function cachaste_web.complete_basic_learning_attempt(uuid,uuid) from public,anon,authenticated;
 grant execute on function cachaste_web.complete_basic_learning_attempt(uuid,uuid) to service_role;
 create or replace function public.cachaste_complete_basic_learning_attempt(
  p_user_id uuid,p_attempt_id uuid
-) returns jsonb language sql security invoker set search_path='' as $
+) returns jsonb language sql security invoker set search_path='' as $wrapper$
  select cachaste_web.complete_basic_learning_attempt(p_user_id,p_attempt_id)
-$;
+$wrapper$;
 revoke all on function public.cachaste_complete_basic_learning_attempt(uuid,uuid) from public,anon,authenticated;
 grant execute on function public.cachaste_complete_basic_learning_attempt(uuid,uuid) to service_role;
 
