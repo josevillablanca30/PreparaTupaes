@@ -192,3 +192,15 @@ assert.deepEqual(classifyDailyAdmission({mode:'full-exam',subject:'M1'}),{allowe
 assert.deepEqual(classifyDailyAdmission({mode:'unit-exam',subject:'M1'}),{allowed:false,reason:'PREMIUM_REQUIRED'});
 assert.deepEqual(classifyDailyAdmission({mode:'free',subject:'M1'}),{allowed:false,reason:'ACTIVITY_NOT_AVAILABLE_IN_BASIC'});
 assert.deepEqual(classifyDailyAdmission({mode:'lesson',subject:'invalid'}),{allowed:false,reason:'INVALID_SUBJECT_OR_MODE'});
+
+const {basicActivityAdmission}=await import('../client/basic-quota.mjs');
+const admissionCalls=[];
+const deniedAdmission=await basicActivityAdmission({mode:'lesson',subject:'M1',accessToken:'test-token-123456',fetcher:async(url,options)=>{
+ admissionCalls.push({url,options});
+ return Response.json({allowed:false,kind:'lesson',subject:'m1',tier:'basica',remaining:0,preflightOnly:true});
+}});
+assert.equal(deniedAdmission.allowed,false);
+assert.equal(admissionCalls[0].url,'/api/basic/admission');
+assert.equal(admissionCalls[0].options.headers.authorization,'Bearer test-token-123456');
+await assert.rejects(()=>basicActivityAdmission({mode:'lesson',subject:'M1',fetcher:async()=>Response.json({allowed:true,kind:'lesson',subject:'m1',tier:'basica',remaining:-1,preflightOnly:true})}),/INVALID_ADMISSION_RESPONSE/);
+await assert.rejects(()=>basicActivityAdmission({mode:'full-exam',subject:'M1',fetcher:async()=>Response.json({reason:'PREMIUM_REQUIRED'},{status:403})}),/PREMIUM_OR_BASIC_RESTRICTION/);
