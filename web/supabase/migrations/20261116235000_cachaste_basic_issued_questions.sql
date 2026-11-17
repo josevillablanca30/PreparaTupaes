@@ -27,10 +27,13 @@ begin
  if p_user_id is null or p_attempt_id is null or
     jsonb_typeof(p_answer_key) is distinct from 'array' or
     jsonb_array_length(p_answer_key) not between 1 and 80 or
+    (select count(distinct q->>'id') from jsonb_array_elements(p_answer_key) q)<>jsonb_array_length(p_answer_key) or
     exists(select 1 from jsonb_array_elements(p_answer_key) q
       where jsonb_typeof(q)<>'object' or
        jsonb_typeof(q->'id')<>'string' or
+       coalesce(q->>'id','')='' or
        jsonb_typeof(q->'options')<>'array' or
+       jsonb_array_length(case when jsonb_typeof(q->'options')='array' then q->'options' else '[]'::jsonb end) not between 2 and 8 or
        jsonb_typeof(q->'answerIndex')<>'number' or
        (q->>'answerIndex')!~'^[0-9]+
   raise exception 'INVALID_ISSUANCE' using errcode='22023';
