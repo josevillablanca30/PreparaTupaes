@@ -12,7 +12,7 @@ create table if not exists cachaste_web.basic_learning_attempts(
  subject text not null check(subject in ('m1','m2','lectora','ciencias','historia','all')),
  usage_day date not null,
  request_key uuid not null,
- status text not null default 'reserved' check(status in ('reserved','completed')),
+ status text not null default 'reserved' check(status in ('reserved','completed','expired')),
  created_at timestamptz not null default now(),
  completed_at timestamptz,
  constraint basic_learning_attempt_subject check(
@@ -25,7 +25,7 @@ create unique index if not exists basic_learning_attempt_request_idx
 create index if not exists basic_learning_attempt_quota_idx
  on cachaste_web.basic_learning_attempts(user_id,kind,subject,usage_day);
 create unique index if not exists basic_learning_diagnostic_once_idx
- on cachaste_web.basic_learning_attempts(user_id,subject) where kind='diagnostic';
+ on cachaste_web.basic_learning_attempts(user_id,subject) where kind='diagnostic' and status<>'expired';
 alter table cachaste_web.basic_learning_attempts enable row level security;
 revoke all on cachaste_web.basic_learning_attempts from public,anon,authenticated;
 
@@ -53,6 +53,11 @@ begin
  if cachaste.premium(u) then
   return jsonb_build_object('allowed',true,'tier','premium','unlimited',true);
  end if;
+ -- Reclaim abandoned reservations only after a conservative 90-minute lease.
+ -- This is safe for admission, but trusted completion must reject expired attempts.
+ update cachaste_web.basic_learning_attempts a set status='expired'
+ where a.user_id=u and a.status='reserved'
+ and a.created_at < now()-interval '90 minutes';
  -- Same lock namespace as completion ledger and duel activation.
  perform pg_advisory_xact_lock(hashtextextended('basic-completion:'||u::text,0));
  select * into prior from cachaste_web.basic_learning_attempts a
@@ -67,6 +72,9 @@ begin
    raise exception 'REQUEST_KEY_EXPIRED' using errcode='22023';
   end if;
   -- A replay of an already completed attempt is not a new admission.
+  if prior.status='expired' then
+   raise exception 'ATTEMPT_EXPIRED' using errcode='22023';
+  end if;
   if prior.status='completed' then
    raise exception 'ATTEMPT_ALREADY_COMPLETED' using errcode='22023';
   end if;
@@ -76,14 +84,14 @@ begin
   max_count:=case p_kind when 'lesson' then 3 when 'diagnostic' then 1 else 1 end;
   select count(*)::integer into used_count from cachaste_web.basic_learning_attempts a
   where a.user_id=u and a.kind=p_kind and a.subject=p_subject
-  and (p_kind='diagnostic' or a.usage_day=today_chile);
+  and a.status<>'expired' and (p_kind='diagnostic' or a.usage_day=today_chile);
   return jsonb_build_object('allowed',true,'tier','basica','attemptId',prior.id,
    'remaining',greatest(0,max_count-used_count),'day',prior.usage_day,'replayed',true);
  end if;
  max_count:=case p_kind when 'lesson' then 3 when 'diagnostic' then 1 else 1 end;
  select count(*)::integer into used_count from cachaste_web.basic_learning_attempts a
  where a.user_id=u and a.kind=p_kind and a.subject=p_subject
- and (p_kind='diagnostic' or a.usage_day=today_chile);
+ and a.status<>'expired' and (p_kind='diagnostic' or a.usage_day=today_chile);
  if used_count>=max_count then
   return jsonb_build_object('allowed',false,'tier','basica','remaining',0);
  end if;
