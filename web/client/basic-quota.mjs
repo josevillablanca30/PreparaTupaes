@@ -96,13 +96,14 @@ export async function withBasicAdmission({mode,subject,accessToken=null,fetcher=
  * Atomic reservation client, deliberately separate from the read-only preflight.
  * A successful reservation is not a verified completion.
  */
-export async function basicReserveActivity({mode,subject,fetcher=fetch,accessToken=null}={}){
+export async function basicReserveActivity({mode,subject,requestKey,fetcher=fetch,accessToken=null}={}){
+ if(typeof requestKey!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestKey))throw Error('INVALID_REQUEST_KEY');
  if(typeof mode!=='string'||typeof subject!=='string'||mode.length>32||subject.length>32)throw Error('INVALID_ACTIVITY');
  if(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10))throw Error('INVALID_AUTH_TOKEN');
  const response=await fetcher('/api/basic/reserve',{
   method:'POST',credentials:'same-origin',
   headers:{'content-type':'application/json','x-cachaste-request':'1',...(accessToken?{authorization:'Bearer '+accessToken}:{})},
-  body:JSON.stringify({mode,subject})
+  body:JSON.stringify({mode,subject,requestKey})
  });
  if(!response.ok)throw Error(response.status===503?'BASIC_NOT_READY':response.status===403?'PREMIUM_OR_BASIC_RESTRICTION':'BASIC_RESERVATION_UNAVAILABLE');
  const result=await response.json();
@@ -121,9 +122,9 @@ export async function basicReserveActivity({mode,subject,fetcher=fetch,accessTok
  * The callback receives the opaque attempt ID for future server attestation.
  * A reservation is spent even if the caller later fails; no client-side refund.
  */
-export async function withBasicReservation({mode,subject,fetcher=fetch,accessToken=null,start}={}){
+export async function withBasicReservation({mode,subject,requestKey,fetcher=fetch,accessToken=null,start}={}){
  if(typeof start!=='function')throw Error('ACTIVITY_START_REQUIRED');
- const decision=await basicReserveActivity({mode,subject,fetcher,accessToken});
+ const decision=await basicReserveActivity({mode,subject,requestKey,fetcher,accessToken});
  if(!decision.allowed)return Object.freeze({started:false,reason:'BASIC_QUOTA_EXHAUSTED',decision});
  if(decision.tier==='premium')return Object.freeze({started:true,decision,value:await start({tier:'premium',attemptId:null})});
  const value=await start({tier:'basica',attemptId:decision.attemptId});
