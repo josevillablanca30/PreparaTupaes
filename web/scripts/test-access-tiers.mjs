@@ -285,3 +285,6 @@ assert.deepEqual(verifyBasicAnswers({attemptId:gradingId,issuedQuestions:trusted
 assert.throws(()=>verifyBasicAnswers({attemptId:gradingId,issuedQuestions:trustedQuestions,answers:[{questionId:'q2',selectedIndex:1},{questionId:'q1',selectedIndex:0}]}),/INVALID_ANSWER/);
 assert.throws(()=>verifyBasicAnswers({attemptId:gradingId,issuedQuestions:[trustedQuestions[0],trustedQuestions[0]],answers:[{questionId:'q1',selectedIndex:1},{questionId:'q1',selectedIndex:1}]}),/INVALID_TRUSTED_QUESTION/);
 assert.throws(()=>verifyBasicAnswers({attemptId:gradingId,issuedQuestions:trustedQuestions,answers:[{questionId:'q1',selectedIndex:1}]}),/INVALID_QUESTION_SET/);
+
+assert.throws(()=>verifyBasicAnswers({attemptId:gradingId,issuedQuestions:trustedQuestions,answers:[{questionId:'q1',selectedIndex:1,answerIndex:1},{questionId:'q2',selectedIndex:0}]}),/INVALID_ANSWER/);
+assert.throws(()=>verifyBasicAnswers({attemptId:gradingId,issuedQuestions:[{id:'q1',options:['a',''],answerIndex:0}],answers:[{questionId:'q1',selectedIndex:0}]}),/INVALID_TRUSTED_QUESTION/);
