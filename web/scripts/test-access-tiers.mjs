@@ -183,3 +183,12 @@ assert.match(basicReadonlyProgressSql,/if operation<>'put'then raise exception '
 assert.match(basicReadonlyProgressSql,/pg_advisory_xact_lock/);
 assert.match(basicReadonlyProgressSql,/cachaste\.premium\(u\)/);
 assert.equal(basicReadonlyProgressSql.includes(String.raw`\\n`),false);
+
+const {classifyDailyAdmission}=await import('../shared/basic-completion-contract.mjs');
+assert.deepEqual(classifyDailyAdmission({mode:'lesson',subject:'M1'}),{allowed:true,kind:'lesson',subject:'m1'});
+assert.deepEqual(classifyDailyAdmission({mode:'diagnostic',subject:'Ciencias'}),{allowed:true,kind:'diagnostic',subject:'ciencias'});
+assert.deepEqual(classifyDailyAdmission({mode:'express-exam',subject:'Historia'}),{allowed:true,kind:'expressExam',subject:'all'});
+assert.deepEqual(classifyDailyAdmission({mode:'full-exam',subject:'M1'}),{allowed:false,reason:'PREMIUM_REQUIRED'});
+assert.deepEqual(classifyDailyAdmission({mode:'unit-exam',subject:'M1'}),{allowed:false,reason:'PREMIUM_REQUIRED'});
+assert.deepEqual(classifyDailyAdmission({mode:'free',subject:'M1'}),{allowed:false,reason:'ACTIVITY_NOT_AVAILABLE_IN_BASIC'});
+assert.deepEqual(classifyDailyAdmission({mode:'lesson',subject:'invalid'}),{allowed:false,reason:'INVALID_SUBJECT_OR_MODE'});
