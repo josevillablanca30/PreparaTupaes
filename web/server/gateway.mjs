@@ -74,6 +74,23 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     const token=bearer(req)||cookie(req);if(token){const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(token))),x=>x.toString(16).padStart(2,'0')).join('');grants.delete(hash);}
     return json({signedOut:true},200,{'set-cookie':`${COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${url.protocol==='https:'?'; Secure':''}`});
    }
+   if(path==='/api/basic/reserve'&&req.method==='POST'){
+    if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
+    // Must be explicitly enabled only after DB migration, server-issued learning
+    // attempts and completion attestation are deployed together.
+    if(env.WEB_BASIC_ACCESS_ENABLED!=='true'||env.WEB_BASIC_EDUCATIONAL_GUARDS_READY!=='true'||
+       env.WEB_BASIC_ATTEMPT_RESERVATIONS_READY!=='true'||env.WEB_BASIC_COMPLETION_ATTESTATION_READY!=='true')
+      return json({error:'BASIC_NOT_READY'},503);
+    const auth=await identity(req,env,{active:false,fresh:true});
+    const raw=await req.text();if(raw.length>1024)return json({error:'PAYLOAD_TOO_LARGE'},413);
+    let body;try{body=JSON.parse(raw);}catch{return json({error:'INVALID_JSON'},400);}
+    if(!body||typeof body!=='object'||Array.isArray(body))return json({error:'INVALID_ACTIVITY'},400);
+    const admission=classifyDailyAdmission({mode:body.mode,subject:body.subject});
+    if(!admission.allowed)return json({allowed:false,reason:admission.reason},403);
+    return json(await backend(env,'/rest/v1/rpc/cachaste_reserve_basic_learning_attempt',auth.token,{
+     method:'POST',body:{p_kind:admission.kind,p_subject:admission.subject}
+    }));
+   }
    if(path==='/api/basic/admission'&&req.method==='POST'){
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
     if(env.WEB_BASIC_ACCESS_ENABLED!=='true'||env.WEB_BASIC_EDUCATIONAL_GUARDS_READY!=='true')return json({error:'BASIC_NOT_READY'},503);
