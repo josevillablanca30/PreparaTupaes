@@ -99,8 +99,14 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
    }
    if(path==='/api/progress'&&req.method==='POST'){
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
-    const auth=await identity(req,env,{fresh:true});const text=await req.text();if(new TextEncoder().encode(text).length>1050000)return json({error:'PROGRESS_TOO_LARGE'},413);
+    const auth=await identity(req,env,{active:false,fresh:true});const text=await req.text();if(new TextEncoder().encode(text).length>1050000)return json({error:'PROGRESS_TOO_LARGE'},413);
     const body=JSON.parse(text);if(body.userId!==undefined&&body.userId!==auth.user.id)return json({error:'SESSION_CHANGED'},409);if(!['snapshot','put'].includes(body.operation))return json({error:'INVALID_OPERATION'},400);
+    if(auth.access.active!==true){
+     // Non-premium accounts can only read existing progress, never write it.
+     // Both gateway and database opt-in flags are required before Basic release.
+     if(body.operation!=='snapshot'||env.WEB_BASIC_ACCESS_ENABLED!=='true'||env.WEB_BASIC_EDUCATIONAL_GUARDS_READY!=='true'||env.WEB_BASIC_PROGRESS_SNAPSHOT_READY!=='true')
+      return json({error:'SUBSCRIPTION_REQUIRED'},402);
+    }
     return json(await backend(env,'/rest/v1/rpc/cachaste_web_progress',auth.token,{method:'POST',body}));
    }
    if(path==='/api/billing/sandbox'&&req.method==='POST'){
