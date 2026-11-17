@@ -235,3 +235,17 @@ assert.equal(reservation.attemptId,validAttempt.attemptId);
 await assert.rejects(()=>basicReserveActivity({mode:'lesson',subject:'M1',fetcher:async()=>Response.json({...validAttempt,day:'invalid'})}),/INVALID_RESERVATION_RESPONSE/);
 await assert.rejects(()=>basicReserveActivity({mode:'lesson',subject:'M1',fetcher:async()=>Response.json({...validAttempt,attemptId:'invalid'})}),/INVALID_RESERVATION_RESPONSE/);
 await assert.rejects(()=>basicReserveActivity({mode:'lesson',subject:'M1',fetcher:async()=>Response.json({error:'BASIC_NOT_READY'},{status:503})}),/BASIC_NOT_READY/);
+
+const {withBasicReservation}=await import('../client/basic-quota.mjs');
+let launches=0,launchAttempt=null;
+const launch=async({attemptId})=>{launches++;launchAttempt=attemptId;return 'started';};
+const exhausted=await withBasicReservation({mode:'lesson',subject:'M1',start:launch,fetcher:async()=>Response.json({allowed:false,tier:'basica',remaining:0})});
+assert.equal(exhausted.started,false);
+assert.equal(launches,0);
+const launched=await withBasicReservation({mode:'lesson',subject:'M1',start:launch,fetcher:async()=>Response.json(validAttempt)});
+assert.equal(launched.started,true);
+assert.equal(launched.value,'started');
+assert.equal(launchAttempt,validAttempt.attemptId);
+assert.equal(launches,1);
+await assert.rejects(()=>withBasicReservation({mode:'lesson',subject:'M1',start:launch,fetcher:async()=>Response.json({...validAttempt,attemptId:'fake'})}),/INVALID_RESERVATION_RESPONSE/);
+assert.equal(launches,1);
