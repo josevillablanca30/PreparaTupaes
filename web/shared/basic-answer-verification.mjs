@@ -12,10 +12,11 @@ export function verifyBasicAnswers({attemptId,issuedQuestions,answers}={}){
   const q=issuedQuestions[i],a=answers[i];
   if(!q||typeof q.id!=='string'||!q.id||seen.has(q.id)||
      !Array.isArray(q.options)||q.options.length<2||q.options.length>8||
-     !Number.isInteger(q.answerIndex)||q.answerIndex<0||q.answerIndex>=q.options.length)
+     !Number.isInteger(q.answerIndex)||q.answerIndex<0||q.answerIndex>=q.options.length||
+     q.options.some(option=>typeof option!=='string'||!option.trim()))
     throw Error('INVALID_TRUSTED_QUESTION');
   seen.add(q.id);
-  if(!a||a.questionId!==q.id||!Number.isInteger(a.selectedIndex)||
+  if(!a||Object.keys(a).some(key=>key!=='questionId'&&key!=='selectedIndex')||a.questionId!==q.id||!Number.isInteger(a.selectedIndex)||
      a.selectedIndex<0||a.selectedIndex>=q.options.length)
     throw Error('INVALID_ANSWER');
   if(a.selectedIndex===q.answerIndex)correct++;
