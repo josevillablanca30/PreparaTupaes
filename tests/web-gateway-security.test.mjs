@@ -311,3 +311,27 @@ test('Basic activity admission checks server quota and denies Premium-only modes
  const call=calls.find(c=>c.url.endsWith('/rest/v1/rpc/cachaste_basic_quota'));
  assert.deepEqual(JSON.parse(call.options.body),{operation:'check',kind:'lesson',subject:'m1',event_id:null});
 });
+
+test('Basic reservation endpoint stays closed until completion attestation is ready',async()=>{
+ const token=fakeToken(),calls=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async(url,options={})=>{
+  calls.push({url,options});
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false});
+  if(url.endsWith('/rest/v1/rpc/cachaste_reserve_basic_learning_attempt'))return Response.json({allowed:true,tier:'basica',attemptId:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a',remaining:2});
+  throw Error('Unexpected request '+url);
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ const post=(body,flags)=>g.fetch(req('/api/basic/reserve',{method:'POST',headers,body:JSON.stringify(body)}),flags);
+ const flags={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true',WEB_BASIC_ATTEMPT_RESERVATIONS_READY:'true'};
+ assert.equal((await post({mode:'lesson',subject:'M1'},flags)).status,503);
+ assert.equal(calls.length,0);
+ const ready={...flags,WEB_BASIC_COMPLETION_ATTESTATION_READY:'true'};
+ assert.equal((await post({mode:'full-exam',subject:'M1'},ready)).status,403);
+ assert.equal(calls.filter(x=>x.url.endsWith('/rest/v1/rpc/cachaste_reserve_basic_learning_attempt')).length,0);
+ const reserved=await post({mode:'lesson',subject:'M1'},ready);
+ assert.equal(reserved.status,200);
+ assert.equal((await json(reserved)).remaining,2);
+ const reservation=calls.find(x=>x.url.endsWith('/rest/v1/rpc/cachaste_reserve_basic_learning_attempt'));
+ assert.deepEqual(JSON.parse(reservation.options.body),{p_kind:'lesson',p_subject:'m1'});
+});
