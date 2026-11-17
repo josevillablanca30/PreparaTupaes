@@ -61,6 +61,11 @@ begin
   if prior.kind is distinct from p_kind or prior.subject is distinct from p_subject then
    raise exception 'REQUEST_KEY_CONFLICT' using errcode='22023';
   end if;
+  -- Never revive a prior day's daily attempt by replaying its request key.
+  -- Diagnostics are lifetime-scoped and remain replayable for the same attempt.
+  if p_kind<>'diagnostic' and prior.usage_day<>today_chile then
+   raise exception 'REQUEST_KEY_EXPIRED' using errcode='22023';
+  end if;
   -- A retry returns the current authoritative quota, not an unknown/null counter.
   max_count:=case p_kind when 'lesson' then 3 when 'diagnostic' then 1 else 1 end;
   select count(*)::integer into used_count from cachaste_web.basic_usage a
