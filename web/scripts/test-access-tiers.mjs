@@ -251,6 +251,7 @@ await assert.rejects(()=>withBasicReservation({mode:'lesson',subject:'M1',reques
 assert.equal(launches,1);
 
 assert.match(readFileSync('web/supabase/migrations/20261116234000_cachaste_basic_learning_attempts.sql','utf8'),/REQUEST_KEY_EXPIRED/);
+assert.match(readFileSync('web/supabase/migrations/20261116234000_cachaste_basic_learning_attempts.sql','utf8'),/ATTEMPT_ALREADY_COMPLETED/);
 const replayedAttempt={...validAttempt,remaining:2,replayed:true};
 const replayed=await basicReserveActivity({mode:'lesson',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a',fetcher:async()=>Response.json(replayedAttempt)});
 assert.equal(replayed.replayed,true);
