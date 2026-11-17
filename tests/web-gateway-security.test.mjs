@@ -251,3 +251,23 @@ test('browser cannot consume Basic quota even if all release flags are enabled',
  assert.equal((await json(response)).error,'SERVER_VERIFIED_COMPLETION_REQUIRED');
  assert.equal(calls.length,2);
 });
+
+test('Basic progress snapshot is opt-in and cannot be used for client writes',async()=>{
+ const token=fakeToken(),calls=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async(url,options={})=>{
+  calls.push({url,options});
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false,validUntilMs:null});
+  if(url.endsWith('/rest/v1/rpc/cachaste_web_progress'))return Response.json({documents:[]});
+  throw Error('Unexpected backend request: '+url);
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ const post=(operation,flags)=>g.fetch(req('/api/progress',{method:'POST',headers,body:JSON.stringify({operation})}),flags);
+ const ready={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true',WEB_BASIC_PROGRESS_SNAPSHOT_READY:'true'};
+ assert.equal((await post('snapshot',env)).status,402);
+ assert.equal((await post('snapshot',{...ready,WEB_BASIC_PROGRESS_SNAPSHOT_READY:'false'})).status,402);
+ assert.equal((await post('put',ready)).status,402);
+ assert.equal(calls.filter(x=>x.url.endsWith('/rest/v1/rpc/cachaste_web_progress')).length,0);
+ assert.equal((await post('snapshot',ready)).status,200);
+ assert.equal(calls.filter(x=>x.url.endsWith('/rest/v1/rpc/cachaste_web_progress')).length,1);
+});
