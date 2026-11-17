@@ -130,3 +130,38 @@ export async function withBasicReservation({mode,subject,requestKey,fetcher=fetc
  const value=await start({tier:'basica',attemptId:decision.attemptId});
  return Object.freeze({started:true,decision,value});
 }
+
+/**
+ * Sends the complete ordered answer sheet to the trusted grading endpoint.
+ * A browser-supplied score, answer key or completion flag is never accepted.
+ * The server verifies ownership and grades against its immutable issued key.
+ */
+export async function basicCompleteActivity({attemptId,answers,fetcher=fetch,accessToken=null}={}){
+ const validUuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+ if(typeof attemptId!=='string'||!validUuid.test(attemptId)||
+    !Array.isArray(answers)||answers.length<1||answers.length>80)throw Error('INVALID_COMPLETION');
+ if(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10))throw Error('INVALID_AUTH_TOKEN');
+ const seen=new Set();
+ for(const answer of answers){
+  if(!answer||typeof answer!=='object'||Array.isArray(answer)||
+     Object.keys(answer).some(k=>!['questionId','selectedIndex'].includes(k))||
+     typeof answer.questionId!=='string'||!answer.questionId||answer.questionId.length>128||
+     seen.has(answer.questionId)||!Number.isInteger(answer.selectedIndex)||
+     answer.selectedIndex<0||answer.selectedIndex>7)throw Error('INVALID_ANSWERS');
+  seen.add(answer.questionId);
+ }
+ const response=await fetcher('/api/basic/complete',{
+  method:'POST',credentials:'same-origin',
+  headers:{'content-type':'application/json','x-cachaste-request':'1',
+   ...(accessToken?{authorization:'Bearer '+accessToken}:{})},
+  body:JSON.stringify({attemptId,answers})
+ });
+ if(!response.ok)throw Error(response.status===503?'BASIC_NOT_READY':
+  response.status===403?'BASIC_COMPLETION_DENIED':'BASIC_COMPLETION_UNAVAILABLE');
+ const result=await response.json();
+ if(result?.allowed!==true||result.completed!==true||result.attemptId!==attemptId||
+    !Number.isInteger(result.correct)||!Number.isInteger(result.total)||
+    result.total!==answers.length||result.correct<0||result.correct>result.total)
+  throw Error('INVALID_COMPLETION_RESPONSE');
+ return Object.freeze({attemptId,correct:result.correct,total:result.total,completed:true});
+}
