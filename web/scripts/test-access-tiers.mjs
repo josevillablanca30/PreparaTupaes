@@ -221,7 +221,7 @@ assert.match(learningAttemptSql,/learning_attempts_enabled boolean not null defa
 assert.match(learningAttemptSql,/pg_advisory_xact_lock/);
 assert.match(learningAttemptSql,/basic_learning_diagnostic_once_idx/);
 assert.match(learningAttemptSql,/p_kind='diagnostic' or a.usage_day=today_chile/);
-assert.match(learningAttemptSql,/select count\(\*\)::integer into used_count from cachaste_web.basic_usage a/);
+assert.match(learningAttemptSql,/select count\(\*\)::integer into used_count from cachaste_web.basic_learning_attempts a/);
 assert.match(learningAttemptSql,/create trigger cachaste_basic_learning_reservation/);
 assert.match(learningAttemptSql,/insert into cachaste_web.basic_usage\(user_id,kind,subject,usage_day,event_id\)/);
 assert.match(learningAttemptSql,/BASIC_ATTEMPTS_NOT_READY/);
