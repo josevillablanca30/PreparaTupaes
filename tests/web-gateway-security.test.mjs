@@ -343,3 +343,25 @@ test('Basic completion is denied without activation and without leaking server c
  const bad=await gateway.fetch(req('/api/basic/complete',{method:'POST',headers:{...headers,origin:'https://attacker.invalid'},body:'{}'}),env);
  assert.equal(bad.status,403);
 });
+
+test('Basic completion uses service-role API key only on privileged RPC',async()=>{
+ const payload=Buffer.from(JSON.stringify({exp:Math.floor(Date.now()/1000)+3600})).toString('base64url');
+ const userToken='eyJhbGciOiJub25lIn0.'+payload+'.signature';
+ const requests=[];
+ const fetcher=async(url,options)=>{
+  requests.push({url,headers:options.headers});
+  if(url.endsWith('/auth/v1/user'))return new Response(JSON.stringify({id:'123e4567-e89b-42d3-a456-426614174001'}),{headers:{'content-type':'application/json'}});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return new Response(JSON.stringify({userId:'123e4567-e89b-42d3-a456-426614174001',serverTimeMs:Date.now(),active:false}),{headers:{'content-type':'application/json'}});
+  if(url.endsWith('/rest/v1/rpc/cachaste_complete_basic_learning_attempt'))return new Response(JSON.stringify({allowed:true,completed:true}),{headers:{'content-type':'application/json'}});
+  throw Error('UNEXPECTED_BACKEND_REQUEST');
+ };
+ const ready=createGateway({fetcher,allowDevelopmentHttp:true});
+ const bindings={...env,SUPABASE_SERVICE_ROLE_KEY:'server-only-test-key',WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true',WEB_BASIC_ATTEMPT_RESERVATIONS_READY:'true',WEB_BASIC_COMPLETION_ATTESTATION_READY:'true',WEB_BASIC_SERVER_ISSUANCE_READY:'true'};
+ const res=await ready.fetch(req('/api/basic/complete',{method:'POST',headers:{origin:'https://sitecacho.cl','x-cachaste-request':'1',authorization:'Bearer '+userToken},body:JSON.stringify({attemptId:'123e4567-e89b-42d3-a456-426614174002',answers:[{questionId:'q1',selectedIndex:1}]})}),bindings);
+ assert.equal(res.status,200);
+ assert.equal(requests.length,3);
+ assert.equal(requests[0].headers.apikey===bindings.SUPABASE_SERVICE_ROLE_KEY,false);
+ assert.equal(requests[1].headers.apikey===bindings.SUPABASE_SERVICE_ROLE_KEY,false);
+ assert.equal(requests[2].headers.apikey,bindings.SUPABASE_SERVICE_ROLE_KEY);
+ assert.equal(requests[2].headers.authorization,'Bearer '+bindings.SUPABASE_SERVICE_ROLE_KEY);
+});
