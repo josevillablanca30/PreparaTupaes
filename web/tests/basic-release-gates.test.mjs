@@ -39,3 +39,14 @@ test('Admisión de duelos y lectura de progreso parten apagadas',()=>{
   assert.match(sql('20261116223000_cachaste_basic_duel_admission.sql'),/duel_admission_enabled boolean not null default false/);
   assert.match(sql('20261116230000_cachaste_basic_readonly_progress.sql'),/progress_snapshot_enabled boolean not null default false/);
 });
+
+test('No se habilitan cuotas por accidente en las migraciones',()=>{
+  for(const name of [
+    '20261116223000_cachaste_basic_duel_admission.sql',
+    '20261116230000_cachaste_basic_readonly_progress.sql',
+    '20261116234000_cachaste_basic_learning_attempts.sql'
+  ]){
+    const migration=sql(name);
+    assert.doesNotMatch(migration,/update\\s+cachaste_web\\.basic_feature_flags\\s+set\\s+[\\s\\S]*?=\\s*true\\s*;/i,name);
+  }
+});
