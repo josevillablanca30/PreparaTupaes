@@ -23,6 +23,22 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
     return Object.freeze({started:false,reason:'BASIC_ISSUANCE_NOT_READY',attemptId:current.attemptId});
    }catch(error){if(phase==='reserving')phase='idle';throw error;}
   },
+  async issue({subject,kind}={}){
+   if(phase!=='reserved'||!current)throw Error('BASIC_RESERVATION_REQUIRED');
+   phase='issuing';
+   try{
+    const response=await fetcher('/api/basic/issue',{
+     method:'POST',credentials:'same-origin',
+     headers:{'content-type':'application/json','x-cachaste-request':'1',
+      ...(accessToken?{authorization:'Bearer '+accessToken}:{})},
+     body:JSON.stringify({attemptId:current.attemptId,subject,kind})
+    });
+    if(!response.ok)throw Error(response.status===503?'BASIC_NOT_READY':'BASIC_ISSUANCE_FAILED');
+    const result=await response.json();
+    phase='reserved';
+    return this.acceptIssuedQuestions(result);
+   }catch(error){if(phase==='issuing')phase='reserved';throw error;}
+  },
   acceptIssuedQuestions({attemptId,questions}={}){
    if(phase!=='reserved'||!current||attemptId!==current.attemptId||!Array.isArray(questions)||!questions.length||questions.length>80)throw Error('INVALID_BASIC_ISSUANCE');
    const ids=new Set();
