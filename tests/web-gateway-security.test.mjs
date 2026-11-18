@@ -365,3 +365,12 @@ test('Basic completion uses service-role API key only on privileged RPC',async()
  assert.equal(requests[2].headers.apikey,bindings.SUPABASE_SERVICE_ROLE_KEY);
  assert.equal(requests[2].headers.authorization,'Bearer '+bindings.SUPABASE_SERVICE_ROLE_KEY);
 });
+
+test('Basic question issuance fails closed before rollout and rejects foreign origin',async()=>{
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json'};
+ const payload=JSON.stringify({attemptId:'123e4567-e89b-42d3-a456-426614174002',subject:'m1',kind:'lesson'});
+ const res=await gateway.fetch(req('/api/basic/issue',{method:'POST',headers,body:payload}),env);
+ assert.equal(res.status,503);assert.equal((await json(res)).error,'BASIC_NOT_READY');
+ const foreign=await gateway.fetch(req('/api/basic/issue',{method:'POST',headers:{...headers,origin:'https://evil.invalid'},body:payload}),env);
+ assert.equal(foreign.status,403);
+});
