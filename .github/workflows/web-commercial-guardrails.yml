@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Verify Básica and Premium quotas without activating access
-        run: node web/scripts/test-access-tiers.mjs && node web/scripts/test-basic-completion.mjs && node --test web/tests/access-tiers-policy.test.mjs
+        run: node web/scripts/test-access-tiers.mjs && node web/scripts/test-basic-completion.mjs && node --test web/tests/access-tiers-policy.test.mjs web/tests/basic-release-gates.test.mjs
       - name: Build unified educational web distribution
         run: node web/scripts/build.mjs
       - name: Verify private educational assets remain behind worker
