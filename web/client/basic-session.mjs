@@ -41,7 +41,7 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
   async issue({subject,kind}={}){
    if(phase!=='reserved'||!current)throw Error('BASIC_RESERVATION_REQUIRED');
    const admission=classifyDailyAdmission({mode:current.mode,subject:current.subject});
-   if(!admission.allowed||kind!==admission.kind||subject!==admission.subject&&!(kind==='expressExam'&&subject===current.subject))throw Error('BASIC_ACTIVITY_MISMATCH');
+   if(!admission.allowed||kind!==admission.kind||subject!==(kind==='expressExam'?({'M1':'m1','M2':'m2','Lectora':'lectora','Ciencias':'ciencias','Historia':'historia'}[current.subject]):admission.subject))throw Error('BASIC_ACTIVITY_MISMATCH');
    phase='issuing';
    try{
     const response=await fetcher('/api/basic/issue',{
