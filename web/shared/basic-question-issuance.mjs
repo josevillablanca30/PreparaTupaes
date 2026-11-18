@@ -9,7 +9,7 @@ export function issueBasicQuestions({attemptId,questions}={}){
  const ids=new Set();
  const publicQuestions=[],answerKey=[];
  for(const question of questions){
-  if(!question||typeof question.id!=='string'||!question.id||ids.has(question.id)||
+  if(!question||typeof question.id!=='string'||!question.id||question.id.length>128||ids.has(question.id)||
      typeof question.prompt!=='string'||!question.prompt.trim()||
      !Array.isArray(question.options)||question.options.length<2||question.options.length>8||
      question.options.some(x=>typeof x!=='string'||!x.trim())||
