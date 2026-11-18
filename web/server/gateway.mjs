@@ -144,7 +144,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
         !Number.isInteger(answer.selectedIndex)||answer.selectedIndex<0||answer.selectedIndex>7)
        return json({error:'INVALID_ANSWERS'},400);
     }
-    // Service key stays exclusively in the Worker environment; identity is
+    // A repeated question ID must never count as two answered questions.\n    if(new Set(body.answers.map(answer=>answer.questionId)).size!==body.answers.length)\n      return json({error:'DUPLICATE_QUESTION_ANSWERS'},400);\n    // Service key stays exclusively in the Worker environment; identity is
     // freshly verified and user ID is never accepted from the browser.
     return json(await backend(env,'/rest/v1/rpc/cachaste_complete_basic_learning_attempt',
       env.SUPABASE_SERVICE_ROLE_KEY,{method:'POST',body:{
