@@ -23,8 +23,22 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
     return Object.freeze({started:false,reason:'BASIC_ISSUANCE_NOT_READY',attemptId:current.attemptId});
    }catch(error){if(phase==='reserving')phase='idle';throw error;}
   },
+  acceptIssuedQuestions({attemptId,questions}={}){
+   if(phase!=='reserved'||!current||attemptId!==current.attemptId||!Array.isArray(questions)||!questions.length||questions.length>80)throw Error('INVALID_BASIC_ISSUANCE');
+   const ids=new Set();
+   for(const q of questions){
+    if(!q||typeof q.id!=='string'||!q.id||ids.has(q.id)||typeof q.prompt!=='string'||!q.prompt.trim()||
+       !Array.isArray(q.options)||q.options.length<2||q.options.length>8||q.options.some(x=>typeof x!=='string'||!x.trim())||
+       Object.hasOwn(q,'answerIndex'))throw Error('INVALID_BASIC_ISSUANCE');
+    ids.add(q.id);
+   }
+   // This method must only be called by the trusted issuance response handler.
+   current={...current,questions:questions.map(q=>({id:q.id,prompt:q.prompt,options:[...q.options]}))};
+   phase='issued';return Object.freeze({questions:current.questions,attemptId});
+  },
   async finish({answers}={}){
    if(phase!=='issued'||!current)throw Error('BASIC_QUESTIONS_NOT_ISSUED');
+   if(!Array.isArray(answers)||answers.length!==current.questions.length||answers.some((a,i)=>a?.questionId!==current.questions[i].id))throw Error('INVALID_BASIC_ANSWERS');
    phase='completing';
    try{
     const result=await basicCompleteActivity({attemptId:current.attemptId,answers,fetcher,accessToken});
