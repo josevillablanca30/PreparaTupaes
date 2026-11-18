@@ -1,6 +1,7 @@
 import{PROJECT_URL,PUBLISHABLE_KEY}from'../shared/config.mjs';
 import{privateAsset}from'./content.mjs';
 import{classifyDailyAdmission}from'../shared/basic-completion-contract.mjs';
+import{prepareBasicIssuance}from'./basic-issuance.mjs';
 import{publicOfflineKey,offlineLicense,safeJson}from'./offline.mjs';
 const COOKIE='cachaste_web_session';
 const PUBLIC_HTML_ALIASES=new Map([['/index.html','/'],...['cuenta','recuperar','privacidad','condiciones','eliminar-cuenta','offline'].map(name=>['/'+name+'.html','/'+name])]);
@@ -91,6 +92,45 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     return json(await backend(env,'/rest/v1/rpc/cachaste_reserve_basic_learning_attempt',auth.token,{
      method:'POST',body:{p_kind:admission.kind,p_subject:admission.subject,p_request_key:body.requestKey}
     }));
+   }
+   if(path==='/api/basic/issue'&&req.method==='POST'){
+    if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
+    if(env.WEB_BASIC_ACCESS_ENABLED!=='true'||env.WEB_BASIC_EDUCATIONAL_GUARDS_READY!=='true'||
+       env.WEB_BASIC_ATTEMPT_RESERVATIONS_READY!=='true'||env.WEB_BASIC_COMPLETION_ATTESTATION_READY!=='true'||
+       env.WEB_BASIC_SERVER_ISSUANCE_READY!=='true'||!env.SUPABASE_SERVICE_ROLE_KEY||
+       !env.BASIC_QUESTION_BANK_JSON)return json({error:'BASIC_NOT_READY'},503);
+    const auth=await identity(req,env,{active:false,fresh:true});
+    const raw=await req.text();if(raw.length>1024)return json({error:'PAYLOAD_TOO_LARGE'},413);
+    let body;try{body=JSON.parse(raw);}catch{return json({error:'INVALID_JSON'},400);}
+    if(!body||typeof body!=='object'||Array.isArray(body)||
+       typeof body.attemptId!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(body.attemptId)||
+       !['m1','m2','lectora','ciencias','historia'].includes(body.subject)||
+       !['lesson','diagnostic','expressExam'].includes(body.kind))return json({error:'INVALID_ISSUANCE'},400);
+    // Read the reservation with the server credential and require ownership,
+    // kind, subject and reserved status before constructing any question set.
+    const service=env.SUPABASE_SERVICE_ROLE_KEY;
+    const query='/rest/v1/basic_learning_attempts?select=id,user_id,kind,subject,status&id=eq.'+encodeURIComponent(body.attemptId)+'&limit=1';
+    // Internal schema is explicitly selected; no answer keys are queried.
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
+    let attempts;
+    try{
+     const res=await fetcher((env.SUPABASE_URL||PROJECT_URL)+query,{
+      signal:controller.signal,headers:{apikey:service,authorization:'Bearer '+service,'accept-profile':'cachaste_web'}});
+     if(!res.ok)return json({error:'ISSUANCE_UNAVAILABLE'},503);
+     attempts=await res.json();
+    }finally{clearTimeout(timer);}
+    const attempt=Array.isArray(attempts)?attempts[0]:null;
+    if(!attempt||attempt.user_id!==auth.user.id||attempt.kind!==body.kind||
+       attempt.subject!==(body.kind==='expressExam'?'all':body.subject)||
+       attempt.status!=='reserved')return json({error:'ATTEMPT_NOT_ELIGIBLE'},403);
+    let issuance;try{issuance=prepareBasicIssuance({
+     attemptId:body.attemptId,subject:body.subject,kind:body.kind,bankJson:env.BASIC_QUESTION_BANK_JSON
+    });}catch{return json({error:'BASIC_ISSUANCE_NOT_READY'},503);}
+    const stored=await backend(env,'/rest/v1/rpc/cachaste_issue_basic_question_key',service,{
+     method:'POST',body:{p_user_id:auth.user.id,p_attempt_id:body.attemptId,p_answer_key:issuance.answerKey}
+    });
+    if(stored!==true)return json({error:'QUESTIONS_ALREADY_ISSUED'},409);
+    return json({attemptId:body.attemptId,questions:issuance.publicQuestions});
    }
    if(path==='/api/basic/complete'&&req.method==='POST'){
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
