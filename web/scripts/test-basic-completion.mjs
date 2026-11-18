@@ -1,3 +1,5 @@
+import {prepareBasicIssuance} from '../server/basic-issuance.mjs';
+import {createBasicLearningSession} from '../client/basic-session.mjs';
 import assert from 'node:assert/strict';
 import {basicCompleteActivity} from '../client/basic-quota.mjs';
 const attemptId='123e4567-e89b-42d3-a456-426614174002';
@@ -17,3 +19,14 @@ await assert.rejects(basicCompleteActivity({attemptId,answers:[...answers,...ans
 await assert.rejects(basicCompleteActivity({attemptId,answers,fetcher:async()=>new Response('{}',{status:503})}),/BASIC_NOT_READY/);
 await assert.rejects(basicCompleteActivity({attemptId,answers,fetcher:async()=>new Response(JSON.stringify({allowed:true,completed:true,attemptId,correct:2,total:1}))}),/INVALID_COMPLETION_RESPONSE/);
 console.log('Basic completion client checks passed');
+
+const bank={m1:Array.from({length:30},(_,i)=>({id:'q'+i,prompt:'Pregunta '+i,options:['A','B','C'],answerIndex:1,status:'reviewed',origin:{rights:'owned'}}))};
+const issuance=prepareBasicIssuance({attemptId,subject:'m1',kind:'lesson',bankJson:JSON.stringify(bank)});
+assert.equal(issuance.publicQuestions.length,10);
+assert.equal(issuance.answerKey.length,10);
+assert.ok(issuance.publicQuestions.every(q=>!('answerIndex' in q)));
+assert.ok(issuance.answerKey.every(q=>q.answerIndex===1));
+assert.throws(()=>prepareBasicIssuance({attemptId,subject:'m2',kind:'lesson',bankJson:JSON.stringify(bank)}),/INVALID_SERVER_BANK/);
+const session=createBasicLearningSession({fetcher:async()=>new Response('{}',{status:503})});
+await assert.rejects(session.start({mode:'lesson',subject:'M1',requestKey:attemptId}),/BASIC_NOT_READY/);
+assert.equal(session.snapshot().phase,'idle');
