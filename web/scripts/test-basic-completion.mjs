@@ -41,3 +41,5 @@ assert.throws(()=>prepareBasicIssuance({attemptId,subject:'m1',kind:'lesson',ban
 const isolated=createBasicLearningSession({fetcher:async()=>new Response('{}',{status:503})});
 assert.equal(Object.hasOwn(isolated,'acceptIssuedQuestions'),false,'client cannot inject its own question set');
 assert.equal(typeof isolated.issue,'function');
+
+assert.throws(()=>prepareBasicIssuance({attemptId,subject:'m1',kind:'lesson',bankJson:JSON.stringify({m1:[...bank.m1.slice(0,9),{...bank.m1[9],id:'x'.repeat(129)}]})}),/INVALID_TRUSTED_QUESTION/,'server must never issue IDs that completion rejects');
