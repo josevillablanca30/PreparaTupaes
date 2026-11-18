@@ -50,3 +50,8 @@ test('No se habilitan cuotas por accidente en las migraciones',()=>{
     assert.doesNotMatch(migration,/update\\s+cachaste_web\\.basic_feature_flags\\s+set\\s+[\\s\\S]*?=\\s*true\\s*;/i,name);
   }
 });
+
+test('El gateway rechaza respuestas duplicadas antes de llamar a Supabase',()=>{
+  assert.match(gateway,/new Set\(body\.answers\.map\(answer=>answer\.questionId\)\)\.size!==body\.answers\.length/);
+  assert.match(gateway,/DUPLICATE_QUESTION_ANSWERS/);
+});
