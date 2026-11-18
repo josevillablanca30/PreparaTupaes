@@ -20,6 +20,8 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
    phase='issued';return Object.freeze({questions:current.questions,attemptId});
   }
 
+ return Object.freeze({
+  snapshot,
   async start({mode,subject,requestKey}={}){
    if(phase!=='idle')throw Error('BASIC_SESSION_ALREADY_STARTED');
    phase='reserving';
