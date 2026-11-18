@@ -109,17 +109,9 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     // Read the reservation with the server credential and require ownership,
     // kind, subject and reserved status before constructing any question set.
     const service=env.SUPABASE_SERVICE_ROLE_KEY;
-    const query='/rest/v1/basic_learning_attempts?select=id,user_id,kind,subject,status&id=eq.'+encodeURIComponent(body.attemptId)+'&limit=1';
-    // Internal schema is explicitly selected; no answer keys are queried.
-    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
-    let attempts;
-    try{
-     const res=await fetcher((env.SUPABASE_URL||PROJECT_URL)+query,{
-      signal:controller.signal,headers:{apikey:service,authorization:'Bearer '+service,'accept-profile':'cachaste_web'}});
-     if(!res.ok)return json({error:'ISSUANCE_UNAVAILABLE'},503);
-     attempts=await res.json();
-    }finally{clearTimeout(timer);}
-    const attempt=Array.isArray(attempts)?attempts[0]:null;
+    const attempt=await backend(env,'/rest/v1/rpc/cachaste_basic_issuance_attempt',service,{
+     method:'POST',body:{p_attempt_id:body.attemptId}
+    });
     if(!attempt||attempt.user_id!==auth.user.id||attempt.kind!==body.kind||
        attempt.subject!==(body.kind==='expressExam'?'all':body.subject)||
        attempt.status!=='reserved')return json({error:'ATTEMPT_NOT_ELIGIBLE'},403);
