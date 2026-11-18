@@ -104,7 +104,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     let body;try{body=JSON.parse(raw);}catch{return json({error:'INVALID_JSON'},400);}
     if(!body||typeof body!=='object'||Array.isArray(body)||
        typeof body.attemptId!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(body.attemptId)||
-       !(body.kind==='expressExam'?body.subject==='all':['m1','m2','lectora','ciencias','historia'].includes(body.subject))||
+       !['m1','m2','lectora','ciencias','historia'].includes(body.subject)||
        !['lesson','diagnostic','expressExam'].includes(body.kind))return json({error:'INVALID_ISSUANCE'},400);
     // Read the reservation with the server credential and require ownership,
     // kind, subject and reserved status before constructing any question set.
