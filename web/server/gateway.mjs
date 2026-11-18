@@ -165,6 +165,15 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     if(typeof quota?.allowed!=='boolean')return json({error:'INVALID_QUOTA_RESPONSE'},502);
     return json({allowed:quota.allowed,kind:admission.kind,subject:admission.subject,tier:quota.tier,remaining:quota.remaining??null,preflightOnly:true});
    }
+   if(path==='/api/basic/verified-progress'&&req.method==='GET'){
+    // Server-attested history only. Never accept user IDs or client-written progress.
+    if(env.WEB_BASIC_ACCESS_ENABLED!=='true'||env.WEB_BASIC_EDUCATIONAL_GUARDS_READY!=='true'||
+       env.WEB_BASIC_COMPLETION_ATTESTATION_READY!=='true')return json({error:'BASIC_NOT_READY'},503);
+    const auth=await identity(req,env,{active:false,fresh:true});
+    const progress=await backend(env,'/rest/v1/rpc/cachaste_basic_verified_progress_snapshot',auth.token,{method:'POST',body:{}});
+    if(!progress||!Array.isArray(progress.verifiedCompletions))return json({error:'INVALID_PROGRESS_RESPONSE'},502);
+    return json(progress);
+   }
    if(path==='/api/basic/summary'&&req.method==='GET'){
     if(env.WEB_BASIC_ACCESS_ENABLED!=='true'||env.WEB_BASIC_EDUCATIONAL_GUARDS_READY!=='true')return json({error:'BASIC_NOT_READY'},503);
     const auth=await identity(req,env,{active:false,fresh:true});
