@@ -2,6 +2,7 @@
 // server-issued questions; do not pass local catalog questions into this flow.
 // Not activated in daily-app until a trusted issuance endpoint is available.
 import {basicReserveActivity,basicCompleteActivity} from './basic-quota.mjs';
+import {classifyDailyAdmission} from '../shared/basic-completion-contract.mjs';
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
  let current=null,phase='idle';
@@ -31,7 +32,7 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
     if(reservation.tier!=='basica'||!uuid.test(reservation.attemptId||'')){
      phase='idle';throw Error('BASIC_ISSUANCE_NOT_READY');
     }
-    current={attemptId:reservation.attemptId};
+    current={attemptId:reservation.attemptId,mode,subject};
     phase='reserved';
     // A reservation is not a question issuance: never start the local engine here.
     return Object.freeze({started:false,reason:'BASIC_ISSUANCE_NOT_READY',attemptId:current.attemptId});
@@ -39,6 +40,8 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
   },
   async issue({subject,kind}={}){
    if(phase!=='reserved'||!current)throw Error('BASIC_RESERVATION_REQUIRED');
+   const admission=classifyDailyAdmission({mode:current.mode,subject:current.subject});
+   if(!admission.allowed||kind!==admission.kind||subject!==admission.subject&&!(kind==='expressExam'&&subject===current.subject))throw Error('BASIC_ACTIVITY_MISMATCH');
    phase='issuing';
    try{
     const response=await fetcher('/api/basic/issue',{
