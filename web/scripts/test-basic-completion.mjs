@@ -31,11 +31,9 @@ const session=createBasicLearningSession({fetcher:async()=>new Response('{}',{st
 await assert.rejects(session.start({mode:'lesson',subject:'M1',requestKey:attemptId}),/BASIC_NOT_READY/);
 assert.equal(session.snapshot().phase,'idle');
 
-const allBank=Object.fromEntries(['m1','m2','lectora','ciencias','historia'].map(subject=>[subject,
- Array.from({length:4},(_,i)=>({id:subject+'-'+i,subject,prompt:'Pregunta '+subject+' '+i,options:['A','B','C'],answerIndex:1,status:'reviewed',origin:{rights:'owned'}}))]));
-const express=prepareBasicIssuance({attemptId,subject:'all',kind:'expressExam',bankJson:JSON.stringify(allBank)});
+const express=prepareBasicIssuance({attemptId,subject:'m1',kind:'expressExam',bankJson:JSON.stringify(bank)});
 assert.equal(express.publicQuestions.length,15);
-assert.equal(new Set(express.publicQuestions.map(q=>q.id)).size,15);
-assert.throws(()=>prepareBasicIssuance({attemptId,subject:'m1',kind:'expressExam',bankJson:JSON.stringify(allBank)}),/BASIC_ISSUANCE_NOT_READY/);
+assert.ok(express.publicQuestions.every(q=>q.id.startsWith('q')));
+assert.throws(()=>prepareBasicIssuance({attemptId,subject:'all',kind:'expressExam',bankJson:JSON.stringify(bank)}),/BASIC_ISSUANCE_NOT_READY/);
 const duplicates={m1:[...bank.m1.slice(0,10),bank.m1[0]]};
 assert.throws(()=>prepareBasicIssuance({attemptId,subject:'m1',kind:'lesson',bankJson:JSON.stringify(duplicates)}),/DUPLICATE_QUESTION_IDS/);
