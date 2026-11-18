@@ -37,3 +37,7 @@ assert.ok(express.publicQuestions.every(q=>q.id.startsWith('q')));
 assert.throws(()=>prepareBasicIssuance({attemptId,subject:'all',kind:'expressExam',bankJson:JSON.stringify(bank)}),/BASIC_ISSUANCE_NOT_READY/);
 const duplicates={m1:[...bank.m1.slice(0,10),bank.m1[0]]};
 assert.throws(()=>prepareBasicIssuance({attemptId,subject:'m1',kind:'lesson',bankJson:JSON.stringify(duplicates)}),/DUPLICATE_QUESTION_IDS/);
+
+const isolated=createBasicLearningSession({fetcher:async()=>new Response('{}',{status:503})});
+assert.equal(Object.hasOwn(isolated,'acceptIssuedQuestions'),false,'client cannot inject its own question set');
+assert.equal(typeof isolated.issue,'function');
