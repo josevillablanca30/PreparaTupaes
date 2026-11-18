@@ -12,12 +12,12 @@ function randomIndex(length){
 export function prepareBasicIssuance({attemptId,subject,kind,bankJson}={}){
  if(!uuid.test(attemptId||'')||
     !['lesson','diagnostic','expressExam'].includes(kind)||
-    (kind==='expressExam'?subject!=='all':!subjects.includes(subject))||
+    !subjects.includes(subject)||
     typeof bankJson!=='string'||bankJson.length>2000000)throw Error('BASIC_ISSUANCE_NOT_READY');
  let bank;try{bank=JSON.parse(bankJson);}catch{throw Error('INVALID_SERVER_BANK');}
  if(!bank||typeof bank!=='object'||Array.isArray(bank))throw Error('INVALID_SERVER_BANK');
  const count=kind==='diagnostic'?30:kind==='expressExam'?15:10;
- const source=kind==='expressExam'?subjects: [subject];
+ const source=[subject];
  const pool=[];
  for(const s of source){
   if(!Array.isArray(bank[s]))throw Error('INVALID_SERVER_BANK');
