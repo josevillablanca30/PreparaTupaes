@@ -14,7 +14,12 @@ begin
    'day',q.usage_day,'recordedAt',q.created_at
  ) order by q.created_at desc,q.event_id desc),'[]'::jsonb)
  into completed
- from cachaste_web.basic_usage q where q.user_id=u;
+ from (
+  select event_id,kind,subject,usage_day,created_at
+  from cachaste_web.basic_usage
+  where user_id=u and kind in ('lesson','diagnostic','expressExam')
+  order by created_at desc,event_id desc limit 100
+ ) q;
  return jsonb_build_object('verifiedCompletions',completed,'day',today_chile);
 end$snapshot$;
 revoke all on function cachaste_web.basic_verified_progress_snapshot() from public,anon,authenticated;
