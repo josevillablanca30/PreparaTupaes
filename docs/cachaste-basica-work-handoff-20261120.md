@@ -32,3 +32,10 @@ Terminar la integración funcional del plan Básico en las pantallas reales de l
 
 ## Criterio de terminado
 Un usuario Básico puede iniciar sesión, realizar actividades permitidas y recibir límites correctos; un Premium mantiene acceso completo; los datos se verifican en servidor; el flujo sobrevive a reintentos; CI y pruebas de base de datos pasan; solo entonces solicitar autorización de publicación.
+
+## Hallazgo de integración (19 nov, revisión del build real)
+- La interfaz educativa **no** vive en `web/client/daily-app.mjs`: está en el archivo raíz **`daily-app.js`** (86 KB), junto a **`daily-core.js`** (22 KB).
+- `web/scripts/build.mjs` primero compila Android y copia `dist` a `web/dist/app`. Luego verifica que `daily-app.js`, `daily-core.js` y otros archivos educativos sean **idénticos** a la referencia Android. Por eso no corresponde editar una copia en `web/app/` ni cambiar el archivo original para Básica sin estudiar el impacto Android.
+- `daily-app.js` inicializa `window.CachasteDaily.create(...)` y llama a `E.start(...)` en diversos botones; los modos incluyen `lesson`, `diagnostic` y `express-exam`. El motor local contiene respuestas y no debe usarse para completar Básica.
+- **Ruta de implementación recomendada:** adaptador exclusivo web en `web/client/`, inyectado en `web/scripts/build.mjs` después de la comprobación de igualdad, con puerta de activación explícita por tier y flags. Debe interceptar el inicio de actividades Básicas antes de `E.start`, renderizar preguntas emitidas por el servidor y finalizar vía `createBasicLearningSession.finish`. Premium debe conservar el flujo original sin interceptación.
+- **No conectar todavía** una reserva de Básica a `E.start`: el servidor exige preguntas emitidas y corrección verificada; usar el motor local sería un bypass de seguridad.
