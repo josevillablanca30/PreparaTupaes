@@ -199,3 +199,19 @@ const resumedSame=await interrupted.resume({mode:'lesson',subject:'M1',requestKe
 assert.equal(resumedSame.started,true);
 assert.equal(resumedSame.attemptId,attemptId);
 assert.deepEqual(interruptedCalls,['/api/basic/reserve','/api/basic/issue','/api/basic/issue']);
+
+// The normal launch button can also be retried safely after issuance fails.
+let launchIssueFailed=false;
+const retryPaths=[];
+const retryLaunch=createBasicLearningSession({fetcher:async(path)=>{
+ retryPaths.push(path);
+ if(path==='/api/basic/reserve')return Response.json({allowed:true,tier:'basica',remaining:2,day:'2026-11-18',attemptId});
+ if(path==='/api/basic/issue'&&!launchIssueFailed){launchIssueFailed=true;throw Error('OFFLINE');}
+ if(path==='/api/basic/issue')return Response.json({attemptId,questions:issuance.publicQuestions});
+ throw Error('UNEXPECTED_ROUTE');
+}});
+await assert.rejects(retryLaunch.launch({mode:'lesson',subject:'M1',requestKey:attemptId}),/OFFLINE/);
+await assert.rejects(retryLaunch.launch({mode:'lesson',subject:'M2',requestKey:attemptId}),/BASIC_ACTIVITY_MISMATCH/);
+const retried=await retryLaunch.launch({mode:'lesson',subject:'M1',requestKey:attemptId});
+assert.equal(retried.started,true);
+assert.deepEqual(retryPaths,['/api/basic/reserve','/api/basic/issue','/api/basic/issue']);
