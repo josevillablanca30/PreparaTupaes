@@ -55,3 +55,9 @@ test('El gateway rechaza respuestas duplicadas antes de llamar a Supabase',()=>{
   assert.match(gateway,/new Set\(body\.answers\.map\(answer=>answer\.questionId\)\)\.size!==body\.answers\.length/);
   assert.match(gateway,/DUPLICATE_QUESTION_ANSWERS/);
 });
+
+test('Un diagnóstico reservado conserva su límite vitalicio aunque caduque la sesión',()=>{
+ const sql=readFileSync(new URL('../supabase/migrations/20261116234000_cachaste_basic_learning_attempts.sql',import.meta.url),'utf8');
+ assert.match(sql,/a\.status='reserved' and a\.kind<>'diagnostic'/);
+ assert.match(sql,/basic_learning_diagnostic_once_idx/);
+});
