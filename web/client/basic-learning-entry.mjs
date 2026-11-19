@@ -17,6 +17,7 @@ export async function verifyBasicLearningAccess({fetcher=fetch,accessToken=null}
 // Web-only integration boundary. Call only after server-confirmed Basic access,
 // an authenticated token, and the actual subject are available. No auto-hook.
 const SUBJECTS=new Set(['M1','M2','Lectora','Ciencias','Historia']);
+const installedBridges=new WeakMap();
 // Lesson launch requires binding the selected concept to server issuance first.
 // Do not silently replace a chosen lesson with unrelated questions.
 const MODES=Object.freeze({'diagnostic-mode':'diagnostic'});
@@ -24,6 +25,7 @@ const MODES=Object.freeze({'diagnostic-mode':'diagnostic'});
 const UNSUPPORTED_BASIC_ACTIONS=new Set(['exam-mode','unit-exam','studio-lesson','express-mode']);
 export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBasicEnabled,onComplete=()=>{}}={}){
  if(!root||typeof root.addEventListener!=='function'||typeof getSubject!=='function'||typeof isBasicEnabled!=='function'||(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10)))throw Error('BASIC_BRIDGE_CONFIGURATION_REQUIRED');
+ if(installedBridges.has(root))return installedBridges.get(root);
  let view=null,activePanel=null,selectedSubject=null;
  const handler=event=>{
   const button=event.target.closest?.('button[data-action]');
@@ -71,7 +73,9 @@ export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBas
   void view.start({mode,subject,requestKey:crypto.randomUUID()}).catch(()=>{});
  };
  root.addEventListener('click',handler,true);
- return Object.freeze({detach(){root.removeEventListener('click',handler,true);},snapshot:()=>view?.snapshot()??{phase:'idle'},get panel(){return activePanel;}});
+ const bridge=Object.freeze({detach(){root.removeEventListener('click',handler,true);installedBridges.delete(root);},snapshot:()=>view?.snapshot()??{phase:'idle'},get panel(){return activePanel;}});
+ installedBridges.set(root,bridge);
+ return bridge;
 }
 
 // The production release flag remains false. This boot path is inert until
