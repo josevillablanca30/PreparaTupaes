@@ -86,3 +86,10 @@ test('Reanudación solo devuelve preguntas originales mediante RPC privilegiado'
  assert.match(gateway,/rpc\/cachaste_store_basic_question_set/);
  assert.doesNotMatch(gateway,/rpc\/cachaste_issue_basic_question_key/);
 });
+
+test('Dos solicitudes simultáneas recuperan el cuestionario guardado, no el nuevo sorteo',()=>{
+ assert.match(gateway,/if\(stored!==true\)\{/);
+ assert.match(gateway,/const replay=await backend\(env,'\/rest\/v1\/rpc\/cachaste_resume_basic_question_set'/);
+ assert.match(gateway,/replay\?\.attemptId===body\.attemptId&&Array\.isArray\(replay\.questions\)/);
+ assert.match(gateway,/if\(replay\?\.attemptId===body\.attemptId&&Array\.isArray\(replay\.questions\)\)return json\(replay\)/);
+});
