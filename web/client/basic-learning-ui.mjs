@@ -40,7 +40,9 @@ export function createBasicLearningView({root,accessToken=null,fetcher=fetch,onC
      if(recovered.completed){busy=false;show(element('h2','Actividad completada'),element('p','Tu avance quedó confirmado. El resultado numérico no está disponible en esta recuperación.'));onComplete(recovered);return;}
     }catch{ /* Keep the original answer sheet for an explicit retry. */ }
     busy=false;message('No pudimos confirmar tu actividad. Conserva esta pantalla y vuelve a intentarlo.');
-    const retry=element('button','Reintentar confirmación');retry.type='button';retry.addEventListener('click',()=>render());root.append(retry);
+    const retry=element('button','Reintentar confirmación');retry.type='button';retry.addEventListener('click',()=>{if(busy)return;render();});root.append(retry);
+    // Keep the selected answers in memory; do not fabricate a completion or
+    // silently consume another attempt when the server response is uncertain.
    }
   });
   const previous=element('button','Anterior');previous.type='button';previous.disabled=busy||index===0;
