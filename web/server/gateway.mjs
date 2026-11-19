@@ -119,7 +119,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
      method:'POST',body:{p_user_id:auth.user.id,p_attempt_id:body.attemptId}
     });
     if(existing!==null){
-     if(!existing||existing.attemptId!==body.attemptId||!Array.isArray(existing.questions))
+     if(!existing||existing.attemptId!==body.attemptId||existing.kind!==body.kind||existing.subject!==(body.kind==='expressExam'?'all':body.subject)||!Array.isArray(existing.questions))
       return json({error:'INVALID_STORED_QUESTIONS'},502);
      return json(existing);
     }
@@ -136,7 +136,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
      const replay=await backend(env,'/rest/v1/rpc/cachaste_resume_basic_question_set',service,{
       method:'POST',body:{p_user_id:auth.user.id,p_attempt_id:body.attemptId}
      });
-     if(replay?.attemptId===body.attemptId&&Array.isArray(replay.questions))return json(replay);
+     if(replay?.attemptId===body.attemptId&&replay.kind===body.kind&&replay.subject===(body.kind==='expressExam'?'all':body.subject)&&Array.isArray(replay.questions))return json(replay);
      return json({error:'QUESTIONS_ALREADY_ISSUED_RETRY'},409);
     }
     return json({attemptId:body.attemptId,questions:issuance.publicQuestions});
