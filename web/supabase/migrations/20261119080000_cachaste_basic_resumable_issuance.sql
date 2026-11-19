@@ -50,7 +50,7 @@ begin
  select public_questions into questions from cachaste_web.basic_issued_questions
  where attempt_id=a.id and user_id=a.user_id;
  if questions is null then return null;end if;
- return jsonb_build_object('attemptId',a.id,'questions',questions);
+ return jsonb_build_object('attemptId',a.id,'kind',a.kind,'subject',a.subject,'questions',questions);
 end$resume$;
 revoke all on function public.cachaste_resume_basic_question_set(uuid,uuid) from public,anon,authenticated;
 grant execute on function public.cachaste_resume_basic_question_set(uuid,uuid) to service_role;
