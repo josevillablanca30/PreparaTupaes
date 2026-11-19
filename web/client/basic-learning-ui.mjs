@@ -66,7 +66,7 @@ export function createBasicLearningView({root,accessToken=null,fetcher=fetch,onC
   async retry(){
    if(!session||!activity||!['reserved','idle'].includes(session.snapshot().phase)||busy)throw Error('BASIC_RETRY_NOT_AVAILABLE');
    busy=true;message('Recuperando actividad…');
-   try{const result=await session.launch(activity);questions=result.questions;answers=new Array(questions.length).fill(null);index=0;busy=false;render();return result;}
+   try{const result=await session.launch(activity);if(!result.started||!Array.isArray(result.questions)||!result.questions.length){busy=false;message(result.reason==='BASIC_QUOTA_EXHAUSTED'?'Ya utilizaste los cupos disponibles.':'La actividad todavía no está disponible.');return result;}questions=result.questions;answers=new Array(questions.length).fill(null);index=0;busy=false;render();return result;}
    catch(error){busy=false;message('La actividad sigue pendiente.');showRetry();throw error;}
   },
   snapshot:()=>Object.freeze({phase:session?.snapshot().phase??'idle',index,total:questions.length})
