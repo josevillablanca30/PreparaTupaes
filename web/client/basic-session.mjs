@@ -35,7 +35,7 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
     if(reservation.tier!=='basica'||!uuid.test(reservation.attemptId||'')){
      phase='idle';throw Error('BASIC_ISSUANCE_NOT_READY');
     }
-    current={attemptId:reservation.attemptId,mode,subject};
+    current={attemptId:reservation.attemptId,mode,subject,requestKey};
     phase='reserved';
     // A reservation is not a question issuance: never start the local engine here.
     return Object.freeze({started:false,reason:'BASIC_ISSUANCE_NOT_READY',attemptId:current.attemptId});
@@ -44,10 +44,11 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
   // Retry with the original request key: the server returns the same attempt
   // and the exact questions persisted on its first successful issuance.
   async resume({mode,subject,requestKey}={}){
-   if(phase!=='idle')throw Error('BASIC_SESSION_ALREADY_STARTED');
+   if(phase!=='idle'&&phase!=='reserved')throw Error('BASIC_SESSION_ALREADY_STARTED');
    const admission=classifyDailyAdmission({mode,subject});
    if(!admission.allowed)throw Error('BASIC_ACTIVITY_MISMATCH');
-   const reserved=await this.start({mode,subject,requestKey});
+   if(phase==='reserved'&&(current.mode!==mode||current.subject!==subject||current.requestKey!==requestKey))throw Error('BASIC_ACTIVITY_MISMATCH');
+   const reserved=phase==='reserved'?{attemptId:current.attemptId}:await this.start({mode,subject,requestKey});
    if(!current||phase!=='reserved')return reserved;
    const issued=await this.issue({subject:admission.kind==='expressExam'?({'M1':'m1','M2':'m2','Lectora':'lectora','Ciencias':'ciencias','Historia':'historia'}[subject]):admission.subject,kind:admission.kind});
    return Object.freeze({resumed:true,started:true,tier:'basica',attemptId:issued.attemptId,questions:issued.questions});
