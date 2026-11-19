@@ -1,3 +1,4 @@
+import {issueBasicQuestions} from '../shared/basic-question-issuance.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -118,4 +119,12 @@ test('Persistencia SQL valida IDs únicos y contenido de las preguntas públicas
  assert.match(migration,/length\(q->>'prompt'\)>10000/);
  assert.match(migration,/jsonb_array_elements_text\(case when jsonb_typeof\(q->'options'\)='array'/);
  assert.match(migration,/length\(option_text\)>2000/);
+});
+
+test('La emisión rechaza textos sobredimensionados antes de tocar la base de datos',()=>{
+ const attemptId='123e4567-e89b-42d3-a456-426614174000';
+ const q={id:'q1',prompt:'Pregunta',options:['A','B'],answerIndex:0};
+ assert.throws(()=>issueBasicQuestions({attemptId,questions:[{...q,prompt:'X'.repeat(10001)}]}),/INVALID_TRUSTED_QUESTION/);
+ assert.throws(()=>issueBasicQuestions({attemptId,questions:[{...q,options:['X'.repeat(2001),'B']}]}),/INVALID_TRUSTED_QUESTION/);
+ assert.equal(issueBasicQuestions({attemptId,questions:[{...q,prompt:'X'.repeat(10000),options:['X'.repeat(2000),'B']}]}).publicQuestions.length,1);
 });
