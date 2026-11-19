@@ -16,12 +16,16 @@ begin
  end if;
  if exists(select 1 from jsonb_array_elements(p_public_questions) with ordinality q(value,pos)
   join jsonb_array_elements(p_answer_key) with ordinality k(value,pos) on q.pos=k.pos
-  where q.value->>'id' is distinct from k.value->>'id' or
+  where jsonb_typeof(q.value) is distinct from 'object' or
+        jsonb_typeof(k.value) is distinct from 'object' or
+        q.value->>'id' is distinct from k.value->>'id' or
         q.value->'options' is distinct from k.value->'options' or
         jsonb_typeof(q.value->'prompt') is distinct from 'string' or
         jsonb_typeof(q.value->'options') is distinct from 'array' or
+        jsonb_typeof(q.value->'id') is distinct from 'string' or
+        (select count(*) from jsonb_array_elements(case when jsonb_typeof(q.value->'options')='array' then q.value->'options' else '[]'::jsonb end) option_value where jsonb_typeof(option_value)<>'string')>0 or
         q.value ? 'answerIndex' or
-        (select count(*) from jsonb_object_keys(q.value) key where key not in ('id','prompt','options'))>0
+        (select count(*) from jsonb_object_keys(case when jsonb_typeof(q.value)='object' then q.value else '{}'::jsonb end) key where key not in ('id','prompt','options'))>0
  ) then raise exception 'INVALID_ISSUANCE' using errcode='22023';end if;
  -- Reuse the previously reviewed issuance validator (IDs, options, answer
  -- indices, ownership, lease and duplicate prevention) atomically.
