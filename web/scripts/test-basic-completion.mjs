@@ -129,3 +129,20 @@ for(const count of [9,11]){
  await assert.rejects(wrongCount.launch({mode:'lesson',subject:'M1',requestKey:attemptId}),/INVALID_BASIC_ISSUANCE/);
  assert.equal(wrongCount.snapshot().phase,'reserved');
 }
+
+// Reject invalid answer choices locally before any completion request reaches the server.
+const optionCalls=[];
+const optionSession=createBasicLearningSession({fetcher:async(path)=>{
+ optionCalls.push(path);
+ if(path==='/api/basic/reserve')return Response.json({allowed:true,tier:'basica',remaining:2,day:'2026-11-18',attemptId});
+ if(path==='/api/basic/issue')return Response.json({attemptId,questions:issuance.publicQuestions});
+ if(path==='/api/basic/complete')throw Error('MUST_NOT_SUBMIT_INVALID_ANSWER');
+ throw Error('UNEXPECTED_ROUTE');
+}});
+const optionLaunch=await optionSession.launch({mode:'lesson',subject:'M1',requestKey:attemptId});
+const validSheet=optionLaunch.questions.map(q=>({questionId:q.id,selectedIndex:0}));
+for(const bad of [{...validSheet[0],selectedIndex:3},{...validSheet[0],selectedIndex:-1},{...validSheet[0],selectedIndex:1.5},{...validSheet[0],correct:true}]){
+ await assert.rejects(optionSession.finish({answers:[bad,...validSheet.slice(1)]}),/INVALID_BASIC_ANSWERS/);
+}
+assert.equal(optionCalls.includes('/api/basic/complete'),false);
+assert.equal(optionSession.snapshot().phase,'issued');
