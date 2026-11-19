@@ -5,7 +5,7 @@ import {classifyDailyAdmission} from '../shared/basic-completion-contract.mjs';
 // Android learning engine or receives the private answer key.
 export function createBasicLearningView({root,accessToken,fetcher=fetch,onComplete=()=>{}}={}){
  if(!root||typeof root.replaceChildren!=='function')throw Error('BASIC_VIEW_ROOT_REQUIRED');
- if(typeof accessToken!=='string'||accessToken.length<10)throw Error('AUTH_REQUIRED');
+ if(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10))throw Error('AUTH_REQUIRED');
  let session=null,questions=[],answers=[],index=0,busy=false,activity=null;
  const element=(tag,text)=>{const n=root.ownerDocument.createElement(tag);if(text!==undefined)n.textContent=String(text);return n;};
  const show=(...nodes)=>root.replaceChildren(...nodes);
