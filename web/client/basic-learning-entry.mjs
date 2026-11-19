@@ -3,7 +3,9 @@ import {createBasicLearningView} from './basic-learning-ui.mjs';
 // Web-only integration boundary. Call only after server-confirmed Basic access,
 // an authenticated token, and the actual subject are available. No auto-hook.
 const SUBJECTS=new Set(['M1','M2','Lectora','Ciencias','Historia']);
-const MODES=Object.freeze({'diagnostic-mode':'diagnostic','express-mode':'express-exam','lesson':'lesson'});
+// Lesson launch requires binding the selected concept to server issuance first.
+// Do not silently replace a chosen lesson with unrelated questions.
+const MODES=Object.freeze({'diagnostic-mode':'diagnostic','express-mode':'express-exam'});
 export function attachBasicLearningEntry({root,accessToken,getSubject,isBasicEnabled,onComplete=()=>{}}={}){
  if(!root||typeof root.addEventListener!=='function'||typeof getSubject!=='function'||typeof isBasicEnabled!=='function'||(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10)))throw Error('BASIC_BRIDGE_CONFIGURATION_REQUIRED');
  let view=null,activePanel=null;
@@ -14,7 +16,6 @@ export function attachBasicLearningEntry({root,accessToken,getSubject,isBasicEna
   if(view){event.preventDefault();event.stopImmediatePropagation();return;}
   const subject=getSubject();
   if(!SUBJECTS.has(subject))return; // Never consume an event with unknown course.
-  if(mode==='lesson'&&!button.dataset.concept)return; // No implicit lesson selection.
   event.preventDefault();event.stopImmediatePropagation();
   const panel=root.ownerDocument.createElement('section');panel.setAttribute('aria-label','Actividad Básica');
   view=createBasicLearningView({root:panel,accessToken,onComplete});
