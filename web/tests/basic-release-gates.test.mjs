@@ -90,6 +90,13 @@ test('Reanudación solo devuelve preguntas originales mediante RPC privilegiado'
 test('Dos solicitudes simultáneas recuperan el cuestionario guardado, no el nuevo sorteo',()=>{
  assert.match(gateway,/if\(stored!==true\)\{/);
  assert.match(gateway,/const replay=await backend\(env,'\/rest\/v1\/rpc\/cachaste_resume_basic_question_set'/);
- assert.match(gateway,/replay\?\.attemptId===body\.attemptId&&Array\.isArray\(replay\.questions\)/);
- assert.match(gateway,/if\(replay\?\.attemptId===body\.attemptId&&Array\.isArray\(replay\.questions\)\)return json\(replay\)/);
+ assert.match(gateway,/replay\.kind===body\.kind/);
+ assert.match(gateway,/replay\.subject===\(body\.kind==='expressExam'\?'all':body\.subject\)/);
+});
+
+test('Recuperación verifica tipo y asignatura contra la reserva original',()=>{
+ const migration=sql('20261119080000_cachaste_basic_resumable_issuance.sql');
+ assert.match(migration,/'kind',a\.kind,'subject',a\.subject/);
+ assert.match(gateway,/existing\.kind!==body\.kind/);
+ assert.match(gateway,/existing\.subject!==\(body\.kind==='expressExam'\?'all':body\.subject\)/);
 });
