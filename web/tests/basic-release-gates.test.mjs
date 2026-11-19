@@ -110,3 +110,12 @@ test('SQL de emisión tolera JSON no-array sin intentar iterarlo directamente',(
  assert.match(migration,/jsonb_array_elements\(case when jsonb_typeof\(p_public_questions\)='array'/);
  assert.match(migration,/jsonb_array_elements\(case when jsonb_typeof\(p_answer_key\)='array'/);
 });
+
+test('Persistencia SQL valida IDs únicos y contenido de las preguntas públicas',()=>{
+ const migration=sql('20261119080000_cachaste_basic_resumable_issuance.sql');
+ assert.match(migration,/count\(distinct q->>'id'\)/);
+ assert.match(migration,/length\(q->>'id'\)>128/);
+ assert.match(migration,/length\(q->>'prompt'\)>10000/);
+ assert.match(migration,/jsonb_array_elements_text\(case when jsonb_typeof\(q->'options'\)='array'/);
+ assert.match(migration,/length\(option_text\)>2000/);
+});
