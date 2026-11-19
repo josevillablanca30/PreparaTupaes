@@ -29,6 +29,16 @@ begin
         q.value ? 'answerIndex' or
         (select count(*) from jsonb_object_keys(case when jsonb_typeof(q.value)='object' then q.value else '{}'::jsonb end) key where key not in ('id','prompt','options'))>0
  ) then raise exception 'INVALID_ISSUANCE' using errcode='22023';end if;
+ -- The public set must contain unique nonempty IDs and usable options.
+ if (select count(distinct q->>'id') from jsonb_array_elements(p_public_questions) q)<>
+    jsonb_array_length(p_public_questions) or
+    exists(select 1 from jsonb_array_elements(p_public_questions) q where
+      coalesce(q->>'id','')='' or length(q->>'id')>128 or
+      coalesce(btrim(q->>'prompt'),'')='' or length(q->>'prompt')>10000 or
+      jsonb_array_length(case when jsonb_typeof(q->'options')='array' then q->'options' else '[]'::jsonb end) not between 2 and 8 or
+      exists(select 1 from jsonb_array_elements_text(case when jsonb_typeof(q->'options')='array' then q->'options' else '[]'::jsonb end) option_text
+       where btrim(option_text)='' or length(option_text)>2000)
+    ) then raise exception 'INVALID_ISSUANCE' using errcode='22023';end if;
  -- Reuse the previously reviewed issuance validator (IDs, options, answer
  -- indices, ownership, lease and duplicate prevention) atomically.
  if not cachaste_web.issue_basic_question_key(p_user_id,p_attempt_id,p_answer_key) then return false;end if;
