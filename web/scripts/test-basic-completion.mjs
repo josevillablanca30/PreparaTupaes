@@ -43,3 +43,26 @@ assert.equal(Object.hasOwn(isolated,'acceptIssuedQuestions'),false,'client canno
 assert.equal(typeof isolated.issue,'function');
 
 assert.throws(()=>prepareBasicIssuance({attemptId,subject:'m1',kind:'lesson',bankJson:JSON.stringify({m1:[...bank.m1.slice(0,9),{...bank.m1[9],id:'x'.repeat(129)}]})}),/INVALID_TRUSTED_QUESTION/,'server must never issue IDs that completion rejects');
+
+// Integrated launcher: a reservation alone must not display local questions.
+const integratedCalls=[];
+const launchFetcher=async(path,options)=>{
+ integratedCalls.push(path);
+ if(path==='/api/basic/reserve')return new Response(JSON.stringify({allowed:true,tier:'basica',remaining:2,day:'2026-11-18',attemptId}));
+ if(path==='/api/basic/issue')return new Response(JSON.stringify({attemptId,questions:issuance.publicQuestions}));
+ if(path==='/api/basic/complete')return new Response(JSON.stringify({allowed:true,completed:true,attemptId,correct:10,total:10}));
+ throw Error('UNEXPECTED_ROUTE');
+};
+const integrated=createBasicLearningSession({fetcher:launchFetcher});
+const launched=await integrated.launch({mode:'lesson',subject:'M1',requestKey:attemptId});
+assert.equal(launched.started,true);
+assert.equal(launched.questions.length,10);
+assert.deepEqual(integratedCalls,['/api/basic/reserve','/api/basic/issue']);
+assert.equal(integrated.snapshot().phase,'issued');
+const graded=await integrated.finish({answers:launched.questions.map(q=>({questionId:q.id,selectedIndex:1}))});
+assert.equal(graded.completed,true);
+assert.deepEqual(integratedCalls,['/api/basic/reserve','/api/basic/issue','/api/basic/complete']);
+assert.equal(integrated.snapshot().phase,'completed');
+const blocked=createBasicLearningSession({fetcher:async(path)=>path==='/api/basic/reserve'?new Response('{}',{status:503}):Promise.reject(Error('ISSUANCE_MUST_NOT_RUN'))});
+await assert.rejects(blocked.launch({mode:'lesson',subject:'M1',requestKey:attemptId}),/BASIC_NOT_READY/);
+assert.equal(blocked.snapshot().phase,'idle');
