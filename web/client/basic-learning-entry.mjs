@@ -21,11 +21,11 @@ const SUBJECTS=new Set(['M1','M2','Lectora','Ciencias','Historia']);
 const installedBridges=new WeakMap();
 // Lesson launch requires binding the selected concept to server issuance first.
 // Do not silently replace a chosen lesson with unrelated questions.
-const MODES=Object.freeze({'diagnostic-mode':'diagnostic'});
+const MODES=Object.freeze({'diagnostic-mode':'diagnostic','express-mode':'express-exam'});
 // These legacy launchers do not enforce Basic quota or server-issued grading.
 // Every action below can launch an unmetered legacy question session.
 // Block the launch (not navigation) until its original engine is quota-attested.
-const UNSUPPORTED_BASIC_ACTIONS=new Set(['exam-mode','unit-exam','studio-lesson','express-mode','studio-direct-test','studio-assess','review-due','keep-practicing','check-first','smart','free','lesson','study-practice','basic-start','resume','switch-start']);
+const UNSUPPORTED_BASIC_ACTIONS=new Set(['exam-mode','unit-exam','studio-lesson','studio-direct-test','studio-assess','review-due','keep-practicing','check-first','smart','free','lesson','study-practice','basic-start','resume','switch-start']);
 export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBasicEnabled,onComplete=()=>{}}={}){
  if(!root||typeof root.addEventListener!=='function'||typeof getSubject!=='function'||typeof isBasicEnabled!=='function'||(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10)))throw Error('BASIC_BRIDGE_CONFIGURATION_REQUIRED');
  if(installedBridges.has(root))return installedBridges.get(root);
