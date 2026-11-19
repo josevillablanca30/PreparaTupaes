@@ -80,7 +80,7 @@ export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBas
   void view.start({mode,subject,requestKey:crypto.randomUUID()}).catch(()=>{});
  };
  root.addEventListener('click',handler,true);
- const bridge=Object.freeze({detach(){root.removeEventListener('click',handler,true);if(view){const phase=view.snapshot().phase;if(['issued','reserved','issuing','reserving','completing'].includes(phase))return false;}clearActivity();installedBridges.delete(root);return true;},snapshot:()=>view?.snapshot()??{phase:'idle'},get panel(){return activePanel;}});
+ const bridge=Object.freeze({detach(){if(view){const phase=view.snapshot().phase;if(['issued','reserved','issuing','reserving','completing'].includes(phase))return false;}root.removeEventListener('click',handler,true);clearActivity();installedBridges.delete(root);return true;},snapshot:()=>view?.snapshot()??{phase:'idle'},get panel(){return activePanel;}});
  installedBridges.set(root,bridge);
  return bridge;
 }
