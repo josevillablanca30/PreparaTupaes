@@ -177,3 +177,25 @@ for(const extra of [{answerIndex:1},{correct:true},{source:'private'}]){
  await assert.rejects(strict.launch({mode:'lesson',subject:'M1',requestKey:attemptId}),/INVALID_BASIC_ISSUANCE/);
  assert.equal(strict.snapshot().phase,'reserved');
 }
+
+// Network interruption after reservation: resume must reuse the same attempt,
+// never spend a second quota slot or switch to another activity.
+let interruptedIssue=true;
+const interruptedCalls=[];
+const interrupted=createBasicLearningSession({fetcher:async(path)=>{
+ interruptedCalls.push(path);
+ if(path==='/api/basic/reserve')return Response.json({allowed:true,tier:'basica',remaining:2,day:'2026-11-18',attemptId});
+ if(path==='/api/basic/issue'){
+  if(interruptedIssue){interruptedIssue=false;throw Error('NETWORK_INTERRUPTED');}
+  return Response.json({attemptId,questions:issuance.publicQuestions});
+ }
+ throw Error('UNEXPECTED_ROUTE');
+}});
+await assert.rejects(interrupted.launch({mode:'lesson',subject:'M1',requestKey:attemptId}),/NETWORK_INTERRUPTED/);
+assert.equal(interrupted.snapshot().phase,'reserved');
+await assert.rejects(interrupted.resume({mode:'lesson',subject:'M2',requestKey:attemptId}),/BASIC_ACTIVITY_MISMATCH/);
+await assert.rejects(interrupted.resume({mode:'lesson',subject:'M1',requestKey:'123e4567-e89b-42d3-a456-426614174099'}),/BASIC_ACTIVITY_MISMATCH/);
+const resumedSame=await interrupted.resume({mode:'lesson',subject:'M1',requestKey:attemptId});
+assert.equal(resumedSame.started,true);
+assert.equal(resumedSame.attemptId,attemptId);
+assert.deepEqual(interruptedCalls,['/api/basic/reserve','/api/basic/issue','/api/basic/issue']);
