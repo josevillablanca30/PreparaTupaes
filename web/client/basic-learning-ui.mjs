@@ -61,7 +61,7 @@ export function createBasicLearningView({root,accessToken,fetcher=fetch,onComple
     const result=await session.launch(activity);
     if(!result.started){busy=false;session=null;activity=null;message(result.reason==='BASIC_QUOTA_EXHAUSTED'?'Ya utilizaste los cupos disponibles.':'Esta actividad todavía no está disponible.');return result;}
     questions=result.questions;answers=new Array(questions.length).fill(null);index=0;busy=false;render();return result;
-   }catch(error){busy=false;message('No pudimos cargar la actividad.');if(session.snapshot().phase==='reserved')showRetry();else if(session.snapshot().phase==='idle'){session=null;activity=null;}throw error;}
+   }catch(error){busy=false;message('No pudimos cargar la actividad.');if(session.snapshot().phase==='reserved')showRetry();else if(session.snapshot().phase==='idle'){session=null;activity=null;}else if(session.snapshot().phase==='reserving'){message('No se pudo confirmar la reserva. No vuelvas a iniciar una actividad hasta verificar su estado.');}throw error;}
   },
   async retry(){
    if(!session||session.snapshot().phase!=='reserved'||busy)throw Error('BASIC_RETRY_NOT_AVAILABLE');
