@@ -12,13 +12,13 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
    if(phase!=='reserved'||!current||attemptId!==current.attemptId||!Array.isArray(questions)||!questions.length||questions.length>80)throw Error('INVALID_BASIC_ISSUANCE');
    const ids=new Set();
    for(const q of questions){
-    if(!q||typeof q.id!=='string'||!q.id||ids.has(q.id)||typeof q.prompt!=='string'||!q.prompt.trim()||
-       !Array.isArray(q.options)||q.options.length<2||q.options.length>8||q.options.some(x=>typeof x!=='string'||!x.trim())||
+    if(!q||typeof q.id!=='string'||!q.id||q.id.length>128||ids.has(q.id)||typeof q.prompt!=='string'||!q.prompt.trim()||q.prompt.length>10000||
+       !Array.isArray(q.options)||q.options.length<2||q.options.length>8||q.options.some(x=>typeof x!=='string'||!x.trim()||x.length>2000)||
        Object.hasOwn(q,'answerIndex'))throw Error('INVALID_BASIC_ISSUANCE');
     ids.add(q.id);
    }
    // This method must only be called by the trusted issuance response handler.
-   current={...current,questions:questions.map(q=>({id:q.id,prompt:q.prompt,options:[...q.options]}))};
+   current={...current,questions:Object.freeze(questions.map(q=>Object.freeze({id:q.id,prompt:q.prompt,options:Object.freeze([...q.options])})))};
    phase='issued';return Object.freeze({questions:current.questions,attemptId});
   }
 
