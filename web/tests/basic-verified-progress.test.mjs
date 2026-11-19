@@ -7,7 +7,7 @@ const gateway=readFileSync(new URL('../server/gateway.mjs',import.meta.url),'utf
 const migration=readFileSync(new URL('../supabase/migrations/20261117002000_cachaste_basic_verified_progress_snapshot.sql',import.meta.url),'utf8');
 test('Verified progress RPC resolves identity from JWT, not supplied user ID',()=>{
  assert.match(migration,/u uuid:=cachaste\.require_user\(\)/);
- assert.match(migration,/where q\.user_id=u/);
+ assert.match(migration,/where user_id=u and kind in \('lesson','diagnostic','expressExam'\)/);
  assert.match(migration,/from cachaste_web\.basic_usage/);
  assert.doesNotMatch(migration,/insert into cachaste_web\.basic_usage/i);
 });
