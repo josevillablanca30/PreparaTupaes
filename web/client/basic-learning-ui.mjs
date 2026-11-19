@@ -61,7 +61,7 @@ export function createBasicLearningView({root,accessToken=null,fetcher=fetch,onC
    session=createBasicLearningSession({fetcher,accessToken});activity={mode,subject,requestKey};busy=true;message('Preparando actividad…');
    try{
     const result=await session.launch(activity);
-    if(!result.started){busy=false;session=null;activity=null;message(result.reason==='BASIC_QUOTA_EXHAUSTED'?'Ya utilizaste los cupos disponibles.':'Esta actividad todavía no está disponible.');return result;}
+    if(!result.started){busy=false;session=null;activity=null;message(result.reason==='BASIC_QUOTA_EXHAUSTED'?(mode==='diagnostic'?'Ya utilizaste el diagnóstico gratuito de esta asignatura. Con Premium puedes seguir preparándote sin límites.':mode==='express-exam'?'Completaste tu PAES Express gratuito de hoy. Vuelve mañana o continúa con Premium.':'Completaste las actividades gratuitas disponibles. Continúa con Premium.'):'Esta actividad todavía no está disponible.');return result;}
     questions=result.questions;answers=new Array(questions.length).fill(null);index=0;busy=false;render();return result;
    }catch(error){busy=false;message('No pudimos cargar la actividad.');if(session.snapshot().phase==='reserved'||session.snapshot().phase==='idle')showRetry();else message('No se pudo confirmar la reserva. Conserva esta pantalla para recuperarla.');throw error;}
   },
