@@ -10,11 +10,15 @@ const MODES=Object.freeze({'diagnostic-mode':'diagnostic'});
 const UNSUPPORTED_BASIC_ACTIONS=new Set(['exam-mode','unit-exam','studio-lesson','express-mode']);
 export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBasicEnabled,onComplete=()=>{}}={}){
  if(!root||typeof root.addEventListener!=='function'||typeof getSubject!=='function'||typeof isBasicEnabled!=='function'||(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10)))throw Error('BASIC_BRIDGE_CONFIGURATION_REQUIRED');
- let view=null,activePanel=null;
+ let view=null,activePanel=null,selectedSubject=null;
  const handler=event=>{
   const button=event.target.closest?.('button[data-action]');
   const action=button?.dataset.action;
   const mode=action&&MODES[action];
+  // Track only explicit course selections from the existing daily-app UI.
+  // Never infer a course from a local question bank or an unverified URL.
+  if(action==='pick-course'&&SUBJECTS.has(button.dataset.subject))selectedSubject=button.dataset.subject;
+  if(action==='pick-track')selectedSubject='Ciencias';
   if(!isBasicEnabled())return;
   if(!mode&&UNSUPPORTED_BASIC_ACTIONS.has(action)){
    event.preventDefault();event.stopImmediatePropagation();
@@ -25,7 +29,8 @@ export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBas
   }
   if(!mode)return;
   if(view){event.preventDefault();event.stopImmediatePropagation();return;}
-  const subject=getSubject();
+  const configuredSubject=getSubject();
+  const subject=SUBJECTS.has(configuredSubject)?configuredSubject:selectedSubject;
   if(!SUBJECTS.has(subject)){
    // An enabled Basic account must never fall through to the legacy local
    // question engine when its selected course cannot be verified.
