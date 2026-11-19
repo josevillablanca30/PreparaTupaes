@@ -32,7 +32,14 @@ export function createBasicLearningView({root,accessToken,fetcher=fetch,onComple
     const result=await session.finish({answers:questions.map((item,j)=>({questionId:item.id,selectedIndex:answers[j]}))});
     const heading=element('h2','Actividad completada'),score=element('p',`Respuestas correctas: ${result.correct} de ${result.total}`);
     show(heading,score);onComplete(result);
-   }catch(error){busy=false;message('No pudimos confirmar tu actividad. Conserva esta pantalla y vuelve a intentarlo.');
+   }catch(error){
+    // A lost completion response is not proof of failure: consult the signed
+    // server ledger before offering another submission of the same answers.
+    try{
+     const recovered=await session.recoverCompletion();
+     if(recovered.completed){busy=false;show(element('h2','Actividad completada'),element('p','Tu avance quedó confirmado. El resultado numérico no está disponible en esta recuperación.'));onComplete(recovered);return;}
+    }catch{ /* Keep the original answer sheet for an explicit retry. */ }
+    busy=false;message('No pudimos confirmar tu actividad. Conserva esta pantalla y vuelve a intentarlo.');
     const retry=element('button','Reintentar confirmación');retry.type='button';retry.addEventListener('click',()=>render());root.append(retry);
    }
   });
