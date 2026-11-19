@@ -74,6 +74,19 @@ export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBas
  return Object.freeze({detach(){root.removeEventListener('click',handler,true);},snapshot:()=>view?.snapshot()??{phase:'idle'},get panel(){return activePanel;}});
 }
 
-// Export a callable bridge from the classic web bundle; publishing this API
-// does not activate Basic or install any event listener.
-if(typeof window!=='undefined')window.CachasteBasicLearningBridge=Object.freeze({attach:attachBasicLearningEntry,verifyAccess:verifyBasicLearningAccess});
+// The production release flag remains false. This boot path is inert until
+// /api/config AND the authenticated quota summary both authorize Basic.
+export async function initializeBasicLearningEntry({documentRef=globalThis.document,fetcher=fetch}={}){
+ if(!documentRef?.getElementById)return null;
+ const enabled=await verifyBasicLearningAccess({fetcher});
+ if(!enabled)return null;
+ const root=documentRef.getElementById('daily-root');
+ if(!root)return null;
+ // No untrusted local entitlement and no guessing a persisted subject.
+ return attachBasicLearningEntry({root,getSubject:()=>null,isBasicEnabled:()=>true});
+}
+if(typeof window!=='undefined'){
+ window.CachasteBasicLearningBridge=Object.freeze({attach:attachBasicLearningEntry,verifyAccess:verifyBasicLearningAccess,initialize:initializeBasicLearningEntry});
+ const boot=()=>{void initializeBasicLearningEntry().catch(()=>{});};
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+}
