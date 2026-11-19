@@ -13,6 +13,7 @@ export function attachBasicLearningEntry({root,accessToken,getSubject,isBasicEna
   if(!mode||!isBasicEnabled())return;
   const subject=getSubject();
   if(!SUBJECTS.has(subject))return; // Never consume an event with unknown course.
+  if(mode==='lesson'&&!button.dataset.concept)return; // No implicit lesson selection.
   event.preventDefault();event.stopImmediatePropagation();
   if(view)return;
   const panel=root.ownerDocument.createElement('section');panel.setAttribute('aria-label','Actividad Básica');
@@ -24,7 +25,7 @@ export function attachBasicLearningEntry({root,accessToken,getSubject,isBasicEna
   const close=root.ownerDocument.createElement('button');close.type='button';close.textContent='Volver a las actividades';
   close.addEventListener('click',()=>{
    const phase=view?.snapshot().phase;
-   if(phase==='issued'||phase==='reserved'||phase==='completing')return;
+   if(phase==='issued'||phase==='reserved'||phase==='issuing'||phase==='reserving'||phase==='completing')return;
    panel.remove();close.remove();for(const node of existing)node.hidden=false;
    view=null;activePanel=null;
   });
