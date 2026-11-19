@@ -23,14 +23,12 @@ begin
         q.value ? 'answerIndex' or
         (select count(*) from jsonb_object_keys(q.value) key where key not in ('id','prompt','options'))>0
  ) then raise exception 'INVALID_ISSUANCE' using errcode='22023';end if;
- perform pg_advisory_xact_lock(hashtextextended('basic-completion:'||p_user_id::text,0));
- select * into a from cachaste_web.basic_learning_attempts where id=p_attempt_id and user_id=p_user_id for update;
- if not found or a.status<>'reserved' or a.created_at<now()-interval '90 minutes' or
-    (a.kind<>'diagnostic' and a.usage_day<>(now() at time zone 'America/Santiago')::date) then
-  raise exception 'ATTEMPT_NOT_ELIGIBLE' using errcode='42501';end if;
- if exists(select 1 from cachaste_web.basic_issued_questions where attempt_id=p_attempt_id) then return false;end if;
- insert into cachaste_web.basic_issued_questions(attempt_id,user_id,answer_key,public_questions)
- values(p_attempt_id,p_user_id,p_answer_key,p_public_questions);
+ -- Reuse the previously reviewed issuance validator (IDs, options, answer
+ -- indices, ownership, lease and duplicate prevention) atomically.
+ if not cachaste_web.issue_basic_question_key(p_user_id,p_attempt_id,p_answer_key) then return false;end if;
+ update cachaste_web.basic_issued_questions
+ set public_questions=p_public_questions
+ where attempt_id=p_attempt_id and user_id=p_user_id;
  return true;
 end$store$;
 revoke all on function public.cachaste_store_basic_question_set(uuid,uuid,jsonb,jsonb) from public,anon,authenticated;
