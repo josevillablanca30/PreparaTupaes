@@ -38,7 +38,12 @@ export function createBasicLearningView({root,accessToken,fetcher=fetch,onComple
   });
   wrap.append(title,progress,prompt,choices,next);show(wrap);
  }
- return Object.freeze({
+ function showRetry(){
+  const button=element('button','Reintentar carga');button.type='button';
+  button.addEventListener('click',()=>{button.disabled=true;void api.retry().catch(()=>{});});
+  root.append(button);
+ }
+ const api=Object.freeze({
   async start({mode,subject,requestKey}={}){
    if(busy||session)throw Error('BASIC_SESSION_ALREADY_STARTED');
    if(!classifyDailyAdmission({mode,subject}).allowed)throw Error('BASIC_ACTIVITY_MISMATCH');
@@ -47,14 +52,15 @@ export function createBasicLearningView({root,accessToken,fetcher=fetch,onComple
     const result=await session.launch(activity);
     if(!result.started){message(result.reason==='BASIC_QUOTA_EXHAUSTED'?'Ya utilizaste los cupos disponibles.':'Esta actividad todavía no está disponible.');return result;}
     questions=result.questions;answers=new Array(questions.length).fill(null);index=0;busy=false;render();return result;
-   }catch(error){busy=false;message('No pudimos cargar la actividad. Puedes reintentar sin reservar otro cupo.');throw error;}
+   }catch(error){busy=false;message('No pudimos cargar la actividad.');if(session.snapshot().phase==='reserved')showRetry();throw error;}
   },
   async retry(){
    if(!session||session.snapshot().phase!=='reserved'||busy)throw Error('BASIC_RETRY_NOT_AVAILABLE');
    busy=true;message('Recuperando actividad…');
    try{const result=await session.launch(activity);questions=result.questions;answers=new Array(questions.length).fill(null);index=0;busy=false;render();return result;}
-   catch(error){busy=false;message('La actividad sigue pendiente. Inténtalo nuevamente.');throw error;}
+   catch(error){busy=false;message('La actividad sigue pendiente.');showRetry();throw error;}
   },
   snapshot:()=>Object.freeze({phase:session?.snapshot().phase??'idle',index,total:questions.length})
  });
+ return api;
 }
