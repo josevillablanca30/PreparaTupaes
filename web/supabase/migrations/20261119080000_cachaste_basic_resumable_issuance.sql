@@ -9,13 +9,15 @@ create or replace function public.cachaste_store_basic_question_set(
 declare a cachaste_web.basic_learning_attempts%rowtype;
 begin
  if auth.role() is distinct from 'service_role' then raise exception 'SERVER_ONLY' using errcode='42501';end if;
- if p_user_id is null or p_attempt_id is null or jsonb_typeof(p_answer_key)<>'array' or
-    jsonb_typeof(p_public_questions)<>'array' or jsonb_array_length(p_answer_key) not between 1 and 80 or
-    jsonb_array_length(p_answer_key)<>jsonb_array_length(p_public_questions) then
+ if p_user_id is null or p_attempt_id is null or jsonb_typeof(p_answer_key) is distinct from 'array' or
+    jsonb_typeof(p_public_questions) is distinct from 'array' or
+    jsonb_array_length(case when jsonb_typeof(p_answer_key)='array' then p_answer_key else '[]'::jsonb end) not between 1 and 80 or
+    jsonb_array_length(case when jsonb_typeof(p_answer_key)='array' then p_answer_key else '[]'::jsonb end)<>
+    jsonb_array_length(case when jsonb_typeof(p_public_questions)='array' then p_public_questions else '[]'::jsonb end) then
   raise exception 'INVALID_ISSUANCE' using errcode='22023';
  end if;
- if exists(select 1 from jsonb_array_elements(p_public_questions) with ordinality q(value,pos)
-  join jsonb_array_elements(p_answer_key) with ordinality k(value,pos) on q.pos=k.pos
+ if exists(select 1 from jsonb_array_elements(case when jsonb_typeof(p_public_questions)='array' then p_public_questions else '[]'::jsonb end) with ordinality q(value,pos)
+  join jsonb_array_elements(case when jsonb_typeof(p_answer_key)='array' then p_answer_key else '[]'::jsonb end) with ordinality k(value,pos) on q.pos=k.pos
   where jsonb_typeof(q.value) is distinct from 'object' or
         jsonb_typeof(k.value) is distinct from 'object' or
         q.value->>'id' is distinct from k.value->>'id' or
