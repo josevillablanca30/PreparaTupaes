@@ -17,7 +17,7 @@ export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBas
   const mode=action&&MODES[action];
   // Track only explicit course selections from the existing daily-app UI.
   // Never infer a course from a local question bank or an unverified URL.
-  if(action==='pick-course'&&SUBJECTS.has(button.dataset.subject))selectedSubject=button.dataset.subject;
+  if(action==='pick-course')selectedSubject=SUBJECTS.has(button.dataset.subject)?button.dataset.subject:null;
   if(action==='pick-track')selectedSubject='Ciencias';
   if(!isBasicEnabled())return;
   if(!mode&&UNSUPPORTED_BASIC_ACTIONS.has(action)){
@@ -30,7 +30,8 @@ export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBas
   if(!mode)return;
   if(view){event.preventDefault();event.stopImmediatePropagation();return;}
   const configuredSubject=getSubject();
-  const subject=SUBJECTS.has(configuredSubject)?configuredSubject:selectedSubject;
+  // A fresh, explicit course choice takes precedence over a stale persisted value.
+  const subject=selectedSubject??configuredSubject;
   if(!SUBJECTS.has(subject)){
    // An enabled Basic account must never fall through to the legacy local
    // question engine when its selected course cannot be verified.
