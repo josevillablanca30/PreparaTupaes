@@ -5,7 +5,7 @@ import {createBasicLearningView} from './basic-learning-ui.mjs';
 const SUBJECTS=new Set(['M1','M2','Lectora','Ciencias','Historia']);
 const MODES=Object.freeze({'diagnostic-mode':'diagnostic','express-mode':'express-exam','lesson':'lesson'});
 export function attachBasicLearningEntry({root,accessToken,getSubject,isBasicEnabled,onComplete=()=>{}}={}){
- if(!root||typeof root.addEventListener!=='function'||typeof getSubject!=='function'||typeof isBasicEnabled!=='function'||typeof accessToken!=='string'||accessToken.length<10)throw Error('BASIC_BRIDGE_CONFIGURATION_REQUIRED');
+ if(!root||typeof root.addEventListener!=='function'||typeof getSubject!=='function'||typeof isBasicEnabled!=='function'||(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10)))throw Error('BASIC_BRIDGE_CONFIGURATION_REQUIRED');
  let view=null,activePanel=null;
  const handler=event=>{
   const button=event.target.closest?.('button[data-action]');
