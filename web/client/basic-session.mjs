@@ -9,7 +9,9 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
  let current=null,phase='idle';
  const snapshot=()=>Object.freeze({phase,attemptId:current?.attemptId??null});
  function acceptIssuedQuestions({attemptId,questions}={}){
-   if(phase!=='reserved'||!current||attemptId!==current.attemptId||!Array.isArray(questions)||!questions.length||questions.length>80)throw Error('INVALID_BASIC_ISSUANCE');
+   const admission=classifyDailyAdmission({mode:current?.mode,subject:current?.subject});
+   const expected=admission.kind==='diagnostic'?30:admission.kind==='expressExam'?15:10;
+   if(phase!=='reserved'||!current||!admission.allowed||attemptId!==current.attemptId||!Array.isArray(questions)||questions.length!==expected)throw Error('INVALID_BASIC_ISSUANCE');
    const ids=new Set();
    for(const q of questions){
     if(!q||typeof q.id!=='string'||!q.id||q.id.length>128||ids.has(q.id)||typeof q.prompt!=='string'||!q.prompt.trim()||q.prompt.length>10000||
