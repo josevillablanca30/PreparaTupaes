@@ -57,6 +57,8 @@ const integrated=createBasicLearningSession({fetcher:launchFetcher});
 const launched=await integrated.launch({mode:'lesson',subject:'M1',requestKey:attemptId});
 assert.equal(launched.started,true);
 assert.equal(launched.questions.length,10);
+assert.equal(Object.isFrozen(launched.questions),true);
+assert.equal(Object.isFrozen(launched.questions[0].options),true);
 assert.deepEqual(integratedCalls,['/api/basic/reserve','/api/basic/issue']);
 assert.equal(integrated.snapshot().phase,'issued');
 const graded=await integrated.finish({answers:launched.questions.map(q=>({questionId:q.id,selectedIndex:1}))});
@@ -98,3 +100,21 @@ assert.equal(recovered.recovered,true);
 assert.equal(recovered.scoreAvailable,false);
 assert.equal(recoverySession.snapshot().phase,'completed');
 assert.equal(recoveryCalls.filter(path=>path==='/api/basic/complete').length,1);
+
+// An oversized or malformed issuance must never become a playable activity.
+const malformedSession=createBasicLearningSession({fetcher:async(path)=>{
+ if(path==='/api/basic/reserve')return Response.json({allowed:true,tier:'basica',remaining:2,day:'2026-11-18',attemptId});
+ if(path==='/api/basic/issue')return Response.json({attemptId,questions:[{id:'x'.repeat(129),prompt:'Pregunta',options:['A','B']}]});
+ throw Error('UNEXPECTED_ROUTE');
+}});
+await assert.rejects(malformedSession.launch({mode:'lesson',subject:'M1',requestKey:attemptId}),/INVALID_BASIC_ISSUANCE/);
+assert.equal(malformedSession.snapshot().phase,'reserved');
+const missingRecovery=createBasicLearningSession({fetcher:async(path)=>{
+ if(path==='/api/basic/reserve')return Response.json({allowed:true,tier:'basica',remaining:2,day:'2026-11-18',attemptId});
+ if(path==='/api/basic/issue')return Response.json({attemptId,questions:issuance.publicQuestions});
+ if(path==='/api/basic/verified-progress')return Response.json({day:'2026-11-18',verifiedCompletions:[]});
+ throw Error('UNEXPECTED_ROUTE');
+}});
+await missingRecovery.launch({mode:'lesson',subject:'M1',requestKey:attemptId});
+assert.equal((await missingRecovery.recoverCompletion()).recovered,false);
+assert.equal(missingRecovery.snapshot().phase,'issued');
