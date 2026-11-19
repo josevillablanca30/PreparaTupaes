@@ -18,7 +18,17 @@ export function attachBasicLearningEntry({root,accessToken,getSubject,isBasicEna
   const panel=root.ownerDocument.createElement('section');panel.setAttribute('aria-label','Actividad Básica');
   view=createBasicLearningView({root:panel,accessToken,onComplete});
   activePanel=panel;
-  root.replaceChildren(panel);
+  // Keep the original learning tree mounted so closing Basic restores navigation.
+  const existing=[...root.children];
+  for(const node of existing)node.hidden=true;
+  const close=root.ownerDocument.createElement('button');close.type='button';close.textContent='Volver a las actividades';
+  close.addEventListener('click',()=>{
+   const phase=view?.snapshot().phase;
+   if(phase==='issued'||phase==='reserved'||phase==='completing')return;
+   panel.remove();close.remove();for(const node of existing)node.hidden=false;
+   view=null;activePanel=null;
+  });
+  root.append(close,panel);
   void view.start({mode,subject,requestKey:crypto.randomUUID()}).catch(()=>{});
  };
  root.addEventListener('click',handler,true);
