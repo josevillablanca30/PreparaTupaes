@@ -58,18 +58,18 @@ export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBas
   const panel=root.ownerDocument.createElement('section');panel.setAttribute('aria-label','Actividad Básica');
   view=createBasicLearningView({root:panel,accessToken,onComplete});
   activePanel=panel;
-  // Keep the original learning tree mounted so closing Basic restores navigation.
-  const existing=[...root.children];
-  const priorVisibility=existing.map(node=>node.hidden);
-  for(const node of existing)node.hidden=true;
+  // Mount outside the legacy renderer: daily-app may replace root.innerHTML
+  // while the activity is open. Never let that destroy an issued attempt.
+  const priorVisibility=root.hidden;
+  root.hidden=true;
   const close=root.ownerDocument.createElement('button');close.type='button';close.textContent='Volver a las actividades';
   close.addEventListener('click',()=>{
    const phase=view?.snapshot().phase;
    if(phase==='issued'||phase==='reserved'||phase==='issuing'||phase==='reserving'||phase==='completing')return;
-   panel.remove();close.remove();existing.forEach((node,i)=>{node.hidden=priorVisibility[i];});
+   panel.remove();close.remove();root.hidden=priorVisibility;
    view=null;activePanel=null;
   });
-  root.append(close,panel);
+  root.after(close,panel);
   void view.start({mode,subject,requestKey:crypto.randomUUID()}).catch(()=>{});
  };
  root.addEventListener('click',handler,true);
