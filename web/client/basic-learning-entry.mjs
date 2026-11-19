@@ -48,7 +48,7 @@ export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBas
    event.preventDefault();event.stopImmediatePropagation();
    let notice=root.querySelector('[data-basic-restriction]');
    if(!notice){notice=root.ownerDocument.createElement('p');notice.dataset.basicRestriction='';notice.setAttribute('role','alert');root.prepend(notice);}
-   notice.textContent=action==='exam-mode'?'Los ensayos completos requieren Premium.':action==='express-mode'?'El PAES Express todavía no está habilitado en Básica.':'Esta actividad todavía no está habilitada en Básica.';
+   notice.textContent=action==='exam-mode'?'Los ensayos completos requieren Premium.':'Esta actividad todavía no está habilitada en Básica.';
    return;
   }
   if(!mode)return;
