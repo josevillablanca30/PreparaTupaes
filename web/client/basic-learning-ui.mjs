@@ -36,7 +36,9 @@ export function createBasicLearningView({root,accessToken,fetcher=fetch,onComple
     const retry=element('button','Reintentar confirmación');retry.type='button';retry.addEventListener('click',()=>render());root.append(retry);
    }
   });
-  wrap.append(title,progress,prompt,choices,next);show(wrap);
+  const previous=element('button','Anterior');previous.type='button';previous.disabled=busy||index===0;
+  previous.addEventListener('click',()=>{if(busy||index===0)return;const selected=choices.querySelector('input:checked');if(selected)answers[index]=Number(selected.value);index--;render();});
+  wrap.append(title,progress,prompt,choices,previous,next);show(wrap);
  }
  function showRetry(){
   const button=element('button','Reintentar carga');button.type='button';
