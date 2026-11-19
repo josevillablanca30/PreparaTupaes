@@ -63,6 +63,6 @@ test('Un diagnóstico reservado conserva su límite vitalicio aunque caduque la 
 });
 
 test('Gateway Basic conserva JavaScript ejecutable y no secuencias de salto literales',()=>{
- assert.doesNotMatch(gateway,/\\\\n\s*if\(new Set\(body\.answers/);
+ assert.equal(gateway.includes(String.raw`\n    if(new Set(body.answers`),false);
  assert.match(gateway,/\/\/ A repeated question ID[^\n]*\n\s*if\(new Set\(body\.answers/);
 });
