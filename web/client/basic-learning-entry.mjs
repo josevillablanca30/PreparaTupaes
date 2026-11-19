@@ -6,13 +6,24 @@ const SUBJECTS=new Set(['M1','M2','Lectora','Ciencias','Historia']);
 // Lesson launch requires binding the selected concept to server issuance first.
 // Do not silently replace a chosen lesson with unrelated questions.
 const MODES=Object.freeze({'diagnostic-mode':'diagnostic','express-mode':'express-exam'});
+// These legacy launchers do not enforce Basic quota or server-issued grading.
+const UNSUPPORTED_BASIC_ACTIONS=new Set(['exam-mode','unit-exam','studio-lesson']);
 export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBasicEnabled,onComplete=()=>{}}={}){
  if(!root||typeof root.addEventListener!=='function'||typeof getSubject!=='function'||typeof isBasicEnabled!=='function'||(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10)))throw Error('BASIC_BRIDGE_CONFIGURATION_REQUIRED');
  let view=null,activePanel=null;
  const handler=event=>{
   const button=event.target.closest?.('button[data-action]');
-  const mode=button&&MODES[button.dataset.action];
-  if(!mode||!isBasicEnabled())return;
+  const action=button?.dataset.action;
+  const mode=action&&MODES[action];
+  if(!isBasicEnabled())return;
+  if(!mode&&UNSUPPORTED_BASIC_ACTIONS.has(action)){
+   event.preventDefault();event.stopImmediatePropagation();
+   let notice=root.querySelector('[data-basic-restriction]');
+   if(!notice){notice=root.ownerDocument.createElement('p');notice.dataset.basicRestriction='';notice.setAttribute('role','alert');root.prepend(notice);}
+   notice.textContent=action==='exam-mode'?'Los ensayos completos requieren Premium.':'Esta actividad todavía no está habilitada en Básica.';
+   return;
+  }
+  if(!mode)return;
   if(view){event.preventDefault();event.stopImmediatePropagation();return;}
   const subject=getSubject();
   if(!SUBJECTS.has(subject)){
