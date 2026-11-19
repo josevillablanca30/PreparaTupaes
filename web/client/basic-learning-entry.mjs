@@ -22,7 +22,9 @@ const installedBridges=new WeakMap();
 // Do not silently replace a chosen lesson with unrelated questions.
 const MODES=Object.freeze({'diagnostic-mode':'diagnostic'});
 // These legacy launchers do not enforce Basic quota or server-issued grading.
-const UNSUPPORTED_BASIC_ACTIONS=new Set(['exam-mode','unit-exam','studio-lesson','express-mode']);
+// Every action below can launch an unmetered legacy question session.
+// Block the launch (not navigation) until its original engine is quota-attested.
+const UNSUPPORTED_BASIC_ACTIONS=new Set(['exam-mode','unit-exam','studio-lesson','express-mode','studio-direct-test','studio-assess','review-due','keep-practicing','check-first','smart','free','lesson','study-practice']);
 export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBasicEnabled,onComplete=()=>{}}={}){
  if(!root||typeof root.addEventListener!=='function'||typeof getSubject!=='function'||typeof isBasicEnabled!=='function'||(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10)))throw Error('BASIC_BRIDGE_CONFIGURATION_REQUIRED');
  if(installedBridges.has(root))return installedBridges.get(root);
