@@ -26,7 +26,12 @@ const UNSUPPORTED_BASIC_ACTIONS=new Set(['exam-mode','unit-exam','studio-lesson'
 export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBasicEnabled,onComplete=()=>{}}={}){
  if(!root||typeof root.addEventListener!=='function'||typeof getSubject!=='function'||typeof isBasicEnabled!=='function'||(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10)))throw Error('BASIC_BRIDGE_CONFIGURATION_REQUIRED');
  if(installedBridges.has(root))return installedBridges.get(root);
- let view=null,activePanel=null,selectedSubject=null;
+ let view=null,activePanel=null,activeClose=null,restoreVisibility=null,selectedSubject=null;
+ const clearActivity=()=>{
+  activePanel?.remove();activeClose?.remove();
+  if(restoreVisibility!==null)root.hidden=restoreVisibility;
+  view=null;activePanel=null;activeClose=null;restoreVisibility=null;
+ };
  const handler=event=>{
   const button=event.target.closest?.('button[data-action]');
   const action=button?.dataset.action;
@@ -60,20 +65,20 @@ export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBas
   activePanel=panel;
   // Mount outside the legacy renderer: daily-app may replace root.innerHTML
   // while the activity is open. Never let that destroy an issued attempt.
-  const priorVisibility=root.hidden;
+  restoreVisibility=root.hidden;
   root.hidden=true;
   const close=root.ownerDocument.createElement('button');close.type='button';close.textContent='Volver a las actividades';
   close.addEventListener('click',()=>{
    const phase=view?.snapshot().phase;
    if(phase==='issued'||phase==='reserved'||phase==='issuing'||phase==='reserving'||phase==='completing')return;
-   panel.remove();close.remove();root.hidden=priorVisibility;
-   view=null;activePanel=null;
+   clearActivity();
   });
+  activeClose=close;
   root.after(close,panel);
   void view.start({mode,subject,requestKey:crypto.randomUUID()}).catch(()=>{});
  };
  root.addEventListener('click',handler,true);
- const bridge=Object.freeze({detach(){root.removeEventListener('click',handler,true);installedBridges.delete(root);},snapshot:()=>view?.snapshot()??{phase:'idle'},get panel(){return activePanel;}});
+ const bridge=Object.freeze({detach(){root.removeEventListener('click',handler,true);if(view){const phase=view.snapshot().phase;if(['issued','reserved','issuing','reserving','completing'].includes(phase))return false;}clearActivity();installedBridges.delete(root);return true;},snapshot:()=>view?.snapshot()??{phase:'idle'},get panel(){return activePanel;}});
  installedBridges.set(root,bridge);
  return bridge;
 }
