@@ -3,6 +3,7 @@
 // Not activated in daily-app until a trusted issuance endpoint is available.
 import {basicReserveActivity,basicCompleteActivity} from './basic-quota.mjs';
 import {classifyDailyAdmission} from '../shared/basic-completion-contract.mjs';
+import {fetchBasicVerifiedProgress} from './basic-verified-progress.mjs';
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
  let current=null,phase='idle';
@@ -66,6 +67,19 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
     phase='reserved';
     return acceptIssuedQuestions(result);
    }catch(error){if(phase==='issuing')phase='reserved';throw error;}
+  },
+  // Recover a completion whose server response was lost. The ledger is the
+  // authority; this never resubmits answers or invents a score.
+  async recoverCompletion(){
+   if(phase!=='issued'||!current)throw Error('BASIC_QUESTIONS_NOT_ISSUED');
+   const progress=await fetchBasicVerifiedProgress({fetcher,accessToken});
+   const verified=progress.verifiedCompletions.find(x=>x.eventId===current.attemptId);
+   if(!verified)return Object.freeze({recovered:false,completed:false});
+   const admission=classifyDailyAdmission({mode:current.mode,subject:current.subject});
+   if(!admission.allowed||verified.kind!==admission.kind||verified.subject!==admission.subject)
+    throw Error('INVALID_BASIC_PROGRESS');
+   phase='completed';
+   return Object.freeze({recovered:true,completed:true,attemptId:current.attemptId,scoreAvailable:false});
   },
   async finish({answers}={}){
    if(phase!=='issued'||!current)throw Error('BASIC_QUESTIONS_NOT_ISSUED');
