@@ -4,11 +4,11 @@ import {basicQuotaSummary} from './basic-quota.mjs';
 // This check is read-only and never activates the Basic release by itself.
 // Both the release flag and the authenticated server entitlement must agree.
 export async function verifyBasicLearningAccess({fetcher=fetch,accessToken=null}={}){
- const response=await fetcher('/api/config',{method:'GET',credentials:'same-origin',cache:'no-store'});
- if(!response.ok)return false;
- const config=await response.json();
- if(config?.basicEnabled!==true)return false;
  try{
+  const response=await fetcher('/api/config',{method:'GET',credentials:'same-origin',cache:'no-store'});
+  if(!response.ok)return false;
+  const config=await response.json();
+  if(config?.basicEnabled!==true)return false;
   const summary=await basicQuotaSummary({fetcher,accessToken});
   return summary.tier==='basica';
  }catch{return false;}
