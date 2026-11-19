@@ -326,7 +326,9 @@ test('Basic reservation endpoint stays closed until completion attestation is re
  const flags={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true',WEB_BASIC_ATTEMPT_RESERVATIONS_READY:'true'};
  assert.equal((await post({mode:'lesson',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'},flags)).status,503);
  assert.equal(calls.length,0);
- const ready={...flags,WEB_BASIC_COMPLETION_ATTESTATION_READY:'true'};
+ const completionReady={...flags,WEB_BASIC_COMPLETION_ATTESTATION_READY:'true'};
+ assert.equal((await post({mode:'lesson',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'},completionReady)).status,503);
+ const ready={...completionReady,WEB_BASIC_SERVER_ISSUANCE_READY:'true',SUPABASE_SERVICE_ROLE_KEY:'test-server-only-key',BASIC_QUESTION_BANK_JSON:'[]'};
  assert.equal((await post({mode:'full-exam',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'},ready)).status,403);
  assert.equal(calls.filter(x=>x.url.endsWith('/rest/v1/rpc/cachaste_reserve_basic_learning_attempt')).length,0);
  const reserved=await post({mode:'lesson',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'},ready);
