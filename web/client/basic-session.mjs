@@ -41,17 +41,6 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
     return Object.freeze({started:false,reason:'BASIC_ISSUANCE_NOT_READY',attemptId:current.attemptId});
    }catch(error){if(phase==='reserving')phase='idle';throw error;}
   },
-  // Resume an existing reservation with the same request key. No second
-  // quota slot is consumed; the server must return the original attempt.
-  async resume({mode,subject,requestKey}={}){
-   if(phase!=='idle')throw Error('BASIC_SESSION_ALREADY_STARTED');
-   const admission=classifyDailyAdmission({mode,subject});
-   if(!admission.allowed)throw Error('BASIC_ACTIVITY_MISMATCH');
-   const reserved=await this.start({mode,subject,requestKey});
-   if(!current||phase!=='reserved')return reserved;
-   const issued=await this.issue({subject:admission.kind==='expressExam'?({'M1':'m1','M2':'m2','Lectora':'lectora','Ciencias':'ciencias','Historia':'historia'}[subject]):admission.subject,kind:admission.kind});
-   return Object.freeze({resumed:true,started:true,tier:'basica',attemptId:issued.attemptId,questions:issued.questions});
-  },
   // Single safe entry point for a Basic learning launcher: reserve first,
   // then fetch the immutable server-issued questions. Never start a local bank.
   async launch({mode,subject,requestKey}={}){
