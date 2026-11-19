@@ -59,6 +59,7 @@ for(const name of pages){
  }
  text=text.replace('</head>','<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"><link rel="stylesheet" href="/web-shell.css"><!--CACHASTE_WEB_BOOTSTRAP--><script src="/web-init.js"></script><script src="/web-legacy.js" defer></script></head>');
  if(name==='competencia.html')text=text.replace('<script src="competition-app.js"></script>','<script src="/web-competition.js"></script><script src="competition-app.js"></script>');
+ if(name==='inicio.html')text=text.replace('</body>','<script src="/web-basic-entry.js" defer></script></body>');
  text=text.replace('</body>','<script src="/web-shell.js" defer></script></body>');
  pagePolicies['/app/'+name]=[...text.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)].filter(x=>x[1].trim()).map(x=>"'sha256-"+createHash('sha256').update(x[1]).digest('base64')+"'");
  await writeFile(file,text);
@@ -69,7 +70,7 @@ await rm(path.join(out,'app/suscripcion.html'));
 for(const name of['science-app.js','reading-app.js']){const file=path.join(out,'app',name);await writeFile(file,adaptLegacyActions(await readFile(file,'utf8')));}
 await writeFile(path.join(out,'app/competition-app.js'),adaptCompetitionUi(androidSource('competition-app.js').toString()));
 await build({stdin:{contents:adaptCompetitionClient(currentClient),resolveDir:root,sourcefile:'web-competition-client.mjs'},outfile:path.join(out,'app/competition-client.js'),bundle:true,minify:true,target:['safari15','chrome100'],format:'iife',legalComments:'eof'});
-for(const[entry,file]of[['legacy-actions.mjs','web-legacy.js'],['competition-platform.mjs','web-competition.js'],['account.mjs','account.js'],['recovery.mjs','recovery.js'],['landing.mjs','landing.js'],['progress-runtime.mjs','web-init.js'],['shell.mjs','web-shell.js']])await build({entryPoints:[path.join(root,'web/client',entry)],outfile:path.join(out,file),bundle:true,minify:true,target:['safari15','chrome100'],format:'iife',legalComments:'eof'});
+for(const[entry,file]of[['legacy-actions.mjs','web-legacy.js'],['competition-platform.mjs','web-competition.js'],['account.mjs','account.js'],['recovery.mjs','recovery.js'],['landing.mjs','landing.js'],['progress-runtime.mjs','web-init.js'],['basic-learning-entry.mjs','web-basic-entry.js'],['shell.mjs','web-shell.js']])await build({entryPoints:[path.join(root,'web/client',entry)],outfile:path.join(out,file),bundle:true,minify:true,target:['safari15','chrome100'],format:'iife',legalComments:'eof'});
 const protectedFiles=[];async function walk(dir,rel=''){for(const name of await readdir(dir)){const p=path.join(dir,name),r=rel+'/'+name;if((await stat(p)).isDirectory())await walk(p,r);else protectedFiles.push('/app'+r);}}await walk(path.join(out,'app'));
 // Account administration must remain accessible after a subscription expires.
 const accountFiles=protectedFiles.filter(p=>['/app/competencia.html','/app/competition-client.js','/app/competition-config.js','/app/competition-app.js','/app/competition-ui.css','/app/daily-visuals.js','/app/competition-geography.json'].includes(p)||p.startsWith('/app/assets/competition-')||p==='/app/assets/gatito-sabio-poses-v2.webp');
