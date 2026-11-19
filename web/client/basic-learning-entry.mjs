@@ -6,7 +6,7 @@ const SUBJECTS=new Set(['M1','M2','Lectora','Ciencias','Historia']);
 const MODES=Object.freeze({'diagnostic-mode':'diagnostic','express-mode':'express-exam','lesson':'lesson'});
 export function attachBasicLearningEntry({root,accessToken,getSubject,isBasicEnabled,onComplete=()=>{}}={}){
  if(!root||typeof root.addEventListener!=='function'||typeof getSubject!=='function'||typeof isBasicEnabled!=='function'||typeof accessToken!=='string'||accessToken.length<10)throw Error('BASIC_BRIDGE_CONFIGURATION_REQUIRED');
- let view=null;
+ let view=null,activePanel=null;
  const handler=event=>{
   const button=event.target.closest?.('button[data-action]');
   const mode=button&&MODES[button.dataset.action];
@@ -17,9 +17,10 @@ export function attachBasicLearningEntry({root,accessToken,getSubject,isBasicEna
   if(view)return;
   const panel=root.ownerDocument.createElement('section');panel.setAttribute('aria-label','Actividad Básica');
   view=createBasicLearningView({root:panel,accessToken,onComplete});
+  activePanel=panel;
   root.replaceChildren(panel);
   void view.start({mode,subject,requestKey:crypto.randomUUID()}).catch(()=>{});
  };
  root.addEventListener('click',handler,true);
- return Object.freeze({detach(){root.removeEventListener('click',handler,true);},snapshot:()=>view?.snapshot()??{phase:'idle'}});
+ return Object.freeze({detach(){root.removeEventListener('click',handler,true);},snapshot:()=>view?.snapshot()??{phase:'idle'},get panel(){return activePanel;}});
 }
