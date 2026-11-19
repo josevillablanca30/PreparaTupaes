@@ -11,22 +11,23 @@ export function attachBasicLearningEntry({root,accessToken,getSubject,isBasicEna
   const button=event.target.closest?.('button[data-action]');
   const mode=button&&MODES[button.dataset.action];
   if(!mode||!isBasicEnabled())return;
+  if(view){event.preventDefault();event.stopImmediatePropagation();return;}
   const subject=getSubject();
   if(!SUBJECTS.has(subject))return; // Never consume an event with unknown course.
   if(mode==='lesson'&&!button.dataset.concept)return; // No implicit lesson selection.
   event.preventDefault();event.stopImmediatePropagation();
-  if(view)return;
   const panel=root.ownerDocument.createElement('section');panel.setAttribute('aria-label','Actividad Básica');
   view=createBasicLearningView({root:panel,accessToken,onComplete});
   activePanel=panel;
   // Keep the original learning tree mounted so closing Basic restores navigation.
   const existing=[...root.children];
+  const priorVisibility=existing.map(node=>node.hidden);
   for(const node of existing)node.hidden=true;
   const close=root.ownerDocument.createElement('button');close.type='button';close.textContent='Volver a las actividades';
   close.addEventListener('click',()=>{
    const phase=view?.snapshot().phase;
    if(phase==='issued'||phase==='reserved'||phase==='issuing'||phase==='reserving'||phase==='completing')return;
-   panel.remove();close.remove();for(const node of existing)node.hidden=false;
+   panel.remove();close.remove();existing.forEach((node,i)=>{node.hidden=priorVisibility[i];});
    view=null;activePanel=null;
   });
   root.append(close,panel);
