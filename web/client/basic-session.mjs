@@ -14,7 +14,7 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
    if(phase!=='reserved'||!current||!admission.allowed||attemptId!==current.attemptId||!Array.isArray(questions)||questions.length!==expected)throw Error('INVALID_BASIC_ISSUANCE');
    const ids=new Set();
    for(const q of questions){
-    if(!q||typeof q.id!=='string'||!q.id||q.id.length>128||ids.has(q.id)||typeof q.prompt!=='string'||!q.prompt.trim()||q.prompt.length>10000||
+    if(!q||typeof q!=='object'||Array.isArray(q)||Object.keys(q).some(k=>!['id','prompt','options'].includes(k))||typeof q.id!=='string'||!q.id||q.id.length>128||ids.has(q.id)||typeof q.prompt!=='string'||!q.prompt.trim()||q.prompt.length>10000||
        !Array.isArray(q.options)||q.options.length<2||q.options.length>8||q.options.some(x=>typeof x!=='string'||!x.trim()||x.length>2000)||
        Object.hasOwn(q,'answerIndex'))throw Error('INVALID_BASIC_ISSUANCE');
     ids.add(q.id);
