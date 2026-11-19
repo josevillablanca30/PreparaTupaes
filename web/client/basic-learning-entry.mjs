@@ -15,7 +15,12 @@ export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBas
   if(!mode||!isBasicEnabled())return;
   if(view){event.preventDefault();event.stopImmediatePropagation();return;}
   const subject=getSubject();
-  if(!SUBJECTS.has(subject))return; // Never consume an event with unknown course.
+  if(!SUBJECTS.has(subject)){
+   // An enabled Basic account must never fall through to the legacy local
+   // question engine when its selected course cannot be verified.
+   event.preventDefault();event.stopImmediatePropagation();
+   return;
+  }
   event.preventDefault();event.stopImmediatePropagation();
   const panel=root.ownerDocument.createElement('section');panel.setAttribute('aria-label','Actividad Básica');
   view=createBasicLearningView({root:panel,accessToken,onComplete});
