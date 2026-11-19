@@ -58,7 +58,7 @@ begin
  -- Reclaim abandoned reservations only after a conservative 90-minute lease.
  -- This is safe for admission, but trusted completion must reject expired attempts.
  update cachaste_web.basic_learning_attempts a set status='expired'
- where a.user_id=u and a.status='reserved'
+ where a.user_id=u and a.status='reserved' and a.kind<>'diagnostic'
  and a.created_at < now()-interval '90 minutes';
 
  select * into prior from cachaste_web.basic_learning_attempts a
