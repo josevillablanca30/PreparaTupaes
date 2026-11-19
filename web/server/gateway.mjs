@@ -115,13 +115,22 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     if(!attempt||attempt.user_id!==auth.user.id||attempt.kind!==body.kind||
        attempt.subject!==(body.kind==='expressExam'?'all':body.subject)||
        attempt.status!=='reserved')return json({error:'ATTEMPT_NOT_ELIGIBLE'},403);
+    const existing=await backend(env,'/rest/v1/rpc/cachaste_resume_basic_question_set',service,{
+     method:'POST',body:{p_user_id:auth.user.id,p_attempt_id:body.attemptId}
+    });
+    if(existing!==null){
+     if(!existing||existing.attemptId!==body.attemptId||!Array.isArray(existing.questions))
+      return json({error:'INVALID_STORED_QUESTIONS'},502);
+     return json(existing);
+    }
     let issuance;try{issuance=prepareBasicIssuance({
      attemptId:body.attemptId,subject:body.subject,kind:body.kind,bankJson:env.BASIC_QUESTION_BANK_JSON
     });}catch{return json({error:'BASIC_ISSUANCE_NOT_READY'},503);}
-    const stored=await backend(env,'/rest/v1/rpc/cachaste_issue_basic_question_key',service,{
-     method:'POST',body:{p_user_id:auth.user.id,p_attempt_id:body.attemptId,p_answer_key:issuance.answerKey}
+    const stored=await backend(env,'/rest/v1/rpc/cachaste_store_basic_question_set',service,{
+     method:'POST',body:{p_user_id:auth.user.id,p_attempt_id:body.attemptId,
+      p_answer_key:issuance.answerKey,p_public_questions:issuance.publicQuestions}
     });
-    if(stored!==true)return json({error:'QUESTIONS_ALREADY_ISSUED'},409);
+    if(stored!==true)return json({error:'QUESTIONS_ALREADY_ISSUED_RETRY'},409);
     return json({attemptId:body.attemptId,questions:issuance.publicQuestions});
    }
    if(path==='/api/basic/complete'&&req.method==='POST'){
