@@ -118,3 +118,14 @@ const missingRecovery=createBasicLearningSession({fetcher:async(path)=>{
 await missingRecovery.launch({mode:'lesson',subject:'M1',requestKey:attemptId});
 assert.equal((await missingRecovery.recoverCompletion()).recovered,false);
 assert.equal(missingRecovery.snapshot().phase,'issued');
+
+// The server cannot silently shorten or expand a Basic activity.
+for(const count of [9,11]){
+ const wrongCount=createBasicLearningSession({fetcher:async(path)=>{
+  if(path==='/api/basic/reserve')return Response.json({allowed:true,tier:'basica',remaining:2,day:'2026-11-18',attemptId});
+  if(path==='/api/basic/issue')return Response.json({attemptId,questions:issuance.publicQuestions.slice(0,count).concat(count===11?[{id:'extra',prompt:'Extra',options:['A','B']}]:[])});
+  throw Error('UNEXPECTED_ROUTE');
+ }});
+ await assert.rejects(wrongCount.launch({mode:'lesson',subject:'M1',requestKey:attemptId}),/INVALID_BASIC_ISSUANCE/);
+ assert.equal(wrongCount.snapshot().phase,'reserved');
+}
