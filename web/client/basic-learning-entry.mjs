@@ -6,7 +6,7 @@ const SUBJECTS=new Set(['M1','M2','Lectora','Ciencias','Historia']);
 // Lesson launch requires binding the selected concept to server issuance first.
 // Do not silently replace a chosen lesson with unrelated questions.
 const MODES=Object.freeze({'diagnostic-mode':'diagnostic','express-mode':'express-exam'});
-export function attachBasicLearningEntry({root,accessToken,getSubject,isBasicEnabled,onComplete=()=>{}}={}){
+export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBasicEnabled,onComplete=()=>{}}={}){
  if(!root||typeof root.addEventListener!=='function'||typeof getSubject!=='function'||typeof isBasicEnabled!=='function'||(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10)))throw Error('BASIC_BRIDGE_CONFIGURATION_REQUIRED');
  let view=null,activePanel=null;
  const handler=event=>{
