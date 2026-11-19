@@ -77,3 +77,24 @@ const legacy=await withBasicReservation({mode:'lesson',subject:'M1',requestKey:a
 assert.equal(legacy.started,false);
 assert.equal(legacy.reason,'BASIC_SERVER_ISSUANCE_REQUIRED');
 assert.equal(legacyEngineStarted,false);
+
+// Lost completion response: verify the ledger rather than retrying an already
+// completed attempt or inventing a score.
+const recoveryCalls=[];
+const recoveryFetcher=async(path)=>{
+ recoveryCalls.push(path);
+ if(path==='/api/basic/reserve')return Response.json({allowed:true,tier:'basica',remaining:2,day:'2026-11-18',attemptId});
+ if(path==='/api/basic/issue')return Response.json({attemptId,questions:issuance.publicQuestions});
+ if(path==='/api/basic/complete')throw Error('NETWORK_RESPONSE_LOST');
+ if(path==='/api/basic/verified-progress')return Response.json({day:'2026-11-18',verifiedCompletions:[{eventId:attemptId,kind:'lesson',subject:'m1',day:'2026-11-18',recordedAt:'2026-11-18T12:00:00Z'}]});
+ throw Error('UNEXPECTED_ROUTE');
+};
+const recoverySession=createBasicLearningSession({fetcher:recoveryFetcher});
+const recoveryLaunch=await recoverySession.launch({mode:'lesson',subject:'M1',requestKey:attemptId});
+await assert.rejects(recoverySession.finish({answers:recoveryLaunch.questions.map(q=>({questionId:q.id,selectedIndex:1}))}),/NETWORK_RESPONSE_LOST/);
+const recovered=await recoverySession.recoverCompletion();
+assert.equal(recovered.completed,true);
+assert.equal(recovered.recovered,true);
+assert.equal(recovered.scoreAvailable,false);
+assert.equal(recoverySession.snapshot().phase,'completed');
+assert.equal(recoveryCalls.filter(path=>path==='/api/basic/complete').length,1);
