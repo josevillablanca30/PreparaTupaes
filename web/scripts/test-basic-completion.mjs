@@ -166,3 +166,14 @@ assert.deepEqual(resumedAttempt.questions,initialAttempt.questions);
 assert.equal(resumableCalls.filter(x=>x.path==='/api/basic/reserve').length,2);
 assert.deepEqual(resumableCalls.filter(x=>x.path==='/api/basic/reserve').map(x=>x.body.requestKey),[attemptId,attemptId]);
 assert.equal(restartedBrowser.snapshot().phase,'issued');
+
+// A compromised or outdated issuance response must not smuggle metadata into the UI.
+for(const extra of [{answerIndex:1},{correct:true},{source:'private'}]){
+ const strict=createBasicLearningSession({fetcher:async(path)=>{
+  if(path==='/api/basic/reserve')return Response.json({allowed:true,tier:'basica',remaining:2,day:'2026-11-18',attemptId});
+  if(path==='/api/basic/issue')return Response.json({attemptId,questions:[{...issuance.publicQuestions[0],...extra},...issuance.publicQuestions.slice(1)]});
+  throw Error('UNEXPECTED_ROUTE');
+ }});
+ await assert.rejects(strict.launch({mode:'lesson',subject:'M1',requestKey:attemptId}),/INVALID_BASIC_ISSUANCE/);
+ assert.equal(strict.snapshot().phase,'reserved');
+}
