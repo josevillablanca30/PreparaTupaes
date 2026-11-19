@@ -36,3 +36,7 @@ export function attachBasicLearningEntry({root,accessToken,getSubject,isBasicEna
  root.addEventListener('click',handler,true);
  return Object.freeze({detach(){root.removeEventListener('click',handler,true);},snapshot:()=>view?.snapshot()??{phase:'idle'},get panel(){return activePanel;}});
 }
+
+// Export a callable bridge from the classic web bundle; publishing this API
+// does not activate Basic or install any event listener.
+if(typeof window!=='undefined')window.CachasteBasicLearningBridge=Object.freeze({attach:attachBasicLearningEntry});
