@@ -66,3 +66,14 @@ assert.equal(integrated.snapshot().phase,'completed');
 const blocked=createBasicLearningSession({fetcher:async(path)=>path==='/api/basic/reserve'?new Response('{}',{status:503}):Promise.reject(Error('ISSUANCE_MUST_NOT_RUN'))});
 await assert.rejects(blocked.launch({mode:'lesson',subject:'M1',requestKey:attemptId}),/BASIC_NOT_READY/);
 assert.equal(blocked.snapshot().phase,'idle');
+
+// Legacy reservation-only launcher must not bypass server question issuance.
+const {withBasicReservation}=await import('../client/basic-quota.mjs');
+let legacyEngineStarted=false;
+const legacy=await withBasicReservation({mode:'lesson',subject:'M1',requestKey:attemptId,
+ fetcher:async()=>new Response(JSON.stringify({allowed:true,tier:'basica',remaining:2,day:'2026-11-18',attemptId})),
+ start:async()=>{legacyEngineStarted=true;}
+});
+assert.equal(legacy.started,false);
+assert.equal(legacy.reason,'BASIC_SERVER_ISSUANCE_REQUIRED');
+assert.equal(legacyEngineStarted,false);
