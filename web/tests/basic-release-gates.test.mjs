@@ -66,3 +66,10 @@ test('Gateway Basic conserva JavaScript ejecutable y no secuencias de salto lite
  assert.equal(gateway.includes(String.raw`\n    if(new Set(body.answers`),false);
  assert.match(gateway,/\/\/ A repeated question ID[^\n]*\n\s*if\(new Set\(body\.answers/);
 });
+
+test('Historial Básica muestra solo aprendizajes finalizados, no duelos reservados',()=>{
+ const migration=readFileSync(new URL('../supabase/migrations/20261117002000_cachaste_basic_verified_progress_snapshot.sql',import.meta.url),'utf8');
+ assert.match(migration,/kind in \('lesson','diagnostic','expressExam'\)/);
+ assert.match(migration,/limit 100/);
+ assert.match(migration,/where user_id=u/);
+});
