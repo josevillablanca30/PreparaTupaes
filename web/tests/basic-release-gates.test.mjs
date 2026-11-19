@@ -73,3 +73,16 @@ test('Historial Básica muestra solo aprendizajes finalizados, no duelos reserva
  assert.match(migration,/limit 100/);
  assert.match(migration,/where user_id=u/);
 });
+
+test('Reanudación solo devuelve preguntas originales mediante RPC privilegiado',()=>{
+ const migration=sql('20261119080000_cachaste_basic_resumable_issuance.sql');
+ assert.match(migration,/add column if not exists public_questions jsonb/);
+ assert.match(migration,/auth\.role\(\) is distinct from 'service_role'/);
+ assert.match(migration,/a\.status<>'reserved'/);
+ assert.match(migration,/p_user_id uuid,p_attempt_id uuid/);
+ assert.match(migration,/revoke all on function public\.cachaste_resume_basic_question_set\(uuid,uuid\) from public,anon,authenticated/);
+ assert.match(migration,/grant execute on function public\.cachaste_resume_basic_question_set\(uuid,uuid\) to service_role/);
+ assert.match(gateway,/rpc\/cachaste_resume_basic_question_set/);
+ assert.match(gateway,/rpc\/cachaste_store_basic_question_set/);
+ assert.doesNotMatch(gateway,/rpc\/cachaste_issue_basic_question_key/);
+});
