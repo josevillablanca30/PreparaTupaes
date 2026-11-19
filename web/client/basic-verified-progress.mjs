@@ -1,7 +1,7 @@
 // Display-only history from the authenticated, server-attested completion ledger.
 // Never use this snapshot to grant access or award points on the client.
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const day=/^\\d{4}-\\d{2}-\\d{2}$/;
+const day=/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
 const subjects=new Set(['m1','m2','lectora','ciencias','historia']);
 export async function fetchBasicVerifiedProgress({fetcher=fetch,accessToken=null}={}){
  if(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10))throw Error('INVALID_AUTH_TOKEN');
