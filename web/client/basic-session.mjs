@@ -56,8 +56,9 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
   // Single safe entry point for a Basic learning launcher: reserve first,
   // then fetch the immutable server-issued questions. Never start a local bank.
   async launch({mode,subject,requestKey}={}){
-   if(phase!=='idle')throw Error('BASIC_SESSION_ALREADY_STARTED');
-   const reserved=await this.start({mode,subject,requestKey});
+   if(phase!=='idle'&&phase!=='reserved')throw Error('BASIC_SESSION_ALREADY_STARTED');
+   if(phase==='reserved'&&(current.mode!==mode||current.subject!==subject||current.requestKey!==requestKey))throw Error('BASIC_ACTIVITY_MISMATCH');
+   const reserved=phase==='reserved'?{attemptId:current.attemptId}:await this.start({mode,subject,requestKey});
    if(!current||phase!=='reserved')return reserved;
    const admission=classifyDailyAdmission({mode,subject});
    if(!admission.allowed)throw Error('BASIC_ACTIVITY_MISMATCH');
