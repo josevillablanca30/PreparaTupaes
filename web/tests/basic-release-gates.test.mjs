@@ -102,3 +102,11 @@ test('Recuperación verifica tipo, asignatura y contenido de preguntas',()=>{
  assert.match(gateway,/Object\.keys\(q\)\.some\(k=>!\['id','prompt','options'\]\.includes\(k\)\)/);
  assert.match(gateway,/if\(!validStoredQuestions\(existing\)\)/);
 });
+
+test('SQL de emisión tolera JSON no-array sin intentar iterarlo directamente',()=>{
+ const migration=sql('20261119080000_cachaste_basic_resumable_issuance.sql');
+ assert.match(migration,/jsonb_array_length\(case when jsonb_typeof\(p_answer_key\)='array'/);
+ assert.match(migration,/jsonb_array_length\(case when jsonb_typeof\(p_public_questions\)='array'/);
+ assert.match(migration,/jsonb_array_elements\(case when jsonb_typeof\(p_public_questions\)='array'/);
+ assert.match(migration,/jsonb_array_elements\(case when jsonb_typeof\(p_answer_key\)='array'/);
+});
