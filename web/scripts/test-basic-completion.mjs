@@ -146,3 +146,23 @@ for(const bad of [{...validSheet[0],selectedIndex:3},{...validSheet[0],selectedI
 }
 assert.equal(optionCalls.includes('/api/basic/complete'),false);
 assert.equal(optionSession.snapshot().phase,'issued');
+
+// Two browser sessions using one request key must recover the same attempt
+// and exactly the same immutable server-issued question IDs.
+const resumableCalls=[];
+const resumeFetcher=async(path,options)=>{
+ resumableCalls.push({path,body:options?.body?JSON.parse(options.body):null});
+ if(path==='/api/basic/reserve')return Response.json({allowed:true,tier:'basica',remaining:2,day:'2026-11-18',attemptId,replayed:resumableCalls.filter(x=>x.path==='/api/basic/reserve').length>1});
+ if(path==='/api/basic/issue')return Response.json({attemptId,questions:issuance.publicQuestions});
+ throw Error('UNEXPECTED_ROUTE');
+};
+const initialBrowser=createBasicLearningSession({fetcher:resumeFetcher});
+const initialAttempt=await initialBrowser.launch({mode:'lesson',subject:'M1',requestKey:attemptId});
+const restartedBrowser=createBasicLearningSession({fetcher:resumeFetcher});
+const resumedAttempt=await restartedBrowser.resume({mode:'lesson',subject:'M1',requestKey:attemptId});
+assert.equal(resumedAttempt.resumed,true);
+assert.equal(resumedAttempt.attemptId,initialAttempt.attemptId);
+assert.deepEqual(resumedAttempt.questions,initialAttempt.questions);
+assert.equal(resumableCalls.filter(x=>x.path==='/api/basic/reserve').length,2);
+assert.deepEqual(resumableCalls.filter(x=>x.path==='/api/basic/reserve').map(x=>x.body.requestKey),[attemptId,attemptId]);
+assert.equal(restartedBrowser.snapshot().phase,'issued');
