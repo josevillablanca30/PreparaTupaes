@@ -1,27 +1,25 @@
 import {createBasicLearningView} from './basic-learning-ui.mjs';
 
-// The web-only bridge is deliberately inert until the authenticated server
-// bootstrap explicitly identifies a Basic learner and the release is enabled.
-const bootstrap=window.CachasteWebBootstrap;
-if(bootstrap?.basicEnabled===true&&bootstrap?.accessTier==='basica'&&location.pathname==='/app/inicio.html'){
- const root=document.getElementById('daily-root');
- if(root){
-  const supported=new Map([['diagnostic-mode','diagnostic'],['express-mode','express-exam'],['lesson','lesson']]);
-  let view=null;
-  root.addEventListener('click',event=>{
-   const button=event.target.closest('button[data-action]');
-   if(!button||!supported.has(button.dataset.action))return;
-   event.preventDefault();event.stopImmediatePropagation();
-   if(view)return;
-   const mode=supported.get(button.dataset.action);
-   const subject=window.CachasteWebBasicSubject;
-   // Subject must come from an explicitly synchronized and validated source;
-   // never infer it from the visible label or silently start the wrong course.
-   if(!['M1','M2','Lectora','Ciencias','Historia'].includes(subject))return;
-   const panel=document.createElement('section');panel.setAttribute('aria-label','Actividad Básica');
-   root.replaceChildren(panel);
-   view=createBasicLearningView({root:panel,accessToken:null,onComplete:()=>{}});
-   void view.start({mode,subject,requestKey:crypto.randomUUID()}).catch(()=>{});
-  },true);
- }
+// Web-only integration boundary. Call only after server-confirmed Basic access,
+// an authenticated token, and the actual subject are available. No auto-hook.
+const SUBJECTS=new Set(['M1','M2','Lectora','Ciencias','Historia']);
+const MODES=Object.freeze({'diagnostic-mode':'diagnostic','express-mode':'express-exam','lesson':'lesson'});
+export function attachBasicLearningEntry({root,accessToken,getSubject,isBasicEnabled,onComplete=()=>{}}={}){
+ if(!root||typeof root.addEventListener!=='function'||typeof getSubject!=='function'||typeof isBasicEnabled!=='function'||typeof accessToken!=='string'||accessToken.length<10)throw Error('BASIC_BRIDGE_CONFIGURATION_REQUIRED');
+ let view=null;
+ const handler=event=>{
+  const button=event.target.closest?.('button[data-action]');
+  const mode=button&&MODES[button.dataset.action];
+  if(!mode||!isBasicEnabled())return;
+  const subject=getSubject();
+  if(!SUBJECTS.has(subject))return; // Never consume an event with unknown course.
+  event.preventDefault();event.stopImmediatePropagation();
+  if(view)return;
+  const panel=root.ownerDocument.createElement('section');panel.setAttribute('aria-label','Actividad Básica');
+  view=createBasicLearningView({root:panel,accessToken,onComplete});
+  root.replaceChildren(panel);
+  void view.start({mode,subject,requestKey:crypto.randomUUID()}).catch(()=>{});
+ };
+ root.addEventListener('click',handler,true);
+ return Object.freeze({detach(){root.removeEventListener('click',handler,true);},snapshot:()=>view?.snapshot()??{phase:'idle'}});
 }
