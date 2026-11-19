@@ -59,6 +59,7 @@ for(const name of pages){
  }
  text=text.replace('</head>','<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"><link rel="stylesheet" href="/web-shell.css"><!--CACHASTE_WEB_BOOTSTRAP--><script src="/web-init.js"></script><script src="/web-legacy.js" defer></script></head>');
  if(name==='competencia.html')text=text.replace('<script src="competition-app.js"></script>','<script src="/web-competition.js"></script><script src="competition-app.js"></script>');
+ if(name==='inicio.html')text=text.replace('</body>','<script src="/web-basic-entry.js" defer></script></body>');
  text=text.replace('</body>','<script src="/web-shell.js" defer></script></body>');
  pagePolicies['/app/'+name]=[...text.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)].filter(x=>x[1].trim()).map(x=>"'sha256-"+createHash('sha256').update(x[1]).digest('base64')+"'");
  await writeFile(file,text);
