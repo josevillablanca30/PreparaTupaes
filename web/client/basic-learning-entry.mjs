@@ -1,5 +1,6 @@
 import {createBasicLearningView} from './basic-learning-ui.mjs';
 import {basicQuotaSummary} from './basic-quota.mjs';
+import {getWebClient} from './auth.mjs';
 
 // This check is read-only and never activates the Basic release by itself.
 // Both the release flag and the authenticated server entitlement must agree.
@@ -103,12 +104,23 @@ export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBas
 // /api/config AND the authenticated quota summary both authorize Basic.
 export async function initializeBasicLearningEntry({documentRef=globalThis.document,fetcher=fetch}={}){
  if(!documentRef?.getElementById)return null;
- const enabled=await verifyBasicLearningAccess({fetcher});
- if(!enabled)return null;
  const root=documentRef.getElementById('daily-root');
  if(!root)return null;
- // No untrusted local entitlement and no guessing a persisted subject.
- return attachBasicLearningEntry({root,getSubject:()=>null,isBasicEnabled:()=>true});
+ try{
+  const response=await fetcher('/api/config',{method:'GET',credentials:'same-origin',cache:'no-store'});
+  if(!response.ok)return null;
+  const config=await response.json();
+  // Do not initialize the auth SDK or expose any Basic controls until
+  // the production release gate explicitly permits them.
+  if(config?.basicEnabled!==true)return null;
+  const sdk=getWebClient(config);
+  const {data,error}=await sdk.auth.getSession();
+  const token=!error&&data?.session?.access_token;
+  if(typeof token!=='string'||token.length<10)return null;
+  const summary=await basicQuotaSummary({fetcher,accessToken:token});
+  if(summary.tier!=='basica')return null;
+  return attachBasicLearningEntry({root,accessToken:token,getSubject:()=>null,isBasicEnabled:()=>true});
+ }catch{return null;}
 }
 if(typeof window!=='undefined'){
  window.CachasteBasicLearningBridge=Object.freeze({attach:attachBasicLearningEntry,verifyAccess:verifyBasicLearningAccess,initialize:initializeBasicLearningEntry});
