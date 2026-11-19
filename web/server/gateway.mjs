@@ -130,7 +130,15 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
      method:'POST',body:{p_user_id:auth.user.id,p_attempt_id:body.attemptId,
       p_answer_key:issuance.answerKey,p_public_questions:issuance.publicQuestions}
     });
-    if(stored!==true)return json({error:'QUESTIONS_ALREADY_ISSUED_RETRY'},409);
+    if(stored!==true){
+     // A concurrent retry may have persisted the same attempt first. Return
+     // only that stored set, never the newly randomized candidate questions.
+     const replay=await backend(env,'/rest/v1/rpc/cachaste_resume_basic_question_set',service,{
+      method:'POST',body:{p_user_id:auth.user.id,p_attempt_id:body.attemptId}
+     });
+     if(replay?.attemptId===body.attemptId&&Array.isArray(replay.questions))return json(replay);
+     return json({error:'QUESTIONS_ALREADY_ISSUED_RETRY'},409);
+    }
     return json({attemptId:body.attemptId,questions:issuance.publicQuestions});
    }
    if(path==='/api/basic/complete'&&req.method==='POST'){
