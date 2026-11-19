@@ -38,6 +38,17 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
     return Object.freeze({started:false,reason:'BASIC_ISSUANCE_NOT_READY',attemptId:current.attemptId});
    }catch(error){if(phase==='reserving')phase='idle';throw error;}
   },
+  // Single safe entry point for a Basic learning launcher: reserve first,
+  // then fetch the immutable server-issued questions. Never start a local bank.
+  async launch({mode,subject,requestKey}={}){
+   if(phase!=='idle')throw Error('BASIC_SESSION_ALREADY_STARTED');
+   const reserved=await this.start({mode,subject,requestKey});
+   if(!current||phase!=='reserved')return reserved;
+   const admission=classifyDailyAdmission({mode,subject});
+   if(!admission.allowed)throw Error('BASIC_ACTIVITY_MISMATCH');
+   const issued=await this.issue({subject:admission.kind==='expressExam'?({'M1':'m1','M2':'m2','Lectora':'lectora','Ciencias':'ciencias','Historia':'historia'}[subject]):admission.subject,kind:admission.kind});
+   return Object.freeze({started:true,tier:'basica',attemptId:issued.attemptId,questions:issued.questions});
+  },
   async issue({subject,kind}={}){
    if(phase!=='reserved'||!current)throw Error('BASIC_RESERVATION_REQUIRED');
    const admission=classifyDailyAdmission({mode:current.mode,subject:current.subject});
