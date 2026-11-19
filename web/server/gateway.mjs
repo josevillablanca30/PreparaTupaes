@@ -80,7 +80,8 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     // Must be explicitly enabled only after DB migration, server-issued learning
     // attempts and completion attestation are deployed together.
     if(env.WEB_BASIC_ACCESS_ENABLED!=='true'||env.WEB_BASIC_EDUCATIONAL_GUARDS_READY!=='true'||
-       env.WEB_BASIC_ATTEMPT_RESERVATIONS_READY!=='true'||env.WEB_BASIC_COMPLETION_ATTESTATION_READY!=='true')
+       env.WEB_BASIC_ATTEMPT_RESERVATIONS_READY!=='true'||env.WEB_BASIC_COMPLETION_ATTESTATION_READY!=='true'||
+       env.WEB_BASIC_SERVER_ISSUANCE_READY!=='true'||!env.SUPABASE_SERVICE_ROLE_KEY||!env.BASIC_QUESTION_BANK_JSON)
       return json({error:'BASIC_NOT_READY'},503);
     const auth=await identity(req,env,{active:false,fresh:true});
     const raw=await req.text();if(raw.length>1024)return json({error:'PAYLOAD_TOO_LARGE'},413);
