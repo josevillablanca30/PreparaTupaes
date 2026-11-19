@@ -85,7 +85,10 @@ export function createBasicLearningSession({fetcher=fetch,accessToken=null}={}){
   },
   async finish({answers}={}){
    if(phase!=='issued'||!current)throw Error('BASIC_QUESTIONS_NOT_ISSUED');
-   if(!Array.isArray(answers)||answers.length!==current.questions.length||answers.some((a,i)=>a?.questionId!==current.questions[i].id))throw Error('INVALID_BASIC_ANSWERS');
+   if(!Array.isArray(answers)||answers.length!==current.questions.length||answers.some((a,i)=>
+    !a||typeof a!=='object'||Array.isArray(a)||Object.keys(a).some(k=>!['questionId','selectedIndex'].includes(k))||
+    a.questionId!==current.questions[i].id||!Number.isInteger(a.selectedIndex)||
+    a.selectedIndex<0||a.selectedIndex>=current.questions[i].options.length))throw Error('INVALID_BASIC_ANSWERS');
    phase='completing';
    try{
     const result=await basicCompleteActivity({attemptId:current.attemptId,answers,fetcher,accessToken});
