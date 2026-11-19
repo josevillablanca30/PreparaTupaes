@@ -1,4 +1,18 @@
 import {createBasicLearningView} from './basic-learning-ui.mjs';
+import {basicQuotaSummary} from './basic-quota.mjs';
+
+// This check is read-only and never activates the Basic release by itself.
+// Both the release flag and the authenticated server entitlement must agree.
+export async function verifyBasicLearningAccess({fetcher=fetch,accessToken=null}={}){
+ const response=await fetcher('/api/config',{method:'GET',credentials:'same-origin',cache:'no-store'});
+ if(!response.ok)return false;
+ const config=await response.json();
+ if(config?.basicEnabled!==true)return false;
+ try{
+  const summary=await basicQuotaSummary({fetcher,accessToken});
+  return summary.tier==='basica';
+ }catch{return false;}
+}
 
 // Web-only integration boundary. Call only after server-confirmed Basic access,
 // an authenticated token, and the actual subject are available. No auto-hook.
@@ -62,4 +76,4 @@ export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBas
 
 // Export a callable bridge from the classic web bundle; publishing this API
 // does not activate Basic or install any event listener.
-if(typeof window!=='undefined')window.CachasteBasicLearningBridge=Object.freeze({attach:attachBasicLearningEntry});
+if(typeof window!=='undefined')window.CachasteBasicLearningBridge=Object.freeze({attach:attachBasicLearningEntry,verifyAccess:verifyBasicLearningAccess});
