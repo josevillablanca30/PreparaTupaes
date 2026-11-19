@@ -59,8 +59,12 @@ export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBas
    // An enabled Basic account must never fall through to the legacy local
    // question engine when its selected course cannot be verified.
    event.preventDefault();event.stopImmediatePropagation();
+   let notice=root.querySelector('[data-basic-restriction]');
+   if(!notice){notice=root.ownerDocument.createElement('p');notice.dataset.basicRestriction='';notice.setAttribute('role','alert');root.prepend(notice);}
+   notice.textContent='Selecciona primero una asignatura para iniciar el diagnóstico.';
    return;
   }
+  root.querySelector('[data-basic-restriction]')?.remove();
   event.preventDefault();event.stopImmediatePropagation();
   const panel=root.ownerDocument.createElement('section');panel.setAttribute('aria-label','Actividad Básica');
   view=createBasicLearningView({root:panel,accessToken,onComplete});
