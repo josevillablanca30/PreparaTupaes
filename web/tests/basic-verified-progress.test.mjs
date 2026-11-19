@@ -21,7 +21,7 @@ test('Gateway requires completion attestation and authenticated identity',()=>{
  assert.doesNotMatch(route,/SUPABASE_SERVICE_ROLE_KEY/);
 });
 test('Client reads server-verified history and rejects malformed results',async()=>{
- const record={eventId:'123e4567-e89b-42d3-a456-426614174002',kind:'lesson',subject:'m1',day:'2026-11-18'};
+ const record={eventId:'123e4567-e89b-42d3-a456-426614174002',kind:'lesson',subject:'m1',day:'2026-11-18',recordedAt:'2026-11-18T12:00:00Z'};
  const calls=[];
  const fetcher=async(path,opts)=>{calls.push({path,opts});return new Response(JSON.stringify({day:'2026-11-18',verifiedCompletions:[record]}));};
  const result=await fetchBasicVerifiedProgress({fetcher});
@@ -30,4 +30,18 @@ test('Client reads server-verified history and rejects malformed results',async(
  assert.equal(result.verifiedCompletions[0].kind,'lesson');
  await assert.rejects(fetchBasicVerifiedProgress({fetcher:async()=>new Response('{}')}),/INVALID_BASIC_PROGRESS/);
  await assert.rejects(fetchBasicVerifiedProgress({fetcher:async()=>new Response('{}',{status:503})}),/BASIC_NOT_READY/);
+});
+
+test('Verified progress rejects forged, duplicated and non-completion records',async()=>{
+ const good={eventId:'123e4567-e89b-42d3-a456-426614174002',kind:'lesson',subject:'m1',day:'2026-11-18',recordedAt:'2026-11-18T12:00:00Z'};
+ const read=items=>fetchBasicVerifiedProgress({fetcher:async()=>Response.json({day:'2026-11-18',verifiedCompletions:items})});
+ await assert.rejects(read([{...good,kind:'duel',subject:'all'}]),/INVALID_BASIC_PROGRESS/);
+ await assert.rejects(read([good,good]),/INVALID_BASIC_PROGRESS/);
+ await assert.rejects(read([{...good,kind:'expressExam',subject:'m1'}]),/INVALID_BASIC_PROGRESS/);
+ await assert.rejects(read([{...good,eventId:'not-a-uuid'}]),/INVALID_BASIC_PROGRESS/);
+ await assert.rejects(read([{...good,recordedAt:'invalid'}]),/INVALID_BASIC_PROGRESS/);
+ await assert.rejects(read(Array.from({length:101},(_,i)=>({...good,eventId:'123e4567-e89b-42d3-a456-'+String(i).padStart(12,'0')}))),/INVALID_BASIC_PROGRESS/);
+ const result=await read([good]);
+ assert.equal(result.verifiedCompletions.length,1);
+ assert.equal(Object.isFrozen(result.verifiedCompletions[0]),true);
 });
