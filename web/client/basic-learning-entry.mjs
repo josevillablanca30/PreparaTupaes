@@ -81,7 +81,17 @@ export function attachBasicLearningEntry({root,accessToken=null,getSubject,isBas
   });
   activeClose=close;
   root.after(close,panel);
-  void view.start({mode,subject,requestKey:crypto.randomUUID()}).catch(()=>{});
+  // Never discard a failed launch silently: the activity view owns recovery
+  // and must remain mounted when the server may already have reserved quota.
+  void view.start({mode,subject,requestKey:crypto.randomUUID()}).catch(()=>{
+   const phase=view?.snapshot().phase;
+   if(phase==='idle'&&!panel.textContent.trim()){
+    const error=root.ownerDocument.createElement('p');
+    error.setAttribute('role','alert');
+    error.textContent='No pudimos iniciar la actividad. Vuelve a intentarlo.';
+    panel.append(error);
+   }
+  });
  };
  root.addEventListener('click',handler,true);
  const bridge=Object.freeze({detach(){if(view){const phase=view.snapshot().phase;if(['issued','reserved','issuing','reserving','completing'].includes(phase))return false;}root.removeEventListener('click',handler,true);clearActivity();installedBridges.delete(root);return true;},snapshot:()=>view?.snapshot()??{phase:'idle'},get panel(){return activePanel;}});
