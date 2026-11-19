@@ -127,8 +127,7 @@ export async function withBasicReservation({mode,subject,requestKey,fetcher=fetc
  const decision=await basicReserveActivity({mode,subject,requestKey,fetcher,accessToken});
  if(!decision.allowed)return Object.freeze({started:false,reason:'BASIC_QUOTA_EXHAUSTED',decision});
  if(decision.tier==='premium')return Object.freeze({started:true,decision,value:await start({tier:'premium',attemptId:null})});
- const value=await start({tier:'basica',attemptId:decision.attemptId});
- return Object.freeze({started:true,decision,value});
+ // A reservation is not permission to start a local question engine.\n // Basic must use createBasicLearningSession().launch() for server-issued questions.\n return Object.freeze({started:false,reason:'BASIC_SERVER_ISSUANCE_REQUIRED',decision});
 }
 
 /**
