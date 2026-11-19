@@ -3,7 +3,7 @@ import {classifyDailyAdmission} from '../shared/basic-completion-contract.mjs';
 
 // Web-only, server-issued Basic learning view. It never invokes the local
 // Android learning engine or receives the private answer key.
-export function createBasicLearningView({root,accessToken,fetcher=fetch,onComplete=()=>{}}={}){
+export function createBasicLearningView({root,accessToken=null,fetcher=fetch,onComplete=()=>{}}={}){
  if(!root||typeof root.replaceChildren!=='function')throw Error('BASIC_VIEW_ROOT_REQUIRED');
  if(accessToken!==null&&(typeof accessToken!=='string'||accessToken.length<10))throw Error('AUTH_REQUIRED');
  let session=null,questions=[],answers=[],index=0,busy=false,activity=null;
