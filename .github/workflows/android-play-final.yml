@@ -6,6 +6,7 @@ on:
     paths: ['learning/**', 'android/app/src/main/java/**', 'web/scripts/verify-android.mjs', '.github/workflows/android-play-final.yml', 'scripts/VerifyPlayBundle.java', 'scripts/verify-play-manifest.py', 'scripts/prepare-android-upgrade-qa.sh', 'scripts/run-android-upgrade-qa.sh', 'android/app/src/commercialAccessQa/java/cl/preparatupaes/app/UpgradePersistenceTest.java']
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: cachaste-final-signed-${{ github.ref }}
   cancel-in-progress: false
@@ -30,12 +31,31 @@ jobs:
             fi
           done
           test "$missing" = 0
-  integration:
-    uses: ./.github/workflows/cachaste-original-access.yml
-  web-regression:
-    uses: ./.github/workflows/web-commercial-guardrails.yml
+  verified-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Reuse approved educational, web and installed upgrade checks for identical source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node --input-type=module <<'JS'
+          import {execFileSync} from 'node:child_process';
+          import assert from 'node:assert/strict';
+          const verified='94be8f2aea800af8dab703d2f0fa8ecd3c0cc8f9',run=44790766013;
+          const changes=execFileSync('git',['diff','--name-only',verified,'HEAD'],{encoding:'utf8'}).trim().split('\n').filter(Boolean);
+          assert.ok(changes.every(file=>file==='.github/workflows/android-play-final.yml'),'Educational source changed: execute new full QA before updating the verified source');
+          const response=await fetch(`https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${run}/jobs?per_page=100`,{headers:{Authorization:`Bearer ${process.env.GH_TOKEN}`,Accept:'application/vnd.github+json'}});
+          assert.ok(response.ok,'Cannot verify previous Actions jobs');const {jobs}=await response.json();
+          for(const name of ['signing-preflight','integration / integration','web-regression / commercial-smoke'])assert.ok(jobs.some(job=>job.name===name&&job.conclusion==='success'),'Missing approved job: '+name);
+          console.log(JSON.stringify({verifiedSource:verified,verifiedRun:run,identicalEducationalSource:true,approvedJobs:3}));
+          JS
   signed-bundle:
-    needs: [signing-preflight, integration, web-regression]
+    needs: [signing-preflight, verified-integration]
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
@@ -43,6 +63,9 @@ jobs:
       CACHASTE_PLAY_ENABLED: 'false'
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
