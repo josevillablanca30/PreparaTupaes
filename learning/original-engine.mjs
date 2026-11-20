@@ -39,10 +39,6 @@ export function attachOriginalEngine({engine:E,rpc,tier,activity=null,storage=gl
    // Recheck on EVERY start. An expired Premium lease cannot open unlimited local sessions.
    void start(method,args);return {blocked:true,message:'Verificando tu acceso…'};
   }
-  if(method==='start'&&!['lesson'].includes(args[2])){
-   // Original guided practice entry points are still lesson stages under the same budget.
-   args=[args[0],2,'lesson',args[3]];
-  }
   void start(method,args);return {blocked:true,message:'Preparando tu etapa…'};
  };
  E.answer=(index,...args)=>{
@@ -65,7 +61,7 @@ export function attachOriginalEngine({engine:E,rpc,tier,activity=null,storage=gl
   void rpc('complete',{attemptId:s.id}).then(()=>{completedPermit=true;busy=false;notify({advance:true});}).catch(e=>announce(message(e))).finally(()=>{busy=false;});
   return false;
  };
- E.transfer=()=>currentTier==='premium'?original.transfer():{questions:[]};
+ E.transfer=()=>{if(currentTier==='premium')return original.transfer();const s=E.state.session,q=s&&E.byKey.get(s.keys[s.index]),queued=s&&s.keys.slice(s.index+1).map(k=>E.byKey.get(k)).find(n=>n.concept===q?.concept&&n.family!==q.family);return queued?{questions:[queued],queued:true}:{questions:[]};};
  E.close=()=>{
   if(currentTier==='premium'&&!E.state.session?.basicAttempt)return original.close();
   const s=E.state.session;if(!s?.basicAttempt)return original.close();

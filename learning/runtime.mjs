@@ -1,5 +1,6 @@
 import {getWebClient} from '../web/client/auth.mjs';
 import {PROJECT_URL,PUBLISHABLE_KEY,STORAGE_KEYS} from '../web/shared/config.mjs';
+import {restoreVerifiedHistory} from './verified-history.mjs';
 import {attachOriginalEngine} from './original-engine.mjs';
 import {installProgressRuntime} from '../web/client/progress-runtime.mjs';
 const enabled=location.origin==='https://appassets.androidplatform.net'||window.CachasteWebBootstrap?.originalEngineEnabled===true;
@@ -54,6 +55,7 @@ const ready=(async()=>{
 ready.catch(()=>{});
 async function prepare(E){
  await ready;if(!enabled)return;
+ if(access.tier==='basica')restoreVerifiedHistory(E,window.CACHASTE_DAILY_CATALOG);
  adapter=attachOriginalEngine({engine:E,rpc,tier:access.tier,activity:bootstrap.activity,refresh,notify:result=>{
   const app=window.CachasteDailyApp;
   if(result.message){let n=document.querySelector('[data-learning-notice]');if(!n){n=document.createElement('p');n.dataset.learningNotice='';n.setAttribute('role','alert');document.getElementById('daily-root').before(n);}n.textContent=result.message;}

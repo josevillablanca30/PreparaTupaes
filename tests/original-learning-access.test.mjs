@@ -60,6 +60,7 @@ test('Original diagnoses and Express, empty technical failures, daily reset and 
  const b=(await invoke(db,0,'start',{...p,requestKey:crypto.randomUUID()})).activity;await complete(db,0,b);
  await assert.rejects(()=>invoke(db,0,'start',{...p,requestKey:crypto.randomUUID()}),/BASIC_QUOTA_EXHAUSTED/);
  const ex=proposal(engine(),'express-exam','Historia'),exA=(await invoke(db,0,'start',ex)).activity;assert.equal(exA.keys.length,15);await complete(db,0,exA);
+ const canonical=(await invoke(db,0,'state')).documents.find(d=>d.key==='cachaste-daily-v1').value;const storage=memory();storage.setItem('cachaste-daily-v1',JSON.stringify(canonical));const restored=engine(storage);const {restoreVerifiedHistory}=await import('../learning/verified-history.mjs');restoreVerifiedHistory(restored,catalog);assert.equal(restored.state.expressReports[0].total,15);assert.equal(restored.state.expressReports[0].subject,'Historia');assert.equal(restored.state.diagnosticReports[0].total,30);
  await assert.rejects(()=>invoke(db,0,'start',{...ex,requestKey:crypto.randomUUID()}),/BASIC_QUOTA_EXHAUSTED/);
  // A previous day does not spend today's Express. Lifetime diagnosis still does.
  await db.exec("update cachaste_web.original_learning_sessions set usage_day=usage_day-1 where kind='expressExam';update cachaste_web.basic_usage set usage_day=usage_day-1 where kind='expressExam'");
@@ -113,5 +114,21 @@ test('Existing web subscription, trial, cancellation, expiry and both tester gra
  await db.exec("insert into cachaste.closed_test_emails(email_hash,valid_until) values(sha256(convert_to('fixture-tester@example.test','UTF8')),now()+interval '1 year')");assert.equal((await access(db,1)).tier,'premium','existing confirmed tester email grant');
  assert.equal((await access(db,2)).tier,'basica');
  await db.query("update auth.sessions set not_after=now()-interval '1 second' where user_id=$1",[users[0]]);await assert.rejects(()=>access(db,0),/AUTH_REQUIRED/);
+ }finally{await db.close();}
+});
+test('All original subjects and science mentions share their approved subject quota; free practice retains its mode',async()=>{
+ const db=await database();try{
+ await db.exec(originalCatalogSeed());await db.exec('update cachaste_web.basic_feature_flags set original_learning_enabled=true');
+ for(const subject of ['M1','M2','Lectura','Historia']){
+  const E=engine();const a=(await invoke(db,0,'start',proposal(E,'lesson',subject))).activity;assert.equal(a.subject,subject);assert.equal(a.mode,'lesson');await complete(db,0,a);
+ }
+ for(const track of ['Biología','Física','Química']){
+  const E=engine();E.state.track=track;const a=(await invoke(db,0,'start',proposal(E,'lesson','Ciencias'))).activity;assert.equal(a.track,track);await complete(db,0,a);
+ }
+ const tp=engine();tp.state.track='TP';await assert.rejects(()=>invoke(db,0,'start',proposal(tp,'lesson','Ciencias')),/BASIC_QUOTA_EXHAUSTED/);
+ const invalid=proposal(engine(),'lesson','Ciencias');await assert.rejects(()=>invoke(db,1,'start',invalid),/SCIENCE_TRACK_REQUIRED/);
+ const E=engine();E.start('Historia',4,'free');const s=E.state.session;
+ const free=(await invoke(db,0,'start',{requestKey:crypto.randomUUID(),mode:s.mode,subject:s.subject,track:s.track,concept:s.concept,keys:[...s.keys]})).activity;
+ assert.equal(free.mode,'free');assert.equal(free.stage,'question');assert.equal(free.keys.length,4);await complete(db,0,free);
  }finally{await db.close();}
 });

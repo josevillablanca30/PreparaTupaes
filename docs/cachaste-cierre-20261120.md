@@ -83,7 +83,7 @@ Tras cerrar QA y recibir autorización para generar el archivo definitivo:
 1. Confirmar en Play Console el mayor `versionCode` de todas las pistas y elegir uno superior. La rama conserva el valor histórico 32 / `1.5.0-rc5`; no se inventa el último valor de Play ni se aumenta sin verificación. Los valores recordados de conversaciones anteriores no reemplazan esta consulta.
 2. Cotejar el certificado de carga registrado con la clave privada existente. La configuración requiere las cuatro variables `CACHASTE_RELEASE_*`; no imprimirlas ni incluirlas en Git/artefactos.
 3. Ejecutar `npm ci`, `node scripts/build.mjs`, `node scripts/build-android-access.mjs`; copiar **todo** `dist/` a `android/app/src/main/assets/`. El guard de Gradle impide empaquetar el motor antiguo sin la integración de cuotas.
-4. Compilar la prueba debug y ejecutar `gradle :app:connectedDebugAndroidTest -PcachasteCommercialAccessQa` en Android de prueba.
+4. Compilar la prueba debug y ejecutar `gradle :app:connectedDebugAndroidTest -PcachasteCommercialAccessQa -Pandroid.testInstrumentationRunnerArguments.class=cl.preparatupaes.app.CommercialAccessTest,cl.preparatupaes.app.SubscriptionLeaseTest` en Android de prueba.
 5. Solo con autorización específica del AAB: `gradle :app:bundleRelease` dentro de `android`, con las variables privadas de firma. Verificar paquete, código de versión y certificado antes de entregarlo.
 6. La subida y publicación en Play Console requieren autorización separada. No iniciar ninguna pista de lanzamiento automáticamente.
 

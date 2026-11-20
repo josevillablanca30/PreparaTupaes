@@ -69,4 +69,4 @@ jobs:
           api-level: 35
           arch: x86_64
           disable-animations: true
-          script: cd android && gradle :app:connectedDebugAndroidTest -PcachasteCommercialAccessQa
+          script: cd android && gradle :app:connectedDebugAndroidTest -PcachasteCommercialAccessQa -Pandroid.testInstrumentationRunnerArguments.class=cl.preparatupaes.app.CommercialAccessTest,cl.preparatupaes.app.SubscriptionLeaseTest

@@ -66,14 +66,16 @@ begin
   -- Premium uses the original offline engine, never spends Basic quota.
   if premium then return jsonb_build_object('tier','premium','unlimited',true);end if;
   request_id:=(payload->>'requestKey')::uuid;mode_name:=payload->>'mode';subj:=payload->>'subject';
-  kind_name:=case mode_name when 'lesson' then 'lesson' when 'diagnostic' then 'diagnostic' when 'express-exam' then 'expressExam' end;
+  kind_name:=case mode_name when 'lesson' then 'lesson' when 'smart' then 'lesson' when 'free' then 'lesson' when 'diagnostic' then 'diagnostic' when 'express-exam' then 'expressExam' end;
   if request_id is null or kind_name is null or subj not in('M1','M2','Lectura','Ciencias','Historia') or subj is null then raise exception 'INVALID_ACTIVITY';end if;
+  if subj='Ciencias' and coalesce(payload->>'track','') not in('Biología','Física','Química','TP') then raise exception 'SCIENCE_TRACK_REQUIRED';end if;
   usage_subj:=case when kind_name='expressExam' then 'all' when subj='Lectura' then 'lectora' else lower(subj) end;
   context_value:=jsonb_build_object('mode',mode_name,'subject',subj,'track',payload->'track','concept',payload->'concept');
   select * into a from cachaste_web.original_learning_sessions where user_id=u and request_key=request_id;
   if found then
    if a.context<>context_value then raise exception 'REQUEST_KEY_CONFLICT';end if;
    if a.status='expired' then raise exception 'ATTEMPT_EXPIRED';end if;
+   if a.status='completed' then raise exception 'ATTEMPT_ALREADY_COMPLETED';end if;
    return jsonb_build_object('tier','basica','activity',a.draft,'completed',a.status='completed','result',a.result,'replayed',true);
   end if;
   -- Resume the server-owned activity after a reload or a change of device.
@@ -90,17 +92,17 @@ begin
   if jsonb_typeof(question_ids) is distinct from 'array' then raise exception 'INVALID_QUESTIONS';end if;
   n:=jsonb_array_length(question_ids);
   -- Keep the approved engine's 2-question lesson stages and 30/15 assessments.
-  if n<>(case kind_name when 'lesson' then 2 when 'diagnostic' then 30 else 15 end) or
+  if (mode_name='lesson' and n<>2) or (mode_name in('smart','free') and n not between 1 and 10) or (kind_name='diagnostic' and n<>30) or (kind_name='expressExam' and n<>15) or
    (select count(distinct value) from jsonb_array_elements_text(question_ids))<>n then raise exception 'INVALID_QUESTIONS';end if;
   for k in select value from jsonb_array_elements_text(question_ids) loop
    select * into q from cachaste_web.original_question_catalog where key=k;
    if not found or q.subject<>subj or (kind_name<>'lesson' and not q.eligible) or
-    (kind_name='lesson' and (payload->>'concept' is null or q.concept<>payload->>'concept')) or
+    (kind_name='lesson' and payload->>'concept' is not null and q.concept<>payload->>'concept') or
     (subj='Ciencias' and not(q.module='MC' or (payload->>'track'='TP' and q.module='MTP') or (q.module='ME' and q.track=payload->>'track'))) then raise exception 'QUESTION_CONTEXT_MISMATCH';end if;
   end loop;
-  if kind_name='lesson' and (select count(distinct c.family) from cachaste_web.original_question_catalog c where c.key in(select value from jsonb_array_elements_text(question_ids)))<>2 then raise exception 'INDEPENDENT_QUESTIONS_REQUIRED';end if;
+  if kind_name='lesson' and (select count(distinct c.family) from cachaste_web.original_question_catalog c where c.key in(select value from jsonb_array_elements_text(question_ids)))<>n then raise exception 'INDEPENDENT_QUESTIONS_REQUIRED';end if;
   session_id:=gen_random_uuid();
-  draft_value:=jsonb_build_object('id',session_id,'basicAttempt',true,'subject',subj,'track',payload->'track','mode',mode_name,'concept',payload->'concept','keys',question_ids,'index',0,'selected',null,'confidence',null,'checked',false,'hinted',false,'studied',false,'stage',case when kind_name='lesson' then 'intro' else 'question' end,'card',0,'tutor','steps','results','[]'::jsonb,'started',floor(extract(epoch from now())*1000)::bigint);
+  draft_value:=jsonb_build_object('id',session_id,'basicAttempt',true,'subject',subj,'track',payload->'track','mode',mode_name,'concept',payload->'concept','keys',question_ids,'index',0,'selected',null,'confidence',null,'checked',false,'hinted',false,'studied',false,'stage',case when mode_name='lesson' then 'intro' else 'question' end,'card',0,'tutor','steps','results','[]'::jsonb,'started',floor(extract(epoch from now())*1000)::bigint);
   insert into cachaste_web.original_learning_sessions(id,user_id,request_key,kind,subject,usage_subject,usage_day,context,keys,draft) values(session_id,u,request_id,kind_name,subj,usage_subj,today,context_value,question_ids,draft_value);
   return jsonb_build_object('tier','basica','activity',draft_value);
  end if;
@@ -138,7 +140,7 @@ begin
  doc:=coalesce(doc,jsonb_build_object('version',1,'seen','{}'::jsonb,'attempts','[]'::jsonb,'days','{}'::jsonb,'completed','[]'::jsonb));
  select coalesce(jsonb_agg(r||jsonb_build_object('diagnosticPending',false)),'[]') into rows_value from jsonb_array_elements(a.answers) r;
  doc:=doc||jsonb_build_object('attempts',coalesce(doc->'attempts','[]')||rows_value,'session',null,'foundationDraft',null,'chosenCourse',true,'subject',a.subject,'track',a.context->'track',
-  'completed',coalesce(doc->'completed','[]')||jsonb_build_array(jsonb_build_object('id',a.id,'subject',a.subject,'mode',a.context->>'mode','at',floor(extract(epoch from now())*1000)::bigint,'total',jsonb_array_length(a.keys),'correct',correct_count)));
+  'completed',coalesce(doc->'completed','[]')||jsonb_build_array(jsonb_build_object('id',a.id,'subject',a.subject,'track',a.context->'track','mode',a.context->>'mode','at',floor(extract(epoch from now())*1000)::bigint,'total',jsonb_array_length(a.keys),'correct',correct_count)));
  day_value:=coalesce(doc->'days'->today::text,'{"keys":[],"xp":0}'::jsonb);xp:=0;
  for row_value in select value from jsonb_array_elements(rows_value) loop
   if not (day_value->'keys') ? (row_value->>'key') then
