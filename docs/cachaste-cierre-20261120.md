@@ -63,9 +63,9 @@ El workflow `.github/workflows/cachaste-original-access.yml` prepara PostgreSQL 
 
 ## Resultados ejecutados
 
-Sobre el commit `3a8fc597`, ambos workflows finalizaron correctamente: [integración Android/servidor](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/44739215488) y [regresión comercial web](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/44739215464). Incluyen PostgreSQL 17 con cuatro conexiones simultáneas, cuatro pruebas de navegador, compilación APK debug y once pruebas instaladas en emulador Android API 35. La regresión comercial cubre acceso, recuperación, tutor, lecciones, Express, rankings y resguardos de pagos. Esto no sustituye una actualización sobre una instalación real con progreso previo ni pruebas contra staging productivo.
+Sobre el commit `f7d85fa8`, ambos workflows finalizaron correctamente: [integración Android/servidor](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/44740634193) y [regresión comercial web](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/44740634024). Incluyen 27 pruebas de motor/base/regresiones, PostgreSQL 17 con cuatro conexiones simultáneas, cuatro pruebas de navegador, compilación APK debug y once pruebas instaladas en emulador Android API 35. La regresión comercial cubre acceso, recuperación, tutor, lecciones, Express, rankings y resguardos de pagos. Esto no sustituye una actualización sobre una instalación real con progreso previo ni pruebas contra staging productivo.
 
-Se incorpora además una regresión del reintento entre dispositivos: si otro dispositivo terminó una actividad cuya respuesta de lanzamiento se perdió, se elimina la clave obsoleta y el siguiente intento puede continuar. Su ejecución se registra en el workflow del commit que incorpora esta corrección.
+Se incorpora además una regresión del reintento entre dispositivos: si otro dispositivo terminó una actividad cuya respuesta de lanzamiento se perdió, se elimina la clave obsoleta y el siguiente intento puede continuar. La regresión se ejecutó y aprobó en el workflow del commit `f7d85fa8`.
 
 ## Migraciones: aplicación futura y reversión
 
@@ -86,19 +86,23 @@ No se ha generado AAB. La compilación autorizada en CI es **APK debug**, con pa
 
 Tras cerrar QA y recibir autorización para generar el archivo definitivo:
 
-1. Confirmar en Play Console el mayor `versionCode` de todas las pistas y elegir uno superior. El empaquetado conserva la referencia Android aprobada `8b6ab59` y su versión 48 / `1.5.0-rc21`; se evita reutilizar el 32 antiguo de la base web. El siguiente código debe ser superior al máximo real de Play, aún sin verificar. Los valores recordados de conversaciones anteriores no reemplazan esta consulta.
+1. Consulta de solo lectura en Play Console completada el 20 de noviembre: la vista «Todos los paquetes de aplicación» enumera siete paquetes, con máximo `47` / `1.5.0-rc20`, activo en prueba cerrada. El proyecto conserva `48` / `1.5.0-rc21`, superior al máximo cargado observado. No se cambió la versión ni se cargó un paquete. Volver a contrastar únicamente si otra sesión carga una versión antes de generar el definitivo.
 2. Cotejar el certificado de carga registrado con la clave privada existente. La configuración requiere las cuatro variables `CACHASTE_RELEASE_*`; no imprimirlas ni incluirlas en Git/artefactos.
 3. Ejecutar `npm ci`, `node scripts/build.mjs`, `node scripts/build-android-access.mjs`; copiar **todo** `dist/` a `android/app/src/main/assets/`. El guard de Gradle impide empaquetar el motor antiguo sin la integración de cuotas.
 4. Compilar la prueba debug y ejecutar `gradle :app:connectedDebugAndroidTest -PcachasteCommercialAccessQa -Pandroid.testInstrumentationRunnerArguments.class=cl.preparatupaes.app.CommercialAccessTest,cl.preparatupaes.app.SubscriptionLeaseTest` en Android de prueba.
 5. Solo con autorización específica del AAB: `gradle :app:bundleRelease` dentro de `android`, con las variables privadas de firma. Verificar paquete, código de versión y certificado antes de entregarlo.
 6. La subida y publicación en Play Console requieren autorización separada. No iniciar ninguna pista de lanzamiento automáticamente.
 
+## Estado observado en Play Console
+
+Consulta autorizada de solo lectura tras «Sigue». El panel marca completados los requisitos de prueba cerrada (12 participantes y 14 días), pero aún ofrece «Solicitar acceso a producción»; no se pulsó. Producción continúa inactiva. La página de firma se consultó sin cambiar claves ni parámetros. La advertencia de Fragment 1.1.0 corresponde al paquete publicado 47; no se atribuye automáticamente a la compilación nueva ni se cambia una dependencia por ese aviso histórico.
+
 ## Bloqueos y autorización pendiente
 
 - Completar la comprobación instalada de actualización/conservación de datos sobre una instalación previa con progreso. La instalación limpia en emulador sí pasó.
 - Staging basado en el esquema productivo real y activación de migraciones/banderas: requieren aprobación; no se crearon servicios pagados ni ramas Supabase con coste.
 - Google nativo está preparado pero su callback y prueba real requieren configuración autorizada; no anunciarlo como probado.
-- Confirmar `versionCode` y certificado de carga en Play Console. El intento de consulta fue rechazado por la revisión automática de seguridad; no se reintentó por una vía alternativa.
+- `versionCode` comprobado tras la autorización del usuario: máximo cargado 47; proyecto 48. Falta cotejar el certificado de carga: la página de firma abre, pero copiar la huella no devuelve valor y la descarga del certificado no se completó en este navegador. No se solicitó restablecimiento ni cambio de clave. No hay keystore de publicación en el checkout; no afirmar que la firma esté cotejada.
 - Generación del AAB y publicación quedan expresamente pendientes de autorización posterior.
 
 No declarar listo para publicar mientras exista alguno de los bloqueos anteriores.
