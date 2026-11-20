@@ -35,7 +35,8 @@ public class UpgradePersistenceTest {
    assertEquals(47,c.getPackageManager().getPackageInfo(c.getPackageName(),0).getLongVersionCode());
    long elapsed=SystemClock.elapsedRealtime();int boot=Settings.Global.getInt(c.getContentResolver(),Settings.Global.BOOT_COUNT,-1);
    c.getSharedPreferences("cachaste-subscription-lease",Context.MODE_PRIVATE).edit().putString("user","10000000-0000-4000-8000-000000000001").putLong("issued",elapsed).putLong("deadline",elapsed+600000).putInt("boot",boot).commit();
-   nav.edit().putString("last-page","file:///android_asset/inicio.html").commit();
+   // The preceding clean-install suite ran version 48. A real version-47 installation has no migration marker.
+   nav.edit().clear().putString("last-page","file:///android_asset/inicio.html").commit();
    scenario=ActivityScenario.launch(MainActivity.class);
    try{
     ready("location.protocol==='file:'&&document.readyState==='complete'&&window.CachasteDaily&&window.CACHASTE_DAILY_CATALOG");

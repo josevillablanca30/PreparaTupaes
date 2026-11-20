@@ -32,8 +32,10 @@ jobs:
           test "$missing" = 0
   integration:
     uses: ./.github/workflows/cachaste-original-access.yml
+  web-regression:
+    uses: ./.github/workflows/web-commercial-guardrails.yml
   signed-bundle:
-    needs: [signing-preflight, integration]
+    needs: [signing-preflight, integration, web-regression]
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:

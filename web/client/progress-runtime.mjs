@@ -67,5 +67,5 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
 }
 if(typeof window!=='undefined'){
  const node=document.getElementById('cachaste-web-bootstrap');
- if(node){const bootstrap=JSON.parse(node.textContent);window.CachasteWebBootstrap=bootstrap;window.CachasteWebProgress=installProgressRuntime({bootstrap,onStatus:status=>{window.CachasteWebSyncStatus=status;dispatchEvent(new CustomEvent('cachaste-sync',{detail:status}));},onConflict:()=>dispatchEvent(new Event('cachaste-conflict'))});}
+ if(node&&!window.CachasteWebProgress){const bootstrap=JSON.parse(node.textContent);window.CachasteWebBootstrap=bootstrap;window.CachasteWebProgress=installProgressRuntime({bootstrap,onStatus:status=>{window.CachasteWebSyncStatus=status;dispatchEvent(new CustomEvent('cachaste-sync',{detail:status}));},onConflict:()=>dispatchEvent(new Event('cachaste-conflict'))});}
 }
