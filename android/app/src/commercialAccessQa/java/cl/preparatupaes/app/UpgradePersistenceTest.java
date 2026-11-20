@@ -39,10 +39,13 @@ public class UpgradePersistenceTest {
    nav.edit().clear().putString("last-page","file:///android_asset/inicio.html").commit();
    scenario=ActivityScenario.launch(MainActivity.class);
    try{
-    ready("location.protocol==='file:'&&document.readyState==='complete'&&window.CachasteDaily&&window.CACHASTE_DAILY_CATALOG");
-    // Keep a real old-engine document and add visible progress fields to test exact preservation.
-    String raw=js("(()=>{const engine=CachasteDaily.create(localStorage,CACHASTE_DAILY_CATALOG.items,CachasteCurriculum.subjects,undefined,undefined,CACHASTE_DAILY_CATALOG.texts);engine.save();let d=JSON.parse(localStorage.getItem('cachaste-daily-v1'));d.upgradeProof={stars:3,xp:45,streak:2,history:['original-47']};localStorage.setItem('cachaste-daily-v1',JSON.stringify(d));localStorage.setItem('cachaste-m2-v1',JSON.stringify({completed:[{id:'saved-before-upgrade'}]}));return localStorage.getItem('cachaste-daily-v1')})()");
-    nav.edit().putString("upgrade-qa-expected",new org.json.JSONTokener(raw).nextValue().toString()).commit();
+    ready("location.protocol==='file:'&&document.readyState==='complete'&&window.CachasteDailyApp&&window.CACHASTE_DAILY_CATALOG");
+    // Complete a real stage through the live UI engine; a second engine would overwrite its in-memory state at pagehide.
+    String raw=js("(()=>{const engine=CachasteDailyApp.engine;engine.close();engine.state.foundationDraft=null;const q=CACHASTE_DAILY_CATALOG.items.find(q=>q.subjectKey==='M1');engine.start('M1',2,'lesson',q.concept);while(engine.state.session){const s=engine.state.session;engine.answer(engine.byKey.get(s.keys[s.index]).answer);engine.next();}engine.state.upgradeProof={xp:engine.stats().xp,completed:engine.state.completed.length,history:['original-47']};engine.save();localStorage.setItem('cachaste-m2-v1',JSON.stringify({completed:[{id:'saved-before-upgrade'}]}));return localStorage.getItem('cachaste-daily-v1')})()");
+    String expected=new org.json.JSONTokener(raw).nextValue().toString();
+    assertTrue(new JSONObject(expected).getJSONArray("attempts").length()>=2);
+    assertTrue(new JSONObject(expected).getJSONArray("completed").length()>=1);
+    nav.edit().putString("upgrade-qa-expected",expected).commit();
     scenario.recreate();ready("location.protocol==='file:'&&document.readyState==='complete'&&window.CachasteDailyApp");
     assertEquals(nav.getString("upgrade-qa-expected","missing"),new org.json.JSONTokener(js("localStorage.getItem('cachaste-daily-v1')")).nextValue().toString());
     Thread.sleep(2000); // Allow the old WebView storage backend to flush before the separate process restart.
