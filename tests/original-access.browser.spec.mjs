@@ -61,3 +61,18 @@ test('Premium keeps the original 15-question subject Express and full-exam launc
  expect(await page.evaluate(()=>window.CachasteDailyApp.engine.state.session.basicAttempt)).toBeUndefined();
  expect((await db.query('select count(*) n from cachaste_web.basic_usage')).rows[0].n).toBe(0);
 });
+test('Offline Android retains Premium only through a valid native lease, without server quota calls',async({context,page})=>{
+ const {readFile}=await import('node:fs/promises');
+ await context.addInitScript(({id})=>{
+  Object.defineProperty(navigator,'onLine',{get:()=>false});
+  window.CachasteAccess={postMessage(raw){const req=JSON.parse(raw);queueMicrotask(()=>window.CachasteAccess.onmessage({data:JSON.stringify({id:req.id,active:true,tier:'premium',userId:id,error:null})}));}};
+ },{id:users[0]});
+ await context.route('https://appassets.androidplatform.net/assets/**',async route=>{
+  const file=new URL(route.request().url()).pathname.replace('/assets/','');const bytes=await readFile('dist/'+file);const contentType=file.endsWith('.html')?'text/html':file.endsWith('.js')?'application/javascript':file.endsWith('.css')?'text/css':file.endsWith('.svg')?'image/svg+xml':file.endsWith('.png')?'image/png':'image/webp';await route.fulfill({status:200,contentType,body:bytes});
+ });
+ await page.goto('https://appassets.androidplatform.net/assets/inicio.html');
+ await expect.poll(()=>page.evaluate(()=>!!window.CachasteDailyApp)).toBe(true);
+ await page.evaluate(()=>window.CachasteDailyApp.engine.startExpress('Historia'));
+ await expect.poll(()=>page.evaluate(()=>window.CachasteDailyApp.engine.state.session?.keys.length)).toBe(15);
+ expect((await db.query('select count(*) n from cachaste_web.basic_usage')).rows[0].n).toBe(0);
+});

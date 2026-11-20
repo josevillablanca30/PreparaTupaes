@@ -38,6 +38,7 @@ final class SubscriptionAccessController {
                     if(message.getType()!=WebMessageCompat.TYPE_STRING||message.getData()==null||message.getData().length()>10000)return;
                     JSONObject request=new JSONObject(message.getData());String id=request.optString("id"),action=request.optString("action");
                     if(!id.matches("[a-zA-Z0-9-]{1,80}"))return;
+                    if(action.equals("cached")){respond(reply,id,null,hasPremiumAccess());return;}
                     if(action.equals("legacy")){respond(reply,id,null,false);return;}
                     if(action.equals("clear")){clear();respond(reply,id,null,false);return;}
                     if(!action.equals("verify"))return;
@@ -67,7 +68,7 @@ final class SubscriptionAccessController {
     private void clear(){generation++;prefs.edit().clear().apply();}
     private void respond(JavaScriptReplyProxy reply,String id,String error,boolean active){
         if(closed||!trustedPage())return;
-        try{JSONObject response=new JSONObject();response.put("id",id);response.put("required",activity.getPackageName().equals("cl.preparatupaes.app"));response.put("active",active);response.put("tier",prefs.getString("tier","unavailable"));response.put("legacy",activity.getSharedPreferences("cachaste-navigation",Activity.MODE_PRIVATE).getString("legacy-progress","{}"));response.put("error",error==null?JSONObject.NULL:error);reply.postMessage(response.toString());}catch(Exception ignored){}
+        try{JSONObject response=new JSONObject();response.put("id",id);response.put("required",activity.getPackageName().equals("cl.preparatupaes.app"));response.put("active",active);response.put("userId",prefs.getString("user",""));response.put("tier",prefs.getString("tier","unavailable"));response.put("legacy",activity.getSharedPreferences("cachaste-navigation",Activity.MODE_PRIVATE).getString("legacy-progress","{}"));response.put("error",error==null?JSONObject.NULL:error);reply.postMessage(response.toString());}catch(Exception ignored){}
     }
     private void verify(String token,String expectedUser,JavaScriptReplyProxy reply,String id,long epoch){
         HttpURLConnection connection=null;JSONObject result=null;String error=null;long started=SystemClock.elapsedRealtime();

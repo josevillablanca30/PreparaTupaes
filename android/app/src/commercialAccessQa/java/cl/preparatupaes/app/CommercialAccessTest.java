@@ -72,6 +72,16 @@ public class CommercialAccessTest {
             open("file:///android_asset/"+page+".html?modo=ensayo");locked();
         }
     }
+    @Test public void cachedPremiumRequiresTheNativeLeaseAndNeverPromotesBasic()throws Exception{
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        int boot=Settings.Global.getInt(context.getContentResolver(),Settings.Global.BOOT_COUNT,-1);long elapsed=SystemClock.elapsedRealtime();
+        prefs.edit().putString("tier","premium").putString("user","10000000-0000-4000-8000-000000000001").putLong("issued",elapsed).putLong("deadline",elapsed+60000).putInt("boot",boot).commit();
+        js("window.cachedReply=null;CachasteAccess.onmessage=e=>window.cachedReply=JSON.parse(e.data);CachasteAccess.postMessage(JSON.stringify({id:'cached-premium',action:'cached'}));true");
+        waitFor("window.cachedReply&&cachedReply.active===true&&cachedReply.tier==='premium'");
+        prefs.edit().putString("tier","basica").commit();
+        js("window.cachedReply=null;CachasteAccess.postMessage(JSON.stringify({id:'cached-basic',action:'cached'}));true");
+        waitFor("window.cachedReply&&cachedReply.active===false");
+    }
     @Test public void androidBackCanExitTheLockedSubscriptionScreen()throws Exception{
         scenario.onActivity(MainActivity::onBackPressed);
         for(int n=0;n<100&&!scenario.getState().toString().equals("DESTROYED");n++)Thread.sleep(50);
