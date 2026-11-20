@@ -115,7 +115,7 @@ public class MainActivity extends Activity {
             }
             @Override public void onPageFinished(WebView view, String url) {
                 if(migratingLegacy && LEGACY_HOME.equals(url)){
-                    view.evaluateJavascript("JSON.stringify(Object.fromEntries(Object.keys(localStorage).filter(k=>/^(cachaste-daily-v1|prepara-paes-|cachaste-(m1|science|reading|m2|history))/.test(k)).map(k=>[k,localStorage.getItem(k)])))",value->{
+                    view.evaluateJavascript("JSON.stringify(Object.fromEntries(['cachaste-daily-v1','prepara-paes-demo-v1','prepara-paes-active-exam-v1','cachaste-m1-assessments-v1','cachaste-m1-diagnostic-30-v1','cachaste-m1-diagnostic-draft-v1','cachaste-m1-pending-review-v1','cachaste-science-v1','cachaste-reading-v1','cachaste-m2-v1','cachaste-history-v1'].map(k=>[k,localStorage.getItem(k)]).filter(pair=>pair[1]!==null)))",value->{
                         try{String archive=new org.json.JSONTokener(value).nextValue().toString();getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("legacy-progress",archive).putBoolean("legacy-archived",true).apply();}catch(Exception ignored){}
                         migratingLegacy=false;view.loadUrl(mayOpen(HOME)?HOME:SUBSCRIPTION);
                     });return;

@@ -43,6 +43,17 @@ public class UpgradePersistenceTest {
     // Keep a real old-engine document and add visible progress fields to test exact preservation.
     String raw=js("(()=>{const engine=CachasteDaily.create(localStorage,CACHASTE_DAILY_CATALOG.items,CachasteCurriculum.subjects,undefined,undefined,CACHASTE_DAILY_CATALOG.texts);engine.save();let d=JSON.parse(localStorage.getItem('cachaste-daily-v1'));d.upgradeProof={stars:3,xp:45,streak:2,history:['original-47']};localStorage.setItem('cachaste-daily-v1',JSON.stringify(d));localStorage.setItem('cachaste-m2-v1',JSON.stringify({completed:[{id:'saved-before-upgrade'}]}));return localStorage.getItem('cachaste-daily-v1')})()");
     nav.edit().putString("upgrade-qa-expected",new org.json.JSONTokener(raw).nextValue().toString()).commit();
+    scenario.recreate();ready("location.protocol==='file:'&&document.readyState==='complete'&&window.CachasteDailyApp");
+    assertEquals(nav.getString("upgrade-qa-expected","missing"),new org.json.JSONTokener(js("localStorage.getItem('cachaste-daily-v1')")).nextValue().toString());
+    Thread.sleep(2000); // Allow the old WebView storage backend to flush before the separate process restart.
+   }finally{scenario.close();}
+  }else if("reopen".equals(phase)){
+   assertEquals(47,c.getPackageManager().getPackageInfo(c.getPackageName(),0).getLongVersionCode());
+   scenario=ActivityScenario.launch(MainActivity.class);
+   try{
+    ready("location.protocol==='file:'&&document.readyState==='complete'&&window.CachasteDailyApp");
+    assertEquals("Version 47 must persist progress across process restart before testing migration",nav.getString("upgrade-qa-expected","missing"),new org.json.JSONTokener(js("localStorage.getItem('cachaste-daily-v1')")).nextValue().toString());
+    assertFalse(nav.getBoolean("legacy-archived",false));
    }finally{scenario.close();}
   }else{
    assertEquals("verify",phase);assertEquals(48,c.getPackageManager().getPackageInfo(c.getPackageName(),0).getLongVersionCode());
@@ -52,6 +63,7 @@ public class UpgradePersistenceTest {
     ready("location.origin==='https://appassets.androidplatform.net'&&document.readyState==='complete'");
     assertTrue(nav.getBoolean("legacy-archived",false));
     JSONObject archive=new JSONObject(nav.getString("legacy-progress","{}"));
+    assertTrue("Archived keys: "+archive.names(),archive.has("cachaste-daily-v1"));
     assertEquals(nav.getString("upgrade-qa-expected","missing"),archive.getString("cachaste-daily-v1"));
     assertEquals("saved-before-upgrade",new JSONObject(archive.getString("cachaste-m2-v1")).getJSONArray("completed").getJSONObject(0).getString("id"));
     scenario.recreate();ready("document.readyState==='complete'&&location.origin==='https://appassets.androidplatform.net'");
