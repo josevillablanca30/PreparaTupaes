@@ -41,7 +41,7 @@ const ready=(async()=>{
  if(!globalThis.CachasteWebProgress){
   // Use the same user-scoped document keys and conflict handling as the web.
   // Legacy local progress stays in its original keys as a durable backup.
-  sync=installProgressRuntime({bootstrap:{userId:data.user.id,documents:bootstrap.documents},fetcher:async(path,options)=>{
+  sync=installProgressRuntime({bootstrap:{userId:data.user.id,tier:access.tier,documents:bootstrap.documents},fetcher:async(path,options)=>{
    const request=JSON.parse(options.body);
    const result=await sdk.rpc('cachaste_web_progress',{operation:request.operation,payload:request.payload});
    return new Response(JSON.stringify(result.error?{error:result.error.message}:result.data),{status:result.error?503:200});
@@ -57,7 +57,7 @@ async function prepare(E){
  adapter=attachOriginalEngine({engine:E,rpc,tier:access.tier,activity:bootstrap.activity,refresh,notify:result=>{
   const app=window.CachasteDailyApp;
   if(result.message){let n=document.querySelector('[data-learning-notice]');if(!n){n=document.createElement('p');n.dataset.learningNotice='';n.setAttribute('role','alert');document.getElementById('daily-root').before(n);}n.textContent=result.message;}
-  if(result.started){location.hash='#session';app?.render();}
+  if(result.started){location.hash='#session';app?.restoreSubject?.();app?.render();}
   if(result.answered)app?.render();
   if(result.advance)document.querySelector('#daily-root button[data-action="next"]')?.click();
  }});
@@ -71,7 +71,7 @@ async function prepare(E){
    let note=document.querySelector('[data-learning-notice]');if(!note){note=document.createElement('p');note.dataset.learningNotice='';note.setAttribute('role','alert');root.before(note);}note.textContent=action==='exam-mode'||action==='unit-exam'?'El ensayo completo es exclusivo de Premium.':'Continúa desde las etapas de tu camino para guardar tu avance.';
   }
  },true);
- const verifyOnResume=async()=>{if(document.hidden)return;try{const tier=await refresh();adapter.setTier(tier);if(tier==='basica')sync?.pause();else sync?.resume();}catch{failed();}};
+ const verifyOnResume=async()=>{if(document.hidden)return;try{const tier=await refresh();await adapter.setTier(tier);sync?.setVerifiedOnly(tier==='basica');if(tier==='basica')sync?.pause();else sync?.resume();}catch{failed();}};
  if(android)setInterval(()=>{void verifyOnResume();},60000);
  document.addEventListener('visibilitychange',verifyOnResume);window.addEventListener('online',verifyOnResume);
  // Reading a legacy full-exam URL requires Premium on BOTH platforms.

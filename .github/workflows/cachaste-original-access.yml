@@ -20,7 +20,7 @@ jobs:
           POSTGRES_PASSWORD: isolated-qa-only
           POSTGRES_DB: cachaste_qa
         ports: ['5432:5432']
-        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+        options: --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
         with:
@@ -62,3 +62,11 @@ jobs:
       - name: Compile Android Java and debug APK only
         working-directory: android
         run: gradle :app:assembleDebug -PcachasteCommercialAccessQa
+
+      - name: Installed Android access, consumption-only UI and legacy route restrictions
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          disable-animations: true
+          script: cd android && gradle :app:connectedDebugAndroidTest -PcachasteCommercialAccessQa

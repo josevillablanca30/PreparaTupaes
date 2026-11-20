@@ -33,6 +33,6 @@ try{
  const denials=await Promise.allSettled(clients.map(c=>rpc(c,'start',{requestKey:crypto.randomUUID(),mode:'lesson',subject:'M1',track:null,concept:first.concept,keys:[first.key,second.key]})));
  assert.ok(denials.every(d=>d.status==='rejected'&&/BASIC_QUOTA_EXHAUSTED/.test(d.reason.message)));
  assert.equal((await admin.query('select count(*)::int n from cachaste_web.basic_usage')).rows[0].n,3);
- assert.equal((await admin.query("select to_char('2026-11-20 02:30:00+00'::timestamptz at time zone 'America/Santiago','YYYY-MM-DD') day")).rows[0].day,'2026-11-19');
+ assert.equal((await admin.query("select to_char('2026-11-20 02:30:00+00'::timestamptz at time zone 'America/Santiago','YYYY-MM-DD') as chile_day")).rows[0].chile_day,'2026-11-19');
  console.log('PostgreSQL: 4 concurrent authenticated devices, exactly 3 stages, 1 charge per completion, Chile daily boundary: PASS');
 }finally{for(const c of clients)await c.end();await admin.end();}

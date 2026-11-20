@@ -1,6 +1,6 @@
 // No tokens or identity claims from this module grant access. Every exchange is
 // checked by Auth and cachaste_access in the Pages gateway.
-export function installSessionLifecycle({sdk, userId, progress, requireAccess = true, fetcher = fetch, onLicense = async () => {}, onState = () => {}, onEnd = async () => {}, online = () => navigator.onLine !== false, schedule = fn => setTimeout(fn, 0)}) {
+export function installSessionLifecycle({sdk, userId, progress, requireAccess = true, allowBasic = false, fetcher = fetch, onLicense = async () => {}, onState = () => {}, onEnd = async () => {}, online = () => navigator.onLine !== false, schedule = fn => setTimeout(fn, 0)}) {
   let ended = false, pending = null, running = null, lastToken = null;
   async function end(reason) {
     if (ended) return;
@@ -22,9 +22,10 @@ export function installSessionLifecycle({sdk, userId, progress, requireAccess = 
         if (ended) break;
         if (checked.user?.id !== userId) { await end('account-changed'); break; }
         lastToken = session.access_token;
-        if (requireAccess && checked.access?.active !== true) { await end('access-expired'); break; }
+        const basic=allowBasic&&checked.access?.tier==='basica'&&checked.access?.basicEnabled===true;
+        if (requireAccess && checked.access?.active !== true && !basic) { await end('access-expired'); break; }
         await onLicense(checked.offlineLicense);
-        progress?.resume(); onState('ready');
+        progress?.setVerifiedOnly?.(basic);if(basic)progress?.pause();else progress?.resume(); onState('ready');
       } catch { if (!ended) onState('reconnecting'); }
     }
   }

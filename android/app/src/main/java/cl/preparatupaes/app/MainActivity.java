@@ -98,9 +98,14 @@ public class MainActivity extends Activity {
                 if (isApplicationPage(url)){if(!mayOpen(url)){view.loadUrl(SUBSCRIPTION);return true;}return false;}
                 // Do not open sites which could lead from this consumption-only app to checkout.
                 String host=request.getUrl().getHost();
+                boolean oauth="jmobinmdwrmdqrxtcruj.supabase.co".equals(host)
+                    && "/auth/v1/authorize".equals(request.getUrl().getPath())
+                    && "google".equals(request.getUrl().getQueryParameter("provider"))
+                    && "cl.preparatupaes.app://auth/callback".equals(request.getUrl().getQueryParameter("redirect_to"))
+                    && "s256".equals(request.getUrl().getQueryParameter("code_challenge_method"));
                 boolean legal="cachaste-privacidad.jose-villablanca-hor.chatgpt.site".equals(host)
                     && ("/privacidad".equals(request.getUrl().getPath())||"/eliminar-cuenta".equals(request.getUrl().getPath()));
-                if (legal && "https".equals(request.getUrl().getScheme())) {
+                if ((legal||oauth) && "https".equals(request.getUrl().getScheme())) {
                     try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); }
                     catch (android.content.ActivityNotFoundException ignored) { }
                 }
@@ -149,6 +154,7 @@ public class MainActivity extends Activity {
         setContentView(viewport);
         viewport.requestApplyInsets();
         String last = state != null ? state.getString("last-page") : getSharedPreferences(PREFS, MODE_PRIVATE).getString("last-page", HOME);
+        String callback=authCallback(getIntent());if(callback!=null)last=callback;
         if(last!=null && last.startsWith("file:///android_asset/"))last=ASSETS+last.substring("file:///android_asset/".length());
         if(!getSharedPreferences(PREFS,MODE_PRIVATE).getBoolean("legacy-archived",false)){
             migratingLegacy=true;webView.loadUrl(LEGACY_HOME);
@@ -156,6 +162,17 @@ public class MainActivity extends Activity {
         else webView.loadUrl(mayOpen(HOME)?HOME:SUBSCRIPTION);
     }
 
+    private String authCallback(Intent intent){
+        Uri uri=intent==null?null:intent.getData();
+        if(uri==null||!"cl.preparatupaes.app".equals(uri.getScheme())||!"auth".equals(uri.getHost())||!"/callback".equals(uri.getPath()))return null;
+        String code=uri.getQueryParameter("code");
+        if(code==null||!code.matches("[A-Za-z0-9_-]{16,512}"))return null;
+        intent.setData(null);return COMPETITION+"?code="+Uri.encode(code)+"#perfil";
+    }
+    @Override protected void onNewIntent(Intent intent){
+        super.onNewIntent(intent);setIntent(intent);String callback=authCallback(intent);
+        if(callback!=null&&webView!=null)webView.loadUrl(callback);
+    }
     @Override protected void onSaveInstanceState(Bundle state) {
         if (webView != null && isApplicationPage(webView.getUrl())) state.putString("last-page", webView.getUrl());
         super.onSaveInstanceState(state);

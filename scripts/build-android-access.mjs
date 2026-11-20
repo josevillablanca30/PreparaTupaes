@@ -5,7 +5,10 @@ import {adaptOriginalLearning,adaptConsumptionCompetition} from '../learning/pre
 await writeFile('dist/daily-app.js',adaptOriginalLearning(await readFile('dist/daily-app.js','utf8')));
 await writeFile('dist/inicio.html',(await readFile('dist/inicio.html','utf8')).replace('<script src="daily-app.js">','<script src="learning-access.js"></script><script src="daily-app.js">'));
 await build({entryPoints:['learning/runtime.mjs'],outfile:'dist/learning-access.js',bundle:true,format:'iife',target:'chrome100',minify:true});
-await build({entryPoints:['learning/competition-entry.mjs'],outfile:'dist/competition-client.js',bundle:true,format:'iife',target:'chrome100',minify:true});
+const client=(await readFile('competition-client.mjs','utf8')).replace("detectSessionInUrl:typeof window!=='undefined'", "detectSessionInUrl:false,flowType:'pkce'");
+await build({stdin:{contents:client+"\nimport {installLearningCompetition} from './learning/competition-client-adapter.mjs';installLearningCompetition(CompetitionClient,errors);",resolveDir:process.cwd()},outfile:'dist/competition-client.js',bundle:true,format:'iife',target:'chrome100',minify:true});
+const config=(await readFile('competition-config.js','utf8')).replace('authReturnUrl:null',"authReturnUrl:'https://sitecacho.cl/recuperar',googleAuthReady:"+String(process.env.CACHASTE_ANDROID_GOOGLE_AUTH_READY==='true'));
+await writeFile('dist/competition-config.js',config);
 await writeFile('dist/competition-app.js',adaptConsumptionCompetition(await readFile('dist/competition-app.js','utf8')));
 const page=await readFile('suscripcion.html','utf8');
 const head=page.slice(0,page.indexOf('<body>'));

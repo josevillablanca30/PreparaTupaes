@@ -46,7 +46,7 @@ export function attachOriginalEngine({engine:E,rpc,tier,activity=null,storage=gl
   void start(method,args);return {blocked:true,message:'Preparando tu etapa…'};
  };
  E.answer=(index,...args)=>{
-  if(currentTier==='premium')return original.answer(index,...args);
+  if(currentTier==='premium'&&!E.state.session?.basicAttempt)return original.answer(index,...args);
   const s=E.state.session;if(!s?.basicAttempt||busy)return null;
   // Retry precisely the same answer after network uncertainty, never a new attempt.
   pendingAnswer??={attemptId:s.id,position:s.index,selectedIndex:index,assisted:!!s.hinted,afterStudy:!!s.studied};
@@ -57,7 +57,7 @@ export function attachOriginalEngine({engine:E,rpc,tier,activity=null,storage=gl
   }).catch(e=>announce(message(e))).finally(()=>{busy=false;});return null;
  };
  E.next=()=>{
-  const s=E.state.session;if(currentTier==='premium')return original.next();
+  const s=E.state.session;if(currentTier==='premium'&&!s?.basicAttempt)return original.next();
   if(!s?.basicAttempt||busy||pendingAnswer)return false;
   if(completedPermit){completedPermit=false;return original.next();}
   if(s.index+1<s.keys.length)return original.next();
@@ -67,10 +67,10 @@ export function attachOriginalEngine({engine:E,rpc,tier,activity=null,storage=gl
  };
  E.transfer=()=>currentTier==='premium'?original.transfer():{questions:[]};
  E.close=()=>{
-  if(currentTier==='premium')return original.close();
+  if(currentTier==='premium'&&!E.state.session?.basicAttempt)return original.close();
   const s=E.state.session;if(!s?.basicAttempt)return original.close();
   // Pausing must not throw away a partially answered activity or create a fresh quota slot.
   announce('Tu etapa queda guardada. Puedes retomarla para seguir aprendiendo.');
  };
- return {get busy(){return busy;},get tier(){return currentTier;},setTier(value){currentTier=value;}};
+ return {get busy(){return busy;},get tier(){return currentTier;},async setTier(value){if(value==='basica'&&currentTier==='premium'){if(E.state.session)storage.setItem('cachaste-premium-session-backup',JSON.stringify(E.state.session));const server=await rpc('state');setActivity(server.activity);notify({started:!!server.activity});}currentTier=value;}};
 }

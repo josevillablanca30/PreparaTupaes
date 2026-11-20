@@ -1,9 +1,18 @@
 export function installLearningCompetition(CompetitionClient,errors){
 const connect=CompetitionClient.prototype.connect,call=CompetitionClient.prototype.call;
 CompetitionClient.prototype.connect=async function(){
+ if(typeof window!=='undefined'&&location.origin==='https://appassets.androidplatform.net'&&!this.authCallbackHandled){
+  this.authCallbackHandled=true;
+  const code=new URLSearchParams(location.search).get('code');
+  if(code){history.replaceState(null,'',location.pathname+'#perfil');const {error}=await this.sdk.auth.exchangeCodeForSession(code);if(error)throw error;}
+ }
  const state=await connect.call(this);this.basic=false;
  if(typeof window!=='undefined'&&location.origin!=='https://appassets.androidplatform.net'&&window.CachasteWebBootstrap?.originalEngineEnabled!==true)return state;
  if(!this.user)return state;
+ if(typeof window!=='undefined'&&!this.accessResumeInstalled){
+  this.accessResumeInstalled=true;
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)return;void this.connect().then(()=>window.CachasteCompetition?.render()).catch(()=>{});});
+ }
  const {data,error}=await this.sdk.rpc('cachaste_learning_access');
  if(!error&&data?.userId===this.user.id){
   // Existing web subscriptions/tester benefits take precedence even if a legacy competition response is stale.

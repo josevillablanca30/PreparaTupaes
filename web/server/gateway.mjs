@@ -69,7 +69,8 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
     const auth=await identity(req,env,{active:false,fresh:true}),secure=url.protocol==='https:'?'; Secure':'';
     const lease=auth.access.active?await offlineLicense(env,auth.user.id,auth.access.validUntilMs,url.origin,revision,now()):null;
-    return json({user:{id:auth.user.id,email:auth.user.email},access:auth.access,offlineLicense:lease},200,{'set-cookie':`${COOKIE}=${auth.token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${Math.max(0,Math.floor((jwtExpires(auth.token)-now())/1000))}${secure}`});
+    const access=originalReady(env)?await backend(env,'/rest/v1/rpc/cachaste_learning_access',auth.token,{method:'POST',body:{}}):auth.access;
+    return json({user:{id:auth.user.id,email:auth.user.email},access,offlineLicense:lease},200,{'set-cookie':`${COOKIE}=${auth.token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${Math.max(0,Math.floor((jwtExpires(auth.token)-now())/1000))}${secure}`});
    }
    if(path==='/api/session'&&req.method==='DELETE'){
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
