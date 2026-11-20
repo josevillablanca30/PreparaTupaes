@@ -13,6 +13,14 @@ jobs:
   integration:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: isolated-qa-only
+          POSTGRES_DB: cachaste_qa
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
         with:
@@ -24,6 +32,10 @@ jobs:
       - run: npm ci
       - name: Original engine, isolated database, quotas and existing payment regression
         run: node --test tests/original-learning-access.test.mjs web/tests/progress-db.test.mjs web/tests/mercadopago-commercial-db.test.mjs web/tests/duels2-server.test.mjs
+      - name: True PostgreSQL concurrency with four authenticated devices
+        env:
+          CACHASTE_QA_POSTGRES_URL: postgresql://postgres:isolated-qa-only@127.0.0.1:5432/cachaste_qa
+        run: node tests/original-postgres-concurrency.mjs
       - name: Gateway and synchronization safeguards
         run: node --test web/tests/basic-release-gates.test.mjs web/tests/basic-verified-progress.test.mjs web/tests/access-tiers-policy.test.mjs tests/web-gateway-security.test.mjs web/tests/progress-runtime.test.mjs
       - name: Build web without commercial activation

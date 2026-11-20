@@ -81,6 +81,10 @@ public class MainActivity extends Activity {
             }
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
+                if(!migratingLegacy && url.startsWith("file:///android_asset/")){
+                    String secure=ASSETS+url.substring("file:///android_asset/".length());
+                    if(isApplicationPage(secure)){view.loadUrl(mayOpen(secure)?secure:SUBSCRIPTION);return true;}
+                }
                 if (url.startsWith("file:///android_asset/competencia.html")) {
                     view.loadUrl(COMPETITION + (request.getUrl().getFragment() == null ? "" : "#" + request.getUrl().getFragment()));
                     return true;
@@ -145,6 +149,7 @@ public class MainActivity extends Activity {
         setContentView(viewport);
         viewport.requestApplyInsets();
         String last = state != null ? state.getString("last-page") : getSharedPreferences(PREFS, MODE_PRIVATE).getString("last-page", HOME);
+        if(last!=null && last.startsWith("file:///android_asset/"))last=ASSETS+last.substring("file:///android_asset/".length());
         if(!getSharedPreferences(PREFS,MODE_PRIVATE).getBoolean("legacy-archived",false)){
             migratingLegacy=true;webView.loadUrl(LEGACY_HOME);
         }else if (isApplicationPage(last)) webView.loadUrl(mayOpen(last)?last:SUBSCRIPTION);

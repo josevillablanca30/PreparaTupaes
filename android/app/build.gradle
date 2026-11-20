@@ -71,3 +71,15 @@ dependencies {
     androidTestImplementation "androidx.test:core:1.6.1"
     androidTestImplementation "junit:junit:4.13.2"
 }
+
+// Prevent packaging the legacy unmetered assets with the Basic-capable native shell.
+tasks.named('preBuild').configure {
+    doFirst {
+        def assetsRoot=file('src/main/assets')
+        if (!new File(assetsRoot,'learning-access.js').isFile() ||
+            !new File(assetsRoot,'daily-app.js').text.contains('CachasteLearningAccess') ||
+            new File(assetsRoot,'competition-billing.js').text.contains("perform('purchase')")) {
+            throw new GradleException('Ejecuta node scripts/build.mjs y node scripts/build-android-access.mjs; copia dist completo a assets antes de compilar.')
+        }
+    }
+}

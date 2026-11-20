@@ -95,3 +95,23 @@ test('Two Basic Duelos 2.0 daily, no charge for queue/failed activation, Premium
  assert.equal((await db.query("select count(*) n from cachaste_web.basic_usage where user_id=$1 and kind='duel'",[users[1]])).rows[0].n,0);
  }finally{await db.close();}
 });
+test('Existing web subscription, trial, cancellation, expiry and both tester grants keep priority over Basic',async()=>{
+ const db=await database();try{
+ const {installCurrentEntitlementFixture}=await import('./helpers/current-entitlement-fixture.mjs');await installCurrentEntitlementFixture(db);
+ await db.exec('update cachaste_web.basic_feature_flags set original_learning_enabled=true');
+ // Synthetic subscriptions only; no provider request or payment is made.
+ await db.exec('update cachaste_web.policy set payments_enabled=true,tax_ready=true');
+ const checkout=crypto.randomUUID();await db.query("insert into cachaste_web.checkouts(id,user_id,plan,provider_plan_id) values($1,$2,'mensual','fixture')",[checkout,users[0]]);
+ await db.query("insert into cachaste_web.subscriptions(provider_id,checkout_id,user_id,plan,provider_status,paid_until,observed_at,live_mode) values('fixture-subscription',$1,$2,'mensual','authorized',now()+interval '1 day',now(),true)",[checkout,users[0]]);
+ assert.equal((await access(db,0)).tier,'premium');
+ await db.exec("update cachaste_web.subscriptions set provider_status='cancelled'");assert.equal((await access(db,0)).tier,'premium','cancelled renewal retains paid time');
+ await db.exec("update cachaste_web.subscriptions set paid_until=now()-interval '1 day'");assert.equal((await access(db,0)).tier,'basica');
+ await db.exec("update cachaste_web.subscriptions set provider_status='authorized',trial_until=now()+interval '7 days'");assert.equal((await access(db,0)).tier,'premium');
+ await db.query("insert into cachaste.closed_test_access(user_id,valid_until) values($1,now()+interval '1 year')",[users[0]]);
+ await db.exec("update cachaste_web.subscriptions set trial_until=now()-interval '1 day'");assert.equal((await access(db,0)).tier,'premium','special benefit survives subscription expiry');
+ await db.query("update auth.users set email='fixture-tester@example.test',email_confirmed_at=now() where id=$1",[users[1]]);
+ await db.exec("insert into cachaste.closed_test_emails(email_hash,valid_until) values(sha256(convert_to('fixture-tester@example.test','UTF8')),now()+interval '1 year')");assert.equal((await access(db,1)).tier,'premium','existing confirmed tester email grant');
+ assert.equal((await access(db,2)).tier,'basica');
+ await db.query("update auth.sessions set not_after=now()-interval '1 second' where user_id=$1",[users[0]]);await assert.rejects(()=>access(db,0),/AUTH_REQUIRED/);
+ }finally{await db.close();}
+});

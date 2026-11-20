@@ -42,7 +42,7 @@ async function finish(page){
 test('Basic completes three original lesson stages, keeps mascot/tutor and stops a fourth',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/inicio.html');await expect.poll(()=>page.evaluate(()=>!!window.CachasteDailyApp)).toBe(true);
  await expect(page.locator('.reference-brand')).toBeVisible();
- for(let n=0;n<3;n++){await launch(page);await expect(page.locator('.wise-cat').first()).toBeVisible();await finish(page);}
+ for(let n=0;n<3;n++){await launch(page);await expect(page.locator('.reference-lesson-hero').first()).toBeVisible();await finish(page);}
  await page.evaluate(()=>{const E=window.CachasteDailyApp.engine;E.start('M1',2,'lesson',[...E.byKey.values()].find(q=>q.subjectKey==='M1').concept);});
  await expect(page.locator('[data-learning-notice]')).toContainText('Vuelve mañana');expect(errors).toEqual([]);
  expect((await db.query('select count(*) n from cachaste_web.basic_usage')).rows[0].n).toBe(3);
