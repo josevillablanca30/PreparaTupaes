@@ -1,119 +1,79 @@
-# ¿Cachaste? — cierre técnico preparado, sin publicación
+# ¿Cachaste? — cierre Android, Básica y Premium
 
-Fecha de revisión: 20 de noviembre de 2026 (Chile).
+Actualizado el 20 de noviembre de 2026 (Chile). Esta revisión reemplaza los bloqueos de firma y autorización registrados anteriormente.
 
-## Alcance y control de versiones
+## Control de cambios
 
-Base recuperada del PR #22: `51ebeb7d4104b25c9c9ebe7e96ab116ff4cfdc8f`. Sus 330 commits se conservaron. Se revisaron ramas remotas, el relevo del 20 de noviembre y la discusión del PR (sin comentarios). El nuevo trabajo usa `work/cachaste-cierre-android-20261120`, PR #23, con base en la rama del #22. No se modifica ni fusiona el #22. No hay despliegue, compra, AAB ni publicación.
+Base del PR #22: `51ebeb7d4104b25c9c9ebe7e96ab116ff4cfdc8f`, conservada sin fusionar. Trabajo en `work/cachaste-cierre-android-20261120`, [PR #23](https://github.com/josevillablanca30/PreparaTupaes/pull/23), dependiente del #22. No se cambia la rama de producción. La referencia educativa Android es `8b6ab59`; la versión aceptada 47 se identifica con el origen `13ae26d3f752ccc6f3de97086dee07cb938ac3fc`.
 
-## Implementación
+## Funcionalidad integrada
 
-- `learning/original-engine.mjs` envuelve las funciones del motor **existente**. Las pantallas, preguntas, clases, tutor, arte y selección original permanecen. Android usa la misma referencia aprobada `8b6ab59` que la web; se conservan sus estilos, legibilidad y selector nativo de foto de perfil. Las etapas son las originales de dos preguntas; no se sustituyen por cuestionarios de diez preguntas. Diagnóstico conserva 30; Express conserva 15 y la asignatura elegida. La práctica libre e inteligente mantienen su modo y longitud originales, bajo el mismo presupuesto diario de etapas. Los informes Express/diagnóstico se reconstruyen de las respuestas confirmadas y no se pierden al cambiar de dispositivo.
-- `learning/runtime.mjs` autentica mediante Supabase, recupera derechos y actividad desde el servidor y conecta el almacenamiento por usuario. Las respuestas de Básica se confirman antes de avanzar; su progreso definitivo lo escribe el servidor.
-- La migración `20261120115046_cachaste_original_learning_access.sql` añade reservas, respuestas canónicas, finalización idempotente, recuperación entre dispositivos y cuota diaria chilena. Diagnóstico es único por asignatura; Express uno diario; lecciones tres etapas por asignatura. El ensayo completo y las rutas tradicionales requieren Premium.
-- Las reservas originales aceptan la selección del motor aprobado, validan cada ID, contexto, asignatura/mención y familia contra el catálogo canónico privado. No aceptan claves de respuesta, corrección, puntaje, identidad ni un plan enviados por el estudiante. El cliente conserva los datos pedagógicos originales; el servidor decide cupos y resultados.
-- Se conserva Duelos 2.0 y su activación atómica. Un participante sin cupos ya no vuelve a entrar a la cola ni puede abortar el emparejamiento de otro alumno Premium. Dos duelos diarios; cola o activación fallida no consumen.
-- Android distingue permiso temporal de acceso Premium y Básica mediante respuesta HTTPS autenticada, identidad coincidente y reloj monotónico. Una preferencia de JavaScript no concede derechos. Premium conserva uso sin conexión únicamente dentro del permiso nativo previamente verificado y vigente; Básica sigue necesitando confirmación del servidor para sus actividades. La navegación de Básica se limita al motor diario y perfil/competencia, bloqueando ensayos por rutas antiguas.
-- La pantalla Android informa los planes externos como texto plano. No tiene enlaces de contratación, WebViews de checkout, puente Billing ni dependencia Billing empaquetada. Los documentos legales se empaquetan como lectura local, conservando el texto comercial aprobado y evitando navegación al checkout.
-- La copia comercial web, precios y pagos se conservan. Los puntos web de integración están apagados salvo activación explícita y aprobación. El flujo Premium anterior continúa cuando la nueva integración web está apagada.
-- El origen seguro de Android conserva una copia de los datos educativos anteriores; nunca elimina las claves antiguas. La primera cuenta del dispositivo recibe el respaldo local cuando no existe documento remoto de esa clave. Los documentos remotos tienen prioridad. La migración y su persistencia deben comprobarse también en una actualización instalada real antes del lanzamiento.
+Se conserva el motor original, catálogo, tutor, lecciones, navegación, arte y foto de perfil. `learning/original-engine.mjs` añade permisos y confirmación de actividad; no crea otro cuestionario.
 
-## Derechos existentes: web → Supabase → Android
+| Función | Básica | Premium |
+| --- | --- | --- |
+| Etapas de lección | 3 por asignatura y día chileno | Sin cuota gratuita |
+| Diagnóstico | 1 por asignatura, de por vida | Acceso original |
+| Express | 1 diario, asignatura seleccionada | Acceso original |
+| Duelos 2.0 | 2 diarios, al activarse la partida | Sin cuota gratuita |
+| Ensayo completo | Bloqueado, incluidas rutas antiguas | Acceso original |
+| Progreso, tutor y rankings | Motores y reglas existentes | Motores y reglas existentes |
 
-`cachaste_learning_access` **consulta** `cachaste.access_state()`; no lo reemplaza. En producción se comprobó por consulta de definiciones que ese resolvedor compone acceso comercial y `closed_test_until`, incluyendo beneficios por usuario y por correo confirmado. Los archivos de pagos, webhooks, precios, suscripciones y concesiones existentes no se modifican.
+Cuotas atómicas con bloqueo transaccional por usuario, `America/Santiago`, reservas recuperables y finalización idempotente. Cola o lanzamiento técnico sin respuestas no consumen permanentemente. Las respuestas nuevas se corrigen con el catálogo privado canónico. Cambiar preferencias locales no concede cupos ni derechos.
 
-Se preparó un fixture exclusivamente local con esa composición de funciones para probar suscripción vigente, prueba, cancelación con periodo pagado, vencimiento, beneficio especial y tester. Los datos de estudiantes reales no se usaron como fixtures.
+El acceso consulta `cachaste.access_state()` sin reemplazarlo. Se conservan las suscripciones web, prueba, cancelaciones con periodo vigente, concesiones especiales y testers. Android vuelve a verificar al iniciar actividades y recuperar primer plano. Premium offline depende del permiso nativo previamente verificado, usuario coincidente y reloj monotónico; una preferencia JavaScript no concede acceso.
 
-Una pérdida de vigencia aplica Básica solo si el resolvedor existente ya no encuentra otro beneficio. La app vuelve a consultar el acceso al iniciar actividades y al recuperar el primer plano. No se realizan pagos reales de prueba.
+Android archiva los datos anteriores del origen `file:` sin borrarlos. El primer usuario autenticado del dispositivo recibe el historial local; otros usuarios no lo heredan. El historial offline se combina para presentación con los resultados confirmados, sin convertirlo en consumo de cuota, resultados competitivos ni actividad verificada. Las actividades nuevas y su recuperación entre dispositivos pertenecen al servidor. No se atribuye verificación remota retroactiva a los antiguos datos offline.
 
-## Google Play: decisión y fuentes oficiales
+## Supabase: instalación autorizada completada
 
-Consultadas el 20 de noviembre de 2026:
+Proyecto `jmobinmdwrmdqrxtcruj`. Migración registrada `20261120174006_cachaste_basic_original_education_install`. Se aplicaron juntos los SQL educativos preparados desde `20261116193000` hasta `20261120115046`, sin reaplicar migraciones históricas comerciales. El manifiesto [reports/cachaste-original-install-20261120.json](../reports/cachaste-original-install-20261120.json) enumera archivos y hashes. **No volver a ejecutar esos archivos individuales sobre este proyecto:** su instalación está registrada por la migración conjunta.
 
-1. [Understanding Google Play’s Payments policy](https://support.google.com/googleplay/android-developer/answer/10281818?hl=en): FAQ «Can I offer a consumption-only (reader) app» permite este modelo para cualquier app; la categoría educativa interactiva no queda excluida por ser interactiva. La definición exige no permitir compras dentro de la app.
-2. La sección «Can I communicate with my users about alternative ways to pay» de esa misma FAQ permite información de compra **sin enlaces directos** en servicios de solo consumo, incluyendo el sitio escrito en texto. Esto sustenta la copia propuesta para Android. No se convierte `sitecacho.cl` en enlace ni se abre desde esa pantalla.
-3. [Payments policy](https://support.google.com/googleplay/android-developer/answer/9858738?hl=en): reglas generales de bienes digitales y prohibición de conducir a otros medios de pago dentro de flujos de compra, salvo excepciones/programas aplicables.
-4. [Understanding user choice billing](https://support.google.com/googleplay/android-developer/answer/13821247?hl=en) y [países con alternativas](https://support.google.com/googleplay/answer/11174377?hl=en): Chile no está incluido en las listas consultadas. No se presupone una excepción chilena ni se inscribe la app en un programa alternativo.
+Antes de aplicar se guardaron privadamente las cuatro funciones existentes afectadas y los datos educativos relevantes. Recuperación no destructiva: `web/supabase/rollback-original-install.sql` apaga las banderas y restaura las funciones anteriores, sin borrar usuarios, progreso ni tablas nuevas. El respaldo de datos es un punto de recuperación; no debe restaurarse automáticamente sobre avances posteriores de estudiantes.
 
-Conclusión técnica: el modelo aprobado es compatible **si Android se mantiene sin compras internas ni enlaces externos de contratación**. No requiere implantar Google Play Billing para reconocer beneficios adquiridos previamente. Esta comprobación documental no equivale a aprobación de una versión por Google Play.
+Se derivaron 802 registros de verificación (755 elegibles para ensayos) del catálogo aprobado. No se editó el banco PAES. Las seis tablas privadas nuevas tienen RLS y no permiten SELECT directo a `anon`/`authenticated`.
 
-## Autenticación Android
+Las cuatro banderas continúan en `false`: `original_learning_enabled`, `duel_admission_enabled`, `progress_snapshot_enabled` y `learning_attempts_enabled`. **Instalar no equivale a activar públicamente Básica.** Tampoco se habilitaron las banderas web ni el checkout.
 
-Correo y contraseña utilizan el mismo proyecto, usuario y derechos que la web. Se conserva la sesión en el origen seguro. El acceso de Google exclusivo requiere retorno nativo seguro: se prepara PKCE y callback `cl.preparatupaes.app://auth/callback`, aceptando únicamente código y verificándolo en Supabase. El inicio Google usa navegador externo, nunca una WebView de Google.
+Prueba real alojada en `web/supabase/verify-original-install.sql`: crea un usuario/sesión efímeros y habilita Básica únicamente dentro de una transacción que termina con ROLLBACK. Aprobó tres etapas, bloqueo de la cuarta, respuestas repetidas, finalización repetida, recuperación y persistencia de progreso; también prioridad de beneficio especial/Premium y actualización tras revocarlo. Después se comprobó ausencia de usuarios/actividades de QA y todas las banderas apagadas. Las huellas de suscripciones, concesiones de testers y documentos previos son idénticas a las anteriores.
 
-El botón está **apagado por defecto**. Antes de habilitar `CACHASTE_ANDROID_GOOGLE_AUTH_READY=true`, el propietario debe autorizar la configuración del callback en la lista de redirecciones de Supabase y completar una prueba Google instalada. No se ha modificado la configuración de Auth en producción. Un retorno arbitrario o una bandera de cliente no concede Premium.
+## Firma: flujo original recuperado
 
-Referencias: [signInWithOAuth](https://supabase.com/docs/reference/javascript/auth-signinwithoauth), [exchangeCodeForSession](https://supabase.com/docs/reference/javascript/auth-exchangecodeforsession).
+El AAB aceptado `Cachaste-1.5.0-rc20-47.aab` tiene SHA-256 de archivo `2d8343aaec8320e85a7a8b13860b1586861ab085c0e2f60631caedb594842894`. Se leyeron y verificaron las firmas de sus 265 entradas de contenido con `VerifyPlayBundle.java`; su certificado coincide con el oficial:
 
-## Comandos de validación (sin publicación)
+`A5:66:92:6F:01:E7:9E:5F:75:42:2B:5C:03:C9:1B:43:37:01:8E:4F:79:87:B3:28:88:C6:50:CA:7F:27:15:75`.
 
-```sh
-npm ci
-node --test tests/original-learning-access.test.mjs web/tests/progress-db.test.mjs web/tests/mercadopago-commercial-db.test.mjs web/tests/duels2-server.test.mjs
-node --test web/tests/basic-release-gates.test.mjs web/tests/basic-verified-progress.test.mjs web/tests/access-tiers-policy.test.mjs tests/web-gateway-security.test.mjs web/tests/progress-runtime.test.mjs web/tests/session-lifecycle.test.mjs
-node web/scripts/test-access-tiers.mjs
-node web/scripts/test-basic-completion.mjs
-node web/scripts/build.mjs
-node scripts/build.mjs
-node scripts/build-android-access.mjs
-npx playwright test --config playwright.original-access.config.mjs
-```
+El historial `publication/firma-actions.md` de la revisión `685e9ecc` documenta que el titular creó la clave en su Android y configuró cuatro secretos de Actions. El respaldo antiguo `77:97:13:CA` corresponde a otra clave y no se utiliza.
 
-El workflow `.github/workflows/cachaste-original-access.yml` prepara PostgreSQL 17 aislado, cuatro conexiones simultáneas y pruebas reales de reserva/finalización; luego navegador y Android. El PostgreSQL de QA solo acepta una URL local que termine en `/cachaste_qa`. No puede apuntarse accidentalmente al proyecto productivo.
+El workflow recuperado `.github/workflows/android-play-final.yml` usa exclusivamente los secretos existentes `CACHASTE_RELEASE_KEYSTORE_BASE64`, `CACHASTE_RELEASE_STORE_PASSWORD`, `CACHASTE_RELEASE_KEY_ALIAS`, `CACHASTE_RELEASE_KEY_PASSWORD`. La clave solo se decodifica en el runner temporal, se coteja antes de compilar, nunca se conserva en artefactos/caché y se elimina incluso tras fallo. No se recuperan sus valores desde GitHub ni se genera una clave nueva.
 
-## Resultados ejecutados
+`VerifyPlayBundle.java` verifica todas las entradas firmadas y rechaza firmas distintas/debug, entradas sin firma, duplicados y archivos privados/de QA. Bundletool oficial 1.18.2 se comprueba mediante SHA-256 fijo; valida el bundle y extrae el manifest real. `verify-play-manifest.py` exige `cl.preparatupaes.app`, código 48, `1.5.0-rc21`, target 36, sin debuggable/testOnly.
 
-Sobre el commit `f7d85fa8`, ambos workflows finalizaron correctamente: [integración Android/servidor](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/44740634193) y [regresión comercial web](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/44740634024). Incluyen 27 pruebas de motor/base/regresiones, PostgreSQL 17 con cuatro conexiones simultáneas, cuatro pruebas de navegador, compilación APK debug y once pruebas instaladas en emulador Android API 35. La regresión comercial cubre acceso, recuperación, tutor, lecciones, Express, rankings y resguardos de pagos. Esto no sustituye una actualización sobre una instalación real con progreso previo ni pruebas contra staging productivo.
+## Pruebas y entrega
 
-Se incorpora además una regresión del reintento entre dispositivos: si otro dispositivo terminó una actividad cuya respuesta de lanzamiento se perdió, se elimina la clave obsoleta y el siguiente intento puede continuar. La regresión se ejecutó y aprobó en el workflow del commit `f7d85fa8`.
+- Código educativo verificado: `94be8f2aea800af8dab703d2f0fa8ecd3c0cc8f9`, [CI 44790766013](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/44790766013). Aprobaron 28 pruebas de motor/base/regresión, 63 de acceso/sincronización/cuotas, PostgreSQL 17 con cuatro conexiones autenticadas simultáneas, cuatro pruebas del navegador original y once pruebas instaladas Android API 35.
+- Actualización instalada 47 → 48 aprobada: se completa una etapa real sobre el motor de la interfaz 47, se comprueba tras cerrar/reabrir el proceso, se instala 48 con `adb install -r` sin desinstalar ni borrar datos y se verifica conservación exacta y recreación. Tres fases instrumentadas aprobadas. Emulador con firma debug, sin alterar la clave de publicación.
+- Regresión web completa aprobada: 52 pruebas de navegador (18 públicas, 12 educativas/sincronización, 15 registro/recuperación y 7 rankings/duelos/accesos), además de 25 comprobaciones de cuotas y 54 salvaguardas web.
+- Supabase alojado: tres etapas y bloqueo de la cuarta, recuperación, reintentos, persistencia, prioridad de beneficio especial/Premium sin consumo gratuito y revocación. Transacción revertida, sin residuos ni activación pública.
+- AAB final: [ejecución 44791947034](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/44791947034), tres trabajos aprobados. Origen `c1b6e74fea0638a423c91e6b2586c5e0a4c60d1d`; respecto del código verificado solo difiere el workflow. El guard comprueba esa equivalencia y los resultados previos antes de firmar. No se omitieron pruebas de código modificado.
+- `Cachaste-1.5.0-rc21-48.aab`: 12.079.819 bytes, código **48**, versión **1.5.0-rc21**, target SDK **36**, release sin debug/testOnly. Las 179 entradas de contenido están firmadas con el certificado oficial. Lint release, bundletool, manifest y verificación de firmas aprobaron. El archivo descargado se volvió a comprobar localmente.
+- SHA-256 del AAB: `ca9a18f28a8ab573dc2b1799ca7ebd99e274ba4d299cae75ce7b2e255f527a27`.
+- [Descargar artefacto GitHub Actions](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/44791947034/artifacts/14656093989): ZIP con AAB, certificado público, manifest, verificaciones y huellas. Caduca el 20 de diciembre de 2026. No contiene claves privadas.
 
-## Migraciones: aplicación futura y reversión
+La ejecución autorizada del AAB conserva únicamente el archivo firmado, certificado público, manifest, verificación de cada entrada, commit de origen y SHA-256 como artefacto Actions durante 30 días. No tiene integración para subir a Play Console.
 
-**No aplicadas en producción.** Tras revisión y autorización, en un clon de staging de la base real:
+## Políticas y activación pendiente
 
-1. Comparar versiones de migración instaladas. No volver a aplicar los archivos históricos de octubre ni reemplazar los resolvedores productivos de testers.
-2. Aplicar solo las migraciones de Básica faltantes, ordenadas: prefijos `20261116`, `20261117`, `20261119080000` y la nueva `20261120115046`. Mantener todas las banderas apagadas.
-3. Generar `node scripts/seed-original-learning.mjs` y ejecutar `web/supabase/original-catalog.seed.sql` en la misma base de staging. Es un catálogo derivado, regenerable y privado; no un banco nuevo.
-4. Repetir pruebas con Auth de staging, suscripciones simuladas y beneficios de prueba, y comprobar las definiciones de las funciones y RLS. Validar actualización Android conservando progreso.
-5. Solo con aprobación adicional de activación, habilitar en la base `original_learning_enabled` y `duel_admission_enabled`; mantener apagados los adaptadores antiguos de emisión paralela (`learning_attempts_enabled` y sus endpoints de Worker).
-6. La activación web exige conjuntamente `WEB_BASIC_ACCESS_ENABLED=true`, `WEB_BASIC_EDUCATIONAL_GUARDS_READY=true`, `WEB_BASIC_ORIGINAL_ENGINE_READY=true` y la bandera de base. No habilitar comercialización ni cambiar banderas de Mercado Pago.
+Fuentes oficiales consultadas el 20 de noviembre:
 
-Reversión no destructiva preparada: `web/supabase/rollback-original-access.sql`; deshabilita las dos banderas nuevas y conserva actividades, progreso, usuarios y pagos. Restaurar también la versión web aprobada y sus banderas anteriores. No eliminar tablas ni modificar las concesiones o suscripciones para desactivar Básica.
+- [FAQ de pagos de Google Play](https://support.google.com/googleplay/android-developer/answer/10281818?hl=en): cualquier categoría puede ofrecer consumo de acceso adquirido fuera de la app; permite información de compra como texto sin enlaces. No se presupuso una exclusión por ser educación interactiva.
+- [Política de pagos](https://support.google.com/googleplay/android-developer/answer/9858738?hl=en).
+- [Facturación alternativa](https://support.google.com/googleplay/android-developer/answer/13821247?hl=en): Chile no aparece entre los mercados consultados.
 
-## Preparación del AAB
+Android no incluye checkout, enlace de contratación, WebView de pago ni puente Billing. La web conserva los precios $2.490/$7.990/$64.990 y el flujo de prueba aprobado. Esta comprobación documental no equivale a aprobación de Google Play.
 
-El usuario autorizó generar y conservar el AAB definitivo en GitHub Actions una vez comprobadas todas las integraciones. No autorizó subir a Play Console, solicitar acceso a producción ni publicar. No se ha generado AAB: siguen vigentes los bloqueos críticos detallados abajo. Las compilaciones ejecutadas hasta ahora son APK debug.
+Google nativo está preparado con PKCE y callback `cl.preparatupaes.app://auth/callback`, apagado por defecto. Correo/contraseña y derechos usan la misma cuenta Supabase de la web. No anunciar Google como habilitado/probado: requiere autorizar su callback y probar el retorno instalado si se decide activarlo.
 
-Tras resolver los bloqueos y cerrar QA, la generación del AAB ya está autorizada:
+El mayor código observado en Play Console es 47; el proyecto y la comprobación del bundle exigen 48. No se accede a Console para subir, solicitar producción o publicar. El titular conserva esas acciones.
 
-1. Consulta de solo lectura en Play Console completada el 20 de noviembre: la vista «Todos los paquetes de aplicación» enumera siete paquetes, con máximo `47` / `1.5.0-rc20`, activo en prueba cerrada. El proyecto conserva `48` / `1.5.0-rc21`, superior al máximo cargado observado. No se cambió la versión ni se cargó un paquete. Volver a contrastar únicamente si otra sesión carga una versión antes de generar el definitivo.
-2. Cotejar el certificado de carga registrado con la clave privada existente. La configuración requiere las cuatro variables `CACHASTE_RELEASE_*`; no imprimirlas ni incluirlas en Git/artefactos.
-3. Ejecutar `npm ci`, `node scripts/build.mjs`, `node scripts/build-android-access.mjs`; copiar **todo** `dist/` a `android/app/src/main/assets/`. El guard de Gradle impide empaquetar el motor antiguo sin la integración de cuotas.
-4. Compilar la prueba debug y ejecutar `gradle :app:connectedDebugAndroidTest -PcachasteCommercialAccessQa -Pandroid.testInstrumentationRunnerArguments.class=cl.preparatupaes.app.CommercialAccessTest,cl.preparatupaes.app.SubscriptionLeaseTest` en Android de prueba.
-5. Con la autorización del AAB ya recibida: `gradle :app:bundleRelease` dentro de `android`, con las variables privadas de firma. Verificar paquete, código de versión y certificado antes de entregarlo.
-6. La subida y publicación en Play Console requieren autorización separada. No iniciar ninguna pista de lanzamiento automáticamente.
-
-## Estado observado en Play Console
-
-Consulta autorizada de solo lectura tras «Sigue». El panel marca completados los requisitos de prueba cerrada (12 participantes y 14 días), pero aún ofrece «Solicitar acceso a producción»; no se pulsó. Producción continúa inactiva. La página de firma se consultó sin cambiar claves ni parámetros. La advertencia de Fragment 1.1.0 corresponde al paquete publicado 47; no se atribuye automáticamente a la compilación nueva ni se cambia una dependencia por ese aviso histórico.
-
-## Bloqueos y autorización pendiente
-
-- Completar la comprobación instalada de actualización/conservación de datos sobre una instalación previa con progreso. La instalación limpia en emulador sí pasó.
-- Staging basado en el esquema productivo real y activación de migraciones/banderas: requieren aprobación; no se crearon servicios pagados ni ramas Supabase con coste.
-- Google nativo está preparado pero su callback y prueba real requieren configuración autorizada; no anunciarlo como probado.
-- `versionCode` comprobado: máximo cargado 47; proyecto 48. El usuario entregó el SHA-256 oficial y se recuperó el respaldo privado de firma existente, pero su única entrada no coincide. Se requiere la clave original correspondiente al certificado oficial; no cambiar ni generar claves.
-- La generación del AAB y su conservación en Actions ya están autorizadas, condicionadas al cierre técnico. La subida, solicitud de acceso a producción y publicación las realizará personalmente el usuario.
-
-No declarar listo para publicar mientras exista alguno de los bloqueos anteriores.
-
-
-## Actualización de misión: autorización del AAB y bloqueos comprobados
-
-- SHA-256 oficial de subida proporcionado por el propietario: `A5:66:92:6F:01:E7:9E:5F:75:42:2B:5C:03:C9:1B:43:37:01:8E:4F:79:87:B3:28:88:C6:50:CA:7F:27:15:75`.
-- Se recuperó el respaldo privado existente y se abrió mediante keytool sin imprimir credenciales. Contiene un solo certificado: `77:97:13:CA:68:02:3F:88:1D:4D:8D:80:7F:CD:DA:32:18:2B:CD:A3:AB:A3:C8:02:A9:5C:B0:34:48:38:C5:62`. Su PEM coincide con su keystore, pero ambos difieren del certificado oficial. El respaldo y sus contraseñas permanecen fuera del repositorio y no deben incluirse en artefactos.
-- `scripts/sign-android-release.py` comprueba ahora el certificado del keystore contra la huella oficial **antes de firmar o crear la salida**. Incluye `--check-key-only`; no permite sustituir la huella mediante un argumento. La ejecución real con el respaldo recuperado termina con `UPLOAD_CERTIFICATE_MISMATCH`, como debe ocurrir. No se firmó ni generó AAB.
-- Consulta de solo lectura sobre el proyecto `jmobinmdwrmdqrxtcruj`: no están instaladas `public.cachaste_learning_access()`, `public.cachaste_original_learning(text,jsonb)` ni la tabla `cachaste_web.original_learning_sessions`. El paquete nuevo no está listo para operar contra ese servidor. No se modificó la base.
-- La configuración de secretos de Actions no pudo inspeccionarse desde el navegador: GitHub muestra la sesión sin iniciar. No se presupone que la clave correcta exista allí ni se extraen valores de secretos.
-
-Intervención exacta necesaria: proporcionar el keystore original cuyo certificado tenga la huella `A5:66:...:15:75`, junto con su alias y credenciales por un medio privado (o indicar el respaldo privado correcto ya guardado); y autorizar específicamente la aplicación/activación de las migraciones educativas preparadas, sin modificar pagos, suscripciones o webhooks. Primero debe completarse su validación aislada/staging y la actualización instalada con progreso. No solicitar restablecimiento de clave para resolver este incidente.
+**Antes de distribuir públicamente debe autorizarse la activación de Básica.** Mientras las banderas sigan apagadas, un usuario sin Premium no obtendrá actividades gratuitas, aunque las funciones estén instaladas y probadas. Ese estado es intencional por la instrucción del titular; no debe confundirse con un lanzamiento ya habilitado.

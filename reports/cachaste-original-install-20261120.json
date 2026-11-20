@@ -1,0 +1,102 @@
+{
+  "project": "jmobinmdwrmdqrxtcruj",
+  "installedMigrationVersion": "20261120174006",
+  "installedMigrationName": "cachaste_basic_original_education_install",
+  "sourceMigrations": [
+    {
+      "path": "web/supabase/migrations/20261116193000_cachaste_basic_quota.sql",
+      "sha256": "8de944e13c727b679a5718165196059f8ad2d250e61cd7c674f8911e2012e88a"
+    },
+    {
+      "path": "web/supabase/migrations/20261116211000_cachaste_basic_server_consumption.sql",
+      "sha256": "d5a871e48ac2293acce8a67492980eb100a8348ca4ccd7973ca5f151cd0713ee"
+    },
+    {
+      "path": "web/supabase/migrations/20261116214000_cachaste_basic_verified_duels.sql",
+      "sha256": "ba401a039125d2201122c29c3a9f072711b52c471c0cb3a52a4ca712f35bce9f"
+    },
+    {
+      "path": "web/supabase/migrations/20261116220000_cachaste_basic_duel_activation_reservations.sql",
+      "sha256": "efbc6eb7b30e9bdf13c6ec4b24335aadeb6407a7be321732fb57525b02734235"
+    },
+    {
+      "path": "web/supabase/migrations/20261116223000_cachaste_basic_duel_admission.sql",
+      "sha256": "7b3ddf251dcf1488c8244312ba2f3e647870d34f3de5ade4e04e92f0b9a825bd"
+    },
+    {
+      "path": "web/supabase/migrations/20261116230000_cachaste_basic_readonly_progress.sql",
+      "sha256": "519a24228ef4dbaade29981616371cb1d726d3cc296ba7e92f66b7596674d564"
+    },
+    {
+      "path": "web/supabase/migrations/20261116234000_cachaste_basic_learning_attempts.sql",
+      "sha256": "420d149bd8481fac4e30d9167f7c580a1417f7a74ee4054db7f7e6ff2db3dc6b"
+    },
+    {
+      "path": "web/supabase/migrations/20261116235000_cachaste_basic_issued_questions.sql",
+      "sha256": "b214681652ffb0ff8e04b55efea5b80cc51ac294fd0344ad58dce30810f8d58a"
+    },
+    {
+      "path": "web/supabase/migrations/20261117000000_cachaste_basic_completion_issuance_guard.sql",
+      "sha256": "66067c37cdf4e2aa15d106898e93e193a2b50ecbdc7bcd4ad1f8fa4745e5d011"
+    },
+    {
+      "path": "web/supabase/migrations/20261117000500_cachaste_basic_verified_answer_completion.sql",
+      "sha256": "c69f706f478e7a6a0c16dc6d207bad8e7dd6966f391fc9b410089f377f69c89c"
+    },
+    {
+      "path": "web/supabase/migrations/20261117001000_cachaste_basic_issuance_rpc.sql",
+      "sha256": "ac77998b2eaec0a8b953084ecf009fa654291959b83a272bd03fb859adcd82d7"
+    },
+    {
+      "path": "web/supabase/migrations/20261117002000_cachaste_basic_verified_progress_snapshot.sql",
+      "sha256": "f5fc791665e1ec9e9a96d6cd11917973a4ebdc42821fd65261443c42920737eb"
+    },
+    {
+      "path": "web/supabase/migrations/20261119080000_cachaste_basic_resumable_issuance.sql",
+      "sha256": "034c7c90ab7f2fd3e799de3872c00c42fcee80a8311eba0180b054118c0ce0b4"
+    },
+    {
+      "path": "web/supabase/migrations/20261120115046_cachaste_original_learning_access.sql",
+      "sha256": "6cd4a37eff639dfed64cd3e2d0c6c9502a91d7650ba2e16cbd7a4d91dc8e33df"
+    }
+  ],
+  "catalogRows": 802,
+  "catalogEligibleRows": 755,
+  "publicBasicActivated": false,
+  "featureFlagsAllFalse": true,
+  "protectedSubscriptionAndTesterHashesUnchanged": true,
+  "hostedRollbackQa": {
+    "threeStages": true,
+    "fourthBlocked": true,
+    "serverRecovery": true,
+    "answerRetry": true,
+    "completionRetry": true,
+    "progressSaved": true,
+    "rolledBack": true,
+    "specialBenefitPriority": true,
+    "premiumUnlimited": true,
+    "revocationRefresh": true
+  },
+  "privateTablesRlsAndNoDirectClientRead": true,
+  "backupSavedPrivately": true,
+  "recoveryScript": "web/supabase/rollback-original-install.sql",
+  "officialUploadSha256": "a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575",
+  "accepted47AabSignatureVerified": true,
+  "accepted47AabSha256": "2d8343aaec8320e85a7a8b13860b1586861ab085c0e2f60631caedb594842894",
+  "accepted47PayloadEntriesSigned": 265,
+  "signingWorkflowRecoveredFrom": "685e9ecc3d55d353c8c9fdf3e29f9549eaa5fac9",
+  "signingSecretNames": [
+    "CACHASTE_RELEASE_KEYSTORE_BASE64",
+    "CACHASTE_RELEASE_STORE_PASSWORD",
+    "CACHASTE_RELEASE_KEY_ALIAS",
+    "CACHASTE_RELEASE_KEY_PASSWORD"
+  ],
+  "permissions": {
+    "anonCannotReadAccess": true,
+    "anonCannotStartActivity": true,
+    "authenticatedCanReadOwnAccess": true,
+    "authenticatedCannotAttestCompletion": true,
+    "clientCannotReadPrivateCatalog": true
+  },
+  "playVersionRecheckedBeforeRelease": 47
+}

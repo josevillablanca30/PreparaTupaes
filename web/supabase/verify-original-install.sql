@@ -37,7 +37,16 @@ begin
  if not blocked then raise exception 'FOURTH_STAGE_NOT_BLOCKED';end if;
  if (select count(*) from cachaste_web.basic_usage where user_id=u)<>3 then raise exception 'DOUBLE_CONSUMPTION';end if;
  if (select jsonb_array_length(value->'completed') from cachaste_web.learning_documents where user_id=u and key='cachaste-daily-v1')<>3 then raise exception 'PROGRESS_NOT_SAVED';end if;
- perform set_config('cachaste.qa_report','{"threeStages":true,"fourthBlocked":true,"serverRecovery":true,"answerRetry":true,"completionRetry":true,"progressSaved":true,"rolledBack":true}',true);
+ -- Synthetic grant belongs only to this rolled-back QA user; existing testers are untouched.
+ insert into cachaste.closed_test_access(user_id,valid_until,reason) values(u,now()+interval '1 day','transactional migration verification');
+ r:=public.cachaste_learning_access();
+ if r->>'tier'<>'premium' or (r->>'active')::boolean is not true then raise exception 'SPECIAL_BENEFIT_NOT_RECOGNIZED';end if;
+ r:=public.cachaste_original_learning('start',jsonb_build_object('mode','lesson','subject','M1','keys',keys,'concept',concept_name,'requestKey',gen_random_uuid()));
+ if r->>'tier'<>'premium' or (r->>'unlimited')::boolean is not true then raise exception 'PREMIUM_RESTRICTED_BY_BASIC';end if;
+ if (select count(*) from cachaste_web.basic_usage where user_id=u)<>3 then raise exception 'PREMIUM_CONSUMED_BASIC';end if;
+ update cachaste.closed_test_access set revoked_at=now() where user_id=u;
+ r:=public.cachaste_learning_access();if r->>'tier'<>'basica' then raise exception 'REVOKED_BENEFIT_NOT_REFRESHED';end if;
+ perform set_config('cachaste.qa_report','{"threeStages":true,"fourthBlocked":true,"serverRecovery":true,"answerRetry":true,"completionRetry":true,"progressSaved":true,"specialBenefitPriority":true,"premiumUnlimited":true,"revocationRefresh":true,"rolledBack":true}',true);
 end $qa$;
 select current_setting('cachaste.qa_report')::jsonb as verification;
 rollback;
