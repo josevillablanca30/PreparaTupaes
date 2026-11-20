@@ -82,15 +82,15 @@ Reversión no destructiva preparada: `web/supabase/rollback-original-access.sql`
 
 ## Preparación del AAB
 
-No se ha generado AAB. La compilación autorizada en CI es **APK debug**, con paquete comercial para las pruebas instaladas; no firma de publicación ni subida.
+El usuario autorizó generar y conservar el AAB definitivo en GitHub Actions una vez comprobadas todas las integraciones. No autorizó subir a Play Console, solicitar acceso a producción ni publicar. No se ha generado AAB: siguen vigentes los bloqueos críticos detallados abajo. Las compilaciones ejecutadas hasta ahora son APK debug.
 
-Tras cerrar QA y recibir autorización para generar el archivo definitivo:
+Tras resolver los bloqueos y cerrar QA, la generación del AAB ya está autorizada:
 
 1. Consulta de solo lectura en Play Console completada el 20 de noviembre: la vista «Todos los paquetes de aplicación» enumera siete paquetes, con máximo `47` / `1.5.0-rc20`, activo en prueba cerrada. El proyecto conserva `48` / `1.5.0-rc21`, superior al máximo cargado observado. No se cambió la versión ni se cargó un paquete. Volver a contrastar únicamente si otra sesión carga una versión antes de generar el definitivo.
 2. Cotejar el certificado de carga registrado con la clave privada existente. La configuración requiere las cuatro variables `CACHASTE_RELEASE_*`; no imprimirlas ni incluirlas en Git/artefactos.
 3. Ejecutar `npm ci`, `node scripts/build.mjs`, `node scripts/build-android-access.mjs`; copiar **todo** `dist/` a `android/app/src/main/assets/`. El guard de Gradle impide empaquetar el motor antiguo sin la integración de cuotas.
 4. Compilar la prueba debug y ejecutar `gradle :app:connectedDebugAndroidTest -PcachasteCommercialAccessQa -Pandroid.testInstrumentationRunnerArguments.class=cl.preparatupaes.app.CommercialAccessTest,cl.preparatupaes.app.SubscriptionLeaseTest` en Android de prueba.
-5. Solo con autorización específica del AAB: `gradle :app:bundleRelease` dentro de `android`, con las variables privadas de firma. Verificar paquete, código de versión y certificado antes de entregarlo.
+5. Con la autorización del AAB ya recibida: `gradle :app:bundleRelease` dentro de `android`, con las variables privadas de firma. Verificar paquete, código de versión y certificado antes de entregarlo.
 6. La subida y publicación en Play Console requieren autorización separada. No iniciar ninguna pista de lanzamiento automáticamente.
 
 ## Estado observado en Play Console
@@ -102,7 +102,18 @@ Consulta autorizada de solo lectura tras «Sigue». El panel marca completados l
 - Completar la comprobación instalada de actualización/conservación de datos sobre una instalación previa con progreso. La instalación limpia en emulador sí pasó.
 - Staging basado en el esquema productivo real y activación de migraciones/banderas: requieren aprobación; no se crearon servicios pagados ni ramas Supabase con coste.
 - Google nativo está preparado pero su callback y prueba real requieren configuración autorizada; no anunciarlo como probado.
-- `versionCode` comprobado tras la autorización del usuario: máximo cargado 47; proyecto 48. Falta cotejar el certificado de carga: la página de firma abre, pero copiar la huella no devuelve valor y la descarga del certificado no se completó en este navegador. No se solicitó restablecimiento ni cambio de clave. No hay keystore de publicación en el checkout; no afirmar que la firma esté cotejada.
-- Generación del AAB y publicación quedan expresamente pendientes de autorización posterior.
+- `versionCode` comprobado: máximo cargado 47; proyecto 48. El usuario entregó el SHA-256 oficial y se recuperó el respaldo privado de firma existente, pero su única entrada no coincide. Se requiere la clave original correspondiente al certificado oficial; no cambiar ni generar claves.
+- La generación del AAB y su conservación en Actions ya están autorizadas, condicionadas al cierre técnico. La subida, solicitud de acceso a producción y publicación las realizará personalmente el usuario.
 
 No declarar listo para publicar mientras exista alguno de los bloqueos anteriores.
+
+
+## Actualización de misión: autorización del AAB y bloqueos comprobados
+
+- SHA-256 oficial de subida proporcionado por el propietario: `A5:66:92:6F:01:E7:9E:5F:75:42:2B:5C:03:C9:1B:43:37:01:8E:4F:79:87:B3:28:88:C6:50:CA:7F:27:15:75`.
+- Se recuperó el respaldo privado existente y se abrió mediante keytool sin imprimir credenciales. Contiene un solo certificado: `77:97:13:CA:68:02:3F:88:1D:4D:8D:80:7F:CD:DA:32:18:2B:CD:A3:AB:A3:C8:02:A9:5C:B0:34:48:38:C5:62`. Su PEM coincide con su keystore, pero ambos difieren del certificado oficial. El respaldo y sus contraseñas permanecen fuera del repositorio y no deben incluirse en artefactos.
+- `scripts/sign-android-release.py` comprueba ahora el certificado del keystore contra la huella oficial **antes de firmar o crear la salida**. Incluye `--check-key-only`; no permite sustituir la huella mediante un argumento. La ejecución real con el respaldo recuperado termina con `UPLOAD_CERTIFICATE_MISMATCH`, como debe ocurrir. No se firmó ni generó AAB.
+- Consulta de solo lectura sobre el proyecto `jmobinmdwrmdqrxtcruj`: no están instaladas `public.cachaste_learning_access()`, `public.cachaste_original_learning(text,jsonb)` ni la tabla `cachaste_web.original_learning_sessions`. El paquete nuevo no está listo para operar contra ese servidor. No se modificó la base.
+- La configuración de secretos de Actions no pudo inspeccionarse desde el navegador: GitHub muestra la sesión sin iniciar. No se presupone que la clave correcta exista allí ni se extraen valores de secretos.
+
+Intervención exacta necesaria: proporcionar el keystore original cuyo certificado tenga la huella `A5:66:...:15:75`, junto con su alias y credenciales por un medio privado (o indicar el respaldo privado correcto ya guardado); y autorizar específicamente la aplicación/activación de las migraciones educativas preparadas, sin modificar pagos, suscripciones o webhooks. Primero debe completarse su validación aislada/staging y la actualización instalada con progreso. No solicitar restablecimiento de clave para resolver este incidente.
