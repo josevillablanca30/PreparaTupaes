@@ -1,5 +1,6 @@
 name: Cachaste Basic Premium Android - no publication
 on:
+  workflow_call:
   pull_request:
     paths: ['learning/**', 'tests/original-*', 'scripts/build-android-access.mjs', 'scripts/seed-original-learning.mjs', 'web/supabase/migrations/*original*', '.github/workflows/cachaste-original-access.yml']
 permissions:
@@ -10,7 +11,7 @@ concurrency:
 jobs:
   integration:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     services:
       postgres:
         image: postgres:17
@@ -61,6 +62,9 @@ jobs:
         working-directory: android
         run: gradle :app:assembleDebug -PcachasteCommercialAccessQa
 
+      - name: Prepare version 47 to 48 installed upgrade test
+        run: bash scripts/prepare-android-upgrade-qa.sh
+
       - name: Enable hardware acceleration on the disposable Linux runner
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -73,4 +77,6 @@ jobs:
           disable-linux-hw-accel: false
           arch: x86_64
           disable-animations: true
-          script: cd android && gradle :app:connectedDebugAndroidTest -PcachasteCommercialAccessQa -Pandroid.testInstrumentationRunnerArguments.class=cl.preparatupaes.app.CommercialAccessTest,cl.preparatupaes.app.SubscriptionLeaseTest
+          script: |
+            gradle -p android :app:connectedDebugAndroidTest -PcachasteCommercialAccessQa -Pandroid.testInstrumentationRunnerArguments.class=cl.preparatupaes.app.CommercialAccessTest,cl.preparatupaes.app.SubscriptionLeaseTest
+            bash scripts/run-android-upgrade-qa.sh
