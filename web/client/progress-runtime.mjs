@@ -60,7 +60,7 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
  const show=()=>{unloading=false;if(pending())flush();};
  const visibility=()=>{if(document.hidden){clearTimeout(timer);persist();}else show();};
  addEventListener('online',flush);addEventListener('pagehide',hide);addEventListener('pageshow',show);document.addEventListener('visibilitychange',visibility);
- status();if(pending())timer=setTimeout(flush,50);
+ if(bootstrap.tier==='basica')stopped=true;status();if(pending()&&!stopped)timer=setTimeout(flush,50);
  return{flush,resolve,pending,conflicts,userId:uid,pause(){stopped=true;clearTimeout(timer);persist();status();},resume(){if(erased)return;stopped=false;status();if(pending())flush();},erase(){erased=true;stopped=true;clearTimeout(timer);for(const key of Object.keys(storage))if(key.startsWith(prefix))remove(key);},restore(){Storage.prototype.getItem=original.get;Storage.prototype.setItem=original.set;Storage.prototype.removeItem=original.remove;clearTimeout(timer);removeEventListener('online',flush);removeEventListener('pagehide',hide);removeEventListener('pageshow',show);document.removeEventListener('visibilitychange',visibility);}};
 }
 if(typeof window!=='undefined'){

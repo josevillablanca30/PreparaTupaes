@@ -1,0 +1,52 @@
+name: Cachaste Basic Premium Android - no publication
+on:
+  push:
+    branches: [work/cachaste-cierre-android-20261120]
+  pull_request:
+    paths: ['learning/**', 'tests/original-*', 'scripts/build-android-access.mjs', 'scripts/seed-original-learning.mjs', 'web/supabase/migrations/*original*', '.github/workflows/cachaste-original-access.yml']
+permissions:
+  contents: read
+concurrency:
+  group: cachaste-original-access-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - name: Original engine, isolated database, quotas and existing payment regression
+        run: node --test tests/original-learning-access.test.mjs web/tests/progress-db.test.mjs web/tests/mercadopago-commercial-db.test.mjs web/tests/duels2-server.test.mjs
+      - name: Gateway and synchronization safeguards
+        run: node --test web/tests/basic-release-gates.test.mjs web/tests/basic-verified-progress.test.mjs web/tests/access-tiers-policy.test.mjs tests/web-gateway-security.test.mjs web/tests/progress-runtime.test.mjs
+      - name: Build web without commercial activation
+        run: node web/scripts/build.mjs
+      - name: Prepare consumption-only Android assets, without AAB
+        run: node scripts/build.mjs && node scripts/build-android-access.mjs
+      - name: Prepare Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Real original lessons, tutor, quotas and cross-device recovery in browser
+        run: npx playwright test --config playwright.original-access.config.mjs
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - name: Prepare Android SDK and local assets
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0"
+          mkdir -p android/app/src/main/assets
+          cp -R dist/. android/app/src/main/assets/
+          printf 'sdk.dir=%s\n' "$ANDROID_HOME" > android/local.properties
+      - name: Compile Android Java and debug APK only
+        working-directory: android
+        run: gradle :app:assembleDebug -PcachasteCommercialAccessQa

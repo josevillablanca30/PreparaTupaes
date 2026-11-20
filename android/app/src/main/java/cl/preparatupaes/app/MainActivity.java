@@ -19,25 +19,32 @@ import android.webkit.WebChromeClient;
 
 /** Offline application. Student data stays in WebView DOM storage on this device. */
 public class MainActivity extends Activity {
-    private static final String HOME = "file:///android_asset/inicio.html";
+    private static final String HOME = "https://appassets.androidplatform.net/assets/inicio.html";
+    private static final String LEGACY_HOME = "file:///android_asset/inicio.html";
     private static final String ASSETS = "https://appassets.androidplatform.net/assets/";
     private static final String COMPETITION = ASSETS + "competencia.html";
     private static final String SUBSCRIPTION = ASSETS + "suscripcion.html";
     private static final String PREFS = "cachaste-navigation";
     private WebView webView;
-    private PlayBillingController playBilling;
+    private boolean migratingLegacy;
     private SubscriptionAccessController subscriptionAccess;
     private final android.os.Handler accessClock=new android.os.Handler(android.os.Looper.getMainLooper());
     private final Runnable checkAccess=new Runnable(){public void run(){enforceEducationalAccess();if(!destroying)accessClock.postDelayed(this,30000);}};
     private boolean destroying;
 
-    private boolean mayOpen(String url){return !SubscriptionLease.requiresSubscription(getPackageName(),url)||(subscriptionAccess!=null&&subscriptionAccess.hasAccess());}
+    private boolean mayOpen(String url){
+        if(migratingLegacy && LEGACY_HOME.equals(url))return true;
+        if(!SubscriptionLease.requiresSubscription(getPackageName(),url))return true;
+        if(subscriptionAccess==null)return false;
+        String path=url.split("[?#]",2)[0];
+        return subscriptionAccess.hasPremiumAccess() || (subscriptionAccess.hasBasicAccess() && HOME.equals(path));
+    }
     private void enforceEducationalAccess(){if(webView!=null&&!mayOpen(webView.getUrl())){webView.stopLoading();webView.loadUrl(SUBSCRIPTION);}}
 
     private boolean isApplicationPage(String url) {
         if (url == null) return false;
         String path = url.split("[?#]", 2)[0];
-        return (getPackageName().equals("cl.preparatupaes.app.sciencebeta") && path.equals(ASSETS + "beta-vs.html")) || path.equals(COMPETITION) || path.equals(SUBSCRIPTION) || path.equals(HOME) || path.equals("file:///android_asset/index.html")
+        return (getPackageName().equals("cl.preparatupaes.app.sciencebeta") && path.equals(ASSETS + "beta-vs.html")) || path.equals(COMPETITION) || path.equals(SUBSCRIPTION) || path.equals(HOME) || path.equals(LEGACY_HOME) || path.matches(java.util.regex.Pattern.quote(ASSETS)+"(index|science|reading|m2|history)\\.html") || path.equals("file:///android_asset/index.html")
             || path.equals("file:///android_asset/science.html")
             || path.equals("file:///android_asset/reading.html")
             || path.equals("file:///android_asset/m2.html")
@@ -50,7 +57,7 @@ public class MainActivity extends Activity {
         getWindow().getDecorView().setSystemUiVisibility(android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
         webView = new WebView(this);
         webView.setTag("cachaste-web");
-        playBilling = new PlayBillingController(this,webView);
+        // Consumption-only distribution: no Billing bridge or checkout is instantiated.
         subscriptionAccess = new SubscriptionAccessController(this,webView);
         webView.setBackgroundColor(0xfffaf9fe);
         WebView.setWebContentsDebuggingEnabled((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
@@ -69,6 +76,7 @@ public class MainActivity extends Activity {
         webView.setWebViewClient(new WebViewClient() {
             @Override public void onPageStarted(WebView view,String url,android.graphics.Bitmap icon){if(!mayOpen(url)){view.stopLoading();view.loadUrl(SUBSCRIPTION);}}
             @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                if(migratingLegacy && request.getUrl().toString().endsWith("/daily-app.js"))return new WebResourceResponse("application/javascript","UTF-8",new java.io.ByteArrayInputStream(new byte[0]));
                 return loader.shouldInterceptRequest(request.getUrl());
             }
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -84,13 +92,23 @@ public class MainActivity extends Activity {
                     return true;
                 }
                 if (isApplicationPage(url)){if(!mayOpen(url)){view.loadUrl(SUBSCRIPTION);return true;}return false;}
-                if ("https".equals(request.getUrl().getScheme())) {
+                // Do not open sites which could lead from this consumption-only app to checkout.
+                String host=request.getUrl().getHost();
+                boolean legal="cachaste-privacidad.jose-villablanca-hor.chatgpt.site".equals(host)
+                    && ("/privacidad".equals(request.getUrl().getPath())||"/eliminar-cuenta".equals(request.getUrl().getPath()));
+                if (legal && "https".equals(request.getUrl().getScheme())) {
                     try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); }
                     catch (android.content.ActivityNotFoundException ignored) { }
                 }
                 return true;
             }
             @Override public void onPageFinished(WebView view, String url) {
+                if(migratingLegacy && LEGACY_HOME.equals(url)){
+                    view.evaluateJavascript("JSON.stringify(Object.fromEntries(Object.keys(localStorage).filter(k=>/^(cachaste-daily-v1|prepara-paes-|cachaste-(m1|science|reading|m2|history))/.test(k)).map(k=>[k,localStorage.getItem(k)])))",value->{
+                        try{String archive=new org.json.JSONTokener(value).nextValue().toString();getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("legacy-progress",archive).putBoolean("legacy-archived",true).apply();}catch(Exception ignored){}
+                        migratingLegacy=false;view.loadUrl(mayOpen(HOME)?HOME:SUBSCRIPTION);
+                    });return;
+                }
                 if (!destroying && view == webView && isApplicationPage(url)) getSharedPreferences(PREFS, MODE_PRIVATE).edit().putString("last-page", url).apply();
             }
             @Override public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
@@ -102,7 +120,7 @@ public class MainActivity extends Activity {
                 getSharedPreferences(PREFS, MODE_PRIVATE).edit().putString("last-page",
                     now - previous > 10000 && isApplicationPage(recovery) ? recovery : HOME).putLong("render-recovery-at", now).apply();
                 webView = null;
-                if (playBilling != null) { playBilling.close(); playBilling = null; }
+
                 if (subscriptionAccess != null) { subscriptionAccess.close(); subscriptionAccess = null; }
                 view.destroy();
                 recreate();
@@ -127,7 +145,9 @@ public class MainActivity extends Activity {
         setContentView(viewport);
         viewport.requestApplyInsets();
         String last = state != null ? state.getString("last-page") : getSharedPreferences(PREFS, MODE_PRIVATE).getString("last-page", HOME);
-        if (isApplicationPage(last)) webView.loadUrl(mayOpen(last)?last:SUBSCRIPTION);
+        if(!getSharedPreferences(PREFS,MODE_PRIVATE).getBoolean("legacy-archived",false)){
+            migratingLegacy=true;webView.loadUrl(LEGACY_HOME);
+        }else if (isApplicationPage(last)) webView.loadUrl(mayOpen(last)?last:SUBSCRIPTION);
         else webView.loadUrl(mayOpen(HOME)?HOME:SUBSCRIPTION);
     }
 
@@ -169,7 +189,7 @@ public class MainActivity extends Activity {
         destroying = true;
         accessClock.removeCallbacks(checkAccess);
         if (subscriptionAccess != null) { subscriptionAccess.close(); subscriptionAccess = null; }
-        if (playBilling != null) { playBilling.close(); playBilling = null; }
+
         if (webView != null) { webView.stopLoading(); webView.destroy(); webView = null; }
         super.onDestroy();
     }

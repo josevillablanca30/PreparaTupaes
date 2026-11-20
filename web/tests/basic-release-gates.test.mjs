@@ -7,7 +7,8 @@ const sql=name=>readFileSync(new URL('../supabase/migrations/'+name,import.meta.
 const gateway=readFileSync(new URL('../server/gateway.mjs',import.meta.url),'utf8');
 
 test('Básica permanece cerrada en gateway hasta validación integral',()=>{
-  assert.match(gateway,/basicEnabled:false/);
+  assert.match(gateway,/basicEnabled:originalReady\(env\)/);
+ assert.match(gateway,/WEB_BASIC_ORIGINAL_ENGINE_READY/);
   assert.match(gateway,/WEB_BASIC_EDUCATIONAL_GUARDS_READY/);
   assert.match(gateway,/SERVER_VERIFIED_COMPLETION_REQUIRED/);
 });

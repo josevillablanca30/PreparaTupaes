@@ -250,7 +250,7 @@ root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!b.m
  if(b.dataset.action==='retry'){location.reload();return;}
  if(b.dataset.action==='google'){await startGoogleSignIn({sdk,config});return;}
  if(b.dataset.action==='signout')await signout();
- if(b.dataset.action==='basic'){notice('Estamos habilitando el acceso Básico. Aún no está disponible en esta versión.');return;}
+ if(b.dataset.action==='basic'){if(config?.basicEnabled!==true)return;await fetch('/api/session',{method:'POST',headers:{'x-cachaste-request':'1',authorization:'Bearer '+(await sdk.auth.getSession()).data.session.access_token}}).then(r=>{if(!r.ok)throw Error('AUTH_REQUIRED');});location.assign('/app/inicio.html');return;}
  if(b.dataset.action==='refresh'){await request({action:'refresh'});await connect();notice(account?.access?.active?'Tu acceso está verificado.':'Todavía no hay un pago o prueba verificados.');}
  if(b.dataset.action==='reset'){location.assign('/recuperar');return;}
  if(b.dataset.action==='mp-qa-status'||b.dataset.action==='mp-qa-refresh'||b.dataset.qaCancel){

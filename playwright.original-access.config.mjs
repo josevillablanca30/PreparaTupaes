@@ -1,0 +1,2 @@
+import {defineConfig} from '@playwright/test';
+export default defineConfig({testDir:'./tests',testMatch:'original-access.browser.spec.mjs',workers:1,fullyParallel:false,timeout:45000,reporter:'list',use:{baseURL:'http://127.0.0.1:4187',viewport:{width:390,height:844},launchOptions:{executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE||undefined,args:['--no-sandbox','--disable-dev-shm-usage']}},webServer:{command:'node tests/original-learning-server.mjs',url:'http://127.0.0.1:4187/inicio.html',reuseExistingServer:false}});
