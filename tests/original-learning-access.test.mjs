@@ -6,6 +6,7 @@ import {database,users,sessions,grantTest} from '../web/tests/database.mjs';
 import {originalCatalogSeed} from '../scripts/seed-original-learning.mjs';
 import {dailyCatalog} from '../scripts/daily-catalog.mjs';
 import {attachOriginalEngine} from '../learning/original-engine.mjs';
+import {mergeLegacyProgress} from '../learning/legacy-progress.mjs';
 const catalog=dailyCatalog();
 const memory=()=>{const data=new Map();return {getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,String(v)),removeItem:k=>data.delete(k)};};
 function engine(storage=memory()){
@@ -140,4 +141,13 @@ test('A lost launch completed on another device cannot trap the original device 
  attachOriginalEngine({engine:E,storage,tier:'basica',rpc:async(op,p)=>{calls.push(p);if(first){first=false;throw Error('ATTEMPT_ALREADY_COMPLETED');}return {tier:'basica',activity:{id:crypto.randomUUID(),basicAttempt:true,subject:p.subject,mode:p.mode,track:p.track,keys:p.keys,index:0,results:[],stage:'intro'}};}});
  E.start('M1',2,'lesson',concept);await new Promise(r=>setTimeout(r,10));assert.equal(storage.getItem('cachaste-original-launch-v1'),null);
  E.start('M1',2,'lesson',concept);await new Promise(r=>setTimeout(r,10));assert.notEqual(calls[1].requestKey,key);assert.equal(E.state.session.basicAttempt,true);
+});
+
+test('Android legacy history survives a later canonical Basic completion without restoring an unverified activity',()=>{
+ const legacy={version:1,attempts:[{eventId:'old',correct:true}],completed:[{id:'old-stage',at:1}],days:{'2026-11-19':{xp:45,keys:['M1:1']}},session:{id:'local-unverified'},foundationDraft:{id:'old'}};
+ const canonical={version:1,attempts:[{eventId:'verified',correct:true}],completed:[{id:'server-stage',at:2}],days:{'2026-11-20':{xp:30,keys:['M1:2']}},session:null};
+ const merged=mergeLegacyProgress(canonical,legacy);
+ assert.deepEqual(new Set(merged.attempts.map(r=>r.eventId)),new Set(['old','verified']));assert.equal(merged.completed.length,2);assert.equal(merged.days['2026-11-19'].xp,45);assert.equal(merged.days['2026-11-20'].xp,30);assert.equal(merged.session,null);assert.equal(merged.foundationDraft,null);
+ assert.deepEqual(mergeLegacyProgress(merged,legacy),merged);assert.equal(legacy.session.id,'local-unverified');
+ assert.equal(mergeLegacyProgress(null,legacy).session,null);
 });

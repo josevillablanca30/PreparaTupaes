@@ -2,6 +2,7 @@ import {getWebClient} from '../web/client/auth.mjs';
 import {PROJECT_URL,PUBLISHABLE_KEY,STORAGE_KEYS} from '../web/shared/config.mjs';
 import {restoreVerifiedHistory} from './verified-history.mjs';
 import {attachOriginalEngine} from './original-engine.mjs';
+import {mergeLegacyProgress} from './legacy-progress.mjs';
 import {installProgressRuntime} from '../web/client/progress-runtime.mjs';
 const enabled=location.origin==='https://appassets.androidplatform.net'||window.CachasteWebBootstrap?.originalEngineEnabled===true;
 const android=location.origin==='https://appassets.androidplatform.net';
@@ -28,7 +29,7 @@ async function refresh(){
 }
 const ready=(async()=>{
  if(!enabled)return;
- let data;
+ let data,legacyDocuments={};
  if(android&&navigator.onLine===false){
   await refresh();let remembered;try{remembered=JSON.parse(localStorage.getItem('cachaste-auth-v1'));}catch{}
   if(remembered?.user?.id!==access.userId)throw Error('AUTH_REQUIRED');
@@ -40,6 +41,7 @@ const ready=(async()=>{
  if(android&&navigator.onLine!==false){
   const archive=await native('legacy');let legacy;try{legacy=JSON.parse(archive?.legacy||'{}');}catch{legacy={};}
   const bound=localStorage.getItem('cachaste-legacy-owner');
+  if(!bound||bound===data.user.id)legacyDocuments=legacy;
   if(!bound){
    // Preserve the device's pre-account educational data without overwriting a remote document.
    for(const key of STORAGE_KEYS){const value=legacy[key];if(typeof value==='string'&&!bootstrap.documents.some(d=>d.key===key)&&localStorage.getItem('cachaste-web:'+data.user.id+':'+key)===null){localStorage.setItem('cachaste-web:'+data.user.id+':'+key,value);}}
@@ -56,6 +58,12 @@ const ready=(async()=>{
    return new Response(JSON.stringify(result.error?{error:result.error.message}:result.data),{status:result.error?503:200});
   }});
   if(access.tier==='basica')sync.pause();
+ }
+ if(access.tier==='basica')for(const key of STORAGE_KEYS){
+  if(typeof legacyDocuments[key]!=='string')continue;
+  try{const legacy=JSON.parse(legacyDocuments[key]),canonical=JSON.parse(localStorage.getItem(key)||'null');
+   if(legacy&&typeof legacy==='object')localStorage.setItem(key,JSON.stringify(mergeLegacyProgress(canonical,legacy)));
+  }catch{}
  }
  sdk.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){sync?.pause();failed();}});
 })();

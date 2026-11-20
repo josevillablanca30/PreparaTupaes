@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [work/cachaste-cierre-android-20261120]
-    paths: ['.github/workflows/android-play-final.yml', 'scripts/VerifyPlayBundle.java', 'scripts/verify-play-manifest.py', 'scripts/prepare-android-upgrade-qa.sh', 'scripts/run-android-upgrade-qa.sh', 'android/app/src/commercialAccessQa/java/cl/preparatupaes/app/UpgradePersistenceTest.java']
+    paths: ['learning/**', 'web/scripts/verify-android.mjs', '.github/workflows/android-play-final.yml', 'scripts/VerifyPlayBundle.java', 'scripts/verify-play-manifest.py', 'scripts/prepare-android-upgrade-qa.sh', 'scripts/run-android-upgrade-qa.sh', 'android/app/src/commercialAccessQa/java/cl/preparatupaes/app/UpgradePersistenceTest.java']
 permissions:
   contents: read
 concurrency:
