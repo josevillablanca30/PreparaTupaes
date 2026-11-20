@@ -41,7 +41,7 @@ jobs:
       - name: Prepare consumption-only Android assets, without AAB
         run: node scripts/build.mjs && node scripts/build-android-access.mjs
       - name: Prepare Chromium
-        run: npx playwright install --with-deps chromium
+        run: bash scripts/install-chromium-qa.sh
       - name: Real original lessons, tutor, quotas and cross-device recovery in browser
         run: npx playwright test --config playwright.original-access.config.mjs
       - uses: actions/setup-java@v4
