@@ -32,7 +32,7 @@ export function attachOriginalEngine({engine:E,rpc,tier,activity=null,storage=gl
    const issued=await rpc('start',{...context,keys:pending.keys,requestKey:pending.requestKey});
    if(issued.tier==='premium'){currentTier='premium';original[method](...args);}else setActivity(issued.activity);
    savePending(null);notify({started:true,resumed:issued.resumed===true});
-  }catch(e){announce(message(e));}finally{busy=false;}
+  }catch(e){if(String(e?.message||e).includes('ATTEMPT_ALREADY_COMPLETED')){savePending(null);announce('Tu etapa ya estaba guardada. Puedes continuar con la siguiente.');}else announce(message(e));}finally{busy=false;}
  }
  for(const method of ['start','startDiagnosis','startExpress','startUnitExam'])E[method]=(...args)=>{
   if(currentTier==='premium'){

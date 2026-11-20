@@ -61,6 +61,12 @@ npx playwright test --config playwright.original-access.config.mjs
 
 El workflow `.github/workflows/cachaste-original-access.yml` prepara PostgreSQL 17 aislado, cuatro conexiones simultáneas y pruebas reales de reserva/finalización; luego navegador y Android. El PostgreSQL de QA solo acepta una URL local que termine en `/cachaste_qa`. No puede apuntarse accidentalmente al proyecto productivo.
 
+## Resultados ejecutados
+
+Sobre el commit `3a8fc597`, ambos workflows finalizaron correctamente: [integración Android/servidor](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/44739215488) y [regresión comercial web](https://github.com/josevillablanca30/PreparaTupaes/actions/runs/44739215464). Incluyen PostgreSQL 17 con cuatro conexiones simultáneas, cuatro pruebas de navegador, compilación APK debug y once pruebas instaladas en emulador Android API 35. La regresión comercial cubre acceso, recuperación, tutor, lecciones, Express, rankings y resguardos de pagos. Esto no sustituye una actualización sobre una instalación real con progreso previo ni pruebas contra staging productivo.
+
+Se incorpora además una regresión del reintento entre dispositivos: si otro dispositivo terminó una actividad cuya respuesta de lanzamiento se perdió, se elimina la clave obsoleta y el siguiente intento puede continuar. Su ejecución se registra en el workflow del commit que incorpora esta corrección.
+
 ## Migraciones: aplicación futura y reversión
 
 **No aplicadas en producción.** Tras revisión y autorización, en un clon de staging de la base real:
@@ -89,7 +95,7 @@ Tras cerrar QA y recibir autorización para generar el archivo definitivo:
 
 ## Bloqueos y autorización pendiente
 
-- Completar la validación de CI más reciente y la comprobación instalada de actualización/conservación de datos.
+- Completar la comprobación instalada de actualización/conservación de datos sobre una instalación previa con progreso. La instalación limpia en emulador sí pasó.
 - Staging basado en el esquema productivo real y activación de migraciones/banderas: requieren aprobación; no se crearon servicios pagados ni ramas Supabase con coste.
 - Google nativo está preparado pero su callback y prueba real requieren configuración autorizada; no anunciarlo como probado.
 - Confirmar `versionCode` y certificado de carga en Play Console. El intento de consulta fue rechazado por la revisión automática de seguridad; no se reintentó por una vía alternativa.

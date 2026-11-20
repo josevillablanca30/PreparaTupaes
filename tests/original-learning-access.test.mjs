@@ -132,3 +132,12 @@ test('All original subjects and science mentions share their approved subject qu
  assert.equal(free.mode,'free');assert.equal(free.stage,'question');assert.equal(free.keys.length,4);await complete(db,0,free);
  }finally{await db.close();}
 });
+
+test('A lost launch completed on another device cannot trap the original device in a stale request key',async()=>{
+ const E=engine(),storage=memory(),concept=catalog.items.find(q=>q.subjectKey==='M1').concept,key=crypto.randomUUID(),calls=[];
+ storage.setItem('cachaste-original-launch-v1',JSON.stringify({context:{mode:'lesson',subject:'M1',track:null,concept},requestKey:key,keys:proposal(engine()).keys}));
+ let first=true;
+ attachOriginalEngine({engine:E,storage,tier:'basica',rpc:async(op,p)=>{calls.push(p);if(first){first=false;throw Error('ATTEMPT_ALREADY_COMPLETED');}return {tier:'basica',activity:{id:crypto.randomUUID(),basicAttempt:true,subject:p.subject,mode:p.mode,track:p.track,keys:p.keys,index:0,results:[],stage:'intro'}};}});
+ E.start('M1',2,'lesson',concept);await new Promise(r=>setTimeout(r,10));assert.equal(storage.getItem('cachaste-original-launch-v1'),null);
+ E.start('M1',2,'lesson',concept);await new Promise(r=>setTimeout(r,10));assert.notEqual(calls[1].requestKey,key);assert.equal(E.state.session.basicAttempt,true);
+});
