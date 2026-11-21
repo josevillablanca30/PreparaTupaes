@@ -51,7 +51,13 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           GH_TOKEN: ${{ github.token }}
-        run: node web/scripts/publish-sitecacho.mjs --prepare-final
+        run: |
+          node --input-type=module <<'NODE'
+          import {pagesClient,reviewedPublicRuntime} from './web/scripts/pages-client.mjs';
+          const current=await pagesClient(process.env).getProject();
+          if(!reviewedPublicRuntime(current.deployment_configs?.production,true,{commercial:process.env.CACHASTE_COMMERCIAL_RELEASE==='true'}))throw Error('EXISTING_PAYMENT_MODE_MUST_MATCH');
+          NODE
+          node web/scripts/publish-sitecacho.mjs --prepare-final
       - name: Construir la revisión con los recursos privados cifrados
         if: steps.request.outputs.enabled == 'true'
         run: |
