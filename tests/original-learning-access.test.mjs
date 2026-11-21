@@ -151,3 +151,20 @@ test('Android legacy history survives a later canonical Basic completion without
  assert.deepEqual(mergeLegacyProgress(merged,legacy),merged);assert.equal(legacy.session.id,'local-unverified');
  assert.equal(mergeLegacyProgress(null,legacy).session,null);
 });
+
+test('Owner access requires the assigned identity and server role, independent of tester grants',async()=>{
+ const db=await database();try{
+  const {installCurrentEntitlementFixture}=await import('./helpers/current-entitlement-fixture.mjs');
+  await installCurrentEntitlementFixture(db);
+  const sql=readFileSync(new URL('../web/supabase/owner-learning-access-hosted.sql',import.meta.url),'utf8');
+  await db.exec(sql.replace('94006b4b-015e-46df-99ea-2a098a2438b0',users[0]));
+  await db.exec('update cachaste_web.basic_feature_flags set original_learning_enabled=true');
+  await db.query("update auth.users set raw_app_meta_data='{\"role\":\"admin\"}' where id in($1,$2)",[users[0],users[1]]);
+  const owner=await access(db,0);
+  assert.equal(owner.tier,'premium');assert.equal(owner.accessSource,'admin');
+  assert.equal((await access(db,1)).tier,'basica');
+  assert.equal((await invoke(db,0,'start',{mode:'lesson',subject:'M1'})).unlimited,true);
+  await db.query("update auth.users set raw_app_meta_data='{}' where id=$1",[users[0]]);
+  assert.equal((await access(db,0)).tier,'basica');
+ }finally{await db.close();}
+});

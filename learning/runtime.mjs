@@ -7,7 +7,17 @@ import {installProgressRuntime} from '../web/client/progress-runtime.mjs';
 const enabled=location.origin==='https://appassets.androidplatform.net'||window.CachasteWebBootstrap?.originalEngineEnabled===true;
 const android=location.origin==='https://appassets.androidplatform.net';
 const sdk=enabled?getWebClient({supabaseUrl:PROJECT_URL,publishableKey:PUBLISHABLE_KEY}):null;
-let access=null,bootstrap=null,sync=null,adapter=null;
+let access=null,bootstrap=null,sync=null,adapter=null,progressStatus=null,hasLegacyDisplay=false;
+function progressScope(){
+ if(androidOffline())return 'En este dispositivo';
+ if(hasLegacyDisplay)return 'En tu cuenta y este dispositivo';
+ if(access?.tier==='basica'&&bootstrap&&!androidOffline())return 'En tu cuenta';
+ const status=progressStatus||window.CachasteWebSyncStatus;
+ if(status==='saved')return 'En tu cuenta';
+ if(['pending','expired','conflict'].includes(status))return 'Guardado en este dispositivo';
+ return 'En este dispositivo';
+}
+const androidOffline=()=>android&&navigator.onLine===false;
 const nativeRequests=new Map();
 if(android&&window.CachasteAccess)window.CachasteAccess.onmessage=event=>{try{const reply=JSON.parse(event.data),pending=nativeRequests.get(reply.id);if(!pending)return;nativeRequests.delete(reply.id);clearTimeout(pending.timer);reply.error?pending.reject(Error(reply.error)):pending.resolve(reply);}catch{}};
 async function native(action){
@@ -52,7 +62,7 @@ const ready=(async()=>{
  if(!globalThis.CachasteWebProgress){
   // Use the same user-scoped document keys and conflict handling as the web.
   // Legacy local progress stays in its original keys as a durable backup.
-  sync=installProgressRuntime({bootstrap:{userId:data.user.id,tier:access.tier,documents:bootstrap.documents},fetcher:async(path,options)=>{
+  sync=installProgressRuntime({onStatus:status=>{progressStatus=status;window.dispatchEvent(new Event('cachaste-sync'));},bootstrap:{userId:data.user.id,tier:access.tier,documents:bootstrap.documents},fetcher:async(path,options)=>{
    const request=JSON.parse(options.body);
    const result=await sdk.rpc('cachaste_web_progress',{operation:request.operation,payload:request.payload});
    return new Response(JSON.stringify(result.error?{error:result.error.message}:result.data),{status:result.error?503:200});
@@ -62,7 +72,7 @@ const ready=(async()=>{
  if(access.tier==='basica')for(const key of STORAGE_KEYS){
   if(typeof legacyDocuments[key]!=='string')continue;
   try{const legacy=JSON.parse(legacyDocuments[key]),canonical=JSON.parse(localStorage.getItem(key)||'null');
-   if(legacy&&typeof legacy==='object')localStorage.setItem(key,JSON.stringify(mergeLegacyProgress(canonical,legacy)));
+   if(legacy&&typeof legacy==='object'){localStorage.setItem(key,JSON.stringify(mergeLegacyProgress(canonical,legacy)));hasLegacyDisplay=true;}
   }catch{}
  }
  sdk.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){sync?.pause();failed();}});
@@ -96,4 +106,4 @@ function prepare(E){
  window.addEventListener('hashchange',()=>{if(adapter.tier==='basica'&&location.hash==='#traditional')location.hash='#home';});
  if(adapter.tier==='basica'&&location.hash==='#traditional')location.hash='#home';
 }
-window.CachasteLearningAccess=Object.freeze({enabled,ready,prepare,failed});
+window.CachasteLearningAccess=Object.freeze({enabled,ready,prepare,failed,progressScope});

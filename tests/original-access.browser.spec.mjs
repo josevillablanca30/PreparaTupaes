@@ -76,3 +76,32 @@ test('Offline Android retains Premium only through a valid native lease, without
  await expect.poll(()=>page.evaluate(()=>window.CachasteDailyApp.engine.state.session?.keys.length)).toBe(15);
  expect((await db.query('select count(*) n from cachaste_web.basic_usage')).rows[0].n).toBe(0);
 });
+
+test('Packaged mobile home preserves the five dark cards without light ledges or a mascot rectangle',async({page})=>{
+ await page.goto('/inicio.html');
+ const cards=page.locator('#daily-root .reference-courses .course-tile');
+ await expect(cards).toHaveCount(5);
+ for(const width of [320,390,600]){
+  await page.setViewportSize({width,height:844});
+  for(const card of await cards.all()){
+   await expect(card).toHaveCSS('box-shadow',/inset/);
+   await expect(card).toHaveCSS('background-image',/linear-gradient/);
+   await expect(card.locator('strong')).toBeVisible();
+   expect(await card.evaluate(node=>node.scrollWidth<=node.clientWidth+2)).toBe(true);
+  }
+  await expect(page.locator('.home-mentor-control')).toHaveCSS('background-color','rgba(0, 0, 0, 0)');
+  await expect(page.locator('.home-mentor-control')).toHaveCSS('background-image','none');
+  await expect(page.locator('[data-home-progress-scope]')).toHaveText('En tu cuenta');
+ }
+});
+
+test('Android access page only displays Basic for a Basic account and reflects server-confirmed full access',async({page})=>{
+ await page.goto('/suscripcion.html');
+ await expect(page.locator('#basic-access')).toBeVisible();
+ await expect(page.locator('#premium-access')).toBeHidden();
+ await db.exec("update cachaste.settings set environment='test'");
+ await grantTest(db,0);
+ await page.reload();
+ await expect(page.locator('#basic-access')).toBeHidden();
+ await expect(page.locator('#premium-access')).toHaveText('Acceso completo');
+});

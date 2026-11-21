@@ -62,7 +62,7 @@ jobs:
         working-directory: android
         run: gradle :app:assembleDebug -PcachasteCommercialAccessQa
 
-      - name: Prepare version 47 to 48 installed upgrade test
+      - name: Prepare version 47 to 50 installed upgrade test
         run: bash scripts/prepare-android-upgrade-qa.sh
 
       - name: Enable hardware acceleration on the disposable Linux runner

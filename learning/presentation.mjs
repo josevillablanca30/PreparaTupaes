@@ -3,11 +3,12 @@ export function adaptOriginalLearning(source){
  const start="(function(){'use strict';",end='window.CachasteDailyApp={engine:E,basics:B,render};render();';
  if(!source.startsWith(start)||!source.includes(end)||! /\}\)\(\);\s*$/.test(source))throw Error('REVIEW_ORIGINAL_LEARNING_BOUNDARY');
  let body=source.slice(start.length).replace(/\}\)\(\);\s*$/,'');
+ body=body.replace('<span>En este dispositivo</span>','<span data-home-progress-scope>En este dispositivo</span>');
  body=body.replace(' const workshopCoverage=', ' window.CachasteLearningAccess.prepare(E);\n const workshopCoverage=');
  const mounted="window.CachasteDailyApp={engine:E,basics:B,render,restoreSubject(){subject=E.state.subject;profileCache=new Map();progressionCache=null;}};render();";
  body=body.replace(end,mounted+"\n window.dispatchEvent(new Event('cachaste-learning-mounted'));");
  // The disabled web path starts synchronously and does not initialize an Auth SDK.
- return "(function(){function launch(){'use strict';"+body+"}\nconst access=window.CachasteLearningAccess;if(access.enabled)access.ready.then(launch).catch(access.failed);else launch();})();\n";
+ return "(function(){function launch(){'use strict';"+body+"}\nconst access=window.CachasteLearningAccess;const updateScope=()=>{const label=document.querySelector('[data-home-progress-scope]');if(label){const text=access.progressScope();if(label.textContent!==text)label.textContent=text;}};window.addEventListener('cachaste-sync',updateScope);window.addEventListener('cachaste-learning-mounted',()=>{updateScope();const root=document.getElementById('daily-root');new MutationObserver(updateScope).observe(root,{childList:true});});if(access.enabled)access.ready.then(launch).catch(access.failed);else launch();})();\n";
 }
 export function adaptConsumptionCompetition(source,{commercialCopy=true}={}){
  source=adaptDuels2Ui(source);

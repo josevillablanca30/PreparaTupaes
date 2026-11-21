@@ -103,7 +103,7 @@ function changeEmailMode(mode){
 }
 async function work(fn){if(busy)return;const loginDraft=Array.from(root.querySelectorAll('#login-form input'),x=>[x.name,x.value]);busy=true;root.setAttribute('aria-busy','true');root.querySelectorAll('button').forEach(b=>b.disabled=true);try{notice('');await fn();}catch(e){notice(messages[e.message]||(/Invalid login credentials/i.test(e.message)?'Revisa tu correo y contraseña.':/rate.limit/i.test(e.message)?'Espera unos minutos antes de volver a intentarlo.':'No pudimos completar la operación. Reinténtalo.'));}finally{busy=false;render();if(!account)for(const[name,value]of loginDraft){const input=root.querySelector('#login-form input[name="'+name+'"]');if(input)input.value=value;}}}
 function plans({required=false,pending=false}={}){
- const complimentary=account?.complimentary?.active===true;
+ const complimentary=account?.access?.accessSource==='admin'||account?.complimentary?.active===true;
  const basicReady=config?.basicEnabled===true;
  const heading=required
   ?'<h1 id="plans-title" tabindex="-1">'+(pending?'Tu suscripción está en revisión':'Elige cómo quieres preparar tu PAES')+'</h1><p class="access-state">'+(basicReady?'Comienza con Básica sin tarjeta o elige Premium con todos sus beneficios.':'Necesitas una suscripción vigente para entrar a tu preparación. Conoce los planes disponibles.')+'</p>'
@@ -148,10 +148,11 @@ function render(){if(!config)return;
   const rows=subscriptionRows();
   const subscriptions=rows?'<section class="account-subscriptions" aria-label="Mis suscripciones">'+rows+'</section>':'';
   if(active){
-   const complimentary=account.complimentary?.active
+   const administrator=account.access?.accessSource==='admin';
+   const complimentary=administrator?'<section class="account-card"><h2>Acceso de administrador</h2><p>Tu acceso es gratuito, permanente e ilimitado.</p></section>':account.complimentary?.active
     ?'<section class="account-card"><h2>Tu año gratuito de tester</h2><p>Tu acceso es gratuito hasta '+esc(new Date(account.complimentary.validUntil).toLocaleDateString('es-CL'))+'. No tiene renovación automática ni requiere tarjeta.</p></section>':'';
    root.innerHTML='<section class="account-card"><span class="eyebrow">Tu cuenta de ¿Cachaste?</span><h1>Sigamos desde donde quedaste.</h1>'+email+
-    '<p class="access-state">Tu acceso está verificado.</p><div class="account-actions"><a class="primary-button" href="'+nextPage()+'">Continuar mi preparación <span>→</span></a>'+accountActions()+'</div></section>'+subscriptions+complimentary+plans();
+    '<p class="access-state">Tu acceso está verificado.</p><div class="account-actions"><a class="primary-button" href="'+nextPage()+'">Continuar mi preparación <span>→</span></a>'+accountActions()+'</div></section>'+subscriptions+complimentary+(administrator?'':plans());
   }else{
    const pending=account.subscriptions?.some(s=>s.renews===true);
    root.innerHTML=(config?.basicEnabled===true?(basicSummary?renderBasicQuotaSummary(basicSummary):'<section class="account-card"><h2>Tu Básica</h2><p>No pudimos consultar tus cupos. Reintenta actualizar tu acceso.</p></section>'):'')+plans({required:true,pending})+subscriptions+'<section class="account-card"><h2>Tu cuenta</h2>'+email+

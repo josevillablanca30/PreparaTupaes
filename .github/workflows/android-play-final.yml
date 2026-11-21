@@ -31,35 +31,12 @@ jobs:
             fi
           done
           test "$missing" = 0
-  verified-integration:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Reuse approved educational, web and installed upgrade checks for the same application code
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          node --input-type=module <<'JS'
-          import {execFileSync} from 'node:child_process';
-          import assert from 'node:assert/strict';
-          const verified='94be8f2aea800af8dab703d2f0fa8ecd3c0cc8f9',run=44790766013;
-          const changes=execFileSync('git',['diff','--name-only',verified,'HEAD'],{encoding:'utf8'}).trim().split('\n').filter(Boolean);
-          const metadata=new Set(['.github/workflows/android-play-final.yml','android/app/build.gradle','scripts/verify-play-manifest.py','docs/cachaste-cierre-20261120.md','reports/cachaste-original-install-20261120.json','reports/cachaste-final-aab-20261120.json','web/supabase/verify-original-install.sql']);
-          assert.ok(changes.every(file=>metadata.has(file)),'Educational source changed: execute new full QA before updating the verified source');
-          const fileAt=(ref,path)=>execFileSync('git',['show',ref+':'+path],{encoding:'utf8'});
-          assert.equal(fileAt('HEAD','android/app/build.gradle'),fileAt(verified,'android/app/build.gradle').replace(/^([ \t]*)versionCode 48$/m,'$1versionCode 49'),'Gradle changes must be limited to versionCode 49');
-          assert.equal(fileAt('HEAD','scripts/verify-play-manifest.py'),fileAt(verified,'scripts/verify-play-manifest.py').replace("'versionCode': '48'","'versionCode': '49'"),'Manifest verifier changes must be limited to versionCode 49');
-          const response=await fetch(`https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${run}/jobs?per_page=100`,{headers:{Authorization:`Bearer ${process.env.GH_TOKEN}`,Accept:'application/vnd.github+json'}});
-          assert.ok(response.ok,'Cannot verify previous Actions jobs');const {jobs}=await response.json();
-          for(const name of ['signing-preflight','integration / integration','web-regression / commercial-smoke'])assert.ok(jobs.some(job=>job.name===name&&job.conclusion==='success'),'Missing approved job: '+name);
-          console.log(JSON.stringify({verifiedSource:verified,verifiedRun:run,identicalEducationalSource:true,approvedJobs:3}));
-          JS
+  integration:
+    uses: ./.github/workflows/cachaste-original-access.yml
+  web-regression:
+    uses: ./.github/workflows/web-commercial-guardrails.yml
   signed-bundle:
-    needs: [signing-preflight, verified-integration]
+    needs: [signing-preflight, integration, web-regression]
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
@@ -115,10 +92,10 @@ jobs:
           actual=$(openssl x509 -in play-delivery/upload-certificate.pem -noout -fingerprint -sha256 | cut -d= -f2 | tr -d ':' | tr 'A-F' 'a-f')
           test "$actual" = "$EXPECTED_UPLOAD_SHA256" || { echo '::error::La clave no coincide con el certificado de carga fijado y confirmado por el titular.'; exit 1; }
           gradle -p android --no-daemon :app:lintRelease :app:bundleRelease
-          cp android/app/build/outputs/bundle/release/app-release.aab play-delivery/Cachaste-1.5.0-rc21-49.aab
-          java scripts/VerifyPlayBundle.java play-delivery/Cachaste-1.5.0-rc21-49.aab "$EXPECTED_UPLOAD_SHA256" > play-delivery/verification.json
-          java -jar "$RUNNER_TEMP/bundletool.jar" validate --bundle=play-delivery/Cachaste-1.5.0-rc21-49.aab
-          java -jar "$RUNNER_TEMP/bundletool.jar" dump manifest --bundle=play-delivery/Cachaste-1.5.0-rc21-49.aab --module=base > play-delivery/AndroidManifest.xml
+          cp android/app/build/outputs/bundle/release/app-release.aab play-delivery/Cachaste-1.5.0-rc21-50.aab
+          java scripts/VerifyPlayBundle.java play-delivery/Cachaste-1.5.0-rc21-50.aab "$EXPECTED_UPLOAD_SHA256" > play-delivery/verification.json
+          java -jar "$RUNNER_TEMP/bundletool.jar" validate --bundle=play-delivery/Cachaste-1.5.0-rc21-50.aab
+          java -jar "$RUNNER_TEMP/bundletool.jar" dump manifest --bundle=play-delivery/Cachaste-1.5.0-rc21-50.aab --module=base > play-delivery/AndroidManifest.xml
           python3 scripts/verify-play-manifest.py play-delivery/AndroidManifest.xml > play-delivery/manifest-verification.json
           printf '%s\n' "$GITHUB_SHA" > play-delivery/source-commit.txt
           sha256sum play-delivery/*.aab > play-delivery/SHA256SUMS.txt
@@ -127,7 +104,7 @@ jobs:
         run: rm -f "$RUNNER_TEMP/cachaste-upload.jks"
       - uses: actions/upload-artifact@v4
         with:
-          name: Cachaste-Play-SIGNED-49-${{ github.sha }}
+          name: Cachaste-Play-SIGNED-50-${{ github.sha }}
           path: play-delivery/
           if-no-files-found: error
           retention-days: 30
