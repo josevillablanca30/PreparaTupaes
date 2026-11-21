@@ -4,7 +4,7 @@
   "productionBranch": "production-requires-owner-approval",
   "scope": "public-web-commercial",
   "enabled": true,
-  "reviewedRevision": "269f82b82bbba2a0dbeaca847a7b39fb27a4e61e",
+  "reviewedRevision": "c43c24d3ff388d960a10cc7a5bb2811af253cd91",
   "realPayments": true,
   "indexing": true,
   "emailSignup": true,
