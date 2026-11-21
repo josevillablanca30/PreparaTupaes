@@ -67,7 +67,7 @@ jobs:
           const current=await pagesClient(process.env).getProject();
           const revision=current.canonical_deployment?.deployment_trigger?.metadata?.commit_hash;
           if(revision!=='269f82b82bbba2a0dbeaca847a7b39fb27a4e61e')throw Error('PRODUCTION_REVISION_CHANGED');
-          if(!reviewedPublicRuntime(current.deployment_configs?.production,true,{commercial:true}))throw Error('EXISTING_COMMERCIAL_MODE_REQUIRED');
+          if(!reviewedPublicRuntime(current.deployment_configs?.production,true,{commercial:process.env.CACHASTE_COMMERCIAL_RELEASE==='true'}))throw Error('EXISTING_PAYMENT_MODE_MUST_MATCH');
           NODE
           node web/scripts/publish-sitecacho.mjs --register-final-key
       - name: Publicar la revisión autorizada
