@@ -14,3 +14,186 @@ test('browser lifecycle saves its own queue without firing unload requests, then
   const remote={key,value:{subject:'Lectura',attempts:[{eventId:'b',correct:false}]},version:3};runtime=installProgressRuntime({bootstrap:{userId:uid,documents:[]},storage,fetcher:async()=>Response.json({conflict:true,document:remote})});storage.setItem(key,JSON.stringify({subject:'Ciencias',attempts:[{eventId:'a',correct:true}]}));await runtime.flush();assert.equal(runtime.conflicts[key].local.subject,'Ciencias');assert.equal(JSON.parse(storage.getItem(key)).subject,'Ciencias');await runtime.resolve(key,'remote');assert.equal(JSON.parse(storage.getItem(key)).subject,'Lectura');const archive=Object.keys(storage).find(k=>k.includes('conflict-archive:'));assert.ok(archive);assert.equal(JSON.parse(rawGet.call(storage,archive)).local.subject,'Ciencias');runtime.erase();assert.equal(Object.keys(storage).some(k=>k.startsWith('cachaste-web:'+uid+':')),false);assert.equal(storage.getItem('cachaste-auth-v1'),'session-secret-qa');assert.equal(storage.getItem('cachaste-web:other:'+key),'another-student');
  }finally{runtime?.restore();for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;}
 });
+
+test('an edit during an in-flight save is sent again automatically',async()=>{
+ const saved={Storage:globalThis.Storage,document:globalThis.document,addEventListener:globalThis.addEventListener,removeEventListener:globalThis.removeEventListener,navigator:Object.getOwnPropertyDescriptor(globalThis,'navigator')};
+ const storage=new LocalStorage(),events=new Map(),docEvents=new Map();
+ globalThis.Storage=LocalStorage;globalThis.addEventListener=(name,fn)=>events.set(name,fn);globalThis.removeEventListener=(name,fn)=>events.delete(name);
+ globalThis.document={hidden:false,addEventListener:(name,fn)=>docEvents.set(name,fn),removeEventListener:(name,fn)=>docEvents.delete(name)};
+ Object.defineProperty(globalThis,'navigator',{value:{onLine:true},configurable:true});
+ let release,started;const startedPromise=new Promise(resolve=>started=resolve),firstReply=new Promise(resolve=>release=resolve),writes=[];
+ const fetcher=async(_url,opts)=>{
+  const body=JSON.parse(opts.body);writes.push(body.payload.value);
+  if(writes.length===1){started();await firstReply;}
+  return Response.json({conflict:false,document:{key,value:body.payload.value,version:writes.length+1}});
+ };
+ let runtime;
+ try{
+  runtime=installProgressRuntime({bootstrap:{userId:uid,documents:[{key,value:{subject:'M1'},version:1}]},storage,fetcher});
+  storage.setItem(key,JSON.stringify({subject:'M2'}));
+  const flushing=runtime.flush();await startedPromise;
+  storage.setItem(key,JSON.stringify({subject:'Ciencias'}));
+  release();await flushing;assert.equal(runtime.pending(),1);
+  await new Promise((resolve,reject)=>{const startedAt=Date.now();const check=()=>{if(writes.length===2)return resolve();if(Date.now()-startedAt>3500)return reject(Error('Newer edit was not retried'));setTimeout(check,40);};check();});
+  assert.equal(writes[0].subject,'M2');assert.equal(writes[1].subject,'Ciencias');
+  assert.equal(runtime.pending(),0);
+ }finally{
+  release?.();runtime?.restore();
+  for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];
+  if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
+ }
+});
+
+test('a temporary server error retries pending progress without navigation',async()=>{
+ const saved={Storage:globalThis.Storage,document:globalThis.document,addEventListener:globalThis.addEventListener,removeEventListener:globalThis.removeEventListener,navigator:Object.getOwnPropertyDescriptor(globalThis,'navigator')};
+ const storage=new LocalStorage(),events=new Map(),docEvents=new Map();let calls=0;
+ globalThis.Storage=LocalStorage;globalThis.addEventListener=(name,fn)=>events.set(name,fn);globalThis.removeEventListener=(name)=>events.delete(name);
+ globalThis.document={hidden:false,addEventListener:(name,fn)=>docEvents.set(name,fn),removeEventListener:(name)=>docEvents.delete(name)};
+ Object.defineProperty(globalThis,'navigator',{value:{onLine:true},configurable:true});
+ let runtime;
+ try{
+  runtime=installProgressRuntime({bootstrap:{userId:uid,documents:[{key,value:{subject:'M1'},version:1}]},storage,fetcher:async(_url,opts)=>{
+   calls++;if(calls===1)return Response.json({error:'TEMPORARY'},{status:503});
+   const p=JSON.parse(opts.body).payload;return Response.json({conflict:false,document:{key:p.key,value:p.value,version:2}});
+  }});
+  storage.setItem(key,JSON.stringify({subject:'M2'}));await runtime.flush();
+  assert.equal(calls,1);assert.equal(runtime.pending(),1);
+  await new Promise((resolve,reject)=>{const start=Date.now();const check=()=>{if(calls>=2)return resolve();if(Date.now()-start>7000)return reject(Error('Pending progress was never retried'));setTimeout(check,50);};check();});
+  assert.equal(runtime.pending(),0);
+ }finally{
+  runtime?.restore();
+  for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];
+  if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
+ }
+});
+
+test('an expired session stops progress writes without discarding local answers',async()=>{
+ const saved={Storage:globalThis.Storage,document:globalThis.document,addEventListener:globalThis.addEventListener,removeEventListener:globalThis.removeEventListener,navigator:Object.getOwnPropertyDescriptor(globalThis,'navigator')};
+ const storage=new LocalStorage(),events=new Map(),docEvents=new Map(),statuses=[];let calls=0;
+ globalThis.Storage=LocalStorage;globalThis.addEventListener=(name,fn)=>events.set(name,fn);globalThis.removeEventListener=(name)=>events.delete(name);
+ globalThis.document={hidden:false,addEventListener:(name,fn)=>docEvents.set(name,fn),removeEventListener:(name)=>docEvents.delete(name)};
+ Object.defineProperty(globalThis,'navigator',{value:{onLine:true},configurable:true});
+ let runtime;
+ try{
+  runtime=installProgressRuntime({bootstrap:{userId:uid,documents:[{key,value:{subject:'M1'},version:1}]},storage,onStatus:s=>statuses.push(s),fetcher:async()=>{calls++;return Response.json({error:'AUTH_REQUIRED'},{status:401});}});
+  storage.setItem(key,JSON.stringify({subject:'M2',answers:[1,2,3]}));
+  await runtime.flush();assert.equal(calls,1);assert.equal(runtime.pending(),1);assert.equal(statuses.at(-1),'expired');
+  await runtime.flush();assert.equal(calls,1);
+  assert.deepEqual(JSON.parse(storage.getItem(key)).answers,[1,2,3]);
+ }finally{
+  runtime?.restore();
+  for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];
+  if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
+ }
+});
+
+test('server conflict matching submitted answer rebases a newer local answer',async()=>{
+ const saved={Storage:globalThis.Storage,document:globalThis.document,addEventListener:globalThis.addEventListener,removeEventListener:globalThis.removeEventListener,navigator:Object.getOwnPropertyDescriptor(globalThis,'navigator')};
+ const storage=new LocalStorage(),events=new Map(),docEvents=new Map();let started,release,calls=0;
+ const waiting=new Promise(resolve=>started=resolve),reply=new Promise(resolve=>release=resolve);
+ globalThis.Storage=LocalStorage;globalThis.addEventListener=(name,fn)=>events.set(name,fn);globalThis.removeEventListener=(name)=>events.delete(name);
+ globalThis.document={hidden:false,addEventListener:(name,fn)=>docEvents.set(name,fn),removeEventListener:(name)=>docEvents.delete(name)};
+ Object.defineProperty(globalThis,'navigator',{value:{onLine:true},configurable:true});
+ let runtime;
+ try{
+  runtime=installProgressRuntime({bootstrap:{userId:uid,documents:[{key,value:{subject:'M1'},version:1}]},storage,fetcher:async(_url,opts)=>{
+   calls++;const p=JSON.parse(opts.body).payload;
+   if(calls===1){started();await reply;return Response.json({conflict:true,document:{key,value:p.value,version:2}});}
+   assert.equal(p.baseVersion,2);return Response.json({conflict:false,document:{key,value:p.value,version:3}});
+  }});
+  storage.setItem(key,JSON.stringify({subject:'M2'}));
+  const first=runtime.flush();await waiting;
+  storage.setItem(key,JSON.stringify({subject:'Ciencias'}));
+  release();await first;
+  assert.equal(runtime.pending(),1);assert.equal(Object.keys(runtime.conflicts).length,0);
+  await new Promise((resolve,reject)=>{const start=Date.now();const check=()=>{if(calls===2)return resolve();if(Date.now()-start>3500)return reject(Error('Rebased answer not synchronized'));setTimeout(check,40);};check();});
+  assert.equal(runtime.pending(),0);assert.equal(JSON.parse(storage.getItem(key)).subject,'Ciencias');
+ }finally{
+  release?.();runtime?.restore();
+  for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];
+  if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
+ }
+});
+
+test('concurrent device histories remain available for explicit merge without silent overwrite',async()=>{
+ const saved={Storage:globalThis.Storage,document:globalThis.document,addEventListener:globalThis.addEventListener,removeEventListener:globalThis.removeEventListener,navigator:Object.getOwnPropertyDescriptor(globalThis,'navigator')};
+ const storage=new LocalStorage(),events=new Map(),docEvents=new Map(),writes=[];
+ globalThis.Storage=LocalStorage;globalThis.addEventListener=(name,fn)=>events.set(name,fn);globalThis.removeEventListener=(name)=>events.delete(name);
+ globalThis.document={hidden:false,addEventListener:(name,fn)=>docEvents.set(name,fn),removeEventListener:(name)=>docEvents.delete(name)};
+ Object.defineProperty(globalThis,'navigator',{value:{onLine:true},configurable:true});
+ const base={attempts:[]},remote={attempts:[{eventId:'phone-answer',correct:true}]},local={attempts:[{eventId:'web-answer',correct:false}]};
+ let runtime;
+ try{
+  runtime=installProgressRuntime({bootstrap:{userId:uid,documents:[{key,value:base,version:1}]},storage,fetcher:async(_url,opts)=>{
+   const payload=JSON.parse(opts.body).payload;writes.push(payload);
+   if(writes.length===1)return Response.json({conflict:true,document:{key,value:remote,version:2}});
+   return Response.json({conflict:false,document:{key,value:payload.value,version:3}});
+  }});
+  storage.setItem(key,JSON.stringify(local));await runtime.flush();
+  assert.equal(writes.length,1);assert.equal(runtime.pending(),1);
+  assert.deepEqual(JSON.parse(storage.getItem(key)),local);
+  assert.equal(runtime.conflicts[key].canMerge,true);
+  assert.deepEqual(runtime.conflicts[key].remote.value,remote);
+  assert.equal(await runtime.resolve(key,'merge'),true);
+  assert.equal(writes.length,2);assert.equal(writes[1].baseVersion,2);
+  assert.deepEqual(new Set(writes[1].value.attempts.map(a=>a.eventId)),new Set(['phone-answer','web-answer']));
+  assert.equal(runtime.pending(),0);
+ }finally{
+  runtime?.restore();
+  for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];
+  if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
+ }
+});
+
+test('a new answer during conflict resolution is preserved and synchronized afterward',async()=>{
+ const saved={Storage:globalThis.Storage,document:globalThis.document,addEventListener:globalThis.addEventListener,removeEventListener:globalThis.removeEventListener,navigator:Object.getOwnPropertyDescriptor(globalThis,'navigator')};
+ const storage=new LocalStorage(),events=new Map(),docEvents=new Map(),writes=[];let release,started;
+ const waiting=new Promise(resolve=>started=resolve),held=new Promise(resolve=>release=resolve);
+ globalThis.Storage=LocalStorage;globalThis.addEventListener=(name,fn)=>events.set(name,fn);globalThis.removeEventListener=(name)=>events.delete(name);
+ globalThis.document={hidden:false,addEventListener:(name,fn)=>docEvents.set(name,fn),removeEventListener:(name)=>docEvents.delete(name)};
+ Object.defineProperty(globalThis,'navigator',{value:{onLine:true},configurable:true});
+ let runtime;
+ try{
+  runtime=installProgressRuntime({bootstrap:{userId:uid,documents:[{key,value:{attempts:[]},version:1}]},storage,fetcher:async(_url,opts)=>{
+   const p=JSON.parse(opts.body).payload;writes.push(p);
+   if(writes.length===1)return Response.json({conflict:true,document:{key,value:{attempts:[{eventId:'remote'}]},version:2}});
+   if(writes.length===2){started();await held;}
+   return Response.json({conflict:false,document:{key,value:p.value,version:writes.length+1}});
+  }});
+  storage.setItem(key,JSON.stringify({attempts:[{eventId:'local'}]}));await runtime.flush();
+  const resolving=runtime.resolve(key,'merge');await waiting;
+  storage.setItem(key,JSON.stringify({attempts:[{eventId:'local'},{eventId:'newer'}]}));
+  release();assert.equal(await resolving,true);assert.equal(runtime.pending(),1);
+  assert.equal(JSON.parse(storage.getItem(key)).attempts.at(-1).eventId,'newer');
+  await new Promise((resolve,reject)=>{const start=Date.now();const check=()=>{if(writes.length>=3)return resolve();if(Date.now()-start>3500)return reject(Error('Newer answer was not retried'));setTimeout(check,40);};check();});
+  assert.equal(writes[2].baseVersion,3);assert.equal(writes[2].value.attempts.at(-1).eventId,'newer');
+  assert.equal(runtime.pending(),0);
+ }finally{
+  release?.();runtime?.restore();
+  for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];
+  if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
+ }
+});
+
+test('reopening a lesson restores unsent local answers rather than overwriting them with stale bootstrap',async()=>{
+ const saved={Storage:globalThis.Storage,document:globalThis.document,addEventListener:globalThis.addEventListener,removeEventListener:globalThis.removeEventListener,navigator:Object.getOwnPropertyDescriptor(globalThis,'navigator')};
+ const storage=new LocalStorage(),events=new Map(),docEvents=new Map(),raw=LocalStorage.prototype.getItem;
+ globalThis.Storage=LocalStorage;globalThis.addEventListener=(name,fn)=>events.set(name,fn);globalThis.removeEventListener=(name)=>events.delete(name);
+ globalThis.document={hidden:false,addEventListener:(name,fn)=>docEvents.set(name,fn),removeEventListener:(name)=>docEvents.delete(name)};
+ Object.defineProperty(globalThis,'navigator',{value:{onLine:false},configurable:true});
+ const bootstrap={userId:uid,documents:[{key,value:{subject:'M1',answers:[]},version:4}]};
+ let runtime;
+ try{
+  runtime=installProgressRuntime({bootstrap,storage,fetcher:async()=>{throw Error('offline')}});
+  storage.setItem(key,JSON.stringify({subject:'M1',answers:[{eventId:'lesson-1',correct:true}]}));
+  assert.equal(runtime.pending(),1);runtime.restore();
+  runtime=installProgressRuntime({bootstrap,storage,fetcher:async()=>{throw Error('offline')}});
+  assert.equal(runtime.pending(),1);
+  assert.deepEqual(JSON.parse(storage.getItem(key)).answers,[{eventId:'lesson-1',correct:true}]);
+  assert.equal(JSON.parse(raw.call(storage,'cachaste-web:'+uid+':sync'))[key].version,4);
+ }finally{
+  runtime?.restore();
+  for(const name of['Storage','document','addEventListener','removeEventListener'])saved[name]===undefined?delete globalThis[name]:globalThis[name]=saved[name];
+  if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
+ }
+});

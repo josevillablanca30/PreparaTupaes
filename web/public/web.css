@@ -79,7 +79,7 @@ body{background:radial-gradient(ellipse at 86% 12%,#3b0c59 0,transparent 35%),#0
 @media(prefers-reduced-motion:reduce){.subject-grid a{transition:none}}
 
 /* The original Android cat artwork has a nonrectangular cutout: no framed image tile. */
-.hero-art>img{aspect-ratio:408/278;object-fit:contain;border:0;border-radius:0;box-shadow:none;background:transparent;filter:drop-shadow(0 0 24px #a329e15c)}
+.hero-art>img{aspect-ratio:408/278;object-fit:contain;border:0;border-radius:0;box-shadow:none;background:transparent;filter:drop-shadow(0 0 16px #a329e133)}
 .hero-art{background:transparent}
 @media(max-width:760px){.hero-art>img{max-height:310px;object-position:center}}
 
@@ -95,12 +95,29 @@ body{background:radial-gradient(ellipse at 86% 12%,#3b0c59 0,transparent 35%),#0
 #account-status:not(:empty){background:#2c153c;color:var(--deep);border-color:var(--line)}
 .skip-link{background:#21102e;color:var(--deep)}
 
-/* A cutout uses the original 408 × 278 composition and never stretches. */
-.hero-art>img{aspect-ratio:408/278;object-fit:contain}
-
 /* Readable actions, secondary labels and disabled forms on the approved palette. */
 .primary-button,button:not(.secondary):not(.text-button){background:linear-gradient(135deg,#9424cc,#650cae);color:#fff}
 .eyebrow,.hero-details,.subject-grid a>span,.price-tag,.legal-note,.site-footer small{font-size:12px}
 .account-card button:disabled{opacity:1;background:#352341;color:#e4d7ef;border:1px dashed #85649b;box-shadow:none;cursor:default}
 .account-card input::placeholder{color:#c8b7d5;opacity:1}
 :where(a,button,input,select,summary):focus-visible{outline:3px solid #ffd15b;outline-offset:4px}
+
+/* Commercial web mobile safety: preserve approved art direction without clipping text. */
+.hero-copy,.hero-copy h1,.landing-hero,.site-header,.price-card,.feature-parity-grid article{min-width:0}
+.hero-copy h1{overflow-wrap:break-word;text-wrap:balance}
+@media(max-width:760px){
+ .hero-copy h1{font-size:clamp(32px,8.8vw,54px);line-height:1.14;letter-spacing:-.045em;overflow-wrap:anywhere}
+ .landing-hero{grid-template-columns:minmax(0,1fr)}
+ .hero-copy>p,.feature-parity-grid p{overflow-wrap:anywhere}
+}
+@media(max-width:350px){.hero-copy h1{font-size:clamp(30px,8.5vw,36px);letter-spacing:-.035em}}
+
+/* Account and pricing keyboard/mobile usability, without changing approved artwork. */
+@media(max-width:480px){
+ .account-main,.account-card,.account-subscriptions,.price-grid,.price-card{min-width:0;max-width:100%}
+ .account-card h1,.price-card h3,.price-card p{overflow-wrap:anywhere}
+ .account-card input,.account-card select,.account-card button{max-width:100%}
+ .account-card input,.account-card select{font-size:16px}
+ .account-footer{flex-wrap:wrap;gap:12px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

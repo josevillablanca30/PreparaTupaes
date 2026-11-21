@@ -22,6 +22,17 @@ try{
  const trial=await admin.rpc('cachaste_web_billing_admin',{operation:'checkout',payload:{id:randomUUID(),userId:users[0],plan:'mensual',providerPlanId:'qa-never-real',trial:true}});assert.equal(trial.error?.message,'BILLING_NOT_READY');record('A service-side checkout is also closed until merchant and tax readiness are enabled');
  if(process.env.CACHASTE_REALTIME_QA==='1'){
   assert.equal((await db.query("select to_regprocedure('public.cachaste_duels2(text,jsonb)') is not null as ready")).rows[0].ready,true);
+  const timerSchema=await db.query(`select
+    exists(select 1 from information_schema.columns where table_schema='cachaste_duels2' and table_name='players' and column_name='question_started_at' and data_type='timestamp with time zone') as clock_column,
+    to_regprocedure('cachaste_duels2.sweep()') is not null as sweep_function,
+    to_regprocedure('cachaste_duels2.init_question_clock()') is not null as init_function,
+    exists(select 1 from pg_trigger where tgname='d2_init_question_clock' and not tgisinternal) as init_trigger`);
+  assert.deepEqual(timerSchema.rows[0],{clock_column:true,sweep_function:true,init_function:true,init_trigger:true});
+  const sweepSql=(await db.query("select pg_get_functiondef('cachaste_duels2.sweep()'::regprocedure) as sql")).rows[0].sql;
+  assert.match(sweepSql,/question_started_at/);
+  assert.match(sweepSql,/90/);
+  assert.match(sweepSql,/120/);
+  record('Disposable PostgreSQL installed the per-question clock, trigger and offline timeout sweep');
   const outsiderAccount={email:'cachaste-realtime-qa-'+randomUUID()+'@example.invalid',password:randomUUID()+randomUUID()};
   const created=await admin.auth.admin.createUser({...outsiderAccount,email_confirm:true});
   assert.ifError(created.error);

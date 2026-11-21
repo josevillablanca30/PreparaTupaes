@@ -3,10 +3,15 @@ export const PAGES_PROJECT = 'cachaste-sitecacho';
 // Public resource identifier confirmed in the owner's Cloudflare screenshot; not an API credential.
 export const PAGES_ACCOUNT_ID = 'cfe4b77c0c39bb056306d16133a93642';
 export const PREVIEW_BRANCH = 'work/cachaste-web-unificada-20261106';
+export const PUBLIC_SOURCE_BRANCH = 'work/cachaste-web-comercial-cierre-20261112';
+export const FINAL_RELEASE_BRANCH = 'work/cachaste-lanzamiento-final-20261113';
 export const RESERVED_PRODUCTION_BRANCH = 'production-requires-owner-approval';
 // The owner requested the public website on 2026-11-10; payment activation remains separate.
 export const PUBLIC_RELEASE_MARKER = 'sitecacho-payments-closed-v1';
+export const COMMERCIAL_RELEASE_MARKER = 'sitecacho-commercial-v1';
 export const REPOSITORY = 'josevillablanca30/PreparaTupaes';
+export const RELEASE_CONTENT_KEY = /^BANK_CONTENT_KEY_RELEASE_[1-9]\d{0,19}_[1-9]\d{0,5}$/;
+const allowedBranches = [PREVIEW_BRANCH, PUBLIC_SOURCE_BRANCH, FINAL_RELEASE_BRANCH];
 
 export function normalizeApiToken(value) {
   if (typeof value !== 'string' || !value.trim()) throw Error('CLOUDFLARE_API_TOKEN_REQUIRED_IN_GITHUB_SECRETS');
@@ -45,7 +50,7 @@ function apiDiagnostic(method, suffix, status, data) {
 }
 
 export function credentials(env) {
-  if (env.GITHUB_REF_NAME !== PREVIEW_BRANCH) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
+  if (!allowedBranches.includes(env.GITHUB_REF_NAME)) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
   if (env.CLOUDFLARE_PAGES_PROJECT && env.CLOUDFLARE_PAGES_PROJECT !== PAGES_PROJECT) throw Error('UNRELATED_PROJECT_DENIED');
   if (env.CLOUDFLARE_ACCOUNT_ID !== PAGES_ACCOUNT_ID) throw Error('UNRELATED_ACCOUNT_DENIED');
   return {account: env.CLOUDFLARE_ACCOUNT_ID, token: normalizeApiToken(env.CLOUDFLARE_API_TOKEN)};
@@ -53,22 +58,28 @@ export function credentials(env) {
 
 export function verifyTarget(project, branch) {
   if (project?.name !== PAGES_PROJECT) throw Error('UNRELATED_PROJECT_DENIED');
-  if (branch !== PREVIEW_BRANCH || project.production_branch !== RESERVED_PRODUCTION_BRANCH) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
+  if (!allowedBranches.includes(branch) || project.production_branch !== RESERVED_PRODUCTION_BRANCH) throw Error('PRODUCTION_DEPLOYMENT_DENIED');
   if (project.source) throw Error('DIRECT_UPLOAD_PROJECT_REQUIRED');
   if (project.canonical_deployment) {
     const release=project.canonical_deployment;
     if (!reviewedPublicRuntime(project.deployment_configs?.production) || release.project_name!==PAGES_PROJECT || release.environment!=='production' ||
-      release.deployment_trigger?.metadata?.branch!==RESERVED_PRODUCTION_BRANCH || !/^[a-f\d]{40}$/.test(release.deployment_trigger?.metadata?.commit_hash||'')) throw Error('EXISTING_PRODUCTION_DEPLOYMENT_DENIED');
+      ![RESERVED_PRODUCTION_BRANCH, PREVIEW_BRANCH, PUBLIC_SOURCE_BRANCH].includes(release.deployment_trigger?.metadata?.branch) || !/^[a-f\d]{40}$/.test(release.deployment_trigger?.metadata?.commit_hash||'')) throw Error('EXISTING_PRODUCTION_DEPLOYMENT_DENIED');
   }
   const domains = new Set([PAGES_PROJECT + '.pages.dev', 'sitecacho.cl', 'www.sitecacho.cl']);
   if ((project.domains || []).some(x => !domains.has(x))) throw Error('UNRELATED_DOMAIN_DENIED');
 }
 
-export function reviewedPublicRuntime(config, expectedSignupEnabled) {
+export function reviewedPublicRuntime(config, expectedSignupEnabled, {commercial} = {}) {
   const v=config?.env_vars||{};
   const signup=v.WEB_SIGNUP_ENABLED;
-  return config?.fail_open===false && v.WEB_PUBLIC_RELEASE?.type==='plain_text' && v.WEB_PUBLIC_RELEASE.value===PUBLIC_RELEASE_MARKER &&
-    ['WEB_PAYMENTS_ENABLED','WEB_AUTH_RETURN_READY','WEB_GOOGLE_AUTH_ENABLED'].every(k=>v[k]?.type==='plain_text'&&v[k].value==='false') &&
+  const marker=v.WEB_PUBLIC_RELEASE;
+  const live=marker?.value===COMMERCIAL_RELEASE_MARKER;
+  return config?.fail_open===false && marker?.type==='plain_text' &&
+    (live||marker.value===PUBLIC_RELEASE_MARKER) && (commercial===undefined||live===commercial) &&
+    v.WEB_PAYMENTS_ENABLED?.type==='plain_text' && v.WEB_PAYMENTS_ENABLED.value===String(live) &&
+    (live?v.WEB_INDEXING_ENABLED?.type==='plain_text'&&v.WEB_INDEXING_ENABLED.value==='true':
+      v.WEB_INDEXING_ENABLED===undefined||v.WEB_INDEXING_ENABLED?.type==='plain_text'&&v.WEB_INDEXING_ENABLED.value==='false') &&
+    ['WEB_AUTH_RETURN_READY','WEB_GOOGLE_AUTH_ENABLED'].every(k=>v[k]?.type==='plain_text'&&v[k].value==='false') &&
     signup?.type==='plain_text' && ['true','false'].includes(signup.value) &&
     (expectedSignupEnabled===undefined||signup.value===String(expectedSignupEnabled)) &&
     ['BANK_CONTENT_KEY','OFFLINE_SIGNING_JWK'].every(k=>v[k]?.type==='secret_text');
@@ -113,6 +124,16 @@ export function pagesClient(env, {fetcher = fetch} = {}) {
     configureProject: deployment_configs => {
       if(Object.values(deployment_configs).some(c=>c?.fail_open===true))throw Error('PAGES_FAIL_CLOSED_REQUIRED');
       return request('PATCH','/'+PAGES_PROJECT,{deployment_configs:{preview:{fail_open:false,...deployment_configs.preview},production:{fail_open:false,...deployment_configs.production}}});
+    },
+    addReleaseContentKey: (name, value, configHash, {commercial=false} = {}) => {
+      if (!RELEASE_CONTENT_KEY.test(name) || !/^[A-Za-z0-9+/]{43}=$/.test(value)) throw Error('INVALID_RELEASE_CONTENT_KEY');
+      const flags = commercial ? Object.fromEntries(Object.entries({
+        WEB_PUBLIC_RELEASE:COMMERCIAL_RELEASE_MARKER, WEB_PAYMENTS_ENABLED:'true', WEB_INDEXING_ENABLED:'true',
+      }).map(([key,value])=>[key,{type:'plain_text',value}])) : {};
+      return request('PATCH', '/' + PAGES_PROJECT, {deployment_configs: {production: {
+        env_vars: {[name]: {type: 'secret_text', value}, ...flags},
+        ...(configHash ? {wrangler_config_hash: configHash} : {}),
+      }}});
     },
     listDeployments: () => request('GET', '/' + PAGES_PROJECT + '/deployments?env=preview&per_page=25'),
     listPublicDeployments: () => request('GET', '/' + PAGES_PROJECT + '/deployments?env=production&per_page=25'),
