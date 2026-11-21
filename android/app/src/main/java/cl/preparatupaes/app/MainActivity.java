@@ -19,25 +19,34 @@ import android.webkit.WebChromeClient;
 
 /** Offline application. Student data stays in WebView DOM storage on this device. */
 public class MainActivity extends Activity {
-    private static final String HOME = "file:///android_asset/inicio.html";
+    private static final String HOME = "https://appassets.androidplatform.net/assets/inicio.html";
+    private static final String LEGACY_HOME = "file:///android_asset/inicio.html";
     private static final String ASSETS = "https://appassets.androidplatform.net/assets/";
     private static final String COMPETITION = ASSETS + "competencia.html";
     private static final String SUBSCRIPTION = ASSETS + "suscripcion.html";
     private static final String PREFS = "cachaste-navigation";
     private WebView webView;
-    private PlayBillingController playBilling;
+    private boolean migratingLegacy;
+    private static final int PROFILE_PHOTO_PICKER=4601;
+    private android.webkit.ValueCallback<Uri[]> photoSelection;
     private SubscriptionAccessController subscriptionAccess;
     private final android.os.Handler accessClock=new android.os.Handler(android.os.Looper.getMainLooper());
     private final Runnable checkAccess=new Runnable(){public void run(){enforceEducationalAccess();if(!destroying)accessClock.postDelayed(this,30000);}};
     private boolean destroying;
 
-    private boolean mayOpen(String url){return !SubscriptionLease.requiresSubscription(getPackageName(),url)||(subscriptionAccess!=null&&subscriptionAccess.hasAccess());}
+    private boolean mayOpen(String url){
+        if(migratingLegacy && LEGACY_HOME.equals(url))return true;
+        if(!SubscriptionLease.requiresSubscription(getPackageName(),url))return true;
+        if(subscriptionAccess==null)return false;
+        String path=url.split("[?#]",2)[0];
+        return subscriptionAccess.hasPremiumAccess() || (subscriptionAccess.hasBasicAccess() && HOME.equals(path));
+    }
     private void enforceEducationalAccess(){if(webView!=null&&!mayOpen(webView.getUrl())){webView.stopLoading();webView.loadUrl(SUBSCRIPTION);}}
 
     private boolean isApplicationPage(String url) {
         if (url == null) return false;
         String path = url.split("[?#]", 2)[0];
-        return (getPackageName().equals("cl.preparatupaes.app.sciencebeta") && path.equals(ASSETS + "beta-vs.html")) || path.equals(COMPETITION) || path.equals(SUBSCRIPTION) || path.equals(HOME) || path.equals("file:///android_asset/index.html")
+        return (getPackageName().equals("cl.preparatupaes.app.sciencebeta") && path.equals(ASSETS + "beta-vs.html")) || path.equals(COMPETITION) || path.equals(SUBSCRIPTION) || path.equals(HOME) || path.equals(LEGACY_HOME) || path.matches(java.util.regex.Pattern.quote(ASSETS)+"(index|science|reading|m2|history|privacidad|condiciones|eliminar-cuenta)\\.html") || path.equals("file:///android_asset/index.html")
             || path.equals("file:///android_asset/science.html")
             || path.equals("file:///android_asset/reading.html")
             || path.equals("file:///android_asset/m2.html")
@@ -47,18 +56,18 @@ public class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
-        getWindow().getDecorView().setSystemUiVisibility(android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+        getWindow().getDecorView().setSystemUiVisibility(0);
         webView = new WebView(this);
         webView.setTag("cachaste-web");
-        playBilling = new PlayBillingController(this,webView);
+        // Consumption-only distribution: no Billing bridge or checkout is instantiated.
         subscriptionAccess = new SubscriptionAccessController(this,webView);
-        webView.setBackgroundColor(0xfffaf9fe);
+        webView.setBackgroundColor(0xff080611);
         WebView.setWebContentsDebuggingEnabled((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setAllowFileAccess(true);
-        settings.setAllowContentAccess(false);
+        settings.setAllowContentAccess(true); // Preserve the approved system photo picker.
         settings.setAllowFileAccessFromFileURLs(false);
         settings.setAllowUniversalAccessFromFileURLs(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
@@ -69,10 +78,15 @@ public class MainActivity extends Activity {
         webView.setWebViewClient(new WebViewClient() {
             @Override public void onPageStarted(WebView view,String url,android.graphics.Bitmap icon){if(!mayOpen(url)){view.stopLoading();view.loadUrl(SUBSCRIPTION);}}
             @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                if(migratingLegacy && request.getUrl().toString().endsWith("/daily-app.js"))return new WebResourceResponse("application/javascript","UTF-8",new java.io.ByteArrayInputStream(new byte[0]));
                 return loader.shouldInterceptRequest(request.getUrl());
             }
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
+                if(!migratingLegacy && url.startsWith("file:///android_asset/")){
+                    String secure=ASSETS+url.substring("file:///android_asset/".length());
+                    if(isApplicationPage(secure)){view.loadUrl(mayOpen(secure)?secure:SUBSCRIPTION);return true;}
+                }
                 if (url.startsWith("file:///android_asset/competencia.html")) {
                     view.loadUrl(COMPETITION + (request.getUrl().getFragment() == null ? "" : "#" + request.getUrl().getFragment()));
                     return true;
@@ -84,13 +98,28 @@ public class MainActivity extends Activity {
                     return true;
                 }
                 if (isApplicationPage(url)){if(!mayOpen(url)){view.loadUrl(SUBSCRIPTION);return true;}return false;}
-                if ("https".equals(request.getUrl().getScheme())) {
+                // Do not open sites which could lead from this consumption-only app to checkout.
+                String host=request.getUrl().getHost();
+                boolean oauth="jmobinmdwrmdqrxtcruj.supabase.co".equals(host)
+                    && "/auth/v1/authorize".equals(request.getUrl().getPath())
+                    && "google".equals(request.getUrl().getQueryParameter("provider"))
+                    && "cl.preparatupaes.app://auth/callback".equals(request.getUrl().getQueryParameter("redirect_to"))
+                    && "s256".equals(request.getUrl().getQueryParameter("code_challenge_method"));
+                boolean legal="cachaste-privacidad.jose-villablanca-hor.chatgpt.site".equals(host)
+                    && ("/privacidad".equals(request.getUrl().getPath())||"/eliminar-cuenta".equals(request.getUrl().getPath()));
+                if ((legal||oauth) && "https".equals(request.getUrl().getScheme())) {
                     try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); }
                     catch (android.content.ActivityNotFoundException ignored) { }
                 }
                 return true;
             }
             @Override public void onPageFinished(WebView view, String url) {
+                if(migratingLegacy && LEGACY_HOME.equals(url)){
+                    view.evaluateJavascript("JSON.stringify(Object.fromEntries(['cachaste-daily-v1','prepara-paes-demo-v1','prepara-paes-active-exam-v1','cachaste-m1-assessments-v1','cachaste-m1-diagnostic-30-v1','cachaste-m1-diagnostic-draft-v1','cachaste-m1-pending-review-v1','cachaste-science-v1','cachaste-reading-v1','cachaste-m2-v1','cachaste-history-v1'].map(k=>[k,localStorage.getItem(k)]).filter(pair=>pair[1]!==null)))",value->{
+                        try{String archive=new org.json.JSONTokener(value).nextValue().toString();getSharedPreferences(PREFS,MODE_PRIVATE).edit().putString("legacy-progress",archive).putBoolean("legacy-archived",true).apply();}catch(Exception ignored){}
+                        migratingLegacy=false;view.loadUrl(mayOpen(HOME)?HOME:SUBSCRIPTION);
+                    });return;
+                }
                 if (!destroying && view == webView && isApplicationPage(url)) getSharedPreferences(PREFS, MODE_PRIVATE).edit().putString("last-page", url).apply();
             }
             @Override public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
@@ -102,18 +131,33 @@ public class MainActivity extends Activity {
                 getSharedPreferences(PREFS, MODE_PRIVATE).edit().putString("last-page",
                     now - previous > 10000 && isApplicationPage(recovery) ? recovery : HOME).putLong("render-recovery-at", now).apply();
                 webView = null;
-                if (playBilling != null) { playBilling.close(); playBilling = null; }
+
                 if (subscriptionAccess != null) { subscriptionAccess.close(); subscriptionAccess = null; }
                 view.destroy();
                 recreate();
                 return true;
             }
         });
-        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebChromeClient(new WebChromeClient(){
+            @Override public boolean onShowFileChooser(WebView view,android.webkit.ValueCallback<Uri[]> callback,FileChooserParams params){
+                String page=view.getUrl();
+                if(page==null||!page.split("[?#]",2)[0].equals(COMPETITION)){callback.onReceiveValue(null);return true;}
+                if(photoSelection!=null)photoSelection.onReceiveValue(null);
+                photoSelection=callback;
+                Intent pick=new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                pick.addCategory(Intent.CATEGORY_OPENABLE);
+                pick.setType("image/*");
+                pick.putExtra(Intent.EXTRA_MIME_TYPES,new String[]{"image/jpeg","image/png","image/webp"});
+                pick.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                try{startActivityForResult(pick,PROFILE_PHOTO_PICKER);}
+                catch(android.content.ActivityNotFoundException e){photoSelection.onReceiveValue(null);photoSelection=null;}
+                return true;
+            }
+        });
         // Inset the viewport itself: WebView padding still lets scrolled content draw under bars.
         FrameLayout viewport = new FrameLayout(this);
         viewport.addView(webView,new FrameLayout.LayoutParams(-1,-1));
-        viewport.setBackgroundColor(0xfffaf9fe);
+        viewport.setBackgroundColor(0xff080611);
         viewport.setOnApplyWindowInsetsListener((view, insets) -> {
             if (Build.VERSION.SDK_INT >= 30) {
                 android.graphics.Insets bars=insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
@@ -127,10 +171,25 @@ public class MainActivity extends Activity {
         setContentView(viewport);
         viewport.requestApplyInsets();
         String last = state != null ? state.getString("last-page") : getSharedPreferences(PREFS, MODE_PRIVATE).getString("last-page", HOME);
-        if (isApplicationPage(last)) webView.loadUrl(mayOpen(last)?last:SUBSCRIPTION);
+        String callback=authCallback(getIntent());if(callback!=null)last=callback;
+        if(last!=null && last.startsWith("file:///android_asset/"))last=ASSETS+last.substring("file:///android_asset/".length());
+        if(!getSharedPreferences(PREFS,MODE_PRIVATE).getBoolean("legacy-archived",false)){
+            migratingLegacy=true;webView.loadUrl(LEGACY_HOME);
+        }else if (isApplicationPage(last)) webView.loadUrl(mayOpen(last)?last:SUBSCRIPTION);
         else webView.loadUrl(mayOpen(HOME)?HOME:SUBSCRIPTION);
     }
 
+    private String authCallback(Intent intent){
+        Uri uri=intent==null?null:intent.getData();
+        if(uri==null||!"cl.preparatupaes.app".equals(uri.getScheme())||!"auth".equals(uri.getHost())||!"/callback".equals(uri.getPath()))return null;
+        String code=uri.getQueryParameter("code");
+        if(code==null||!code.matches("[A-Za-z0-9_-]{16,512}"))return null;
+        intent.setData(null);return COMPETITION+"?code="+Uri.encode(code)+"#perfil";
+    }
+    @Override protected void onNewIntent(Intent intent){
+        super.onNewIntent(intent);setIntent(intent);String callback=authCallback(intent);
+        if(callback!=null&&webView!=null)webView.loadUrl(callback);
+    }
     @Override protected void onSaveInstanceState(Bundle state) {
         if (webView != null && isApplicationPage(webView.getUrl())) state.putString("last-page", webView.getUrl());
         super.onSaveInstanceState(state);
@@ -165,11 +224,24 @@ public class MainActivity extends Activity {
             }
         );
     }
+    @Override protected void onActivityResult(int requestCode,int resultCode,Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode!=PROFILE_PHOTO_PICKER||photoSelection==null)return;
+        android.webkit.ValueCallback<Uri[]> callback=photoSelection;photoSelection=null;
+        Uri uri=resultCode==RESULT_OK&&data!=null?data.getData():null;
+        String mime=null;
+        try{if(uri!=null&&"content".equals(uri.getScheme()))mime=getContentResolver().getType(uri);}
+        catch(RuntimeException denied){uri=null;}
+        if(!("image/jpeg".equals(mime)||"image/png".equals(mime)||"image/webp".equals(mime)))uri=null;
+        callback.onReceiveValue(uri==null?null:new Uri[]{uri});
+    }
+
     @Override protected void onDestroy() {
+        if(photoSelection!=null){photoSelection.onReceiveValue(null);photoSelection=null;}
         destroying = true;
         accessClock.removeCallbacks(checkAccess);
         if (subscriptionAccess != null) { subscriptionAccess.close(); subscriptionAccess = null; }
-        if (playBilling != null) { playBilling.close(); playBilling = null; }
+
         if (webView != null) { webView.stopLoading(); webView.destroy(); webView = null; }
         super.onDestroy();
     }

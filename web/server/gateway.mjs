@@ -32,6 +32,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
   if(active&&access.active!==true)throw Object.assign(Error('SUBSCRIPTION_REQUIRED'),{status:402});
   return{...value,token};
  }
+ const originalReady=env=>env.WEB_BASIC_ACCESS_ENABLED==='true'&&env.WEB_BASIC_EDUCATIONAL_GUARDS_READY==='true'&&env.WEB_BASIC_ORIGINAL_ENGINE_READY==='true';
  const sameOrigin=req=>{const origin=req.headers.get('origin');return origin===new URL(req.url).origin&&req.headers.get('x-cachaste-request')==='1';};
  async function handler(req,env,ctx={}){
   const url=new URL(req.url);let path;try{path=decodeURIComponent(url.pathname);}catch{return json({error:'BAD_PATH'},400);}
@@ -52,7 +53,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     const entries=SEARCH_PAGES.map(page=>'<url><loc>'+SEARCH_ORIGIN+page+'</loc></url>').join('');
     return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+entries+'</urlset>',{headers:{'content-type':'application/xml; charset=utf-8','cache-control':'no-cache'}});
    }
-   if(path==='/api/config')return json({supabaseUrl:env.SUPABASE_URL||PROJECT_URL,publishableKey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,signupEnabled:env.WEB_SIGNUP_ENABLED==='true',basicEnabled:false,authReturnReady:commercialHost,googleAuthEnabled:commercialHost,revision});
+   if(path==='/api/config')return json({supabaseUrl:env.SUPABASE_URL||PROJECT_URL,publishableKey:env.SUPABASE_PUBLISHABLE_KEY||PUBLISHABLE_KEY,signupEnabled:env.WEB_SIGNUP_ENABLED==='true',basicEnabled:originalReady(env),authReturnReady:commercialHost,googleAuthEnabled:commercialHost,revision});
    if(path==='/api/auth/status'&&req.method==='GET'){
     if(!commercialHost)return json({googleReady:false});
     // The provider status is verified against Supabase below; no separate Cloudflare launch flags are required.
@@ -68,7 +69,8 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
     const auth=await identity(req,env,{active:false,fresh:true}),secure=url.protocol==='https:'?'; Secure':'';
     const lease=auth.access.active?await offlineLicense(env,auth.user.id,auth.access.validUntilMs,url.origin,revision,now()):null;
-    return json({user:{id:auth.user.id,email:auth.user.email},access:auth.access,offlineLicense:lease},200,{'set-cookie':`${COOKIE}=${auth.token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${Math.max(0,Math.floor((jwtExpires(auth.token)-now())/1000))}${secure}`});
+    const access=originalReady(env)?await backend(env,'/rest/v1/rpc/cachaste_learning_access',auth.token,{method:'POST',body:{}}):auth.access;
+    return json({user:{id:auth.user.id,email:auth.user.email},access,offlineLicense:lease},200,{'set-cookie':`${COOKIE}=${auth.token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${Math.max(0,Math.floor((jwtExpires(auth.token)-now())/1000))}${secure}`});
    }
    if(path==='/api/session'&&req.method==='DELETE'){
     if(!sameOrigin(req))return json({error:'ORIGIN_DENIED'},403);
@@ -287,7 +289,12 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     if(!allowed.has(path))return json({error:'NOT_FOUND'},404);
     const accountOnly=path===COMPETITION_PAGE&&url.searchParams.get('manage')==='profile';
     const accountAsset=accountAllowed.has(path)&&(path!==COMPETITION_PAGE||accountOnly);
-    let auth;try{auth=await identity(req,env,{active:!accountAsset,fresh:path.endsWith('.html')});}catch(e){
+    let auth;try{auth=await identity(req,env,{active:!accountAsset&&!originalReady(env),fresh:path.endsWith('.html')});
+     if(!auth.access.active&&!accountAsset){
+      if(!originalReady(env)||path.endsWith('.html')&&!['/app/inicio.html','/app/competencia.html'].includes(path))throw Object.assign(Error('SUBSCRIPTION_REQUIRED'),{status:402});
+      const entitlement=await backend(env,'/rest/v1/rpc/cachaste_learning_access',auth.token,{method:'POST',body:{}});
+      if(entitlement.tier!=='basica')throw Object.assign(Error('BASIC_NOT_READY'),{status:503});
+     }}catch(e){
      if(path.endsWith('.html')&&req.headers.get('accept')?.includes('text/html')){
       const next=encodeURIComponent(path),plans=e.message==='SUBSCRIPTION_REQUIRED'?'#planes':'';
       const accountPath=accountOnly?'/cuenta.html?manage=profile':'/cuenta.html?next='+next+plans;
@@ -301,9 +308,10 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
     headers.set('x-cachaste-user',auth.user.id);headers.set('content-security-policy',policy(path,pagePolicies));
     if(path.endsWith('.html')){
      const learning=auth.access.active&&!accountOnly;
-     const snapshot=learning?await backend(env,'/rest/v1/rpc/cachaste_web_progress',auth.token,{method:'POST',body:{operation:'snapshot',payload:{}}}):{documents:[]};
+     const basic=!auth.access.active&&originalReady(env)&&!accountOnly;
+     const snapshot=basic?await backend(env,'/rest/v1/rpc/cachaste_original_learning',auth.token,{method:'POST',body:{operation:'state',payload:{}}}):learning?await backend(env,'/rest/v1/rpc/cachaste_web_progress',auth.token,{method:'POST',body:{operation:'snapshot',payload:{}}}):{documents:[]};
      const lease=learning?await offlineLicense(env,auth.user.id,auth.access.validUntilMs,url.origin,revision,now()):null;
-     const bootstrap={userId:auth.user.id,documents:snapshot.documents,offlineLicense:lease,revision,accessUntil:auth.access.validUntilMs,accountOnly};
+     const bootstrap={userId:auth.user.id,originalEngineEnabled:originalReady(env),tier:basic?'basica':'premium',documents:snapshot.documents,offlineLicense:lease,revision,accessUntil:auth.access.validUntilMs,accountOnly};
      return new Response((await response.text()).replace('<!--CACHASTE_WEB_BOOTSTRAP-->','<script id="cachaste-web-bootstrap" type="application/json">'+safeJson(bootstrap)+'</script>'),{status:response.status,headers});
     }
     return new Response(response.body,{status:response.status,headers});

@@ -1,0 +1,20 @@
+{
+  "sourceCommit": "c1b6e74fea0638a423c91e6b2586c5e0a4c60d1d",
+  "validatedCodeCommit": "94be8f2aea800af8dab703d2f0fa8ecd3c0cc8f9",
+  "workflowRun": 44791947034,
+  "integrationRun": 44790766013,
+  "artifactId": 14656093989,
+  "artifactUrl": "https://github.com/josevillablanca30/PreparaTupaes/actions/runs/44791947034/artifacts/14656093989",
+  "fileName": "Cachaste-1.5.0-rc21-48.aab",
+  "sizeBytes": 12079819,
+  "sha256": "ca9a18f28a8ab573dc2b1799ca7ebd99e274ba4d299cae75ce7b2e255f527a27",
+  "versionCode": 48,
+  "versionName": "1.5.0-rc21",
+  "playLastUploadedCodeObserved": 47,
+  "targetSdk": 36,
+  "certificateSha256": "a566926f01e79e5f75422b5c03c91b4337018e4f7987b32888c650ca7f271575",
+  "verifiedSignedPayloadEntries": 179,
+  "publicBasicActivated": false,
+  "uploadedToPlay": false,
+  "paymentsChanged": false
+}

@@ -1,0 +1,11 @@
+/* Keep the approved card geometry and border, remove the inherited light ledge. */
+#daily-root .reference-courses .course-tile {
+  box-shadow: inset 0 1px 0 #cf8dff30 !important;
+}
+
+/* The imported artwork already has a transparent background. */
+#daily-root .reference-welcome .home-mentor-control {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}

@@ -7,3 +7,6 @@ playwright-report/
 test-results/
 
 .local-bindings.json
+
+# Derived private verifier catalogue, regenerated from the existing PAES bank
+supabase/original-catalog.seed.sql

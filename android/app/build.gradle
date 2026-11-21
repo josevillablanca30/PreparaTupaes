@@ -14,8 +14,8 @@ android {
         minSdk 24
         targetSdk 36
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        versionCode 32
-        versionName '1.5.0-rc5'
+        versionCode 50
+        versionName '1.5.0-rc21'
         buildConfigField 'boolean', 'CACHASTE_PLAY_ENABLED', String.valueOf(System.getenv('CACHASTE_PLAY_ENABLED') == 'true')
     }
     signingConfigs {
@@ -54,6 +54,7 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
     buildFeatures { buildConfig true }
+    sourceSets.main.java.exclude '**/PlayBillingController.java'
     if (commercialAccessQa) sourceSets.androidTest.java.srcDir 'src/commercialAccessQa/java'
     else {
         sourceSets.debug.assets.srcDir 'src/beta/assets'
@@ -64,9 +65,21 @@ android {
 dependencies {
     // Align the split JDK libraries with the stdlib already required by AndroidX/Billing.
     implementation platform("org.jetbrains.kotlin:kotlin-bom:1.8.22")
-    implementation "com.android.billingclient:billing:9.1.0"
+    // Retained legacy controller is excluded from this consumption-only build.
     implementation "androidx.webkit:webkit:1.15.0"
     androidTestImplementation "androidx.test:runner:1.6.2"
     androidTestImplementation "androidx.test:core:1.6.1"
     androidTestImplementation "junit:junit:4.13.2"
+}
+
+// Prevent packaging the legacy unmetered assets with the Basic-capable native shell.
+tasks.named('preBuild').configure {
+    doFirst {
+        def assetsRoot=file('src/main/assets')
+        if (!new File(assetsRoot,'learning-access.js').isFile() ||
+            !new File(assetsRoot,'daily-app.js').text.contains('CachasteLearningAccess') ||
+            new File(assetsRoot,'competition-billing.js').text.contains("perform('purchase')")) {
+            throw new GradleException('Ejecuta node scripts/build.mjs y node scripts/build-android-access.mjs; copia dist completo a assets antes de compilar.')
+        }
+    }
 }
