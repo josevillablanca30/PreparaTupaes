@@ -138,10 +138,11 @@ function render(){if(!config)return;
   const rows=subscriptionRows();
   const subscriptions=rows?'<section class="account-subscriptions" aria-label="Mis suscripciones">'+rows+'</section>':'';
   if(active){
-   const complimentary=account.complimentary?.active
+   const administrator=account.access?.accessSource==='admin';
+   const complimentary=administrator?'<section class="account-card"><h2>Acceso de administrador</h2><p>Tu acceso es gratuito, permanente e ilimitado.</p></section>':account.complimentary?.active
     ?'<section class="account-card"><h2>Tu año gratuito de tester</h2><p>Tu acceso es gratuito hasta '+esc(new Date(account.complimentary.validUntil).toLocaleDateString('es-CL'))+'. No tiene renovación automática ni requiere tarjeta.</p></section>':'';
    root.innerHTML='<section class="account-card"><span class="eyebrow">Tu cuenta de ¿Cachaste?</span><h1>Sigamos desde donde quedaste.</h1>'+email+
-    '<p class="access-state">Tu acceso está verificado.</p><div class="account-actions"><a class="primary-button" href="'+nextPage()+'">Continuar mi preparación <span>→</span></a>'+accountActions()+'</div></section>'+subscriptions+complimentary+plans();
+    '<p class="access-state">Tu acceso está verificado.</p><div class="account-actions"><a class="primary-button" href="'+nextPage()+'">Continuar mi preparación <span>→</span></a>'+accountActions()+'</div></section>'+subscriptions+complimentary+(administrator?'':plans());
   }else{
    const pending=account.subscriptions?.some(s=>s.renews===true);
    root.innerHTML=plans({required:true,pending})+subscriptions+'<section class="account-card"><h2>Tu cuenta</h2>'+email+

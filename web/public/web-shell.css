@@ -100,3 +100,14 @@ body.web-learning .web-appbar{background:#160d24;border-color:#68418a;color:#f7e
  .web-learning #competition-root .mentor-control{background:transparent!important;border:0!important;box-shadow:none!important}
  .web-learning #competition-root .mentor-control .hero-cat{mask-image:radial-gradient(ellipse 69% 76% at 50% 51%,#000 49%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 69% 76% at 50% 51%,#000 49%,transparent 100%)}
 }
+/* Keep the approved card geometry and border, remove the inherited light ledge. */
+#daily-root .reference-courses .course-tile {
+  box-shadow: inset 0 1px 0 #cf8dff30 !important;
+}
+
+/* The imported artwork already has a transparent background. */
+#daily-root .reference-welcome .home-mentor-control {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}

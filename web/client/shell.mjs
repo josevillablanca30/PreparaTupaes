@@ -32,7 +32,15 @@ if(typeof window!=='undefined'&&location.pathname.startsWith('/app/')&&!window.C
   syncButton.setAttribute('title',label);
   bar.dataset.sync=state;
  };
- addEventListener('cachaste-sync',update);update();
+ const updateHomeScope=()=>{
+  const label=document.getElementById('home-activity-title')?.parentElement?.querySelector('span');
+  if(!label||!window.CachasteWebProgress)return;
+  const text=window.CachasteWebSyncStatus==='saved'&&navigator.onLine!==false?'En tu cuenta':'Guardado en este dispositivo';
+  if(label.textContent!==text)label.textContent=text;
+ };
+ const home=document.getElementById('daily-root');
+ if(home)new MutationObserver(updateHomeScope).observe(home,{childList:true});
+ addEventListener('cachaste-sync',()=>{update();updateHomeScope();});update();updateHomeScope();
  bar.querySelector('[data-install]').onclick=installPwa;
  bar.querySelector('[data-sync-open]').onclick=async()=>{
   const sync=window.CachasteWebProgress,entry=Object.entries(sync?.conflicts||{})[0];if(!entry){await sync?.flush();return;}
