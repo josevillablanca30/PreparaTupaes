@@ -335,6 +335,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
    if(response.ok&&['/cuenta','/cuenta.html'].includes(path)&&/text\/html/i.test(headers.get('content-type')||'')){
     const html=(await response.text()).replace('src="/account.js"','src="/account.js?v='+encodeURIComponent(revision)+'"');
     for(const name of ['content-length','content-encoding','etag'])headers.delete(name);
+    headers.set('x-robots-tag','noindex, nofollow, noarchive');
     return new Response(html,{status:response.status,headers});
    }
    if(response.ok&&/text\/html/i.test(headers.get('content-type')||'')){
