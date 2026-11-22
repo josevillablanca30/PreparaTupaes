@@ -1,6 +1,6 @@
 {
   "scope": "basic-web-access-only",
-  "reviewedRevision": "b567deb296fe73f6ce6f54f59a02532251484d3b",
-  "expectedProductionRevision": "e540fb675426457985c0e7b84a6f932659d35a2f",
+  "reviewedRevision": "dd82ee5b9ada70252fe2053d8db6d27f84f3b560",
+  "expectedProductionRevision": "b567deb296fe73f6ce6f54f59a02532251484d3b",
   "preservePayments": true
 }
