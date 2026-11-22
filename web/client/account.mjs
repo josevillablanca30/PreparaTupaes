@@ -121,7 +121,7 @@ function plans({required=false,pending=false}={}){
  }).join('');
  const status=!billing.ready?'<p class="opening-note">Estamos preparando la apertura. La contratación todavía no está habilitada y no se realizarán cobros.</p>':
   '<p class="legal-note">La suscripción se renueva hasta que la canceles. Revisa el monto y las condiciones en el checkout oficial de Mercado Pago.</p>';
- const basic=basicReady?'<article class="price-card"><h3>Plan Básico</h3><p class="price">Gratis</p><p>Sin tarjeta. Aprende y comprueba cómo funciona ¿Cachaste?.</p><ul><li>3 etapas al día por materia</li><li>1 diagnóstico por materia, una sola vez</li><li>1 ensayo Express diario</li><li>2 duelos diarios</li><li>Progreso y rankings</li></ul><button type="button" data-action="basic">Empezar gratis</button></article>':'';
+ const basic=basicReady?'<article class="price-card" style="order:-2"><h3>Plan Básico</h3><p class="price">Gratis</p><p>Sin tarjeta. Aprende y comprueba cómo funciona ¿Cachaste?.</p><ul><li>3 etapas al día por materia</li><li>1 diagnóstico por materia, una sola vez</li><li>1 ensayo Express diario</li><li>2 duelos diarios</li><li>Progreso y rankings</li></ul><button type="button" data-action="basic">Empezar gratis</button></article>':'';
  const trial=billing.trialAvailable&&!account?.trialUsed?'<p class="legal-note"><strong>Recuerda: tienes 7 días de Premium gratis.</strong> Requiere tarjeta. Al terminar la prueba comienza el plan mensual de $7.990, salvo que canceles antes. Los planes semanal y anual también están disponibles para contratación directa.</p>':'';
  return '<section class="account-plans" id="planes"><div class="section-heading">'+heading+'</div><div class="price-grid">'+basic+cards+'</div>'+trial+status+'</section>';
 }
@@ -155,7 +155,7 @@ function render(){if(!config)return;
     '<p class="access-state">Tu acceso está verificado.</p><div class="account-actions"><a class="primary-button" href="'+nextPage()+'">Continuar mi preparación <span>→</span></a>'+accountActions()+'</div></section>'+subscriptions+complimentary+(administrator?'':plans());
   }else{
    const pending=account.subscriptions?.some(s=>s.renews===true);
-   root.innerHTML=(config?.basicEnabled===true?(basicSummary?renderBasicQuotaSummary(basicSummary):'<section class="account-card"><h2>Tu Básica</h2><p>No pudimos consultar tus cupos. Reintenta actualizar tu acceso.</p></section>'):'')+plans({required:true,pending})+subscriptions+'<section class="account-card"><h2>Tu cuenta</h2>'+email+
+   root.innerHTML=plans({required:true,pending})+(config?.basicEnabled===true?(basicSummary?renderBasicQuotaSummary(basicSummary):'<section class="account-card"><h2>Tu Básica</h2><p>No pudimos consultar tus cupos. Reintenta actualizar tu acceso.</p></section>'):'')+subscriptions+'<section class="account-card"><h2>Tu cuenta</h2>'+email+
     '<div class="account-actions">'+accountActions()+'</div></section>';
   }
   if(account.isAdmin===true)root.insertAdjacentHTML('beforeend','<section class="account-card"><h2>Ventas y comisiones</h2><p>Exporta el registro verificado por días de Chile. Este reporte no reemplaza los documentos tributarios.</p><form id="sales-form"><label>Desde<input name="from" type="date" required></label><label>Hasta<input name="to" type="date" required></label><button type="submit">Descargar CSV</button></form></section>');
