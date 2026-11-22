@@ -1,0 +1,51 @@
+name: Cachaste · Corrección acceso Básico web
+on:
+  push:
+    branches: [work/cachaste-lanzamiento-final-20261113]
+    paths: [web/deploy-basic-public.request]
+permissions:
+  contents: read
+concurrency:
+  group: cachaste-pages-preview
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CLOUDFLARE_ACCOUNT_ID: cfe4b77c0c39bb056306d16133a93642
+      CLOUDFLARE_PAGES_PROJECT: cachaste-sitecacho
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - name: Verificar cuotas, acceso, progreso y pagos existentes
+        run: node --test tests/original-learning-access.test.mjs web/tests/basic-release-gates.test.mjs web/tests/access-tiers-policy.test.mjs web/tests/progress-runtime.test.mjs web/tests/session-lifecycle.test.mjs tests/web-gateway-security.test.mjs web/tests/mercadopago-commercial-db.test.mjs web/tests/free-plan-selector.test.mjs
+      - name: Preparar únicamente acceso educativo preservando pagos
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node web/scripts/release-basic-access.mjs
+      - name: Construir y verificar distribución cifrada
+        run: |
+          GITHUB_SHA="$REVIEWED_RELEASE_SHA" node web/scripts/build.mjs
+          node web/scripts/verify-private-distribution.mjs
+      - name: Publicar corrección autorizada
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: npx --yes wrangler@4.45.0 pages deploy web/dist --project-name=cachaste-sitecacho --branch=production-requires-owner-approval --commit-hash="$REVIEWED_RELEASE_SHA" --commit-dirty=false
+      - name: Comprobar producción
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const config=await fetch('https://sitecacho.cl/api/config',{cache:'no-store'}).then(r=>r.json());
+          assert.equal(config.revision,process.env.REVIEWED_RELEASE_SHA);
+          assert.equal(config.basicEnabled,true);
+          const js=await fetch('https://sitecacho.cl/account.js',{cache:'no-store'}).then(r=>r.text());
+          assert.ok(js.includes('Empezar gratis'));
+          console.log(JSON.stringify({production:'https://sitecacho.cl',revision:config.revision,basicEnabled:true,freePlanVisibleInBundle:true}));
+          NODE

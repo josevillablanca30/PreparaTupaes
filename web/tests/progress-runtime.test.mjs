@@ -197,3 +197,18 @@ test('reopening a lesson restores unsent local answers rather than overwriting t
   if(saved.navigator)Object.defineProperty(globalThis,'navigator',saved.navigator);else delete globalThis.navigator;
  }
 });
+
+test('loading progress bootstrap through two bundles preserves one runtime and its dirty activity',async()=>{
+ const {build}=await import('esbuild'),{default:vm}=await import('node:vm');
+ const result=await build({entryPoints:[new URL('../client/progress-runtime.mjs',import.meta.url).pathname],bundle:true,write:false,format:'iife',platform:'browser'});
+ const storage=new LocalStorage(),window={},bootstrap={userId:uid,tier:'premium',documents:[{key,value:{version:1,session:null,attempts:[]},version:1}]};
+ const timers=new Set(),context=vm.createContext({window,Storage:LocalStorage,localStorage:storage,document:{getElementById:()=>({textContent:JSON.stringify(bootstrap)}),addEventListener(){},removeEventListener(){}},navigator:{onLine:true},fetch(){throw Error('Unexpected network');},setTimeout(fn){timers.add(fn);return fn;},clearTimeout(fn){timers.delete(fn);},CustomEvent:class{},dispatchEvent(){},addEventListener(){},removeEventListener(){}});
+ let runtime;
+ try{
+  vm.runInContext(result.outputFiles[0].text,context);runtime=window.CachasteWebProgress;
+  storage.setItem(key,JSON.stringify({version:1,session:{id:'lesson-being-read'},attempts:[]}));
+  const wrapped=LocalStorage.prototype.setItem;assert.equal(runtime.pending(),1);
+  vm.runInContext(result.outputFiles[0].text,context);
+  assert.equal(window.CachasteWebProgress,runtime);assert.equal(LocalStorage.prototype.setItem,wrapped);assert.equal(runtime.pending(),1);assert.equal(JSON.parse(storage.getItem(key)).session.id,'lesson-being-read');
+ }finally{runtime?.restore();}
+});

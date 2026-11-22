@@ -30,3 +30,8 @@ test('auth callbacks release the SDK lock before asynchronous work, and offline 
   const tasks=[],h=setup({schedule:fn=>tasks.push(fn)});h.emit('TOKEN_REFRESHED',session());assert.equal(h.calls.length,0);await tasks.shift()();assert.equal(h.calls.length,1);h.runtime.dispose();
   const offline=setup({online:()=>false});await offline.runtime.renew(null);await offline.runtime.renew(session());assert.equal(offline.calls.length,0);assert.equal(offline.ends.length,0);offline.runtime.dispose();
 });
+test('server-confirmed Basic remains signed in without enabling client-authored Premium progress',async()=>{
+ const fetcher=async()=>Response.json({user:{id:'student-a'},access:{active:false,tier:'basica',basicEnabled:true}});
+ const basic=setup({fetcher,allowBasic:true});await basic.runtime.renew(session());assert.equal(basic.ends.length,0);assert.equal(basic.pauses,1);assert.equal(basic.resumes,0);basic.runtime.dispose();
+ const unapproved=setup({fetcher});await unapproved.runtime.renew(session());assert.deepEqual(unapproved.ends,['access-expired']);unapproved.runtime.dispose();
+});

@@ -1,5 +1,7 @@
 import{getWebClient,nextLearningPage,startGoogleSignIn,finishAuthReturn}from'./auth.mjs';
 import{PLANS}from'../shared/config.mjs';
+import{basicQuotaSummary}from'./basic-quota.mjs';
+import{renderBasicQuotaSummary}from'./basic-quota-view.mjs';
 import{initPwa,installPwa,serviceWorkerMessage}from'./shell.mjs';
 import{isRecoveryReturn}from'./recovery-flow.mjs';
 import{mountRecoveryPage}from'./recovery-page.mjs';
@@ -10,6 +12,7 @@ const root=document.getElementById('account-root'),status=document.getElementByI
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=x=>new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',maximumFractionDigits:0}).format(x);
 const messages={COMPLIMENTARY_ACCESS:'Tu acceso de tester es gratuito. No necesitas contratar una suscripción ni ingresar una tarjeta.',TEST_BUYER_EMAIL_REQUIRED:'Ingresa el correo exacto de una cuenta de prueba entregado por Mercado Pago.',NOT_TEST_SELLER:'La cuenta vendedora no pudo verificarse como cuenta de prueba.',CHECKOUT_ALREADY_FINISHED:'Esta solicitud ya fue completada. Actualiza los resultados de prueba.',GOOGLE_NOT_READY:'El acceso con Google está preparado, pero aún falta autorizar el proveedor y su retorno seguro. No se ha creado una cuenta.',AUTH_RETURN_CANCELLED:'El acceso fue cancelado. Puedes volver a intentarlo.',AUTH_RETURN_INVALID:'El enlace de acceso venció o se abrió en otro navegador. Vuelve a iniciar sesión desde aquí.',AUTH_REDIRECT_DENIED:'No pudimos validar el destino de acceso. Vuelve a intentarlo.',AUTH_REQUIRED:'Inicia sesión para continuar.',BILLING_NOT_READY:'Las suscripciones todavía están en preparación. Los cobros siguen desactivados.',CHECKOUT_PENDING:'Tu solicitud anterior sigue en revisión. Actualiza el acceso antes de crear otra.',TRIAL_ALREADY_USED:'La prueba gratuita ya fue utilizada o reservada para esta cuenta. Puedes elegir el plan mensual sin prueba.',PLAN_NOT_READY:'Este plan todavía no está habilitado por el responsable.',SERVICE_UNAVAILABLE:'No logramos conectar. Vuelve a intentarlo cuando tengas conexión.',SYNC_UNAVAILABLE:'No logramos sincronizar. Conservamos el avance de este dispositivo.',QA_ADMIN_REQUIRED:'Tu cuenta aún no está autorizada para pruebas de Mercado Pago.',ORIGIN_NOT_ALLOWED:'Abre la prueba desde el sitio oficial de ¿Cachaste?.',PROVIDER_CHECKOUT_FAILED:'Mercado Pago no pudo iniciar la suscripción de prueba.',TEST_CONFIG_MISSING:'Falta completar la configuración del entorno de prueba.'};
+let basicSummary=null;
 let config,sdk,account=null,billing={ready:false,trialAvailable:false},busy=false,qaState=null,qaCheckout=null,qaPayment=null,recovering=location.search.includes('recovery=1');
 const qaDraft={email:'',payerId:'',plan:'MONTHLY_TRIAL',paymentId:''};
 const qaPlans={MONTHLY_TRIAL:'Mensual · 7 días gratis',WEEKLY:'Semanal · $2.490',MONTHLY:'Mensual · $7.990',YEARLY:'Anual · $64.990'};
@@ -34,7 +37,7 @@ async function request(body,url='/api/billing',method='POST',signal){
 async function clearBrowserAccess(){await serviceWorkerMessage({type:'PURGE_PRIVATE'});const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);try{await fetch('/api/session',{method:'DELETE',headers:{'x-cachaste-request':'1'},signal:controller.signal});}catch{}finally{clearTimeout(timer);}}
 async function connect(verifyPayments=false){
  const{data:{session},error}=await sdk.auth.getSession();if(error)throw error;
- if(!session){account=null;if(navigator.onLine!==false)await clearBrowserAccess();return;}
+ if(!session){basicSummary=null;account=null;if(navigator.onLine!==false)await clearBrowserAccess();return;}
  let reconciliationDelayed=false;
  if(verifyPayments&&(billing.managementReady||billing.ready)){
   try{await request({action:'refresh'},'/api/billing','POST',AbortSignal.timeout(8000));}catch{reconciliationDelayed=true;}
@@ -43,6 +46,10 @@ async function connect(verifyPayments=false){
  if(!checked.offlineLicense)await serviceWorkerMessage({type:'PURGE_PRIVATE'});
  await initPwa(checked.offlineLicense);
  account=await request(undefined,'/api/session','GET');
+ basicSummary=null;
+ if(config?.basicEnabled===true&&account?.access?.active!==true){
+  try{basicSummary=await basicQuotaSummary({accessToken:session.access_token});}catch{basicSummary=null;}
+ }
  if(reconciliationDelayed)notice('Tu cuenta está disponible. Mercado Pago aún no responde. Puedes actualizar tu acceso más tarde.');
  else if(verifyPayments&&checkoutReturned&&!account?.access?.active)notice('Estamos esperando la confirmación del pago. Puedes consultar el estado en Actualizar mi acceso.');
 }
@@ -96,9 +103,10 @@ function changeEmailMode(mode){
 }
 async function work(fn){if(busy)return;const loginDraft=Array.from(root.querySelectorAll('#login-form input'),x=>[x.name,x.value]);busy=true;root.setAttribute('aria-busy','true');root.querySelectorAll('button').forEach(b=>b.disabled=true);try{notice('');await fn();}catch(e){notice(messages[e.message]||(/Invalid login credentials/i.test(e.message)?'Revisa tu correo y contraseña.':/rate.limit/i.test(e.message)?'Espera unos minutos antes de volver a intentarlo.':'No pudimos completar la operación. Reinténtalo.'));}finally{busy=false;render();if(!account)for(const[name,value]of loginDraft){const input=root.querySelector('#login-form input[name="'+name+'"]');if(input)input.value=value;}}}
 function plans({required=false,pending=false}={}){
- const complimentary=account?.complimentary?.active===true;
+ const complimentary=account?.access?.accessSource==='admin'||account?.complimentary?.active===true;
+ const basicReady=config?.basicEnabled===true;
  const heading=required
-  ?'<h1 id="plans-title" tabindex="-1">'+(pending?'Tu suscripción está en revisión':'Elige tu plan')+'</h1><p class="access-state">Necesitas una suscripción vigente para entrar a tu preparación.</p>'
+  ?'<h1 id="plans-title" tabindex="-1">'+(pending?'Tu suscripción está en revisión':'Elige tu plan')+'</h1><p class="access-state">'+(basicReady?'Comienza con Básica sin tarjeta o elige Premium con todos sus beneficios.':'Necesitas una suscripción vigente para entrar a tu preparación. Conoce los planes disponibles.')+'</p>'
   :'<span class="eyebrow">Tu preparación completa</span><h2>Elige tu ritmo.</h2><p>Una sola suscripción para aprender y competir. Sin vidas limitadas.</p>';
  const cards=Object.entries(PLANS).map(([id,plan])=>{
   const cadence={semanal:'semana',mensual:'mes',anual:'año'}[id];
@@ -113,7 +121,9 @@ function plans({required=false,pending=false}={}){
  }).join('');
  const status=!billing.ready?'<p class="opening-note">Estamos preparando la apertura. La contratación todavía no está habilitada y no se realizarán cobros.</p>':
   '<p class="legal-note">La suscripción se renueva hasta que la canceles. Revisa el monto y las condiciones en el checkout oficial de Mercado Pago.</p>';
- return '<section class="account-plans" id="planes"><div class="section-heading">'+heading+'</div><div class="price-grid">'+cards+'</div>'+status+'</section>';
+ const basic=basicReady?'<article class="price-card"><h3>Plan Básico</h3><p class="price">Gratis</p><p>Sin tarjeta. Aprende y comprueba cómo funciona ¿Cachaste?.</p><ul><li>3 etapas al día por materia</li><li>1 diagnóstico por materia, una sola vez</li><li>1 ensayo Express diario</li><li>2 duelos diarios</li><li>Progreso y rankings</li></ul><button type="button" data-action="basic">Empezar gratis</button></article>':'';
+ const trial=billing.trialAvailable&&!account?.trialUsed?'<p class="legal-note"><strong>Recuerda: tienes 7 días de Premium gratis.</strong> Requiere tarjeta. Al terminar la prueba comienza el plan mensual de $7.990, salvo que canceles antes. Los planes semanal y anual también están disponibles para contratación directa.</p>':'';
+ return '<section class="account-plans" id="planes"><div class="section-heading">'+heading+'</div><div class="price-grid">'+basic+cards+'</div>'+trial+status+'</section>';
 }
 function subscriptionRows(){
  return (account?.subscriptions||[]).map(s=>'<article><h2>Plan '+esc(s.plan)+'</h2><p>Estado: '+
@@ -133,7 +143,7 @@ function render(){if(!config)return;
  }else if(!user){
   root.innerHTML='<section class="account-card"><span class="eyebrow">Un ratito a la vez</span><h1>Tu preparación comienza aquí.</h1><p>Una misma cuenta para tu aprendizaje y competencia. Tu progreso educativo web se guarda en tu cuenta.</p><button type="button" class="google-signin" data-action="google" aria-describedby="google-status"><img src="/icons/google-g.png" alt="" width="20" height="20"> Continuar con Google</button><p id="google-status" class="legal-note">'+
    (config.googleAuthEnabled&&config.authReturnReady?'Usa tu cuenta de Google para entrar o registrarte.':'Acceso con Google en preparación. Aún no está habilitado.')+
-   '</p><div class="auth-divider"><span>o entra con tu correo</span></div>'+emailForm()+'<p class="legal-note">El acceso educativo y competitivo requiere una suscripción vigente. <a href="/privacidad.html">Privacidad</a> · <a href="/condiciones.html">Condiciones</a></p></section>';
+   '</p><div class="auth-divider"><span>o entra con tu correo</span></div>'+emailForm()+'<p class="legal-note">'+(config.basicEnabled===true?'Puedes empezar con Básica sin tarjeta y contratar Premium cuando quieras.':'El acceso educativo y competitivo requiere una suscripción vigente.')+' <a href="/privacidad.html">Privacidad</a> · <a href="/condiciones.html">Condiciones</a></p></section>';
  }else{
   const rows=subscriptionRows();
   const subscriptions=rows?'<section class="account-subscriptions" aria-label="Mis suscripciones">'+rows+'</section>':'';
@@ -145,7 +155,7 @@ function render(){if(!config)return;
     '<p class="access-state">Tu acceso está verificado.</p><div class="account-actions"><a class="primary-button" href="'+nextPage()+'">Continuar mi preparación <span>→</span></a>'+accountActions()+'</div></section>'+subscriptions+complimentary+(administrator?'':plans());
   }else{
    const pending=account.subscriptions?.some(s=>s.renews===true);
-   root.innerHTML=plans({required:true,pending})+subscriptions+'<section class="account-card"><h2>Tu cuenta</h2>'+email+
+   root.innerHTML=(config?.basicEnabled===true?(basicSummary?renderBasicQuotaSummary(basicSummary):'<section class="account-card"><h2>Tu Básica</h2><p>No pudimos consultar tus cupos. Reintenta actualizar tu acceso.</p></section>'):'')+plans({required:true,pending})+subscriptions+'<section class="account-card"><h2>Tu cuenta</h2>'+email+
     '<div class="account-actions">'+accountActions()+'</div></section>';
   }
   if(account.isAdmin===true)root.insertAdjacentHTML('beforeend','<section class="account-card"><h2>Ventas y comisiones</h2><p>Exporta el registro verificado por días de Chile. Este reporte no reemplaza los documentos tributarios.</p><form id="sales-form"><label>Desde<input name="from" type="date" required></label><label>Hasta<input name="to" type="date" required></label><button type="submit">Descargar CSV</button></form></section>');
@@ -241,6 +251,7 @@ root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!b.m
  if(b.dataset.action==='retry'){location.reload();return;}
  if(b.dataset.action==='google'){await startGoogleSignIn({sdk,config});return;}
  if(b.dataset.action==='signout')await signout();
+ if(b.dataset.action==='basic'){if(config?.basicEnabled!==true)return;await fetch('/api/session',{method:'POST',headers:{'x-cachaste-request':'1',authorization:'Bearer '+(await sdk.auth.getSession()).data.session.access_token}}).then(r=>{if(!r.ok)throw Error('AUTH_REQUIRED');});location.assign('/app/inicio.html');return;}
  if(b.dataset.action==='refresh'){await request({action:'refresh'});await connect();notice(account?.access?.active?'Tu acceso está verificado.':'Todavía no hay un pago o prueba verificados.');}
  if(b.dataset.action==='reset'){location.assign('/recuperar');return;}
  if(b.dataset.action==='mp-qa-status'||b.dataset.action==='mp-qa-refresh'||b.dataset.qaCancel){

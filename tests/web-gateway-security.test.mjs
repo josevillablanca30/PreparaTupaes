@@ -133,3 +133,246 @@ test('valid student progress reaches the RPC with the authenticated token',async
  assert.equal(calls[2].options.headers.authorization,'Bearer '+token);
  assert.deepEqual(JSON.parse(calls[2].options.body),payload);
 });
+
+test('basic quota remains closed without a complete educational release',async()=>{
+ const res=await gateway.fetch(req('/api/basic/quota',{method:'POST',headers:{origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json'},body:JSON.stringify({operation:'consume',kind:'lesson',subject:'m1',eventId:'ad4d7f88-7f50-4d5c-a833-111111111111'})}),env);
+ assert.equal(res.status,503);
+ assert.equal((await json(res)).error,'BASIC_NOT_READY');
+});
+test('basic quota rejects cross-origin calls before checking release flag',async()=>{
+ const res=await gateway.fetch(req('/api/basic/quota',{method:'POST',headers:{origin:'https://attacker.invalid','x-cachaste-request':'1','content-type':'application/json'},body:'{}'}),env);
+ assert.equal(res.status,403);
+ assert.equal((await json(res)).error,'ORIGIN_DENIED');
+});
+test('basic quota does not appear enabled in public configuration',async()=>{
+ const res=await gateway.fetch(req('/api/config'),{...env,WEB_BASIC_ACCESS_ENABLED:'true'});
+ assert.equal(res.status,200);
+ assert.equal((await json(res)).basicEnabled,false);
+});
+
+test('basic quota gateway requires a verified identity and forwards only validated fields',async()=>{
+ const token=fakeToken(),calls=[];
+ const quotaGateway=createGateway({allowDevelopmentHttp:true,fetcher:async(url,options={})=>{
+  calls.push({url,options});
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false,validUntilMs:null});
+  if(url.endsWith('/rest/v1/rpc/cachaste_basic_quota'))return Response.json({allowed:true,tier:'basica',remaining:2});
+  throw Error('Unexpected backend request');
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ const enabled={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true',WEB_BASIC_COMPLETION_ATTESTATION_READY:'true'};
+ const eventId='ad4d7f88-7f50-4d5c-a833-111111111111';
+ const response=await quotaGateway.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'check',kind:'lesson',subject:'m1',ignored:'secret'})}),enabled);
+ assert.equal(response.status,200);
+ assert.equal((await json(response)).remaining,2);
+ assert.equal(calls.length,3);
+ assert.deepEqual(JSON.parse(calls[2].options.body),{operation:'check',kind:'lesson',subject:'m1',event_id:null});
+ const invalid=await quotaGateway.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'check',kind:'lesson',subject:'all'})}),enabled);
+ assert.equal(invalid.status,400);
+ assert.equal(calls.length,5);
+});
+
+test('basic quota requires both release and educational enforcement flags',async()=>{
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json'};
+ const body=JSON.stringify({operation:'check',kind:'lesson',subject:'m1'});
+ for(const bindings of [{...env,WEB_BASIC_ACCESS_ENABLED:'true'},{...env,WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true'}]){
+  const res=await gateway.fetch(req('/api/basic/quota',{method:'POST',headers,body}),bindings);
+  assert.equal(res.status,503);
+  assert.equal((await json(res)).error,'BASIC_NOT_READY');
+ }
+});
+
+test('basic quota rejects malformed JSON without reaching the database',async()=>{
+ const token=fakeToken();let quotaCalls=0;
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async url=>{
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false,validUntilMs:null});
+  quotaCalls++;throw Error('Unexpected quota database request');
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ const flags={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true'};
+ for(const body of ['{invalid','null','[]']){
+  const res=await g.fetch(req('/api/basic/quota',{method:'POST',headers,body}),flags);
+  assert.equal(res.status,400,body);
+ }
+ assert.equal(quotaCalls,0);
+});
+
+test('basic consumption remains closed without server-side completion attestation',async()=>{
+ const token=fakeToken(),calls=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async url=>{
+  calls.push(url);
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false,validUntilMs:null});
+  throw Error('No quota RPC expected');
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ const flags={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true'};
+ const response=await g.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'consume',kind:'lesson',subject:'m1',eventId:'ad4d7f88-7f50-4d5c-a833-111111111111'})}),flags);
+ assert.equal(response.status,403);
+ assert.equal((await json(response)).error,'SERVER_VERIFIED_COMPLETION_REQUIRED');
+ assert.equal(calls.length,2);
+});
+
+test('basic quota summary requires both flags and an authenticated user',async()=>{
+ const token=fakeToken(),calls=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async(url,options={})=>{
+  calls.push({url,options});
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false,validUntilMs:null});
+  if(url.endsWith('/rest/v1/rpc/cachaste_basic_quota_summary'))return Response.json({tier:'basica',day:'2026-11-16',lessonsRemaining:{m1:3,m2:3,lectora:3,ciencias:3,historia:3},diagnosticsRemaining:{m1:1,m2:1,lectora:1,ciencias:1,historia:1},expressExamsRemaining:1,duelsRemaining:2,fullExamsRemaining:0});
+  throw Error('Unexpected backend request');
+ }});
+ const path='/api/basic/summary';
+ assert.equal((await g.fetch(req(path),env)).status,503);
+ const flags={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true'};
+ assert.equal((await g.fetch(req(path),flags)).status,401);
+ const response=await g.fetch(req(path,{headers:{authorization:'Bearer '+token}}),flags);
+ assert.equal(response.status,200);
+ const body=await json(response);
+ assert.equal(body.lessonsRemaining.m1,3);
+ assert.equal(body.fullExamsRemaining,0);
+ assert.equal(calls.length,3);
+ assert.equal(calls[2].options.method,'POST');
+});
+
+test('browser cannot consume Basic quota even if all release flags are enabled',async()=>{
+ const token=fakeToken(),calls=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async(url)=>{
+  calls.push(url);
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false});
+  throw Error('MUST_NOT_WRITE_QUOTA');
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ const flags={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true',WEB_BASIC_COMPLETION_ATTESTATION_READY:'true'};
+ const response=await g.fetch(req('/api/basic/quota',{method:'POST',headers,body:JSON.stringify({operation:'consume',kind:'lesson',subject:'m1',eventId:'ad4d7f88-7f50-4d5c-a833-111111111111'})}),flags);
+ assert.equal(response.status,403);
+ assert.equal((await json(response)).error,'SERVER_VERIFIED_COMPLETION_REQUIRED');
+ assert.equal(calls.length,2);
+});
+
+test('Basic progress snapshot is opt-in and cannot be used for client writes',async()=>{
+ const token=fakeToken(),calls=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async(url,options={})=>{
+  calls.push({url,options});
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false,validUntilMs:null});
+  if(url.endsWith('/rest/v1/rpc/cachaste_web_progress'))return Response.json({documents:[]});
+  throw Error('Unexpected backend request: '+url);
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ const post=(operation,flags)=>g.fetch(req('/api/progress',{method:'POST',headers,body:JSON.stringify({operation})}),flags);
+ const ready={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true',WEB_BASIC_PROGRESS_SNAPSHOT_READY:'true'};
+ assert.equal((await post('snapshot',env)).status,402);
+ assert.equal((await post('snapshot',{...ready,WEB_BASIC_PROGRESS_SNAPSHOT_READY:'false'})).status,402);
+ assert.equal((await post('put',ready)).status,402);
+ assert.equal(calls.filter(x=>x.url.endsWith('/rest/v1/rpc/cachaste_web_progress')).length,0);
+ assert.equal((await post('snapshot',ready)).status,200);
+ assert.equal(calls.filter(x=>x.url.endsWith('/rest/v1/rpc/cachaste_web_progress')).length,1);
+});
+
+test('progress endpoint rejects malformed and non-object payloads without writing',async()=>{
+ const token=fakeToken();let progressCalls=0;
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async url=>{
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false});
+  if(url.endsWith('/rest/v1/rpc/cachaste_web_progress'))progressCalls++;
+  throw Error('Unexpected backend request');
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ for(const body of ['{broken','null','[]']){
+  const response=await g.fetch(req('/api/progress',{method:'POST',headers,body}),env);
+  assert.equal(response.status,400,body);
+ }
+ assert.equal(progressCalls,0);
+});
+
+test('Basic activity admission checks server quota and denies Premium-only modes',async()=>{
+ const token=fakeToken(),calls=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async(url,options={})=>{
+  calls.push({url,options});
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false});
+  if(url.endsWith('/rest/v1/rpc/cachaste_basic_quota'))return Response.json({allowed:false,tier:'basica',remaining:0});
+  throw Error('Unexpected request '+url);
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ const post=(body,flags)=>g.fetch(req('/api/basic/admission',{method:'POST',headers,body:JSON.stringify(body)}),flags);
+ const ready={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true'};
+ assert.equal((await post({mode:'lesson',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'},env)).status,503);
+ const premiumOnly=await post({mode:'full-exam',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'},ready);
+ assert.equal(premiumOnly.status,403);
+ assert.equal((await json(premiumOnly)).reason,'PREMIUM_REQUIRED');
+ assert.equal(calls.filter(c=>c.url.endsWith('/rest/v1/rpc/cachaste_basic_quota')).length,0);
+ const exhausted=await post({mode:'lesson',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'},ready);
+ assert.equal(exhausted.status,200);
+ assert.deepEqual(await json(exhausted),{allowed:false,kind:'lesson',subject:'m1',tier:'basica',remaining:0,preflightOnly:true});
+ const call=calls.find(c=>c.url.endsWith('/rest/v1/rpc/cachaste_basic_quota'));
+ assert.deepEqual(JSON.parse(call.options.body),{operation:'check',kind:'lesson',subject:'m1',event_id:null});
+});
+
+test('Basic reservation endpoint stays closed until completion attestation is ready',async()=>{
+ const token=fakeToken(),calls=[];
+ const g=createGateway({allowDevelopmentHttp:true,fetcher:async(url,options={})=>{
+  calls.push({url,options});
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:'student-a'});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return Response.json({userId:'student-a',serverTimeMs:Date.now(),active:false});
+  if(url.endsWith('/rest/v1/rpc/cachaste_reserve_basic_learning_attempt'))return Response.json({allowed:true,tier:'basica',attemptId:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a',remaining:2});
+  throw Error('Unexpected request '+url);
+ }});
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json',authorization:'Bearer '+token};
+ const post=(body,flags)=>g.fetch(req('/api/basic/reserve',{method:'POST',headers,body:JSON.stringify(body)}),flags);
+ const flags={...env,WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true',WEB_BASIC_ATTEMPT_RESERVATIONS_READY:'true'};
+ assert.equal((await post({mode:'lesson',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'},flags)).status,503);
+ assert.equal(calls.length,0);
+ const completionReady={...flags,WEB_BASIC_COMPLETION_ATTESTATION_READY:'true'};
+ assert.equal((await post({mode:'lesson',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'},completionReady)).status,503);
+ const ready={...completionReady,WEB_BASIC_SERVER_ISSUANCE_READY:'true',SUPABASE_SERVICE_ROLE_KEY:'test-server-only-key',BASIC_QUESTION_BANK_JSON:'[]'};
+ assert.equal((await post({mode:'full-exam',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'},ready)).status,403);
+ assert.equal(calls.filter(x=>x.url.endsWith('/rest/v1/rpc/cachaste_reserve_basic_learning_attempt')).length,0);
+ const reserved=await post({mode:'lesson',subject:'M1',requestKey:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'},ready);
+ assert.equal(reserved.status,200);
+ assert.equal((await json(reserved)).remaining,2);
+ const reservation=calls.find(x=>x.url.endsWith('/rest/v1/rpc/cachaste_reserve_basic_learning_attempt'));
+ assert.deepEqual(JSON.parse(reservation.options.body),{p_kind:'lesson',p_subject:'m1',p_request_key:'a2f817ca-a0e1-4d83-a6d1-99319124ab7a'});
+});
+
+test('Basic completion is denied without activation and without leaking server credentials',async()=>{
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json'};
+ const res=await gateway.fetch(req('/api/basic/complete',{method:'POST',headers,body:JSON.stringify({attemptId:'123e4567-e89b-42d3-a456-426614174000',answers:[{questionId:'q1',selectedIndex:0}]})}),env);
+ assert.equal(res.status,503);assert.equal((await json(res)).error,'BASIC_NOT_READY');
+ const bad=await gateway.fetch(req('/api/basic/complete',{method:'POST',headers:{...headers,origin:'https://attacker.invalid'},body:'{}'}),env);
+ assert.equal(bad.status,403);
+});
+
+test('Basic completion uses service-role API key only on privileged RPC',async()=>{
+ const payload=Buffer.from(JSON.stringify({exp:Math.floor(Date.now()/1000)+3600})).toString('base64url');
+ const userToken='eyJhbGciOiJub25lIn0.'+payload+'.signature';
+ const requests=[];
+ const fetcher=async(url,options)=>{
+  requests.push({url,headers:options.headers});
+  if(url.endsWith('/auth/v1/user'))return new Response(JSON.stringify({id:'123e4567-e89b-42d3-a456-426614174001'}),{headers:{'content-type':'application/json'}});
+  if(url.endsWith('/rest/v1/rpc/cachaste_access'))return new Response(JSON.stringify({userId:'123e4567-e89b-42d3-a456-426614174001',serverTimeMs:Date.now(),active:false}),{headers:{'content-type':'application/json'}});
+  if(url.endsWith('/rest/v1/rpc/cachaste_complete_basic_learning_attempt'))return new Response(JSON.stringify({allowed:true,completed:true}),{headers:{'content-type':'application/json'}});
+  throw Error('UNEXPECTED_BACKEND_REQUEST');
+ };
+ const ready=createGateway({fetcher,allowDevelopmentHttp:true});
+ const bindings={...env,SUPABASE_SERVICE_ROLE_KEY:'server-only-test-key',WEB_BASIC_ACCESS_ENABLED:'true',WEB_BASIC_EDUCATIONAL_GUARDS_READY:'true',WEB_BASIC_ATTEMPT_RESERVATIONS_READY:'true',WEB_BASIC_COMPLETION_ATTESTATION_READY:'true',WEB_BASIC_SERVER_ISSUANCE_READY:'true'};
+ const res=await ready.fetch(req('/api/basic/complete',{method:'POST',headers:{origin:'https://sitecacho.cl','x-cachaste-request':'1',authorization:'Bearer '+userToken},body:JSON.stringify({attemptId:'123e4567-e89b-42d3-a456-426614174002',answers:[{questionId:'q1',selectedIndex:1}]})}),bindings);
+ assert.equal(res.status,200);
+ assert.equal(requests.length,3);
+ assert.equal(requests[0].headers.apikey===bindings.SUPABASE_SERVICE_ROLE_KEY,false);
+ assert.equal(requests[1].headers.apikey===bindings.SUPABASE_SERVICE_ROLE_KEY,false);
+ assert.equal(requests[2].headers.apikey,bindings.SUPABASE_SERVICE_ROLE_KEY);
+ assert.equal(requests[2].headers.authorization,'Bearer '+bindings.SUPABASE_SERVICE_ROLE_KEY);
+});
+
+test('Basic question issuance fails closed before rollout and rejects foreign origin',async()=>{
+ const headers={origin:'https://sitecacho.cl','x-cachaste-request':'1','content-type':'application/json'};
+ const payload=JSON.stringify({attemptId:'123e4567-e89b-42d3-a456-426614174002',subject:'m1',kind:'lesson'});
+ const res=await gateway.fetch(req('/api/basic/issue',{method:'POST',headers,body:payload}),env);
+ assert.equal(res.status,503);assert.equal((await json(res)).error,'BASIC_NOT_READY');
+ const foreign=await gateway.fetch(req('/api/basic/issue',{method:'POST',headers:{...headers,origin:'https://evil.invalid'},body:payload}),env);
+ assert.equal(foreign.status,403);
+});
