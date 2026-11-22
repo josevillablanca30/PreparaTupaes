@@ -32,6 +32,8 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
   if(active&&access.active!==true)throw Object.assign(Error('SUBSCRIPTION_REQUIRED'),{status:402});
   return{...value,token};
  }
+ const accountRuntime=/^\/(?:account|web-init|web-shell|web-legacy|web-competition|learning-access|web-basic-entry)\.js$/;
+ const versionScripts=html=>html.replace(/(<script\b[^>]*\bsrc=")(\/(?:account|web-init|web-shell|web-legacy|web-competition|learning-access|web-basic-entry)\.js)(")/g,(_,before,src,after)=>before+src+'?v='+encodeURIComponent(revision)+after);
  const originalReady=env=>env.WEB_BASIC_ACCESS_ENABLED==='true'&&env.WEB_BASIC_EDUCATIONAL_GUARDS_READY==='true'&&env.WEB_BASIC_ORIGINAL_ENGINE_READY==='true';
  const sameOrigin=req=>{const origin=req.headers.get('origin');return origin===new URL(req.url).origin&&req.headers.get('x-cachaste-request')==='1';};
  async function handler(req,env,ctx={}){
@@ -312,7 +314,7 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
      const snapshot=basic?await backend(env,'/rest/v1/rpc/cachaste_original_learning',auth.token,{method:'POST',body:{operation:'state',payload:{}}}):learning?await backend(env,'/rest/v1/rpc/cachaste_web_progress',auth.token,{method:'POST',body:{operation:'snapshot',payload:{}}}):{documents:[]};
      const lease=learning?await offlineLicense(env,auth.user.id,auth.access.validUntilMs,url.origin,revision,now()):null;
      const bootstrap={userId:auth.user.id,originalEngineEnabled:originalReady(env),tier:basic?'basica':'premium',documents:snapshot.documents,offlineLicense:lease,revision,accessUntil:auth.access.validUntilMs,accountOnly};
-     return new Response((await response.text()).replace('<!--CACHASTE_WEB_BOOTSTRAP-->','<script id="cachaste-web-bootstrap" type="application/json">'+safeJson(bootstrap)+'</script>'),{status:response.status,headers});
+     return new Response(versionScripts(await response.text()).replace('<!--CACHASTE_WEB_BOOTSTRAP-->','<script id="cachaste-web-bootstrap" type="application/json">'+safeJson(bootstrap)+'</script>'),{status:response.status,headers});
     }
     return new Response(response.body,{status:response.status,headers});
    }
@@ -329,11 +331,11 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
    // A fragment callback is invisible to the server. The root must have the
    // same privacy headers as /recuperar for old Android/default-template links.
    const authPage=['/','/index.html','/cuenta.html','/cuenta','/recuperar.html','/recuperar','/recuperar/'].includes(path);
-   const headers=new Headers(response.headers);headers.set('content-security-policy',policy(path,pagePolicies));headers.set('x-content-type-options','nosniff');headers.set('referrer-policy',authPage?'no-referrer':'strict-origin-when-cross-origin');if(authPage||path==='/account.js')headers.set('cache-control','private, no-store');headers.set('x-frame-options','DENY');headers.set('permissions-policy','camera=(), microphone=(), geolocation=()');
+   const headers=new Headers(response.headers);headers.set('content-security-policy',policy(path,pagePolicies));headers.set('x-content-type-options','nosniff');headers.set('referrer-policy',authPage?'no-referrer':'strict-origin-when-cross-origin');if(authPage||accountRuntime.test(path))headers.set('cache-control','private, no-store');headers.set('x-frame-options','DENY');headers.set('permissions-policy','camera=(), microphone=(), geolocation=()');
    // An old account bundle may remain fresh in the browser for four hours.
    // Give each deployment a distinct URL, including behind an older service worker.
    if(response.ok&&['/cuenta','/cuenta.html'].includes(path)&&/text\/html/i.test(headers.get('content-type')||'')){
-    const html=(await response.text()).replace('src="/account.js"','src="/account.js?v='+encodeURIComponent(revision)+'"');
+    const html=versionScripts(await response.text());
     for(const name of ['content-length','content-encoding','etag'])headers.delete(name);
     headers.set('x-robots-tag','noindex, nofollow, noarchive');
     return new Response(html,{status:response.status,headers});
