@@ -47,5 +47,10 @@ jobs:
           assert.equal(config.basicEnabled,true);
           const js=await fetch('https://sitecacho.cl/account.js',{cache:'no-store'}).then(r=>r.text());
           assert.ok(js.includes('Empezar gratis'));
+          const page=await fetch('https://sitecacho.cl/cuenta.html',{cache:'no-store'});
+          assert.equal(page.headers.get('cache-control'),'private, no-store');
+          assert.ok((await page.text()).includes('/account.js?v='+config.revision));
+          const bundle=await fetch('https://sitecacho.cl/account.js?v='+config.revision,{cache:'no-store'});
+          assert.equal(bundle.headers.get('cache-control'),'private, no-store');
           console.log(JSON.stringify({production:'https://sitecacho.cl',revision:config.revision,basicEnabled:true,freePlanVisibleInBundle:true}));
           NODE

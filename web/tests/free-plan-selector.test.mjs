@@ -10,3 +10,18 @@ test('Free selector preserves all paid plans and opens the existing educational 
  const {PLANS}=await import('../shared/config.mjs');
  assert.deepEqual(Object.fromEntries(Object.entries(PLANS).map(([k,v])=>[k,v.amount])),{mensual:7990,semanal:2490,anual:64990});
 });
+
+import {createGateway} from '../server/gateway.mjs';
+test('Account reload uses a deployment-specific bundle even with a four-hour cached previous script',async()=>{
+ const gateway=createGateway({revision:'release-basic-cache-fix'});
+ const env={ASSETS:{fetch:async req=>new Response(new URL(req.url).pathname==='/account.js'?'new-account-bundle':'<html><script src="/account.js" defer></script></html>',{headers:{'content-type':new URL(req.url).pathname==='/account.js'?'application/javascript':'text/html','cache-control':'public, max-age=14400','etag':'old-asset','content-length':'123'}})}};
+ for(const path of ['/cuenta','/cuenta.html','/cuenta.html?next=%2Fapp%2Finicio.html']){
+  const response=await gateway.fetch(new Request('https://sitecacho.cl'+path),env);
+  assert.equal(response.headers.get('cache-control'),'private, no-store');
+  assert.equal(response.headers.get('etag'),null);
+  assert.match(await response.text(),/src="\/account.js\?v=release-basic-cache-fix"/);
+ }
+ const bundle=await gateway.fetch(new Request('https://sitecacho.cl/account.js?v=release-basic-cache-fix'),env);
+ assert.equal(bundle.headers.get('cache-control'),'private, no-store');
+ assert.equal(await bundle.text(),'new-account-bundle');
+});

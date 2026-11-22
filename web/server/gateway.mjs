@@ -329,7 +329,14 @@ export function createGateway({fetcher=fetch,now=()=>Date.now(),revision='local'
    // A fragment callback is invisible to the server. The root must have the
    // same privacy headers as /recuperar for old Android/default-template links.
    const authPage=['/','/index.html','/cuenta.html','/cuenta','/recuperar.html','/recuperar','/recuperar/'].includes(path);
-   const headers=new Headers(response.headers);headers.set('content-security-policy',policy(path,pagePolicies));headers.set('x-content-type-options','nosniff');headers.set('referrer-policy',authPage?'no-referrer':'strict-origin-when-cross-origin');if(authPage)headers.set('cache-control','private, no-store');headers.set('x-frame-options','DENY');headers.set('permissions-policy','camera=(), microphone=(), geolocation=()');
+   const headers=new Headers(response.headers);headers.set('content-security-policy',policy(path,pagePolicies));headers.set('x-content-type-options','nosniff');headers.set('referrer-policy',authPage?'no-referrer':'strict-origin-when-cross-origin');if(authPage||path==='/account.js')headers.set('cache-control','private, no-store');headers.set('x-frame-options','DENY');headers.set('permissions-policy','camera=(), microphone=(), geolocation=()');
+   // An old account bundle may remain fresh in the browser for four hours.
+   // Give each deployment a distinct URL, including behind an older service worker.
+   if(response.ok&&['/cuenta','/cuenta.html'].includes(path)&&/text\/html/i.test(headers.get('content-type')||'')){
+    const html=(await response.text()).replace('src="/account.js"','src="/account.js?v='+encodeURIComponent(revision)+'"');
+    for(const name of ['content-length','content-encoding','etag'])headers.delete(name);
+    return new Response(html,{status:response.status,headers});
+   }
    if(response.ok&&/text\/html/i.test(headers.get('content-type')||'')){
     const mayIndex=indexing&&SEARCH_PAGES.includes(searchPage);
     if(!mayIndex)headers.set('x-robots-tag','noindex, nofollow, noarchive');
