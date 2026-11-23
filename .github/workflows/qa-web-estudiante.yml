@@ -1,7 +1,9 @@
 name: Acceso Básico móvil en sitecacho.cl
 on:
+  workflow_dispatch:
   push:
     branches: [qa/web-movil-produccion-20261123]
+    paths: [.github/workflows/qa-web-estudiante.yml]
 permissions:
   contents: read
 jobs:
@@ -17,6 +19,8 @@ jobs:
           node-version: '22'
       - run: npm ci && npx playwright install --with-deps chromium
       - run: node qa-estudiante-web.mjs
+        env:
+          CACHASTE_QA_STUDENT_PASSWORD: ${{ secrets.CACHASTE_QA_STUDENT_PASSWORD }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
