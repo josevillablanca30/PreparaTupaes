@@ -1,0 +1,25 @@
+name: Acceso Básico móvil en sitecacho.cl
+on:
+  push:
+    branches: [qa/web-movil-produccion-20261123]
+permissions:
+  contents: read
+jobs:
+  estudiante:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci && npx playwright install --with-deps chromium
+      - run: node qa-estudiante-web.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Evidencia-Web-Movil
+          path: evidencia/*.png
+          if-no-files-found: ignore
