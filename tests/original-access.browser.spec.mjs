@@ -44,7 +44,8 @@ test('Basic completes three original lesson stages, keeps mascot/tutor and stops
  await expect(page.locator('.reference-brand')).toBeVisible();
  for(let n=0;n<3;n++){await launch(page);await expect(page.locator('.reference-lesson-hero').first()).toBeVisible();await finish(page);}
  await page.evaluate(()=>{const E=window.CachasteDailyApp.engine;E.start('M1',2,'lesson',[...E.byKey.values()].find(q=>q.subjectKey==='M1').concept);});
- await expect(page.locator('[data-learning-notice]')).toContainText('Vuelve mañana');expect(errors).toEqual([]);
+ await expect(page.locator('[data-learning-notice]')).toContainText('Vuelve mañana');
+ await expect(page.locator('[data-learning-notice]')).toContainText('sitecacho.cl');expect(errors).toEqual([]);
  expect((await db.query('select count(*) n from cachaste_web.basic_usage')).rows[0].n).toBe(3);
 });
 test('Reload and another device recover a server-owned attempt; local quota/session edits do not add access',async({page,browser})=>{
@@ -99,6 +100,8 @@ test('Android access page offers Basic and preserves server-confirmed full acces
  await page.goto('/suscripcion.html');
  await expect(page.locator('#basic-access')).toBeVisible();
  await expect(page.locator('#premium-access')).toBeHidden();
+ await expect(page.locator('main')).toContainText('sitecacho.cl');
+ await expect(page.locator('main')).toContainText('No se realizan compras dentro de esta aplicación.');
  await db.exec("update cachaste.settings set environment='test'");
  await grantTest(db,0);
  await page.reload();
