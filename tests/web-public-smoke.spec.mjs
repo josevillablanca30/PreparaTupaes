@@ -9,7 +9,10 @@ test('landing loads with preserved branding and no horizontal overflow',async({p
  await expect(mascot).toHaveCSS('mask-image','none');
  const sizes=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
  expect(sizes.scroll).toBeLessThanOrEqual(sizes.client+1);
- await expect(page.getByText(/Los cobros todavía no están habilitados/i).first()).toBeVisible();
+ const cards=page.locator('#planes .price-card');
+ await expect(cards.locator('h3')).toHaveText(['Básico','Semanal','Mensual','Anual']);
+ await expect(cards.first().getByText('GRATIS',{exact:true})).toBeVisible();
+ await expect(cards.first().getByRole('link',{name:/Empezar gratis/})).toHaveAttribute('href','/cuenta.html#planes');
 });
 test('account and recovery pages load without horizontal overflow',async({page})=>{
  for(const route of ['/cuenta.html','/recuperar.html']){
