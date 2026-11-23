@@ -11,13 +11,29 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
-      - name: Preparar credencial del estudiante de QA
-        env:
-          QA_LOGIN: ${{ secrets.CACHASTE_QA_STUDENT_PASSWORD }}
+      - name: Preparar contraseña aleatoria de QA
         run: |
-          test -n "$QA_LOGIN" || { echo 'Falta la contraseña de la cuenta de prueba confirmada'; exit 1; }
           umask 077
-          printf %s "$QA_LOGIN" > "$RUNNER_TEMP/student-test-password"
+          openssl rand -hex 32 | tr -d '\n' > "$RUNNER_TEMP/student-test-password"
+          cat > "$RUNNER_TEMP/public.pem" <<'KEY'
+          -----BEGIN PUBLIC KEY-----
+          MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAoQOvPBMpVjr5bY/J/Uly
+          xqHTr5RrgI/Fx9OJgbg+4GU8aF1MtTTSDmbZxikQ8YIvyUtCTPGqfIFRnv1Zll02
+          aMoJ0RJvZezcfPHz8nE1hqZ1mMj+8jHFCmiUbdzUjRaTm3pWpIIzNDcp2SA2Va2D
+          Yqh4nT21HwTEQJT3WquADedIJ3jSK0X7vCUySpDWkeU1ZBCIDhTeR8aJtfCYYeh8
+          ndjQE0BNxX6j+eLxI4Md8OkfGXf8KhNgWIVI1M72W62thm9BEAoZ8VMmbHoR9JYK
+          +qQ3zOHmXpMVneYP82kxDbuRaHIusIyVkKxIt2Us8zMVXAlqUG2BzW1qyjy4bXPa
+          5wtTRxoASpbyokvQKLaFFk0ADYTKCACuTGvilSCIe4Z/F6g2U00H4xCG2Ticlaoy
+          xPtj1MYW9Yo1EZ8lOf5kYDWuQDMb9ws9+4oT254jQ648LXckbTsuTzpQKVLSXCoH
+          dcFz9sNKjlpWeCRgOe5A1okHEem6o68/vH8mn9buNkf3AgMBAAE=
+          -----END PUBLIC KEY-----
+          KEY
+          openssl pkeyutl -encrypt -pubin -inkey "$RUNNER_TEMP/public.pem" -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256 -in "$RUNNER_TEMP/student-test-password" -out "$RUNNER_TEMP/credencial-cifrada.bin"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Credencial-QA-cifrada
+          path: ${{ runner.temp }}/credencial-cifrada.bin
+          retention-days: 1
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -26,6 +42,11 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci && node scripts/build.mjs && node scripts/build-android-access.mjs
+      - run: npx playwright install --with-deps chromium
+      - name: Recorrido web publicado con cuenta Básica
+        continue-on-error: true
+        id: web
+        run: node qa-estudiante-web.mjs
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -50,6 +71,8 @@ jobs:
           arch: x86_64
           disable-animations: true
           script: bash qa-android-journey.sh
+      - if: always() && steps.web.outcome != 'success'
+        run: exit 1
       - if: always()
         run: rm -f "$RUNNER_TEMP/student-test-password"
       - uses: actions/upload-artifact@v4
