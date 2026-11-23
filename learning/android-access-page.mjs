@@ -17,9 +17,12 @@ async function showAccess(){
    status.textContent=admin?'Tu acceso de administrador es gratuito, permanente e ilimitado.':'Tu cuenta tiene acceso completo.';
    premium.textContent=admin?'Acceso de administrador':'Acceso completo';
    premium.hidden=false;
-  }else if(data.tier==='basica'){
+   basic.href='inicio.html';
+   basic.textContent='Continuar mi preparación';
+  }else if(data.tier==='basica' && data.basicEnabled===true){
    status.textContent='Tu cuenta puede utilizar el Plan Básico sin tarjeta.';
-   basic.hidden=false;
+   basic.href='inicio.html';
+   basic.textContent='Entrar con Plan Básico GRATIS';
   }else status.textContent='Tu acceso todavía no está disponible.';
  }catch{
   status.textContent='No pudimos consultar tu acceso. Conéctate y vuelve a intentarlo.';
