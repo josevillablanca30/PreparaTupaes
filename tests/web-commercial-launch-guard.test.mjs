@@ -12,8 +12,9 @@ test('commercial landing retains mobile-safe heading and approved artwork',()=>{
 });
 test('commercial review must not accidentally enable public checkout or indexing',()=>{
  assert.match(landing,/name="robots" content="noindex,nofollow"/);
- assert.match(landing,/La contratación todavía no está habilitada/);
- assert.match(landing,/Los cobros todavía no están habilitados/);
+ const plans=landing.match(/<section[^>]+id="planes"[^>]*>([\s\S]*?)<\/section>/)[1];
+ assert.deepEqual([...plans.matchAll(/href="([^"]+)"/g)].map(match=>match[1]),Array(4).fill('/cuenta.html#planes'));
+ assert.doesNotMatch(plans,/<form\b|data-action="checkout"/);
  assert.match(account,/name="robots" content="noindex,nofollow"/);
 });
 test('landing exposes account, plan prices and essential disclosures',()=>{
