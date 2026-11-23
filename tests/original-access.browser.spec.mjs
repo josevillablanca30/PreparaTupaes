@@ -95,13 +95,14 @@ test('Packaged mobile home preserves the five dark cards without light ledges or
  }
 });
 
-test('Android access page only displays Basic for a Basic account and reflects server-confirmed full access',async({page})=>{
+test('Android access page offers Basic and preserves server-confirmed full access',async({page})=>{
  await page.goto('/suscripcion.html');
  await expect(page.locator('#basic-access')).toBeVisible();
  await expect(page.locator('#premium-access')).toBeHidden();
  await db.exec("update cachaste.settings set environment='test'");
  await grantTest(db,0);
  await page.reload();
- await expect(page.locator('#basic-access')).toBeHidden();
+ await expect(page.locator('#basic-access')).toHaveText('Continuar mi preparación');
+ await expect(page.locator('#basic-access')).toHaveAttribute('href','inicio.html');
  await expect(page.locator('#premium-access')).toHaveText('Acceso completo');
 });
