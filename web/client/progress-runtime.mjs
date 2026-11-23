@@ -5,16 +5,18 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
  const uid=bootstrap.userId,prefix='cachaste-web:'+uid+':',keys=new Set(STORAGE_KEYS),original={get:Storage.prototype.getItem,set:Storage.prototype.setItem,remove:Storage.prototype.removeItem};
  const get=k=>original.get.call(storage,k),set=(k,v)=>original.set.call(storage,k,v),remove=k=>original.remove.call(storage,k);
  const parse=(raw,fallback=null)=>{try{return JSON.parse(raw)||fallback;}catch{return fallback;}};
+ let verifiedOnly=bootstrap.tier==='basica';
  let meta=parse(get(prefix+'sync'),{}),timer=null,running=false,stopped=false,erased=false,unloading=false,conflicts=parse(get(prefix+'conflicts'),{});
  const persist=()=>{if(!erased)set(prefix+'sync',JSON.stringify(meta));};
  const pending=()=>Object.entries(meta).filter(([,v])=>v.dirty).length;
  const status=()=>onStatus(stopped?'expired':Object.keys(conflicts).length?'conflict':pending()?'pending':'saved');
  for(const document of bootstrap.documents||[]){
   const saved=meta[document.key];if(!keys.has(document.key))continue;
-  if(!saved?.dirty){document.value===null?remove(prefix+document.key):set(prefix+document.key,JSON.stringify(document.value));meta[document.key]={version:document.version,base:document.value,dirty:false};}
+  if(verifiedOnly&&saved?.dirty)set(prefix+'legacy-local-backup:'+document.key,get(prefix+document.key)||'null');
+  if(verifiedOnly||!saved?.dirty){document.value===null?remove(prefix+document.key):set(prefix+document.key,JSON.stringify(document.value));meta[document.key]={version:document.version,base:document.value,dirty:false};}
  }
  persist();
- const enqueue=key=>{if(!keys.has(key)||erased)return;meta[key]={...(meta[key]||{version:0,base:null}),dirty:true};persist();status();clearTimeout(timer);if(!stopped)timer=setTimeout(flush,1800);};
+ const enqueue=key=>{if(!keys.has(key)||erased||verifiedOnly)return;meta[key]={...(meta[key]||{version:0,base:null}),dirty:true};persist();status();clearTimeout(timer);if(!stopped)timer=setTimeout(flush,1800);};
  const wrappedGet=function(key){return original.get.call(this,this===storage&&keys.has(key)?prefix+key:key);};
  const wrappedSet=function(key,value){original.set.call(this,this===storage&&keys.has(key)?prefix+key:key,String(value));if(this===storage&&keys.has(key))enqueue(key);};
  const wrappedRemove=function(key){original.remove.call(this,this===storage&&keys.has(key)?prefix+key:key);if(this===storage&&keys.has(key))enqueue(key);};
@@ -30,12 +32,18 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
    if(reply.conflict){
     const remote=reply.document||{version:0,value:null},latest=parse(get(prefix+key)),merged=mergeDocument(record.base,latest,remote.value);
     if(JSON.stringify(latest)===JSON.stringify(remote.value)){meta[key]={version:remote.version,base:remote.value,dirty:false};persist();continue;}
+    // If the remote matches the submitted snapshot, a newer local answer is
+    // still pending. Rebase it instead of treating it as a user conflict.
+    if(JSON.stringify(local)===JSON.stringify(remote.value)){meta[key]={version:remote.version,base:remote.value,dirty:true};persist();clearTimeout(timer);timer=setTimeout(flush,1800);continue;}
     conflicts[key]={local:latest,remote,base:record.base,fields:merged.conflicts,canMerge:merged.conflicts.length===0};
     set(prefix+'conflicts',JSON.stringify(conflicts));onConflict({key,...conflicts[key]});continue;
    }
    const saved=reply.document;const changed=JSON.stringify(parse(get(prefix+key)))!==JSON.stringify(local);
    meta[key]={version:saved.version,base:saved.value,dirty:changed};persist();
-  }}catch(e){if(e.message!=='ACCESS_EXPIRED')onStatus('pending');}
+   // A student may keep answering while the request is in flight. The first
+   // response only acknowledges the earlier snapshot; queue the newer edit.
+   if(changed&&!stopped&&!unloading){clearTimeout(timer);timer=setTimeout(flush,1800);}
+  }}catch(e){if(e.message!=='ACCESS_EXPIRED'){onStatus('pending');if(!stopped&&!unloading){clearTimeout(timer);timer=setTimeout(flush,5000);}}}
   finally{running=false;status();}
  }
  async function resolve(key,choice){
@@ -44,9 +52,9 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
   set(prefix+'conflict-archive:'+Date.now()+':'+key,JSON.stringify(conflict));
   const latest=parse(get(prefix+key)),merge=mergeDocument(conflict.base,latest,conflict.remote.value);if(choice==='merge'&&merge.conflicts.length)throw Error('CONFLICT_CHANGED');
   const value=choice==='local'?latest:choice==='merge'?merge.value:conflict.remote.value;
-  if(choice!=='remote'){const reply=await rpc('put',{key,value,baseVersion:conflict.remote.version});if(reply.conflict){conflicts[key].remote=reply.document;set(prefix+'conflicts',JSON.stringify(conflicts));throw Error('CONFLICT_CHANGED');}meta[key]={version:reply.document.version,base:value,dirty:false};}
-  else meta[key]={version:conflict.remote.version,base:value,dirty:false};
-  value===null?remove(prefix+key):set(prefix+key,JSON.stringify(value));delete conflicts[key];set(prefix+'conflicts',JSON.stringify(conflicts));persist();status();return true;
+  if(choice!=='remote'){const reply=await rpc('put',{key,value,baseVersion:conflict.remote.version});if(reply.conflict){conflicts[key].remote=reply.document;set(prefix+'conflicts',JSON.stringify(conflicts));throw Error('CONFLICT_CHANGED');}const changed=JSON.stringify(parse(get(prefix+key)))!==JSON.stringify(latest);meta[key]={version:reply.document.version,base:value,dirty:changed};if(!changed){value===null?remove(prefix+key):set(prefix+key,JSON.stringify(value));}else if(!stopped&&!unloading){clearTimeout(timer);timer=setTimeout(flush,1800);}}
+  else {meta[key]={version:conflict.remote.version,base:value,dirty:false};value===null?remove(prefix+key):set(prefix+key,JSON.stringify(value));}
+  delete conflicts[key];set(prefix+'conflicts',JSON.stringify(conflicts));persist();status();return true;
  }
  // Local edits are durable before any network request. Safari can discard a
  // document during navigation; its next page resumes pending writes by user ID.
@@ -54,10 +62,10 @@ export function installProgressRuntime({bootstrap,storage=localStorage,fetcher=f
  const show=()=>{unloading=false;if(pending())flush();};
  const visibility=()=>{if(document.hidden){clearTimeout(timer);persist();}else show();};
  addEventListener('online',flush);addEventListener('pagehide',hide);addEventListener('pageshow',show);document.addEventListener('visibilitychange',visibility);
- status();if(pending())timer=setTimeout(flush,50);
- return{flush,resolve,pending,conflicts,userId:uid,pause(){stopped=true;clearTimeout(timer);persist();status();},resume(){if(erased)return;stopped=false;status();if(pending())flush();},erase(){erased=true;stopped=true;clearTimeout(timer);for(const key of Object.keys(storage))if(key.startsWith(prefix))remove(key);},restore(){Storage.prototype.getItem=original.get;Storage.prototype.setItem=original.set;Storage.prototype.removeItem=original.remove;clearTimeout(timer);removeEventListener('online',flush);removeEventListener('pagehide',hide);removeEventListener('pageshow',show);document.removeEventListener('visibilitychange',visibility);}};
+ if(bootstrap.tier==='basica')stopped=true;status();if(pending()&&!stopped)timer=setTimeout(flush,50);
+ return{flush,resolve,pending,conflicts,userId:uid,setVerifiedOnly(value){verifiedOnly=value===true;},pause(){stopped=true;clearTimeout(timer);persist();status();},resume(){if(erased)return;stopped=false;status();if(pending())flush();},erase(){erased=true;stopped=true;clearTimeout(timer);for(const key of Object.keys(storage))if(key.startsWith(prefix))remove(key);},restore(){Storage.prototype.getItem=original.get;Storage.prototype.setItem=original.set;Storage.prototype.removeItem=original.remove;clearTimeout(timer);removeEventListener('online',flush);removeEventListener('pagehide',hide);removeEventListener('pageshow',show);document.removeEventListener('visibilitychange',visibility);}};
 }
 if(typeof window!=='undefined'){
  const node=document.getElementById('cachaste-web-bootstrap');
- if(node){const bootstrap=JSON.parse(node.textContent);window.CachasteWebBootstrap=bootstrap;window.CachasteWebProgress=installProgressRuntime({bootstrap,onStatus:status=>{window.CachasteWebSyncStatus=status;dispatchEvent(new CustomEvent('cachaste-sync',{detail:status}));},onConflict:()=>dispatchEvent(new Event('cachaste-conflict'))});}
+ if(node&&!window.CachasteWebProgress){const bootstrap=JSON.parse(node.textContent);window.CachasteWebBootstrap=bootstrap;window.CachasteWebProgress=installProgressRuntime({bootstrap,onStatus:status=>{window.CachasteWebSyncStatus=status;dispatchEvent(new CustomEvent('cachaste-sync',{detail:status}));},onConflict:()=>dispatchEvent(new Event('cachaste-conflict'))});}
 }

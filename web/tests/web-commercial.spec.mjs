@@ -31,6 +31,72 @@ test('anonymous bank request, forged JWT and Premium URL flags all fail closed',
 test('login crosses real browser UI and cookie gate; disabled registration and billing stay honest',async({page})=>{
  await identity(page);await page.goto('/cuenta.html');await page.getByRole('button',{name:'Cerrar sesión',exact:true}).click();await expect(page.getByRole('heading',{name:'Tu preparación comienza aquí.'})).toBeVisible();await page.getByLabel('Correo electrónico',{exact:true}).fill('student-a@example.invalid');await page.getByLabel('Contraseña',{exact:true}).fill('Isolated-qa-password-2026');await page.getByRole('button',{name:'Crear mi cuenta',exact:true}).click();await expect(page.locator('#account-status')).toContainText('El registro se habilitará');await page.getByRole('button',{name:'Entrar a mi cuenta',exact:false}).click();await expect(page.locator('[data-action=pick-course]')).toHaveCount(5);
 });
+test('the account stays usable when payment reconciliation is delayed',async({page})=>{
+ await identity(page);
+ let refreshes=0;
+ await page.route('**/api/billing',async route=>{
+  const {action}=route.request().postDataJSON();
+  if(action==='status')return route.fulfill({json:{ready:false,trialAvailable:false,managementReady:true}});
+  expect(action).toBe('refresh');
+  refreshes++;
+  await route.fulfill({status:503,json:{error:'PAYMENT_PROVIDER_UNAVAILABLE'}});
+ });
+ await page.goto('/cuenta.html?checkout=return');
+ await expect(page.getByRole('link',{name:'Continuar mi preparación',exact:false})).toBeVisible();
+ await expect(page.locator('#account-status')).toContainText('Mercado Pago aún no responde');
+ await expect(page.getByRole('button',{name:'Ver estado de apertura'})).toHaveCount(3);
+ expect(refreshes).toBe(1);
+});
+test('a checkout return waits for server-confirmed access',async({page,request})=>{
+ await identity(page);
+ await request.post('/__qa/control',{data:{active:false}});
+ await page.goto('/cuenta.html?checkout=return&status=approved');
+ await expect(page.locator('#account-status')).toContainText('esperando la confirmación del pago');
+ await expect(page.getByRole('link',{name:'Continuar mi preparación',exact:false})).toHaveCount(0);
+ await expect(page.locator('.access-state')).toContainText('Necesitas una suscripción vigente');
+});
+test('an unpaid student signs in, chooses a plan and enters only after server confirmation',async({page,request})=>{
+ await identity(page);
+ await page.goto('/cuenta.html');
+ await page.getByRole('button',{name:'Cerrar sesión',exact:true}).click();
+ await request.post('/__qa/control',{data:{active:false}});
+ await expect(page.getByRole('heading',{name:'Tu preparación comienza aquí.'})).toBeVisible();
+ await expect(page.locator('[data-plan]')).toHaveCount(0);
+ await page.route('**/api/billing',async route=>{
+  const {action,plan}=route.request().postDataJSON();
+  if(action==='status')return route.fulfill({json:{ready:true,managementReady:true,trialAvailable:true}});
+  if(action==='refresh')return route.fulfill({json:{refreshed:true}});
+  expect({action,plan}).toEqual({action:'checkout',plan:'semanal'});
+  return route.fulfill({json:{checkoutUrl:new URL('/cuenta.html?checkout=return',route.request().url()).href}});
+ });
+ await page.reload();
+ await page.getByLabel('Correo electrónico',{exact:true}).fill('student-a@example.invalid');
+ await page.getByLabel('Contraseña',{exact:true}).fill('Isolated-qa-password-2026');
+ await page.getByRole('button',{name:'Entrar a mi cuenta',exact:false}).click();
+ await expect(page.getByRole('heading',{name:'Elige tu plan',exact:true})).toBeFocused();
+ await expect(page.getByRole('button',{name:'Elegir semanal',exact:true})).toBeVisible();
+ await expect(page.getByRole('link',{name:'Continuar mi preparación',exact:false})).toHaveCount(0);
+ await page.goto('/app/competencia.html#rankings');
+ await expect(page).toHaveURL(/\/cuenta\.html\?.*#planes$/);
+ await page.getByRole('link',{name:'Perfil, privacidad y eliminación',exact:true}).click();
+ await expect(page.getByRole('button',{name:'Eliminar mi cuenta',exact:false})).toBeVisible();
+ await expect(page.getByRole('link',{name:'Rankings',exact:true})).toHaveCount(0);
+ await expect(page.getByRole('link',{name:'Abrir duelos y rankings',exact:true})).toHaveCount(0);
+ await page.evaluate(()=>new Promise(resolve=>{
+  addEventListener('hashchange',()=>requestAnimationFrame(resolve),{once:true});
+  location.hash='duelos';
+ }));
+ await expect(page.getByRole('heading',{name:'Duelos',exact:true})).toHaveCount(0);
+ await expect(page.getByRole('heading',{name:'Mi perfil público',exact:true})).toBeVisible();
+ await page.getByRole('link',{name:'Volver a Mi cuenta',exact:true}).click();
+ await page.getByRole('button',{name:'Elegir semanal',exact:true}).click();
+ await expect(page.locator('#account-status')).toContainText('esperando la confirmación del pago');
+ await expect(page.getByRole('link',{name:'Continuar mi preparación',exact:false})).toHaveCount(0);
+ await request.post('/__qa/control',{data:{active:true}});
+ await page.getByRole('button',{name:'Actualizar mi acceso',exact:true}).click();
+ await page.getByRole('link',{name:'Continuar mi preparación',exact:false}).click();
+ await expect(page.locator('[data-action=pick-course]')).toHaveCount(5);
+});
 test('Google opens only a configured S256 flow and the real SDK exchanges its one-time callback before entering the five subjects',async({page,request,baseURL},info)=>{
  await request.post('/__qa/control',{data:{googleReady:true}});
  // Isolated provider transport: no Google account, consent or production grant
@@ -68,12 +134,12 @@ test('switching from Mi cuenta to a student without Premium removes the previous
  await request.post('/__qa/control',{data:{active:false}});await page.evaluate(async other=>{await globalThis[Symbol.for('cachaste.web.auth')].client.auth.setSession({access_token:other.access_token,refresh_token:other.refresh_token});},sessions.users[1]);await expect(page.locator('.account-email')).toContainText('student-b@example.invalid');await expect(page.locator('.access-state')).toContainText('Necesitas una suscripción');await expect.poll(()=>page.evaluate(async()=>[...await caches.keys()].filter(k=>k.startsWith('cachaste-private-')||k.startsWith('cachaste-license-')).length)).toBe(0);
 });
 test('a Google-only student can administer and delete the account after Premium expires without inventing a password',async({page,request})=>{
- await enter(page);await expect.poll(()=>page.evaluate(()=>!!window.CachasteWebSession)).toBe(true);await page.evaluate(()=>CachasteWebSession.reconnect());await request.post('/__qa/control',{data:{active:false,googleAccount:true}});await page.goto('/app/competencia.html#perfil');await expect(page.getByRole('heading',{name:'Mi perfil público',exact:true})).toBeVisible();await page.getByRole('button',{name:'Eliminar mi cuenta',exact:false}).click();await expect(page.locator('#delete-account-form')).toBeVisible();await expect(page.locator('#delete-account-form input[name=password]')).toHaveCount(0);await expect(page.locator('a[href="/cuenta.html?reauth=google&next=%2Fapp%2Fcompetencia.html"]')).toBeVisible();
+ await enter(page);await expect.poll(()=>page.evaluate(()=>!!window.CachasteWebSession)).toBe(true);await page.evaluate(()=>CachasteWebSession.reconnect());await request.post('/__qa/control',{data:{active:false,googleAccount:true}});await page.goto('/app/competencia.html?manage=profile#perfil');await expect(page.getByRole('heading',{name:'Mi perfil público',exact:true})).toBeVisible();await page.getByRole('button',{name:'Eliminar mi cuenta',exact:false}).click();await expect(page.locator('#delete-account-form')).toBeVisible();await expect(page.locator('#delete-account-form input[name=password]')).toHaveCount(0);await expect(page.locator('a[href="/cuenta.html?reauth=google&next=%2Fapp%2Fcompetencia.html"]')).toBeVisible();
  await page.getByLabel('Escribe ELIMINAR',{exact:true}).fill('ELIMINAR');await page.getByRole('button',{name:'Eliminar definitivamente mi cuenta',exact:true}).click();await expect(page).toHaveURL(/cuenta.html/);await expect(page.getByRole('heading',{name:'Tu preparación comienza aquí.'})).toBeVisible();expect(await page.evaluate(()=>Object.keys(localStorage).filter(k=>k.startsWith('cachaste-web:')).length)).toBe(0);
  const state=await(await request.get('/__qa/state')).json(),remove=state.calls.findIndex(x=>x.operation==='photo_storage_remove'),deletion=state.calls.findIndex(x=>x.operation==='delete_account');expect(remove).toBeGreaterThanOrEqual(0);expect(deletion).toBeGreaterThan(remove);
 });
 test('web profile deletion removes its Storage thumbnail first even after educational access expires',async({page,request})=>{
- await enter(page);await request.post('/__qa/control',{data:{active:false}});await page.goto('/app/competencia.html#perfil');await page.getByRole('button',{name:'Borrar mi perfil público',exact:true}).click();await page.getByRole('button',{name:'Borrar perfil',exact:true}).click();
+ await enter(page);await request.post('/__qa/control',{data:{active:false}});await page.goto('/app/competencia.html?manage=profile#perfil');await page.getByRole('button',{name:'Borrar mi perfil público',exact:true}).click();await page.getByRole('button',{name:'Borrar perfil',exact:true}).click();
  await expect.poll(async()=>{const state=await(await request.get('/__qa/state')).json();return state.calls.filter(x=>['photo_storage_remove','delete_profile'].includes(x.operation)).map(x=>x.operation);}).toEqual(['photo_storage_remove','delete_profile']);
 });
 test('five subjects and all science tracks retain the full educational engine',async({page},info)=>{
@@ -179,4 +245,79 @@ test('complimentary testers see their expiry and cannot start a subscription; sa
  await page.getByRole('button',{name:'Abrir checkout de prueba'}).click();
  const payload=(await posted).postDataJSON();expect(payload.plan).toBe('MONTHLY_TRIAL');expect(payload.payerEmail).toBe('test_user_synthetic@testuser.com');expect(payload.requestId).toMatch(/^[a-f0-9-]{36}$/);
  await expect(page.getByRole('heading',{name:'Destino de checkout simulado para QA de interfaz'})).toBeVisible();
+});
+
+test('the admin can obtain and review a sandbox plan link by payer ID',async({page,request})=>{
+ await request.post('/__qa/control',{data:{qaAdmin:true}});
+ const session=await identity(page);
+ const checkoutUrl='https://www.mercadopago.cl/subscriptions/checkout?preapproval_plan_id=synthetic-weekly';
+ const payerId='1234567890';
+ await page.goto('/cuenta.html?qa=mp');
+ const buyer=page.getByLabel('ID de la cuenta compradora de prueba');
+ const plan=page.getByLabel('Plan de prueba');
+ const link=page.getByRole('link',{name:'Abrir enlace sandbox del plan'});
+ const button=page.getByRole('button',{name:'Obtener enlace por ID'});
+ await plan.selectOption('WEEKLY');
+ await buyer.fill(payerId);
+ const posted=page.waitForRequest(r=>r.url().endsWith('/api/billing/sandbox')&&r.method()==='POST');
+ await button.click();
+ const checkout=await posted;
+ expect(checkout.postDataJSON()).toEqual({action:'checkout',plan:'WEEKLY',payerId});
+ expect(await checkout.headerValue('authorization')).toBe('Bearer '+session.access_token);
+ expect(await checkout.headerValue('x-cachaste-request')).toBe('1');
+ await expect(link).toHaveAttribute('href',checkoutUrl);
+ await expect(link).toHaveAttribute('target','_blank');
+ await expect(page).toHaveURL(/\/cuenta\.html\?qa=mp$/);
+ expect(page.context().pages()).toEqual([page]);
+ await expect(plan).toHaveValue('WEEKLY');
+ await expect(buyer).toHaveValue(payerId);
+
+ await buyer.fill('1234567891');
+ await expect(link).toHaveCount(0);
+ await page.route('**/api/billing/sandbox',async route=>{
+  const response=await route.fetch();
+  await route.fulfill({response,json:{...await response.json(),productionEnabled:true}});
+ });
+ await button.click();
+ await expect(page.locator('#account-status')).toContainText('El servidor no devolvió un enlace válido');
+ await expect(link).toHaveCount(0);
+});
+
+test('the sandbox panel verifies the new payment before allowing reconciliation',async({page,request})=>{
+ await request.post('/__qa/control',{data:{qaAdmin:true}});
+ await identity(page);
+ const payerId='1234567890',paymentId='9876543210';
+ await page.goto('/cuenta.html?qa=mp');
+ await page.getByLabel('Plan de prueba').selectOption('WEEKLY');
+ await page.getByLabel('ID de la cuenta compradora de prueba').fill(payerId);
+ await page.getByLabel('ID del pago de prueba').fill(paymentId);
+ const lookup=page.getByRole('button',{name:'Verificar pago de prueba'});
+ const reconcile=page.getByRole('button',{name:'Conciliar pago de prueba'});
+ const sandboxPost=()=>page.waitForRequest(r=>r.url().endsWith('/api/billing/sandbox')&&r.method()==='POST');
+ await expect(reconcile).toHaveCount(0);
+ const lookedUp=sandboxPost();
+ await lookup.click();
+ expect((await lookedUp).postDataJSON()).toEqual({action:'plan_payment_lookup',plan:'WEEKLY',payerId,paymentId});
+ await expect(page.locator('#mp-qa-payment')).toContainText('synthetic-qa-subscription');
+ const sandboxPath='**/api/billing/sandbox';
+ await page.route(sandboxPath,route=>route.fulfill({status:403,json:{error:'OWNERSHIP_REQUIRED'}}),{times:1});
+ await reconcile.click();
+ await expect(page.locator('#account-status')).toContainText('Falta registrar la evidencia de titularidad');
+ await expect(reconcile).toHaveCount(0);
+ await lookup.click();
+ await expect(reconcile).toBeVisible();
+ const reconciled=sandboxPost();
+ await reconcile.click();
+ expect((await reconciled).postDataJSON()).toEqual({action:'plan_payment_reconcile',plan:'WEEKLY',payerId,paymentId});
+ await expect(page.locator('#mp-qa-payment')).toContainText('Conciliación sandbox registrada.');
+
+ await page.getByLabel('ID del pago de prueba').fill('9876543211');
+ await page.route(sandboxPath,async route=>{
+  const response=await route.fetch();
+  const data=await response.json();
+  await route.fulfill({response,json:{...data,subscription:{...data.subscription,liveMode:true}}});
+ });
+ await lookup.click();
+ await expect(page.locator('#account-status')).toContainText('Mercado Pago no confirmó un pago sandbox elegible');
+ await expect(reconcile).toHaveCount(0);
 });

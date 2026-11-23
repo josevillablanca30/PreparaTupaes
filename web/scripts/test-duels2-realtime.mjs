@@ -93,6 +93,50 @@ export async function testDuels2Realtime({db,clients,outsider,record}){
     await Promise.all(audience.map((client,i)=>channels[i]?client.removeChannel(channels[i]):undefined));
   }
 
+  // Exercise the actual SQL deadline logic without waiting two wall-clock minutes.
+  // Rewind only the disposable database clock for this one active player.
+  const {rows:[beforeClock]}=await db.query(
+    'select position from cachaste_duels2.players where id=$1',[a.id]);
+  await db.query(
+    "update cachaste_duels2.players set question_started_at=clock_timestamp()-interval '119 seconds' where id=$1",[a.id]);
+  const stillOpen=await call(clients[0],'attempt',{attemptId:a.id});
+  assert.equal(stillOpen.position,beforeClock.position,'M1 must not expire before 120 seconds');
+  await db.query(
+    "update cachaste_duels2.players set question_started_at=clock_timestamp()-interval '121 seconds' where id=$1",[a.id]);
+  const expired=await call(clients[0],'attempt',{attemptId:a.id});
+  assert.equal(expired.position,beforeClock.position+1,'M1 must expire after 120 seconds');
+  const {rows:[miss]}=await db.query(
+    'select choice,correct from cachaste_duels2.answers where player_id=$1 and position=$2',
+    [a.id,beforeClock.position]);
+  assert.equal(miss.choice,null);
+  assert.equal(miss.correct,false);
+  record('Real PostgreSQL rejects premature M1 expiry and records the 120-second timeout as an incorrect answer');
+  // A stale client must not be able to submit an answer for the expired question.
+  const late=await call(clients[0],'answer',{
+    attemptId:a.id,position:beforeClock.position,choice:0,requestId:randomUUID()
+  });
+  assert.equal(late.position,expired.position);
+  const {rows:[unchanged]}=await db.query(
+    'select count(*)::int as count from cachaste_duels2.answers where player_id=$1 and position=$2',
+    [a.id,beforeClock.position]);
+  assert.equal(unchanged.count,1,'Late submission must not duplicate or replace a timeout');
+  record('Real PostgreSQL rejects a stale answer after timeout without overwriting the incorrect result');
+  // The 90-second rule must also be enforced for non-math subjects.
+  // Reuse the disposable match and restore M1 before the rest of the QA.
+  await db.query("update cachaste_duels2.matches set subject='LECTURA' where id=$1",[invitation.id]);
+  const {rows:[readingStart]}=await db.query(
+    'select position from cachaste_duels2.players where id=$1',[a.id]);
+  await db.query(
+    "update cachaste_duels2.players set question_started_at=clock_timestamp()-interval '89 seconds' where id=$1",[a.id]);
+  const readingOpen=await call(clients[0],'attempt',{attemptId:a.id});
+  assert.equal(readingOpen.position,readingStart.position,'Reading must remain open before 90 seconds');
+  await db.query(
+    "update cachaste_duels2.players set question_started_at=clock_timestamp()-interval '91 seconds' where id=$1",[a.id]);
+  const readingExpired=await call(clients[0],'attempt',{attemptId:a.id});
+  assert.equal(readingExpired.position,readingStart.position+1,'Reading must expire after 90 seconds');
+  await db.query("update cachaste_duels2.matches set subject='M1' where id=$1",[invitation.id]);
+  record('Real PostgreSQL enforces the 90-second deadline for non-math questions');
+
   await call(clients[0],'forfeit',{attemptId:a.id});
   await call(clients[1],'forfeit',{attemptId:b.id});
   const request={subject:'M1',requestId:randomUUID()};
@@ -102,6 +146,12 @@ export async function testDuels2Realtime({db,clients,outsider,record}){
   await db.query("update cachaste_duels2.queue set joined_at=clock_timestamp()-interval '11 seconds' where user_id=$1",[user.id]);
   const bot=await call(clients[0],'random',request);
   assert.equal(bot.opponentKind,'bot');
+  const botAttempt=await call(clients[0],'start',{attemptId:bot.attemptId});
+  await db.query(
+    "update cachaste_duels2.players set question_started_at=clock_timestamp()-interval '121 seconds' where id=$1",
+    [botAttempt.id]);
+  const {rows:[offlineStart]}=await db.query(
+    'select position from cachaste_duels2.players where id=$1',[botAttempt.id]);
   await db.query("update cachaste_duels2.bot_plan set due_at=clock_timestamp()-interval '1 second' where player_id in (select id from cachaste_duels2.players where match_id=$1 and slot=1)",[bot.id]);
   const operations=await readFile(new URL('../../duels2/operations.sql',import.meta.url),'utf8');
   const setup=operations.slice(operations.indexOf('create extension'),operations.indexOf('-- Verify'));
@@ -114,9 +164,17 @@ export async function testDuels2Realtime({db,clients,outsider,record}){
           where j.jobname=$1 and r.status='succeeded' and r.start_time>=$2) as ran,
           (select position from cachaste_duels2.players where match_id=$3 and slot=1) as position
       `,[jobName,since,bot.id]);
-      return result.ran&&result.position===10;
-    },85000,'Cron must advance the bot with no open channel or client RPC');
-    record('The dedicated Cron job advances a bot without an open client or polling call');
+      if(!result.ran||result.position!==10)return false;
+      const {rows:[human]}=await db.query(
+        'select position from cachaste_duels2.players where id=$1',[botAttempt.id]);
+      return human.position>offlineStart.position;
+    },85000,'Cron must advance bot and expired human question with no client RPC');
+    const {rows:[offlineMiss]}=await db.query(
+      'select choice,correct from cachaste_duels2.answers where player_id=$1 and position=$2',
+      [botAttempt.id,offlineStart.position]);
+    assert.equal(offlineMiss.choice,null);
+    assert.equal(offlineMiss.correct,false);
+    record('Cron advances the bot and expires an offline human question without client polling');
   }finally{
     if((await db.query("select to_regclass('cron.job') is not null as installed")).rows[0].installed)
       await db.query('select cron.unschedule(jobid) from cron.job where jobname=$1',[jobName]);

@@ -13,5 +13,11 @@ export function adaptCurrentCompetitionUi(source){
  const list="(list.length?'<ul class=\"duel-list\">'+[...list].sort";
  replace(list,"'<div class=\"web-duel-filters\" role=\"group\" aria-label=\"Filtrar duelos recientes\">'+btn('web-duel-filter','Todos ('+list.length+')',state.webDuelFilter!=='finished'?'primary compact':'soft compact','data-filter=\"all\" aria-pressed=\"'+(state.webDuelFilter!=='finished')+'\"')+btn('web-duel-filter','Terminados ('+finished.length+')',state.webDuelFilter==='finished'?'primary compact':'soft compact','data-filter=\"finished\" aria-pressed=\"'+(state.webDuelFilter==='finished')+'\"')+'</div>'+(visible.length?'<ul class=\"duel-list\">'+[...visible].sort");
  replace("if(action==='subject'){","if(action==='web-duel-filter'){state.webDuelFilter=b.dataset.filter==='finished'?'finished':'all';render();return;}\n  if(action==='subject'){");
+ replace("let state={route:location.hash.slice(1)||'rankings'", "const accountOnly=window.CachasteWebBootstrap?.accountOnly===true;\n let state={route:accountOnly?'perfil':location.hash.slice(1)||'rankings'");
+ replace("state.route=api.recovering?'recuperar':location.hash.slice(1)||'rankings';","state.route=accountOnly?'perfil':api.recovering?'recuperar':location.hash.slice(1)||'rankings';");
+ replace("function nav(active){return","function nav(active){if(accountOnly)return '';return");
+ replace("function header(back=false){return","function header(back=false){if(accountOnly)return '<header class=\"comp-header\"><a class=\"soft\" href=\"/cuenta.html#planes\">Volver a Mi cuenta</a></header>';return");
+ const learningLinks=`<a href="inicio.html#progress">Mi progreso educativo '+icon('arrow')+'</a><a href="inicio.html#home">Mi camino de aprendizaje '+icon('arrow')+'</a>`;
+ replace(learningLinks,"'+(accountOnly?'':'"+learningLinks+"')+'");
  return "async function cachasteRemoveWebProfilePhoto(api){if(!api.user?.id)throw Error('AUTH_REQUIRED');const{error}=await api.sdk.storage.from('cachaste-profile-photos').remove([api.user.id+'/avatar.webp']);if(error)throw error;}\n"+source;
 }

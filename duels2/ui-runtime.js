@@ -8,7 +8,7 @@
  const d2Missing=error=>error?.code==='PGRST202'||(error?.code==='42883'&&/public\.cachaste_duels2\(/.test(error.message||''));
  const d2ReadUnavailable=error=>/^(PROFILE_REQUIRED|COMMUNITY_REQUIRED|ACCOUNT_RESTRICTED|SUBSCRIPTION_REQUIRED)$/.test(error?.message||'');
  let d2Channel=null,d2ChannelMatch=null,d2Realtime=false,d2Polling=false,d2PendingAction=null,d2QueuePayload=null,d2QueueGeneration=0,d2LastWidth=50,d2LastQuestion=null;
- function d2Rules(){return '<div class="duels2-rules"><h2 id="dialog-title">Así se juega Duelos 2.0</h2><ul><li>Ambos reciben las mismas <strong>10 preguntas</strong>, en distinto orden.</li><li>Importa acertar: <strong>terminar primero no da ventaja</strong>. Tienen 40 minutos desde el inicio del duelo.</li><li>Cada acierto suma un punto de dominio para ti. Cada error le entrega un punto al rival.</li><li>La barra compartida cambia en tiempo real. No muestra las preguntas, respuestas ni avance del rival.</li><li>Buscamos personas primero. Si no aparece nadie tras unos 10 segundos, jugarás con un <strong>rival virtual identificado</strong>.</li><li>Contra personas: victoria <strong>+3 estrellas</strong> y derrota <strong>−3</strong>. Contra bots: <strong>+1 / −1</strong>. Empate: 0. Tu saldo nunca baja de cero.</li><li>Si abandonas o vence tu tiempo sin terminar, pierdes. Tu rival conserva su turno. Si ambos abandonan, no cambia el saldo.</li><li>Al terminar ambos, podrás revisar tu alternativa, la respuesta correcta y el tutor paso a paso.</li></ul><p>Las estrellas competitivas y tu dominio académico se guardan por separado.</p></div>';}
+ function d2Rules(){return '<div class="duels2-rules"><h2 id="dialog-title">Así se juega Duelos 2.0</h2><ul><li>Ambos reciben las mismas <strong>10 preguntas</strong>, en distinto orden.</li><li>Importa acertar: <strong>terminar primero no da ventaja</strong>. Cada pregunta tiene un tiempo propio: 120 segundos en M1 y M2, y 90 segundos en las demás asignaturas. El tiempo lo controla el servidor.</li><li>Cada acierto suma un punto de dominio para ti. Cada error le entrega un punto al rival.</li><li>La barra compartida cambia en tiempo real. No muestra las preguntas, respuestas ni avance del rival.</li><li>Buscamos personas primero. Si no aparece nadie tras unos 10 segundos, jugarás con un <strong>rival virtual identificado</strong>.</li><li>Contra personas: victoria <strong>+3 estrellas</strong> y derrota <strong>−3</strong>. Contra bots: <strong>+1 / −1</strong>. Empate: 0. Tu saldo nunca baja de cero.</li><li>Si abandonas o vence tu tiempo sin terminar, pierdes. Tu rival conserva su turno. Si ambos abandonan, no cambia el saldo.</li><li>Al terminar ambos, podrás revisar tu alternativa, la respuesta correcta y el tutor paso a paso.</li></ul><p>Las estrellas competitivas y tu dominio académico se guardan por separado.</p></div>';}
  async function d2Rpc(operation,payload){
   if(!api.sdk)throw Error('SERVICE_NOT_READY');
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
@@ -49,6 +49,21 @@
   }
  };
  function d2Balance(value){const d=state.duel;if(!d||d.version!==2)return;const own=d.creator?.id===api.user?.id?Number(value):-Number(value),width=Math.max(0,Math.min(100,50+own*2.5)),fill=root.querySelector('.duels2-fill'),meter=root.querySelector('[data-duels2-meter]');if(fill)fill.style.width=width+'%';if(meter){meter.setAttribute('aria-valuenow',String(own));meter.setAttribute('aria-valuetext',own===0?'Dominio equilibrado':own>0?'Dominio a tu favor':'Dominio a favor de tu rival');}d2LastWidth=width;}
+ function d2QuestionClock(){
+  const a=state.attempt;
+  if(state.route!=='pregunta'||a?.version!==2||!a.questionDeadline)return;
+  if(a._d2ServerStamp!==a.serverNow){a._d2ServerStamp=a.serverNow;a._d2ReceivedAt=Date.now();}
+  const question=root.querySelector('.competitive-question');
+  if(!question)return;
+  let clock=question.querySelector('[data-duels2-question-clock]');
+  if(!clock){clock=document.createElement('p');clock.className='duels2-question-clock';clock.setAttribute('role','timer');clock.dataset.duels2QuestionClock='';question.prepend(clock);}
+  const serverTime=Date.parse(a.serverNow),deadline=Date.parse(a.questionDeadline);
+  if(!Number.isFinite(deadline))return;
+  // Use the last authoritative server timestamp; never extend time on reconnect.
+  const elapsed=Number.isFinite(serverTime)?Date.now()-(a._d2ReceivedAt||Date.now()):0;
+  const remaining=Math.max(0,Math.ceil((deadline-(Number.isFinite(serverTime)?serverTime:Date.now())-Math.max(0,elapsed))/1000));
+  clock.textContent=remaining===0?'Tiempo agotado · cuenta como incorrecta (−1). Actualizando duelo…':'Tiempo de esta pregunta: '+Math.floor(remaining/60)+':'+String(remaining%60).padStart(2,'0');
+ }
  function d2Paint(){
   const d=state.duel;if(d?.version!==2||!['duelo','pregunta','resultado'].includes(state.route))return;
   const other=d.creator?.id===api.user?.id?d.opponent:d.creator;
@@ -59,8 +74,9 @@
   }else d2Balance(d.balance);
   const live=root.querySelector('.duels2-live-label');if(live)live.textContent=d.status==='finished'?'Final verificado':d2Realtime?'En vivo':'Actualizando';
   if(state.route==='pregunta'&&state.attempt?.version===2){
+   d2QuestionClock();
    const a=state.attempt,question=root.querySelector('.competitive-question');question?.classList.add('duels2-question-in');
-   if(!root.querySelector('.duels2-personal-streak')){const node=document.createElement('p');node.className='duels2-personal-streak';node.textContent=a.streak>1?'Tu racha: '+a.streak+' aciertos seguidos':'Tómate tu tiempo. Ambos pueden responder las diez.';question?.querySelector('.question-rules')?.after(node);}
+   if(!root.querySelector('.duels2-personal-streak')){const node=document.createElement('p');node.className='duels2-personal-streak';node.textContent=a.streak>1?'Tu racha: '+a.streak+' aciertos seguidos':'Cada pregunta tiene su propio tiempo límite.';question?.querySelector('.question-rules')?.after(node);}
    if(d2LastQuestion!==null&&d2LastQuestion!==a.question?.key)root.querySelector('.duels2-meter')?.classList.add('duels2-registered');d2LastQuestion=a.question?.key;
   }
   if(!root.querySelector('.duels2-rival-note')){const node=document.createElement('p');node.className='duels2-rival-note';node.textContent=d.opponentKind==='bot'?'Rival virtual · '+({initial:'nivel inicial',intermediate:'nivel intermedio',advanced:'nivel avanzado'}[d.opponent?.level]||'entrenamiento')+' · +1 / −1 estrella':'Rival humano · +3 / −3 estrellas';root.querySelector('.duels2-meter')?.after(node);}
@@ -97,7 +113,7 @@
    if(state.route==='pregunta'&&state.attempt?.version===2){const a=await api.call('attempt',{attemptId:state.attempt.id});if(a.status!==state.attempt.status||a.position!==state.attempt.position)await processAttempt(a);}
   }catch(error){const node=root.querySelector('.duels2-live-label');if(node)node.textContent='Reconectando';}finally{d2Polling=false;}
  }
- setInterval(()=>void d2Sync(),2000);
+ setInterval(()=>{d2QuestionClock();void d2Sync();},1000);
  root.addEventListener('click',event=>{
   const target=event.target.closest('[data-action]'),action=target?.dataset.action;if(!action)return;
   if(action==='cancel-queue'){d2QueueGeneration++;}
