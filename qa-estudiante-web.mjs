@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {randomUUID} from 'node:crypto';
+
 import {mkdir} from 'node:fs/promises';
 import {chromium,devices} from 'playwright';
 import {createClient} from '@supabase/supabase-js';
@@ -15,29 +15,23 @@ try {
  const cards=page.locator('#planes article');
  assert.deepEqual(await cards.locator('h3').allTextContents(),['Básico','Semanal','Mensual','Anual']);
  await cards.first().getByRole('link',{name:/Empezar gratis/}).click();
- await page.locator('[data-action=signup-form]').click();
+
  const support=await page.getByRole('link',{name:'Soporte'}).getAttribute('href');
  assert.match(support,/^mailto:[^@]+@gmail\.com$/);
- const email=support.slice(7).replace('@','+cachaste.web.'+process.env.GITHUB_RUN_ID+'@');
- const password=randomUUID()+randomUUID();
+ const email=support.slice(7).replace('@','+cachaste.qa.20261123@');
+ const password=process.env.CACHASTE_QA_STUDENT_PASSWORD;
+ assert.ok(password,'Falta la contraseña de la cuenta de QA confirmada');
  async function submit(form){
    await page.locator(form+' [name=email]').fill(email);
    await page.locator(form+' [name=password]').fill(password);
    await page.locator(form+' button[type=submit]').click();
  }
- await submit('#signup-form');
- await page.locator('#verify-signup-form').waitFor();
- console.log('Registro de estudiante enviado desde la portada móvil.');
  const client=createClient(config.supabaseUrl,config.publishableKey,{auth:{persistSession:false,autoRefreshToken:false}});
- for(let i=0;i<25;i++){
-   await new Promise(r=>setTimeout(r,12000));
-   const {data,error}=await client.auth.signInWithPassword({email,password});
-   if(error){if(error.code!=='email_not_confirmed')throw new Error('Error de ingreso: '+error.code);continue}
-   const session=await fetch(base+'/api/session',{headers:{Authorization:'Bearer '+data.session.access_token}}).then(r=>r.json());
-   assert.equal(session.isAdmin,false);assert.equal(session.subscriptions.length,0);assert.equal(session.access.active,false);
-   await client.auth.signOut({scope:'local'});break;
- }
- await page.locator('[data-action=login-form]').click();
+ const {data,error}=await client.auth.signInWithPassword({email,password});
+ assert.ok(!error && data.session,'La cuenta de QA debe tener correo confirmado y contraseña vigente');
+ const state=await fetch(base+'/api/session',{headers:{Authorization:'Bearer '+data.session.access_token}}).then(r=>r.json());
+ assert.equal(state.isAdmin,false);assert.equal(state.subscriptions.length,0);assert.equal(state.access.active,false);
+ await client.auth.signOut({scope:'local'});
  await submit('#login-form');
  const basic=page.locator('button[data-action=basic]');
  await basic.waitFor();
