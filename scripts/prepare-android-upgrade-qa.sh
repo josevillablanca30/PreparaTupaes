@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# Rebuild the exact version-47 source recorded with the accepted AAB. Same disposable debug signer as version 50.
+# Rebuild the exact version-47 source recorded with the accepted AAB. Same disposable debug signer as version 51.
 legacy="$RUNNER_TEMP/cachaste-legacy47"
 git worktree add --detach "$legacy" 13ae26d3f752ccc6f3de97086dee07cb938ac3fc
 ln -s "$GITHUB_WORKSPACE/node_modules" "$legacy/node_modules"
