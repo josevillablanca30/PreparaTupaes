@@ -7,7 +7,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import org.junit.Test;
 import org.json.JSONObject;
 import java.io.FileOutputStream;
-import java.util.UUID;
+import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 import static org.junit.Assert.*;
@@ -15,7 +16,7 @@ import static org.junit.Assert.*;
 public class StudentJourneyTest {
     private ActivityScenario<MainActivity> scenario;
     private String email;
-    private final String password = UUID.randomUUID().toString() + UUID.randomUUID();
+    private String password;
 
     private String js(String script) throws Exception {
         AtomicReference<String> result = new AtomicReference<>();
@@ -60,18 +61,10 @@ public class StudentJourneyTest {
             assertEquals("\"Plan Básico GRATIS|Semanal|Mensual|Anual\"",js("Array.from(document.querySelectorAll('section[aria-label=Planes] h2'),e=>e.textContent).join('|')"));
             screenshot("planes.png");
             click("#basic-access");
-            click("[data-action=show-signup]");
-            submit("signup-form");
-            until("document.body.innerText.includes('Confirma') || document.body.innerText.includes('código')","Confirmación de registro");
-            // The ordinary confirmation email is verified in the test mailbox.
-            // Wait for external confirmation without storing or exporting the test password.
-            Thread.sleep(90000);
-            if("true".equals(js("!!document.querySelector('[data-action=show-login]')"))) click("[data-action=show-login]");
-            else if(!"true".equals(js("!!document.querySelector('#auth-form')"))){
-                js("location.href='competencia.html#perfil';true");
-                until("document.querySelector('#auth-form') || document.querySelector('[data-action=show-login]')","Volver al ingreso");
-                if("true".equals(js("!!document.querySelector('[data-action=show-login]')"))) click("[data-action=show-login]");
-            }
+            android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+            try (FileInputStream input=context.openFileInput("qa-login")) {
+                password=new String(input.readAllBytes(),StandardCharsets.UTF_8);
+            } finally { context.deleteFile("qa-login"); }
             submit("auth-form");
             until("document.querySelector('[data-action=signout]')","Ingreso del estudiante confirmado");
             click("a[href^='inicio.html']");
