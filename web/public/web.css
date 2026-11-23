@@ -121,3 +121,8 @@ body{background:radial-gradient(ellipse at 86% 12%,#3b0c59 0,transparent 35%),#0
  .account-footer{flex-wrap:wrap;gap:12px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Keep the existing single-column layout on phones and the basic plan first. */
+#planes .price-card.featured{order:0}
+@media (min-width:761px){#planes .price-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1100px){#planes .price-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
