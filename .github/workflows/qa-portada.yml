@@ -1,0 +1,24 @@
+name: Validar portada con estudiante temporal
+on:
+  push:
+    branches: [qa/portada-basica-20261123]
+permissions:
+  contents: read
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: node --test web/tests/paes-landing.test.mjs web/tests/free-plan-selector.test.mjs
+      - run: npx playwright install --with-deps chromium
+      - name: Probar acceso normal contra el backend publicado
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: node qa-portada.mjs
