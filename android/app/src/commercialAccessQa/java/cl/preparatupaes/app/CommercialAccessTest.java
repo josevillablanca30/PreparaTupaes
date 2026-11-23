@@ -60,8 +60,8 @@ public class CommercialAccessTest {
     @Test public void consumptionOnlyHasNoCheckoutOrBillingBridge()throws Exception{
         assertEquals("\"undefined\"",js("typeof window.CachastePlay"));
         assertEquals("0",js("document.querySelectorAll('a[href^=\"https:\"],iframe,webview,#subscribe,#restore').length"));
-        assertEquals("Plan Básico GRATIS|Semanal|Mensual|Anual",js("Array.from(document.querySelectorAll('section[aria-label=Planes] h2'),e=>e.textContent).join('|')"));
-        assertEquals("competencia.html#perfil",js("document.getElementById('basic-access').getAttribute('href')"));
+        assertEquals("true",js("Array.from(document.querySelectorAll('section[aria-label=Planes] h2'),e=>e.textContent).join('|')==='Plan Básico GRATIS|Semanal|Mensual|Anual'"));
+        assertEquals("true",js("document.getElementById('basic-access').getAttribute('href')==='competencia.html#perfil'"));
     }
     @Test public void basicLeaseCannotOpenLegacyFullExams()throws Exception{
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
