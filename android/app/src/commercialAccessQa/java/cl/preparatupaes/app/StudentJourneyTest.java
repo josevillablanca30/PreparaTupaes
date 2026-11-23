@@ -72,12 +72,18 @@ public class StudentJourneyTest {
             screenshot("ingreso.png");
             js("(()=>{const E=CachasteDailyApp.engine;const first=[...E.byKey.values()].find(q=>q.subjectKey==='M1');E.start('M1',2,'lesson',first.concept);return true})()");
             until("window.CachasteDailyApp.engine.state.session?.basicAttempt","Actividad Básica emitida por el servidor");
+            js("location.hash='#session';CachasteDailyApp.render();true");
             for(int i=0;i<2;i++){
-                click("[data-action=begin-question]");
+                until("document.querySelector('[data-action=begin-question], [data-action=choice], [data-action=visual-overview]')","Esperando pregunta o introducción");
+                if (!"true".equals(js("!!document.querySelector('[data-action=choice]')"))) {
+                    if (!"true".equals(js("!!document.querySelector('[data-action=begin-question]')"))) click("[data-action=visual-overview]");
+                    click("[data-action=begin-question]");
+                }
                 click("[data-action=choice][data-index='0']");
                 click("[data-action=check]");
                 until("CachasteDailyApp.engine.state.session?.checked","Respuesta recibida");
                 click("[data-action=next]");
+                if(i==0) until("CachasteDailyApp.engine.state.session?.index===1","Segunda pregunta");
             }
             until("document.querySelector('.celebration-screen')","Actividad completada");
             screenshot("actividad.png");

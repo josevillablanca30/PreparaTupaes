@@ -9,7 +9,7 @@ assert.equal(config.revision,'672b304ad3c661da5bc45926dce15759e810837a');
 await mkdir('evidencia',{recursive:true});
 const browser=await chromium.launch();
 try {
- const ctx=await browser.newContext({...devices['Pixel 7'],serviceWorkers:'block'});
+ const ctx=await browser.newContext({...devices['Pixel 7']});
  const page=await ctx.newPage();
  await page.goto(base+'/#planes');
  const cards=page.locator('#planes article');
@@ -39,7 +39,7 @@ try {
  await client.auth.signOut({scope:'local'});
  await submit('#login-form');
  const basic=page.locator('button[data-action=basic]');
- await basic.waitFor();
+ try {await basic.waitFor({timeout:70000});}catch(e){console.log('Pantalla:',new URL(page.url()).pathname,'Título:',await page.locator('h1').allTextContents(),'Aviso:',await page.locator('#account-status').allTextContents());throw e;}
  await basic.screenshot({path:'evidencia/selector.png'});
  await basic.click();
  await page.waitForURL('**/app/inicio.html');

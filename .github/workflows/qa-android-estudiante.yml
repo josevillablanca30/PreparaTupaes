@@ -1,4 +1,4 @@
-name: Recorrido Android 51 con cuenta normal
+name: Recorrido web y Android 51 con cuenta normal
 on:
   workflow_dispatch:
   push:
