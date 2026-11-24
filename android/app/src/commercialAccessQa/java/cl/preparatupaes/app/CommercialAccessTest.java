@@ -30,7 +30,7 @@ public class CommercialAccessTest {
         fail("Expected commercial access state: "+expression);
     }
     private void open(String page)throws Exception{js("window.commercialNavigationMarker=true;true");scenario.onActivity(activity->web(activity).loadUrl(page));}
-    private void locked()throws Exception{waitFor("!window.commercialNavigationMarker&&document.readyState==='complete'&&location.pathname.endsWith('/suscripcion.html')&&document.getElementById('billing-status')");}
+    private void locked()throws Exception{waitFor("!window.commercialNavigationMarker&&document.readyState==='complete'&&location.pathname.endsWith('/suscripcion.html')&&document.getElementById('access-status')");}
     @Before public void start()throws Exception{
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("cl.preparatupaes.app",context.getPackageName());
@@ -57,6 +57,32 @@ public class CommercialAccessTest {
         waitFor("window.accessReply&&accessReply.error==='AUTH_REQUIRED'");assertFalse(prefs.contains("deadline"));
         open("file:///android_asset/index.html");locked();
     }
+    @Test public void consumptionOnlyHasNoCheckoutOrBillingBridge()throws Exception{
+        assertEquals("\"undefined\"",js("typeof window.CachastePlay"));
+        assertEquals("0",js("document.querySelectorAll('a[href^=\"https:\"],iframe,webview,#subscribe,#restore').length"));
+        assertEquals("true",js("Array.from(document.querySelectorAll('section[aria-label=Planes] h2'),e=>e.textContent).join('|')==='Plan Básico GRATIS|Semanal|Mensual|Anual'"));
+        assertEquals("true",js("document.getElementById('basic-access').getAttribute('href')==='competencia.html#perfil'"));
+    }
+    @Test public void basicLeaseCannotOpenLegacyFullExams()throws Exception{
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        int boot=Settings.Global.getInt(context.getContentResolver(),Settings.Global.BOOT_COUNT,-1);
+        long elapsed=SystemClock.elapsedRealtime();
+        prefs.edit().putString("tier","basica").putString("user","10000000-0000-4000-8000-000000000001").putLong("issued",elapsed).putLong("deadline",elapsed+60000).putInt("boot",boot).commit();
+        for(String page:new String[]{"index","science","reading","m2","history"}){
+            open("https://appassets.androidplatform.net/assets/"+page+".html?modo=ensayo");locked();
+            open("file:///android_asset/"+page+".html?modo=ensayo");locked();
+        }
+    }
+    @Test public void cachedPremiumRequiresTheNativeLeaseAndNeverPromotesBasic()throws Exception{
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        int boot=Settings.Global.getInt(context.getContentResolver(),Settings.Global.BOOT_COUNT,-1);long elapsed=SystemClock.elapsedRealtime();
+        prefs.edit().putString("tier","premium").putString("user","10000000-0000-4000-8000-000000000001").putLong("issued",elapsed).putLong("deadline",elapsed+60000).putInt("boot",boot).commit();
+        js("window.cachedReply=null;CachasteAccess.onmessage=e=>window.cachedReply=JSON.parse(e.data);CachasteAccess.postMessage(JSON.stringify({id:'cached-premium',action:'cached'}));true");
+        waitFor("window.cachedReply&&cachedReply.active===true&&cachedReply.tier==='premium'");
+        prefs.edit().putString("tier","basica").commit();
+        js("window.cachedReply=null;CachasteAccess.postMessage(JSON.stringify({id:'cached-basic',action:'cached'}));true");
+        waitFor("window.cachedReply&&cachedReply.active===false");
+    }
     @Test public void androidBackCanExitTheLockedSubscriptionScreen()throws Exception{
         scenario.onActivity(MainActivity::onBackPressed);
         for(int n=0;n<100&&!scenario.getState().toString().equals("DESTROYED");n++)Thread.sleep(50);
@@ -67,7 +93,7 @@ public class CommercialAccessTest {
         int boot=Settings.Global.getInt(context.getContentResolver(),Settings.Global.BOOT_COUNT,-1);assertTrue(boot>=0);
         long elapsed=SystemClock.elapsedRealtime();
         // Only this instrumentation APK writes a fixture lease into its disposable emulator.
-        prefs.edit().putString("user","10000000-0000-4000-8000-000000000001").putLong("issued",elapsed).putLong("deadline",elapsed+60000).putInt("boot",boot).commit();
+        prefs.edit().putString("tier","premium").putString("user","10000000-0000-4000-8000-000000000001").putLong("issued",elapsed).putLong("deadline",elapsed+60000).putInt("boot",boot).commit();
         open("file:///android_asset/inicio.html");waitFor("location.pathname.endsWith('/inicio.html')&&document.querySelector('main')");
         scenario.recreate();waitFor("location.pathname.endsWith('/inicio.html')&&document.querySelector('main')");
         prefs.edit().putLong("deadline",SystemClock.elapsedRealtime()-1).commit();

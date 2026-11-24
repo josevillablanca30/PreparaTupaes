@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 /** Only a direct authenticated HTTPS server response can create an educational access lease. */
 final class SubscriptionAccessController {
     private static final String ORIGIN="https://appassets.androidplatform.net";
-    private static final String API="https://jmobinmdwrmdqrxtcruj.supabase.co/rest/v1/rpc/cachaste_access";
+    private static final String API="https://jmobinmdwrmdqrxtcruj.supabase.co/rest/v1/rpc/cachaste_learning_access";
     private static final String PUBLIC_KEY="sb_publishable_wf2Ji381IwRo2exQKJQ7ew_SRYCl_q1";
     private final Activity activity;
     private final WebView web;
@@ -38,6 +38,8 @@ final class SubscriptionAccessController {
                     if(message.getType()!=WebMessageCompat.TYPE_STRING||message.getData()==null||message.getData().length()>10000)return;
                     JSONObject request=new JSONObject(message.getData());String id=request.optString("id"),action=request.optString("action");
                     if(!id.matches("[a-zA-Z0-9-]{1,80}"))return;
+                    if(action.equals("cached")){respond(reply,id,null,hasPremiumAccess());return;}
+                    if(action.equals("legacy")){respond(reply,id,null,false);return;}
                     if(action.equals("clear")){clear();respond(reply,id,null,false);return;}
                     if(!action.equals("verify"))return;
                     if(!activity.getPackageName().equals("cl.preparatupaes.app")){respond(reply,id,null,false);return;}
@@ -54,17 +56,19 @@ final class SubscriptionAccessController {
     }
     private boolean trustedPage(){
         String url=web.getUrl();if(url==null)return false;String path=url.split("[?#]",2)[0];
-        return path.equals(ORIGIN+"/assets/competencia.html")||path.equals(ORIGIN+"/assets/suscripcion.html");
+        return path.matches(java.util.regex.Pattern.quote(ORIGIN)+"/assets/(competencia|suscripcion|inicio)\\.html");
     }
     private int boot(){try{return Settings.Global.getInt(activity.getContentResolver(),Settings.Global.BOOT_COUNT,-1);}catch(Exception ignored){return -1;}}
     boolean hasAccess(){
         SubscriptionLease lease=new SubscriptionLease(prefs.getString("user",""),prefs.getLong("issued",0),prefs.getLong("deadline",0),prefs.getInt("boot",-1));
         return lease.valid(SystemClock.elapsedRealtime(),boot());
     }
+    boolean hasBasicAccess(){return hasAccess() && "basica".equals(prefs.getString("tier",""));}
+    boolean hasPremiumAccess(){return hasAccess() && "premium".equals(prefs.getString("tier",""));}
     private void clear(){generation++;prefs.edit().clear().apply();}
     private void respond(JavaScriptReplyProxy reply,String id,String error,boolean active){
         if(closed||!trustedPage())return;
-        try{JSONObject response=new JSONObject();response.put("id",id);response.put("required",activity.getPackageName().equals("cl.preparatupaes.app"));response.put("active",active);response.put("error",error==null?JSONObject.NULL:error);reply.postMessage(response.toString());}catch(Exception ignored){}
+        try{JSONObject response=new JSONObject();response.put("id",id);response.put("required",activity.getPackageName().equals("cl.preparatupaes.app"));response.put("active",active);response.put("userId",prefs.getString("user",""));response.put("tier",prefs.getString("tier","unavailable"));response.put("legacy",activity.getSharedPreferences("cachaste-navigation",Activity.MODE_PRIVATE).getString("legacy-progress","{}"));response.put("error",error==null?JSONObject.NULL:error);reply.postMessage(response.toString());}catch(Exception ignored){}
     }
     private void verify(String token,String expectedUser,JavaScriptReplyProxy reply,String id,long epoch){
         HttpURLConnection connection=null;JSONObject result=null;String error=null;long started=SystemClock.elapsedRealtime();
@@ -90,10 +94,10 @@ final class SubscriptionAccessController {
             if("AUTH_REQUIRED".equals(failure))clear();
             try{
                 if(data!=null&&!expectedUser.equals(data.getString("userId"))){clear();throw new Exception("AUTH_REQUIRED");}
-                if(data!=null&&data.getBoolean("active")){
-                    SubscriptionLease lease=SubscriptionLease.fromServer(data.getString("userId"),data.getLong("serverTimeMs"),data.getLong("validUntilMs"),started,received,boot());
+                if(data!=null&&(data.getBoolean("active")||("basica".equals(data.optString("tier"))&&data.optBoolean("basicEnabled")))){
+                    SubscriptionLease lease=SubscriptionLease.fromServer(data.getString("userId"),data.getLong("serverTimeMs"),data.getLong(data.getBoolean("active")?"validUntilMs":"basicValidUntilMs"),started,received,boot());
                     if(lease.valid(SystemClock.elapsedRealtime(),boot())){
-                        prefs.edit().putString("user",lease.user).putLong("issued",lease.issued).putLong("deadline",lease.deadline).putInt("boot",lease.boot).apply();active=true;
+                        prefs.edit().putString("tier",data.getBoolean("active")?"premium":"basica").putString("user",lease.user).putLong("issued",lease.issued).putLong("deadline",lease.deadline).putInt("boot",lease.boot).apply();active=true;
                     }else outcome="ACCESS_UNAVAILABLE";
                 }else if(data!=null)clear();
             }catch(Exception ignored){outcome="ACCESS_UNAVAILABLE";}
