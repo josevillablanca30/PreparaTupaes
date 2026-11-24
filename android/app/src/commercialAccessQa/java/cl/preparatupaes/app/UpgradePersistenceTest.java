@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import static org.junit.Assert.*;
 
-/** Runs first on the original version 47, then after adb install -r of version 51. Disposable emulator only. */
+/** Runs first on the original version 47, then after adb install -r of version 52. Disposable emulator only. */
 public class UpgradePersistenceTest {
  private ActivityScenario<MainActivity> scenario;
  private String js(String code)throws Exception{
@@ -35,7 +35,7 @@ public class UpgradePersistenceTest {
    assertEquals(47,c.getPackageManager().getPackageInfo(c.getPackageName(),0).getLongVersionCode());
    long elapsed=SystemClock.elapsedRealtime();int boot=Settings.Global.getInt(c.getContentResolver(),Settings.Global.BOOT_COUNT,-1);
    c.getSharedPreferences("cachaste-subscription-lease",Context.MODE_PRIVATE).edit().putString("user","10000000-0000-4000-8000-000000000001").putLong("issued",elapsed).putLong("deadline",elapsed+600000).putInt("boot",boot).commit();
-   // The preceding clean-install suite ran version 51. A real version-47 installation has no migration marker.
+   // The preceding clean-install suite ran version 52. A real version-47 installation has no migration marker.
    nav.edit().clear().putString("last-page","file:///android_asset/inicio.html").commit();
    scenario=ActivityScenario.launch(MainActivity.class);
    try{
@@ -59,7 +59,7 @@ public class UpgradePersistenceTest {
     assertFalse(nav.getBoolean("legacy-archived",false));
    }finally{scenario.close();}
   }else{
-   assertEquals("verify",phase);assertEquals(51,c.getPackageManager().getPackageInfo(c.getPackageName(),0).getLongVersionCode());
+   assertEquals("verify",phase);assertEquals(52,c.getPackageManager().getPackageInfo(c.getPackageName(),0).getLongVersionCode());
    assertTrue(nav.contains("upgrade-qa-expected"));
    scenario=ActivityScenario.launch(MainActivity.class);
    try{
